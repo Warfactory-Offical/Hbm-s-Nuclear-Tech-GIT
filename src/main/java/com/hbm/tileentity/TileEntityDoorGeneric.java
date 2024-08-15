@@ -420,7 +420,8 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 
 	public void updateRedstonePower(BlockPos pos){
 		//Drillgon200: Best I could come up with without having to use dummy tile entities
-		boolean powered = world.isBlockIndirectlyGettingPowered(pos) > 0;
+		//boolean powered = world.isBlockPowered(pos);
+		boolean powered = world.isBlockPowered(pos);
 		boolean contained = activatedBlocks.contains(pos);
 		if(!contained && powered){
 			activatedBlocks.add(pos);
