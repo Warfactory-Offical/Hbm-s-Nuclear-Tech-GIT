@@ -50,6 +50,10 @@ dependencies {
 
     compileOnly rfg.deobf("cofh:RedstoneFlux:1.12-${version_redstoneflux}:universal")
 
-    implementation 'org.scala-lang:scala-library:2.13.12'
+    implementation rfg.deobf("curse.maven:groovyscript-687577:5562296")
+    implementation rfg.deobf('curse.maven:had-enough-items-557549:5471944')
+
+
+
 
 }
