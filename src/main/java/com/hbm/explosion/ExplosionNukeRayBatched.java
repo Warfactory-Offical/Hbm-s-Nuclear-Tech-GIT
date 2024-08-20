@@ -149,7 +149,7 @@ public class ExplosionNukeRayBatched {
 				if(b.getExplosionResistance(null) >= 2_000_000)
 					break;
 
-				rayStrength -= Math.pow(getNukeResistance(blockState, b)+1, 3 * ((double) r) / ((double) radius))-1;
+				rayStrength -= Math.pow(getNukeResistance(blockState, b)+1, 3 * ((double) (r = (r > 0) ? r : 1)) / ((double) radius))-1;
 
 				//save block positions in to-destroy-boolean[] until rayStrength is 0 
 				if(rayStrength > 0){
