@@ -143,7 +143,7 @@ public class AssemblerRecipes {
 
 	//FFS 7 you need to become more precise and thorough.
 	private static void registerDefaults() {
-		makeRecipe(new ComparableStack(ModItems.plate_iron, 2), new AStack[] { new OreDictStack(IRON.ingot(), 3), }, 30);
+		/* makeRecipe(new ComparableStack(ModItems.plate_iron, 2), new AStack[] { new OreDictStack(IRON.ingot(), 3), }, 30);
 		makeRecipe(new ComparableStack(ModItems.plate_gold, 2), new AStack[] { new OreDictStack(GOLD.ingot(), 3), }, 30);
 		makeRecipe(new ComparableStack(ModItems.plate_titanium, 2), new AStack[] { new OreDictStack(TI.ingot(), 3), }, 30);
 		makeRecipe(new ComparableStack(ModItems.plate_aluminium, 2), new AStack[] { new OreDictStack(AL.ingot(), 3), }, 30);
@@ -1032,7 +1032,7 @@ public class AssemblerRecipes {
 		
 		makeRecipe(new ComparableStack(ModBlocks.control_panel_custom, 1), new AStack[]{new ComparableStack(ModItems.circuit_targeting_tier5), new OreDictStack(STEEL.block(), 1), new ComparableStack(ModItems.wire_copper, 24), new ComparableStack(ModBlocks.pole_top)}, 100);
 		makeRecipe(new ComparableStack(ModBlocks.railgun_plasma, 1), new AStack[]{new OreDictStack(STEEL.plate(), 24), new ComparableStack(ModItems.hull_big_steel, 2), new ComparableStack(ModItems.hull_small_steel, 6), new ComparableStack(ModItems.pipes_steel, 2), new ComparableStack(ModBlocks.machine_desh_battery, 4), new ComparableStack(ModItems.coil_copper, 16), new ComparableStack(ModItems.coil_copper_torus, 8), new ComparableStack(ModItems.plate_desh, 4), new ComparableStack(ModItems.circuit_targeting_tier4, 4), new ComparableStack(ModItems.circuit_targeting_tier3, 2), new OreDictStack(ANY_PLASTIC.ingot(), 4)}, 500);
-		
+		*/
 		/// HIDDEN ///
 		hidden.add(new ComparableStack(ModBlocks.machine_radgen, 1));
 	}

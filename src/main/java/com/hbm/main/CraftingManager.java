@@ -65,8 +65,8 @@ public class CraftingManager {
 		if(!GeneralConfig.recipes) {
 			return;
 		}
-		addCrafting();
-		addSmelting();
+		//addCrafting();
+		//addSmelting();
 
 		hack.getRegistry().register(new SmallReactorFuelCraftingHandler().setRegistryName(new ResourceLocation(RefStrings.MODID, "reactor_fuel_crafting_handler")));
 		hack.getRegistry().register(new RBMKFuelCraftingHandler().setRegistryName(new ResourceLocation(RefStrings.MODID, "rbmk_fuel_crafting_handler")));

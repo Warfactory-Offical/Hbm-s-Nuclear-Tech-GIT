@@ -42,7 +42,7 @@ public class ChemplantRecipes {
 	public static LinkedHashMap<Integer, String> recipeNames = new LinkedHashMap<>();
 
 	public static void registerRecipes() {
-		if(MachineConfig.chemplantKeepOilProcessing){
+		/*if(MachineConfig.chemplantKeepOilProcessing){
 			makeRecipe(0, "FP_HEAVYOIL", null, new FluidStack[]{ new FluidStack(ModForgeFluids.heavyoil, 1000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.bitumen, 300), new FluidStack(ModForgeFluids.smear, 700) }, 50);
 			
 			makeRecipe(10, "FP_SMEAR", null, new FluidStack[]{ new FluidStack(ModForgeFluids.smear, 1000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.heatingoil, 600), new FluidStack(ModForgeFluids.lubricant, 400) }, 50);
@@ -226,7 +226,7 @@ public class ChemplantRecipes {
 		makeRecipe(880, "OSMIRIDIUM_DEATH", new AStack[] { new ComparableStack(ModItems.powder_paleogenite), new OreDictStack(F.dust(), 8), new ComparableStack(ModItems.nugget_bismuth, 4) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000), new FluidStack(ModForgeFluids.sas3, 1000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.liquid_osmiridium, 1000) }, 240);
 		
 		// makeRecipe(0, "FP_SMEAR, new AStack[] { new ComparableStack() }, new FluidStack[]{ new FluidStack() }, null, null, 100);
-		
+		*/
 	}
 
 	public static void makeRecipe(int index, String name, AStack[] itemInputs, FluidStack[] fluidInputs, AStack[] outputItems, FluidStack[] outputFluids, int duration) {
