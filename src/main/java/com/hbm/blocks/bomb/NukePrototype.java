@@ -43,7 +43,7 @@ public class NukePrototype extends BlockContainer implements IBomb {
 	
 	public NukePrototype(Material materialIn, String s) {
 		super(materialIn);
-		this.setUnlocalizedName(s);
+		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
 		ModBlocks.ALL_BLOCKS.add(this);
@@ -69,7 +69,7 @@ public class NukePrototype extends BlockContainer implements IBomb {
 			TileEntityNukePrototype entity = (TileEntityNukePrototype) world.getTileEntity(pos);
 			if(entity.isReady())
 			{
-        		this.onBlockDestroyedByPlayer(world, pos, world.getBlockState(pos));
+        		this.onPlayerDestroy(world, pos, world.getBlockState(pos));
             	entity.clearSlots();
             	world.setBlockToAir(pos);
             	igniteTestBomb(world, pos.getX(), pos.getY(), pos.getZ(), BombConfig.prototypeRadius);
@@ -91,11 +91,11 @@ public class NukePrototype extends BlockContainer implements IBomb {
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		TileEntityNukePrototype entity = (TileEntityNukePrototype) worldIn.getTileEntity(pos);
-        if (worldIn.isBlockIndirectlyGettingPowered(pos) > 0 && !worldIn.isRemote)
+        if (worldIn.isBlockPowered(pos) && !worldIn.isRemote)
         {
         	if(entity.isReady())
         	{
-        		this.onBlockDestroyedByPlayer(worldIn, pos, worldIn.getBlockState(pos));
+        		this.onPlayerDestroy(worldIn, pos, worldIn.getBlockState(pos));
             	entity.clearSlots();
             	worldIn.setBlockToAir(pos);
             	igniteTestBomb(worldIn, pos.getX(), pos.getY(), pos.getZ(), BombConfig.prototypeRadius);
@@ -144,7 +144,7 @@ public class NukePrototype extends BlockContainer implements IBomb {
         {
         	if(entity.isReady())
         	{
-        		this.onBlockDestroyedByPlayer(world, pos, world.getBlockState(pos));
+        		this.onPlayerDestroy(world, pos, world.getBlockState(pos));
             	entity.clearSlots();
             	world.setBlockToAir(pos);
             	igniteTestBomb(world, pos.getX(), pos.getY(), pos.getZ(), BombConfig.prototypeRadius);
@@ -194,7 +194,7 @@ public class NukePrototype extends BlockContainer implements IBomb {
 	
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumfacing = EnumFacing.getFront(meta);
+		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {

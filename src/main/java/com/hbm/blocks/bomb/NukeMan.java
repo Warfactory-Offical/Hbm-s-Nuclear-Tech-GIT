@@ -44,7 +44,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 	
 	public NukeMan(Material materialIn, String s) {
 		super(materialIn);
-		this.setUnlocalizedName(s);
+		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.nukeTab);
 		
@@ -98,12 +98,12 @@ public class NukeMan extends BlockContainer implements IBomb {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(pos);
-        if (world.isBlockIndirectlyGettingPowered(pos) > 0 && !world.isRemote)
+        if (world.isBlockPowered(pos) && !world.isRemote)
         {
         	
         	if(entity.isReady())
         	{
-        		this.onBlockDestroyedByPlayer(world, pos, state);
+        		this.onPlayerDestroy(world, pos, state);
             	entity.clearSlots();
             	world.setBlockToAir(pos);
             	igniteTestBomb(world, pos.getX(), pos.getY(), pos.getZ());
@@ -207,7 +207,7 @@ public class NukeMan extends BlockContainer implements IBomb {
         {
         	if(entity.isReady())
         	{
-        		this.onBlockDestroyedByPlayer(world, pos, world.getBlockState(pos));
+        		this.onPlayerDestroy(world, pos, world.getBlockState(pos));
             	entity.clearSlots();
             	world.setBlockToAir(pos);
             	igniteTestBomb(world, pos.getX(), pos.getY(), pos.getZ());

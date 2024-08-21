@@ -313,7 +313,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	
 	public short getRelevantMode() {
 		
-		if(world.isBlockIndirectlyGettingPowered(pos) > 0) {
+		if(world.isBlockPowered(pos)) {
 			return this.redHigh;
 		} else {
 			return this.redLow;
