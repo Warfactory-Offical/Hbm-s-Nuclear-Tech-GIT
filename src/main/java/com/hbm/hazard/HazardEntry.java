@@ -3,6 +3,7 @@ package com.hbm.hazard;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hbm.hazard.modifier.HazardModifier;
 import com.hbm.hazard.type.HazardTypeBase;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +17,7 @@ public class HazardEntry {
 	/*
 	 * Modifiers are evaluated in the order they're being applied to the entry.
 	 */
-	List<HazardModifier> mods = new ArrayList<>();
+	List<HazardModifier> mods = new ArrayList();
 	
 	public HazardEntry(HazardTypeBase type) {
 		this(type, 1F);

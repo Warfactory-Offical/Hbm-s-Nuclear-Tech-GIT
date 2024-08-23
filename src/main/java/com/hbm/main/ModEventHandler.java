@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import com.hbm.hazard.HazardSystem;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.Level;
 
@@ -596,9 +597,22 @@ public class ModEventHandler {
 			}
 		}
 		
-		if(event.world != null && !event.world.isRemote && event.world.getTotalWorldTime() % 100 == 97){
+		if(event.world != null && !event.world.isRemote) {
+			if(event.world.getTotalWorldTime() % 100 == 97)
+				PacketDispatcher.wrapper.sendToAll(new SurveyPacket(RBMKDials.getColumnHeight(event.world)));
 			//Drillgon200: Retarded hack because I'm not convinced game rules are client sync'd
-			PacketDispatcher.wrapper.sendToAll(new SurveyPacket(RBMKDials.getColumnHeight(event.world)));
+
+			List<Object> oList = new ArrayList<Object>();
+			oList.addAll(event.world.loadedEntityList);
+
+			for (Object e : oList) {
+
+				if (e instanceof EntityItem) {
+					EntityItem item = (EntityItem) e;
+					HazardSystem.updateDroppedItem(item);
+				}
+			}
+
 		}
 
 		if(event.phase == Phase.START) {
@@ -739,6 +753,9 @@ public class ModEventHandler {
 		if(event.phase == Phase.END){
 			JetpackHandler.postPlayerTick(event.player);
 		}
+		/// NEW ITEM SYS START ///
+		HazardSystem.updatePlayerInventory(player);
+		/// NEW ITEM SYS END ///
 	}
 
 	@SubscribeEvent
@@ -973,6 +990,10 @@ public class ModEventHandler {
 		}
 		
 		EntityEffectHandler.onUpdate(event.getEntityLiving());
+		//NEW HAZ SYSTEM
+		if(!event.getEntity().world.isRemote && !(event.getEntityLiving() instanceof EntityPlayer)) {
+			HazardSystem.updateLivingInventory(event.getEntityLiving());
+		}
 	}
 
 	@SubscribeEvent

@@ -1,16 +1,12 @@
 package com.hbm.hazard.type;
 
-import java.util.List;
-
 import com.hbm.config.GeneralConfig;
-import com.hbm.hazard.HazardModifier;
-import com.hbm.items.ModItems;
-import com.hbm.lib.Library;
+import com.hbm.hazard.helper.HazardHelper;
+import com.hbm.hazard.modifier.HazardModifier;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,21 +15,26 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class HazardTypeRadiation extends HazardTypeBase {
 
 	@Override
 	public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
+
+
+		boolean reacher = HazardHelper.isHoldingReacher(target);
+
+		level *= stack.getCount();
 		
-		boolean reacher = false;
-		
-		if(target instanceof EntityPlayer && !GeneralConfig.enable528)
-			reacher = Library.checkForHeld((EntityPlayer) target, ModItems.reacher);
-			
 		if(level > 0) {
 			float rad = level / 20F;
 			
-			if(reacher)
-				rad = (float) Math.min(Math.sqrt(rad), rad); //to prevent radiation from going up when being <1
+			if(GeneralConfig.enable528 && reacher) {
+				rad = (float) (rad / 49F);	//More realistic function for 528: x / distance^2
+			} else if(reacher) {
+				rad = (float) Math.sqrt(rad); //Reworked radiation function: sqrt(x+1/(x+2)^2)-1/(x+2)
+			}											
 			
 			ContaminationUtil.contaminate(target, HazardType.RADIATION, ContaminationType.CREATIVE, rad);
 		}
@@ -44,16 +45,19 @@ public class HazardTypeRadiation extends HazardTypeBase {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addHazardInformation(EntityPlayer player, List<String> list, float level, ItemStack stack, List<HazardModifier> modifiers) {
+	public void addHazardInformation(EntityPlayer player, List list, float level, ItemStack stack, List<HazardModifier> modifiers) {
 		
 		level = HazardModifier.evalAllModifiers(stack, player, level, modifiers);
 		
+		if(level < 1e-5)
+			return;
+		
 		list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("trait.radioactive") + "]");
 		String rad = "" + (Math.floor(level* 1000) / 1000);
-		list.add(TextFormatting.YELLOW + rad + " " + I18nUtil.resolveKey("desc.rads"));
+		list.add(TextFormatting.YELLOW + (rad + "RAD/s"));
 		
 		if(stack.getCount() > 1) {
-			list.add(TextFormatting.YELLOW + I18nUtil.resolveKey("desc.stack")+" " + (Math.floor(level * 1000 * stack.getCount()) / 1000) + " " + I18nUtil.resolveKey("desc.rads"));
+			list.add(TextFormatting.YELLOW + "Stack: " + ((Math.floor(level * 1000 * stack.getCount()) / 1000) + "RAD/s"));
 		}
 	}
 

@@ -363,4 +363,7 @@ public class BobMathUtil {
 		float b = bA + (bB-bA) * percentB;
 		return (((int)r & 0xFF) << 16) | (((int)g & 0xFF) << 8) | ((int)b & 0xFF);
 	}
+	public static double squirt(double x) {
+		return Math.sqrt(x + 1D / ((x + 2D) * (x + 2D))) - 1D / (x + 2D);
+	}
 }

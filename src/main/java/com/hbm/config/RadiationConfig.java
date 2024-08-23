@@ -26,7 +26,14 @@ public class RadiationConfig {
 	public static int geigerY = 2;
 	public static int digammaX = 16;
 	public static int digammaY = 18;
-	
+	public static boolean disableAsbestos = false;
+	public static boolean disableBlinding = false;
+	public static boolean disableCoal = false;
+	public static boolean disableExplosive = false;
+	public static boolean disableHydro = false;
+	public static boolean disableHot = false;
+	public static boolean disableCold = false;
+
 	public static void loadFromConfig(Configuration config) {
 		final String CATEGORY_NUKE = "06_explosions";
 		final String CATEGORY_RAD = "07_radiation";

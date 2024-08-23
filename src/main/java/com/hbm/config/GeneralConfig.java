@@ -79,7 +79,10 @@ public class GeneralConfig {
 	public static boolean enableReflectorCompat = false;
 	public static int coltanRate = 2;
 	public static int bedrockRate = 50;
-	
+	public static boolean enableLBSM = true;
+	public static boolean enableLBSMSafeMEDrives = false;
+	public static boolean enableLBSMSafeCrates = false;
+
 	public static void loadFromConfig(Configuration config){
 		final String CATEGORY_GENERAL = "01_general";
 		enableDebugMode = config.get(CATEGORY_GENERAL, "1.00_enableDebugMode", false).getBoolean(false);

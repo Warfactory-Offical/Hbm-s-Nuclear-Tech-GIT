@@ -135,8 +135,8 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 		
 		@Override
 		public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected){
-			if(!worldIn.isRemote && entity instanceof EntityLivingBase)
-				this.module.applyEffects((EntityLivingBase) entity, stack.getCount(), itemSlot, isSelected, ((EntityLivingBase)entity).getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+			//if(!worldIn.isRemote && entity instanceof EntityLivingBase)
+				//this.module.applyEffects((EntityLivingBase) entity, stack.getCount(), itemSlot, isSelected, ((EntityLivingBase)entity).getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 		}
 		
 		@Override
