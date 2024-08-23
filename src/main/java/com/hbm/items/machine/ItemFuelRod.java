@@ -33,11 +33,11 @@ public class ItemFuelRod extends ItemHazard {
 	
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TextFormatting.GREEN + "["+ I18nUtil.resolveKey("trait.radioactive") +"]");
-		tooltip.add(TextFormatting.YELLOW + "" + this.irad + " "+I18nUtil.resolveKey("desc.rads"));
-		if(this.iblind){
-			tooltip.add(TextFormatting.DARK_AQUA + "["+I18nUtil.resolveKey("trait.blinding")+"]");
-		}
+		//tooltip.add(TextFormatting.GREEN + "["+ I18nUtil.resolveKey("trait.radioactive") +"]");
+		//tooltip.add(TextFormatting.YELLOW + "" + this.irad + " "+I18nUtil.resolveKey("desc.rads"));
+		//if(this.iblind){
+		//	tooltip.add(TextFormatting.DARK_AQUA + "["+I18nUtil.resolveKey("trait.blinding")+"]");
+		//}
 		tooltip.add(TextFormatting.GOLD + "["+I18nUtil.resolveKey("trait.reactorrod")+"]");
 		
 		tooltip.add(TextFormatting.DARK_AQUA + "  "+I18nUtil.resolveKey("desc.generates")+" " + heat + " "+I18nUtil.resolveKey("desc.heatpt"));

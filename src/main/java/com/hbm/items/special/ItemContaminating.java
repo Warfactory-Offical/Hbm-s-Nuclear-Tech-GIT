@@ -40,7 +40,7 @@ public class ItemContaminating extends ItemHazard {
 	
 	@Override
 	public boolean onEntityItemUpdate(EntityItem entityItem){
-		boolean m = this.module.onEntityItemUpdate(entityItem);
+		//boolean m = this.module.onEntityItemUpdate(entityItem);
 		if(entityItem != null && !entityItem.world.isRemote && (entityItem.onGround || entityItem.isBurning()) && CompatibilityConfig.isWarDim(entityItem.world)) {
 			if(isCleanGround(new BlockPos(entityItem.posX, entityItem.posY, entityItem.posZ), entityItem.world)){
 				return false;
@@ -56,7 +56,7 @@ public class ItemContaminating extends ItemHazard {
 			entityItem.setDead();
 			return true;
 		}
-		return false || m;
+		return false; // || m;
 	}
 
 	public static boolean isCleanGround(BlockPos pos, World world){
@@ -70,7 +70,7 @@ public class ItemContaminating extends ItemHazard {
 	
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 		if(falloutBallRadius > 1){
 			list.add("§2["+I18nUtil.resolveKey("trait.contaminating")+"§2]");
 			list.add(" §a"+I18nUtil.resolveKey("trait.contaminating.radius", falloutBallRadius));

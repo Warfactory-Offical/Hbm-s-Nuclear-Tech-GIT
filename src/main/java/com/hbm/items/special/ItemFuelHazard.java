@@ -27,7 +27,7 @@ public class ItemFuelHazard extends ItemHazard {
 	
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, list, flagIn);
+	//	super.addInformation(stack, worldIn, list, flagIn);
 		if(this == ModItems.dust)
 		{
 			if(MainRegistry.polaroidID == 11)

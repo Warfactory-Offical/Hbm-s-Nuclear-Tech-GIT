@@ -3,10 +3,12 @@ package com.hbm.hazard.type;
 import com.hbm.config.GeneralConfig;
 import com.hbm.hazard.helper.HazardHelper;
 import com.hbm.hazard.modifier.HazardModifier;
+import com.hbm.util.BobMathUtil;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.I18nUtil;
+import com.hbm.util.function.Function;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,12 +30,12 @@ public class HazardTypeRadiation extends HazardTypeBase {
 		level *= stack.getCount();
 		
 		if(level > 0) {
-			float rad = level / 20F;
+			float rad = (level / 20F)/2;
 			
 			if(GeneralConfig.enable528 && reacher) {
 				rad = (float) (rad / 49F);	//More realistic function for 528: x / distance^2
 			} else if(reacher) {
-				rad = (float) Math.sqrt(rad); //Reworked radiation function: sqrt(x+1/(x+2)^2)-1/(x+2)
+				rad = (float) BobMathUtil.squirt(rad); //Reworked radiation function: sqrt(x+1/(x+2)^2)-1/(x+2)
 			}											
 			
 			ContaminationUtil.contaminate(target, HazardType.RADIATION, ContaminationType.CREATIVE, rad);

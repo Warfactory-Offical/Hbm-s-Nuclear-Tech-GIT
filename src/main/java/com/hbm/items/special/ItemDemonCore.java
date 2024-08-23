@@ -29,7 +29,7 @@ public class ItemDemonCore extends ItemHazard {
 	
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 		list.add(TextFormatting.RED + "[" + I18nUtil.resolveKey("trait.drop") + "]");
 	}
 

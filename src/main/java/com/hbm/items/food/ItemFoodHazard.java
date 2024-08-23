@@ -85,7 +85,7 @@ public class ItemFoodHazard extends ItemFood implements IItemHazard {
     	}
 
 		this.module.addInformation(stack, list, flagIn);
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 	}
 	
 	@Override

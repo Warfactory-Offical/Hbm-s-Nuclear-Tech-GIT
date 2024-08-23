@@ -21,7 +21,7 @@ public class ItemTsar extends ItemHazard {
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.usedin"));
 		list.add(" "+ I18nUtil.resolveKey("tile.nuke_tsar.name"));
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 	}
 
 }

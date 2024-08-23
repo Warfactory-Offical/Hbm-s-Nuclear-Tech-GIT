@@ -59,7 +59,7 @@ public class ItemHazardSoup extends ItemSoup implements IItemHazard {
             list.add("Removes 80 RAD");
     	}
     	this.module.addInformation(stack, list, flagIn);
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 	}
 
 	@Override

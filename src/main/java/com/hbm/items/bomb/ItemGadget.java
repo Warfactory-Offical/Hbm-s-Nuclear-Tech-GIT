@@ -24,7 +24,7 @@ public class ItemGadget extends ItemHazard {
 		list.add(" "+ I18nUtil.resolveKey("tile.nuke_gadget.name"));
 		if(this == ModItems.gadget_explosive8)
 			list.add(" "+ I18nUtil.resolveKey("tile.nuke_man.name"));
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 	}
 
 }

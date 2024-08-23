@@ -153,7 +153,7 @@ public class ItemRTGPellet extends ItemHazard {
 	
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 		final ItemRTGPellet instance = (ItemRTGPellet) stack.getItem();
 		list.add("§c" + I18nUtil.resolveKey("desc.item.rtgHeat", getScaledPower(instance, stack)) + "§r");
 		if (instance.getDoesDecay()) {

@@ -25,6 +25,6 @@ public class ItemManMike extends ItemHazard {
 			list.add(" "+ I18nUtil.resolveKey("tile.nuke_man.name"));
 		list.add(" "+ I18nUtil.resolveKey("tile.nuke_mike.name"));
 		list.add(" "+ I18nUtil.resolveKey("tile.nuke_tsar.name"));
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 	}
 }

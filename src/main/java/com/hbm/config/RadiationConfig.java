@@ -33,8 +33,9 @@ public class RadiationConfig {
 	public static boolean disableHydro = false;
 	public static boolean disableHot = false;
 	public static boolean disableCold = false;
+    public static boolean disableToxic = false;
 
-	public static void loadFromConfig(Configuration config) {
+    public static void loadFromConfig(Configuration config) {
 		final String CATEGORY_NUKE = "06_explosions";
 		final String CATEGORY_RAD = "07_radiation";
 		// afterrain duration

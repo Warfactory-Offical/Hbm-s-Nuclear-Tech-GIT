@@ -77,6 +77,7 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 	public static final float sa327 = 17.5F; //Solinium
 	public static final float saf = 5.85F; //Schrabidium Fuel
 	public static final float les = 2.52F;
+	public static final float ts = 120.0F;
 	public static final float mes = 5.25F;
 	public static final float hes = 8.8F;
 	public static final float gh336 = 5.0F; //Ghisorium
@@ -141,8 +142,8 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 		
 		@Override
 		public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
-			this.module.addInformation(stack, list, flagIn);
-			super.addInformation(stack, world, list, flagIn);
+		//	this.module.addInformation(stack, list, flagIn);
+		//	super.addInformation(stack, world, list, flagIn);
 		}
 		
 		@Override

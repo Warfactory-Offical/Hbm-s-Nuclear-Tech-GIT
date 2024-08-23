@@ -21,6 +21,6 @@ public class ItemSolinium extends ItemHazard {
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.usedin"));
 		list.add(" " + I18nUtil.resolveKey("trait.soliniumbomb"));
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 	}
 }
