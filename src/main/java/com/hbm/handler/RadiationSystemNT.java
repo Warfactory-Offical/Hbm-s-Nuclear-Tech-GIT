@@ -549,7 +549,7 @@ public class RadiationSystemNT {
 	}
 
 	@SubscribeEvent
-	public static void onWorldUpdate(TickEvent.WorldTickEvent e) {
+	public static void onWorldTick(TickEvent.WorldTickEvent e) {
 		if(GeneralConfig.enableDebugMode) {
 			MainRegistry.logger.info("[Debug] onWorldUpdate called for RadSys tick " + ticks);
 		}

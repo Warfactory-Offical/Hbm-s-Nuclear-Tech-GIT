@@ -18,4 +18,6 @@ public class OreNames {
 	public static final String BLOCK = "block";
 	public static final String ORE = "ore";
 	public static final String ORENETHER = "oreNether";
+	public static final String WASTE = "waste";
+	public static final String WASTEHOT = "wasteHot";
 }

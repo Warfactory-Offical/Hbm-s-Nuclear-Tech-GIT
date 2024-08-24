@@ -148,6 +148,8 @@ public class HazardRegistry {
 	public static final float rod_dual = rod * 2;
 	public static final float rod_quad = rod * 4;
 	public static final float rod_rbmk = rod * 8;
+	public static final float waste = 0.075F;
+	public static final float waste_hot = 0.075F;
 
 	public static final HazardTypeBase RADIATION = new HazardTypeRadiation();
 	public static final HazardTypeBase DIGAMMA = new HazardTypeDigamma();
@@ -300,12 +302,19 @@ public class HazardRegistry {
 //		HazardSystem.register(rod_zirnox_zfb_mox_depleted, makeData(RADIATION, wst * rod_dual * 5F));
 
 		//TODO: add Oredict to Waste
+		HazardSystem.register(waste_uranium, makeData().addEntry( RADIATION, wst * billet * 10F));
+		HazardSystem.register(waste_thorium, makeData().addEntry( RADIATION,wst * billet * 7.5F));
+		HazardSystem.register(waste_mox, makeData().addEntry( RADIATION,wst * billet * 10F));
+		HazardSystem.register(waste_plutonium, makeData().addEntry( RADIATION, wst * billet * 12.5F));
+		HazardSystem.register(waste_schrabidium, makeData().addEntry( RADIATION,wst * billet * 15F).addEntry(BLINDING, 50F));
+
+		HazardSystem.register(waste_uranium_hot, makeData().addEntry( RADIATION, wst * billet * 10F).addEntry(HOT, 5F));
+		HazardSystem.register(waste_thorium_hot, makeData().addEntry( RADIATION,wst * billet * 7.5F).addEntry(HOT, 5F));
+		HazardSystem.register(waste_mox_hot, makeData().addEntry( RADIATION,wst * billet * 10F).addEntry(HOT, 5F));
+		HazardSystem.register(waste_plutonium_hot, makeData().addEntry( RADIATION, wst * billet * 12.5F).addEntry(HOT, 5F));
+		HazardSystem.register(waste_schrabidium_hot, makeData().addEntry( RADIATION,wst * billet * 15F).addEntry(HOT, 5F).addEntry(BLINDING, 50F));
+
 //		registerOtherWaste(waste_natural_uranium, wst * billet * 11.5F);
-		registerOtherWaste(waste_uranium, wst * billet * 10F);
-		registerOtherWaste(waste_thorium, wst * billet * 7.5F);
-		registerOtherWaste(waste_mox, wst * billet * 10F);
-		registerOtherWaste(waste_plutonium, wst * billet * 12.5F);
-		registerOtherWaste(waste_schrabidium, wst * billet * 15F);
 //		registerOtherWaste(waste_u233, wst * billet * 10F);
 //		registerOtherWaste(waste_u235, wst * billet * 11F);
 //		registerOtherWaste(waste_zfb_mox, wst * billet * 5F);

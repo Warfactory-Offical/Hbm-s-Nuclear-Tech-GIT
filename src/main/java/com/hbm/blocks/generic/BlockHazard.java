@@ -228,17 +228,19 @@ public class BlockHazard extends Block implements IItemHazard {
 	}
 
 	@Override
+	@SuppressWarnings("unreachable-")
 	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity) {
+
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase)entity, 0.5F, 0, false, EnumHand.MAIN_HAND);
 
-		
+
     	if (entity instanceof EntityLivingBase && this == ModBlocks.brick_jungle_mystic)
     	{
     		((EntityLivingBase) entity).addPotionEffect(new PotionEffect(HbmPotion.taint, 15 * 20, 2));
     		return;
     	}
-	}
+ 	}
 
 	@Override
 	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
