@@ -133,7 +133,7 @@ public class OreDictManager {
 	public static final DictFrame SBD = new DictFrame("Schrabidate");
 	public static final DictFrame SRN = new DictFrame("Schraranium");
 	public static final DictFrame GH336 = new DictFrame("Ghiorsium336", "Gh336");
-	public static final DictFrame BF = new DictFrame("Neoveline", "Balefire");
+	public static final DictFrame RS = new DictFrame("Neoveline", "Radspice");
 	/*
 	 * STABLE
 	 */
@@ -344,7 +344,7 @@ public class OreDictManager {
 		BAKELITE																											.ingot(ingot_bakelite)		.dust(powder_bakelite)									.block(block_bakelite);
 		RUBBER																												.ingot(ingot_rubber)																.block(block_rubber);
 		LATEX																												.ingot(ingot_biorubber)																							.gem(ball_resin);
-		MAGTUNG																												.ingot(ingot_magnetized_tungsten).dust(powder_magnetized_tungsten)					.block(block_magnetized_tungsten);
+		MAGTUNG .rad(0.75F)																												.ingot(ingot_magnetized_tungsten).dust(powder_magnetized_tungsten)					.block(block_magnetized_tungsten);
 		CMB																													.ingot(ingot_combine_steel)	.dust(powder_combine_steel)								.block(block_combine_steel)														.plate(plate_combine_steel);
 		DESH														.nugget(nugget_desh)									.ingot(ingot_desh)			.dust(powder_desh)										.block(block_desh);
 		STAR																												.ingot(ingot_starmetal)																.block(block_starmetal)							.crystal(crystal_starmetal)								.ore(ore_meteor_starmetal);
@@ -397,7 +397,7 @@ public class OreDictManager {
 		AU198	.rad(HazardRegistry.au198)					.hot(5)	.nugget(nugget_au198)		.billet(billet_au198)		.ingot(ingot_au198)			.dust(powder_au198)		.dustSmall(powder_au198_tiny)	.block(block_au198);
 		PB209	.rad(HazardRegistry.pb209)	.blinding(50F)	.hot(7)	.nugget(nugget_pb209)		.billet(billet_pb209)		.ingot(ingot_pb209)			.dust(powder_pb209)		.dustSmall(powder_pb209_tiny);
 		GH336	.rad(HazardRegistry.gh336)							.nugget(nugget_gh336)		.billet(billet_gh336)		.ingot(ingot_gh336);
-		BF		.rad(HazardRegistry.bf) 	.blinding(60F) .hot(10F) .hydro(10F) .toxic(2) .nugget(nugget_radspice) .ingot(ingot_radspice) .dust(powder_radspice) .dustSmall(powder_radspice_tiny) .block(block_radspice);
+		RS		.rad(HazardRegistry.radspice) 	.blinding(60F) .hot(10F) .hydro(10F) .toxic(2) .nugget(nugget_radspice) .ingot(ingot_radspice) .dust(powder_radspice) .dustSmall(powder_radspice_tiny) .block(block_radspice);
 
 		AUSTRALIUM													.nugget(nugget_australium)	.billet(billet_australium)	.ingot(ingot_australium)	.dust(powder_australium)								.block(block_australium)																				.ore(ore_australium);
 		REIIUM														.nugget(nugget_reiium)									.ingot(ingot_reiium)		.dust(powder_reiium)									.block(block_reiium)																					.ore(ore_reiium);
