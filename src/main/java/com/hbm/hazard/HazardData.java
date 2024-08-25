@@ -49,4 +49,11 @@ public class HazardData {
 	public int getMutex() {
 		return mutexBits;
 	}
+
+	@Override
+	public String toString() {
+		return "HazardData{" +
+				"entries=" + entries +
+				'}';
+	}
 }

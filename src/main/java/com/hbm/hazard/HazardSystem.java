@@ -8,6 +8,7 @@ import com.hbm.hazard.type.HazardTypeBase;
 import com.hbm.interfaces.Untested;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 
+import com.hbm.main.MainRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -60,7 +61,7 @@ public class HazardSystem {
 		}
 
 		if (o instanceof Item i) {
-            if (itemMap.containsKey(i)) throw new KeyAlreadyExistsException(i.toString());
+            if (itemMap.containsKey(i)) MainRegistry.logger.warn(new KeyAlreadyExistsException(i.toString()));
 
 			itemMap.put(i, data);
 			return;
@@ -69,21 +70,21 @@ public class HazardSystem {
 		if (o instanceof Block b) {
 			Item i = Item.getItemFromBlock(b);
 
-			if (itemMap.containsKey(i)) throw new KeyAlreadyExistsException(b.toString());
+			if (itemMap.containsKey(i)) MainRegistry.logger.warn(new KeyAlreadyExistsException(b.toString()));
 
 			itemMap.put(i, data);
 			return;
 		}
 
 		if (o instanceof ItemStack is) {
-			if (stackMap.containsKey(is)) throw new KeyAlreadyExistsException(is.toString());
+			if (stackMap.containsKey(is)) MainRegistry.logger.warn(new KeyAlreadyExistsException(is.toString()));
 
             stackMap.put(new ComparableStack(is), data);
 			return;
 		}
 
 		if (o instanceof ComparableStack cs) {
-			if (stackMap.containsKey(cs)) throw new KeyAlreadyExistsException(cs.toString());
+			if (stackMap.containsKey(cs)) MainRegistry.logger.warn(new KeyAlreadyExistsException(cs.toString()));
 
             stackMap.put(cs, data);
 			return;

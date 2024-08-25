@@ -7,6 +7,7 @@ import com.hbm.config.GeneralConfig;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.hazard.HazardData;
 import com.hbm.hazard.HazardSystem;
+import com.hbm.hazard.type.HazardTypeRadiation;
 import com.hbm.inventory.BreederRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
@@ -53,8 +54,6 @@ public class ItemHazardModule {
 	public float explosive;
 	
 	public float tempMod = 1F;
-
-
 
 	public void setMod(float tempMod) {
 		this.tempMod = tempMod;
@@ -104,6 +103,20 @@ public class ItemHazardModule {
 		this.explosive = bang;
 	}
 
+	public HazardData getHazardData() {
+		HazardData result = new HazardData();
+		if (radiation > 0) result.addEntry(RADIATION, radiation);
+		if (digamma > 0)   result.addEntry(DIGAMMA, digamma);
+		if (fire > 0)      result.addEntry(HOT, fire);
+		if (cryogenic > 0) result.addEntry(COLD, cryogenic);
+		if (toxic > 0)     result.addEntry(TOXIC, toxic);
+		if (blinding)      result.addEntry(BLINDING);
+		if (asbestos > 0)  result.addEntry(ASBESTOS, asbestos);
+		if (coal > 0)      result.addEntry(COAL, coal);
+		if (hydro)         result.addEntry(HYDROACTIVE);
+		if (explosive > 0) result.addEntry(EXPLOSIVE, explosive);
+		return result;
+	}
 
 	@Deprecated
 	public void applyEffects(EntityLivingBase entity, float mod, int slot, boolean currentItem, EnumHand hand) {

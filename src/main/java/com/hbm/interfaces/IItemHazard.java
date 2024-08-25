@@ -1,8 +1,11 @@
 package com.hbm.interfaces;
 
+import com.hbm.hazard.HazardSystem;
+import com.hbm.main.MainRegistry;
 import com.hbm.modules.ItemHazardModule;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.main.Main;
 import net.minecraft.item.Item;
 
 public interface IItemHazard {
@@ -65,10 +68,15 @@ public interface IItemHazard {
 	
 	//the only ugly part of this entire system is the manual casting so that the rest of the daisychained setters work
 	public default Item toItem() {
-		return (Item)this;
+		Item item = (Item) this;
+		HazardSystem.register(item, getModule().getHazardData());
+		MainRegistry.logger.error(getModule().getHazardData().toString());
+		return item;
 	}
 	
 	public default Block toBlock() {
-		return (Block)this;
+		Block block = (Block) this;
+		HazardSystem.register(block, getModule().getHazardData());
+		return block;
 	}
 }

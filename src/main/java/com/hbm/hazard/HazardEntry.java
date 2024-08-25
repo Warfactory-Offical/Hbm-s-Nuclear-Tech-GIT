@@ -50,4 +50,12 @@ public class HazardEntry {
 		clone.mods = this.mods;
 		return clone;
 	}
+
+	@Override
+	public String toString() {
+		return "HazardEntry{" +
+				"type=" + type.getClass().toString() +
+				", baseLevel=" + baseLevel +
+				'}';
+	}
 }

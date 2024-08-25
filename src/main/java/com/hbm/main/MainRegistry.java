@@ -558,7 +558,7 @@ public class MainRegistry {
 		MultiblockBBHandler.init();
 		ControlEvent.init();
 		SiegeTier.registerTiers();
-		HazardRegistry.registerItems();
+//		HazardRegistry.registerItems();
 		PotionRecipes.registerPotionRecipes();
 
 		proxy.registerRenderInfo();
