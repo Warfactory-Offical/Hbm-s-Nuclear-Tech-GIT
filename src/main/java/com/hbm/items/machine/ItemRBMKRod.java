@@ -2,6 +2,7 @@ package com.hbm.items.machine;
 
 import java.util.List;
 
+import com.hbm.hazard.HazardData;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
@@ -70,6 +71,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 
 	// Lol had quite some freetime
 
+	HazardData hazardData;
 	public ItemRBMKRod(ItemRBMKPellet pellet, String s) {
 		this(pellet.fullName, s);
 		this.pellet = pellet;
@@ -78,7 +80,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	public ItemRBMKRod(String fullName, String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		this.module = new ItemHazardModule();
+		this.module = new ItemHazardModule(hazardData);
 		
 		this.fullName = fullName;
 		

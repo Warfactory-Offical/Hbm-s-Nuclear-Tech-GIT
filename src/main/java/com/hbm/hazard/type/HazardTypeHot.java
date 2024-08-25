@@ -18,15 +18,11 @@ public class HazardTypeHot extends HazardTypeBase {
 
 	@Override
 	public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
-		
-		if(RadiationConfig.disableHot)
-			return;
-		
-		boolean reacher = HazardHelper.isHoldingReacher(target);
-		
 
-		if(!reacher && !target.isWet() && level > 0)
-			target.setFire((int) Math.ceil(level));
+		boolean wetOrReacher = HazardHelper.isHoldingReacher(target) || target.isWet() ;
+		if(RadiationConfig.disableHot && !wetOrReacher) return;
+
+		target.setFire((int) Math.ceil(level));
 	}
 
 	@Override

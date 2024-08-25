@@ -20,42 +20,55 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
+import static com.hbm.hazard.helper.HazardHelper.applyPotionEffect;
+
 public class HazardTypeToxic extends HazardTypeBase {
 	@Override
 	public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
 
-		if (RadiationConfig.disableToxic)
-			return;
+		if (RadiationConfig.disableToxic) return;
+
 		boolean reacher = HazardHelper.isHoldingReacher(target);
 		boolean hasToxFilter = false;
 		boolean hasHazmat = false;
 
 		if (target instanceof EntityPlayer) {
-			if (ArmorRegistry.hasProtection(target, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.NERVE_AGENT)) {
-				ArmorUtil.damageGasMaskFilter(target, 1);
-				hasToxFilter = true;
+			EntityPlayer player = (EntityPlayer) target;
+			hasToxFilter = ArmorRegistry.hasProtection(player, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.NERVE_AGENT);
+
+			if (hasToxFilter) {
+				ArmorUtil.damageGasMaskFilter(player, 1);
 			}
-			hasHazmat = ArmorUtil.checkForHazmat((EntityPlayer) target);
+
+			hasHazmat = ArmorUtil.checkForHazmat(player);
 		}
 
-		if (!hasToxFilter && !hasHazmat && !reacher) {
-			target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 110, (int) (level - 1)));
+		boolean isUnprotected = !(hasToxFilter || hasHazmat || reacher);
 
-			if (level > 2)
-				target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 110, (int) Math.min(4, level - 4)));
-			if (level > 4)
-				target.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 110, (int) level));
-			if (level > 6) {
-				if (target.world.rand.nextInt((int) (2000 / level)) == 0) {
-					target.addPotionEffect(new PotionEffect(MobEffects.POISON, 110, (int) (level - 4)));
-				}
+		if (isUnprotected) {
+			applyPotionEffect(target, MobEffects.WEAKNESS, 110, (int) (level - 1));
+
+			if (level > 2) {
+				applyPotionEffect(target, MobEffects.SLOWNESS, 110, (int) Math.min(4, level - 4));
+			}
+
+			if (level > 4) {
+				applyPotionEffect(target, MobEffects.HUNGER, 110, (int) level);
+			}
+
+			if (level > 6 && target.world.rand.nextInt((int) (2000 / level)) == 0) {
+				applyPotionEffect(target, MobEffects.POISON, 110, (int) (level - 4));
 			}
 		}
-		if (!(hasHazmat && hasToxFilter && reacher)) {
-			if (level > 8)
-				target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 110, (int) (level - 8)));
-			if (level > 16)
-				target.addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 110, (int) (level - 16)));
+
+		if (!hasHazmat || !hasToxFilter || !reacher) {
+			if (level > 8) {
+				applyPotionEffect(target, MobEffects.MINING_FATIGUE, 110, (int) (level - 8));
+			}
+
+			if (level > 16) {
+				applyPotionEffect(target, MobEffects.INSTANT_DAMAGE, 110, (int) (level - 16));
+			}
 		}
 	}
 
@@ -69,16 +82,20 @@ public class HazardTypeToxic extends HazardTypeBase {
     @Override
 	@SideOnly(Side.CLIENT)
     public void addHazardInformation(EntityPlayer player, List list, float level, ItemStack stack, List<HazardModifier> modifiers) {
-			if(level > 16)
-				list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("adjective.extreme") + " " + I18nUtil.resolveKey("trait.toxic") + "]");
-			else if(level > 8)
-				list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("adjective.veryhigh") + " " + I18nUtil.resolveKey("trait.toxic") + "]");
-			else if(level > 4)
-				list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("adjective.high") + " " + I18nUtil.resolveKey("trait.toxic") + "]");
-			else if(level > 2)
-				list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("adjective.medium") + " " + I18nUtil.resolveKey("trait.toxic") + "]");
-			else
-				list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("adjective.little") + " " + I18nUtil.resolveKey("trait.toxic") + "]");
+		String adjectiveKey;
 
+		if (level > 16) {
+			adjectiveKey = "adjective.extreme";
+		} else if (level > 8) {
+			adjectiveKey = "adjective.veryhigh";
+		} else if (level > 4) {
+			adjectiveKey = "adjective.high";
+		} else if (level > 2) {
+			adjectiveKey = "adjective.medium";
+		} else {
+			adjectiveKey = "adjective.little";
+		}
+
+		list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey(adjectiveKey) + " " + I18nUtil.resolveKey("trait.toxic") + "]");
     }
 }

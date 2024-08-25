@@ -2,6 +2,8 @@ package com.hbm.items.special;
 
 import java.util.List;
 
+import com.hbm.hazard.HazardData;
+import com.hbm.hazard.HazardSystem;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.modules.ItemHazardModule;
 
@@ -12,6 +14,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+
 
 @Deprecated()
 public class ItemHazard extends ItemCustomLore implements IItemHazard {
@@ -121,12 +124,16 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 	public static final float rod_rbmk = rod * 8;
 	public static final float magt = nugget * 0.5F * sa326;
 
-		
+
+		HazardData hazardData;
 		ItemHazardModule module;
+
 		
 		public ItemHazard(String s) {
 			super(s);
-			this.module = new ItemHazardModule();
+			hazardData = new HazardData();
+			HazardSystem.register(this, hazardData);
+			this.module = new ItemHazardModule(hazardData); //Ill depricate it at some point
 		}
 
 		@Override

@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import static com.hbm.hazard.HazardRegistry.DIGAMMA;
+
 public class ItemDigamma extends ItemHazard {
 
 	int digamma;
@@ -40,7 +42,7 @@ public class ItemDigamma extends ItemHazard {
 		list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.hlPlayer", (digamma / 20F) + "s"));
 
 		list.add("");
-		super.addInformation(stack, world, list, flagIn);
+		//super.addInformation(stack, world, list, flagIn);
 
 		float d = ((int) ((1000F / digamma) * 200F)) / 10F;
 

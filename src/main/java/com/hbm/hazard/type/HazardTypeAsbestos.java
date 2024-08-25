@@ -3,6 +3,7 @@ package com.hbm.hazard.type;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.RadiationConfig;
 import com.hbm.handler.ArmorUtil;
+import com.hbm.hazard.HazardSystem;
 import com.hbm.util.ArmorRegistry;
 import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.I18nUtil;
@@ -26,9 +27,9 @@ public class HazardTypeAsbestos extends HazardTypeBase {
 			return;
 
 		if (ArmorRegistry.hasProtection(target, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_FINE))
-			ArmorUtil.damageGasMaskFilter(target, (int) level);
+			ArmorUtil.damageGasMaskFilter(target, (int) level*hazardRate);
 		else
-			HbmLivingProps.incrementAsbestos(target, (int) Math.min(level, 10));
+			HbmLivingProps.incrementAsbestos(target, (int) Math.min(level, 10)*hazardRate);
 	}
 
 

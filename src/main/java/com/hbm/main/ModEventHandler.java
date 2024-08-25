@@ -17,6 +17,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import com.hbm.hazard.HazardSystem;
 import net.minecraft.util.math.Vec3d;
@@ -170,8 +172,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.registries.DataSerializerEntry;
 
+
 public class ModEventHandler {
 
+	public static final int HAZARD_POLL_RATE = RadiationConfig.hazardRate;
 	public static final ResourceLocation ENT_HBM_PROP_ID = new ResourceLocation(RefStrings.MODID, "HBMLIVINGPROPS");
 	public static final ResourceLocation DATA_LOC = new ResourceLocation(RefStrings.MODID, "HBMDATA");
 
@@ -275,27 +279,34 @@ public class ModEventHandler {
 			e.getTable().addPool(pool);
 		}
 	}
-	
+
+	/// SMELTING ///
 	@SubscribeEvent
-	public void itemSmelted(PlayerEvent.ItemSmeltedEvent e) {
-		
-		if(!e.player.world.isRemote && e.smelting.getItem() == Items.IRON_INGOT && e.player.getRNG().nextInt(64) == 0) {
-			
-			if(!e.player.inventory.addItemStackToInventory(new ItemStack(ModItems.lodestone)))
-				e.player.dropItem(new ItemStack(ModItems.lodestone), false);
-			else
-				e.player.inventoryContainer.detectAndSendChanges();
-		}
-		
-		if(!e.player.world.isRemote && e.smelting.getItem() == ModItems.ingot_uranium && e.player.getRNG().nextInt(64) == 0) {
-			
-			if(!e.player.inventory.addItemStackToInventory(new ItemStack(ModItems.quartz_plutonium)))
-				e.player.dropItem(new ItemStack(ModItems.quartz_plutonium), false);
-			else
-				e.player.inventoryContainer.detectAndSendChanges();
+	public void itemSmelted(PlayerEvent.ItemSmeltedEvent event) {
+		if (event.player.world.isRemote) return;
+
+		Item smeltedItem = event.smelting.getItem();
+		int randomChance = 64;
+
+		// Check for specific smelting results and handle rewards
+		if (smeltedItem == Items.IRON_INGOT || smeltedItem == ModItems.ingot_uranium) {
+			Item rewardItem = smeltedItem == Items.IRON_INGOT ? ModItems.lodestone : ModItems.quartz_plutonium;
+
+			if (event.player.getRNG().nextInt(randomChance) == 0) {
+				giveOrDropItem(event.player, new ItemStack(rewardItem));
+			}
 		}
 	}
 
+	// Utility method to handle giving or dropping the reward item
+	private void giveOrDropItem(EntityPlayer player, ItemStack reward) {
+		if (!player.inventory.addItemStackToInventory(reward)) {
+			player.dropItem(reward, false);
+		} else {
+			player.inventoryContainer.detectAndSendChanges();
+		}
+	}
+	///MOB SPAWNING
 	public boolean canWear(Entity entity){
 		return entity instanceof EntityZombie || entity instanceof EntitySkeleton || entity instanceof EntityVillager || entity instanceof EntityIronGolem;
 	}
@@ -573,41 +584,41 @@ public class ModEventHandler {
 
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event) {
-		if(!MainRegistry.allPipeNetworks.isEmpty() && !event.world.isRemote) {
+		if (event.world == null || event.world.isRemote) return; // Dont bother updating shit
+
+		// Handle pipe network updates
+		if (!MainRegistry.allPipeNetworks.isEmpty()) {
 			Iterator<FFPipeNetwork> itr = MainRegistry.allPipeNetworks.iterator();
-			while(itr.hasNext()) {
+			while (itr.hasNext()) {
 				FFPipeNetwork net = itr.next();
-				if(net.getNetworkWorld() != event.world)
-					continue;
-				if(net != null)
-					net.updateTick();
-				if(net.getPipes().isEmpty()) {
+
+				if (net == null || net.getNetworkWorld() != event.world) continue; // Skip for invalid
+
+				net.updateTick();
+
+				if (net.getPipes().isEmpty()) {
 					net.destroySoft();
 					itr.remove();
 				}
-
 			}
 		}
-		
-		if(event.world != null && !event.world.isRemote) {
-			if(event.world.getTotalWorldTime() % 100 == 97)
-				PacketDispatcher.wrapper.sendToAll(new SurveyPacket(RBMKDials.getColumnHeight(event.world)));
-			//Drillgon200: Retarded hack because I'm not convinced game rules are client sync'd
 
-			List<Object> oList = new ArrayList<Object>();
-			oList.addAll(event.world.loadedEntityList);
+		long worldTime = event.world.getTotalWorldTime();
 
-			for (Object e : oList) {
-
-				if (e instanceof EntityItem) {
-					EntityItem item = (EntityItem) e;
-					HazardSystem.updateDroppedItem(item);
-				}
-			}
-
+		// Perform periodic operations
+		if (worldTime % 100 == 97) {
+			PacketDispatcher.wrapper.sendToAll(new SurveyPacket(RBMKDials.getColumnHeight(event.world)));
 		}
 
-		if(event.phase == Phase.START) {
+		// Hazard system update for dropped items
+		for (Object e : event.world.loadedEntityList) {
+			if (e instanceof EntityItem) {
+				HazardSystem.updateDroppedItem((EntityItem) e);
+			}
+		}
+
+		// Handle additional logic at the start of the tick
+		if (event.phase == Phase.START) {
 			BossSpawnHandler.rollTheDice(event.world);
 			TimedGenerator.automaton(event.world, 100);
 		}
@@ -716,7 +727,7 @@ public class ModEventHandler {
 		}
 
 		// Update inventory hazard system periodically
-		if (player.ticksExisted % 5 == 0) {
+		if (player.ticksExisted % HAZARD_POLL_RATE == 0) {
 			HazardSystem.updatePlayerInventory(player);
 		}
 	}
@@ -918,78 +929,92 @@ public class ModEventHandler {
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@SubscribeEvent
-	public void onLivingUpdate(LivingUpdateEvent event){
-		if(event.isCancelable() && event.isCanceled())
-			return;
-		ArmorFSB.handleTick(event.getEntityLiving());
-		if(r_handInventory == null){
+	public void onLivingUpdate(LivingUpdateEvent event) {
+		if (event.isCancelable() && event.isCanceled()) return;
+
+		EntityLivingBase entity = event.getEntityLiving();
+		ArmorFSB.handleTick(entity);
+
+		// Reflection field initialization
+		if (r_handInventory == null || r_armorArray == null) {
 			r_handInventory = ReflectionHelper.findField(EntityLivingBase.class, "handInventory", "field_184630_bs");
 			r_armorArray = ReflectionHelper.findField(EntityLivingBase.class, "armorArray", "field_184631_bt");
 		}
-		NonNullList<ItemStack> handInventory = null;
-		NonNullList<ItemStack> armorArray = null;
+
 		try {
-			handInventory = (NonNullList<ItemStack>) r_handInventory.get(event.getEntityLiving());
-			armorArray = (NonNullList<ItemStack>) r_armorArray.get(event.getEntityLiving());
-			
-			if(event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().getHeldItemMainhand().getItem() instanceof IEquipReceiver && !ItemStack.areItemsEqual(handInventory.get(0), event.getEntityLiving().getHeldItemMainhand())) {
-				((IEquipReceiver)event.getEntityLiving().getHeldItemMainhand().getItem()).onEquip((EntityPlayer) event.getEntityLiving(), EnumHand.MAIN_HAND);
+			NonNullList<ItemStack> handInventory = (NonNullList<ItemStack>) r_handInventory.get(entity);
+			NonNullList<ItemStack> armorArray = (NonNullList<ItemStack>) r_armorArray.get(entity);
+
+			// Handle equipped items for main hand and off-hand
+			if (entity instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) entity;
+				handleEquipUpdate(player, handInventory.get(0), EnumHand.MAIN_HAND);
+				handleEquipUpdate(player, handInventory.get(1), EnumHand.OFF_HAND);
 			}
-			if(event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().getHeldItemOffhand().getItem() instanceof IEquipReceiver && !ItemStack.areItemsEqual(handInventory.get(0), event.getEntityLiving().getHeldItemOffhand())) {
-				((IEquipReceiver)event.getEntityLiving().getHeldItemOffhand().getItem()).onEquip((EntityPlayer) event.getEntityLiving(), EnumHand.OFF_HAND);
-			}
-		} catch(Exception e) { }
-		
-		for(int i = 2; i < 6; i++) {
-			
-			ItemStack prev = armorArray != null ? armorArray.get(i-2) : null;
-			ItemStack armor = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
-			
-			boolean reapply = armorArray != null && !ItemStack.areItemStacksEqual(prev, armor);
-			
-			if(reapply) {
-				
-				if(prev != null && ArmorModHandler.hasMods(prev)) {
-					
-					for(ItemStack mod : ArmorModHandler.pryMods(prev)) {
-						
-						if(mod != null && mod.getItem() instanceof ItemArmorMod) {
-							
-							Multimap<String, AttributeModifier> map = ((ItemArmorMod)mod.getItem()).getModifiers(EntityEquipmentSlot.values()[i], prev);
-							
-							if(map != null)
-								event.getEntityLiving().getAttributeMap().removeAttributeModifiers(map);
-						}
-					}
+
+			// Handle armor updates
+			for (int i = 2; i < 6; i++) {
+				EntityEquipmentSlot slot = EntityEquipmentSlot.values()[i];
+				ItemStack previousArmor = (armorArray != null) ? armorArray.get(i - 2) : ItemStack.EMPTY;
+				ItemStack currentArmor = entity.getItemStackFromSlot(slot);
+
+				boolean needsReapply = armorArray != null && !ItemStack.areItemStacksEqual(previousArmor, currentArmor);
+				if (needsReapply) {
+					removeOldModifiers(previousArmor, slot, entity);
+					applyNewModifiers(currentArmor, slot, entity);
 				}
 			}
-			
-			if(armor != null && ArmorModHandler.hasMods(armor)) {
-				
-				for(ItemStack mod : ArmorModHandler.pryMods(armor)) {
-					
-					if(mod != null && mod.getItem() instanceof ItemArmorMod) {
-						((ItemArmorMod)mod.getItem()).modUpdate(event.getEntityLiving(), armor);
-						
-						if(reapply) {
-							
-							Multimap<String, AttributeModifier> map = ((ItemArmorMod)mod.getItem()).getModifiers(EntityEquipmentSlot.values()[i], armor);
-							
-							if(map != null)
-								event.getEntityLiving().getAttributeMap().applyAttributeModifiers(map);
-						}
-					}
-				}
-			}
+
+		} catch (Exception e) {
+			//TODO:Figure out how to log that
 		}
-		
-		EntityEffectHandler.onUpdate(event.getEntityLiving());
-		//NEW HAZ SYSTEM
-		if(!event.getEntity().world.isRemote && !(event.getEntityLiving() instanceof EntityPlayer)) {
-			HazardSystem.updateLivingInventory(event.getEntityLiving());
+
+		EntityEffectHandler.onUpdate(entity);
+
+		// New Hazard system
+		if (!entity.world.isRemote && !(entity instanceof EntityPlayer)) {
+			if (entity.ticksExisted % HAZARD_POLL_RATE == 0) {
+				HazardSystem.updateLivingInventory(entity);
+			}
 		}
 	}
 
+	// Handle item equip logic for a given hand
+	private void handleEquipUpdate(EntityPlayer player, ItemStack previousItem, EnumHand hand) {
+		ItemStack currentItem = player.getHeldItem(hand);
+		if (currentItem.getItem() instanceof IEquipReceiver && !ItemStack.areItemsEqual(previousItem, currentItem)) {
+			((IEquipReceiver) currentItem.getItem()).onEquip(player, hand);
+		}
+	}
+
+	// Remove old attribute modifiers for armor
+	private void removeOldModifiers(ItemStack previousArmor, EntityEquipmentSlot slot, EntityLivingBase entity) {
+		if (previousArmor != null && ArmorModHandler.hasMods(previousArmor)) {
+			for (ItemStack mod : ArmorModHandler.pryMods(previousArmor)) {
+				if (mod != null && mod.getItem() instanceof ItemArmorMod) {
+					Multimap<String, AttributeModifier> modifiers = ((ItemArmorMod) mod.getItem()).getModifiers(slot, previousArmor);
+					if (modifiers != null) {
+						entity.getAttributeMap().removeAttributeModifiers(modifiers);
+					}
+				}
+			}
+		}
+	}
+
+	// Apply new attribute modifiers for armor
+	private void applyNewModifiers(ItemStack currentArmor, EntityEquipmentSlot slot, EntityLivingBase entity) {
+		if (currentArmor != null && ArmorModHandler.hasMods(currentArmor)) {
+			for (ItemStack mod : ArmorModHandler.pryMods(currentArmor)) {
+				if (mod != null && mod.getItem() instanceof ItemArmorMod) {
+					((ItemArmorMod) mod.getItem()).modUpdate(entity, currentArmor);
+					Multimap<String, AttributeModifier> modifiers = ((ItemArmorMod) mod.getItem()).getModifiers(slot, currentArmor);
+					if (modifiers != null) {
+						entity.getAttributeMap().applyAttributeModifiers(modifiers);
+					}
+				}
+			}
+		}
+	}
 	@SubscribeEvent
 	public void onEntityJump(LivingJumpEvent event) {
 		if(event.isCancelable() && event.isCanceled())

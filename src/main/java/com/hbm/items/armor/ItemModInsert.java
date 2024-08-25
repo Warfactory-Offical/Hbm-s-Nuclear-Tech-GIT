@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.common.collect.Multimap;
 import com.hbm.handler.ArmorModHandler;
+import com.hbm.hazard.HazardData;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.modules.ItemHazardModule;
@@ -31,7 +32,8 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 	private float projectileMod;
 	private float explosionMod;
 	private float speed;
-	
+	private HazardData hazardData;
+
 	public ItemModInsert(int durability, float damageMod, float projectileMod, float explosionMod, float speed, String s){
 		super(ArmorModHandler.kevlar, false, true, false, false, s);
 		this.damageMod = damageMod;
@@ -131,8 +133,8 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 		
 		return multimap;
 	}
-	
-	ItemHazardModule module = new ItemHazardModule();
+
+	ItemHazardModule module = new ItemHazardModule(hazardData);
 	
 	@Override
 	public ItemHazardModule getModule() {

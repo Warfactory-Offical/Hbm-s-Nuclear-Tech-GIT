@@ -21,7 +21,7 @@ public class HazardTypeExplosive extends HazardTypeBase {
 		if(RadiationConfig.disableExplosive)
 			return;
 
-		if(!target.world.isRemote && target.isBurning() && stack.getCount() > 0) {
+		if(target.isBurning() && stack.getCount() > 0) {
 			stack.setCount(0);
 			target.world.newExplosion(null, target.posX, target.posY + target.getEyeHeight() - target.getYOffset(), target.posZ, level, false, true);
 		}

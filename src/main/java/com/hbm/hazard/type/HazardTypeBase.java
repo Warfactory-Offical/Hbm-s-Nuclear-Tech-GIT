@@ -1,5 +1,6 @@
 package com.hbm.hazard.type;
 
+import com.hbm.config.RadiationConfig;
 import com.hbm.hazard.modifier.HazardModifier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public abstract class HazardTypeBase {
+	public static int hazardRate = RadiationConfig.hazardRate;
 	
 	/**
 	 * Does the thing. Called by HazardEntry.applyHazard

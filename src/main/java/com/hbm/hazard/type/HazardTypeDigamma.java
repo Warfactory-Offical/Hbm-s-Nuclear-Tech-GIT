@@ -15,7 +15,7 @@ public class HazardTypeDigamma extends HazardTypeBase {
 
 	@Override
 	public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
-		ContaminationUtil.applyDigammaData(target, level / 20F);
+		ContaminationUtil.applyDigammaData(target, (level / 20F)*hazardRate);
 	}
 
 	@Override
@@ -23,15 +23,15 @@ public class HazardTypeDigamma extends HazardTypeBase {
 
 	@Override
 	public void addHazardInformation(EntityPlayer player, List list, float level, ItemStack stack, List<HazardModifier> modifiers) {
-		
 		level = HazardModifier.evalAllModifiers(stack, player, level, modifiers);
-		
-		float d = (float)(Math.floor(level * 10000F)) / 10F;
+
+		float displayLevel = Math.round(level * 10000F) / 10F;
 		list.add(TextFormatting.RED + "[" + I18nUtil.resolveKey("trait.digamma") + "]");
-		list.add(TextFormatting.DARK_RED + "" + d + "mDRX/s");
-		
-		if(stack.getCount() > 1) {
-			list.add(TextFormatting.DARK_RED + "Stack: " + ((Math.floor(level * 10000F * stack.getCount()) / 10F) + "mDRX/s"));
+		list.add(TextFormatting.DARK_RED + "" + displayLevel + "mDRX/s");
+
+		if (stack.getCount() > 1) {
+			float stackLevel = displayLevel * stack.getCount();
+			list.add(TextFormatting.DARK_RED + "Stack: " + stackLevel + "mDRX/s");
 		}
 	}
 

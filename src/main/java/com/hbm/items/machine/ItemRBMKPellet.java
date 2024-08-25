@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
+import com.hbm.hazard.HazardData;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
@@ -26,6 +27,7 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	
 	public String fullName = "";
 	ItemHazardModule module;
+	HazardData hazardData;
 
 	public ItemRBMKPellet(String fullName, String s) {
 		this.setTranslationKey(s);
@@ -34,7 +36,8 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setCreativeTab(MainRegistry.controlTab);
-		this.module = new ItemHazardModule();
+		hazardData = new HazardData();
+		this.module = new ItemHazardModule(hazardData);
 		//generateJsons(s);
 		
 		ModItems.ALL_ITEMS.add(this);

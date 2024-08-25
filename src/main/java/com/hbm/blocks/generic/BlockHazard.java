@@ -3,6 +3,8 @@ package com.hbm.blocks.generic;
 import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.hazard.HazardData;
+import com.hbm.hazard.HazardSystem;
 import com.hbm.items.ModItems;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.lib.ForgeDirection;
@@ -37,6 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockHazard extends Block implements IItemHazard {
 	
 	ItemHazardModule module;
+	HazardData hazardData;
 	
 	private float radIn = 0.0F;
 	private float radMax = 0.0F;
@@ -51,7 +54,9 @@ public class BlockHazard extends Block implements IItemHazard {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		this.module = new ItemHazardModule();
+		HazardData hazardData = new HazardData();
+		HazardSystem.register(this, hazardData);
+		this.module = new ItemHazardModule(hazardData);
 		
 		ModBlocks.ALL_BLOCKS.add(this);
 	}

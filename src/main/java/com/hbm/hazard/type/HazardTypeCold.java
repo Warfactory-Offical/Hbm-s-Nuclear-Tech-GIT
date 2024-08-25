@@ -17,28 +17,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
+import static com.hbm.hazard.helper.HazardHelper.applyPotionEffect;
+
 public class HazardTypeCold extends HazardTypeBase {
 
 
     @Override
     public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
         boolean reacher = HazardHelper.isHoldingReacher(target);
-        if(RadiationConfig.disableCold || reacher)
-            return;
+        if (RadiationConfig.disableCold || reacher) return;
 
-        boolean isProtected = target instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer) target);
-        if(!isProtected){
-            target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 110, (int)level-1));
-            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 110, Math.min(4, (int)level-1)));
-            target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 110,(int)level-1));
-            if(level > 4){
-                target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 110, (int)level-3));
-            }
+        if (target instanceof EntityPlayer && ArmorUtil.checkForHazmat(target)) return; // Early return if protected
+
+        int baseLevel = (int) level - 1;
+        int witherLevel = (int) level - 3;
+
+        applyPotionEffect(target, MobEffects.MINING_FATIGUE, 110, baseLevel);
+        applyPotionEffect(target, MobEffects.SLOWNESS, 110, Math.min(4, baseLevel));
+        applyPotionEffect(target, MobEffects.WEAKNESS, 110, baseLevel);
+
+        if (level > 4) {
+           applyPotionEffect(target, MobEffects.WITHER, 110, witherLevel);
         }
-
-
-
-
     }
 
     @Override

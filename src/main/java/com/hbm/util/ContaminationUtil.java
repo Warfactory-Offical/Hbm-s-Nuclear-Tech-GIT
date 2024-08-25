@@ -7,6 +7,7 @@ import com.hbm.capability.HbmLivingCapability;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.CompatibilityConfig;
 import com.hbm.config.GeneralConfig;
+import com.hbm.config.RadiationConfig;
 import com.hbm.entity.mob.EntityNuclearCreeper;
 import com.hbm.entity.mob.EntityQuackos;
 import com.hbm.entity.projectile.EntityBulletBase;
@@ -462,7 +463,7 @@ public class ContaminationUtil {
 
 	public static void applyAsbestos(Entity e, int i, int dmg, int chance) {
 
-		if(!GeneralConfig.enableAsbestos)
+		if(RadiationConfig.disableAsbestos)
 			return;
 
 		if(!(e instanceof EntityLivingBase))
@@ -498,7 +499,7 @@ public class ContaminationUtil {
 	/// COAL ///
 	public static void applyCoal(Entity e, int i, int dmg, int chance) {
 
-		if(!GeneralConfig.enableCoal)
+		if(RadiationConfig.disableCoal)
 			return;
 
 		if(!(e instanceof EntityLivingBase))

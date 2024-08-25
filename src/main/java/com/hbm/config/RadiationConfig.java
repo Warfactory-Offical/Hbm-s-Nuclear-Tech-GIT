@@ -26,6 +26,7 @@ public class RadiationConfig {
 	public static int geigerY = 2;
 	public static int digammaX = 16;
 	public static int digammaY = 18;
+	public static int hazardRate = 5;
 	public static boolean disableAsbestos = false;
 	public static boolean disableBlinding = false;
 	public static boolean disableCoal = false;
@@ -38,6 +39,9 @@ public class RadiationConfig {
     public static void loadFromConfig(Configuration config) {
 		final String CATEGORY_NUKE = "06_explosions";
 		final String CATEGORY_RAD = "07_radiation";
+		Property hazardPollingRate = config.get(CATEGORY_RAD,  "HazardPollingRate", 5);
+		hazardPollingRate.setComment("Every how many ticks should inventory hazard check be done. WARNING: very low values can cause server performance issues, don't lower it on larger servers!");
+		hazardRate = (hazardPollingRate.getInt()<=0) ? hazardPollingRate.getInt() : 1;
 		// afterrain duration
 		Property radRain = config.get(CATEGORY_NUKE, "6.06_falloutRainDuration", 2000);
 		radRain.setComment("Duration of the thunderstorm after fallout in ticks (only large explosions)");

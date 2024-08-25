@@ -38,7 +38,7 @@ public class HazardTypeRadiation extends HazardTypeBase {
 				rad = (float) BobMathUtil.squirt(rad); //Reworked radiation function: sqrt(x+1/(x+2)^2)-1/(x+2)
 			}											
 			
-			ContaminationUtil.contaminate(target, HazardType.RADIATION, ContaminationType.CREATIVE, rad);
+			ContaminationUtil.contaminate(target, HazardType.RADIATION, ContaminationType.CREATIVE, rad*hazardRate);
 		}
 	}
 
