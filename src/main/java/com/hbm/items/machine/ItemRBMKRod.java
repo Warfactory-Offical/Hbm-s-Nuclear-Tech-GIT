@@ -71,7 +71,6 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 
 	// Lol had quite some freetime
 
-	HazardData hazardData;
 	public ItemRBMKRod(ItemRBMKPellet pellet, String s) {
 		this(pellet.fullName, s);
 		this.pellet = pellet;
@@ -80,7 +79,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	public ItemRBMKRod(String fullName, String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		this.module = new ItemHazardModule(hazardData);
+		this.module = new ItemHazardModule();
 		
 		this.fullName = fullName;
 		

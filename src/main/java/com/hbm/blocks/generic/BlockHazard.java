@@ -39,8 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockHazard extends Block implements IItemHazard {
 	
 	ItemHazardModule module;
-	HazardData hazardData;
-	
+
 	private float radIn = 0.0F;
 	private float radMax = 0.0F;
 	private float rad3d = 0.0F;
@@ -54,9 +53,7 @@ public class BlockHazard extends Block implements IItemHazard {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		HazardData hazardData = new HazardData();
-		HazardSystem.register(this, hazardData);
-		this.module = new ItemHazardModule(hazardData);
+		this.module = new ItemHazardModule();
 		
 		ModBlocks.ALL_BLOCKS.add(this);
 	}

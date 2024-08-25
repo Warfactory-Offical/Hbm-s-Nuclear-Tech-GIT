@@ -125,15 +125,12 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 	public static final float magt = nugget * 0.5F * sa326;
 
 
-		HazardData hazardData;
 		ItemHazardModule module;
 
 		
 		public ItemHazard(String s) {
 			super(s);
-			hazardData = new HazardData();
-			HazardSystem.register(this, hazardData);
-			this.module = new ItemHazardModule(hazardData); //Ill depricate it at some point
+			this.module = new ItemHazardModule(); //Ill depricate it at some point
 		}
 
 		@Override

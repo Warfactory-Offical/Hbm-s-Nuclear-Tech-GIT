@@ -27,7 +27,6 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	
 	public String fullName = "";
 	ItemHazardModule module;
-	HazardData hazardData;
 
 	public ItemRBMKPellet(String fullName, String s) {
 		this.setTranslationKey(s);
@@ -36,8 +35,7 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setCreativeTab(MainRegistry.controlTab);
-		hazardData = new HazardData();
-		this.module = new ItemHazardModule(hazardData);
+		this.module = new ItemHazardModule();
 		//generateJsons(s);
 		
 		ModItems.ALL_ITEMS.add(this);

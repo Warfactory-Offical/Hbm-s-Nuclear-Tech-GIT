@@ -32,7 +32,6 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 	private float projectileMod;
 	private float explosionMod;
 	private float speed;
-	private HazardData hazardData;
 
 	public ItemModInsert(int durability, float damageMod, float projectileMod, float explosionMod, float speed, String s){
 		super(ArmorModHandler.kevlar, false, true, false, false, s);
@@ -134,7 +133,7 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 		return multimap;
 	}
 
-	ItemHazardModule module = new ItemHazardModule(hazardData);
+	ItemHazardModule module = new ItemHazardModule();
 	
 	@Override
 	public ItemHazardModule getModule() {

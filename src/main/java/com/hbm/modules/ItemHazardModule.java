@@ -53,11 +53,8 @@ public class ItemHazardModule {
 	public float explosive;
 	
 	public float tempMod = 1F;
-	private HazardData hazardData;
 
-	public ItemHazardModule (HazardData hazardData) {
-		this.hazardData = hazardData;
-	}
+
 
 	public void setMod(float tempMod) {
 		this.tempMod = tempMod;
@@ -68,52 +65,42 @@ public class ItemHazardModule {
 	}
 	
 	public void addRadiation(float radiation) {
-		hazardData.addEntry(RADIATION, radiation);
 		this.radiation = radiation;
 	}
 	
 	public void addDigamma(float digamma) {
-		hazardData.addEntry(DIGAMMA, digamma);
 		this.digamma = digamma;
 	}
 	
 	public void addFire(int fire) {
-		hazardData.addEntry(HOT, fire);
 		this.fire = fire;
 	}
 
 	public void addCryogenic(int cryogenicLvl) {
-		hazardData.addEntry(COLD, cryogenicLvl);
 		this.cryogenic = cryogenicLvl;
 	}
 
 	public void addToxic(int toxicLvl) {
-		hazardData.addEntry(TOXIC, toxicLvl);
 		this.toxic = toxicLvl;
 	}
 	
 	public void addCoal(int coal) {
-		hazardData.addEntry(COAL, coal);
 		this.coal = coal;
 	}
 	
 	public void addAsbestos(int asbestos) {
-		hazardData.addEntry(ASBESTOS, asbestos);
 		this.asbestos = asbestos;
 	}
 	
 	public void addBlinding() {
-		hazardData.addEntry(BLINDING, 50F);
 		this.blinding = true;
 	}
 	
 	public void addHydroReactivity() {
-		hazardData.addEntry(HYDROACTIVE, 5F);
 		this.hydro = true;
 	}
 	
 	public void addExplosive(float bang) {
-		hazardData.addEntry(EXPLOSIVE, 5F);
 		this.explosive = bang;
 	}
 
