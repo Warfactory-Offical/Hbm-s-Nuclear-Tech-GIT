@@ -70,13 +70,14 @@ public interface IItemHazard {
 	public default Item toItem() {
 		Item item = (Item) this;
 		HazardSystem.register(item, getModule().getHazardData());
-		MainRegistry.logger.error(getModule().getHazardData().toString());
+		MainRegistry.logger.info("Registered " + item.getRegistryName() + " with " + getModule().getHazardData());
 		return item;
 	}
 	
 	public default Block toBlock() {
 		Block block = (Block) this;
 		HazardSystem.register(block, getModule().getHazardData());
+		MainRegistry.logger.info("Registered " + block.getRegistryName() + " with " + getModule().getHazardData());
 		return block;
 	}
 }

@@ -54,7 +54,7 @@ public class HazardEntry {
 	@Override
 	public String toString() {
 		return "HazardEntry{" +
-				"type=" + type.getClass().toString() +
+				"type=" + type.getClass().toString().substring("class com.hbm.hazard.type.HazardType".length()).toUpperCase() +
 				", baseLevel=" + baseLevel +
 				'}';
 	}
