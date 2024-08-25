@@ -1,9 +1,6 @@
 package com.hbm.hazard;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import com.hbm.hazard.modifier.HazardModifier;
 import com.hbm.hazard.transformer.HazardTransformerBase;
@@ -18,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -113,71 +111,76 @@ public class HazardSystem {
 	 */
 	public static List<HazardEntry> getHazardsFromStack(ItemStack stack) {
 
+		if (stack.isEmpty() || isItemBlacklisted(stack)) {
+			return Collections.emptyList();
+		}
 
-		if(stack.isEmpty())
-			return new ArrayList();
-		if(isItemBlacklisted(stack)) {
-			return new ArrayList();
-		}
-		
-		List<HazardData> chronological = new ArrayList();
-		
-		/// ORE DICT ///
+		List<HazardData> chronological = new ArrayList<>();
+
+		// ORE DICT
 		int[] ids = OreDictionary.getOreIDs(stack);
-		for(int id : ids) {
-			String name = OreDictionary.getOreName(id);
-			
-			if(oreMap.containsKey(name))
-				chronological.add(oreMap.get(name));
-		}
-		
-		/// ITEM ///
-		if(itemMap.containsKey(stack.getItem()))
-			chronological.add(itemMap.get(stack.getItem()));
-		
-		/// STACK ///
-		ComparableStack comp = new ComparableStack(stack).makeSingular();
-		if(stackMap.containsKey(comp))
-			chronological.add(stackMap.get(comp));
-		
-		List<HazardEntry> entries = new ArrayList();
-		
-		for(HazardTransformerBase trafo : trafos) {
-			trafo.transformPre(stack, entries);
-		}
-		
-		int mutex = 0;
-		
-		for(HazardData data : chronological) {
-			//if the current data is marked as an override, purge all previous data
-			if(data.doesOverride)
-				entries.clear();
-			
-			if((data.getMutex() & mutex) == 0) {
-				entries.addAll(data.entries);
-				mutex = mutex | data.getMutex();
+		if (ids.length > 0) {
+			for (int id : ids) {
+				String name = OreDictionary.getOreName(id);
+				HazardData hazardData = oreMap.get(name);
+				if (hazardData != null) {
+					chronological.add(hazardData);
+				}
 			}
 		}
-		
-		for(HazardTransformerBase trafo : trafos) {
+
+		// ITEM
+		HazardData itemHazardData = itemMap.get(stack.getItem());
+		if (itemHazardData != null) {
+			chronological.add(itemHazardData);
+		}
+
+		// STACK
+		ComparableStack comp = new ComparableStack(stack).makeSingular();
+		HazardData stackHazardData = stackMap.get(comp);
+		if (stackHazardData != null) {
+			chronological.add(stackHazardData);
+		}
+
+		List<HazardEntry> entries = new ArrayList<>();
+
+		// Pre-transformations
+		for (HazardTransformerBase trafo : trafos) {
+			trafo.transformPre(stack, entries);
+		}
+
+		int mutex = 0;
+
+		for (HazardData data : chronological) {
+			if (data.doesOverride) {
+				entries.clear();
+			}
+			if ((data.getMutex() & mutex) == 0) {
+				entries.addAll(data.entries);
+				mutex |= data.getMutex();
+			}
+		}
+
+		// Post-transformations
+		for (HazardTransformerBase trafo : trafos) {
 			trafo.transformPost(stack, entries);
 		}
-		
+
 		return entries;
 	}
-	
+
 	public static float getHazardLevelFromStack(ItemStack stack, HazardTypeBase hazard) {
 		List<HazardEntry> entries = getHazardsFromStack(stack);
-		
-		for(HazardEntry entry : entries) {
-			if(entry.type == hazard) {
+
+		for (HazardEntry entry : entries) {
+			if (entry.type == hazard) {
 				return HazardModifier.evalAllModifiers(stack, null, entry.baseLevel, entry.mods);
 			}
 		}
-		
+
 		return 0F;
 	}
-	
+
 	/**
 	 * Will grab and iterate through all assigned hazards of the given stack and apply their effects to the holder.
 	 * @param stack
@@ -196,21 +199,27 @@ public class HazardSystem {
 	 * @param player
 	 */
 	public static void updatePlayerInventory(EntityPlayer player) {
+		NonNullList<ItemStack> mainInventory = player.inventory.mainInventory;
+		NonNullList<ItemStack> armorInventory = player.inventory.armorInventory;
 
-		for(int i = 0; i < player.inventory.mainInventory.size(); i++) {
-			
-			ItemStack stack = player.inventory.mainInventory.get(i);
-			if(!stack.isEmpty() & stack != ItemStack.EMPTY) {
+		// Iterate over main inventory
+		for (int i = 0; i < mainInventory.size(); i++) {
+			ItemStack stack = mainInventory.get(i);
+
+			// Check if stack is not empty
+			if (!stack.isEmpty()) {
 				applyHazards(stack, player);
-				
-				if(stack.getCount()==0) {
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+
+				// Check if stack is now empty after applying hazards
+				if (stack.getCount() == 0) {
+					mainInventory.set(i, ItemStack.EMPTY);
 				}
 			}
 		}
-		
-		for(ItemStack stack : player.inventory.armorInventory) {
-			if(!stack.isEmpty() || stack != ItemStack.EMPTY) {
+
+		// Iterate over armor inventory
+		for (ItemStack stack : armorInventory) {
+			if (!stack.isEmpty()) {
 				applyHazards(stack, player);
 			}
 		}

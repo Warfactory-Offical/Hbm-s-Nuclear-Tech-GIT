@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import com.hbm.hazard.HazardSystem;
+import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.Level;
 
@@ -93,21 +94,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityZombieHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -133,7 +126,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootEntry;
@@ -704,58 +696,60 @@ public class ModEventHandler {
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		EntityPlayer player = event.player;
 
-		if(!player.world.isRemote && event.phase == TickEvent.Phase.START) {
-
-			/// GHOST FIX START ///
-
-			if(!Float.isFinite(player.getHealth()) || !Float.isFinite(player.getAbsorptionAmount())) {
-				player.sendMessage(new TextComponentString("Your health has been restored!"));
-				player.world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.syringeUse, SoundCategory.PLAYERS, 1.0F, 1.0F);
-				player.setHealth(player.getMaxHealth());
-				player.setAbsorptionAmount(0);
-			}
-
-			/// GHOST FIX END ///
-			
-			/// BETA HEALTH START ///
-			if(Library.hasInventoryItem(player.inventory, ModItems.beta)) {
-				if(player.getFoodStats().getFoodLevel() < 10) {
-					player.getFoodStats().setFoodLevel(10);
-				}
-
-				if(player.getFoodStats().getFoodLevel() > 10) {
-					player.heal(player.getFoodStats().getFoodLevel() - 10);
-					player.getFoodStats().setFoodLevel(10);
+		//Client-side
+		if (player.world.isRemote) {
+			if (event.phase == TickEvent.Phase.START && !player.isInvisible() && !player.isSneaking()) {
+				if (player.getUniqueID().toString().equals(Library.HbMinecraft)) {
+					handleClientSideParticleEffect(player);
 				}
 			}
-			/// BETA HEALTH END ///
+			return;
 		}
-		if(!player.world.isRemote && event.phase == Phase.START){
+
+		// Non-client-side
+		if (event.phase == TickEvent.Phase.START) {
+			handleGhostFix(player);
+			handleBetaHealth(player);
 			ItemDigammaDiagnostic.playVoices(player.world, player);
+		} else if (event.phase == TickEvent.Phase.END) {
+			JetpackHandler.postPlayerTick(player);
 		}
 
-		if(player.world.isRemote && event.phase == Phase.START && !player.isInvisible() && !player.isSneaking()) {
+		// Update inventory hazard system periodically
+		if (player.ticksExisted % 5 == 0) {
+			HazardSystem.updatePlayerInventory(player);
+		}
+	}
 
-			if(player.getUniqueID().toString().equals(Library.HbMinecraft)) {
+	private void handleGhostFix(EntityPlayer player) {
+		if (!Float.isFinite(player.getHealth()) || !Float.isFinite(player.getAbsorptionAmount())) {
+			player.sendMessage(new TextComponentString("Your health has been restored!"));
+			player.world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.syringeUse, SoundCategory.PLAYERS, 1.0F, 1.0F);
+			player.setHealth(player.getMaxHealth());
+			player.setAbsorptionAmount(0);
+		}
+	}
 
-				int i = player.ticksExisted * 3;
-
-				Vec3 vec = Vec3.createVectorHelper(3, 0, 0);
-				
-				vec.rotateAroundY((float) (i * Math.PI / 180D));
-				for(int k = 0; k < 5; k++) {
-
-					vec.rotateAroundY((float) (1F * Math.PI / 180D));
-					player.world.spawnParticle(EnumParticleTypes.TOWN_AURA, player.posX + vec.xCoord, player.posY + 1 + player.world.rand.nextDouble() * 0.05, player.posZ + vec.zCoord, 0.0, 0.0, 0.0);
-				}
+	private void handleBetaHealth(EntityPlayer player) {
+		if (Library.hasInventoryItem(player.inventory, ModItems.beta)) {
+			int foodLevel = player.getFoodStats().getFoodLevel();
+			if (foodLevel < 10) {
+				player.getFoodStats().setFoodLevel(10);
+			} else if (foodLevel > 10) {
+				player.heal(foodLevel - 10);
+				player.getFoodStats().setFoodLevel(10);
 			}
 		}
-		if(event.phase == Phase.END){
-			JetpackHandler.postPlayerTick(event.player);
+	}
+
+	private void handleClientSideParticleEffect(EntityPlayer player) {
+		double angle = Math.toRadians(player.ticksExisted * 3);
+		Vec3d vec = new Vec3d(3, 0, 0).rotateYaw((float) angle);
+
+		for (int k = 0; k < 5; k++) {
+			vec = vec.rotateYaw((float) Math.toRadians(1));
+			player.world.spawnParticle(EnumParticleTypes.TOWN_AURA, player.posX + vec.x, player.posY + 1 + player.world.rand.nextDouble() * 0.05, player.posZ + vec.z, 0.0, 0.0, 0.0);
 		}
-		/// NEW ITEM SYS START ///
-		HazardSystem.updatePlayerInventory(player);
-		/// NEW ITEM SYS END ///
 	}
 
 	@SubscribeEvent
