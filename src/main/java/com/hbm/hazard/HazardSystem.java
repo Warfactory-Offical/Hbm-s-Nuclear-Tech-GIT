@@ -20,6 +20,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
+
 @Untested
 public class HazardSystem {
 
@@ -52,16 +54,42 @@ public class HazardSystem {
 	 */
 	public static void register(Object o, HazardData data) {
 
-		if(o instanceof String)
-			oreMap.put((String)o, data);
-		if(o instanceof Item)
-			itemMap.put((Item)o, data);
-		if(o instanceof Block)
-			itemMap.put(Item.getItemFromBlock((Block)o), data);
-		if(o instanceof ItemStack)
-			stackMap.put(new ComparableStack((ItemStack)o), data);
-		if(o instanceof ComparableStack)
-			stackMap.put((ComparableStack)o, data);
+		if (o instanceof String s) {
+            oreMap.put(s, data);
+			return;
+		}
+
+		if (o instanceof Item i) {
+            if (itemMap.containsKey(i)) throw new KeyAlreadyExistsException(i.toString());
+
+			itemMap.put(i, data);
+			return;
+		}
+
+		if (o instanceof Block b) {
+			Item i = Item.getItemFromBlock(b);
+
+			if (itemMap.containsKey(i)) throw new KeyAlreadyExistsException(b.toString());
+
+			itemMap.put(i, data);
+			return;
+		}
+
+		if (o instanceof ItemStack is) {
+			if (stackMap.containsKey(is)) throw new KeyAlreadyExistsException(is.toString());
+
+            stackMap.put(new ComparableStack(is), data);
+			return;
+		}
+
+		if (o instanceof ComparableStack cs) {
+			if (stackMap.containsKey(cs)) throw new KeyAlreadyExistsException(cs.toString());
+
+            stackMap.put(cs, data);
+			return;
+		}
+
+		throw new UnsupportedOperationException(o.toString() + " not an instance of any handled type");
 	}
 	
 	/**
