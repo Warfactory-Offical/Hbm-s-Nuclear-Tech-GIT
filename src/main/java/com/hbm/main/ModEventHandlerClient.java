@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.hbm.hazard.HazardSystem;
+import com.hbm.items.meta.MetaItem;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -278,7 +279,11 @@ public class ModEventHandlerClient {
 		ModelLoader.registerItemVariants(ModItems.cell, list);
 
 		for(Item item : ModItems.ALL_ITEMS) {
-			registerModel(item, 0);
+			if (item instanceof MetaItem metaItem) {
+				metaItem.registerModels();
+			} else {
+				registerModel(item, 0);
+			}
 		}
 		for(Block block : ModBlocks.ALL_BLOCKS) {
 			registerBlockModel(block, 0);

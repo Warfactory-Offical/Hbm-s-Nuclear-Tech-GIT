@@ -147,6 +147,9 @@ import com.hbm.items.machine.ItemStamp;
 import com.hbm.items.machine.ItemTemplateFolder;
 import com.hbm.items.machine.ItemTurretBiometry;
 import com.hbm.items.machine.ItemTurretChip;
+import com.hbm.items.meta.MaterialHBM;
+import com.hbm.items.meta.MetaItem;
+import com.hbm.items.meta.ShapeHBM;
 import com.hbm.items.special.ItemSimpleConsumable;
 import com.hbm.items.special.ItemAMSCore;
 import com.hbm.items.special.ItemBook;
@@ -1098,6 +1101,9 @@ public class ModItems {
 	
 
 	//Materials
+
+	public static final Item ingot = new MetaItem(ShapeHBM.INGOT, MaterialHBM.STEEL).setCreativeTab(MainRegistry.partsTab);
+
 	public static final Item ingot_steel = new ItemBase("ingot_steel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_titanium = new ItemBase("ingot_titanium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_copper = new ItemBase("ingot_copper").setCreativeTab(MainRegistry.partsTab);
@@ -3675,7 +3681,7 @@ public class ModItems {
 	public static final Item memory = new ItemBattery(Long.MAX_VALUE / 100L, 100000000000000L, 100000000000000L, "memory").setMaxStackSize(1).setCreativeTab(null);
 	
 	public static void preInit(){
-		for(Item item : ALL_ITEMS){
+		for(Item item : ALL_ITEMS) {
 			ForgeRegistries.ITEMS.register(item);
 		}
 		
