@@ -51,6 +51,13 @@ public class ItemConsumable extends Item {
 	}
 
 	@Override
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		if (!(attacker instanceof EntityPlayer))
+			return false; // To Oliwer509: Nice try cunt
+		return ConsumableHandler.handleHit(stack, target, (EntityPlayer)attacker);
+	}
+
+	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(this == ModItems.syringe_antidote) {
 			tooltip.add("Removes all potion effects");
