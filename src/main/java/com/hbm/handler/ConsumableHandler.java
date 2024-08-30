@@ -51,15 +51,19 @@ public class ConsumableHandler {
         itemActions.put(ModItems.cbt_device, ConsumableHandler::handleCbtDevice);
         itemActions.put(ModItems.syringe_mkunicorn, ConsumableHandler::handleMkUnicornSyringe);
 
-        hitActions.put(ModItems.syringe_antidote, ConsumableHandler::handleAntidote);
-        hitActions.put(ModItems.syringe_awesome, ConsumableHandler::handleAwesomeSyringe);
-        hitActions.put(ModItems.syringe_poison, ConsumableHandler::handlePoisonSyringe);
-        hitActions.put(ModItems.syringe_metal_stimpak, ConsumableHandler::handleMetalStimpak);
-        hitActions.put(ModItems.syringe_metal_medx, ConsumableHandler::handleMetalMedX);
-        hitActions.put(ModItems.syringe_metal_psycho, ConsumableHandler::handleMetalPsycho);
-        hitActions.put(ModItems.syringe_metal_super, ConsumableHandler::handleMetalSuper);
-        hitActions.put(ModItems.syringe_mkunicorn, ConsumableHandler::handleMkUnicornSyringe);
-        hitActions.put(ModItems.syringe_taint, ConsumableHandler::handleTaintSyringe);
+        hitActions.put(ModItems.syringe_antidote, hitAction(ConsumableHandler::handleAntidote));
+        hitActions.put(ModItems.syringe_awesome, hitAction(ConsumableHandler::handleAwesomeSyringe));
+        hitActions.put(ModItems.syringe_poison, hitAction(ConsumableHandler::handlePoisonSyringe));
+        hitActions.put(ModItems.syringe_metal_stimpak, hitAction(ConsumableHandler::handleMetalStimpak));
+        hitActions.put(ModItems.syringe_metal_medx, hitAction(ConsumableHandler::handleMetalMedX));
+        hitActions.put(ModItems.syringe_metal_psycho, hitAction(ConsumableHandler::handleMetalPsycho));
+        hitActions.put(ModItems.syringe_metal_super, hitAction(ConsumableHandler::handleMetalSuper));
+        hitActions.put(ModItems.syringe_mkunicorn, hitAction(ConsumableHandler::handleMkUnicornSyringe));
+        hitActions.put(ModItems.syringe_taint, hitAction(ConsumableHandler::handleTaintSyringe));
+    }
+
+    private static TriConsumer<ItemStack, EntityLivingBase, EntityLivingBase> hitAction(Consumer<Context> consumer) {
+
     }
 
 
