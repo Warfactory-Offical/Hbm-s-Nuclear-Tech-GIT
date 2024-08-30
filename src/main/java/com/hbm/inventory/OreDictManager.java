@@ -1,10 +1,7 @@
 package com.hbm.inventory;
 import com.hbm.util.ItemStackUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 //i love you
 import static com.hbm.items.ModItems.*;
@@ -522,7 +519,13 @@ public class OreDictManager {
 
 	private static boolean recursionBrake = false;
 
-	@SubscribeEvent
+	private static Map<String, ItemStack> toRegisterItemStacks = new LinkedHashMap<>();
+
+    public static void queueRegisterOre(String entryName, ItemStack stack) {
+		toRegisterItemStacks.put(entryName, stack);
+    }
+
+    @SubscribeEvent
 	public void onRegisterOre(OreRegisterEvent event) {
 		if(recursionBrake)
 			return;
@@ -537,6 +540,8 @@ public class OreDictManager {
 				MainRegistry.logger.info("OreDict: Re-registration for " + event.getName() + " to " + name);
 			}
 		}
+
+		for (Map.Entry<String, ItemStack> entry : toRegisterItemStacks.entrySet()) OreDictionary.registerOre(entry.getKey(), entry.getValue());
 
 		recursionBrake = false;
 	}
