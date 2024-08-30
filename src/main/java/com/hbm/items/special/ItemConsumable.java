@@ -16,6 +16,7 @@ import com.hbm.main.MainRegistry;
 import com.hbm.potion.HbmPotion;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -51,10 +52,10 @@ public class ItemConsumable extends Item {
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-		if (!(attacker instanceof EntityPlayer))
+	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer attacker, Entity target) {
+		if (!(target instanceof EntityLivingBase))
 			return false; // To Oliwer509: Nice try cunt
-		return ConsumableHandler.handleHit(stack, target, (EntityPlayer)attacker);
+		return ConsumableHandler.handleHit(stack, attacker, (EntityLivingBase) target);
 	}
 
 	@Override

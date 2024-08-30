@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 public class ConsumableHandler {
 
     private static final Map<Item, Consumer<Context>> itemActions = new HashMap<>();
-    private static final Map<Item, TriConsumer<ItemStack, EntityLivingBase, EntityLivingBase>> hitActions = new HashMap<>();
+    private static final Map<Item, TriConsumer<ItemStack, EntityPlayer, EntityLivingBase>> hitActions = new HashMap<>();
 
     static {
         itemActions.put(ModItems.syringe_antidote,      ConsumableHandler::handleAntidote);
@@ -60,9 +60,9 @@ public class ConsumableHandler {
         hitActions.put(ModItems.syringe_taint,         hitAction(ConsumableHandler::handleTaintSyringe));
     }
 
-    private static TriConsumer<ItemStack, EntityLivingBase, EntityLivingBase> hitAction(Consumer<Context> consumer) {
+    private static TriConsumer<ItemStack, EntityPlayer, EntityLivingBase> hitAction(Consumer<Context> consumer) {
         return (stack, attacker, target)->{
-            consumer.accept(new Context(target.world, (EntityPlayer) attacker, target, EnumHand.MAIN_HAND));
+            consumer.accept(new Context(target.world, attacker, target, EnumHand.MAIN_HAND));
         };
     }
 
@@ -78,7 +78,7 @@ public class ConsumableHandler {
         return context.getActionResult();
     }
 
-    public static boolean handleHit(ItemStack stack, EntityLivingBase target, EntityPlayer player ){
+    public static boolean handleHit(ItemStack stack,  EntityPlayer player, EntityLivingBase target ){
         if(!hitActions.containsKey(stack.getItem()))
             return false;
         hitActions.get(stack.getItem()).accept(stack, player, target);
@@ -230,15 +230,15 @@ public class ConsumableHandler {
         public Context(World world, EntityPlayer player, EnumHand hand) {
             this.world = world;
             this.target = player;
-            this.user = (EntityPlayer) target;
+            this.user =  player;
             this.hand = hand;
 
         }
 
         public Context(World world, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
             this.world = world;
-            this.target = player;
-            this.user = (EntityPlayer) target;
+            this.target = target;
+            this.user = player;
             this.hand = hand;
 
         }
