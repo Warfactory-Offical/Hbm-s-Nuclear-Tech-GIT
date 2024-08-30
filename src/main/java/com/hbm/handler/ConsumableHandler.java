@@ -36,30 +36,30 @@ public class ConsumableHandler {
     private static final Map<Item, TriConsumer<ItemStack, EntityLivingBase, EntityLivingBase>> hitActions = new HashMap<>();
 
     static {
-        itemActions.put(ModItems.syringe_antidote, ConsumableHandler::handleAntidote);
-        itemActions.put(ModItems.syringe_awesome, ConsumableHandler::handleAwesomeSyringe);
-        itemActions.put(ModItems.syringe_poison, ConsumableHandler::handlePoisonSyringe);
+        itemActions.put(ModItems.syringe_antidote,      ConsumableHandler::handleAntidote);
+        itemActions.put(ModItems.syringe_awesome,       ConsumableHandler::handleAwesomeSyringe);
+        itemActions.put(ModItems.syringe_poison,        ConsumableHandler::handlePoisonSyringe);
         itemActions.put(ModItems.syringe_metal_stimpak, ConsumableHandler::handleMetalStimpak);
-        itemActions.put(ModItems.syringe_metal_medx, ConsumableHandler::handleMetalMedX);
-        itemActions.put(ModItems.syringe_metal_psycho, ConsumableHandler::handleMetalPsycho);
-        itemActions.put(ModItems.syringe_metal_super, ConsumableHandler::handleMetalSuper);
-        itemActions.put(ModItems.med_bag, ConsumableHandler::handleMedBag);
-        itemActions.put(ModItems.syringe_taint, ConsumableHandler::handleTaintSyringe);
-        itemActions.put(ModItems.jetpack_tank, ConsumableHandler::handleJetpackTank);
-        itemActions.put(ModItems.gun_kit_1, ConsumableHandler::handleGunKit1);
-        itemActions.put(ModItems.gun_kit_2, ConsumableHandler::handleGunKit2);
-        itemActions.put(ModItems.cbt_device, ConsumableHandler::handleCbtDevice);
-        itemActions.put(ModItems.syringe_mkunicorn, ConsumableHandler::handleMkUnicornSyringe);
+        itemActions.put(ModItems.syringe_metal_medx,    ConsumableHandler::handleMetalMedX);
+        itemActions.put(ModItems.syringe_metal_psycho,  ConsumableHandler::handleMetalPsycho);
+        itemActions.put(ModItems.syringe_metal_super,   ConsumableHandler::handleMetalSuper);
+        itemActions.put(ModItems.med_bag,               ConsumableHandler::handleMedBag);
+        itemActions.put(ModItems.syringe_taint,         ConsumableHandler::handleTaintSyringe);
+        itemActions.put(ModItems.jetpack_tank,          ConsumableHandler::handleJetpackTank);
+        itemActions.put(ModItems.gun_kit_1,             ConsumableHandler::handleGunKit1);
+        itemActions.put(ModItems.gun_kit_2,             ConsumableHandler::handleGunKit2);
+        itemActions.put(ModItems.cbt_device,            ConsumableHandler::handleCbtDevice);
+        itemActions.put(ModItems.syringe_mkunicorn,     ConsumableHandler::handleMkUnicornSyringe);
 
-        hitActions.put(ModItems.syringe_antidote, hitAction(ConsumableHandler::handleAntidote));
-        hitActions.put(ModItems.syringe_awesome, hitAction(ConsumableHandler::handleAwesomeSyringe));
-        hitActions.put(ModItems.syringe_poison, hitAction(ConsumableHandler::handlePoisonSyringe));
+        hitActions.put(ModItems.syringe_antidote,      hitAction(ConsumableHandler::handleAntidote));
+        hitActions.put(ModItems.syringe_awesome,       hitAction(ConsumableHandler::handleAwesomeSyringe));
+        hitActions.put(ModItems.syringe_poison,        hitAction(ConsumableHandler::handlePoisonSyringe));
         hitActions.put(ModItems.syringe_metal_stimpak, hitAction(ConsumableHandler::handleMetalStimpak));
-        hitActions.put(ModItems.syringe_metal_medx, hitAction(ConsumableHandler::handleMetalMedX));
-        hitActions.put(ModItems.syringe_metal_psycho, hitAction(ConsumableHandler::handleMetalPsycho));
-        hitActions.put(ModItems.syringe_metal_super, hitAction(ConsumableHandler::handleMetalSuper));
-        hitActions.put(ModItems.syringe_mkunicorn, hitAction(ConsumableHandler::handleMkUnicornSyringe));
-        hitActions.put(ModItems.syringe_taint, hitAction(ConsumableHandler::handleTaintSyringe));
+        hitActions.put(ModItems.syringe_metal_medx,    hitAction(ConsumableHandler::handleMetalMedX));
+        hitActions.put(ModItems.syringe_metal_psycho,  hitAction(ConsumableHandler::handleMetalPsycho));
+        hitActions.put(ModItems.syringe_metal_super,   hitAction(ConsumableHandler::handleMetalSuper));
+        hitActions.put(ModItems.syringe_mkunicorn,     hitAction(ConsumableHandler::handleMkUnicornSyringe));
+        hitActions.put(ModItems.syringe_taint,         hitAction(ConsumableHandler::handleTaintSyringe));
     }
 
     private static TriConsumer<ItemStack, EntityLivingBase, EntityLivingBase> hitAction(Consumer<Context> consumer) {
