@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.main.MainRegistry;
 import com.hbm.util.ItemStackUtil;
 
 import com.hbm.capability.HbmLivingProps;
@@ -244,18 +245,17 @@ public class ConsumableHandler {
         }
 
         public void shrinkCurrentItem() {
-            target.getHeldItem(hand).shrink(1);
+            this.user.getHeldItem(hand).shrink(1);
         }
 
         public void shrinkAndReplaceItem(Item... replacements) {
             shrinkCurrentItem();
-            if (target.getHeldItem(hand).isEmpty()) {
-                target.setHeldItem(hand, ItemStackUtil.itemStackFrom(replacements[rand.nextInt(replacements.length)]));
+            if (user.getHeldItem(hand).isEmpty()) {
+                user.setHeldItem(hand, ItemStackUtil.itemStackFrom(replacements[rand.nextInt(replacements.length)]));
             } else {
                 for (Item replacement : replacements) {
-                       ItemStack toReplace = ItemStackUtil.itemStackFrom(replacement);
-                    if(!user.addItemStackToInventory(toReplace));
-                        user.dropItem(toReplace, false);
+                        ItemStack toReplace = ItemStackUtil.itemStackFrom(replacement);
+                        if(!user.addItemStackToInventory(toReplace)) user.dropItem(toReplace, false);
                 }
             }
         }
