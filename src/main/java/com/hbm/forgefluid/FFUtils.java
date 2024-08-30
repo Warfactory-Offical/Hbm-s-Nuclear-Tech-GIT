@@ -1,4 +1,5 @@
 package com.hbm.forgefluid;
+import com.hbm.util.ItemStackUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -430,7 +431,7 @@ public class FFUtils {
 			tank.fill(FluidUtil.getFluidContained(in), true);
 			in.shrink(1);
 			if(out.isEmpty()) {
-				slots.setStackInSlot(slot2, new ItemStack(ModItems.fluid_tank_full));
+				slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.fluid_tank_full));
 			} else {
 				out.grow(1);
 			}
@@ -442,7 +443,7 @@ public class FFUtils {
 			tank.fill(FluidUtil.getFluidContained(in), true);
 			in.shrink(1);
 			if(out.isEmpty()) {
-				slots.setStackInSlot(slot2, new ItemStack(ModItems.fluid_barrel_full));
+				slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.fluid_barrel_full));
 			} else {
 				out.grow(1);
 			}
@@ -454,7 +455,7 @@ public class FFUtils {
 			tank.fill(FluidUtil.getFluidContained(in), true);
 			in.shrink(1);
 			if(out.isEmpty()) {
-				slots.setStackInSlot(slot2, new ItemStack(ModItems.canister_generic));
+				slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.canister_generic));
 			} else {
 				out.grow(1);
 			}
@@ -466,7 +467,7 @@ public class FFUtils {
 			tank.fill(FluidUtil.getFluidContained(in), true);
 			in.shrink(1);
 			if(out.isEmpty()) {
-				slots.setStackInSlot(slot2, new ItemStack(ModItems.gas_canister));
+				slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.gas_canister));
 			} else {
 				out.grow(1);
 			}
@@ -478,7 +479,7 @@ public class FFUtils {
 			tank.fill(FluidUtil.getFluidContained(in), true);
 			in.shrink(1);
 			if(out.isEmpty()) {
-				slots.setStackInSlot(slot2, new ItemStack(ModItems.cell));
+				slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.cell));
 			} else {
 				out.grow(1);
 			}
@@ -501,7 +502,7 @@ public class FFUtils {
 				tank.fill(fluid, true);
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(container));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(container));
 				} else {
 					out.grow(1);
 				}
@@ -721,9 +722,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_coolant));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_coolant));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_coolant));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_coolant));
 				}
 				return true;
 			}
@@ -732,9 +733,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_tritium));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_tritium));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_tritium));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_tritium));
 				}
 				return true;
 			}
@@ -743,9 +744,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_water));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_water));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_water));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_water));
 				}
 				return true;
 			}
@@ -756,9 +757,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_dual_coolant));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_dual_coolant));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_dual_coolant));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_dual_coolant));
 				}
 				return true;
 			}
@@ -767,9 +768,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_dual_tritium));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_dual_tritium));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_dual_tritium));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_dual_tritium));
 				}
 				return true;
 			}
@@ -778,9 +779,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_dual_water));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_dual_water));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_dual_water));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_dual_water));
 				}
 				return true;
 			}
@@ -791,9 +792,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_quad_coolant));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_quad_coolant));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_quad_coolant));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_quad_coolant));
 				}
 				return true;
 			}
@@ -802,9 +803,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_quad_tritium));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_quad_tritium));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_quad_tritium));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_quad_tritium));
 				}
 				return true;
 			}
@@ -813,9 +814,9 @@ public class FFUtils {
 
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(ModItems.rod_quad_water));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(ModItems.rod_quad_water));
 				} else {
-					slots.setStackInSlot(slot1, new ItemStack(ModItems.rod_quad_water));
+					slots.setStackInSlot(slot1, ItemStackUtil.itemStackFrom(ModItems.rod_quad_water));
 				}
 				return true;
 			}
@@ -843,7 +844,7 @@ public class FFUtils {
 				tank.drain(stack, true);
 				in.shrink(1);
 				if(out.isEmpty()) {
-					slots.setStackInSlot(slot2, new ItemStack(container));
+					slots.setStackInSlot(slot2, ItemStackUtil.itemStackFrom(container));
 				} else {
 					out.grow(1);
 				}

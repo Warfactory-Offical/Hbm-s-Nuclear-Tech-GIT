@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class ItemCassette extends Item {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
 			for(int i = 1; i < TrackType.values().length; ++i) {
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 			}
 		}
 	}

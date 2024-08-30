@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.pile;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -33,7 +34,7 @@ public class BlockGraphiteFuel extends BlockGraphiteDrilledTE implements IToolab
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
 		super.getDrops(drops, world, pos, state, fortune);
-		drops.add(new ItemStack(ModItems.pile_rod_uranium));
+		drops.add(ItemStackUtil.itemStackFrom(ModItems.pile_rod_uranium));
 	}
 	
 	@Override
@@ -46,7 +47,7 @@ public class BlockGraphiteFuel extends BlockGraphiteDrilledTE implements IToolab
 				
 				if(side.getAxis() == axis) {
 					world.setBlockState(new BlockPos(x, y, z), ModBlocks.block_graphite_drilled.getDefaultState().withProperty(AXIS, axis), 3);
-					ejectItem(world, x, y, z, side, new ItemStack(ModItems.pile_rod_uranium));
+					ejectItem(world, x, y, z, side, ItemStackUtil.itemStackFrom(ModItems.pile_rod_uranium));
 				}
 			}
 			

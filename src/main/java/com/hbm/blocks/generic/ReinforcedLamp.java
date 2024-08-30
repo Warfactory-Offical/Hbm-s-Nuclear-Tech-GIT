@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 import java.util.List;
@@ -79,7 +80,7 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.reinforced_lamp_off);
+		return ItemStackUtil.itemStackFrom(ModBlocks.reinforced_lamp_off);
 	}
 
 	@Override

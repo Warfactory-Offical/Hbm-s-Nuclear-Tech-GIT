@@ -1,4 +1,5 @@
 package com.hbm.handler.crt;
+import com.hbm.util.ItemStackUtil;
 
 import crafttweaker.IAction;
 import crafttweaker.CraftTweakerAPI;
@@ -171,7 +172,7 @@ public class Chemplant {
 
 			ComparableStack[] compInputs = new ComparableStack[Math.min(4, inputs.length)];
 			for(int i = 0; i < Math.min(4, inputs.length); i++)
-				compInputs[i] = new ComparableStack(inputs[i]);
+				compInputs[i] = ItemStackUtil.comparableStackFrom(inputs[i]);
 			return compInputs;
 		}
 

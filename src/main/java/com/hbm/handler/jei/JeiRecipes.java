@@ -1,4 +1,5 @@
 package com.hbm.handler.jei;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -473,7 +474,7 @@ public class JeiRecipes {
 		public void getIngredients(IIngredients ingredients) {
 			List<List<ItemStack>> in = Library.copyItemStackListList(inputs);
 			while(in.size() < 12)
-				in.add(Arrays.asList(new ItemStack(ModItems.nothing)));
+				in.add(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.nothing)));
 			int index = -1;
 			for(int i = 0; i < AssemblerRecipes.recipeList.size(); i++){ // finding the template item
 				if(AssemblerRecipes.recipeList.get(i).isApplicable(output)){
@@ -484,7 +485,7 @@ public class JeiRecipes {
 			if(index >= 0) // adding the template item
 				in.add(Arrays.asList(ItemAssemblyTemplate.getTemplate(index)));
 			else {
-				in.add(Arrays.asList(new ItemStack(ModItems.nothing)));
+				in.add(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.nothing)));
 			}
 			ingredients.setInputLists(VanillaTypes.ITEM, in);
 			ingredients.setOutput(VanillaTypes.ITEM, output);
@@ -502,7 +503,7 @@ public class JeiRecipes {
 			for(int i = 0; i < recipe.in.size(); i ++)
 				inputs.add(recipe.in.get(i).getStack());
 			while(inputs.size() < 4)
-				inputs.add(new ItemStack(ModItems.nothing));
+				inputs.add(ItemStackUtil.itemStackFrom(ModItems.nothing));
 			output = recipe.getResult();
 		}
 		
@@ -683,21 +684,21 @@ public class JeiRecipes {
 
         	List<AStack> inputs = new ArrayList<AStack>(7);
         	for(int j = 0; j < 7; j ++)
-        		inputs.add(j, new ComparableStack(ModItems.nothing));
+        		inputs.add(j, ItemStackUtil.comparableStackFrom(ModItems.nothing));
 
         	List<ItemStack> outputs = new ArrayList<ItemStack>(6);
         	for(int j = 0; j < 6; j ++)
-        		outputs.add(j, new ItemStack(ModItems.nothing));
+        		outputs.add(j, ItemStackUtil.itemStackFrom(ModItems.nothing));
         	
         	//Adding template item
-        	ItemStack template = new ItemStack(ModItems.chemistry_template, 1, i);
+        	ItemStack template = ItemStackUtil.itemStackFrom(ModItems.chemistry_template, 1, i);
 
         	List<AStack> listIn = ChemplantRecipes.getChemInputFromTempate(template);
         	FluidStack[] fluidIn = ChemplantRecipes.getFluidInputFromTempate(template);
         	ItemStack[] listOut = ChemplantRecipes.getChemOutputFromTempate(template);
         	FluidStack[] fluidOut = ChemplantRecipes.getFluidOutputFromTempate(template);
 
-        	inputs.set(6, new ComparableStack(template));
+        	inputs.set(6, ItemStackUtil.comparableStackFrom(template));
 
         	if(listIn != null)
         		for(int j = 0; j < listIn.size(); j++)
@@ -827,35 +828,35 @@ public class JeiRecipes {
 		if(batteries != null)
 			return batteries;
 		batteries = new ArrayList<ItemStack>();
-		batteries.add(new ItemStack(ModItems.battery_potato));
-		batteries.add(new ItemStack(ModItems.battery_potatos));
-		batteries.add(new ItemStack(ModItems.battery_su));
-		batteries.add(new ItemStack(ModItems.battery_su_l));
-		batteries.add(new ItemStack(ModItems.battery_generic));
-		batteries.add(new ItemStack(ModItems.battery_red_cell));
-		batteries.add(new ItemStack(ModItems.battery_red_cell_6));
-		batteries.add(new ItemStack(ModItems.battery_red_cell_24));
-		batteries.add(new ItemStack(ModItems.battery_advanced));
-		batteries.add(new ItemStack(ModItems.battery_advanced_cell));
-		batteries.add(new ItemStack(ModItems.battery_advanced_cell_4));
-		batteries.add(new ItemStack(ModItems.battery_advanced_cell_12));
-		batteries.add(new ItemStack(ModItems.battery_lithium));
-		batteries.add(new ItemStack(ModItems.battery_lithium_cell));
-		batteries.add(new ItemStack(ModItems.battery_lithium_cell_3));
-		batteries.add(new ItemStack(ModItems.battery_lithium_cell_6));
-		batteries.add(new ItemStack(ModItems.battery_schrabidium));
-		batteries.add(new ItemStack(ModItems.battery_schrabidium_cell));
-		batteries.add(new ItemStack(ModItems.battery_schrabidium_cell_2));
-		batteries.add(new ItemStack(ModItems.battery_schrabidium_cell_4));
-		batteries.add(new ItemStack(ModItems.battery_spark));
-		batteries.add(new ItemStack(ModItems.battery_spark_cell_6));
-		batteries.add(new ItemStack(ModItems.battery_spark_cell_25));
-		batteries.add(new ItemStack(ModItems.battery_spark_cell_100));
-		batteries.add(new ItemStack(ModItems.battery_spark_cell_1000));
-		batteries.add(new ItemStack(ModItems.battery_spark_cell_10000));
-		batteries.add(new ItemStack(ModItems.battery_spark_cell_power));
-		batteries.add(new ItemStack(ModItems.fusion_core));
-		batteries.add(new ItemStack(ModItems.energy_core));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_potato));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_potatos));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_su));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_su_l));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_generic));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_red_cell));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_red_cell_6));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_red_cell_24));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_advanced));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_advanced_cell));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_advanced_cell_4));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_advanced_cell_12));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_lithium));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_lithium_cell));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_lithium_cell_3));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_lithium_cell_6));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_schrabidium));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_schrabidium_cell));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_schrabidium_cell_2));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_schrabidium_cell_4));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_spark));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_spark_cell_6));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_spark_cell_25));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_spark_cell_100));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_spark_cell_1000));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_spark_cell_10000));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.battery_spark_cell_power));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.fusion_core));
+		batteries.add(ItemStackUtil.itemStackFrom(ModItems.energy_core));
 		return batteries;
 	}
 	
@@ -864,8 +865,8 @@ public class JeiRecipes {
 			return cmbRecipes;
 		cmbRecipes = new ArrayList<CMBFurnaceRecipe>();
 		
-		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(new ItemStack(ModItems.ingot_advanced_alloy), new ItemStack(ModItems.ingot_magnetized_tungsten)), new ItemStack(ModItems.ingot_combine_steel, 4)));
-		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(new ItemStack(ModItems.powder_advanced_alloy), new ItemStack(ModItems.powder_magnetized_tungsten)), new ItemStack(ModItems.ingot_combine_steel, 4)));
+		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy), ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten)), ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel, 4)));
+		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.powder_advanced_alloy), ItemStackUtil.itemStackFrom(ModItems.powder_magnetized_tungsten)), ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel, 4)));
 		
 		return cmbRecipes;
 	}
@@ -930,7 +931,7 @@ public class JeiRecipes {
 		wasteDrumRecipes = new ArrayList<WasteDrumRecipe>();
 		
 		for(Map.Entry<Item, ItemStack> entry : WasteDrumRecipes.recipes.entrySet()){
-			wasteDrumRecipes.add(new WasteDrumRecipe(new ItemStack(entry.getKey()), entry.getValue()));
+			wasteDrumRecipes.add(new WasteDrumRecipe(ItemStackUtil.itemStackFrom(entry.getKey()), entry.getValue()));
 		}
 		
 		return wasteDrumRecipes;
@@ -1036,14 +1037,14 @@ public class JeiRecipes {
 			return blades;
 		
 		blades = new ArrayList<ItemStack>();
-		blades.add(new ItemStack(ModItems.blades_advanced_alloy));
-		blades.add(new ItemStack(ModItems.blades_aluminum));
-		blades.add(new ItemStack(ModItems.blades_combine_steel));
-		blades.add(new ItemStack(ModItems.blades_gold));
-		blades.add(new ItemStack(ModItems.blades_iron));
-		blades.add(new ItemStack(ModItems.blades_steel));
-		blades.add(new ItemStack(ModItems.blades_titanium));
-		blades.add(new ItemStack(ModItems.blades_schrabidium));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_advanced_alloy));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_aluminum));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_combine_steel));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_gold));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_iron));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_steel));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_titanium));
+		blades.add(ItemStackUtil.itemStackFrom(ModItems.blades_schrabidium));
 		return blades;
 	}
 	

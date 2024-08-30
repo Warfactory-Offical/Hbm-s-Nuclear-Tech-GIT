@@ -1,4 +1,5 @@
 package com.hbm.items.gear;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -203,7 +204,7 @@ public class ArmorModel extends ItemArmor {
 			if(stack.getItem() == ModItems.mask_damp || stack.getItem() == ModItems.mask_piss){
 				if(world.rand.nextInt(8192) == 0){
 					stack.shrink(1);
-					((EntityPlayer)e).dropItem(new ItemStack(ModItems.mask_rag), true);
+					((EntityPlayer)e).dropItem(ItemStackUtil.itemStackFrom(ModItems.mask_rag), true);
 				}
 			}
 		}

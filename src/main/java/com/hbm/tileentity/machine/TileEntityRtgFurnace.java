@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineRtgFurnace;
 import com.hbm.items.machine.ItemRTGPellet;
@@ -122,7 +123,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 			{
 				if(this.inventory.getStackInSlot(i).isEmpty())
 				{
-					this.inventory.setStackInSlot(i, new ItemStack(this.inventory.getStackInSlot(i).getItem()));
+					this.inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(this.inventory.getStackInSlot(i).getItem()));
 				}else{
 					this.inventory.getStackInSlot(i).shrink(1);
 				}

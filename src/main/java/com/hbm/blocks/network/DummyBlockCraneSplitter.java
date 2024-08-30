@@ -1,4 +1,5 @@
 package com.hbm.blocks.network;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IDummy;
@@ -83,6 +84,6 @@ public class DummyBlockCraneSplitter extends BlockContainer implements IDummy {
 
         @Override
         public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-            return new ItemStack(ModBlocks.machine_centrifuge);
+            return ItemStackUtil.itemStackFrom(ModBlocks.machine_centrifuge);
         }
 }

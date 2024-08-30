@@ -1,4 +1,5 @@
 package com.hbm.items.armor;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -39,9 +40,9 @@ public class ItemModInk extends ItemArmorMod {
 			if(!event.getEntity().world.isRemote) {
 				
 				if(event.getEntity().world.rand.nextInt(10) == 0)
-					event.getEntity().entityDropItem(new ItemStack(Blocks.YELLOW_FLOWER), 1.0F);
+					event.getEntity().entityDropItem(ItemStackUtil.itemStackFrom(Blocks.YELLOW_FLOWER), 1.0F);
 				
-				event.getEntity().entityDropItem(new ItemStack(Blocks.RED_FLOWER, 1, event.getEntity().world.rand.nextInt(9)), 1.0F);
+				event.getEntity().entityDropItem(ItemStackUtil.itemStackFrom(Blocks.RED_FLOWER, 1, event.getEntity().world.rand.nextInt(9)), 1.0F);
 			}
 		}
 	}

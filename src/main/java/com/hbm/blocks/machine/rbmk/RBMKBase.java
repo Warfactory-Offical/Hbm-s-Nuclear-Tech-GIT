@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.rbmk;
+import com.hbm.util.ItemStackUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -147,10 +148,10 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 		if(!world.isRemote && dropLids) {
 			int i = state.getValue(META);
 			if(i == DIR_NORMAL_LID.ordinal() + offset) {
-				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, new ItemStack(ModItems.rbmk_lid)));
+				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid)));
 			}
 			if(i == DIR_GLASS_LID.ordinal() + offset) {
-				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, new ItemStack(ModItems.rbmk_lid_glass)));
+				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid_glass)));
 			}
 		}
 		
@@ -176,10 +177,10 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 					
 					if(!world.isRemote) {
 						if(i == DIR_NORMAL_LID.ordinal() + offset) {
-							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, new ItemStack(ModItems.rbmk_lid)));
+							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid)));
 						}
 						if(i == DIR_GLASS_LID.ordinal() + offset) {
-							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, new ItemStack(ModItems.rbmk_lid_glass)));
+							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid_glass)));
 						}
 						
 						world.setBlockState(new BlockPos(pos[0], pos[1], pos[2]), this.getDefaultState().withProperty(META, DIR_NO_LID.ordinal() + BlockDummyable.offset), 3);

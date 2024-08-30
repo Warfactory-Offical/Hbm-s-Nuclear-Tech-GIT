@@ -1,4 +1,5 @@
 package com.hbm.blocks.bomb;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -82,7 +83,7 @@ public class CompactLauncher extends BlockContainer implements IMultiBlock, IBom
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.struct_launcher_core);
+		return ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher_core);
 	}
 	
 	@Override

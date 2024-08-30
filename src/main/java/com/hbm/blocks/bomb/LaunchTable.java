@@ -1,4 +1,5 @@
 package com.hbm.blocks.bomb;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -122,7 +123,7 @@ public class LaunchTable extends BlockContainer implements IMultiBlock, IBomb {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.struct_launcher_core_large);
+		return ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher_core_large);
 	}
 	
 	@Override

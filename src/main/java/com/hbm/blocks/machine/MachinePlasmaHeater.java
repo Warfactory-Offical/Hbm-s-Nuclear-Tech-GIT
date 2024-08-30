@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -74,10 +75,10 @@ public class MachinePlasmaHeater extends BlockDummyable {
 		if(i >= 12) {
 
             for(int l = 0; l < 2; l++)
-            	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_heater, 64)));
+            	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_heater, 64)));
 
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_heater, 7)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.struct_plasma_core, 1)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_heater, 7)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.struct_plasma_core, 1)));
     	}
 
 		super.breakBlock(world, pos, state);

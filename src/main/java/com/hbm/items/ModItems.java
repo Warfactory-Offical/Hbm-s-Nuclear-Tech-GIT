@@ -1,4 +1,5 @@
 package com.hbm.items;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -150,6 +151,8 @@ import com.hbm.items.machine.ItemTurretChip;
 import com.hbm.items.meta.MaterialHBM;
 import com.hbm.items.meta.MetaItem;
 import com.hbm.items.meta.ShapeHBM;
+import com.hbm.items.meta.materials.MaterialMineral;
+import com.hbm.items.meta.shapes.ShapePart;
 import com.hbm.items.special.ItemSimpleConsumable;
 import com.hbm.items.special.ItemAMSCore;
 import com.hbm.items.special.ItemBook;
@@ -357,40 +360,40 @@ public class ModItems {
 	
 	public static final Item iv_xp_empty = new ItemSimpleConsumable("iv_xp_empty").setUseActionServer((stack, user) -> {
 			if(user.experienceTotal >= 100) {
-				ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.syringeUse, new ItemStack(ModItems.iv_xp));
+				ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.syringeUse, ItemStackUtil.itemStackFrom(ModItems.iv_xp));
 				EnchantmentUtil.removeExperience(user, 100);
 			}
 		}).setMaxStackSize(16).setCreativeTab(MainRegistry.consumableTab);
 		
 	public static final Item iv_xp = new ItemSimpleConsumable("iv_xp").setUseActionServer((stack, user) -> {
-			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, new ItemStack(ModItems.iv_xp_empty));
+			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, ItemStackUtil.itemStackFrom(ModItems.iv_xp_empty));
 			user.addExperience(100);
 		}).setMaxStackSize(16).setCreativeTab(MainRegistry.consumableTab);
 		
 	public static final Item iv_empty = new ItemSimpleConsumable("iv_empty").setUseActionServer((stack, user) -> {
 			if(user.hurtResistantTime <= 0) {
-				ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.syringeUse, new ItemStack(ModItems.iv_blood));
+				ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.syringeUse, ItemStackUtil.itemStackFrom(ModItems.iv_blood));
 				user.attackEntityFrom(DamageSource.MAGIC, 5F);
 			}
 		}).setMaxStackSize(16).setCreativeTab(MainRegistry.consumableTab);
 		
 	public static final Item iv_blood = new ItemSimpleConsumable("iv_blood").setUseActionServer((stack, user) -> {
-			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, new ItemStack(ModItems.iv_empty));
+			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, ItemStackUtil.itemStackFrom(ModItems.iv_empty));
 			user.heal(3F);
 		}).setMaxStackSize(16).setCreativeTab(MainRegistry.consumableTab);
 		
 	public static final Item radaway = new ItemSimpleConsumable("radaway").setUseActionServer((stack, user) -> {
-			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, new ItemStack(ModItems.iv_empty));
+			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, ItemStackUtil.itemStackFrom(ModItems.iv_empty));
 			ItemSimpleConsumable.addPotionEffect(user, HbmPotion.radaway, 200, 24);
 		}).setMaxStackSize(16).setCreativeTab(MainRegistry.consumableTab);
 		
 	public static final Item radaway_strong = new ItemSimpleConsumable("radaway_strong").setUseActionServer((stack, user) -> {
-			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, new ItemStack(ModItems.iv_empty));
+			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, ItemStackUtil.itemStackFrom(ModItems.iv_empty));
 			ItemSimpleConsumable.addPotionEffect(user, HbmPotion.radaway, 100, 99);
 		}).setMaxStackSize(16).setCreativeTab(MainRegistry.consumableTab);
 		
 	public static final Item radaway_flush = new ItemSimpleConsumable("radaway_flush").setUseActionServer((stack, user) -> {
-			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, new ItemStack(ModItems.iv_empty));
+			ItemSimpleConsumable.giveSoundAndDecrement(stack, user, HBMSoundHandler.radawayUse, ItemStackUtil.itemStackFrom(ModItems.iv_empty));
 			ItemSimpleConsumable.addPotionEffect(user, HbmPotion.radaway, 50, 399);
 		}).setMaxStackSize(16).setCreativeTab(MainRegistry.consumableTab);
 	
@@ -984,7 +987,7 @@ public class ModItems {
 	public static final Item wood_gavel = new WeaponSpecial(ToolMaterial.WOOD, "wood_gavel").setMaxStackSize(1).setCreativeTab(MainRegistry.weaponTab);
 	public static final Item lead_gavel = new WeaponSpecial(MainRegistry.enumToolMaterialSteel, "lead_gavel").setMaxStackSize(1).setCreativeTab(MainRegistry.weaponTab);
 	public static final Item diamond_gavel = new WeaponSpecial(ToolMaterial.DIAMOND, "diamond_gavel").setMaxStackSize(1).setCreativeTab(MainRegistry.weaponTab);
-	public static final ToolMaterial matMeseGavel = EnumHelper.addToolMaterial("HBM_MESEGAVEL", 4, 0, 50F, 0.0F, 200).setRepairItem(new ItemStack(ModItems.plate_paa));
+	public static final ToolMaterial matMeseGavel = EnumHelper.addToolMaterial("HBM_MESEGAVEL", 4, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
 	public static final Item mese_gavel = new ItemSwordAbility(250, 1.5, matMeseGavel, "mese_gavel")
 			.addHitAbility(new WeaponAbility.PhosphorusAbility(60))
 			.addHitAbility(new WeaponAbility.RadiationAbility(500))
@@ -1093,121 +1096,115 @@ public class ModItems {
 	public static final Item hs_sword = new ItemSwordCutter(10F, 1F, MainRegistry.matCrucible, "hs_sword").setCreativeTab(MainRegistry.weaponTab);
 	//High frequency sword
 	public static final Item hf_sword = new ItemSwordCutter(15F, 1F, MainRegistry.matCrucible, "hf_sword").setCreativeTab(MainRegistry.weaponTab);
-	
 
 
-	
-
-	
 
 	//Materials
 
-	public static final Item ingot = new MetaItem(ShapeHBM.INGOT, MaterialHBM.STEEL).setCreativeTab(MainRegistry.partsTab);
+	public static final MetaItem<ShapePart, MaterialMineral> ingot = new MetaItem(ShapePart.INGOT, MaterialMineral.ingotValues()).setCreativeTab(MainRegistry.partsTab);
 
-	public static final Item ingot_steel = new ItemBase("ingot_steel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_titanium = new ItemBase("ingot_titanium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_copper = new ItemBase("ingot_copper").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_red_copper = new ItemBase("ingot_red_copper").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_advanced_alloy = new ItemBase("ingot_advanced_alloy").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_tungsten = new ItemBase("ingot_tungsten").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_aluminium = new ItemBase("ingot_aluminium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_beryllium = new ItemBase("ingot_beryllium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_lead = new ItemHazard("ingot_lead").addToxic(2).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_asbestos = new ItemHazard("ingot_asbestos").addAsbestos(6).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_magnetized_tungsten = new ItemHazard(ItemHazard.magt, "ingot_magnetized_tungsten").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_combine_steel = new ItemCustomLore("ingot_combine_steel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_dura_steel = new ItemCustomLore("ingot_dura_steel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_technetium = new ItemHazard("ingot_technetium").addRadiation(ItemHazard.tc99 * ItemHazard.ingot).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_tcalloy = new ItemHazard(0.07F, "ingot_tcalloy").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_cdalloy = new ItemBase("ingot_cdalloy").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_polymer = new ItemCustomLore("ingot_polymer").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_bakelite = new ItemCustomLore("ingot_bakelite").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_rubber = new ItemCustomLore("ingot_rubber").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_biorubber = new ItemCustomLore("ingot_biorubber").setCreativeTab(MainRegistry.partsTab);	
-	public static final Item ingot_desh = new ItemCustomLore("ingot_desh").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_saturnite = new ItemCustomLore("ingot_saturnite").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_ferrouranium = new ItemHazard("ingot_ferrouranium").addRadiation(ItemHazard.u * 0.5F).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_starmetal = new ItemCustomLore("ingot_starmetal").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_osmiridium = new ItemHazard("ingot_osmiridium").addDigamma(0.040F).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_euphemium = new ItemCustomLore("ingot_euphemium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_dineutronium = new ItemCustomLore("ingot_dineutronium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_cadmium = new ItemBase("ingot_cadmium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_bismuth = new ItemCustomLore("ingot_bismuth").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_arsenic = new ItemHazard("ingot_arsenic").addToxic(16).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_zirconium = new ItemBase("ingot_zirconium").setCreativeTab(MainRegistry.partsTab);
-
-	public static final Item ingot_th232 = new ItemHazard(ItemHazard.th232, "ingot_th232").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_uranium = new ItemHazard(ItemHazard.u, "ingot_uranium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_u233 = new ItemHazard(ItemHazard.u233, "ingot_u233").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_u235 = new ItemHazard(ItemHazard.u235, "ingot_u235").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_u238 = new ItemHazard(ItemHazard.u238, "ingot_u238").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_u238m2 = new ItemUnstable(350, 200, "ingot_u238m2").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_plutonium = new ItemHazard(ItemHazard.pu, "ingot_plutonium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_pu238 = new ItemHazard(ItemHazard.pu238, true, false, "ingot_pu238").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_pu239 = new ItemHazard(ItemHazard.pu239, "ingot_pu239").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_pu240 = new ItemHazard(ItemHazard.pu240, "ingot_pu240").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_pu241 = new ItemHazard("ingot_pu241").addRadiation(ItemHazard.pu241 * ItemHazard.ingot).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_pu_mix = new ItemHazard(ItemHazard.purg * ItemHazard.ingot, "ingot_pu_mix").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_am241 = new ItemHazard("ingot_am241").addRadiation(ItemHazard.am241 * ItemHazard.ingot).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_am242 = new ItemHazard("ingot_am242").addRadiation(ItemHazard.am242 * ItemHazard.ingot).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_am_mix = new ItemHazard("ingot_am_mix").addRadiation(ItemHazard.amrg * ItemHazard.ingot).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_schraranium = new ItemHazard(ItemHazard.sr, false, true, "ingot_schraranium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_schrabidium = new ItemHazard(ItemHazard.sa326, false, true, "ingot_schrabidium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_schrabidate = new ItemHazard(ItemHazard.sb, false, true, "ingot_schrabidate").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_solinium = new ItemHazard(ItemHazard.sa327, false, true, "ingot_solinium").setCreativeTab(MainRegistry.partsTab);
-	
-	public static final Item ingot_thorium_fuel = new ItemHazard(ItemHazard.thf, "ingot_thorium_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_uranium_fuel = new ItemHazard(ItemHazard.uf, "ingot_uranium_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_mox_fuel = new ItemHazard(ItemHazard.mox, "ingot_mox_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_plutonium_fuel = new ItemHazard(ItemHazard.puf, "ingot_plutonium_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_neptunium_fuel = new ItemHazard(ItemHazard.npf, true, "ingot_neptunium_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_americium_fuel = new ItemHazard(ItemHazard.amf, "ingot_americium_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_les = new ItemHazard(ItemHazard.les, false, true, "ingot_les").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_schrabidium_fuel = new ItemHazard(ItemHazard.saf, false, true, "ingot_schrabidium_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_hes = new ItemHazard(ItemHazard.hes, false, true, "ingot_hes").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_neptunium = new ItemHazard(ItemHazard.np237, true, "ingot_neptunium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_tennessine = new ItemHazard(120F, "ingot_tennessine").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_polonium = new ItemHazard(ItemHazard.po210, true, "ingot_polonium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_phosphorus = new ItemHazard(0F, true, "ingot_phosphorus").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_boron = new ItemBase("ingot_boron").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_graphite = new ItemFuel("ingot_graphite", 1600).setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_fiberglass = new ItemCustomLore("ingot_fiberglass").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_smore = new ItemFoodBase(10, 20F, false, "ingot_smore").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_niobium = new ItemCustomLore("ingot_niobium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_actinium = new ItemCustomLore("ingot_actinium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_neodymium = new ItemCustomLore("ingot_neodymium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_bromine = new ItemCustomLore("ingot_bromine").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_caesium = new ItemHazard(0.0F, true, "ingot_caesium").addHydroReactivity().toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_cerium = new ItemCustomLore("ingot_cerium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_lanthanium = new ItemCustomLore("ingot_lanthanium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_tantalium = new ItemCustomLore("ingot_tantalium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_astatine = new ItemCustomLore("ingot_astatine").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_firebrick = new ItemBase("ingot_firebrick").setCreativeTab(MainRegistry.partsTab);
-
-	public static final Item ingot_cobalt = new ItemCustomLore("ingot_cobalt").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_co60 = new ItemHazard(ItemHazard.co60, "ingot_co60").addFire(5).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_strontium = new ItemHazard("ingot_strontium").addHydroReactivity().toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_sr90 = new ItemHazard(ItemHazard.sr90, true, "ingot_sr90").addHydroReactivity().toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_iodine = new ItemCustomLore("ingot_iodine").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_i131 = new ItemHazard(ItemHazard.i131, "ingot_i131").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_au198 = new ItemHazard("ingot_au198").addRadiation(ItemHazard.au198 * ItemHazard.ingot).addFire(15).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_pb209 = new ItemHazard(ItemHazard.pb209, true, true, "ingot_pb209").addToxic(2).toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_ra226 = new ItemHazard(ItemHazard.ra226, "ingot_ra226").addHydroReactivity().toItem().setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_ac227 = new ItemHazard(ItemHazard.ac227, "ingot_ac227").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_gh336 = new ItemHazard(ItemHazard.gh336, "ingot_gh336").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_radspice = new ItemHazard(ItemHazard.radspice, "ingot_radspice").addFire(15).addToxic(2).addBlinding().addHydroReactivity().toItem().setCreativeTab(MainRegistry.partsTab);
-
-	public static final Item ingot_electronium = new ItemUnstable(30, 6000, "ingot_electronium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_reiium = new ItemCustomLore("ingot_reiium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_weidanium = new ItemCustomLore("ingot_weidanium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_australium = new ItemCustomLore("ingot_australium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_verticium = new ItemCustomLore("ingot_verticium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_unobtainium = new ItemCustomLore("ingot_unobtainium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_daffergon = new ItemCustomLore("ingot_daffergon").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_steel_dusted = new ItemHotDusted(200, "ingot_steel_dusted").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_chainsteel = new ItemHot(100, "ingot_chainsteel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_meteorite = new ItemHot(200, "ingot_meteorite").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_meteorite_forged = new ItemHot(200, "ingot_meteorite_forged").setCreativeTab(MainRegistry.partsTab);
+	public static final Item ingot_u238m2 = new ItemUnstable(350, 200, "ingot_u238m2").setCreativeTab(MainRegistry.partsTab);
+
+	public static final ItemStack ingot_steel = ingot.getItemStack(MaterialMineral.STEEL);
+	public static final ItemStack ingot_titanium = ingot.getItemStack(MaterialMineral.TITANIUM);
+	public static final ItemStack ingot_copper = ingot.getItemStack(MaterialMineral.COPPER);
+	public static final ItemStack ingot_red_copper = ingot.getItemStack(MaterialMineral.RED_COPPER);
+	public static final ItemStack ingot_advanced_alloy = ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY);
+	public static final ItemStack ingot_tungsten = ingot.getItemStack(MaterialMineral.TUNGSTEN);
+	public static final ItemStack ingot_aluminium = ingot.getItemStack(MaterialMineral.ALUMINIUM);
+	public static final ItemStack ingot_beryllium = ingot.getItemStack(MaterialMineral.BERYLLIUM);
+	public static final ItemStack ingot_lead = ingot.getItemStack(MaterialMineral.LEAD);
+	public static final ItemStack ingot_asbestos = ingot.getItemStack(MaterialMineral.ASBESTOS);
+	public static final ItemStack ingot_magnetized_tungsten = ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN);
+	public static final ItemStack ingot_combine_steel = ingot.getItemStack(MaterialMineral.COMBINE_STEEL);
+	public static final ItemStack ingot_dura_steel = ingot.getItemStack(MaterialMineral.DURA_STEEL);
+	public static final ItemStack ingot_technetium = ingot.getItemStack(MaterialMineral.TECHNETIUM);
+	public static final ItemStack ingot_tcalloy = ingot.getItemStack(MaterialMineral.TCALLOY);
+	public static final ItemStack ingot_cdalloy = ingot.getItemStack(MaterialMineral.CDALLOY);
+	public static final ItemStack ingot_polymer = ingot.getItemStack(MaterialMineral.POLYMER);
+	public static final ItemStack ingot_bakelite = ingot.getItemStack(MaterialMineral.BAKELITE);
+	public static final ItemStack ingot_rubber = ingot.getItemStack(MaterialMineral.RUBBER);
+	public static final ItemStack ingot_biorubber = ingot.getItemStack(MaterialMineral.BIORUBBER);
+	public static final ItemStack ingot_desh = ingot.getItemStack(MaterialMineral.DESH);
+	public static final ItemStack ingot_saturnite = ingot.getItemStack(MaterialMineral.SATURNITE);
+	public static final ItemStack ingot_ferrouranium = ingot.getItemStack(MaterialMineral.FERROURANIUM);
+	public static final ItemStack ingot_starmetal = ingot.getItemStack(MaterialMineral.STARMETAL);
+	public static final ItemStack ingot_osmiridium = ingot.getItemStack(MaterialMineral.OSMIRIDIUM);
+	public static final ItemStack ingot_euphemium = ingot.getItemStack(MaterialMineral.EUPHEMIUM);
+	public static final ItemStack ingot_dineutronium = ingot.getItemStack(MaterialMineral.DINEUTRONIUM);
+	public static final ItemStack ingot_cadmium = ingot.getItemStack(MaterialMineral.CADMIUM);
+	public static final ItemStack ingot_bismuth = ingot.getItemStack(MaterialMineral.BISMUTH);
+	public static final ItemStack ingot_arsenic = ingot.getItemStack(MaterialMineral.ARSENIC);
+	public static final ItemStack ingot_zirconium = ingot.getItemStack(MaterialMineral.ZIRCONIUM);
+	public static final ItemStack ingot_th232 = ingot.getItemStack(MaterialMineral.TH232);
+	public static final ItemStack ingot_uranium = ingot.getItemStack(MaterialMineral.URANIUM);
+	public static final ItemStack ingot_u233 = ingot.getItemStack(MaterialMineral.U233);
+	public static final ItemStack ingot_u235 = ingot.getItemStack(MaterialMineral.U235);
+	public static final ItemStack ingot_u238 = ingot.getItemStack(MaterialMineral.U238);
+	public static final ItemStack ingot_plutonium = ingot.getItemStack(MaterialMineral.PLUTONIUM);
+	public static final ItemStack ingot_pu238 = ingot.getItemStack(MaterialMineral.PU238);
+	public static final ItemStack ingot_pu239 = ingot.getItemStack(MaterialMineral.PU239);
+	public static final ItemStack ingot_pu240 = ingot.getItemStack(MaterialMineral.PU240);
+	public static final ItemStack ingot_pu241 = ingot.getItemStack(MaterialMineral.PU241);
+	public static final ItemStack ingot_pu_mix = ingot.getItemStack(MaterialMineral.PU_MIX);
+	public static final ItemStack ingot_am241 = ingot.getItemStack(MaterialMineral.AM241);
+	public static final ItemStack ingot_am242 = ingot.getItemStack(MaterialMineral.AM242);
+	public static final ItemStack ingot_am_mix = ingot.getItemStack(MaterialMineral.AM_MIX);
+	public static final ItemStack ingot_schraranium = ingot.getItemStack(MaterialMineral.SCHRARANIUM);
+	public static final ItemStack ingot_schrabidium = ingot.getItemStack(MaterialMineral.SCHRABIDIUM);
+	public static final ItemStack ingot_schrabidate = ingot.getItemStack(MaterialMineral.SCHRABIDATE);
+	public static final ItemStack ingot_solinium = ingot.getItemStack(MaterialMineral.SOLINIUM);
+	public static final ItemStack ingot_thorium_fuel = ingot.getItemStack(MaterialMineral.THORIUM_FUEL);
+	public static final ItemStack ingot_uranium_fuel = ingot.getItemStack(MaterialMineral.URANIUM_FUEL);
+	public static final ItemStack ingot_mox_fuel = ingot.getItemStack(MaterialMineral.MOX_FUEL);
+	public static final ItemStack ingot_plutonium_fuel = ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL);
+	public static final ItemStack ingot_neptunium_fuel = ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL);
+	public static final ItemStack ingot_americium_fuel = ingot.getItemStack(MaterialMineral.AMERICIUM_FUEL);
+	public static final ItemStack ingot_les = ingot.getItemStack(MaterialMineral.LES);
+	public static final ItemStack ingot_schrabidium_fuel = ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL);
+	public static final ItemStack ingot_hes = ingot.getItemStack(MaterialMineral.HES);
+	public static final ItemStack ingot_neptunium = ingot.getItemStack(MaterialMineral.NEPTUNIUM);
+	public static final ItemStack ingot_tennessine = ingot.getItemStack(MaterialMineral.TENNESSINE);
+	public static final ItemStack ingot_polonium = ingot.getItemStack(MaterialMineral.POLONIUM);
+	public static final ItemStack ingot_phosphorus = ingot.getItemStack(MaterialMineral.PHOSPHORUS);
+	public static final ItemStack ingot_boron = ingot.getItemStack(MaterialMineral.BORON);
+	public static final ItemStack ingot_graphite = ingot.getItemStack(MaterialMineral.GRAPHITE);
+	public static final ItemStack ingot_fiberglass = ingot.getItemStack(MaterialMineral.FIBERGLASS);
+	public static final ItemStack ingot_smore = ingot.getItemStack(MaterialMineral.SMORE);
+	public static final ItemStack ingot_niobium = ingot.getItemStack(MaterialMineral.NIOBIUM);
+	public static final ItemStack ingot_actinium = ingot.getItemStack(MaterialMineral.ACTINIUM);
+	public static final ItemStack ingot_neodymium = ingot.getItemStack(MaterialMineral.NEODYMIUM);
+	public static final ItemStack ingot_bromine = ingot.getItemStack(MaterialMineral.BROMINE);
+	public static final ItemStack ingot_caesium = ingot.getItemStack(MaterialMineral.CAESIUM);
+	public static final ItemStack ingot_cerium = ingot.getItemStack(MaterialMineral.CERIUM);
+	public static final ItemStack ingot_lanthanium = ingot.getItemStack(MaterialMineral.LANTHANIUM);
+	public static final ItemStack ingot_tantalium = ingot.getItemStack(MaterialMineral.TANTALIUM);
+	public static final ItemStack ingot_astatine = ingot.getItemStack(MaterialMineral.ASTATINE);
+	public static final ItemStack ingot_firebrick = ingot.getItemStack(MaterialMineral.FIREBRICK);
+	public static final ItemStack ingot_cobalt = ingot.getItemStack(MaterialMineral.COBALT);
+	public static final ItemStack ingot_co60 = ingot.getItemStack(MaterialMineral.CO60);
+	public static final ItemStack ingot_strontium = ingot.getItemStack(MaterialMineral.STRONTIUM);
+	public static final ItemStack ingot_sr90 = ingot.getItemStack(MaterialMineral.SR90);
+	public static final ItemStack ingot_iodine = ingot.getItemStack(MaterialMineral.IODINE);
+	public static final ItemStack ingot_i131 = ingot.getItemStack(MaterialMineral.I131);
+	public static final ItemStack ingot_au198 = ingot.getItemStack(MaterialMineral.AU198);
+	public static final ItemStack ingot_pb209 = ingot.getItemStack(MaterialMineral.PB209);
+	public static final ItemStack ingot_ra226 = ingot.getItemStack(MaterialMineral.RA226);
+	public static final ItemStack ingot_ac227 = ingot.getItemStack(MaterialMineral.AC227);
+	public static final ItemStack ingot_gh336 = ingot.getItemStack(MaterialMineral.GH336);
+	public static final ItemStack ingot_radspice = ingot.getItemStack(MaterialMineral.RADSPICE);
+	public static final ItemStack ingot_electronium = ingot.getItemStack(MaterialMineral.ELECTRONIUM);
+	public static final ItemStack ingot_reiium = ingot.getItemStack(MaterialMineral.REIIUM);
+	public static final ItemStack ingot_weidanium = ingot.getItemStack(MaterialMineral.WEIDANIUM);
+	public static final ItemStack ingot_australium = ingot.getItemStack(MaterialMineral.AUSTRALIUM);
+	public static final ItemStack ingot_verticium = ingot.getItemStack(MaterialMineral.VERTICIUM);
+	public static final ItemStack ingot_unobtainium = ingot.getItemStack(MaterialMineral.UNOBTAINIUM);
+	public static final ItemStack ingot_daffergon = ingot.getItemStack(MaterialMineral.DAFFERGON);
+	public static final ItemStack ingot_chainsteel = ingot.getItemStack(MaterialMineral.CHAINSTEEL);
+	public static final ItemStack ingot_meteorite = ingot.getItemStack(MaterialMineral.METEORITE);
+	public static final ItemStack ingot_meteorite_forged = ingot.getItemStack(MaterialMineral.METEORITE_FORGED);
+
 	public static final Item blade_meteorite = new ItemHot(200, "blade_meteorite").setCreativeTab(MainRegistry.partsTab);
 	
 	public static final Item billet_th232 = new ItemHazard(ItemHazard.th232 * ItemHazard.billet, "billet_th232").setCreativeTab(MainRegistry.partsTab);
@@ -2059,7 +2056,7 @@ public class ModItems {
 			.addBreakAbility(new ToolAbility.HammerAbility(4))
 			.addBreakAbility(new ToolAbility.RecursionAbility(9));
 	
-	public static final ToolMaterial matDecCobalt = EnumHelper.addToolMaterial("HBM_COBALT2", 4, 1000, 15.0F, 2.5F, 25).setRepairItem(new ItemStack(ModItems.ingot_cobalt));
+	public static final ToolMaterial matDecCobalt = EnumHelper.addToolMaterial("HBM_COBALT2", 4, 1000, 15.0F, 2.5F, 25).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt));
 	public static final Item cobalt_decorated_sword = new ItemSwordAbility(15F, 0, matDecCobalt, "cobalt_decorated_sword");
 	public static final Item cobalt_decorated_pickaxe = new ItemToolAbility(6F, -2.8F, 0, matDecCobalt, EnumToolType.PICKAXE, "cobalt_decorated_pickaxe")
 			.addBreakAbility(new ToolAbility.RecursionAbility(4))
@@ -2079,7 +2076,7 @@ public class ModItems {
 			.addBreakAbility(new LuckAbility(3));
 	public static final Item cobalt_decorated_hoe = new ModHoe(matDecCobalt, "cobalt_decorated_hoe").setCreativeTab(CreativeTabs.TOOLS);
 	
-	public static final ToolMaterial matStarmetal = EnumHelper.addToolMaterial("HBM_STARMETAL", 3, 1000, 20.0F, 2.5F, 30).setRepairItem(new ItemStack(ModItems.ingot_starmetal));
+	public static final ToolMaterial matStarmetal = EnumHelper.addToolMaterial("HBM_STARMETAL", 3, 1000, 20.0F, 2.5F, 30).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_starmetal));
 	public static final Item starmetal_sword = new ItemSwordAbility(25F, 0, matStarmetal, "starmetal_sword")
 			.addHitAbility(new WeaponAbility.BeheaderAbility())
 			.addHitAbility(new WeaponAbility.StunAbility(3));
@@ -2130,7 +2127,7 @@ public class ModItems {
 	
 	public static final Item cmb_hoe = new ModHoe(MainRegistry.enumToolMaterialCmb, "cmb_hoe").setMaxStackSize(1).setCreativeTab(CreativeTabs.TOOLS);
 	
-	public static final ToolMaterial matBismuth = EnumHelper.addToolMaterial("HBM_BISMUTH", 4, 0, 50F, 0.0F, 200).setRepairItem(new ItemStack(ModItems.ingot_bismuth));
+	public static final ToolMaterial matBismuth = EnumHelper.addToolMaterial("HBM_BISMUTH", 4, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_bismuth));
 	public static final Item bismuth_pickaxe = new ItemToolAbility(15F, -2.8F, 0, matBismuth, EnumToolType.MINER, "bismuth_pickaxe")
 			.addBreakAbility(new ToolAbility.HammerAbility(2))
 			.addBreakAbility(new ToolAbility.RecursionAbility(4))
@@ -2142,7 +2139,7 @@ public class ModItems {
 			.addHitAbility(new WeaponAbility.BeheaderAbility())
 			.setDepthRockBreaker();
 	
-	public static final ToolMaterial matVolcano = EnumHelper.addToolMaterial("HBM_VOLCANIC", 4, 0, 50F, 0.0F, 200).setRepairItem(new ItemStack(ModItems.ingot_bismuth));
+	public static final ToolMaterial matVolcano = EnumHelper.addToolMaterial("HBM_VOLCANIC", 4, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_bismuth));
 	public static final Item volcanic_pickaxe = new ItemToolAbility(15F, -2.8F, 0, matVolcano, EnumToolType.MINER, "volcanic_pickaxe")
 			.addBreakAbility(new ToolAbility.HammerAbility(2))
 			.addBreakAbility(new ToolAbility.RecursionAbility(4))
@@ -2154,7 +2151,7 @@ public class ModItems {
 			.addHitAbility(new WeaponAbility.BeheaderAbility())
 			.setDepthRockBreaker();
 	
-	public static final ToolMaterial matChlorophyte = EnumHelper.addToolMaterial("HBM_CHLOROPHYTE", 5, 0, 50F, 0.0F, 200).setRepairItem(new ItemStack(ModItems.powder_chlorophyte));
+	public static final ToolMaterial matChlorophyte = EnumHelper.addToolMaterial("HBM_CHLOROPHYTE", 5, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.powder_chlorophyte));
 	public static final Item chlorophyte_pickaxe = new ItemToolAbility(20F, -2.8F, 0, matChlorophyte, EnumToolType.MINER, "chlorophyte_pickaxe")
 			.addBreakAbility(new ToolAbility.HammerAbility(2))
 			.addBreakAbility(new ToolAbility.LuckAbility(4))
@@ -2165,7 +2162,7 @@ public class ModItems {
 			.addHitAbility(new WeaponAbility.BeheaderAbility())
 			.setDepthRockBreaker();
 
-	public static final ToolMaterial matMese = EnumHelper.addToolMaterial("HBM_MESE", 6, 0, 50F, 0.0F, 200).setRepairItem(new ItemStack(ModItems.plate_paa));
+	public static final ToolMaterial matMese = EnumHelper.addToolMaterial("HBM_MESE", 6, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
 	public static final Item mese_pickaxe = new ItemToolAbility(35F, -2.8F, 0, matMese, EnumToolType.MINER, "mese_pickaxe")
 			.addBreakAbility(new ToolAbility.HammerAbility(3))
 			.addBreakAbility(new ToolAbility.RecursionAbility(5))

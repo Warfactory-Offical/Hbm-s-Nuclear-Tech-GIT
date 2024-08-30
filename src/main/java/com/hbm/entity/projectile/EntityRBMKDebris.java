@@ -1,4 +1,5 @@
 package com.hbm.entity.projectile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -66,27 +67,27 @@ public class EntityRBMKDebris extends Entity {
 		if(!world.isRemote && !isDead) {
 			switch(this.getType()){
 			case BLANK:
-				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal)))
+				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_metal)))
 					this.setDead();
 				break;
 			case ELEMENT:
-				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal)))
+				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_metal)))
 					this.setDead();
 				break;
 			case FUEL:
-				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_fuel)))
+				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_fuel)))
 					this.setDead();
 				break;
 			case GRAPHITE:
-				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_graphite)))
+				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_graphite)))
 					this.setDead();
 				break;
 			case LID:
-				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.rbmk_lid)))
+				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.rbmk_lid)))
 					this.setDead();
 				break;
 			case ROD:
-				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal)))
+				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_metal)))
 					this.setDead();
 				break;
 			}

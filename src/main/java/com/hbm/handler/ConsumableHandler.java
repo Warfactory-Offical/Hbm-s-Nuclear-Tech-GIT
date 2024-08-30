@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.VersatileConfig;
@@ -215,10 +216,10 @@ public class ConsumableHandler {
         public void shrinkAndReplaceItem(Item... replacements) {
             shrinkCurrentItem();
             if (player.getHeldItem(hand).isEmpty()) {
-                player.setHeldItem(hand, new ItemStack(replacements[rand.nextInt(replacements.length)]));
+                player.setHeldItem(hand, ItemStackUtil.itemStackFrom(replacements[rand.nextInt(replacements.length)]));
             } else {
                 for (Item replacement : replacements) {
-                       ItemStack toReplace = new ItemStack(replacement);
+                       ItemStack toReplace = ItemStackUtil.itemStackFrom(replacement);
                     if(!player.addItemStackToInventory(toReplace));
                         player.dropItem(toReplace, false);
                 }

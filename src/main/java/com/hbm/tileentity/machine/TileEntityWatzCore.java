@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,9 +235,9 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 			if(WatzFuel.getLifeTime(inventory.getStackInSlot(i)) >= fuel.lifeTime)
 			{
 				if(inventory.getStackInSlot(i).getItem() == ModItems.pellet_lead)
-					inventory.setStackInSlot(i, new ItemStack(ModItems.powder_lead));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.powder_lead));
 				else
-					inventory.setStackInSlot(i, new ItemStack(ModItems.pellet_lead));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.pellet_lead));
 			}
 		}
 	}

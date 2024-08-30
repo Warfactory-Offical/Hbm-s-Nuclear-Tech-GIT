@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 
@@ -9,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class AnvilSmithingRenameRecipe extends AnvilSmithingRecipe {
 	
 	public AnvilSmithingRenameRecipe() {
-		super(1, new ItemStack(Items.IRON_SWORD), new ComparableStack(Items.IRON_SWORD), new ComparableStack(Items.NAME_TAG, 0));
+		super(1, ItemStackUtil.itemStackFrom(Items.IRON_SWORD), ItemStackUtil.comparableStackFrom(Items.IRON_SWORD), ItemStackUtil.comparableStackFrom(Items.NAME_TAG, 0));
 	}
 	
 	@Override

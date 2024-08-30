@@ -1,4 +1,5 @@
 package com.hbm.world.generator.room;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.crafting.handlers.MKUCraftingHandler;
@@ -60,11 +61,11 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 				int r = world.rand.nextInt(10);
 				
 				if(r == 0)
-					((TileEntitySafe)world.getTileEntity(new BlockPos(x + parent.width / 2, y + 2, z + parent.width / 2))).inventory.setStackInSlot(7, new ItemStack(ModItems.book_of_));
+					((TileEntitySafe)world.getTileEntity(new BlockPos(x + parent.width / 2, y + 2, z + parent.width / 2))).inventory.setStackInSlot(7, ItemStackUtil.itemStackFrom(ModItems.book_of_));
 				else if(r < 4)
 					((TileEntitySafe)world.getTileEntity(new BlockPos(x + parent.width / 2, y + 2, z + parent.width / 2))).inventory.setStackInSlot(7, genetateMKU(world));
 				else
-					((TileEntitySafe)world.getTileEntity(new BlockPos(x + parent.width / 2, y + 2, z + parent.width / 2))).inventory.setStackInSlot(7, new ItemStack(Items.BOOK));
+					((TileEntitySafe)world.getTileEntity(new BlockPos(x + parent.width / 2, y + 2, z + parent.width / 2))).inventory.setStackInSlot(7, ItemStackUtil.itemStackFrom(Items.BOOK));
 			}
 			break;
 		}
@@ -100,7 +101,7 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 	public static ItemStack genetateMKU(World world) {
 		int r = world.rand.nextInt(6);
 
-		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+		ItemStack book = ItemStackUtil.itemStackFrom(Items.WRITTEN_BOOK);
 		book.setTagCompound(new NBTTagCompound());
 		book.getTagCompound().setString("author", "Dave");
 		book.getTagCompound().setString("title", "§6§lMKU§e Note "+(r+1));

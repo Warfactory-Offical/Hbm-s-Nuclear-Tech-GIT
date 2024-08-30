@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class ItemBombCaller extends Item {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if (tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH)
 			for (int i = 0; i < EnumCallerType.values().length - 4; i++) {
-				ItemStack stack = new ItemStack(this, 1, 0);
+				ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 				setCallerType(stack, EnumCallerType.values()[i]);
 				items.add(stack);
 			}
@@ -172,7 +173,7 @@ public class ItemBombCaller extends Item {
 	}
 	
 	public static ItemStack getStack(EnumCallerType type){
-		ItemStack stack = new ItemStack(ModItems.bomb_caller, 1, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.bomb_caller, 1, 0);
 		setCallerType(stack, type);
 		return stack;
 	}

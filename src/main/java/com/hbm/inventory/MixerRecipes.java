@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -46,10 +47,10 @@ public class MixerRecipes {
 	}
 
 	public static void registerRecipes() {
-		addRecipe(new FluidStack(ModForgeFluids.ethanol, 100), new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 500)}, new ComparableStack(Items.SUGAR), 200);
-		addRecipe(new FluidStack(ModForgeFluids.colloid, 500), new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 500)}, new ComparableStack(ModItems.dust), 20);
-		addRecipe(new FluidStack(ModForgeFluids.fishoil, 100), null, new ComparableStack(Items.FISH, 1, OreDictionary.WILDCARD_VALUE), 50);
-		addRecipe(new FluidStack(ModForgeFluids.sunfloweroil, 100), null, new ComparableStack(Blocks.DOUBLE_PLANT, 1, 0), 50);
+		addRecipe(new FluidStack(ModForgeFluids.ethanol, 100), new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 500)}, ItemStackUtil.comparableStackFrom(Items.SUGAR), 200);
+		addRecipe(new FluidStack(ModForgeFluids.colloid, 500), new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 500)}, ItemStackUtil.comparableStackFrom(ModItems.dust), 20);
+		addRecipe(new FluidStack(ModForgeFluids.fishoil, 100), null, ItemStackUtil.comparableStackFrom(Items.FISH, 1, OreDictionary.WILDCARD_VALUE), 50);
+		addRecipe(new FluidStack(ModForgeFluids.sunfloweroil, 100), null, ItemStackUtil.comparableStackFrom(Blocks.DOUBLE_PLANT, 1, 0), 50);
 		addRecipe(new FluidStack(ModForgeFluids.nitroglycerin, 1000), new FluidStack[]{ new FluidStack(ModForgeFluids.petroleum, 1000), new FluidStack(ModForgeFluids.nitric_acid, 1000)}, null, 20);
 		addRecipe(new FluidStack(ModForgeFluids.biofuel, 250), new FluidStack[]{ new FluidStack(ModForgeFluids.fishoil, 500), new FluidStack(ModForgeFluids.sunfloweroil, 500)}, null, 20);
 		addRecipe(new FluidStack(ModForgeFluids.lubricant, 1000), new FluidStack[]{ new FluidStack(ModForgeFluids.ethanol, 200), new FluidStack(ModForgeFluids.sunfloweroil, 800)}, null, 20);

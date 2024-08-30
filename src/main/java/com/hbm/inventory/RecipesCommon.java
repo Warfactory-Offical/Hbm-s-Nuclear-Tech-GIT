@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -166,7 +167,7 @@ public class RecipesCommon {
 		
 		public ItemStack toStack() {
 			
-			return new ItemStack(item, stacksize, meta);
+			return ItemStackUtil.itemStackFrom(item, stacksize, meta);
 		}
 		
 		@Override
@@ -292,7 +293,7 @@ public class RecipesCommon {
 		
 		@Override
 		public AStack copy() {
-			return new ComparableStack(item, stacksize, meta);
+			return ItemStackUtil.comparableStackFrom(item, stacksize, meta);
 		}
 		
 		@Override
@@ -387,7 +388,7 @@ public class RecipesCommon {
 		@Override
 		public ItemStack getStack() {
 			ItemStack stack = toStacks().get(0);
-			return new ItemStack(stack.getItem(), stacksize, stack.getMetadata());
+			return ItemStackUtil.itemStackFrom(stack.getItem(), stacksize, stack.getMetadata());
 		}
 		
 		@Override

@@ -1,4 +1,5 @@
 package com.hbm.render.entity.item;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.item.EntityMovingItem;
@@ -34,7 +35,7 @@ public class RenderMovingPackage extends Render<EntityMovingPackage> {
         GL11.glTranslated(x, y + 0.3125, z);
 
         if(this.dummy == null) {
-            this.dummy = new ItemStack(ModBlocks.crate);
+            this.dummy = ItemStackUtil.itemStackFrom(ModBlocks.crate);
         }
 
         double scale = 1.25;

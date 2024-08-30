@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -68,7 +69,7 @@ public class PotionRecipes {
 		if (reagent instanceof Item)
 			return Ingredient.fromItem((Item) reagent);
 		else if (reagent instanceof Block)
-			return Ingredient.fromStacks(new ItemStack((Block) reagent));
+			return Ingredient.fromStacks(ItemStackUtil.itemStackFrom((Block) reagent));
 		else if (reagent instanceof ItemStack)
 			return Ingredient.fromStacks((ItemStack) reagent);
 		else if (reagent instanceof String)

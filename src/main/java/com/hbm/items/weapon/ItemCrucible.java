@@ -1,4 +1,5 @@
 package com.hbm.items.weapon;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.UUID;
@@ -68,7 +69,7 @@ public class ItemCrucible extends ItemSwordCutter implements IPostRender {
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
-			items.add(charge(new ItemStack(this)));
+			items.add(charge(ItemStackUtil.itemStackFrom(this)));
 		}
 	}
 	

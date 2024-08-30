@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -88,7 +89,7 @@ public class DummyBlockCentrifuge extends BlockContainer implements IDummy {
 	
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(ModBlocks.machine_centrifuge);
+		return ItemStackUtil.itemStackFrom(ModBlocks.machine_centrifuge);
 	}
 	
 	@Override

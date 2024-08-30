@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -87,7 +88,7 @@ public class DummyBlockFlare extends DummyOldBase {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.machine_flare);
+		return ItemStackUtil.itemStackFrom(ModBlocks.machine_flare);
 	}
 	
 	@Override

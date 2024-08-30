@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Random;
@@ -64,7 +65,7 @@ public class RBMKFuelRecipes {
 	}
 
 	public static ItemStack makeRBMKRod(ItemRBMKRod rod, int enrichment, boolean xenon){
-		ItemStack fuelRod = new ItemStack(rod);
+		ItemStack fuelRod = ItemStackUtil.itemStackFrom(rod);
 		ItemRBMKRod.setCoreHeat(fuelRod, 20D+rand.nextDouble()*29.9D);
 		ItemRBMKRod.setHullHeat(fuelRod, 20D+rand.nextDouble()*29.9D);
 		ItemRBMKRod.setPoison(fuelRod, xenon ? 50D+rand.nextDouble()*50D : rand.nextDouble()*49.9D);
@@ -73,7 +74,7 @@ public class RBMKFuelRecipes {
 	}
 
 	public static ItemStack makeRBMKPellet(ItemStack rod){
-		ItemStack result = new ItemStack(((ItemRBMKRod)rod.getItem()).pellet, 8);
+		ItemStack result = ItemStackUtil.itemStackFrom(((ItemRBMKRod)rod.getItem()).pellet, 8);
 		int enrichment = 4 - MathHelper.clamp((int)Math.ceil(ItemRBMKRod.getEnrichment(rod) * 5 - 1), 0, 4);
 		int meta = enrichment + (ItemRBMKRod.getPoisonLevel(rod) >= 0.5D ? 5 : 0);
 		result.setItemDamage(meta);

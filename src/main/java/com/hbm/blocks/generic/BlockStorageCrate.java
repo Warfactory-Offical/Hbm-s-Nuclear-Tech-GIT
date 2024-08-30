@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -101,7 +102,7 @@ public class BlockStorageCrate extends BlockContainer {
 
 		if(!player.capabilities.isCreativeMode && !world.isRemote && willHarvest) {
 			
-			ItemStack drop = new ItemStack(this);
+			ItemStack drop = ItemStackUtil.itemStackFrom(this);
 			TileEntity te = world.getTileEntity(pos);
 			
 			NBTTagCompound nbt = new NBTTagCompound();
@@ -144,7 +145,7 @@ public class BlockStorageCrate extends BlockContainer {
 				if(nbt.toString().length() > MachineConfig.crateByteSize * 1000) {
 					player.sendMessage(new TextComponentString("§cWarning: Container NBT exceeds "+MachineConfig.crateByteSize+"kB, contents will be ejected!"));
 					InventoryHelper.dropInventoryItems(world, pos, world.getTileEntity(pos));
-					InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Item.getItemFromBlock(this)));
+					InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(Item.getItemFromBlock(this)));
 					return world.setBlockToAir(pos);
 				}
 			}
@@ -215,7 +216,7 @@ public class BlockStorageCrate extends BlockContainer {
 
 			NBTTagCompound nbt = stack.getTagCompound();
 			for(int i = 0; i < inventory.getSlots(); i++) {
-				inventory.insertItem(i, new ItemStack(nbt.getCompoundTag("slot" + i)), false);
+				inventory.insertItem(i, ItemStackUtil.itemStackFrom(nbt.getCompoundTag("slot" + i)), false);
 			}
 			
 			if(te instanceof TileEntityLockableBase) {

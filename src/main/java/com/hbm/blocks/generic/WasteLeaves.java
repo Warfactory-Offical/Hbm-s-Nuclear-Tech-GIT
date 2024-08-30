@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 import java.util.ArrayList;
@@ -86,9 +87,9 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
 		if(RANDOM.nextInt(4) == 0)
-			drops.add(new ItemStack(Item.getItemFromBlock(Blocks.DEADBUSH)));
+			drops.add(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(Blocks.DEADBUSH)));
 		if(RANDOM.nextInt(3) == 0)
-			drops.add(new ItemStack(Items.STICK));
+			drops.add(ItemStackUtil.itemStackFrom(Items.STICK));
 	}
 
 	@Override
@@ -100,7 +101,7 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 
 	public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune){
 		NonNullList<ItemStack> output = NonNullList.create();
-		output.add(new ItemStack(ModBlocks.waste_leaves, fortune+1));
+		output.add(ItemStackUtil.itemStackFrom(ModBlocks.waste_leaves, fortune+1));
 		return output;
 	}
 

@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 
@@ -16,9 +17,9 @@ public class TemplateTab extends CreativeTabs {
 	@Override
 	public ItemStack createIcon() {
 		if(ModItems.assembly_template != null){
-			return new ItemStack(ModItems.assembly_template);
+			return ItemStackUtil.itemStackFrom(ModItems.assembly_template);
 		}
-		return new ItemStack(Items.IRON_PICKAXE);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}
 	
 	@Override

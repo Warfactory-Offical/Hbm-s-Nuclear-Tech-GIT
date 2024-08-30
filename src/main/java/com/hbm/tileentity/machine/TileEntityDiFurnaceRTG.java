@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineDiFurnaceRTG;
 import com.hbm.inventory.DiFurnaceRecipes;
@@ -177,7 +178,7 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 			{
 				if(inventory.getStackInSlot(i).getCount() <= 0)
 				{
-					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem().setFull3D()));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem().setFull3D()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}

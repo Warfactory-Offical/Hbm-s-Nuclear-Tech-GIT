@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineArcFurnace;
 import com.hbm.items.ModItems;
@@ -146,7 +147,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 			{
 				if(inventory.getStackInSlot(i).isEmpty())
 				{
-					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem()));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}
@@ -161,7 +162,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 					if(inventory.getStackInSlot(i).getItemDamage() < inventory.getStackInSlot(i).getMaxDamage())
 						inventory.getStackInSlot(i).setItemDamage(inventory.getStackInSlot(i).getItemDamage() + 1);
 					else
-						inventory.setStackInSlot(i, new ItemStack(ModItems.arc_electrode_burnt));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.arc_electrode_burnt));
 				}
 			}
 		}

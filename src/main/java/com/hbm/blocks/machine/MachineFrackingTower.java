@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
@@ -64,7 +65,7 @@ public class MachineFrackingTower extends BlockDummyable {
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.machine_fracking_tower);
+        return ItemStackUtil.itemStackFrom(ModBlocks.machine_fracking_tower);
     }
 
 //    @Override

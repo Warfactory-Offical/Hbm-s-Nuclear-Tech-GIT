@@ -1,4 +1,5 @@
 package com.hbm.blocks.bomb;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +45,7 @@ public class BlockVolcano extends Block {
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab())
 			for(int i = 0; i < 4; ++i) {
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 			}
 	}
 	

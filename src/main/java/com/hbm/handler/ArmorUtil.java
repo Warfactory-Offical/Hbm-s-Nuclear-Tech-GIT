@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -341,7 +342,7 @@ public class ArmorUtil {
 			return null;
 		
 		NBTTagCompound attach = mask.getTagCompound().getCompoundTag(FILTERK_KEY);
-		ItemStack filter = new ItemStack(attach);
+		ItemStack filter = ItemStackUtil.itemStackFrom(attach);
 		if(filter.isEmpty())
 			return null;
 		return filter;

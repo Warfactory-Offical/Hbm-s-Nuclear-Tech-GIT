@@ -1,4 +1,5 @@
 package com.hbm.blocks.bomb;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 import java.util.List;
@@ -116,7 +117,7 @@ public class Landmine extends BlockContainer implements IBomb {
 			safeMode = true;
 			world.setBlockToAir(pos);
 
-			ItemStack itemstack = new ItemStack(this, 1);
+			ItemStack itemstack = ItemStackUtil.itemStackFrom(this, 1);
 			float f = world.rand.nextFloat() * 0.6F + 0.2F;
 			float f1 = world.rand.nextFloat() * 0.2F;
 			float f2 = world.rand.nextFloat() * 0.6F + 0.2F;

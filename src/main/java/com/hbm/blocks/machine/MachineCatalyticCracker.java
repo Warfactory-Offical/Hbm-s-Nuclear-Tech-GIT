@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.machine_catalytic_cracker);
+        return ItemStackUtil.itemStackFrom(ModBlocks.machine_catalytic_cracker);
     }
 	
 	@Override

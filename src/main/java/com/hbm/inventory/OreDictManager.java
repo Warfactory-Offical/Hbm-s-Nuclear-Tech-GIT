@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -429,18 +430,18 @@ public class OreDictManager {
 		// OreDictionary.registerOre(KEY_CRACK_TAR, fromOne(oil_tar, EnumTarType.CRACK));
 		// OreDictionary.registerOre(KEY_COAL_TAR, fromOne(oil_tar, EnumTarType.COAL));
 
-		OreDictionary.registerOre(KEY_UNIVERSAL_TANK, new ItemStack(fluid_tank_full, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_UNIVERSAL_TANK, ItemStackUtil.itemStackFrom(fluid_tank_full, 1, OreDictionary.WILDCARD_VALUE));
 		/* yell at me if these bastard was ever used for anything
-		 * OreDictionary.registerOre(KEY_HAZARD_TANK, new ItemStack(fluid_tank_lead_full, 1, OreDictionary.WILDCARD_VALUE));
+		 * OreDictionary.registerOre(KEY_HAZARD_TANK, ItemStackUtil.itemStackFrom(fluid_tank_lead_full, 1, OreDictionary.WILDCARD_VALUE));
 		 */
-		OreDictionary.registerOre(KEY_UNIVERSAL_BARREL, new ItemStack(fluid_barrel_full, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_UNIVERSAL_BARREL, ItemStackUtil.itemStackFrom(fluid_barrel_full, 1, OreDictionary.WILDCARD_VALUE));
 
-		OreDictionary.registerOre(KEY_TOOL_SCREWDRIVER, new ItemStack(screwdriver, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre(KEY_TOOL_SCREWDRIVER, new ItemStack(screwdriver_desh, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre(KEY_TOOL_HANDDRILL, new ItemStack(hand_drill, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre(KEY_TOOL_HANDDRILL, new ItemStack(hand_drill_desh, 1, OreDictionary.WILDCARD_VALUE));
-		//OreDictionary.registerOre(KEY_TOOL_CHEMISTRYSET, new ItemStack(chemistry_set, 1, OreDictionary.WILDCARD_VALUE));
-		//OreDictionary.registerOre(KEY_TOOL_CHEMISTRYSET, new ItemStack(chemistry_set_boron, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_SCREWDRIVER, ItemStackUtil.itemStackFrom(screwdriver, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_SCREWDRIVER, ItemStackUtil.itemStackFrom(screwdriver_desh, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_HANDDRILL, ItemStackUtil.itemStackFrom(hand_drill, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_HANDDRILL, ItemStackUtil.itemStackFrom(hand_drill_desh, 1, OreDictionary.WILDCARD_VALUE));
+		//OreDictionary.registerOre(KEY_TOOL_CHEMISTRYSET, ItemStackUtil.itemStackFrom(chemistry_set, 1, OreDictionary.WILDCARD_VALUE));
+		//OreDictionary.registerOre(KEY_TOOL_CHEMISTRYSET, ItemStackUtil.itemStackFrom(chemistry_set_boron, 1, OreDictionary.WILDCARD_VALUE));
 
 		OreDictionary.registerOre(KEY_CIRCUIT_BISMUTH, circuit_bismuth);
 		OreDictionary.registerOre(KEY_CIRCUIT_BISMUTH, circuit_arsenic);
@@ -467,14 +468,14 @@ public class OreDictManager {
 		OreDictionary.registerOre("stairWoodPink", pink_stairs);
 
 		OreDictionary.registerOre(KEY_SAND, Blocks.SAND);
-		OreDictionary.registerOre(KEY_SAND, new ItemStack(Blocks.SAND, 1, 1));
+		OreDictionary.registerOre(KEY_SAND, ItemStackUtil.itemStackFrom(Blocks.SAND, 1, 1));
 		OreDictionary.registerOre(KEY_GRAVEL, Blocks.GRAVEL);
 		OreDictionary.registerOre(KEY_PLANKS, Blocks.PLANKS);
-		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 1));
-		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 2));
-		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 3));
-		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 4));
-		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 5));
+		OreDictionary.registerOre(KEY_PLANKS, ItemStackUtil.itemStackFrom(Blocks.PLANKS, 1, 1));
+		OreDictionary.registerOre(KEY_PLANKS, ItemStackUtil.itemStackFrom(Blocks.PLANKS, 1, 2));
+		OreDictionary.registerOre(KEY_PLANKS, ItemStackUtil.itemStackFrom(Blocks.PLANKS, 1, 3));
+		OreDictionary.registerOre(KEY_PLANKS, ItemStackUtil.itemStackFrom(Blocks.PLANKS, 1, 4));
+		OreDictionary.registerOre(KEY_PLANKS, ItemStackUtil.itemStackFrom(Blocks.PLANKS, 1, 5));
 
 		OreDictionary.registerOre("dyeRed", cinnebar);
 		OreDictionary.registerOre("dye", cinnebar);
@@ -606,16 +607,16 @@ public class OreDictManager {
 
 		/** Returns an ItemStack composed of the supplied item with the meta being the enum's ordinal. Purely syntactic candy */
 		public static ItemStack fromOne(Item item, Enum en) {
-			return new ItemStack(item, 1, en.ordinal());
+			return ItemStackUtil.itemStackFrom(item, 1, en.ordinal());
 		}
 		public static ItemStack fromOne(Block block, Enum en) {
-			return new ItemStack(block, 1, en.ordinal());
+			return ItemStackUtil.itemStackFrom(block, 1, en.ordinal());
 		}
 		public static ItemStack fromOne(Item item, Enum en, int stacksize) {
-			return new ItemStack(item, stacksize, en.ordinal());
+			return ItemStackUtil.itemStackFrom(item, stacksize, en.ordinal());
 		}
 		public static ItemStack fromOne(Block block, Enum en, int stacksize) {
-			return new ItemStack(block, stacksize, en.ordinal());
+			return ItemStackUtil.itemStackFrom(block, stacksize, en.ordinal());
 		}
 		/** Same as fromOne but with an array of ItemStacks. The array type is Object[] so that the ODM methods work with it. Generates ItemStacks for the entire enum class. */
 		public static Object[] fromAll(Item item, Class<? extends Enum> en) {
@@ -623,7 +624,7 @@ public class OreDictManager {
 			Object[] stacks = new Object[vals.length];
 
 			for(int i = 0; i < vals.length; i++) {
-				stacks[i] = new ItemStack(item, 1, vals[i].ordinal());
+				stacks[i] = ItemStackUtil.itemStackFrom(item, 1, vals[i].ordinal());
 			}
 			return stacks;
 		}
@@ -680,8 +681,8 @@ public class OreDictManager {
 		public DictFrame makeObject(String tag, Object... objects) {
 
 			for(Object o : objects) {
-				if(o instanceof Item)		registerStack(tag, new ItemStack((Item) o));
-				if(o instanceof Block)		registerStack(tag, new ItemStack((Block) o));
+				if(o instanceof Item)		registerStack(tag, ItemStackUtil.itemStackFrom((Item) o));
+				if(o instanceof Block)		registerStack(tag, ItemStackUtil.itemStackFrom((Block) o));
 				if(o instanceof ItemStack)	registerStack(tag, (ItemStack) o);
 			}
 
@@ -689,7 +690,7 @@ public class OreDictManager {
 		}
 
 		public DictFrame makeItem(String tag, Item... items) {
-			for(Item i : items) registerStack(tag, new ItemStack(i));
+			for(Item i : items) registerStack(tag, ItemStackUtil.itemStackFrom(i));
 			return this;
 		}
 		public DictFrame makeStack(String tag, ItemStack... stacks) {
@@ -697,7 +698,7 @@ public class OreDictManager {
 			return this;
 		}
 		public DictFrame makeBlocks(String tag, Block... blocks) {
-			for(Block b : blocks) registerStack(tag, new ItemStack(b));
+			for(Block b : blocks) registerStack(tag, ItemStackUtil.itemStackFrom(b));
 			return this;
 		}
 

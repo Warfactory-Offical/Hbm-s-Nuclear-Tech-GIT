@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,18 +40,18 @@ public class EntityMissileBHole extends EntityMissileBaseAdvanced {
 	public List<ItemStack> getDebris() {
 		List<ItemStack> list = new ArrayList<ItemStack>();
 
-		list.add(new ItemStack(ModItems.wire_aluminium, 4));
-		list.add(new ItemStack(ModItems.plate_titanium, 4));
-		list.add(new ItemStack(ModItems.hull_small_aluminium, 2));
-		list.add(new ItemStack(ModItems.ducttape, 1));
-		list.add(new ItemStack(ModItems.circuit_targeting_tier1, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 4));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.hull_small_aluminium, 2));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.ducttape, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.circuit_targeting_tier1, 1));
 		
 		return list;
 	}
 
 	@Override
 	public ItemStack getDebrisRareDrop() {
-		return new ItemStack(ModItems.grenade_black_hole, 1);
+		return ItemStackUtil.itemStackFrom(ModItems.grenade_black_hole, 1);
 	}
 
 	@Override

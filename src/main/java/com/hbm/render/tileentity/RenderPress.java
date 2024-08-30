@@ -1,4 +1,5 @@
 package com.hbm.render.tileentity;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.opengl.GL11;
 
@@ -175,7 +176,7 @@ public class RenderPress extends TileEntitySpecialRenderer<TileEntityMachinePres
 		GL11.glRotatef(-90, 1F, 0F, 0F);
 		
 		TileEntityMachinePress press = (TileEntityMachinePress) tileEntity;
-		ItemStack stack = new ItemStack(Item.getItemById(press.item), 1, press.meta);
+		ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(press.item), 1, press.meta);
 
 		if(!(stack.getItem() instanceof ItemBlock) && !stack.isEmpty()) {
 			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, tileEntity.getWorld(), null);

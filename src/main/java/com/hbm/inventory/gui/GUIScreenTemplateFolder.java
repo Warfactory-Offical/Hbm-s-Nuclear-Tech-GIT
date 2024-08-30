@@ -1,4 +1,5 @@
 package com.hbm.inventory.gui;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,14 +90,14 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
     	//Stamps
 		for(Item i : PressRecipes.stamps_plate)
-			allStacks.add(new ItemStack(i));
+			allStacks.add(ItemStackUtil.itemStackFrom(i));
 		for(Item i : PressRecipes.stamps_wire)
-			allStacks.add(new ItemStack(i));
+			allStacks.add(ItemStackUtil.itemStackFrom(i));
 		for(Item i : PressRecipes.stamps_circuit)
-			allStacks.add(new ItemStack(i));
+			allStacks.add(ItemStackUtil.itemStackFrom(i));
 		//Tracks
     	for(int i = 1; i < ItemCassette.TrackType.values().length; i++)
-			allStacks.add(new ItemStack(ModItems.siren_track, 1, i));
+			allStacks.add(ItemStackUtil.itemStackFrom(ModItems.siren_track, 1, i));
     	//Fluid IDs
     	for(Fluid fluid : FluidRegistry.getRegisteredFluids().values()){
     		if(FluidTypeHandler.noID(fluid)) continue;
@@ -104,17 +105,17 @@ public class GUIScreenTemplateFolder extends GuiScreen {
     	}
     	//Assembly Templates
     	//for(int i = 0; i < ItemAssemblyTemplate.recipes.size(); i++)
-    	//	stacks.add(new ItemStack(ModItems.assembly_template, 1, i));
+    	//	stacks.add(ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, i));
     	for (int i = 0; i < AssemblerRecipes.recipeList.size(); ++i) {
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setInteger("type", i);
-			ItemStack stack = new ItemStack(ModItems.assembly_template, 1, 0);
+			ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, 0);
 			stack.setTagCompound(tag);
 			allStacks.add(stack);
 		}
     	//Chemistry Templates
     	for (int i: ChemplantRecipes.recipeNames.keySet()){
-			allStacks.add(new ItemStack(ModItems.chemistry_template, 1, i));
+			allStacks.add(ItemStackUtil.itemStackFrom(ModItems.chemistry_template, 1, i));
 		}
 		search(null);
     }
@@ -274,7 +275,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 					if(stack.getItem() == ModItems.assembly_template)
 						itemRender.renderItemAndEffectIntoGUI(player, AssemblerRecipes.getOutputFromTempate(stack), xPos + 1, yPos + 1);
 					else if(stack.getItem() == ModItems.chemistry_template)
-						itemRender.renderItemAndEffectIntoGUI(player, new ItemStack(ModItems.chemistry_icon, 1, stack.getItemDamage()), xPos + 1, yPos + 1);
+						itemRender.renderItemAndEffectIntoGUI(player, ItemStackUtil.itemStackFrom(ModItems.chemistry_icon, 1, stack.getItemDamage()), xPos + 1, yPos + 1);
 					else
 						itemRender.renderItemAndEffectIntoGUI(player, stack, xPos + 1, yPos + 1);
 				}

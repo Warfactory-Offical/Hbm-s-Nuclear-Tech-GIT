@@ -1,4 +1,5 @@
 package com.hbm.util;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -635,11 +636,11 @@ public class ContaminationUtil {
 						EntityPlayer p = (EntityPlayer) e;
 						
 						if(p.getHeldItemMainhand().getItem() == ModItems.marshmallow && p.getRNG().nextInt((int)len) == 0) {
-							p.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(ModItems.marshmallow_roasted));
+							p.setHeldItem(EnumHand.MAIN_HAND, ItemStackUtil.itemStackFrom(ModItems.marshmallow_roasted));
 						}
 
 						if(p.getHeldItemOffhand().getItem() == ModItems.marshmallow && p.getRNG().nextInt((int)len) == 0) {
-							p.setHeldItem(EnumHand.OFF_HAND, new ItemStack(ModItems.marshmallow_roasted));
+							p.setHeldItem(EnumHand.OFF_HAND, ItemStackUtil.itemStackFrom(ModItems.marshmallow_roasted));
 						}
 					}
 					e.attackEntityFrom(DamageSource.IN_FIRE, fireDmg);

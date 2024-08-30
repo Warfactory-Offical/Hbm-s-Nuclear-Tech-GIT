@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Map;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ItemBedrockOre extends Item {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab()){
 			for(Integer oreMeta : BedrockOreRegistry.oreIndexes.keySet()) {
-				items.add(new ItemStack(this, 1, oreMeta));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, oreMeta));
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
 			for (int i: ChemplantRecipes.recipeNames.keySet()){
-	            list.add(new ItemStack(this, 1, i));
+	            list.add(ItemStackUtil.itemStackFrom(this, 1, i));
 	        }
 		}
 	}

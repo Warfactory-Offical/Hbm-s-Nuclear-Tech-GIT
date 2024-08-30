@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -211,7 +212,7 @@ public abstract class ToolAbility {
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 			
-			ItemStack stack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 			
 			if(result != null && !result.isEmpty()) {
@@ -251,7 +252,7 @@ public abstract class ToolAbility {
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 			
-			ItemStack stack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
 			ItemStack result = ShredderRecipes.getShredderResult(stack);
 			
 			if(result != null && result.getItem() != ModItems.scrap) {
@@ -291,7 +292,7 @@ public abstract class ToolAbility {
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 			
-			ItemStack stack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
 			ItemStack[] result = CentrifugeRecipes.getOutput(stack);
 			
 			if(result != null) {
@@ -426,7 +427,7 @@ public abstract class ToolAbility {
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 
-			ItemStack stack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
 			ItemStack result = CrystallizerRecipes.getOutputItem(stack);
 
 			if(result != null) {
@@ -474,7 +475,7 @@ public abstract class ToolAbility {
 
 			if(mercury > 0) {
 				world.setBlockToAir(new BlockPos(x, y, z));
-				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModItems.nugget_mercury, mercury)));
+				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, mercury)));
 			}
 		}
 

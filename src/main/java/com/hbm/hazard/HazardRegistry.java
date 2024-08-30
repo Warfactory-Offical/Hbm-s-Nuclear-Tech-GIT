@@ -1,4 +1,5 @@
 package com.hbm.hazard;
+import com.hbm.util.ItemStackUtil;
 
 import static com.hbm.blocks.ModBlocks.*;
 import static com.hbm.items.ModItems.*;
@@ -257,25 +258,25 @@ public class HazardRegistry {
 		HazardSystem.register(block_euphemium_cluster, makeData(RADIATION, 50F));
 
 		//Ill keep this annotation for reference later ig
-//		HazardSystem.register(new ItemStack(ModBlocks.sellafield, 1, 0), makeData(RADIATION, 0.5F));
-//		HazardSystem.register(new ItemStack(ModBlocks.sellafield, 1, 1), makeData(RADIATION, 1F));
-//		HazardSystem.register(new ItemStack(ModBlocks.sellafield, 1, 2), makeData(RADIATION, 2.5F));
-//		HazardSystem.register(new ItemStack(ModBlocks.sellafield, 1, 3), makeData(RADIATION, 4F));
-//		HazardSystem.register(new ItemStack(ModBlocks.sellafield, 1, 4), makeData(RADIATION, 5F));
-//		HazardSystem.register(new ItemStack(ModBlocks.sellafield, 1, 5), makeData(RADIATION, 10F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModBlocks.sellafield, 1, 0), makeData(RADIATION, 0.5F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModBlocks.sellafield, 1, 1), makeData(RADIATION, 1F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModBlocks.sellafield, 1, 2), makeData(RADIATION, 2.5F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModBlocks.sellafield, 1, 3), makeData(RADIATION, 4F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModBlocks.sellafield, 1, 4), makeData(RADIATION, 5F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModBlocks.sellafield, 1, 5), makeData(RADIATION, 10F));
 
 		//Amazing naming scheme (fucking why)
-		HazardSystem.register(new ItemStack(sellafield_slaked), makeData(RADIATION, 2.5F));
-		HazardSystem.register(new ItemStack(sellafield_0), makeData(RADIATION, 5.0F));
-		HazardSystem.register(new ItemStack(sellafield_1), makeData(RADIATION, 10.0F));
-		HazardSystem.register(new ItemStack(sellafield_2), makeData(RADIATION, 20.0F));
-		HazardSystem.register(new ItemStack(sellafield_3), makeData().addEntry(RADIATION, 40.0F).addEntry(HOT, 1));
-		HazardSystem.register(new ItemStack(sellafield_4), makeData().addEntry(RADIATION, 80.0F).addEntry(HOT, 2));
-		HazardSystem.register(new ItemStack(sellafield_core), makeData().addEntry(RADIATION,2000.0F).addEntry(HOT, 4));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(sellafield_slaked), makeData(RADIATION, 2.5F));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(sellafield_0), makeData(RADIATION, 5.0F));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(sellafield_1), makeData(RADIATION, 10.0F));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(sellafield_2), makeData(RADIATION, 20.0F));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(sellafield_3), makeData().addEntry(RADIATION, 40.0F).addEntry(HOT, 1));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(sellafield_4), makeData().addEntry(RADIATION, 80.0F).addEntry(HOT, 2));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(sellafield_core), makeData().addEntry(RADIATION,2000.0F).addEntry(HOT, 4));
 
 		//Doesn't exist yet
-//		HazardSystem.register(new ItemStack(ModBlocks.ore_sellafield_radgem), makeData(RADIATION, 25F));
-//		HazardSystem.register(new ItemStack(ModItems.gem_rad), makeData(RADIATION, 25F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModBlocks.ore_sellafield_radgem), makeData(RADIATION, 25F));
+//		HazardSystem.register(ItemStackUtil.itemStackFrom(ModItems.gem_rad), makeData(RADIATION, 25F));
 
 		//TODO: add that fucker
 //		registerOtherFuel(rod_zirnox, EnumZirnoxType.NATURAL_URANIUM_FUEL.ordinal(), u * rod_dual, wst * rod_dual * 11.5F, false);
@@ -410,7 +411,7 @@ public class HazardRegistry {
 		registerRTGPellet(pellet_rtg_gold, au198 * rtg, 0, 5F);
 		registerRTGPellet(pellet_rtg_americium, am241 * rtg, 0);
 		//huh?
-		//HazardSystem.register(new ItemStack(pellet_rtg_depleted, 1, DepletedRTGMaterial.NEPTUNIUM.ordinal()), makeData(RADIATION, np237 * rtg));
+		//HazardSystem.register(ItemStackUtil.itemStackFrom(pellet_rtg_depleted, 1, DepletedRTGMaterial.NEPTUNIUM.ordinal()), makeData(RADIATION, np237 * rtg));
 		
 		HazardSystem.register(pile_rod_uranium, makeData(RADIATION, u * billet * 3));
 // Doesnt exist either LMAO		HazardSystem.register(pile_rod_pu239, makeData(RADIATION, !GeneralConfig.enable528 ? purg * billet + pu239 * billet + u * billet : purg * billet + pu239 * billet + wst * billet));
@@ -757,7 +758,7 @@ public class HazardRegistry {
 		data.addEntry(new HazardEntry(RADIATION, base).addMod(new HazardModifierFuelRadiation(target)));
 		if(blinding)
 			data.addEntry(BLINDING, 20F);
-		HazardSystem.register(new ItemStack(fuel, 1, meta), data);
+		HazardSystem.register(ItemStackUtil.itemStackFrom(fuel, 1, meta), data);
 	}
 	
 	private static void registerRTGPellet(Item pellet, float base, float target) { registerRTGPellet(pellet, base, target, 0, 0); }
@@ -772,20 +773,20 @@ public class HazardRegistry {
 	}
 	
 	private static void registerOtherWaste(Item waste, float base) {
-		HazardSystem.register(new ItemStack(waste, 1, 0), makeData(RADIATION, base * 0.075F));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 0), makeData(RADIATION, base * 0.075F));
 		
 		HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base));
 		data.addEntry(new HazardEntry(HOT, 5F));
-		HazardSystem.register(new ItemStack(waste, 1, 1), data);
+		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 1), data);
 	}
 	
 	private static void registerRadSourceWaste(Item waste, float base) {
-		HazardSystem.register(new ItemStack(waste, 1, 0), makeData(RADIATION, base));
+		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 0), makeData(RADIATION, base));
 		
 		HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base));
 		data.addEntry(new HazardEntry(HOT, 5F));
-		HazardSystem.register(new ItemStack(waste, 1, 1), data);
+		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 1), data);
 	}
 }

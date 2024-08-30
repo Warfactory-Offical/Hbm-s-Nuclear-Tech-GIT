@@ -1,4 +1,5 @@
 package com.hbm.crafting.handlers;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,12 +54,12 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 		lastSeed = world.getSeed();
 		
 		List<ItemStack> list = Arrays.asList(new ItemStack[] {
-				new ItemStack(ModItems.powder_iodine),
-				new ItemStack(ModItems.powder_fire),
-				new ItemStack(ModItems.dust),
-				new ItemStack(ModItems.nugget_mercury),
-				new ItemStack(ModItems.morning_glory),
-				new ItemStack(ModItems.syringe_metal_empty),
+				ItemStackUtil.itemStackFrom(ModItems.powder_iodine),
+				ItemStackUtil.itemStackFrom(ModItems.powder_fire),
+				ItemStackUtil.itemStackFrom(ModItems.dust),
+				ItemStackUtil.itemStackFrom(ModItems.nugget_mercury),
+				ItemStackUtil.itemStackFrom(ModItems.morning_glory),
+				ItemStackUtil.itemStackFrom(ModItems.syringe_metal_empty),
 				null,
 				null,
 				null
@@ -81,7 +82,7 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 
 	@Override
 	public ItemStack getRecipeOutput() {
-		return new ItemStack(ModItems.syringe_mkunicorn);
+		return ItemStackUtil.itemStackFrom(ModItems.syringe_mkunicorn);
 	}
 
 	@Override

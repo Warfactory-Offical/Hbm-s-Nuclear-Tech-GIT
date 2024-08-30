@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -53,29 +54,29 @@ public class ItemMultitoolPassive extends Item {
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 2.0F, 1.0F);
 
 			if(this == ModItems.multitool_ext) {
-				return ActionResult.newResult(EnumActionResult.SUCCESS, new ItemStack(ModItems.multitool_miner, 1, stack.getItemDamage()));
+				return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStackUtil.itemStackFrom(ModItems.multitool_miner, 1, stack.getItemDamage()));
 			} else if(this == ModItems.multitool_miner) {
-				ItemStack item = new ItemStack(ModItems.multitool_hit, 1, stack.getItemDamage());
+				ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_hit, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.LOOTING, 3);
 				item.addEnchantment(Enchantments.KNOCKBACK, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_hit) {
-				return ActionResult.newResult(EnumActionResult.SUCCESS, new ItemStack(ModItems.multitool_beam, 1, stack.getItemDamage()));
+				return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStackUtil.itemStackFrom(ModItems.multitool_beam, 1, stack.getItemDamage()));
 			} else if(this == ModItems.multitool_beam) {
-				return ActionResult.newResult(EnumActionResult.SUCCESS, new ItemStack(ModItems.multitool_sky, 1, stack.getItemDamage()));
+				return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStackUtil.itemStackFrom(ModItems.multitool_sky, 1, stack.getItemDamage()));
 			} else if(this == ModItems.multitool_sky) {
-				ItemStack item = new ItemStack(ModItems.multitool_mega, 1, stack.getItemDamage());
+				ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_mega, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.KNOCKBACK, 5);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_mega) {
-				ItemStack item = new ItemStack(ModItems.multitool_joule, 1, stack.getItemDamage());
+				ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_joule, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.KNOCKBACK, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_joule) {
-				ItemStack item = new ItemStack(ModItems.multitool_decon, 1, stack.getItemDamage());
+				ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_decon, 1, stack.getItemDamage());
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_decon) {
-				ItemStack item = new ItemStack(ModItems.multitool_dig, 1, stack.getItemDamage());
+				ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_dig, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.LOOTING, 3);
 				item.addEnchantment(Enchantments.FORTUNE, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
@@ -136,7 +137,7 @@ public class ItemMultitoolPassive extends Item {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(this == ModItems.multitool_ext) {
 			IBlockState b = world.getBlockState(pos);
-			ItemStack s = FurnaceRecipes.instance().getSmeltingResult(new ItemStack(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
+			ItemStack s = FurnaceRecipes.instance().getSmeltingResult(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
 			if(!s.isEmpty()) {
 				ItemStack t = s.copy();
 				if(!world.isRemote)

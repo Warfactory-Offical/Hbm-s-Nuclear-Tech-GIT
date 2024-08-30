@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -184,7 +185,7 @@ public class EntitySoyuz extends Entity {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
 			if (b0 >= 0 && b0 < payload.length) {
-				payload[b0] = new ItemStack(nbt1);
+				payload[b0] = ItemStackUtil.itemStackFrom(nbt1);
 			}
 		}
 	}

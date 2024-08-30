@@ -1,4 +1,5 @@
 package com.hbm.tileentity.deco;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -94,9 +95,9 @@ public class TileEntityTrappedBrick extends TileEntity implements ITickable {
 			EntityZombie zombie = new EntityZombie(world);
 			zombie.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 			switch(world.rand.nextInt(3)) {
-			case 0: zombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.chernobylsign)); break;
-			case 1: zombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.cobalt_sword)); break;
-			case 2: zombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.cmb_hoe)); break;
+			case 0: zombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.chernobylsign)); break;
+			case 1: zombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.cobalt_sword)); break;
+			case 2: zombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.cmb_hoe)); break;
 			}
 			zombie.setDropChance(EntityEquipmentSlot.MAINHAND, 1.0F);
 			world.spawnEntity(zombie);

@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -228,7 +229,7 @@ public class BlockModDoor extends Block {
 	}
 
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(this.getItem());
+		return ItemStackUtil.itemStackFrom(this.getItem());
 	}
 
 	private Item getItem() {

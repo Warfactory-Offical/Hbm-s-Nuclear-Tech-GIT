@@ -1,4 +1,5 @@
 package com.hbm.items.food;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -254,10 +255,10 @@ public class ItemLemon extends ItemFood {
 				this == ModItems.canned_kerosene || 
 				this == ModItems.canned_recursion || 
 				this == ModItems.canned_bark)
-        	tryAddItem(player, new ItemStack(ModItems.can_key));
+        	tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.can_key));
 		
 		if(this == ModItems.canned_recursion && worldIn.rand.nextInt(10) > 0)
-        	tryAddItem(player, new ItemStack(ModItems.canned_recursion));
+        	tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.canned_recursion));
 	}
 	
 	@Override
@@ -265,7 +266,7 @@ public class ItemLemon extends ItemFood {
 		ItemStack sta = super.onItemUseFinish(stack, worldIn, entityLiving);
         
         if(this == ModItems.loop_stew)
-        	return new ItemStack(Items.BOWL);
+        	return ItemStackUtil.itemStackFrom(Items.BOWL);
         
 
     	

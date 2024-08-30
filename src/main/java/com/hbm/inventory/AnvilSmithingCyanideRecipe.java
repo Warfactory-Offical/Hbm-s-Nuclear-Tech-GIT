@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.items.ModItems;
@@ -11,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class AnvilSmithingCyanideRecipe extends AnvilSmithingRecipe {
 	
 	public AnvilSmithingCyanideRecipe() {
-		super(1, new ItemStack(Items.BREAD), new ComparableStack(Items.BREAD), new ComparableStack(ModItems.plan_c));
+		super(1, ItemStackUtil.itemStackFrom(Items.BREAD), ItemStackUtil.comparableStackFrom(Items.BREAD), ItemStackUtil.comparableStackFrom(ModItems.plan_c));
 		
 		if(!this.output.hasTagCompound())
 			this.output.setTagCompound(new NBTTagCompound());

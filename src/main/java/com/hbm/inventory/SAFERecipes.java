@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,11 +19,11 @@ public class SAFERecipes {
 	private static LinkedHashMap<ComparableStack, ItemStack> recipes = new LinkedHashMap<>();
 	
 	public static void registerRecipes() {
-		addRecipe(new ComparableStack(ModItems.tiny_singularity), new ItemStack(ModItems.singularity));
-		addRecipe(new ComparableStack(ModItems.tiny_singularity_counter_resonant), new ItemStack(ModItems.singularity_counter_resonant));
-		addRecipe(new ComparableStack(ModItems.tiny_singularity_super_heated), new ItemStack(ModItems.singularity_super_heated));
-		addRecipe(new ComparableStack(ModItems.tiny_black_hole), new ItemStack(ModItems.black_hole));
-		addRecipe(new ComparableStack(ModItems.tiny_singularity_spark), new ItemStack(ModItems.singularity_spark));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity), ItemStackUtil.itemStackFrom(ModItems.singularity));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity_counter_resonant), ItemStackUtil.itemStackFrom(ModItems.singularity_counter_resonant));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity_super_heated), ItemStackUtil.itemStackFrom(ModItems.singularity_super_heated));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_black_hole), ItemStackUtil.itemStackFrom(ModItems.black_hole));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity_spark), ItemStackUtil.itemStackFrom(ModItems.singularity_spark));
 	}
 
 	public static void addRecipe(ComparableStack input, ItemStack output){
@@ -46,6 +47,6 @@ public class SAFERecipes {
 	public static ItemStack getOutput(ItemStack stack) {
 		if(stack == null)
 			return null;
-		return recipes.get(new ComparableStack(stack));
+		return recipes.get(ItemStackUtil.comparableStackFrom(stack));
 	}
 }

@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,9 @@ public class ItemMS extends Item {
     	    	Random rand = new Random();
     	    	List<ItemStack> list = new ArrayList<ItemStack>();
 
-    	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 1));
-    	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 2));
-    	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 3));
+    	    	list.add(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2, 1, 1));
+    	    	list.add(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2, 1, 2));
+    	    	list.add(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2, 1, 3));
     	    	
     	    	for(ItemStack sta : list) {
     	            float f = rand.nextFloat() * 0.8F + 0.1F;

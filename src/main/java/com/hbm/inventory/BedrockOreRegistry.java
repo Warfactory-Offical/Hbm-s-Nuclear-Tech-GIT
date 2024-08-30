@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 import java.util.List;
@@ -214,7 +215,7 @@ public class BedrockOreRegistry {
 	public static ItemStack getResource(String ore){
 		List<ItemStack> outputs = OreDictionary.getOres(oreResults.get(ore));
 		if(outputs.size() > 0) return outputs.get(0);
-		return new ItemStack(Items.AIR);
+		return ItemStackUtil.itemStackFrom(Items.AIR);
 	}
 
 	public static int getOreColor(String ore){

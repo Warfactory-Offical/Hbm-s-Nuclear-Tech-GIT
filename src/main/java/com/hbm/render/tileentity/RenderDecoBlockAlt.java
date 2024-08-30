@@ -1,4 +1,5 @@
 package com.hbm.render.tileentity;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.opengl.GL11;
 
@@ -69,7 +70,7 @@ public class RenderDecoBlockAlt extends TileEntitySpecialRenderer<TileEntityDeco
 			GL11.glPushMatrix();
 			GL11.glTranslated(0, 0.11, 0);
 			GL11.glScaled(0.5, 0.5, 0.5);
-			ItemStack stack = new ItemStack(ModItems.watch);
+			ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.watch);
 			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, te.getWorld(), null);
 			model = ForgeHooksClient.handleCameraTransforms(model, TransformType.FIXED, false);
 			RenderHelper.bindBlockTexture();

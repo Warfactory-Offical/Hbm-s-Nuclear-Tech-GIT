@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -89,7 +90,7 @@ public class DummyBlockCyclotron extends BlockContainer implements IDummy {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.machine_cyclotron);
+		return ItemStackUtil.itemStackFrom(ModBlocks.machine_cyclotron);
 	}
 	
 	@Override

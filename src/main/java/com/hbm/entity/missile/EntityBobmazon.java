@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.lib.HBMSoundHandler;
@@ -83,7 +84,7 @@ public class EntityBobmazon extends Entity {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		if(compound.hasKey("payload"))
-			payload = new ItemStack(compound.getCompoundTag("payload"));
+			payload = ItemStackUtil.itemStackFrom(compound.getCompoundTag("payload"));
 	}
 
 }

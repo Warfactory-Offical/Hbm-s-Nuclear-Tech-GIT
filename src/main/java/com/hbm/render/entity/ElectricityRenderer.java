@@ -1,4 +1,5 @@
 package com.hbm.render.entity;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -26,7 +27,7 @@ public class ElectricityRenderer extends Render<EntityDischarge> {
 	
 	protected ElectricityRenderer(RenderManager renderManager) {
 		super(renderManager);
-		tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.discharge, 1, 0), null, null).getParticleTexture();
+		tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.discharge, 1, 0), null, null).getParticleTexture();
 	}
 	
 	@Override

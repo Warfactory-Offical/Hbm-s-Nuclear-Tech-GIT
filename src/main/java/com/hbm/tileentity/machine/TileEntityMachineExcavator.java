@@ -404,7 +404,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		Item blockItem = Item.getItemFromBlock(b);
 		
 		if(blockItem != null && blockItem != Items.AIR) {
-			List<String> names = ItemStackUtil.getOreDictNames(new ItemStack(blockItem));
+			List<String> names = ItemStackUtil.getOreDictNames(ItemStackUtil.itemStackFrom(blockItem));
 			
 			for(String name : names) {
 				if(name.startsWith("ore")) {
@@ -475,7 +475,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		} else {
 			if(this.canSilkTouch()) {
 				
-				ItemStack result = new ItemStack(Item.getItemFromBlock(b), 1, b.getMetaFromState(bState));
+				ItemStack result = ItemStackUtil.itemStackFrom(Item.getItemFromBlock(b), 1, b.getMetaFromState(bState));
 					
 				if(result != null && !result.isEmpty()) {
 					items.clear();
@@ -705,7 +705,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 				
 				tank.drain(ore.acidRequirement.amount, true);
 			}
-			ItemStack bedrockOreStack = new ItemStack(ModItems.ore_bedrock, 1, BedrockOreRegistry.getOreIndex(ore.oreName));
+			ItemStack bedrockOreStack = ItemStackUtil.itemStackFrom(ModItems.ore_bedrock, 1, BedrockOreRegistry.getOreIndex(ore.oreName));
 			InventoryUtil.tryAddItemToInventory(inventory, 5, 13, bedrockOreStack);
 		}
 	}

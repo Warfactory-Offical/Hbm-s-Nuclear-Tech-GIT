@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +155,7 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 								} else {
 									MachineSILEX silexBlock = (MachineSILEX)silex.getBlockType();
 									world.setBlockToAir(silex_pos);
-									world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(Item.getItemFromBlock(ModBlocks.machine_silex))));
+									world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.machine_silex))));
 								} 
 							}
 							

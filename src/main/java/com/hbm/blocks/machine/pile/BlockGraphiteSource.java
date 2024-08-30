@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.pile;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -31,7 +32,7 @@ public class BlockGraphiteSource extends BlockGraphiteDrilledTE implements ITool
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
 		super.getDrops(drops, world, pos, state, fortune);
-		drops.add(new ItemStack(whoAmIAgain()));
+		drops.add(ItemStackUtil.itemStackFrom(whoAmIAgain()));
 	}
 	
 	@Override
@@ -45,7 +46,7 @@ public class BlockGraphiteSource extends BlockGraphiteDrilledTE implements ITool
 			
 			if(side.getAxis() == axis) {
 				world.setBlockState(new BlockPos(x, y, z), ModBlocks.block_graphite_drilled.getDefaultState().withProperty(AXIS, axis), 3);
-				ejectItem(world, x, y, z, side, new ItemStack(whoAmIAgain()));
+				ejectItem(world, x, y, z, side, ItemStackUtil.itemStackFrom(whoAmIAgain()));
 			}
 		}
 		

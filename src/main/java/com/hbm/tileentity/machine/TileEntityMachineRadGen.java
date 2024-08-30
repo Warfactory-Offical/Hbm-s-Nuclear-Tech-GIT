@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
@@ -119,7 +120,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 					if(inventory.getStackInSlot(1).isEmpty()) {
 						if(fuel + r <= maxFuel) {
 							
-							inventory.setStackInSlot(1, new ItemStack(inventory.getStackInSlot(0).getItem().getContainerItem()));
+							inventory.setStackInSlot(1, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(0).getItem().getContainerItem()));
 							
 							inventory.getStackInSlot(0).shrink(1);
 							if(inventory.getStackInSlot(0).isEmpty())

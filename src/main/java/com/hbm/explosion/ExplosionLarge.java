@@ -1,4 +1,5 @@
 package com.hbm.explosion;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -200,7 +201,7 @@ public class ExplosionLarge {
 				if(debris.get(i) != null) {
 					int k = rand.nextInt(debris.get(i).getCount() + 1);
 					for(int j = 0; j < k; j++) {
-						EntityItem item = new EntityItem(world, x, y, z, new ItemStack(debris.get(i).getItem()));
+						EntityItem item = new EntityItem(world, x, y, z, ItemStackUtil.itemStackFrom(debris.get(i).getItem()));
 						item.motionX = (motionX + rand.nextGaussian() * deviation) * 0.85;
 						item.motionY = (motionY + rand.nextGaussian() * deviation) * 0.85;
 						item.motionZ = (motionZ + rand.nextGaussian() * deviation) * 0.85;

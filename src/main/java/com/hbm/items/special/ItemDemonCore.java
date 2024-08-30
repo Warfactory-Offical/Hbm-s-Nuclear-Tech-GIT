@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class ItemDemonCore extends ItemHazard {
 	@Override
 	public boolean onEntityItemUpdate(EntityItem entityItem){
 		if(entityItem != null && !entityItem.world.isRemote && entityItem.onGround) {
-			entityItem.setItem(new ItemStack(ModItems.demon_core_closed));
-			entityItem.world.spawnEntity(new EntityItem(entityItem.world, entityItem.posX, entityItem.posY, entityItem.posZ, new ItemStack(ModItems.screwdriver)));
+			entityItem.setItem(ItemStackUtil.itemStackFrom(ModItems.demon_core_closed));
+			entityItem.world.spawnEntity(new EntityItem(entityItem.world, entityItem.posX, entityItem.posY, entityItem.posZ, ItemStackUtil.itemStackFrom(ModItems.screwdriver)));
 			return true;
 		}
 		return false;

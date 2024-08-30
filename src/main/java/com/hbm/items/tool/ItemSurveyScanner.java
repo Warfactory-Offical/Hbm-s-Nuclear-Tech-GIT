@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class ItemSurveyScanner extends Item {
 		Block b = state.getBlock();
 		if(i == 0) {
 			if(b == ModBlocks.ore_bedrock_block) return 1000;
-			ItemStack stack = new ItemStack(b, 1, b.getMetaFromState(state));
+			ItemStack stack = ItemStackUtil.itemStackFrom(b, 1, b.getMetaFromState(state));
 			if(stack.isEmpty())
 				return 0;
 			int[] ids = OreDictionary.getOreIDs(stack);

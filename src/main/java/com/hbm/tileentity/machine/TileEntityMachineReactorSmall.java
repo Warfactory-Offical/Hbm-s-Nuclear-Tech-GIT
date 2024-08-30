@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -488,49 +489,49 @@ public class TileEntityMachineReactorSmall extends TileEntity implements ITickab
 		Item item = inventory.getStackInSlot(id).getItem();
 
 		if(item == ModItems.rod_uranium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_uranium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_uranium_fuel_depleted));
 
 		} else if(item == ModItems.rod_thorium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_thorium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_thorium_fuel_depleted));
 
 		} else if(item == ModItems.rod_plutonium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_plutonium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_plutonium_fuel_depleted));
 
 		} else if(item == ModItems.rod_mox_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_mox_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_mox_fuel_depleted));
 
 		} else if(item == ModItems.rod_schrabidium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_schrabidium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_schrabidium_fuel_depleted));
 
 		} else if(item == ModItems.rod_dual_uranium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_dual_uranium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_dual_uranium_fuel_depleted));
 
 		} else if(item == ModItems.rod_dual_thorium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_dual_thorium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_dual_thorium_fuel_depleted));
 
 		} else if(item == ModItems.rod_dual_plutonium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_dual_plutonium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_dual_plutonium_fuel_depleted));
 
 		} else if(item == ModItems.rod_dual_mox_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_dual_mox_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_dual_mox_fuel_depleted));
 
 		} else if(item == ModItems.rod_dual_schrabidium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_dual_schrabidium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_dual_schrabidium_fuel_depleted));
 
 		} else if(item == ModItems.rod_quad_uranium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_quad_uranium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_quad_uranium_fuel_depleted));
 
 		} else if(item == ModItems.rod_quad_thorium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_quad_thorium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_quad_thorium_fuel_depleted));
 
 		} else if(item == ModItems.rod_quad_plutonium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_quad_plutonium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_quad_plutonium_fuel_depleted));
 
 		} else if(item == ModItems.rod_quad_mox_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_quad_mox_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_quad_mox_fuel_depleted));
 
 		} else if(item == ModItems.rod_quad_schrabidium_fuel) {
-			inventory.setStackInSlot(id, new ItemStack(ModItems.rod_quad_schrabidium_fuel_depleted));
+			inventory.setStackInSlot(id, ItemStackUtil.itemStackFrom(ModItems.rod_quad_schrabidium_fuel_depleted));
 		}
 	}
 

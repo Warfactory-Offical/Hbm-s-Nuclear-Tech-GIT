@@ -1,4 +1,5 @@
 package com.hbm.items.weapon;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -26,15 +27,15 @@ public class ItemCustomMissile extends Item {
 	public static ItemStack buildMissile(Item chip, Item warhead, Item fuselage, Item stability, Item thruster) {
 
 		if(stability == null) {
-			return buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), null, new ItemStack(thruster));
+			return buildMissile(ItemStackUtil.itemStackFrom(chip), ItemStackUtil.itemStackFrom(warhead), ItemStackUtil.itemStackFrom(fuselage), null, ItemStackUtil.itemStackFrom(thruster));
 		} else {
-			return buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), new ItemStack(stability), new ItemStack(thruster));
+			return buildMissile(ItemStackUtil.itemStackFrom(chip), ItemStackUtil.itemStackFrom(warhead), ItemStackUtil.itemStackFrom(fuselage), ItemStackUtil.itemStackFrom(stability), ItemStackUtil.itemStackFrom(thruster));
 		}
 	}
 
 	public static ItemStack buildMissile(ItemStack chip, ItemStack warhead, ItemStack fuselage, ItemStack stability, ItemStack thruster) {
 
-		ItemStack missile = new ItemStack(ModItems.missile_custom);
+		ItemStack missile = ItemStackUtil.itemStackFrom(ModItems.missile_custom);
 
 		writeToNBT(missile, "chip", Item.getIdFromItem(chip.getItem()));
 		writeToNBT(missile, "warhead", Item.getIdFromItem(warhead.getItem()));

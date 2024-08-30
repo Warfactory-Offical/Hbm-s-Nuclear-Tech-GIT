@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +44,18 @@ public class EntityMissileVolcano extends EntityMissileBaseAdvanced {
 	public List<ItemStack> getDebris() {
 		List<ItemStack> list = new ArrayList<ItemStack>();
 
-		list.add(new ItemStack(ModItems.plate_titanium, 16));
-		list.add(new ItemStack(ModItems.plate_steel, 20));
-		list.add(new ItemStack(ModItems.plate_aluminium, 12));
-		list.add(new ItemStack(ModItems.thruster_large, 1));
-		list.add(new ItemStack(ModItems.circuit_targeting_tier4, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 16));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 20));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_aluminium, 12));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.thruster_large, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.circuit_targeting_tier4, 1));
 
 		return list;
 	}
 
 	@Override
 	public ItemStack getDebrisRareDrop() {
-		return new ItemStack(ModItems.warhead_volcano);
+		return ItemStackUtil.itemStackFrom(ModItems.warhead_volcano);
 	}
 
 	@Override

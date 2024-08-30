@@ -1,4 +1,5 @@
 package com.hbm.blocks.network;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ITooltipProvider;
 import com.hbm.items.tool.ItemTooling;
@@ -93,7 +94,7 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
                             }
 
                             itemstack.shrink(j1);
-                            EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                            EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, ItemStackUtil.itemStackFrom(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                             if(itemstack.hasTagCompound()) {
                                 entityitem.getItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());

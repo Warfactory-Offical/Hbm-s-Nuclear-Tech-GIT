@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineNukeFurnace;
 import com.hbm.inventory.BreederRecipes;
@@ -147,7 +148,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 			{
 				if(inventory.getStackInSlot(i).isEmpty())
 				{
-					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem().setFull3D()));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem().setFull3D()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}

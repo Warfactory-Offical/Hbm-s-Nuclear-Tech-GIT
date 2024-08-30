@@ -1,4 +1,5 @@
 package com.hbm.entity.mob;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashSet;
 import java.util.List;
@@ -96,28 +97,28 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
 		int equip = rand.nextInt(2);
 
         switch(equip) {
-        case 0: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.gun_revolver_nopip)); break;
-        case 1: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.gun_ks23)); break;
+        case 0: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.gun_revolver_nopip)); break;
+        case 1: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.gun_ks23)); break;
         }
         if(rand.nextInt(5) == 0) {
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.security_helmet));
-        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.security_plate));
-        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.security_legs));
-        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.security_boots));
+        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.security_helmet));
+        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.security_plate));
+        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.security_legs));
+        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.security_boots));
         }
 
         if(this.world != null && this.world.provider.getDimension() != 0) {
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.paa_helmet));
-        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.paa_plate));
-        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.paa_legs));
-        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.paa_boots));
+        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.paa_helmet));
+        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.paa_plate));
+        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.paa_legs));
+        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.paa_boots));
         }
 	}
 	
 	@Override
 	public boolean isPotionApplicable(PotionEffect potioneffectIn) {
     	if(this.getItemStackFromSlot(EntityEquipmentSlot.HEAD) == null || this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty())
-            this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.gas_mask_m65));
+            this.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.gas_mask_m65));
 
         return false;
 	}

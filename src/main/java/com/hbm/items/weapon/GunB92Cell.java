@@ -1,4 +1,5 @@
 package com.hbm.items.weapon;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class GunB92Cell extends Item {
 	}
 	
 	public static ItemStack getFullCell() {
-		ItemStack stack = new ItemStack(ModItems.gun_b92_ammo, 1, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.gun_b92_ammo, 1, 0);
 		setPower(stack, 25);
 		return stack.copy();
 	}

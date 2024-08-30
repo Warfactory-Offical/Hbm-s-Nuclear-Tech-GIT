@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +36,11 @@ public class ItemLootCrate extends Item {
 		playerIn.inventoryContainer.detectAndSendChanges();
 
 		if(stack.getItem() == ModItems.loot_10)
-			playerIn.inventory.addItemStackToInventory(new ItemStack(choose(list10)));
+			playerIn.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(choose(list10)));
 		if(stack.getItem() == ModItems.loot_15)
-			playerIn.inventory.addItemStackToInventory(new ItemStack(choose(list15)));
+			playerIn.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(choose(list15)));
 		if(stack.getItem() == ModItems.loot_misc)
-			playerIn.inventory.addItemStackToInventory(new ItemStack(choose(listMisc)));
+			playerIn.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(choose(listMisc)));
 		
 		stack.shrink(1);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

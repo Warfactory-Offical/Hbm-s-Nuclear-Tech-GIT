@@ -99,7 +99,7 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
             int j = nbttagcompound1.getByte("slot") & 255;
 
             if(j >= 0 && j < this.contents.length) {
-                this.contents[j] = new ItemStack(nbttagcompound1);
+                this.contents[j] = ItemStackUtil.itemStackFrom(nbttagcompound1);
             }
         }
     }

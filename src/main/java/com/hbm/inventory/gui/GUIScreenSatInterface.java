@@ -1,4 +1,5 @@
 package com.hbm.inventory.gui;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -175,7 +176,7 @@ public class GUIScreenSatInterface extends GuiScreen {
 			
 			for(int j = (int)player.posY; j >= 0; j--) {
 				IBlockState state = world.getBlockState(new BlockPos(x, j, z));
-				int c = getColorFromBlock(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)));
+				int c = getColorFromBlock(ItemStackUtil.itemStackFrom(state.getBlock(), 1, state.getBlock().getMetaFromState(state)));
 				
 				if(c != 0) {
 					map[i + 100][scanPos] = c;

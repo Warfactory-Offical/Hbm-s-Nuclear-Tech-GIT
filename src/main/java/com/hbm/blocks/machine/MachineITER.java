@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -119,10 +120,10 @@ public class MachineITER extends BlockDummyable {
 				Item item = Item.getItemFromBlock(this);
 
 				if(stack == null || stack.isEmpty()) {
-					pl.setHeldItem(hand, new ItemStack(this));
+					pl.setHeldItem(hand, ItemStackUtil.itemStackFrom(this));
 				} else {
 					if(stack.getItem() != item || stack.getCount() == stack.getMaxStackSize()) {
-						pl.inventory.addItemStackToInventory(new ItemStack(this));
+						pl.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(this));
 					} else {
 						pl.getHeldItem(hand).grow(1);
 					}
@@ -150,13 +151,13 @@ public class MachineITER extends BlockDummyable {
 		if(i >= 12 && drop) {
 
             for(int l = 0; l < 4; l++)
-            	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_conductor, 64)));
+            	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_conductor, 64)));
 
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_conductor, 36)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_center, 64)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_motor, 4)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.reinforced_glass, 8)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.struct_iter_core, 1)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_conductor, 36)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_center, 64)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_motor, 4)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.reinforced_glass, 8)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.struct_iter_core, 1)));
     	}
 
 		super.breakBlock(world, pos, state);

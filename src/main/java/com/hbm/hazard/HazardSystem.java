@@ -1,4 +1,5 @@
 package com.hbm.hazard;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.*;
 
@@ -59,7 +60,7 @@ public class HazardSystem {
 		if(o instanceof Block)
 			itemMap.put(Item.getItemFromBlock((Block)o), data);
 		if(o instanceof ItemStack)
-			stackMap.put(new ComparableStack((ItemStack)o), data);
+			stackMap.put(ItemStackUtil.comparableStackFrom((ItemStack)o), data);
 		if(o instanceof ComparableStack)
 			stackMap.put((ComparableStack)o, data);
 	}
@@ -71,7 +72,7 @@ public class HazardSystem {
 	public static void blacklist(Object o) {
 		
 		if(o instanceof ItemStack) {
-			stackBlacklist.add(new ComparableStack((ItemStack) o).makeSingular());
+			stackBlacklist.add(ItemStackUtil.comparableStackFrom((ItemStack) o).makeSingular());
 		} else if(o instanceof String) {
 			dictBlacklist.add((String) o);
 		}
@@ -79,7 +80,7 @@ public class HazardSystem {
 	
 	public static boolean isItemBlacklisted(ItemStack stack) {
 
-		if(stackBlacklist.contains(new ComparableStack(stack).makeSingular()))
+		if(stackBlacklist.contains(ItemStackUtil.comparableStackFrom(stack).makeSingular()))
 			return true;
 
 		int[] ids = OreDictionary.getOreIDs(stack);
@@ -136,7 +137,7 @@ public class HazardSystem {
 		}
 
 		// STACK
-		ComparableStack comp = new ComparableStack(stack).makeSingular();
+		ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
 		HazardData stackHazardData = stackMap.get(comp);
 		if (stackHazardData != null) {
 			chronological.add(stackHazardData);

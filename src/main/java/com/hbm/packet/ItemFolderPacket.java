@@ -1,4 +1,5 @@
 package com.hbm.packet;
+import com.hbm.util.ItemStackUtil;
 
 import java.io.IOException;
 
@@ -40,7 +41,7 @@ public class ItemFolderPacket implements IMessage {
 		}
 		buffer.writeBytes(buf);
 		try {
-			stack = new ItemStack(buffer.readCompoundTag());
+			stack = ItemStackUtil.itemStackFrom(buffer.readCompoundTag());
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

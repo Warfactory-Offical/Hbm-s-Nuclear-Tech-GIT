@@ -1,4 +1,5 @@
 //package com.hbm.items;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Locale;
@@ -33,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //    @SideOnly(Side.CLIENT)
 //    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 //        for (int i = 0; i < theEnum.getEnumConstants().length; i++) {
-//            items.add(new ItemStack(this, 1, i));
+//            items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 //        }
 //    }
 //
@@ -73,7 +74,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //        if (num.getClass() != this.theEnum)
 //            return ItemStack.EMPTY;
 //
-//        return new ItemStack(this, count, num.ordinal());
+//        return ItemStackUtil.itemStackFrom(this, count, num.ordinal());
 //    }
 //
 //    public ItemStack stackFromEnum(Enum num) {

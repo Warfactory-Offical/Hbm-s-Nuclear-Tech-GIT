@@ -75,10 +75,12 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		if(this == ModBlocks.ore_asbestos || this == ModBlocks.ore_gneiss_asbestos || this == ModBlocks.basalt_asbestos){
-			return ModItems.ingot_asbestos;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.ore_nether_fire){
-			return rand.nextInt(10) == 0 ? ModItems.ingot_phosphorus : ModItems.powder_fire;
+			// TODO
+			// return rand.nextInt(10) == 0 ? ModItems.ingot_phosphorus : ModItems.powder_fire;
+			return ModItems.powder_fire;
 		}
 		if(this == ModBlocks.ore_sulfur || this == ModBlocks.ore_nether_sulfur || this == ModBlocks.ore_meteor_sulfur || this == ModBlocks.basalt_sulfur){
 			return ModItems.sulfur;
@@ -113,21 +115,21 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 			case 0: return ModItems.coil_advanced_alloy;
 			case 1: return ModItems.plate_advanced_alloy;
 			case 2: return ModItems.powder_desh_mix;
-			case 3: return ModItems.ingot_desh;
+//			case 3: return ModItems.ingot_desh;
 			case 4: return ModItems.battery_advanced;
 			case 5: return ModItems.battery_lithium_cell;
 			case 6: return ModItems.battery_advanced_cell;
 			case 7: return ModItems.nugget_schrabidium;
-			case 8: return ModItems.ingot_plutonium;
-			case 9: return ModItems.ingot_thorium_fuel;
-			case 10: return ModItems.ingot_u233;
+//			case 8: return ModItems.ingot_plutonium;
+//			case 9: return ModItems.ingot_thorium_fuel;
+//			case 10: return ModItems.ingot_u233;
 			case 11: return ModItems.turbine_tungsten;
-			case 12: return ModItems.ingot_dura_steel;
-			case 13: return ModItems.ingot_polymer;
-			case 14: return ModItems.ingot_tungsten;
-			case 15: return ModItems.ingot_combine_steel;
-			case 16: return ModItems.ingot_lanthanium;
-			case 17: return ModItems.ingot_actinium;
+//			case 12: return ModItems.ingot_dura_steel;
+//			case 13: return ModItems.ingot_polymer;
+//			case 14: return ModItems.ingot_tungsten;
+//			case 15: return ModItems.ingot_combine_steel;
+//			case 16: return ModItems.ingot_lanthanium;
+//			case 17: return ModItems.ingot_actinium;
 			case 18: return Item.getItemFromBlock(ModBlocks.block_meteor);
 			case 19: return Item.getItemFromBlock(ModBlocks.fusion_heater);
 			case 20: return Item.getItemFromBlock(ModBlocks.fusion_core);
@@ -145,39 +147,40 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 			case 32: return ModItems.ammo_mirv;
 			case 33: return ModItems.gun_defabricator_ammo;
 			case 34: return ModItems.gun_osipr_ammo2;
+			default: return ModItems.ammo_nuke; // TODO remove
 			}
 		}
 		if(this == ModBlocks.deco_aluminium)
 		{
-			return ModItems.ingot_aluminium;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_beryllium)
 		{
-			return ModItems.ingot_beryllium;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_lead)
 		{
-			return ModItems.ingot_lead;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_red_copper)
 		{
-			return ModItems.ingot_red_copper;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_steel)
 		{
-			return ModItems.ingot_steel;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_titanium)
 		{
-			return ModItems.ingot_titanium;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_tungsten)
 		{
-			return ModItems.ingot_tungsten;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_asbestos)
 		{
-			return ModItems.ingot_asbestos;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.ore_cinnebar) {
 			return ModItems.cinnebar;
@@ -221,6 +224,41 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	
 	@Override
 	public int damageDropped(IBlockState state) {
+		if(this == ModBlocks.ore_asbestos || this == ModBlocks.ore_gneiss_asbestos || this == ModBlocks.basalt_asbestos){
+			return ModItems.ingot_asbestos.getMetadata();
+		}
+		if(this == ModBlocks.deco_aluminium)
+		{
+			return ModItems.ingot_aluminium.getMetadata();
+		}
+		if(this == ModBlocks.deco_beryllium)
+		{
+			return ModItems.ingot_beryllium.getMetadata();
+		}
+		if(this == ModBlocks.deco_lead)
+		{
+			return ModItems.ingot_lead.getMetadata();
+		}
+		if(this == ModBlocks.deco_red_copper)
+		{
+			return ModItems.ingot_red_copper.getMetadata();
+		}
+		if(this == ModBlocks.deco_steel)
+		{
+			return ModItems.ingot_steel.getMetadata();
+		}
+		if(this == ModBlocks.deco_titanium)
+		{
+			return ModItems.ingot_titanium.getMetadata();
+		}
+		if(this == ModBlocks.deco_tungsten)
+		{
+			return ModItems.ingot_tungsten.getMetadata();
+		}
+		if(this == ModBlocks.deco_asbestos)
+		{
+			return ModItems.ingot_asbestos.getMetadata();
+		}
 		return 0;
 	}
 	

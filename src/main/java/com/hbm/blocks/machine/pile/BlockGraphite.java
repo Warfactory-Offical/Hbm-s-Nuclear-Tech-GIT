@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.pile;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockHazardFuel;
@@ -40,7 +41,7 @@ public class BlockGraphite extends BlockHazardFuel implements IToolable {
 			PacketDispatcher.wrapper.sendToAllAround(new ParticleBurstPacket(x, y, z, Block.getIdFromBlock(this), 0), new TargetPoint(world.provider.getDimension(), x, y, z, 50));
 			world.playSound(null, x + 0.5, y + 0.5, z + 0.5, this.blockSoundType.getStepSound(), SoundCategory.BLOCKS, (this.blockSoundType.getVolume() + 1.0F) / 2.0F, this.blockSoundType.pitch * 0.8F);
 
-			BlockGraphiteRod.ejectItem(world, x, y, z, side, new ItemStack(ModItems.powder_coal));
+			BlockGraphiteRod.ejectItem(world, x, y, z, side, ItemStackUtil.itemStackFrom(ModItems.powder_coal));
 		}
 		
 		return true;

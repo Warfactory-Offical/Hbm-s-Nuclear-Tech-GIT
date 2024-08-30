@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachineDiFurnace;
@@ -191,7 +192,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 			{
 				if(inventory.getStackInSlot(i).getCount() <= 0)
 				{
-					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem().setFull3D()));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem().setFull3D()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}

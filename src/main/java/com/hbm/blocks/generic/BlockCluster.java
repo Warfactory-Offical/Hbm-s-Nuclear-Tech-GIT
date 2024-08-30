@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -53,7 +54,7 @@ public class BlockCluster extends BlockOre implements IDrillInteraction {
 			double mY = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
 			double mZ = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
 			
-			EntityItem entityitem = new EntityItem(world, (double) pos.getX() + mX, (double) pos.getY() + mY, (double) pos.getZ() + mZ, new ItemStack(drop));
+			EntityItem entityitem = new EntityItem(world, (double) pos.getX() + mX, (double) pos.getY() + mY, (double) pos.getZ() + mZ, ItemStackUtil.itemStackFrom(drop));
 			entityitem.setPickupDelay(10);
 			world.spawnEntity(entityitem);
 		}
@@ -82,7 +83,7 @@ public class BlockCluster extends BlockOre implements IDrillInteraction {
 
 	@Override
 	public ItemStack extractResource(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
-		return drill.getDrillRating() >= 30 ? new ItemStack(this.getDrop()) : null;
+		return drill.getDrillRating() >= 30 ? ItemStackUtil.itemStackFrom(this.getDrop()) : null;
 	}
 
 	@Override

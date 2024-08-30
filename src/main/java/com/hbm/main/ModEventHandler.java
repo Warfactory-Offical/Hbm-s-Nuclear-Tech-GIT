@@ -1,4 +1,5 @@
 package com.hbm.main;
+import com.hbm.util.ItemStackUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -182,7 +183,7 @@ public class ModEventHandler {
 	public static boolean showMessage = true;
 	public static Random rand = new Random();
 
-	
+
 	@SubscribeEvent
 	public void soundRegistering(RegistryEvent.Register<SoundEvent> evt) {
 
@@ -190,7 +191,7 @@ public class ModEventHandler {
 			evt.getRegistry().register(e);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void attachRadCap(AttachCapabilitiesEvent<Entity> e) {
 		if(e.getObject() instanceof EntityLivingBase)
@@ -226,39 +227,39 @@ public class ModEventHandler {
 			((IChunkLoader) evt.getEntity()).loadNeighboringChunks(evt.getNewChunkX(), evt.getNewChunkZ());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onItemToss(ItemTossEvent event){
 		ItemStack yeet = event.getEntityItem().getItem();
-		
+
 		if(yeet.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(yeet)) {
-			
+
 			ItemStack[] mods = ArmorModHandler.pryMods(yeet);
 			ItemStack cladding = mods[ArmorModHandler.cladding];
-			
+
 			if(cladding != null && cladding.getItem() == ModItems.cladding_obsidian) {
 				event.getEntity().setEntityInvulnerable(true);
 			}
 		}
-		
+
 		if(yeet.getItem() == ModItems.bismuth_tool) {
 			event.getEntity().setEntityInvulnerable(true);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void lootTableLoad(LootTableLoadEvent e){
 		//Drillgon200: Yeah we're doing this in code. Screw minecraft json.
 		if(CompatibilityConfig.modLoot){
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_VILLAGE_BLACKSMITH, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.armor_polish), 1, 1, 3));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_VILLAGE_BLACKSMITH, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.bathwater), 1, 1, 1));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_ABANDONED_MINESHAFT, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.bathwater), 1, 1, 1));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_ABANDONED_MINESHAFT, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.serum), 1, 1, 5));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_SIMPLE_DUNGEON, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.heart_piece), 1, 1, 1));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_DESERT_PYRAMID, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.heart_piece), 1, 1, 1));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_JUNGLE_TEMPLE, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.heart_piece), 1, 1, 1));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_SIMPLE_DUNGEON, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.scrumpy), 1, 1, 1));
-			addWeightedRandomToLootTable(e, LootTableList.CHESTS_DESERT_PYRAMID, new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.scrumpy), 1, 1, 1));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_VILLAGE_BLACKSMITH, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.armor_polish), 1, 1, 3));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_VILLAGE_BLACKSMITH, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.bathwater), 1, 1, 1));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_ABANDONED_MINESHAFT, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.bathwater), 1, 1, 1));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_ABANDONED_MINESHAFT, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.serum), 1, 1, 5));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_SIMPLE_DUNGEON, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.heart_piece), 1, 1, 1));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_DESERT_PYRAMID, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.heart_piece), 1, 1, 1));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_JUNGLE_TEMPLE, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.heart_piece), 1, 1, 1));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_SIMPLE_DUNGEON, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.scrumpy), 1, 1, 1));
+			addWeightedRandomToLootTable(e, LootTableList.CHESTS_DESERT_PYRAMID, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.scrumpy), 1, 1, 1));
 		}
 	}
 
@@ -285,15 +286,15 @@ public class ModEventHandler {
 	public void itemSmelted(PlayerEvent.ItemSmeltedEvent event) {
 		if (event.player.world.isRemote) return;
 
-		Item smeltedItem = event.smelting.getItem();
+		ItemStack smeltedItem = event.smelting;
 		int randomChance = 64;
 
 		// Check for specific smelting results and handle rewards
-		if (smeltedItem == Items.IRON_INGOT || smeltedItem == ModItems.ingot_uranium) {
-			Item rewardItem = smeltedItem == Items.IRON_INGOT ? ModItems.lodestone : ModItems.quartz_plutonium;
+		if (ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) || ItemStackUtil.isSameMetaItem(smeltedItem, ModItems.ingot_uranium)) {
+			Item rewardItem = ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) ? ModItems.lodestone : ModItems.quartz_plutonium;
 
 			if (event.player.getRNG().nextInt(randomChance) == 0) {
-				giveOrDropItem(event.player, new ItemStack(rewardItem));
+				giveOrDropItem(event.player, ItemStackUtil.itemStackFrom(rewardItem));
 			}
 		}
 	}
@@ -310,7 +311,7 @@ public class ModEventHandler {
 	public boolean canWear(Entity entity){
 		return entity instanceof EntityZombie || entity instanceof EntitySkeleton || entity instanceof EntityVillager || entity instanceof EntityIronGolem;
 	}
-	
+
 	@SubscribeEvent
 	public void mobSpawn(LivingSpawnEvent.SpecialSpawn event) {
 		if(CompatibilityConfig.mobGear){
@@ -330,101 +331,101 @@ public class ModEventHandler {
 
 				if(!hasHat){
 					if(rand.nextInt(64) == 0)
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.gas_mask_m65, 1, world.rand.nextInt(100)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.gas_mask_m65, 1, world.rand.nextInt(100)));
 					if(rand.nextInt(128) == 0)
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.gas_mask, 1, world.rand.nextInt(100)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.gas_mask, 1, world.rand.nextInt(100)));
 					if(rand.nextInt(256) == 0)
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.mask_of_infamy, 1, world.rand.nextInt(100)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.mask_of_infamy, 1, world.rand.nextInt(100)));
 				}
 				if(!(hasHat || hasChest || hasLegs || hasFeet)){
 					if(randomArmorNumber < 2){ //1:32768
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.dns_helmet, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.dns_plate, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.dns_legs, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.dns_boots, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.dns_helmet, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.dns_plate, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.dns_legs, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.dns_boots, 1));
 					}
 					else if(randomArmorNumber < 2<<6){ //1:1024
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.rpa_helmet, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.rpa_plate, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.rpa_legs, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.rpa_boots, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.rpa_helmet, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.rpa_plate, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.rpa_legs, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.rpa_boots, 1));
 					}
 
 					else if(randomArmorNumber < 2<<8){ //1:256
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.ajr_helmet, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.ajr_plate, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.ajr_legs, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.ajr_boots, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.ajr_helmet, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.ajr_plate, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.ajr_legs, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.ajr_boots, 1));
 					}
 
 					else if(randomArmorNumber < 2<<10){ //1:64
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.t45_helmet, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.t45_plate, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.t45_legs, 1));
-						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.t45_boots, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.t45_helmet, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.t45_plate, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.t45_legs, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.t45_boots, 1));
 					}
 
 					else if(randomArmorNumber < 2<<11){ //1:32
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.hazmat_helmet, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.hazmat_plate, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.hazmat_legs, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.hazmat_boots, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.hazmat_helmet, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.hazmat_plate, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.hazmat_legs, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.hazmat_boots, 1, world.rand.nextInt(ModItems.hazmat_helmet.getMaxDamage(ItemStack.EMPTY))));
 					}
 
 					else if(randomArmorNumber < 2<<12){ //1:16
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.titanium_helmet, 1, world.rand.nextInt(ModItems.titanium_helmet.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.titanium_plate, 1, world.rand.nextInt(ModItems.titanium_plate.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.titanium_legs, 1, world.rand.nextInt(ModItems.titanium_legs.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.titanium_boots, 1, world.rand.nextInt(ModItems.titanium_boots.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.titanium_helmet, 1, world.rand.nextInt(ModItems.titanium_helmet.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.titanium_plate, 1, world.rand.nextInt(ModItems.titanium_plate.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.titanium_legs, 1, world.rand.nextInt(ModItems.titanium_legs.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.titanium_boots, 1, world.rand.nextInt(ModItems.titanium_boots.getMaxDamage(ItemStack.EMPTY))));
 					}
 
 					else if(randomArmorNumber < 2<<13){ //1:8
-						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.steel_helmet, 1, world.rand.nextInt(ModItems.steel_helmet.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.steel_plate, 1, world.rand.nextInt(ModItems.steel_plate.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.steel_legs, 1, world.rand.nextInt(ModItems.steel_legs.getMaxDamage(ItemStack.EMPTY))));
-						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.steel_boots, 1, world.rand.nextInt(ModItems.steel_boots.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.steel_helmet, 1, world.rand.nextInt(ModItems.steel_helmet.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.steel_plate, 1, world.rand.nextInt(ModItems.steel_plate.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.steel_legs, 1, world.rand.nextInt(ModItems.steel_legs.getMaxDamage(ItemStack.EMPTY))));
+						entity.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.steel_boots, 1, world.rand.nextInt(ModItems.steel_boots.getMaxDamage(ItemStack.EMPTY))));
 					}
 				}
 
 				if(!hasMainHand){
 					if(randomHandNumber == 0)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.pipe_lead, 1, world.rand.nextInt(100)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.pipe_lead, 1, world.rand.nextInt(100)));
 					else if(randomHandNumber == 1)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.reer_graar, 1, world.rand.nextInt(100)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.reer_graar, 1, world.rand.nextInt(100)));
 					else if(randomHandNumber == 2)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.pipe_rusty, 1, world.rand.nextInt(100)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.pipe_rusty, 1, world.rand.nextInt(100)));
 					else if(randomHandNumber == 3)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.crowbar, 1, world.rand.nextInt(100)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.crowbar, 1, world.rand.nextInt(100)));
 					else if(randomHandNumber == 4)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.steel_pickaxe, 1, world.rand.nextInt(300)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.steel_pickaxe, 1, world.rand.nextInt(300)));
 					else if(randomHandNumber == 5)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.bat, 1, world.rand.nextInt(300)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.bat, 1, world.rand.nextInt(300)));
 					else if(randomHandNumber == 6)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.bat_nail, 1, world.rand.nextInt(300)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.bat_nail, 1, world.rand.nextInt(300)));
 					else if(randomHandNumber == 7)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.golf_club, 1, world.rand.nextInt(300)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.golf_club, 1, world.rand.nextInt(300)));
 					else if(randomHandNumber == 8)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.titanium_sword, 1, world.rand.nextInt(300)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.titanium_sword, 1, world.rand.nextInt(300)));
 					else if(randomHandNumber == 9)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.steel_sword, 1, world.rand.nextInt(300)));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.steel_sword, 1, world.rand.nextInt(300)));
 					else if(randomHandNumber == 10)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.stopsign));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.stopsign));
 					else if(randomHandNumber == 11)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.sopsign));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.sopsign));
 					else if(randomHandNumber == 12)
-						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.chernobylsign));
+						entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.chernobylsign));
 				}
 
 				if(!hasOffHand){
 					if(rand.nextInt(128) == 0)
-						entity.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(ModItems.geiger_counter, 1));
+						entity.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStackUtil.itemStackFrom(ModItems.geiger_counter, 1));
 				}
 			}
 		}
 	}
 
 	private static final Set<String> hashes = new HashSet();
-	
+
 	static {
 		hashes.add("41de5c372b0589bbdb80571e87efa95ea9e34b0d74c6005b8eab495b7afd9994");
 		hashes.add("31da6223a100ed348ceb3254ceab67c9cc102cb2a04ac24de0df3ef3479b1036");
@@ -445,7 +446,7 @@ public class ModEventHandler {
 
 			if(hashes.contains(result)){
 				world.destroyBlock(pos, false);
-				EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.bobmazon_hidden));
+				EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ItemStackUtil.itemStackFrom(ModItems.bobmazon_hidden));
 				entityitem.setPickupDelay(10);
 				world.spawnEntity(entityitem);
 			}
@@ -573,7 +574,7 @@ public class ModEventHandler {
 				Item item = Item.getItemById(id);
 
 				if(item != null && size > 0 && meta >= 0) {
-					player.inventory.addItemStackToInventory(new ItemStack(item, size, meta));
+					player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(item, size, meta));
 				}
 			}
 
@@ -623,7 +624,7 @@ public class ModEventHandler {
 			TimedGenerator.automaton(event.world, 100);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void serverTick(ServerTickEvent e){
 		if(e.phase == Phase.START){
@@ -633,7 +634,7 @@ public class ModEventHandler {
 			EntityHitDataHandler.updateSystem();
 		}
 	}
-	
+
 	// Drillgon200: So 1.12.2's going to ignore ISpecialArmor if the damage is
 	// unblockable, huh?
 	@SubscribeEvent
@@ -645,11 +646,11 @@ public class ModEventHandler {
 			}
 		}
 		ArmorFSB.handleHurt(e);
-		
+
 		/// V1 ///
 		if(EntityDamageUtil.wasAttackedByV1(e.getSource())) {
 			EntityPlayer attacker = (EntityPlayer) ((EntityDamageSource)e.getSource()).getImmediateSource();
-					
+
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaburst");
 			data.setInteger("count", (int)Math.min(ent.getMaxHealth() / 2F, 250));
@@ -657,20 +658,20 @@ public class ModEventHandler {
 			data.setString("mode", "blockdust");
 			data.setInteger("block", Block.getIdFromBlock(Blocks.REDSTONE_BLOCK));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, ent.posX, ent.posY + ent.height * 0.5, ent.posZ), new TargetPoint(ent.dimension, ent.posX, ent.posY, ent.posZ, 50));
-					
+
 			if(attacker.getDistanceSq(ent) < 25) {
 				attacker.heal(e.getAmount() * 0.5F);
 			}
 		}
-		
+
 		for(int i = 2; i < 6; i++) {
-			
+
 			ItemStack armor = ent.getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
-			
+
 			if(armor != null && ArmorModHandler.hasMods(armor)) {
-				
+
 				for(ItemStack mod : ArmorModHandler.pryMods(armor)) {
-					
+
 					if(mod != null && mod.getItem() instanceof ItemArmorMod) {
 						((ItemArmorMod)mod.getItem()).modDamage(e, armor);
 					}
@@ -692,7 +693,7 @@ public class ModEventHandler {
 
 		ArmorFSB.handleAttack(event);
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerFall(PlayerFlyableFallEvent event) {
 		ArmorFSB.handleFall(event.getEntityPlayer());
@@ -768,7 +769,7 @@ public class ModEventHandler {
 		HbmLivingProps.setRadiation(event.getEntityLiving(), 0);
 		if(event.getEntity().world.isRemote)
 			return;
-		
+
 		if(event.getEntityLiving() instanceof EntityPlayer) {
 			if(ArmorUtil.checkArmor((EntityPlayer) event.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
 				if(event.getSource() != ModDamageSource.digamma){
@@ -789,7 +790,7 @@ public class ModEventHandler {
 		}
 
 		if(event.getEntity().getUniqueID().toString().equals(Library.Alcater)) {
-			event.getEntity().entityDropItem(new ItemStack(ModItems.bottle_rad).setStackDisplayName("§aAlcater's §2Neo §aNuka§r"), 0.5F);
+			event.getEntity().entityDropItem(ItemStackUtil.itemStackFrom(ModItems.bottle_rad).setStackDisplayName("§aAlcater's §2Neo §aNuka§r"), 0.5F);
 		}
 
 		if(event.getEntity() instanceof EntityTaintedCreeper && event.getSource() == ModDamageSource.boxcar) {
@@ -798,71 +799,71 @@ public class ModEventHandler {
 				AdvancementManager.grantAchievement(player, AdvancementManager.bobHidden);
 			}
 		}
-		
+
 		if(!event.getEntityLiving().world.isRemote) {
-			
+
 			if(event.getSource() instanceof EntityDamageSource && ((EntityDamageSource)event.getSource()).getTrueSource() instanceof EntityPlayer
 					 && !(((EntityDamageSource)event.getSource()).getTrueSource() instanceof FakePlayer)) {
-				
+
 				if(event.getEntityLiving() instanceof EntitySpider && event.getEntityLiving().getRNG().nextInt(500) == 0) {
 					event.getEntityLiving().dropItem(ModItems.spider_milk, 1);
 				}
-				
+
 				if(event.getEntityLiving() instanceof EntityCaveSpider && event.getEntityLiving().getRNG().nextInt(100) == 0) {
 					event.getEntityLiving().dropItem(ModItems.serum, 1);
 				}
-				
+
 				if(event.getEntityLiving() instanceof EntityAnimal && event.getEntityLiving().getRNG().nextInt(500) == 0) {
 					event.getEntityLiving().dropItem(ModItems.bandaid, 1);
 				}
-				
+
 				if(event.getEntityLiving() instanceof IMob && event.getEntityLiving().getRNG().nextInt(1000) == 0) {
 					event.getEntityLiving().dropItem(ModItems.heart_piece, 1);
 				}
-				
+
 				if(event.getEntityLiving() instanceof EntityCyberCrab && event.getEntityLiving().getRNG().nextInt(500) == 0) {
 					event.getEntityLiving().dropItem(ModItems.wd40, 1);
 				}
 			}
 		}
 	}
-	
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onEntityDeathFirst(LivingDeathEvent event){
 		for(int i = 2; i < 6; i++) {
-			
+
 			ItemStack stack = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
-			
+
 			if(stack != null && stack.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(stack)) {
-				
+
 				ItemStack revive = ArmorModHandler.pryMods(stack)[ArmorModHandler.extra];
-				
+
 				if(revive != null) {
-					
+
 					//Classic revive
 					if(revive.getItem() instanceof ItemModRevive) {
 						revive.setItemDamage(revive.getItemDamage() + 1);
-						
+
 						if(revive.getItemDamage() >= revive.getMaxDamage()) {
 							ArmorModHandler.removeMod(stack, ArmorModHandler.extra);
 						} else {
 							ArmorModHandler.applyMod(stack, revive);
 						}
-						
+
 						event.getEntityLiving().setHealth(event.getEntityLiving().getMaxHealth());
 						event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 60, 99));
 						event.setCanceled(true);
 						return;
 					}
-					
+
 					//Shackles
 					if(revive.getItem() instanceof ItemModShackles && HbmLivingProps.getRadiation(event.getEntityLiving()) < 1000F) {
-						
+
 						revive.setItemDamage(revive.getItemDamage() + 1);
-						
+
 						int dmg = revive.getItemDamage();
 						ArmorModHandler.applyMod(stack, revive);
-						
+
 						event.getEntityLiving().setHealth(event.getEntityLiving().getMaxHealth());
 						HbmLivingProps.incrementRadiation(event.getEntityLiving(), dmg * dmg);
 						event.setCanceled(true);
@@ -872,61 +873,61 @@ public class ModEventHandler {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onEntityDeathLast(LivingDeathEvent event){
 		EntityLivingBase entity = event.getEntityLiving();
-		
+
 		if(EntityDamageUtil.wasAttackedByV1(event.getSource())) {
 
 			NBTTagCompound vdat = new NBTTagCompound();
 			vdat.setString("type", "giblets");
 			vdat.setInteger("ent", entity.getEntityId());
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(vdat, entity.posX, entity.posY + entity.height * 0.5, entity.posZ), new TargetPoint(entity.dimension, entity.posX, entity.posY + entity.height * 0.5, entity.posZ, 150));
-			
+
 			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, SoundCategory.HOSTILE, 2.0F, 0.95F + entity.world.rand.nextFloat() * 0.2F);
-			
+
 			EntityPlayer attacker = (EntityPlayer) ((EntityDamageSource)event.getSource()).getImmediateSource();
-			
+
 			if(attacker.getDistanceSq(entity) < 100) {
 				attacker.heal(entity.getMaxHealth() * 0.25F);
 			}
 		}
-		
+
 		if(entity instanceof EntityPlayer) {
-			
+
 			EntityPlayer player = (EntityPlayer) entity;
-			
+
 			for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
-				
+
 				ItemStack stack = player.inventory.getStackInSlot(i);
-				
+
 				if(stack != null && stack.getItem() == ModItems.detonator_deadman) {
-					
+
 					if(stack.getTagCompound() != null) {
-						
+
 						int x = stack.getTagCompound().getInteger("x");
 						int y = stack.getTagCompound().getInteger("y");
 						int z = stack.getTagCompound().getInteger("z");
 
 						if(!player.world.isRemote && player.world.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof IBomb) {
-							
+
 							((IBomb) player.world.getBlockState(new BlockPos(x, y, z)).getBlock()).explode(player.world, new BlockPos(x, y, z));
-							
+
 							if(GeneralConfig.enableExtendedLogging)
 								MainRegistry.logger.log(Level.INFO, "[DET] Tried to detonate block at " + x + " / " + y + " / " + z + " by dead man's switch from " + player.getDisplayName() + "!");
 						}
-						
+
 						player.inventory.setInventorySlotContents(i, null);
 					}
 				}
 			}
 		}
 	}
-	
+
 	public static Field r_handInventory = null;
 	public static Field r_armorArray = null;
-	
+
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event) {
@@ -1022,7 +1023,7 @@ public class ModEventHandler {
 		ArmorFSB.handleJump(event.getEntityLiving());
 	}
 
-	
+
 	@SubscribeEvent
 	public void blockBreak(BlockEvent.BreakEvent event){
 		if(event.isCancelable() && event.isCanceled())
@@ -1031,15 +1032,15 @@ public class ModEventHandler {
 			return;
 
 		Block block = event.getState().getBlock();
-		
+
 		if(block == Blocks.COAL_ORE || block == Blocks.COAL_BLOCK || block == ModBlocks.ore_lignite) {
-			
+
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
 				int x = event.getPos().getX() + dir.offsetX;
 				int y = event.getPos().getY() + dir.offsetY;
 				int z = event.getPos().getZ() + dir.offsetZ;
-				
+
 				if(event.getWorld().rand.nextInt(2) == 0 && event.getWorld().getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.AIR)
 					event.getWorld().setBlockState(new BlockPos(x, y, z), ModBlocks.gas_coal.getDefaultState());
 			}
@@ -1056,7 +1057,7 @@ public class ModEventHandler {
 
 			PacketDispatcher.sendTo(new KeybindPacket(EnumKeybind.TOGGLE_JETPACK, props.getEnableBackpack()), playerMP);
 			PacketDispatcher.sendTo(new KeybindPacket(EnumKeybind.TOGGLE_HEAD, props.getEnableHUD()), playerMP);
-			
+
 			if (GeneralConfig.enableWelcomeMessage) {
 				e.player.sendMessage(new TextComponentTranslation("chat.welcome"));
 			}
@@ -1073,7 +1074,7 @@ public class ModEventHandler {
 					}
 				}
 			}
-			
+
 			if(HTTPHandler.optifine){
 				e.player.sendMessage(new TextComponentString("Optifine detected, may cause compatibility issues. Check log for details."));
 			}
@@ -1084,7 +1085,7 @@ public class ModEventHandler {
 	        }
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void worldLoad(WorldEvent.Load e) {
 		JetpackHandler.worldLoad(e);
@@ -1099,7 +1100,7 @@ public class ModEventHandler {
 	public void onDataSerializerRegister(RegistryEvent.Register<DataSerializerEntry> evt) {
 		evt.getRegistry().register(new DataSerializerEntry(MissileStruct.SERIALIZER).setRegistryName(new ResourceLocation(RefStrings.MODID, "missile_struct")));
 	}
-	
+
 	@SubscribeEvent
 	public void anvilUpdateEvent(AnvilUpdateEvent event) {
 
@@ -1121,7 +1122,7 @@ public class ModEventHandler {
 
             event.setCost(10);
 		}
-		if(event.getLeft().getItem() == ModItems.ingot_meteorite && event.getRight().getItem() == ModItems.ingot_meteorite &&
+		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot_meteorite) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot_meteorite) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
 			double h1 = ItemHot.getHeat(event.getLeft());
@@ -1129,14 +1130,14 @@ public class ModEventHandler {
 
 			if(h1 >= 0.5 && h2 >= 0.5) {
 
-				ItemStack out = new ItemStack(ModItems.ingot_meteorite_forged);
+				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.ingot_meteorite_forged);
 				ItemHot.heatUp(out, (h1 + h2) / 2D);
 				event.setOutput(out);
 	            event.setCost(10);
 			}
 		}
 
-		if(event.getLeft().getItem() == ModItems.ingot_meteorite_forged && event.getRight().getItem() == ModItems.ingot_meteorite_forged &&
+		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot_meteorite_forged) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot_meteorite_forged) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
 			double h1 = ItemHot.getHeat(event.getLeft());
@@ -1144,48 +1145,48 @@ public class ModEventHandler {
 
 			if(h1 >= 0.5 && h2 >= 0.5) {
 
-				ItemStack out = new ItemStack(ModItems.blade_meteorite);
+				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.blade_meteorite);
 				ItemHot.heatUp(out, (h1 + h2) / 2D);
 				event.setOutput(out);
 	            event.setCost(30);
 			}
 		}
 
-		if(event.getLeft().getItem() == ModItems.meteorite_sword_seared && event.getRight().getItem() == ModItems.ingot_meteorite_forged &&
+		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.meteorite_sword_seared) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot_meteorite_forged) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
 			double h2 = ItemHot.getHeat(event.getRight());
 
 			if(h2 >= 0.5) {
 
-				ItemStack out = new ItemStack(ModItems.meteorite_sword_reforged);
+				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_reforged);
 				event.setOutput(out);
 	            event.setCost(50);
 			}
 		}
-		
+
 		if(event.getLeft().getItem() == ModItems.ingot_steel_dusted && event.getRight().getItem() == ModItems.ingot_steel_dusted &&
 				event.getLeft().getCount() ==  event.getRight().getCount()) {
 
 			double h1 = ItemHot.getHeat(event.getLeft());
 			double h2 = ItemHot.getHeat(event.getRight());
-			
+
 			if(h2 >= 0.5) {
 
 				int i1 = event.getLeft().getItemDamage();
 				int i2 = event.getRight().getItemDamage();
-				
+
 				int i3 = Math.min(i1, i2) + 1;
-				
+
 				boolean done = i3 >= 10;
-				
+
 				ItemStack out;
 				if(done){
-					out = new ItemStack(ModItems.ingot_chainsteel, event.getLeft().getCount(), 0);
+					out = ItemStackUtil.itemStackFrom(ModItems.ingot_chainsteel, event.getLeft().getCount());
 				} else {
-					out = new ItemStack(ModItems.ingot_steel_dusted, event.getLeft().getCount(), i3);
+					out = ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, event.getLeft().getCount(), i3);
 				}
-	            
+
 				ItemHot.heatUp(out, done ? 1D : (h1 + h2) / 2D);
 				event.setOutput(out);
 				event.setCost(event.getLeft().getCount());
@@ -1195,11 +1196,11 @@ public class ModEventHandler {
 
 	@SubscribeEvent
 	public void onFoodEaten(LivingEntityUseItemEvent.Finish event) {
-		
+
 		ItemStack stack = event.getItem();
-		
+
 		if(stack != null && stack.getItem() instanceof ItemFood) {
-			
+
 			if(stack.hasTagCompound() && stack.getTagCompound().getBoolean("ntmCyanide")) {
 				for(int i = 0; i < 10; i++) {
 					event.getEntityLiving().attackEntityFrom(rand.nextBoolean() ? ModDamageSource.euthanizedSelf : ModDamageSource.euthanizedSelf2, 1000);
@@ -1207,7 +1208,7 @@ public class ModEventHandler {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 
@@ -1216,10 +1217,10 @@ public class ModEventHandler {
 		if(player.getDisplayName().getUnformattedText().equals("Dr_Nostalgia") && !player.world.isRemote) {
 
 			if(!Library.hasInventoryItem(player.inventory, ModItems.hat))
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.hat));
-			
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.hat));
+
 			if(!Library.hasInventoryItem(player.inventory, ModItems.beta))
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.beta));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.beta));
 		}
 	}
 

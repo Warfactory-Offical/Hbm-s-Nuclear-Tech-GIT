@@ -1,4 +1,5 @@
 package com.hbm.blocks.network;
+import com.hbm.util.ItemStackUtil;
 
 import api.hbm.block.IConveyorBelt;
 import api.hbm.block.IConveyorItem;
@@ -65,7 +66,7 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.crane_splitter);
+        return ItemStackUtil.itemStackFrom(ModBlocks.crane_splitter);
     }
 
     private EnumFacing getCustomMap(int meta){

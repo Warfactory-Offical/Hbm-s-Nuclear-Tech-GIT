@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class ItemGuideBook extends Item {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab())
 			for(int i = 1; i < BookType.values().length; i++)
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 	}
 	
 	@Override

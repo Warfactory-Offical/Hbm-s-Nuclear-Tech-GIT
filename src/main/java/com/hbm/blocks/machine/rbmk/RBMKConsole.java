@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.rbmk;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -129,8 +130,8 @@ public class RBMKConsole extends BlockDummyable implements ITooltipProvider {
 					double rZ = entity.getPos().getZ() + 0.5D + vec.zCoord;
 					double size = 0.1875D;
 					
-					if(Math.abs(hX - rX) < size && Math.abs(hZ - rZ) < size && !player.inventory.hasItemStack(new ItemStack(ModItems.book_guide, 1, BookType.RBMK.ordinal()))) {
-						player.inventory.addItemStackToInventory(new ItemStack(ModItems.book_guide, 1, BookType.RBMK.ordinal()));
+					if(Math.abs(hX - rX) < size && Math.abs(hZ - rZ) < size && !player.inventory.hasItemStack(ItemStackUtil.itemStackFrom(ModItems.book_guide, 1, BookType.RBMK.ordinal()))) {
+						player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.book_guide, 1, BookType.RBMK.ordinal()));
 						player.inventoryContainer.detectAndSendChanges();
 						return true;
 					}

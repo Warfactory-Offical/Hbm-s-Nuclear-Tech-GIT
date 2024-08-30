@@ -1,4 +1,5 @@
 package com.hbm.particle;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.BlockCloudResidue;
@@ -153,7 +154,7 @@ public class ParticleCloudFX extends Particle {
 		if (this.particleAge < this.particleMaxAge / 8 && this.particleAge >= 0) {
 			item = textureItems[0];
 		}
-		tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(item, 1, meta), null, null).getParticleTexture();
+		tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(item, 1, meta), null, null).getParticleTexture();
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

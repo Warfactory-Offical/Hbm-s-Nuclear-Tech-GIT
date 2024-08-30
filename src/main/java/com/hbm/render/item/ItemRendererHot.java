@@ -1,4 +1,5 @@
 package com.hbm.render.item;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.opengl.GL11;
 
@@ -33,7 +34,7 @@ public class ItemRendererHot extends TEISRBase {
             GlStateManager.disableLighting();
             GlStateManager.tryBlendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
 			GlStateManager.color(1F, 1F, 1F, (float) h);
-            IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(stack.getItem(), 1, 15), Minecraft.getMinecraft().world, null);
+            IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(stack.getItem(), 1, 15), Minecraft.getMinecraft().world, null);
 			RenderHelper.bindBlockTexture();
             TextureAtlasSprite icon = model.getParticleTexture();
             float up = icon.getInterpolatedV(16);

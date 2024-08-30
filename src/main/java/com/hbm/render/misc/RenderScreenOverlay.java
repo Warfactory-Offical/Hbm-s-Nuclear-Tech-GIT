@@ -1,4 +1,5 @@
 package com.hbm.render.misc;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.opengl.GL11;
 import com.hbm.lib.RefStrings;
@@ -201,7 +202,7 @@ public class RenderScreenOverlay {
         GlStateManager.disableBlend();
         GlStateManager.enableRescaleNormal();
         RenderHelper.enableGUIStandardItemLighting();
-        itemRenderer.renderItemAndEffectIntoGUI(null, new ItemStack(ammo), pX, pZ);
+        itemRenderer.renderItemAndEffectIntoGUI(null, ItemStackUtil.itemStackFrom(ammo), pX, pZ);
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
         GlStateManager.enableBlend();
@@ -227,7 +228,7 @@ public class RenderScreenOverlay {
         GlStateManager.disableBlend();
         GlStateManager.enableRescaleNormal();
         RenderHelper.enableGUIStandardItemLighting();
-        	itemRenderer.renderItemAndEffectIntoGUI(null, new ItemStack(ammo), pX, pZ);
+        	itemRenderer.renderItemAndEffectIntoGUI(null, ItemStackUtil.itemStackFrom(ammo), pX, pZ);
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
 

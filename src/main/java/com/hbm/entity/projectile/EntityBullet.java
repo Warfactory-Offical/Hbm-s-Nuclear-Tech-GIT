@@ -1,4 +1,5 @@
 package com.hbm.entity.projectile;
+import com.hbm.util.ItemStackUtil;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -643,7 +644,7 @@ public class EntityBullet extends Entity implements IProjectile {
 		if (!this.world.isRemote && this.inGround && this.arrowShake <= 0) {
 			boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && entityIn.capabilities.isCreativeMode;
 
-			if (this.canBePickedUp == 1 && !entityIn.inventory.addItemStackToInventory(new ItemStack(ModItems.gun_rpg_ammo, 1))) {
+			if (this.canBePickedUp == 1 && !entityIn.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.gun_rpg_ammo, 1))) {
 				flag = false;
 			}
 

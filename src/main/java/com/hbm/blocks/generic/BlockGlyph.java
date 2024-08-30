@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class BlockGlyph extends Block {
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
 			for (int i = 0; i < 16; ++i){
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 	        }
 		}
 	}

@@ -1,4 +1,5 @@
 package com.hbm.handler.crt;
+import com.hbm.util.ItemStackUtil;
 
 import crafttweaker.IAction;
 import crafttweaker.CraftTweakerAPI;
@@ -43,7 +44,7 @@ public class BreedingReactor {
 				CraftTweakerAPI.logError("ERROR Breeding heat needs to be between 1-4 not "+this.heatLvl+"!");
 				return;
 			}
-			BreederRecipes.addRecipe(new ComparableStack(this.input), this.output, this.heatLvl);
+			BreederRecipes.addRecipe(ItemStackUtil.comparableStackFrom(this.input), this.output, this.heatLvl);
 		}
 		@Override
 		public String describe(){
@@ -70,7 +71,7 @@ public class BreedingReactor {
 				CraftTweakerAPI.logError("ERROR Breeding input item can not be an empty/air stack!");
 				return;
 			}
-			BreederRecipes.removeRecipe(new ComparableStack(this.input));
+			BreederRecipes.removeRecipe(ItemStackUtil.comparableStackFrom(this.input));
 		}
 		@Override
 		public String describe(){
@@ -109,7 +110,7 @@ public class BreedingReactor {
 				CraftTweakerAPI.logError("ERROR Breeding uses in Nuclear Furnace can not be < 1 so "+this.usesInNuclearFurnace+" is invalid!");
 				return;
 			}
-			BreederRecipes.addFuel(new ComparableStack(this.input), this.heatLvl, this.usesInNuclearFurnace);
+			BreederRecipes.addFuel(ItemStackUtil.comparableStackFrom(this.input), this.heatLvl, this.usesInNuclearFurnace);
 		}
 		@Override
 		public String describe(){
@@ -136,7 +137,7 @@ public class BreedingReactor {
 				CraftTweakerAPI.logError("ERROR Breeding fuel item can not be an empty/air stack!");
 				return;
 			}
-			BreederRecipes.removeFuel(new ComparableStack(input));
+			BreederRecipes.removeFuel(ItemStackUtil.comparableStackFrom(input));
 		}
 		@Override
 		public String describe(){

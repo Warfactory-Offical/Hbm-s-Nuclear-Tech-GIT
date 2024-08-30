@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,9 @@ public class ControlTab extends CreativeTabs {
 	@Override
 	public ItemStack createIcon() {
 		if(ModItems.pellet_rtg != null){
-			return new ItemStack(ModItems.pellet_rtg);
+			return ItemStackUtil.itemStackFrom(ModItems.pellet_rtg);
 		}
-		return new ItemStack(Items.IRON_PICKAXE, 1);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE, 1);
 	}
 	
 	@Override

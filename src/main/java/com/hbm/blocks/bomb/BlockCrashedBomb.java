@@ -1,4 +1,5 @@
 package com.hbm.blocks.bomb;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -67,9 +68,9 @@ public class BlockCrashedBomb extends BlockContainer implements IBomb {
 					player.getHeldItem(hand).damageItem(1, player);
 			world.destroyBlock(pos, false);
 
-			world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.egg_balefire_shard)));
-			world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.plate_steel, 10 + world.rand.nextInt(15))));
-			world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.plate_titanium, 2 + world.rand.nextInt(7))));
+			world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard)));
+			world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModItems.plate_steel, 10 + world.rand.nextInt(15))));
+			world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 2 + world.rand.nextInt(7))));
 
 			return true;
 		}

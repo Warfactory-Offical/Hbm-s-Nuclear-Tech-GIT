@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -45,7 +46,7 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab()){
 			for(int i = 0; i < 10; ++i) {
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 			}
 		}
 	}

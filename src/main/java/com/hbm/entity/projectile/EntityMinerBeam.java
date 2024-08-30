@@ -1,4 +1,5 @@
 package com.hbm.entity.projectile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -375,7 +376,7 @@ public class EntityMinerBeam extends Entity implements IProjectile {
 	public void dropMinedItem(World world, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState b = world.getBlockState(pos);
-		ItemStack s = FurnaceRecipes.instance().getSmeltingResult(new ItemStack(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
+		ItemStack s = FurnaceRecipes.instance().getSmeltingResult(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
 		if(!s.isEmpty()) {
 			ItemStack t = s.copy();
 			if(!world.isRemote)

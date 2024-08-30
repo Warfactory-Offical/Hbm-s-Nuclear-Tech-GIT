@@ -1,4 +1,5 @@
 package com.hbm.blocks;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,10 +173,10 @@ public abstract class BlockDummyable extends BlockContainer {
 				Item item = Item.getItemFromBlock(this);
 				
 				if(stack.isEmpty()) {
-					pl.inventory.mainInventory.set(pl.inventory.currentItem, new ItemStack(this));
+					pl.inventory.mainInventory.set(pl.inventory.currentItem, ItemStackUtil.itemStackFrom(this));
 				} else {
 					if(stack.getItem() != item || stack.getCount() == stack.getMaxStackSize()) {
-						pl.inventory.addItemStackToInventory(new ItemStack(this));
+						pl.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(this));
 					} else {
 						pl.getHeldItem(hand).grow(1);
 					}

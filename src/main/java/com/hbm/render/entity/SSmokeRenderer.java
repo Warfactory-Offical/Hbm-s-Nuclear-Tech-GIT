@@ -1,4 +1,5 @@
 package com.hbm.render.entity;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -79,7 +80,7 @@ public class SSmokeRenderer extends Render<EntitySSmokeFX> {
 				item = ModItems.smoke1;
 			}
 
-			TextureAtlasSprite tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(item, 1, meta), null, null).getParticleTexture();
+			TextureAtlasSprite tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(item, 1, meta), null, null).getParticleTexture();
 
 			if (tex != null) {
 				GL11.glPushMatrix();

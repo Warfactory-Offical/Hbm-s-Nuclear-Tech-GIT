@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 import com.hbm.inventory.ChemplantRecipes;
@@ -40,7 +41,7 @@ public class ItemChemistryIcon extends Item {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if(tab == this.getCreativeTab()){
 		for (int i: ChemplantRecipes.recipeNames.keySet()){
-				list.add(new ItemStack(this, 1, i));
+				list.add(ItemStackUtil.itemStackFrom(this, 1, i));
         	}
 		}
 	}

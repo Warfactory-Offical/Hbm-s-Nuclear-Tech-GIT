@@ -552,9 +552,10 @@ public class ModEventHandlerClient {
 		swapModelsNoGui(ModItems.mese_gavel, reg);
 		swapModels(ModItems.gun_bolter, reg);
 		swapModels(ModItems.ingot_steel_dusted, reg);
-		swapModels(ModItems.ingot_chainsteel, reg);
-		swapModels(ModItems.ingot_meteorite, reg);
-		swapModels(ModItems.ingot_meteorite_forged, reg);
+		// TODO
+//		swapModels(ModItems.ingot_chainsteel, reg);
+//		swapModels(ModItems.ingot_meteorite, reg);
+//		swapModels(ModItems.ingot_meteorite_forged, reg);
 		swapModels(ModItems.blade_meteorite, reg);
 		swapModels(ModItems.crucible, reg);
 		swapModels(ModItems.hs_sword, reg);

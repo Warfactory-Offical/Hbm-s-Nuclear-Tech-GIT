@@ -1,4 +1,5 @@
 package com.hbm.world;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -636,7 +637,7 @@ public class Spaceship extends WorldGenerator
 			WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(3), (TileEntityChest)world.getTileEntity(pos.setPos(x + 8, y + -2, z + 38)), 12);
 			if(rand.nextInt(10) == 0){
 				IItemHandlerModifiable handle = (IItemHandlerModifiable)((TileEntityChest)world.getTileEntity(pos.setPos(x + 8, y + -2, z + 38))).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-				handle.setStackInSlot(rand.nextInt(handle.getSlots()), new ItemStack(ModItems.gun_vortex));
+				handle.setStackInSlot(rand.nextInt(handle.getSlots()), ItemStackUtil.itemStackFrom(ModItems.gun_vortex));
 			}
 		}
 		world.setBlockState(pos.setPos(x + 9, y + -2, z + 38), Block3.getDefaultState(), 3);

@@ -1,4 +1,5 @@
 package com.hbm.render.entity;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,16 +36,16 @@ public class RenderLN2 extends Render<EntityLN2> {
 	@Override
 	public void doRender(EntityLN2 fx, double x, double y, double z, float entityYaw, float partialTicks) {
 		if(textures.isEmpty()){
-			textures.put(ModItems.ln2_1, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_1, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_2, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_2, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_3, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_3, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_4, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_4, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_5, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_5, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_6, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_6, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_7, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_7, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_8, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_8, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_9, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_9, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_10, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_10, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_1, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_1, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_2, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_2, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_3, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_3, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_4, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_4, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_5, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_5, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_6, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_6, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_7, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_7, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_8, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_8, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_9, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_9, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_10, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_10, 1, 0), null, null).getParticleTexture());
 		}
 		TextureAtlasSprite tex = textures.get(ModItems.ln2_1);
 		if(fx.ticksExisted <= fx.maxAge && fx.ticksExisted >= fx.maxAge / 10 * 9)

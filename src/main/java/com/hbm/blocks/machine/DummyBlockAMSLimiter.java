@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -117,7 +118,7 @@ public class DummyBlockAMSLimiter extends BlockContainer implements IDummy {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.ams_limiter);
+		return ItemStackUtil.itemStackFrom(ModBlocks.ams_limiter);
 	}
 
 }

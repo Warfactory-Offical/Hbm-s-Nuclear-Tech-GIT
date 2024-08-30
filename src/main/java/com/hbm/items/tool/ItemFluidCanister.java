@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class ItemFluidCanister extends Item implements IHasCustomModel {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
 			for(Fluid f : EnumCanister.getFluids()){
-				ItemStack stack = new ItemStack(this, 1, 0);
+				ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 				stack.setTagCompound(new NBTTagCompound());
 				if(f != null)
 					stack.getTagCompound().setTag(HbmFluidHandlerCanister.FLUID_NBT_KEY, new FluidStack(f, cap).writeToNBT(new NBTTagCompound()));
@@ -114,7 +115,7 @@ public class ItemFluidCanister extends Item implements IHasCustomModel {
 	}
 	
 	public static ItemStack getFullCanister(Fluid f, int amount){
-		ItemStack stack = new ItemStack(ModItems.canister_generic, amount, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.canister_generic, amount, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		if(f != null && EnumCanister.contains(f))
 			stack.getTagCompound().setTag(HbmFluidHandlerCanister.FLUID_NBT_KEY, new FluidStack(f, 1000).writeToNBT(new NBTTagCompound()));

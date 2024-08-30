@@ -1,4 +1,5 @@
 package com.hbm.entity.mob;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -320,7 +321,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 			List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(200, 200, 200));
 			for(EntityPlayer player : players) {
 				AdvancementManager.grantAchievement(player, AdvancementManager.bossUFO);
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.coin_ufo));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.coin_ufo));
 			}
 		}
 		

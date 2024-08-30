@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -34,7 +35,7 @@ public class BlockNTMDirt extends BlockDirt {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		items.add(new ItemStack(this, 1, 0));
+		items.add(ItemStackUtil.itemStackFrom(this, 1, 0));
 	}
 	
 	@Override

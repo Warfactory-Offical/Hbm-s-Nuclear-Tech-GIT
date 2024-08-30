@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -55,7 +56,7 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.machine_pumpjack);
+		return ItemStackUtil.itemStackFrom(ModBlocks.machine_pumpjack);
 	}
 
 	@Override

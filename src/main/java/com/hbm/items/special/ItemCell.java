@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -137,7 +138,7 @@ public class ItemCell extends Item {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
 			for(Fluid f : EnumCell.getFluids()) {
-				ItemStack stack = new ItemStack(this, 1, 0);
+				ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 				stack.setTagCompound(new NBTTagCompound());
 				if(f != null)
 					stack.getTagCompound().setTag(HbmFluidHandlerCell.FLUID_NBT_KEY, new FluidStack(f, 1000).writeToNBT(new NBTTagCompound()));
@@ -208,7 +209,7 @@ public class ItemCell extends Item {
 
 	public static ItemStack getFullCell(Fluid fluid, int amount) {
 		if(EnumCell.contains(fluid)) {
-			ItemStack stack = new ItemStack(ModItems.cell, amount, 0);
+			ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.cell, amount, 0);
 			stack.setTagCompound(new NBTTagCompound());
 			stack.getTagCompound().setTag(HbmFluidHandlerCell.FLUID_NBT_KEY, new FluidStack(fluid, 1000).writeToNBT(new NBTTagCompound()));
 			return stack;

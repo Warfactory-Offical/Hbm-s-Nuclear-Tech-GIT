@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class ItemSiegeCoin extends Item {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab())
 			for(int i = 0; i < SiegeTier.getLength(); i++) {
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 			}
 	}
 

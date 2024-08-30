@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 	    	for(int i = 0; i < count; i++) {
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("type", i);
-				ItemStack stack = new ItemStack(this, 1, 0);
+				ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 				stack.setTagCompound(tag);
 				list.add(stack);
 			}
@@ -83,7 +84,7 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 	public static ItemStack getTemplate(int id){
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("type", id);
-		ItemStack stack = new ItemStack(ModItems.assembly_template, 1, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, 0);
 		stack.setTagCompound(tag);
 		return stack;
 	}

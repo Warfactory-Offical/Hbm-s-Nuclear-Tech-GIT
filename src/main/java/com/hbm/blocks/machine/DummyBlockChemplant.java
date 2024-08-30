@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -85,7 +86,7 @@ public class DummyBlockChemplant extends DummyOldBase {
     
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-    	return new ItemStack(Item.getItemFromBlock(ModBlocks.machine_chemplant));
+    	return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.machine_chemplant));
     }
 	
 	@Override

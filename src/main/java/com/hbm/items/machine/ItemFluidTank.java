@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -59,12 +60,12 @@ public class ItemFluidTank extends Item implements IHasCustomModel {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(GeneralConfig.registerTanks){
 			if (tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
-				ItemStack empty = new ItemStack(this, 1, 0);
+				ItemStack empty = ItemStackUtil.itemStackFrom(this, 1, 0);
 				empty.setTagCompound(new NBTTagCompound());
 				items.add(empty);
 				for (Entry<String, Fluid> entry : FluidRegistry.getRegisteredFluids().entrySet()) {
 					if(FluidTypeHandler.noContainer(entry.getValue())) continue;
-					ItemStack stack = new ItemStack(this, 1, 0);
+					ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 					stack.setTagCompound(new NBTTagCompound());
 					stack.getTagCompound().setTag(HbmFluidHandlerItemStack.FLUID_NBT_KEY,
 							new FluidStack(entry.getValue(), cap).writeToNBT(new NBTTagCompound()));
@@ -125,7 +126,7 @@ public class ItemFluidTank extends Item implements IHasCustomModel {
 	}
 	
 	public static ItemStack getFullBarrel(Fluid f, int amount){
-		ItemStack stack = new ItemStack(ModItems.fluid_barrel_full, amount, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_barrel_full, amount, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setTag(HbmFluidHandlerItemStack.FLUID_NBT_KEY, new FluidStack(f, 16000).writeToNBT(new NBTTagCompound()));
 		return stack;
@@ -136,7 +137,7 @@ public class ItemFluidTank extends Item implements IHasCustomModel {
 	}
 	
 	public static ItemStack getFullTank(Fluid f, int amount){
-		ItemStack stack = new ItemStack(ModItems.fluid_tank_full, amount, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_tank_full, amount, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setTag(HbmFluidHandlerItemStack.FLUID_NBT_KEY, new FluidStack(f, 1000).writeToNBT(new NBTTagCompound()));
 		return stack;

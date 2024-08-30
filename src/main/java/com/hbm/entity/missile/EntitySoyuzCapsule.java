@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -57,13 +58,13 @@ public class EntitySoyuzCapsule extends EntityThrowable {
     			ItemStack stack = ItemStack.EMPTY;
     			switch(soyuz){
     			case 0:
-    				stack = new ItemStack(ModItems.missile_soyuz0);
+    				stack = ItemStackUtil.itemStackFrom(ModItems.missile_soyuz0);
     				break;
     			case 1:
-    				stack = new ItemStack(ModItems.missile_soyuz1);
+    				stack = ItemStackUtil.itemStackFrom(ModItems.missile_soyuz1);
     				break;
     			case 2:
-    				stack = new ItemStack(ModItems.missile_soyuz2);
+    				stack = ItemStackUtil.itemStackFrom(ModItems.missile_soyuz2);
     				break;
     			}
     			capsule.inventory.setStackInSlot(18, stack);
@@ -94,7 +95,7 @@ public class EntitySoyuzCapsule extends EntityThrowable {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
 			if (b0 >= 0 && b0 < payload.length) {
-				payload[b0] = new ItemStack(nbt1);
+				payload[b0] = ItemStackUtil.itemStackFrom(nbt1);
 			}
 		}
 	}

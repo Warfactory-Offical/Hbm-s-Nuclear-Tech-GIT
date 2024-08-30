@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -54,7 +55,7 @@ public class BlockMushHuge extends Block implements IItemHazard {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(ModBlocks.mush), 1, 0);
+		return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.mush), 1, 0);
 	}
 	
 }

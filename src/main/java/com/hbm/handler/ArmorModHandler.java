@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -165,7 +166,7 @@ public class ArmorModHandler {
 			
 			NBTTagCompound cmp = mods.getCompoundTag(MOD_SLOT_KEY + i);
 			
-			ItemStack stack = new ItemStack(cmp);
+			ItemStack stack = ItemStackUtil.itemStackFrom(cmp);
 			
 			slots[i] = stack;
 		}
@@ -180,7 +181,7 @@ public class ArmorModHandler {
 		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
 		
 		NBTTagCompound cmp = mods.getCompoundTag(MOD_SLOT_KEY + slot);
-		ItemStack stack = new ItemStack(cmp);
+		ItemStack stack = ItemStackUtil.itemStackFrom(cmp);
 		
 		return stack;
 	}

@@ -1,4 +1,5 @@
 package com.hbm.items.meta;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
@@ -44,7 +45,7 @@ public class MetaItem<
     }
 
     public ItemStack getItemStack(EMaterial material, int amount) {
-        return new ItemStack(this, amount, Arrays.asList(materials).indexOf(material));
+        return ItemStackUtil.itemStackFrom(this, amount, Arrays.asList(materials).indexOf(material));
     }
 
     public ItemStack getItemStack(EMaterial material) {
@@ -55,7 +56,7 @@ public class MetaItem<
     public void getSubItems(@NotNull CreativeTabs tab, @NotNull NonNullList<ItemStack> items) {
         if (isInCreativeTab(tab)) {
             for (int i = 0; i < materials.length; ++i) {
-                items.add(new ItemStack(this, 1, i));
+                items.add(ItemStackUtil.itemStackFrom(this, 1, i));
             }
         }
     }
@@ -81,6 +82,10 @@ public class MetaItem<
                             )
                     );
         }
+    }
+
+    public MetaItem<EShape, EMaterial> setCreativeTab(CreativeTabs creativeTab) {
+        return (MetaItem<EShape, EMaterial>) super.setCreativeTab(creativeTab);
     }
 
 }

@@ -1,4 +1,5 @@
 package com.hbm.handler.crt;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.inventory.RecipesCommon;
 import crafttweaker.IAction;
@@ -58,7 +59,7 @@ public class Assembler {
 				return;
 			}
 			RecipesCommon.AStack[] compInputs = NTMCraftTweaker.IIngredientsToAStack(this.inputs);
-			AssemblerRecipes.makeRecipe(new ComparableStack(this.output), compInputs, this.duration);
+			AssemblerRecipes.makeRecipe(ItemStackUtil.comparableStackFrom(this.output), compInputs, this.duration);
 		}
 		@Override
 		public String describe(){
@@ -91,7 +92,7 @@ public class Assembler {
 				CraftTweakerAPI.logError("ERROR Assembler output item can not be an empty/air stack!");
 				return;
 			}
-			AssemblerRecipes.removeRecipe(new ComparableStack(this.output));
+			AssemblerRecipes.removeRecipe(ItemStackUtil.comparableStackFrom(this.output));
 		}
 		@Override
 		public String describe(){

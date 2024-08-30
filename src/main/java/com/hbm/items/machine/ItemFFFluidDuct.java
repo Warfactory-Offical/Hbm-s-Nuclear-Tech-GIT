@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -105,7 +106,7 @@ public class ItemFFFluidDuct extends Item {
 	}
 	
 	public static ItemStack getStackFromFluid(Fluid f, int amount){
-		ItemStack stack = new ItemStack(ModItems.ff_fluid_duct, amount, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.ff_fluid_duct, amount, 0);
 		if(f == null)
 			return stack;
 		stack.setTagCompound(new NBTTagCompound());

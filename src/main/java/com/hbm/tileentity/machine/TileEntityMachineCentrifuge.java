@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 import com.hbm.inventory.CentrifugeRecipes;
@@ -172,7 +173,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 			//Alcater: No idea - "for(int i = 0; i < 1; i++)" should be a illegal
 			if(inventory.getStackInSlot(0).isEmpty())
 			{
-				//inventory.setStackInSlot(0, new ItemStack(inventory.getStackInSlot(i).getItem().setFull3D()));
+				//inventory.setStackInSlot(0, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem().setFull3D()));
 				inventory.setStackInSlot(0, ItemStack.EMPTY);
 			}else{
 				inventory.getStackInSlot(0).shrink(1);

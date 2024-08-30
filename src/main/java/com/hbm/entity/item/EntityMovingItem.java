@@ -1,4 +1,5 @@
 package com.hbm.entity.item;
+import com.hbm.util.ItemStackUtil;
 
 import api.hbm.block.IConveyorItem;
 import api.hbm.block.IEnterableBlock;
@@ -35,7 +36,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
     public ItemStack getItemStack() {
 
         ItemStack stack = this.getDataManager().get(STACK);
-        return stack == null ? new ItemStack(Blocks.STONE) : stack;
+        return stack == null ? ItemStackUtil.itemStackFrom(Blocks.STONE) : stack;
     }
 
     public boolean canBeCollidedWith() {
@@ -62,7 +63,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 
         NBTTagCompound compound = nbt.getCompoundTag("Item");
-        this.setItemStack(new ItemStack(compound));
+        this.setItemStack(ItemStackUtil.itemStackFrom(compound));
 
         ItemStack stack = this.getDataManager().get(STACK);
 

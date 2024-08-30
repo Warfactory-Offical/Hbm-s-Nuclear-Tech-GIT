@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -171,7 +172,7 @@ public class DummyBlockVault extends BlockContainer implements IDummy, IBomb, IR
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.vault_door);
+		return ItemStackUtil.itemStackFrom(ModBlocks.vault_door);
 	}
 
 	@Override

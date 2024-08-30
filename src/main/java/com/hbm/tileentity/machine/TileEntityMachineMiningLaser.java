@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -267,7 +268,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 			state = Blocks.REDSTONE_ORE.getDefaultState();
 		}
 
-		ItemStack stack = new ItemStack(b, 1, b.getMetaFromState(state));
+		ItemStack stack = ItemStackUtil.itemStackFrom(b, 1, b.getMetaFromState(state));
 
 		if(stack != null && stack.getItem() != null) {
 			if(hasCrystallizer()) {

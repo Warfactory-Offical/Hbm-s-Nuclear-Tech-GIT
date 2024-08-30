@@ -37,7 +37,7 @@ public class HazardTransformerRadiationContainer extends HazardTransformerBase {
 
 			for(int i = 0; i < 104; i++) {
 				NBTTagCompound slotTag = stack.getTagCompound().getCompoundTag("slot"+i);
-				ItemStack held = new ItemStack(slotTag);
+				ItemStack held = ItemStackUtil.itemStackFrom(slotTag);
 
 
 				if(held != null) {

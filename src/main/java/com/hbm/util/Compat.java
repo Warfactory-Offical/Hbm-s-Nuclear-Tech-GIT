@@ -1,4 +1,5 @@
 package com.hbm.util;
+import com.hbm.util.ItemStackUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -31,7 +32,7 @@ public class Compat {
 
 					if(stackTag instanceof NBTTagCompound) {
 						NBTTagCompound compound = (NBTTagCompound) stackTag;
-						ItemStack stack = new ItemStack(compound);
+						ItemStack stack = ItemStackUtil.itemStackFrom(compound);
 
 						int count = nbt.getInteger("@" + i);
 						stack.setCount(count);

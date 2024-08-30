@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +132,7 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 			if(inventory.getStackInSlot(1).isEmpty())
 			{
 				if(containerItem != null)
-					inventory.setStackInSlot(1, new ItemStack(containerItem));
+					inventory.setStackInSlot(1, ItemStackUtil.itemStackFrom(containerItem));
 				else
 					inventory.setStackInSlot(1, ItemStack.EMPTY);
 			}

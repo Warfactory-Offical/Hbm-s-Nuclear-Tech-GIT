@@ -1,4 +1,5 @@
 package com.hbm.packet;
+import com.hbm.util.ItemStackUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -60,7 +61,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 					int count = buf.readInt();
 					int id = buf.readInt();
 					int meta = buf.readInt();
-					ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
+					ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
 					try {
 						stack.setTagCompound(CompressedStreamTools.read(new ByteBufInputStream(buf), new NBTSizeTracker(2097152L)));
 					} catch(IOException e) {
@@ -78,14 +79,14 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 					int count = buf.readInt();
 					int id = buf.readInt();
 					int meta = buf.readInt();
-					ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
-					inputs[j] = new ComparableStack(stack);
+					ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
+					inputs[j] = ItemStackUtil.comparableStackFrom(stack);
 				}
 			}
 			int id = buf.readInt();
 			int meta = buf.readInt();
 			int count = buf.readInt();
-			ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
+			ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
 			ComparableStack output;
 			byte type = buf.readByte();
 			if(type == 1){
@@ -96,7 +97,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 				}
 				output = new NbtComparableStack(stack);
 			} else {
-				output = new ComparableStack(stack);
+				output = ItemStackUtil.comparableStackFrom(stack);
 			}
 			
 			int time = buf.readInt();
@@ -111,7 +112,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 			int id = buf.readInt();
 			int meta = buf.readInt();
 			int count = buf.readInt();
-			ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
+			ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
 			ComparableStack hideStack;
 			byte type = buf.readByte();
 			if(type == 1){
@@ -122,7 +123,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 				}
 				hideStack = new NbtComparableStack(stack);
 			} else {
-				hideStack = new ComparableStack(stack);
+				hideStack = ItemStackUtil.comparableStackFrom(stack);
 			}
 			hidden.add(hideStack);
 		}

@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -66,14 +67,14 @@ public class ItemFluidIcon extends Item {
 	}
 	
 	public static ItemStack getStack(Fluid f){
-		ItemStack stack = new ItemStack(ModItems.fluid_icon, 1, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_icon, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setString("type", f.getName());
 		return stack;
 	}
 	
 	public static ItemStack getStackWithQuantity(Fluid f, int amount){
-		ItemStack stack = new ItemStack(ModItems.fluid_icon, 1, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_icon, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setString("type", f.getName());
 		stack.getTagCompound().setInteger("fill", amount);
@@ -81,7 +82,7 @@ public class ItemFluidIcon extends Item {
 	}
 
 	public static ItemStack getStackWithQuantity(FluidStack f){
-		ItemStack stack = new ItemStack(ModItems.fluid_icon, 1, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_icon, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setString("type", f.getFluid().getName());
 		stack.getTagCompound().setInteger("fill", f.amount);

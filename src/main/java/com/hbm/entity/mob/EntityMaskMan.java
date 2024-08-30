@@ -1,4 +1,5 @@
 package com.hbm.entity.mob;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -142,8 +143,8 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
 		if(!world.isRemote){
 
-			ItemStack mask = new ItemStack(ModItems.gas_mask_m65);
-			ArmorUtil.installGasMaskFilter(mask, new ItemStack(ModItems.gas_mask_filter_combo));
+			ItemStack mask = ItemStackUtil.itemStackFrom(ModItems.gas_mask_m65);
+			ArmorUtil.installGasMaskFilter(mask, ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_combo));
 			
 			this.entityDropItem(mask, 0F);
 			this.dropItem(ModItems.coin_maskman, 1);

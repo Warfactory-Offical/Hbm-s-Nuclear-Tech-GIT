@@ -1,4 +1,5 @@
 package com.hbm.render.entity;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -120,7 +121,7 @@ public class MultiCloudRenderer extends Render<EntityModFX> {
 		if (fx.particleAge < fx.maxAge / 8 && fx.particleAge >= 0) {
 			item = textureItems[0];
 		}
-		tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(item, 1, meta), null, null).getParticleTexture();
+		tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(item, 1, meta), null, null).getParticleTexture();
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

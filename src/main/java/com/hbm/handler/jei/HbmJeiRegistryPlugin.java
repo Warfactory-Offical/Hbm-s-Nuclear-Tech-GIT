@@ -1,4 +1,5 @@
 package com.hbm.handler.jei;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +49,7 @@ public class HbmJeiRegistryPlugin implements IRecipeRegistryPlugin {
 					}).map(recipe -> new AssemblerRecipeWrapper(recipe.getKey().toStack(), recipe.getValue(), AssemblerRecipes.time.get(recipe.getKey()))).collect(Collectors.toList());
 					return list;
 				} else if(focus.getMode() == Mode.OUTPUT) {
-					return (List<T>) AssemblerRecipes.recipes.entrySet().stream().filter(recipe -> (new ComparableStack(recipe.getKey().toStack()).matchesRecipe(stack, true))).map(recipe -> new AssemblerRecipeWrapper(recipe.getKey().toStack(), recipe.getValue(), AssemblerRecipes.time.get(recipe.getKey()))).collect(Collectors.toList());
+					return (List<T>) AssemblerRecipes.recipes.entrySet().stream().filter(recipe -> (ItemStackUtil.comparableStackFrom(recipe.getKey().toStack()).matchesRecipe(stack, true))).map(recipe -> new AssemblerRecipeWrapper(recipe.getKey().toStack(), recipe.getValue(), AssemblerRecipes.time.get(recipe.getKey()))).collect(Collectors.toList());
 				}
 			}
 		}

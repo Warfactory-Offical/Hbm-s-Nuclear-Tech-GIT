@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -278,11 +279,11 @@ public class MachineBoiler extends BlockContainer {
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		if (this == ModBlocks.machine_boiler_on || this == ModBlocks.machine_boiler_off)
-			return new ItemStack(ModBlocks.machine_boiler_off);
+			return ItemStackUtil.itemStackFrom(ModBlocks.machine_boiler_off);
 		if (this == ModBlocks.machine_boiler_electric_on || this == ModBlocks.machine_boiler_electric_off)
-			return new ItemStack(ModBlocks.machine_boiler_electric_off);
+			return ItemStackUtil.itemStackFrom(ModBlocks.machine_boiler_electric_off);
 		if (this == ModBlocks.machine_boiler_rtg_on || this == ModBlocks.machine_boiler_rtg_off)
-			return new ItemStack(ModBlocks.machine_boiler_rtg_off);
+			return ItemStackUtil.itemStackFrom(ModBlocks.machine_boiler_rtg_off);
 		return super.getPickBlock(state, target, world, pos, player);
 	}
 

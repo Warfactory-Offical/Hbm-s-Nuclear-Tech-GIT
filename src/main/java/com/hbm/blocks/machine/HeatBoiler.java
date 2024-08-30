@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class HeatBoiler extends BlockDummyable implements ILookOverlay, ITooltip
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.heat_boiler);
+        return ItemStackUtil.itemStackFrom(ModBlocks.heat_boiler);
     }
 
     @Override

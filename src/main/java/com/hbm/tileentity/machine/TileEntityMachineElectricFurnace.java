@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineElectricFurnace;
 import com.hbm.lib.Library;
@@ -156,7 +157,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 			{
 				if(inventory.getStackInSlot(2).isEmpty())
 				{
-					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem()));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}

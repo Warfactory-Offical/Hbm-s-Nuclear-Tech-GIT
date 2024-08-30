@@ -1,4 +1,5 @@
 package com.hbm.entity.mob.botprime;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -149,7 +150,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 			List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(200, 200, 200));
 			for(EntityPlayer player : players) {
 				AdvancementManager.grantAchievement(player, AdvancementManager.bossWorm);
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.coin_worm));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.coin_worm));
 			}
 		}
 		

@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -38,7 +39,7 @@ public class BlockBedrockOre extends Block implements IDrillInteraction {
 		if(drop == null)
 			return null;
 		
-		return world.rand.nextInt(50) == 0 ? new ItemStack(drop) : null;
+		return world.rand.nextInt(50) == 0 ? ItemStackUtil.itemStackFrom(drop) : null;
 	}
 
 	@Override

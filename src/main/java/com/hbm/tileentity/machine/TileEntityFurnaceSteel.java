@@ -148,7 +148,7 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("lastItem");
 			if(b0 >= 0 && b0 < lastItems.length) {
-				lastItems[b0] = new ItemStack(nbt1);
+				lastItems[b0] = ItemStackUtil.itemStackFrom(nbt1);
 			
 			}
 		}

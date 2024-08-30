@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class MachineFENSU extends BlockDummyableMBB implements ILookOverlay {
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
 		if(!player.capabilities.isCreativeMode && !world.isRemote && willHarvest) {
 			
-			ItemStack drop = new ItemStack(this);
+			ItemStack drop = ItemStackUtil.itemStackFrom(this);
 			int[] posCore = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
 			TileEntity te;
 			if(posCore == null){

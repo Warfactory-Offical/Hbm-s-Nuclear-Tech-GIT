@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -253,7 +254,7 @@ public class MachineDiFurnace extends BlockContainer {
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(Item.getItemFromBlock(ModBlocks.machine_difurnace_off));
+		return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.machine_difurnace_off));
 	}
 
 	@Override

@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.LinkedHashMap;
 import java.util.HashMap;
@@ -18,11 +19,11 @@ public class WasteDrumRecipes {
 	public static void registerRecipes() {
 
 		//input, output
-		addRecipe(ModItems.waste_uranium_hot, new ItemStack(ModItems.waste_uranium, 1));
-		addRecipe(ModItems.waste_thorium_hot, new ItemStack(ModItems.waste_thorium, 1));
-		addRecipe(ModItems.waste_plutonium_hot, new ItemStack(ModItems.waste_plutonium, 1));
-		addRecipe(ModItems.waste_mox_hot, new ItemStack(ModItems.waste_mox, 1));
-		addRecipe(ModItems.waste_schrabidium_hot, new ItemStack(ModItems.waste_schrabidium, 1));
+		addRecipe(ModItems.waste_uranium_hot, ItemStackUtil.itemStackFrom(ModItems.waste_uranium, 1));
+		addRecipe(ModItems.waste_thorium_hot, ItemStackUtil.itemStackFrom(ModItems.waste_thorium, 1));
+		addRecipe(ModItems.waste_plutonium_hot, ItemStackUtil.itemStackFrom(ModItems.waste_plutonium, 1));
+		addRecipe(ModItems.waste_mox_hot, ItemStackUtil.itemStackFrom(ModItems.waste_mox, 1));
+		addRecipe(ModItems.waste_schrabidium_hot, ItemStackUtil.itemStackFrom(ModItems.waste_schrabidium, 1));
 	}
 
 	public static void addRecipe(ItemStack input, ItemStack output){

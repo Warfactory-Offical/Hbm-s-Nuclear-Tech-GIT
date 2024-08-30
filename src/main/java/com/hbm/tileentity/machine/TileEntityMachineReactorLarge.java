@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -450,7 +451,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			
 			//Meteorite sword
 			if(coreHeat > 0 && inventory.getStackInSlot(4).getItem() == ModItems.meteorite_sword_bred)
-				inventory.setStackInSlot(4, new ItemStack(ModItems.meteorite_sword_irradiated));
+				inventory.setStackInSlot(4, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_irradiated));
 			
 			//Load fuel
 			if(getFuelContent(inventory.getStackInSlot(4), type) > 0) {
@@ -465,7 +466,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 						
 					} else if(inventory.getStackInSlot(5).isEmpty()) {
 						
-						inventory.setStackInSlot(5, new ItemStack(inventory.getStackInSlot(4).getItem().getContainerItem()));
+						inventory.setStackInSlot(5, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(4).getItem().getContainerItem()));
 						inventory.getStackInSlot(4).shrink(1);
 						fuel += cont;
 						
@@ -491,7 +492,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 					if(inventory.getStackInSlot(7).isEmpty()) {
 
 						waste -= absorbed;
-						inventory.setStackInSlot(7, new ItemStack(getWaste(inventory.getStackInSlot(6).getItem(), type)));
+						inventory.setStackInSlot(7, ItemStackUtil.itemStackFrom(getWaste(inventory.getStackInSlot(6).getItem(), type)));
 						inventory.getStackInSlot(6).shrink(1);
 						
 					} else if(inventory.getStackInSlot(7).getItem() == getWaste(inventory.getStackInSlot(6).getItem(), type) && inventory.getStackInSlot(7).getCount() < inventory.getStackInSlot(7).getMaxStackSize()) {
@@ -613,7 +614,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			}
 			
 			for(int i = 0; i < chest.getSlots(); i ++){
-				if(chest.insertItem(i, new ItemStack(waste), false).isEmpty()){
+				if(chest.insertItem(i, ItemStackUtil.itemStackFrom(waste), false).isEmpty()){
 					this.waste -= wSize;
 					return;
 				}
@@ -646,8 +647,8 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			
 			for(int i = 0; i < chest.getSizeInventory(); i++) {
 				
-				if(chest.isItemValidForSlot(i, new ItemStack(waste)) && chest.getStackInSlot(i) != null && chest.getStackInSlot(i).getItem() == waste && chest.getStackInSlot(i).stackSize < chest.getStackInSlot(i).getMaxStackSize()) {
-					chest.setInventorySlotContents(i, new ItemStack(waste, chest.getStackInSlot(i).stackSize + 1));
+				if(chest.isItemValidForSlot(i, ItemStackUtil.itemStackFrom(waste)) && chest.getStackInSlot(i) != null && chest.getStackInSlot(i).getItem() == waste && chest.getStackInSlot(i).stackSize < chest.getStackInSlot(i).getMaxStackSize()) {
+					chest.setInventorySlotContents(i, ItemStackUtil.itemStackFrom(waste, chest.getStackInSlot(i).stackSize + 1));
 					this.waste -= wSize;
 					return;
 				}
@@ -655,8 +656,8 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			
 			for(int i = 0; i < chest.getSizeInventory(); i++) {
 				
-				if(chest.isItemValidForSlot(i, new ItemStack(waste)) && chest.getStackInSlot(i) == null) {
-					chest.setInventorySlotContents(i, new ItemStack(waste));
+				if(chest.isItemValidForSlot(i, ItemStackUtil.itemStackFrom(waste)) && chest.getStackInSlot(i) == null) {
+					chest.setInventorySlotContents(i, ItemStackUtil.itemStackFrom(waste));
 					this.waste -= wSize;
 					return;
 				}
@@ -685,7 +686,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 									chest.setStackInSlot(i, ItemStack.EMPTY);
 								fuel += cont;
 								if(chest.getStackInSlot(i).isEmpty() && container != null)
-									chest.setStackInSlot(i, new ItemStack(container));
+									chest.setStackInSlot(i, ItemStackUtil.itemStackFrom(container));
 							}
 						}
 					}
@@ -705,7 +706,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 								fuel += cont;
 								
 								if(chest.getStackInSlot(i).isEmpty() && container != null)
-									chest.setStackInSlot(i, new ItemStack(container));
+									chest.setStackInSlot(i, ItemStackUtil.itemStackFrom(container));
 							}
 						}
 					}
@@ -914,11 +915,21 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		int value;
 		ReactorFuelType type;
 		Item item;
-		
-		public ReactorFuelEntry(int value, ReactorFuelType type, Item item) {
+		int meta; // TODO: use this motherfucker
+
+		public ReactorFuelEntry(int value, ReactorFuelType type, Item item, int meta) {
 			this.value = value;
 			this.type = type;
 			this.item = item;
+			this.meta = meta;
+		}
+
+		public ReactorFuelEntry(int value, ReactorFuelType type, ItemStack stack) {
+			this(value, type, stack.getItem(), stack.getMetadata());
+		}
+
+		public ReactorFuelEntry(int value, ReactorFuelType type, Item item) {
+			this(value, type, item, 0);
 		}
 	}
 	
@@ -941,9 +952,12 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	//Alcater: seems to be done now
 	static List<ReactorFuelEntry> fuels = new ArrayList<ReactorFuelEntry>();
 	static List<ReactorWasteEntry> wastes = new ArrayList<ReactorWasteEntry>();
-	
+
 	public static void registerFuelEntry(int nuggets, ReactorFuelType type, Item fuel) {
-		
+		fuels.add(new ReactorFuelEntry(nuggets, type, fuel));
+	}
+
+	public static void registerFuelEntry(int nuggets, ReactorFuelType type, ItemStack fuel) {
 		fuels.add(new ReactorFuelEntry(nuggets, type, fuel));
 	}
 	

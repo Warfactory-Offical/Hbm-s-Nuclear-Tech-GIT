@@ -1,4 +1,5 @@
 package com.hbm.crafting.handlers;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.machine.ItemRBMKRod;
 
@@ -42,7 +43,7 @@ public class RBMKFuelCraftingHandler extends net.minecraftforge.registries.IForg
 				return ItemStack.EMPTY;
 			
 			if(ItemRBMKRod.getHullHeat(stack) < 50 && ItemRBMKRod.getCoreHeat(stack) < 50) {
-				ItemStack result = new ItemStack(rod.pellet, 8);
+				ItemStack result = ItemStackUtil.itemStackFrom(rod.pellet, 8);
 				int enrichment = 4 - MathHelper.clamp((int)Math.ceil(ItemRBMKRod.getEnrichment(stack) * 5 - 1), 0, 4);
 				int meta = enrichment + (ItemRBMKRod.getPoisonLevel(stack) >= 0.5D ? 5 : 0);
 				result.setItemDamage(meta);

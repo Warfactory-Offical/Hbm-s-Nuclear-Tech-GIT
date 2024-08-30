@@ -1,5 +1,6 @@
 package api.hbm.energy;
 
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,6 +44,6 @@ public interface IBatteryItem {
 
 	/** Returns an empty battery stack from the passed Item */
 	public static ItemStack emptyBattery(Item item) {
-		return item instanceof IBatteryItem ? emptyBattery(new ItemStack(item)) : null;
+		return item instanceof IBatteryItem ? emptyBattery(ItemStackUtil.itemStackFrom(item)) : null;
 	}
 }

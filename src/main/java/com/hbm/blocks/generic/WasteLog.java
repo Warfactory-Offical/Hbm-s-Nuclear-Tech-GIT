@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -59,13 +60,13 @@ public class WasteLog extends BlockRotatedPillar implements IItemHazard {
 		Random rand = world instanceof World ? ((World)world).rand : RANDOM;
 		if(this == ModBlocks.waste_log){
 			if(rand.nextInt(1000) == 0) {
-		        drops.add(new ItemStack(ModItems.burnt_bark));
+		        drops.add(ItemStackUtil.itemStackFrom(ModItems.burnt_bark));
 		        return;
 		    } else if(rand.nextInt(4) == 0) {
-		    	drops.add(new ItemStack(Item.getItemFromBlock(ModBlocks.waste_log)));
+		    	drops.add(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.waste_log)));
 		        return;
 		    } else {
-		    	drops.add(new ItemStack(Items.COAL, 1, 1));
+		    	drops.add(ItemStackUtil.itemStackFrom(Items.COAL, 1, 1));
 		        return;
 		    }
     	}

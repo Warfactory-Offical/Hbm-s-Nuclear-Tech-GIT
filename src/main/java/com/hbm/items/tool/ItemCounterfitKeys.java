@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class ItemCounterfitKeys extends Item {
 			TileEntityLockableBase locked = (TileEntityLockableBase) te;
 			
 			if(locked.isLocked()) {
-				ItemStack st = new ItemStack(ModItems.key_fake);
+				ItemStack st = ItemStackUtil.itemStackFrom(ModItems.key_fake);
 				ItemKeyPin.setPins(st, locked.getPins());
 				
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, st.copy());

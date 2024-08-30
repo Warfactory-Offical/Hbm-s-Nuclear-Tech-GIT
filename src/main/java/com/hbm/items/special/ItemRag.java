@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -33,9 +34,9 @@ public class ItemRag extends Item {
 			if(entityItem.isInWater() || entityItem.world.getBlockState(new BlockPos((int)Math.floor(entityItem.posX), (int)Math.floor(entityItem.posY), (int)Math.floor(entityItem.posZ))).getMaterial() == Material.WATER) {
 				ItemStack stack = entityItem.getItem();
 				if(stack.getItem() == ModItems.rag)
-					entityItem.setItem(new ItemStack(ModItems.rag_damp, stack.getCount()));
+					entityItem.setItem(ItemStackUtil.itemStackFrom(ModItems.rag_damp, stack.getCount()));
 				else 
-					entityItem.setItem(new ItemStack(ModItems.mask_damp, stack.getCount()));
+					entityItem.setItem(ItemStackUtil.itemStackFrom(ModItems.mask_damp, stack.getCount()));
 				return true;
 			}
 		}
@@ -49,9 +50,9 @@ public class ItemRag extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 		if((System.currentTimeMillis() % 120000) < 60000){
 			if(stack.getItem() == ModItems.rag)
-				player.dropItem(new ItemStack(ModItems.rag_piss, 1, 0), false);
+				player.dropItem(ItemStackUtil.itemStackFrom(ModItems.rag_piss, 1, 0), false);
 			else
-				player.dropItem(new ItemStack(ModItems.mask_piss, 1, 0), false);
+				player.dropItem(ItemStackUtil.itemStackFrom(ModItems.mask_piss, 1, 0), false);
 			stack.shrink(1);
 		}
 		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));

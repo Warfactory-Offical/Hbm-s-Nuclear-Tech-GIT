@@ -1,4 +1,5 @@
 package com.hbm.render;
+import com.hbm.util.ItemStackUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -175,7 +176,7 @@ public class RenderHelper {
 	
 	
 	public static TextureAtlasSprite getItemTexture(Item item, int meta){
-		return getItemTexture(new ItemStack(item, 1, meta));
+		return getItemTexture(ItemStackUtil.itemStackFrom(item, 1, meta));
 	}
 	
 	public static TextureAtlasSprite getItemTexture(Item item){

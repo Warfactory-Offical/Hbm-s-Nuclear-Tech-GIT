@@ -1,4 +1,5 @@
 package com.hbm.render.item;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -22,7 +23,7 @@ public class ChemTemplateRender extends TileEntityItemStackRenderer {
 		if (stack.getItem() instanceof ItemChemistryTemplate && type == TransformType.GUI) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				GL11.glTranslated(0.5, 0.5, 0);
-				ItemStack renderStack = new ItemStack(ModItems.chemistry_icon, 1, stack.getItemDamage());
+				ItemStack renderStack = ItemStackUtil.itemStackFrom(ModItems.chemistry_icon, 1, stack.getItemDamage());
 				Minecraft.getMinecraft().getRenderItem().renderItem(renderStack, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(renderStack, Minecraft.getMinecraft().world, Minecraft.getMinecraft().player));
 			} else {
 				GL11.glTranslated(0.5, 0.5, 0);

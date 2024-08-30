@@ -1,4 +1,5 @@
 package com.hbm.items.tool;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -42,11 +43,11 @@ public class ItemMultitoolTool extends ItemTool {
 	        world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 2.0F, 1.0F);
 	        
 			if(this == ModItems.multitool_dig) {
-				ItemStack item = new ItemStack(ModItems.multitool_silk, 1, stack.getItemDamage());
+				ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_silk, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.SILK_TOUCH, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if (this == ModItems.multitool_silk) {
-				ItemStack item = new ItemStack(ModItems.multitool_ext, 1, stack.getItemDamage());
+				ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_ext, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.FIRE_ASPECT, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			}

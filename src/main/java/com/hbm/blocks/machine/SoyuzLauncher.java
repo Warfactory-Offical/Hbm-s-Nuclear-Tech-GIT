@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -84,10 +85,10 @@ public class SoyuzLauncher extends BlockDummyable {
 				Item item = Item.getItemFromBlock(this);
 
 				if(stack == null) {
-					pl.inventory.mainInventory.set(pl.inventory.currentItem, new ItemStack(this));
+					pl.inventory.mainInventory.set(pl.inventory.currentItem, ItemStackUtil.itemStackFrom(this));
 				} else {
 					if(stack.getItem() != item || stack.getCount() == stack.getMaxStackSize()) {
-						pl.inventory.addItemStackToInventory(new ItemStack(this));
+						pl.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(this));
 					} else {
 						pl.getHeldItem(hand).grow(1);
 					}
@@ -167,12 +168,12 @@ public class SoyuzLauncher extends BlockDummyable {
 			int y = pos.getY();
 			int z = pos.getZ();
 			for(int l = 0; l < 10; l++)
-				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModBlocks.struct_launcher, 38)));
+				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher, 38)));
 			for(int l = 0; l < 8; l++)
-				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModBlocks.concrete_smooth, 41)));
+				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.concrete_smooth, 41)));
 			for(int l = 0; l < 6; l++)
-				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModBlocks.struct_scaffold, 64)));
-			world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModBlocks.struct_scaffold, 53)));
+				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.struct_scaffold, 64)));
+			world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.struct_scaffold, 53)));
 			world.notifyNeighborsOfStateChange(pos, state.getBlock(), true);
 		}
 		super.breakBlock(world, pos, state);

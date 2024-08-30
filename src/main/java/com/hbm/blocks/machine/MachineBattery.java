@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +133,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
 		if(!player.capabilities.isCreativeMode && !world.isRemote && willHarvest) {
 			
-			ItemStack drop = new ItemStack(this);
+			ItemStack drop = ItemStackUtil.itemStackFrom(this);
 			TileEntity te = world.getTileEntity(pos);
 			if (te instanceof TileEntityMachineBattery) {
 				TileEntityMachineBattery battery = (TileEntityMachineBattery) te;

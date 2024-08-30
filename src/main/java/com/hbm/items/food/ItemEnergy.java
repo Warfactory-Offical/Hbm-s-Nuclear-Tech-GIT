@@ -1,4 +1,5 @@
 package com.hbm.items.food;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -90,12 +91,12 @@ public class ItemEnergy extends Item {
 				player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 30 * 20, 2));
 				ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
 				if(!player.capabilities.isCreativeMode) {
-					Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_nuka));
+					Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_nuka));
 					if(stack.isEmpty()) {
-						return new ItemStack(ModItems.bottle_empty);
+						return ItemStackUtil.itemStackFrom(ModItems.bottle_empty);
 					}
 
-					Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle_empty));
+					Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle_empty));
 				}
 			}
 			if(this == ModItems.bottle_nuka) {
@@ -104,12 +105,12 @@ public class ItemEnergy extends Item {
 				player.addPotionEffect(new PotionEffect(MobEffects.HASTE, 30 * 20, 1));
 				ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
 				if(!player.capabilities.isCreativeMode) {
-					Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_nuka));
+					Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_nuka));
 					if(stack.isEmpty()) {
-						return new ItemStack(ModItems.bottle_empty);
+						return ItemStackUtil.itemStackFrom(ModItems.bottle_empty);
 					}
 
-					Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle_empty));
+					Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle_empty));
 				}
 			}
 			if(this == ModItems.bottle_sparkle) {
@@ -120,13 +121,13 @@ public class ItemEnergy extends Item {
 				player.addPotionEffect(new PotionEffect(MobEffects.HASTE, 120 * 20, 1));
 				ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
 				if(!player.capabilities.isCreativeMode){
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_sparkle));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_sparkle));
             		if (stack.isEmpty())
                 	{
-                    	return new ItemStack(ModItems.bottle_empty);
+                    	return ItemStackUtil.itemStackFrom(ModItems.bottle_empty);
                 	}
 
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle_empty));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle_empty));
                 }
 			}
 			if(this == ModItems.bottle_quantum) {
@@ -136,12 +137,12 @@ public class ItemEnergy extends Item {
 				player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 30 * 20, 1));
 				ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 15.0F);
 				if(!player.capabilities.isCreativeMode) {
-					Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_quantum));
+					Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_quantum));
 					if(stack.isEmpty()) {
-						return new ItemStack(ModItems.bottle_empty);
+						return ItemStackUtil.itemStackFrom(ModItems.bottle_empty);
 					}
 
-					Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle_empty));
+					Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle_empty));
 				}
 			}
 			
@@ -156,13 +157,13 @@ public class ItemEnergy extends Item {
                 ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 15.0F);
                 
                 if(!player.capabilities.isCreativeMode){
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_rad));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_rad));
             		if (stack.isEmpty())
                 	{
-                    	return new ItemStack(ModItems.bottle_empty);
+                    	return ItemStackUtil.itemStackFrom(ModItems.bottle_empty);
                 	}
 
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle_empty));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle_empty));
                 }
         	}
 			
@@ -174,13 +175,13 @@ public class ItemEnergy extends Item {
                 player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 30 * 20, 2));
                 
                 if(!player.capabilities.isCreativeMode){
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_korl));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_korl));
             		if (stack.isEmpty())
                 	{
-                    	return new ItemStack(ModItems.bottle2_empty);
+                    	return ItemStackUtil.itemStackFrom(ModItems.bottle2_empty);
                 	}
 
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle2_empty));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle2_empty));
                 }
         	}
 			
@@ -192,13 +193,13 @@ public class ItemEnergy extends Item {
                 player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 30 * 20, 2));
                 
                 if(!player.capabilities.isCreativeMode){
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_fritz));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_fritz));
             		if (stack.isEmpty())
                 	{
-                    	return new ItemStack(ModItems.bottle2_empty);
+                    	return ItemStackUtil.itemStackFrom(ModItems.bottle2_empty);
                 	}
 
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle2_empty));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle2_empty));
                 }
         	}
 			
@@ -210,13 +211,13 @@ public class ItemEnergy extends Item {
                 player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 120 * 20, 2));
                 
                 if(!player.capabilities.isCreativeMode){
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_korl));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_korl));
             		if (stack.isEmpty())
                 	{
-                    	return new ItemStack(ModItems.bottle2_empty);
+                    	return ItemStackUtil.itemStackFrom(ModItems.bottle2_empty);
                 	}
 
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle2_empty));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle2_empty));
                 }
         	}
 			
@@ -228,13 +229,13 @@ public class ItemEnergy extends Item {
                 player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 120 * 20, 2));
                 
                 if(!player.capabilities.isCreativeMode){
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_fritz));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_fritz));
             		if (stack.isEmpty())
                 	{
-                    	return new ItemStack(ModItems.bottle2_empty);
+                    	return ItemStackUtil.itemStackFrom(ModItems.bottle2_empty);
                 	}
 
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle2_empty));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle2_empty));
                 }
         	}
 			
@@ -248,17 +249,17 @@ public class ItemEnergy extends Item {
                 
                 if(!player.capabilities.isCreativeMode){
                 	if(worldIn.rand.nextInt(10) == 0){
-            			Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_star));
+            			Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_star));
                 	} else {
-            			Library.addToInventoryOrDrop(player, new ItemStack(ModItems.cap_sunset));
+            			Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.cap_sunset));
                 	}
             		
             		if (stack.isEmpty())
                 	{
-                    	return new ItemStack(ModItems.bottle2_empty);
+                    	return ItemStackUtil.itemStackFrom(ModItems.bottle2_empty);
                 	}
 
-                	Library.addToInventoryOrDrop(player, new ItemStack(ModItems.bottle2_empty));
+                	Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.bottle2_empty));
                 }
         	}
 			
@@ -269,9 +270,9 @@ public class ItemEnergy extends Item {
 
 			if(!player.capabilities.isCreativeMode)
 				if(this == ModItems.can_creature || this == ModItems.can_mrsugar || this == ModItems.can_overcharge || this == ModItems.can_redbomb || this == ModItems.can_smart || this == ModItems.can_luna || this == ModItems.can_bepis || this == ModItems.can_breen) {
-					Library.addToInventoryOrDrop(player, new ItemStack(ModItems.ring_pull));
+					Library.addToInventoryOrDrop(player, ItemStackUtil.itemStackFrom(ModItems.ring_pull));
 					if(stack.isEmpty()) {
-						return new ItemStack(ModItems.can_empty);
+						return ItemStackUtil.itemStackFrom(ModItems.can_empty);
 					}
 				}
 			player.inventoryContainer.detectAndSendChanges();

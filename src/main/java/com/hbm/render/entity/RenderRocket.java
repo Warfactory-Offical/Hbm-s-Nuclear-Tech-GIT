@@ -1,4 +1,5 @@
 package com.hbm.render.entity;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.entity.projectile.EntityRocket;
 import com.hbm.items.ModItems;
@@ -68,7 +69,7 @@ public class RenderRocket extends Render<EntityRocket> {
 
     public ItemStack getStackToRender(EntityRocket entityIn)
     {
-        return new ItemStack(this.item);
+        return ItemStackUtil.itemStackFrom(this.item);
     }
 
     /**

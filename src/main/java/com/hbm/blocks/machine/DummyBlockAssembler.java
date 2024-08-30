@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -82,7 +83,7 @@ public class DummyBlockAssembler extends DummyOldBase {
 	}
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(Item.getItemFromBlock(ModBlocks.machine_assembler));
+		return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.machine_assembler));
 	}
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

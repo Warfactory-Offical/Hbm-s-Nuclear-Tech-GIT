@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -147,7 +148,7 @@ public class ItemBattery extends Item implements IBatteryItem {
     public static ItemStack getEmptyBattery(Item item) {
     	
     	if(item instanceof ItemBattery) {
-    		ItemStack stack = new ItemStack(item);
+    		ItemStack stack = ItemStackUtil.itemStackFrom(item);
     		stack.setTagCompound(new NBTTagCompound());;
     		stack.getTagCompound().setLong("charge", 0);
     		//stack.setItemDamage(100);
@@ -160,13 +161,13 @@ public class ItemBattery extends Item implements IBatteryItem {
     public static ItemStack getFullBattery(Item item) {
     	
     	if(item instanceof ItemBattery) {
-    		ItemStack stack = new ItemStack(item);
+    		ItemStack stack = ItemStackUtil.itemStackFrom(item);
     		stack.setTagCompound(new NBTTagCompound());;
     		stack.getTagCompound().setLong("charge", ((ItemBattery)item).getMaxCharge());
     		return stack.copy();
     	}
     	
-    	return new ItemStack(item);
+    	return ItemStackUtil.itemStackFrom(item);
     }
 	
 	@Override

@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -87,7 +88,7 @@ public class ItemRTGPellet extends ItemHazard {
 	public static ItemStack handleDecay(ItemStack stack, ItemRTGPellet instance) {
 		if (instance.getDoesDecay()) {
 			if (instance.getLifespan(stack) <= 0)
-				return new ItemStack(instance.getDecayItem());
+				return ItemStackUtil.itemStackFrom(instance.getDecayItem());
 			else
 				instance.decay(stack);
 		}
@@ -158,7 +159,7 @@ public class ItemRTGPellet extends ItemHazard {
 		list.add("§c" + I18nUtil.resolveKey("desc.item.rtgHeat", getScaledPower(instance, stack)) + "§r");
 		if (instance.getDoesDecay()) {
 			list.add("§aFuel left: "+((int)(instance.getDecay(instance, stack) * 100000000D))/1000000D + "%§r");
-			list.add(I18nUtil.resolveKey("desc.item.rtgDecay", new ItemStack(instance.getDecayItem()).getDisplayName()));
+			list.add(I18nUtil.resolveKey("desc.item.rtgDecay", ItemStackUtil.itemStackFrom(instance.getDecayItem()).getDisplayName()));
 			list.add("");
 			list.add(String.format("%s / %s ticks", instance.getLifespan(stack), instance.getMaxLifespan()));
 			final String[] halfLife = BobMathUtil.ticksToDate(instance.getHalfLife());

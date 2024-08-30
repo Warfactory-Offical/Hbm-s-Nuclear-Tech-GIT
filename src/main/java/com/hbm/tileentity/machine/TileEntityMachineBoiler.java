@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachineBoiler;
@@ -158,7 +159,7 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 				if (inventory.getStackInSlot(4).isEmpty()) {
 
 					if (containerItem != null)
-						inventory.setStackInSlot(4, new ItemStack(containerItem));
+						inventory.setStackInSlot(4, ItemStackUtil.itemStackFrom(containerItem));
 					else
 						inventory.setStackInSlot(4, ItemStack.EMPTY);
 				}

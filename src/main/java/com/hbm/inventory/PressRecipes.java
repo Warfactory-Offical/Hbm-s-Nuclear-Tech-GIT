@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -43,67 +44,67 @@ public class PressRecipes {
 	}
 
 	public static void registerOverrides() {
-		addRecipe(PressType.FLAT, new OreDictStack(COAL.dust()), new ItemStack(Items.COAL));
-		addRecipe(PressType.FLAT, new OreDictStack("dustQuartz"), new ItemStack(Items.QUARTZ));
-		addRecipe(PressType.FLAT, new OreDictStack(NETHERQUARTZ.dust()), new ItemStack(Items.QUARTZ)); 
-		addRecipe(PressType.FLAT, new OreDictStack(LAPIS.dust()), new ItemStack(Items.DYE, 1, 4)); 
-		addRecipe(PressType.FLAT, new OreDictStack(DIAMOND.dust()), new ItemStack(Items.DIAMOND)); 
-		addRecipe(PressType.FLAT, new OreDictStack(EMERALD.dust()), new ItemStack(Items.EMERALD)); 
-		addRecipe(PressType.FLAT, new ComparableStack(ModItems.pellet_coal), new ItemStack(Items.DIAMOND)); 
-		addRecipe(PressType.FLAT, new ComparableStack(ModItems.biomass), new ItemStack(ModItems.biomass_compressed)); 
-		addRecipe(PressType.FLAT, new ComparableStack(ModItems.powder_lignite), new ItemStack(ModItems.briquette_lignite)); 
-		addRecipe(PressType.FLAT, new ComparableStack(ModItems.meteorite_sword_reforged), new ItemStack(ModItems.meteorite_sword_hardened)); 
-		addRecipe(PressType.FLAT, new OreDictStack("fuelCoke"), new ItemStack(ModItems.ingot_graphite));
-		addRecipe(PressType.FLAT, new OreDictStack("sugarcane"), new ItemStack(Items.PAPER, 2));
-		addRecipe(PressType.FLAT, new ComparableStack(Blocks.LOG, 1, 3), new ItemStack(ModItems.ball_resin, 1));
+		addRecipe(PressType.FLAT, new OreDictStack(COAL.dust()), ItemStackUtil.itemStackFrom(Items.COAL));
+		addRecipe(PressType.FLAT, new OreDictStack("dustQuartz"), ItemStackUtil.itemStackFrom(Items.QUARTZ));
+		addRecipe(PressType.FLAT, new OreDictStack(NETHERQUARTZ.dust()), ItemStackUtil.itemStackFrom(Items.QUARTZ)); 
+		addRecipe(PressType.FLAT, new OreDictStack(LAPIS.dust()), ItemStackUtil.itemStackFrom(Items.DYE, 1, 4)); 
+		addRecipe(PressType.FLAT, new OreDictStack(DIAMOND.dust()), ItemStackUtil.itemStackFrom(Items.DIAMOND)); 
+		addRecipe(PressType.FLAT, new OreDictStack(EMERALD.dust()), ItemStackUtil.itemStackFrom(Items.EMERALD)); 
+		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(ModItems.pellet_coal), ItemStackUtil.itemStackFrom(Items.DIAMOND)); 
+		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(ModItems.biomass), ItemStackUtil.itemStackFrom(ModItems.biomass_compressed)); 
+		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(ModItems.powder_lignite), ItemStackUtil.itemStackFrom(ModItems.briquette_lignite)); 
+		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(ModItems.meteorite_sword_reforged), ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_hardened)); 
+		addRecipe(PressType.FLAT, new OreDictStack("fuelCoke"), ItemStackUtil.itemStackFrom(ModItems.ingot_graphite));
+		addRecipe(PressType.FLAT, new OreDictStack("sugarcane"), ItemStackUtil.itemStackFrom(Items.PAPER, 2));
+		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(Blocks.LOG, 1, 3), ItemStackUtil.itemStackFrom(ModItems.ball_resin, 1));
 
-		addRecipe(PressType.PLATE, new OreDictStack(IRON.ingot()), new ItemStack(ModItems.plate_iron));
-		addRecipe(PressType.PLATE, new OreDictStack(GOLD.ingot()), new ItemStack(ModItems.plate_gold));
-		addRecipe(PressType.PLATE, new OreDictStack(TI.ingot()), new ItemStack(ModItems.plate_titanium));
-		addRecipe(PressType.PLATE, new OreDictStack(AL.ingot()), new ItemStack(ModItems.plate_aluminium));
-		addRecipe(PressType.PLATE, new OreDictStack(STEEL.ingot()), new ItemStack(ModItems.plate_steel));
-		addRecipe(PressType.PLATE, new OreDictStack(PB.ingot()), new ItemStack(ModItems.plate_lead));
-		addRecipe(PressType.PLATE, new OreDictStack(CU.ingot()), new ItemStack(ModItems.plate_copper));
-		addRecipe(PressType.PLATE, new OreDictStack("ingotAdvanced"), new ItemStack(ModItems.plate_advanced_alloy));
-		addRecipe(PressType.PLATE, new OreDictStack(ALLOY.ingot()), new ItemStack(ModItems.plate_advanced_alloy));
-		addRecipe(PressType.PLATE, new OreDictStack(SA326.ingot()), new ItemStack(ModItems.plate_schrabidium));
-		addRecipe(PressType.PLATE, new OreDictStack(CMB.ingot()), new ItemStack(ModItems.plate_combine_steel));
-		addRecipe(PressType.PLATE, new OreDictStack(BIGMT.ingot()), new ItemStack(ModItems.plate_saturnite));
+		addRecipe(PressType.PLATE, new OreDictStack(IRON.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_iron));
+		addRecipe(PressType.PLATE, new OreDictStack(GOLD.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_gold));
+		addRecipe(PressType.PLATE, new OreDictStack(TI.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_titanium));
+		addRecipe(PressType.PLATE, new OreDictStack(AL.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_aluminium));
+		addRecipe(PressType.PLATE, new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_steel));
+		addRecipe(PressType.PLATE, new OreDictStack(PB.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_lead));
+		addRecipe(PressType.PLATE, new OreDictStack(CU.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_copper));
+		addRecipe(PressType.PLATE, new OreDictStack("ingotAdvanced"), ItemStackUtil.itemStackFrom(ModItems.plate_advanced_alloy));
+		addRecipe(PressType.PLATE, new OreDictStack(ALLOY.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_advanced_alloy));
+		addRecipe(PressType.PLATE, new OreDictStack(SA326.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_schrabidium));
+		addRecipe(PressType.PLATE, new OreDictStack(CMB.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_combine_steel));
+		addRecipe(PressType.PLATE, new OreDictStack(BIGMT.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_saturnite));
 
-		addRecipe(PressType.WIRE, new OreDictStack(AL.ingot()), new ItemStack(ModItems.wire_aluminium, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(CU.ingot()), new ItemStack(ModItems.wire_copper, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(W.ingot()), new ItemStack(ModItems.wire_tungsten, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(MINGRADE.ingot()), new ItemStack(ModItems.wire_red_copper, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(GOLD.ingot()), new ItemStack(ModItems.wire_gold, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(SA326.ingot()), new ItemStack(ModItems.wire_schrabidium, 8));
-		addRecipe(PressType.WIRE, new OreDictStack("ingotAdvanced"), new ItemStack(ModItems.wire_advanced_alloy, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(ALLOY.ingot()), new ItemStack(ModItems.wire_advanced_alloy, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(MAGTUNG.ingot()), new ItemStack(ModItems.wire_magnetized_tungsten, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(AL.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(CU.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_copper, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(W.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_tungsten, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(MINGRADE.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_red_copper, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(GOLD.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_gold, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(SA326.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_schrabidium, 8));
+		addRecipe(PressType.WIRE, new OreDictStack("ingotAdvanced"), ItemStackUtil.itemStackFrom(ModItems.wire_advanced_alloy, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(ALLOY.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_advanced_alloy, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(MAGTUNG.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_magnetized_tungsten, 8));
 
-		addRecipe(PressType.CIRCUIT, new ComparableStack(ModItems.circuit_raw), new ItemStack(ModItems.circuit_aluminium));
-		addRecipe(PressType.CIRCUIT, new ComparableStack(ModItems.circuit_bismuth_raw), new ItemStack(ModItems.circuit_bismuth));
-		addRecipe(PressType.CIRCUIT, new ComparableStack(ModItems.circuit_arsenic_raw), new ItemStack(ModItems.circuit_arsenic));
-		addRecipe(PressType.CIRCUIT, new ComparableStack(ModItems.circuit_tantalium_raw), new ItemStack(ModItems.circuit_tantalium));
+		addRecipe(PressType.CIRCUIT, ItemStackUtil.comparableStackFrom(ModItems.circuit_raw), ItemStackUtil.itemStackFrom(ModItems.circuit_aluminium));
+		addRecipe(PressType.CIRCUIT, ItemStackUtil.comparableStackFrom(ModItems.circuit_bismuth_raw), ItemStackUtil.itemStackFrom(ModItems.circuit_bismuth));
+		addRecipe(PressType.CIRCUIT, ItemStackUtil.comparableStackFrom(ModItems.circuit_arsenic_raw), ItemStackUtil.itemStackFrom(ModItems.circuit_arsenic));
+		addRecipe(PressType.CIRCUIT, ItemStackUtil.comparableStackFrom(ModItems.circuit_tantalium_raw), ItemStackUtil.itemStackFrom(ModItems.circuit_tantalium));
 
-		addRecipe(PressType.THREEFIFESEVEN, new ComparableStack(ModItems.assembly_iron), new ItemStack(ModItems.gun_revolver_iron_ammo));
-		addRecipe(PressType.THREEFIFESEVEN, new ComparableStack(ModItems.assembly_steel), new ItemStack(ModItems.gun_revolver_ammo));
-		addRecipe(PressType.THREEFIFESEVEN, new ComparableStack(ModItems.assembly_lead), new ItemStack(ModItems.gun_revolver_lead_ammo));
-		addRecipe(PressType.THREEFIFESEVEN, new ComparableStack(ModItems.assembly_gold), new ItemStack(ModItems.gun_revolver_gold_ammo));
-		addRecipe(PressType.THREEFIFESEVEN, new ComparableStack(ModItems.assembly_schrabidium), new ItemStack(ModItems.gun_revolver_schrabidium_ammo));
-		addRecipe(PressType.THREEFIFESEVEN, new ComparableStack(ModItems.assembly_nightmare), new ItemStack(ModItems.gun_revolver_nightmare_ammo));
-		addRecipe(PressType.THREEFIFESEVEN, new ComparableStack(ModItems.assembly_desh), new ItemStack(ModItems.ammo_357_desh));
-		addRecipe(PressType.THREEFIFESEVEN, new OreDictStack(STEEL.ingot()), new ItemStack(ModItems.gun_revolver_cursed_ammo));
+		addRecipe(PressType.THREEFIFESEVEN, ItemStackUtil.comparableStackFrom(ModItems.assembly_iron), ItemStackUtil.itemStackFrom(ModItems.gun_revolver_iron_ammo));
+		addRecipe(PressType.THREEFIFESEVEN, ItemStackUtil.comparableStackFrom(ModItems.assembly_steel), ItemStackUtil.itemStackFrom(ModItems.gun_revolver_ammo));
+		addRecipe(PressType.THREEFIFESEVEN, ItemStackUtil.comparableStackFrom(ModItems.assembly_lead), ItemStackUtil.itemStackFrom(ModItems.gun_revolver_lead_ammo));
+		addRecipe(PressType.THREEFIFESEVEN, ItemStackUtil.comparableStackFrom(ModItems.assembly_gold), ItemStackUtil.itemStackFrom(ModItems.gun_revolver_gold_ammo));
+		addRecipe(PressType.THREEFIFESEVEN, ItemStackUtil.comparableStackFrom(ModItems.assembly_schrabidium), ItemStackUtil.itemStackFrom(ModItems.gun_revolver_schrabidium_ammo));
+		addRecipe(PressType.THREEFIFESEVEN, ItemStackUtil.comparableStackFrom(ModItems.assembly_nightmare), ItemStackUtil.itemStackFrom(ModItems.gun_revolver_nightmare_ammo));
+		addRecipe(PressType.THREEFIFESEVEN, ItemStackUtil.comparableStackFrom(ModItems.assembly_desh), ItemStackUtil.itemStackFrom(ModItems.ammo_357_desh));
+		addRecipe(PressType.THREEFIFESEVEN, new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.gun_revolver_cursed_ammo));
 
-		addRecipe(PressType.FOURFOUR, new ComparableStack(ModItems.assembly_nopip), new ItemStack(ModItems.ammo_44));
+		addRecipe(PressType.FOURFOUR, ItemStackUtil.comparableStackFrom(ModItems.assembly_nopip), ItemStackUtil.itemStackFrom(ModItems.ammo_44));
 
-		addRecipe(PressType.NINE, new ComparableStack(ModItems.assembly_smg), new ItemStack(ModItems.ammo_9mm));
-		addRecipe(PressType.NINE, new ComparableStack(ModItems.assembly_uzi), new ItemStack(ModItems.ammo_22lr));
-		addRecipe(PressType.NINE, new OreDictStack(GOLD.ingot()), new ItemStack(ModItems.ammo_566_gold));
-		addRecipe(PressType.NINE, new ComparableStack(ModItems.assembly_lacunae), new ItemStack(ModItems.ammo_5mm));
-		addRecipe(PressType.NINE, new ComparableStack(ModItems.assembly_556), new ItemStack(ModItems.ammo_556));
+		addRecipe(PressType.NINE, ItemStackUtil.comparableStackFrom(ModItems.assembly_smg), ItemStackUtil.itemStackFrom(ModItems.ammo_9mm));
+		addRecipe(PressType.NINE, ItemStackUtil.comparableStackFrom(ModItems.assembly_uzi), ItemStackUtil.itemStackFrom(ModItems.ammo_22lr));
+		addRecipe(PressType.NINE, new OreDictStack(GOLD.ingot()), ItemStackUtil.itemStackFrom(ModItems.ammo_566_gold));
+		addRecipe(PressType.NINE, ItemStackUtil.comparableStackFrom(ModItems.assembly_lacunae), ItemStackUtil.itemStackFrom(ModItems.ammo_5mm));
+		addRecipe(PressType.NINE, ItemStackUtil.comparableStackFrom(ModItems.assembly_556), ItemStackUtil.itemStackFrom(ModItems.ammo_556));
 
-		addRecipe(PressType.FIVEZERO, new ComparableStack(ModItems.assembly_calamity), new ItemStack(ModItems.ammo_50bmg));
-		addRecipe(PressType.FIVEZERO, new ComparableStack(ModItems.assembly_actionexpress), new ItemStack(ModItems.ammo_50ae));
+		addRecipe(PressType.FIVEZERO, ItemStackUtil.comparableStackFrom(ModItems.assembly_calamity), ItemStackUtil.itemStackFrom(ModItems.ammo_50bmg));
+		addRecipe(PressType.FIVEZERO, ItemStackUtil.comparableStackFrom(ModItems.assembly_actionexpress), ItemStackUtil.itemStackFrom(ModItems.ammo_50ae));
 	}
 
 
@@ -138,7 +139,7 @@ public class PressRecipes {
 	public static List<ItemStack> toStack(List<Item> iList){
 		List<ItemStack> i_stamps = new ArrayList<ItemStack>();
 		for(Item i : iList){
-			i_stamps.add(new ItemStack(i));
+			i_stamps.add(ItemStackUtil.itemStackFrom(i));
 		}
 		return i_stamps;
 	}
@@ -183,11 +184,11 @@ public class PressRecipes {
 	}
 
 	public static ItemStack getPressOutput(PressType pType, ItemStack input){
-		ItemStack outputItem = pressRecipes.get(new Pair(pType, new ComparableStack(input.getItem(), 1, input.getItemDamage())));
+		ItemStack outputItem = pressRecipes.get(new Pair(pType, ItemStackUtil.comparableStackFrom(input.getItem(), 1, input.getItemDamage())));
 		if(outputItem != null)
 			return outputItem;
 
-		int[] ids = OreDictionary.getOreIDs(new ItemStack(input.getItem(), 1, input.getItemDamage()));
+		int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(input.getItem(), 1, input.getItemDamage()));
 		for(int id : ids) {
 
 			OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(id));

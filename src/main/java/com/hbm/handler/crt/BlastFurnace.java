@@ -1,4 +1,5 @@
 package com.hbm.handler.crt;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.inventory.RecipesCommon;
 import crafttweaker.IAction;
@@ -86,7 +87,7 @@ public class BlastFurnace {
 				CraftTweakerAPI.logError("ERROR Blast Furnace input 2 item can not be an empty/air stack!");
 				return;
 			}
-			DiFurnaceRecipes.removeRecipe(new ComparableStack(this.input1), new ComparableStack(this.input2));
+			DiFurnaceRecipes.removeRecipe(ItemStackUtil.comparableStackFrom(this.input1), ItemStackUtil.comparableStackFrom(this.input2));
 		}
 		@Override
 		public String describe(){
@@ -128,7 +129,7 @@ public class BlastFurnace {
 				CraftTweakerAPI.logError("ERROR Blast Furnace heat needs to be between 1-12800 not "+this.heatLvl+"!");
 				return;
 			}
-			DiFurnaceRecipes.addFuel(new ComparableStack(this.input), this.heatLvl);
+			DiFurnaceRecipes.addFuel(ItemStackUtil.comparableStackFrom(this.input), this.heatLvl);
 		}
 		@Override
 		public String describe(){
@@ -153,7 +154,7 @@ public class BlastFurnace {
 				CraftTweakerAPI.logError("ERROR Blast Furnace fuel item can not be an empty/air stack!");
 				return;
 			}
-			DiFurnaceRecipes.removeFuel(new ComparableStack(input));
+			DiFurnaceRecipes.removeFuel(ItemStackUtil.comparableStackFrom(input));
 		}
 		@Override
 		public String describe(){

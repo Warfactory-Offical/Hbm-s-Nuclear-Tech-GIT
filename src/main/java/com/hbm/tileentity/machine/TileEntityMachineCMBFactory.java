@@ -12,6 +12,7 @@ import com.hbm.tileentity.TileEntityMachineBase;
 
 import api.hbm.energy.IBatteryItem;
 import api.hbm.energy.IEnergyUser;
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -46,28 +47,28 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 	private static final int[] slots_top = new int[] {1, 3};
 	private static final int[] slots_bottom = new int[] {0, 2, 4};
 	private static final int[] slots_side = new int[] {0, 2};
-	
+
 	public TileEntityMachineCMBFactory() {
 		super(6);
 		tank = new FluidTank(8000);
 	}
-	
+
 	@Override
 	public String getName(){
 		return "container.machineCMB";
 	}
-	
+
 	@Override
 	public int[] getAccessibleSlotsFromSide(EnumFacing e){
 		int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
-	
+
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int amount){
 		return this.isItemValidForSlot(slot, stack);
 	}
-	
+
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemStack, int amount){
 		if(i == 4)
@@ -80,7 +81,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 				return true;
 		return false;
 	}
-	
+
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack){
 		switch(i)
@@ -90,7 +91,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 				return true;
 			break;
 		case 1:
-			if(stack.getItem() == ModItems.ingot_magnetized_tungsten || stack.getItem() == ModItems.powder_magnetized_tungsten)
+			if(ItemStackUtil.isSameMetaItem(stack, ModItems.ingot_magnetized_tungsten) || stack.getItem() == ModItems.powder_magnetized_tungsten)
 				return true;
 			break;
 		case 2:
@@ -98,14 +99,14 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 				return true;
 			break;
 		case 3:
-			if(stack.getItem() == ModItems.ingot_advanced_alloy || stack.getItem() == ModItems.powder_advanced_alloy)
+			if(ItemStackUtil.isSameMetaItem(stack, ModItems.ingot_advanced_alloy) || stack.getItem() == ModItems.powder_advanced_alloy)
 				return true;
 			break;
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
@@ -114,7 +115,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 			return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <=64;
 		}
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
@@ -122,7 +123,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 		process = compound.getShort("process");
 		super.readFromNBT(compound);
 	}
-	
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
@@ -130,43 +131,43 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 		compound.setShort("process", (short) process);
 		return super.writeToNBT(compound);
 	}
-	
+
 	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
-	
+
 	public int getProgressScaled(int i) {
 		return (process * i) / processSpeed;
 	}
-	
+
 	public boolean canProcess() {
-		
+
 		boolean b = false;
-		
+
 		if(tank.getFluidAmount() >= 1 && power >= 100000 && !inventory.getStackInSlot(1).isEmpty() && !inventory.getStackInSlot(3).isEmpty() && (inventory.getStackInSlot(4).isEmpty() || inventory.getStackInSlot(4).getCount() <= 60))
 		{
-			boolean flag0 = inventory.getStackInSlot(1).getItem() == ModItems.ingot_magnetized_tungsten || inventory.getStackInSlot(1).getItem() == ModItems.powder_magnetized_tungsten;
-			boolean flag1 = inventory.getStackInSlot(3).getItem() == ModItems.ingot_advanced_alloy || inventory.getStackInSlot(3).getItem() == ModItems.powder_advanced_alloy;
-			
+			boolean flag0 = ItemStackUtil.isSameMetaItem(inventory.getStackInSlot(1), ModItems.ingot_magnetized_tungsten) || inventory.getStackInSlot(1).getItem() == ModItems.powder_magnetized_tungsten;
+			boolean flag1 = ItemStackUtil.isSameMetaItem(inventory.getStackInSlot(3), ModItems.ingot_advanced_alloy) || inventory.getStackInSlot(3).getItem() == ModItems.powder_advanced_alloy;
+
 			b = flag0 && flag1;
 		}
-		
+
 		return  b;
 	}
-	
+
 	public boolean isProcessing() {
 		return process > 0;
 	}
-	
+
 	public void process() {
 		tank.drain(1, true);
 		needsUpdate = true;
 		power -= 100000;
-		
+
 		process++;
-		
+
 		if(process >= processSpeed) {
-			
+
 			inventory.getStackInSlot(1).shrink(1);
 			if (inventory.getStackInSlot(1).isEmpty()) {
 				inventory.setStackInSlot(1, ItemStack.EMPTY);
@@ -176,10 +177,10 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 			if (inventory.getStackInSlot(3).isEmpty()) {
 				inventory.setStackInSlot(3, ItemStack.EMPTY);
 			}
-			
+
 			if(inventory.getStackInSlot(4).isEmpty())
 			{
-				inventory.setStackInSlot(4, new ItemStack(ModItems.ingot_combine_steel, 4));
+				inventory.setStackInSlot(4, ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel, 4));
 			} else {
 				//Possible dupe glitch? Check later.
 				inventory.getStackInSlot(4).grow(4);
