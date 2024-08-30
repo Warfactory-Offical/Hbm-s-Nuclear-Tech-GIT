@@ -13,6 +13,7 @@ import com.hbm.lib.ModDamageSource;
 import com.hbm.potion.HbmPotion;
 
 import com.hbm.util.EnchantmentUtil;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -22,6 +23,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.util.TriConsumer;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -30,9 +33,9 @@ import java.util.function.Consumer;
 public class ConsumableHandler {
 
     private static final Map<Item, Consumer<Context>> itemActions = new HashMap<>();
+    private static final Map<Item, TriConsumer<ItemStack, EntityLivingBase, EntityLivingBase>> hitActions = new HashMap<>();
 
     static {
-        itemActions.put(ModItems.iv_xp_empty, ConsumableHandler::handleIvXPempty);
         itemActions.put(ModItems.syringe_antidote, ConsumableHandler::handleAntidote);
         itemActions.put(ModItems.syringe_awesome, ConsumableHandler::handleAwesomeSyringe);
         itemActions.put(ModItems.syringe_poison, ConsumableHandler::handlePoisonSyringe);
@@ -47,13 +50,35 @@ public class ConsumableHandler {
         itemActions.put(ModItems.gun_kit_2, ConsumableHandler::handleGunKit2);
         itemActions.put(ModItems.cbt_device, ConsumableHandler::handleCbtDevice);
         itemActions.put(ModItems.syringe_mkunicorn, ConsumableHandler::handleMkUnicornSyringe);
+
+        hitActions.put(ModItems.syringe_antidote, ConsumableHandler::handleAntidote);
+        hitActions.put(ModItems.syringe_awesome, ConsumableHandler::handleAwesomeSyringe);
+        hitActions.put(ModItems.syringe_poison, ConsumableHandler::handlePoisonSyringe);
+        hitActions.put(ModItems.syringe_metal_stimpak, ConsumableHandler::handleMetalStimpak);
+        hitActions.put(ModItems.syringe_metal_medx, ConsumableHandler::handleMetalMedX);
+        hitActions.put(ModItems.syringe_metal_psycho, ConsumableHandler::handleMetalPsycho);
+        hitActions.put(ModItems.syringe_metal_super, ConsumableHandler::handleMetalSuper);
+        hitActions.put(ModItems.syringe_mkunicorn, ConsumableHandler::handleMkUnicornSyringe);
+        hitActions.put(ModItems.syringe_taint, ConsumableHandler::handleTaintSyringe);
     }
 
-    private static void handleIvXPempty(Context context) {
-        if(context.player.experienceTotal >= 100) {
+
+    private static boolean handleCommonAttack(ItemStack stack, EntityLivingBase attacker, EntityLivingBase target){
+        Item item = stack.getItem();
+        if(!hitActions.containsKey(item)){
+            return false;
         }
 
+
     }
+    private static void handleEntityHit(ItemStack stack, EntityLivingBase attacker, EntityLivingBase target){
+        World world = target.world;
+        if(!world.isRemote){
+            Context context = new Context(world,(EntityPlayer) attacker, EnumHand.MAIN_HAND);
+                context.
+            }
+        }
+
 
     public static ActionResult<ItemStack> handleItemUse(World world, EntityPlayer player, EnumHand hand, Item item) {
         if (!itemActions.containsKey(item)) {
