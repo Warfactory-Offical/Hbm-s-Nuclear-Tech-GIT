@@ -93,6 +93,7 @@ public class ConsumableHandler {
         if (!VersatileConfig.hasPotionSickness(context.target)) {
             context.target.clearActivePotions();
             VersatileConfig.applyPotionSickness(context.target, 5);
+            context.playSound(HBMSoundHandler.syringeUse);
             context.shrinkAndReplaceItem(ModItems.syringe_empty);
         }
     }
@@ -115,13 +116,13 @@ public class ConsumableHandler {
     }
 
     private static void handlePoisonSyringe(Context context) {
+        context.playSound(HBMSoundHandler.syringeUse);
+        context.shrinkAndReplaceItem(ModItems.syringe_empty);
         if (context.rand.nextInt(2) == 0) {
             context.target.attackEntityFrom(ModDamageSource.euthanizedSelf, 30);
         } else {
             context.target.attackEntityFrom(ModDamageSource.euthanizedSelf2, 30);
         }
-        context.playSound(HBMSoundHandler.syringeUse);
-        context.shrinkAndReplaceItem(ModItems.syringe_empty);
     }
 
     private static void handleMetalStimpak(Context context) {
