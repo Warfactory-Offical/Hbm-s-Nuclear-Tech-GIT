@@ -167,6 +167,10 @@ public class RBMKOutgasserRecipes {
 		addRecipe((int)requiredFlux, in, out);
 	}
 
+	public static void addRecipe(float requiredFlux, ItemStack in, ItemStack out) {
+		addRecipe((int)requiredFlux, in, out);
+	}
+
 	public static void addRecipe(float requiredFlux, Block in, ItemStack out) {
 		addRecipe((int)requiredFlux, in, out);
 	}

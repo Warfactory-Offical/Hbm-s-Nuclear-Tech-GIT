@@ -2,7 +2,6 @@ package com.hbm.items.machine;
 
 import java.util.List;
 
-import com.hbm.hazard.HazardData;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;

@@ -3,6 +3,8 @@ package com.hbm.forgefluid;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.hbm.util.ItemStackUtil;
+import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.init.Items;
@@ -14,44 +16,45 @@ import net.minecraftforge.fluids.FluidStack;
 //good as the forge one, but it'll sure fix that one terrible override in FFUtils.
 public class FluidContainerRegistry {
 	
-	private static Map<Item, FluidContainerData> containers = new HashMap<>();
-	private static Map<Pair<Item, Fluid>, Item> containerToItem = new HashMap<>();
-	
+	private static final Map<ItemStack, FluidContainerData> containers = new HashMap<>();
+	private static final Map<Pair<ItemStack, Fluid>, ItemStack> containerToItemStack = new HashMap<>();
+
 	public static void registerContainer(Item item, Item container, FluidStack fluid){
-		containers.put(item, new FluidContainerData(container, fluid));
-		containerToItem.put(Pair.of(container, fluid.getFluid()), item);
+		registerContainer(item.getDefaultInstance(), container.getDefaultInstance(), fluid);
+	}
+
+	public static void registerContainer(ItemStack stack, ItemStack container, FluidStack fluid){
+		containers.put(stack, new FluidContainerData(container, fluid));
+		containerToItemStack.put(Pair.of(container, fluid.getFluid()), stack);
 	}
 	
-	public static boolean hasFluid(Item item){
-		return containers.containsKey(item);
+	public static boolean hasFluid(ItemStack stack){
+		return containers.containsKey(stack);
 	}
 	
-	public static FluidStack getFluidFromItem(Item item){
-		FluidContainerData data = containers.get(item);
-		if(data == null)
-			return null;
+	public static FluidStack getFluidFromItem(ItemStack stack){
+		FluidContainerData data = containers.get(stack);
+		if(data == null) return null;
 		return data.containedFluid.copy();
 	}
 	
-	public static Item getContainerItem(Item item){
-		FluidContainerData data = containers.get(item);
-		if(data == null)
-			return Items.AIR;
+	public static ItemStack getContainerItem(ItemStack stack){
+		FluidContainerData data = containers.get(stack);
+		if(data == null) return Items.AIR.getDefaultInstance();
 		return data.container;
 	}
 	
-	public static Item getFullContainer(Item item, Fluid f){
-		Item i = containerToItem.get(Pair.of(item, f));
-		if(i == null)
-			return Items.AIR;
-		return i;
+	public static ItemStack getFullContainer(ItemStack stack, Fluid f){
+		ItemStack is = containerToItemStack.get(Pair.of(stack, f));
+		if(is == null) return Items.AIR.getDefaultInstance();
+		return is;
 	}
 	
 	private static class FluidContainerData {
-		public Item container;
+		public ItemStack container;
 		public FluidStack containedFluid;
 		
-		public FluidContainerData(Item container, FluidStack fluid) {
+		public FluidContainerData(ItemStack container, FluidStack fluid) {
 			this.container = container;
 			this.containedFluid = fluid;
 		}

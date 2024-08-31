@@ -488,17 +488,17 @@ public class FFUtils {
 
 		//Mercury override
 		//Oh god, these overrides are getting worse and worse, but it would take a large amount of effort to make the code good
-		if(in.getItem() == ModItems.nugget_mercury && tank.fill(new FluidStack(ModForgeFluids.mercury, 125), false) == 125){
+		if(ItemStackUtil.isSameMetaItem(in, ModItems.nugget_mercury) && tank.fill(new FluidStack(ModForgeFluids.mercury, 125), false) == 125){
 			tank.fill(new FluidStack(ModForgeFluids.mercury, 125), true);
 			in.shrink(1);
 			return true;
 		}
 
 		//That's it. I'm making a fluid container registry just so I don't have to make this method any worse.
-		if(FluidContainerRegistry.hasFluid(in.getItem())) {
-			FluidStack fluid = FluidContainerRegistry.getFluidFromItem(in.getItem());
-			Item container = FluidContainerRegistry.getContainerItem(in.getItem());
-			if(tank.fill(fluid, false) == fluid.amount && (out.isEmpty() || (out.getItem() == container && out.getCount() < out.getMaxStackSize()))) {
+		if(FluidContainerRegistry.hasFluid(in)) {
+			FluidStack fluid = FluidContainerRegistry.getFluidFromItem(in);
+			ItemStack container = FluidContainerRegistry.getContainerItem(in);
+			if(tank.fill(fluid, false) == fluid.amount && (out.isEmpty() || (out == container && out.getCount() < out.getMaxStackSize()))) {
 				tank.fill(fluid, true);
 				in.shrink(1);
 				if(out.isEmpty()) {
@@ -519,10 +519,9 @@ public class FFUtils {
 		FluidStack fluid = FluidUtil.getFluidContained(stack);
 		if(fluid != null && fluidRestrictor.apply(fluid))
 			return true;
-		if(FluidContainerRegistry.hasFluid(stack.getItem())) {
-			fluid = FluidContainerRegistry.getFluidFromItem(stack.getItem());
-			if(fluid != null && fluidRestrictor.apply(fluid))
-				return true;
+		if(FluidContainerRegistry.hasFluid(stack)) {
+			fluid = FluidContainerRegistry.getFluidFromItem(stack);
+            return fluid != null && fluidRestrictor.apply(fluid);
 		}
 		return false;
 	}
@@ -837,10 +836,10 @@ public class FFUtils {
 			}
 		}
 
-		Item container = FluidContainerRegistry.getFullContainer(in.getItem(), tank.getFluid().getFluid());
-		if(container != null && container != Items.AIR) {
+		ItemStack container = FluidContainerRegistry.getFullContainer(in, tank.getFluid().getFluid());
+		if(container != null && container != Items.AIR.getDefaultInstance()) {
 			FluidStack stack = FluidContainerRegistry.getFluidFromItem(container);
-			if(tank.drain(stack, false).amount == stack.amount && (out.isEmpty() || (out.getItem() == container && out.getCount() < out.getMaxStackSize()))) {
+			if(tank.drain(stack, false).amount == stack.amount && (out.isEmpty() || (ItemStackUtil.isSameMetaItem(out, container) && out.getCount() < out.getMaxStackSize()))) {
 				tank.drain(stack, true);
 				in.shrink(1);
 				if(out.isEmpty()) {
@@ -929,8 +928,8 @@ public class FFUtils {
 		FluidStack contained = FluidUtil.getFluidContained(stack);
 		if(contained != null && contained.getFluid() == fluid)
 			return true;
-		if(FluidContainerRegistry.hasFluid(stack.getItem())) {
-			contained = FluidContainerRegistry.getFluidFromItem(stack.getItem());
+		if(FluidContainerRegistry.hasFluid(stack)) {
+			contained = FluidContainerRegistry.getFluidFromItem(stack);
 			if(contained != null && contained.getFluid() == fluid)
 				return true;
 		}

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.common.collect.Multimap;
 import com.hbm.handler.ArmorModHandler;
-import com.hbm.hazard.HazardData;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.modules.ItemHazardModule;

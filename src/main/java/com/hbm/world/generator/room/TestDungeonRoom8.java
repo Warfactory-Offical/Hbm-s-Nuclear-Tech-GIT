@@ -121,26 +121,26 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 	public static String[] generatePages(int r, World world) {
 		
 		String[] orig;
-		Item ingred;	
+		ItemStack ingred;
 
 		if(r == 0) {
 			orig = bookIodine;
-			ingred = ModItems.powder_iodine;
+			ingred = ItemStackUtil.itemStackFrom(ModItems.powder_iodine);
 		} else if(r == 1) {
 			orig = bookPhosphorous;
-			ingred = ModItems.powder_fire;
+			ingred = ItemStackUtil.itemStackFrom(ModItems.powder_fire);
 		} else if(r == 2) {
 			orig = bookDust;
-			ingred = ModItems.dust;
+			ingred = ItemStackUtil.itemStackFrom(ModItems.dust);
 		} else if(r == 3) {
 			orig = bookMercury;
-			ingred = ModItems.nugget_mercury;
+			ingred = ItemStackUtil.itemStackFrom(ModItems.nugget_mercury);
 		} else if(r == 4) {
 			orig = bookFlower;
-			ingred = ModItems.morning_glory;
+			ingred = ItemStackUtil.itemStackFrom(ModItems.morning_glory);
 		} else {
 			orig = bookSyringe;
-			ingred = ModItems.syringe_metal_empty;
+			ingred = ItemStackUtil.itemStackFrom(ModItems.syringe_metal_empty);
 		}
 		
 		String[] copy = new String[orig.length];
@@ -154,7 +154,7 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 		return copy;
 	}
 	
-	public static int getSlot(World world, Item item) {
+	public static int getSlot(World world, ItemStack stack) {
 		
 		MKUCraftingHandler.generateRecipe(world);
 		ItemStack[] recipe = MKUCraftingHandler.MKURecipe;
@@ -164,7 +164,7 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 		
 		for(int i = 0; i < 9; i++) {
 			
-			if(recipe[i] != null && recipe[i].getItem() == item) {
+			if(recipe[i] != null && ItemStackUtil.isSameMetaItem(recipe[i], stack)) {
 				return i + 1;
 			}
 		}

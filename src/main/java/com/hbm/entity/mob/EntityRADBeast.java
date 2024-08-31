@@ -212,7 +212,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         super.dropLoot(wasRecentlyHit, looting, source);
         if(looting > 0) {
-                this.dropItem(ModItems.nugget_polonium, looting);
+                this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget_polonium, looting), 0);
             }
             
         int count = this.rand.nextInt(3) + 1;

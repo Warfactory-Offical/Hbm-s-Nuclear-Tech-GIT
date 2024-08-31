@@ -223,7 +223,7 @@ import com.hbm.handler.HazmatRegistry;
 import com.hbm.handler.HbmKeybinds;
 import com.hbm.handler.MultiblockBBHandler;
 import com.hbm.handler.crt.NTMCraftTweaker;
-import com.hbm.hazard.HazardRegistry;
+import com.hbm.hazard_old.HazardRegistry;
 import com.hbm.inventory.AnvilRecipes;
 import com.hbm.inventory.AssemblerRecipes;
 import com.hbm.inventory.ChemplantRecipes;
@@ -366,9 +366,6 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootEntry;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
@@ -376,10 +373,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -1069,6 +1064,7 @@ public class MainRegistry {
 	public void postInit(FMLPostInitializationEvent event) {
 		ModItems.postInit();
 		ModBlocks.postInit();
+		com.hbm.hazard.HazardRegistry.postInit(); // TODO: simplify name when remove old hazard system
 		BlockCrate.setDrops();
 		BedrockOreRegistry.registerBedrockOres();
 		FluidTypeHandler.registerFluidProperties();

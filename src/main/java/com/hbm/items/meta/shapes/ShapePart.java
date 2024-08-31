@@ -4,7 +4,10 @@ import com.hbm.items.meta.IMetaItemShape;
 
 public enum ShapePart implements IMetaItemShape {
 
-    INGOT("ingot", "ingot", "");
+    INGOT("ingot", "ingot", ""),
+    BILLET("billet", "billet", ""),
+    NUGGET("nugget", "nugget", ""),
+    ;
 
     private final String a, b, c;
 

@@ -1,12 +1,8 @@
 package com.hbm.items.machine;
 import com.hbm.util.ItemStackUtil;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.List;
 
-import com.hbm.hazard.HazardData;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;

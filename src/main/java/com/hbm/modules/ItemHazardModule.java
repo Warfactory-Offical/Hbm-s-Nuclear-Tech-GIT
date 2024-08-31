@@ -2,35 +2,15 @@ package com.hbm.modules;
 
 import java.util.List;
 
-import com.hbm.capability.HbmLivingProps;
-import com.hbm.config.GeneralConfig;
-import com.hbm.handler.ArmorUtil;
-import com.hbm.hazard.HazardData;
-import com.hbm.hazard.HazardSystem;
 import com.hbm.inventory.BreederRecipes;
-import com.hbm.items.ModItems;
-import com.hbm.lib.Library;
-import com.hbm.util.ArmorRegistry;
-import com.hbm.util.ArmorRegistry.HazardClass;
-import com.hbm.util.ContaminationUtil;
-import com.hbm.util.ContaminationUtil.ContaminationType;
-import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.I18nUtil;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-
-import static com.hbm.hazard.HazardRegistry.*;
 
 public class ItemHazardModule {
 	/**

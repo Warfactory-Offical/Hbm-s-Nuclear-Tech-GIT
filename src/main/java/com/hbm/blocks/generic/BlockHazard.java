@@ -3,9 +3,6 @@ package com.hbm.blocks.generic;
 import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.hazard.HazardData;
-import com.hbm.hazard.HazardSystem;
-import com.hbm.items.ModItems;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.main.MainRegistry;
@@ -22,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;

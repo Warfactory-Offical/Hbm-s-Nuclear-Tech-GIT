@@ -15,8 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import static com.hbm.hazard.HazardRegistry.DIGAMMA;
-
 public class ItemDigamma extends ItemHazard {
 
 	int digamma;

@@ -433,7 +433,7 @@ public class CraftingManager {
 		addRodBillet(ModItems.billet_plutonium_fuel, ModItems.rod_plutonium_fuel);
 		addRodBillet(ModItems.billet_mox_fuel, ModItems.rod_mox_fuel);
 		addRodBillet(ModItems.billet_schrabidium_fuel, ModItems.rod_schrabidium_fuel);
-		addRodBilletUnload(ModItems.billet_nuclear_waste, ModItems.rod_waste );
+		addRodBilletUnload(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ModItems.rod_waste );
 
 
 		addRodBilletUnload(ModItems.billet_ac227, ModItems.rod_ac227);
@@ -490,7 +490,7 @@ public class CraftingManager {
 		addDualRodBillet(ModItems.billet_plutonium_fuel, ModItems.rod_dual_plutonium_fuel);
 		addDualRodBillet(ModItems.billet_mox_fuel, ModItems.rod_dual_mox_fuel);
 		addDualRodBillet(ModItems.billet_schrabidium_fuel, ModItems.rod_dual_schrabidium_fuel);
-		addDualRodBilletUnload(ModItems.billet_nuclear_waste, ModItems.rod_dual_waste);
+		addDualRodBilletUnload(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ModItems.rod_dual_waste);
 
 		addDualRodBilletUnload(ModItems.billet_ac227, ModItems.rod_dual_ac227);
 		addDualRodBilletUnload(ModItems.billet_ra226, ModItems.rod_dual_ra226);
@@ -556,7 +556,7 @@ public class CraftingManager {
 		addQuadRodBillet(ModItems.billet_plutonium_fuel, ModItems.rod_quad_plutonium_fuel);
 		addQuadRodBillet(ModItems.billet_mox_fuel, ModItems.rod_quad_mox_fuel);
 		addQuadRodBillet(ModItems.billet_schrabidium_fuel, ModItems.rod_quad_schrabidium_fuel);
-		addQuadRodBilletUnload(ModItems.billet_nuclear_waste, ModItems.rod_quad_waste);
+		addQuadRodBilletUnload(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ModItems.rod_quad_waste);
 
 		addQuadRodBilletUnload(ModItems.billet_ac227, ModItems.rod_quad_ac227);
 		addQuadRodBilletUnload(ModItems.billet_ra226, ModItems.rod_quad_ra226);
@@ -2201,7 +2201,7 @@ public class CraftingManager {
 		addRBMKRod(ModItems.billet_australium_lesser, ModItems.rbmk_fuel_leaus);
 		addRBMKRod(ModItems.billet_australium_greater, ModItems.rbmk_fuel_heaus);
 		addRBMKRod(ModItems.billet_unobtainium, ModItems.rbmk_fuel_unobtainium);
-		addRBMKRod(ModItems.egg_balefire_shard, ModItems.rbmk_fuel_balefire);
+//		addRBMKRod(ModItems.egg_balefire_shard, ModItems.rbmk_fuel_balefire);
 		addRBMKRod(ModItems.billet_les, ModItems.rbmk_fuel_les);
 		addRBMKRod(ModItems.billet_schrabidium_fuel, ModItems.rbmk_fuel_mes);
 		addRBMKRod(ModItems.billet_hes, ModItems.rbmk_fuel_hes);
@@ -2516,27 +2516,27 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_uranium, 2), new Object[] { ModItems.billet_uranium_fuel, U238.billet() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.billet_uranium, 2), new Object[] { "ABC", "BB ", "BB ", 'A', U238.billet(), 'B', U238.nugget(), 'C', U235.nugget() });
 
-		addBillet(ModItems.billet_uranium, ModItems.nugget_uranium, U.nugget());
-		addBillet(ModItems.billet_u233, ModItems.nugget_u233, U233.nugget());
-		addBillet(ModItems.billet_u235, ModItems.nugget_u235, U235.nugget());
-		addBillet(ModItems.billet_u238, ModItems.nugget_u238, U238.nugget());
-		addBillet(ModItems.billet_th232, ModItems.nugget_th232, TH232.nugget());
-		addBillet(ModItems.billet_plutonium, ModItems.nugget_plutonium, PU.nugget());
-		addBillet(ModItems.billet_pu238, ModItems.nugget_pu238, PU238.nugget());
-		addBillet(ModItems.billet_pu239, ModItems.nugget_pu239, PU239.nugget());
-		addBillet(ModItems.billet_pu240, ModItems.nugget_pu240, PU240.nugget());
-		addBillet(ModItems.billet_pu241, ModItems.nugget_pu241, PU241.nugget());
-		addBillet(ModItems.billet_pu_mix, ModItems.nugget_pu_mix, PURG.nugget());
-		addBillet(ModItems.billet_am241, ModItems.nugget_am241, AM241.nugget());
-		addBillet(ModItems.billet_am242, ModItems.nugget_am242, AM242.nugget());
-		addBillet(ModItems.billet_am_mix, ModItems.nugget_am_mix, AMRG.nugget());
+		addBillet(ModItems.billet_uranium, ModItems.nugget_uranium);
+		addBillet(ModItems.billet_u233, ModItems.nugget_u233);
+		addBillet(ModItems.billet_u235, ModItems.nugget_u235);
+		addBillet(ModItems.billet_u238, ModItems.nugget_u238);
+		addBillet(ModItems.billet_th232, ModItems.nugget_th232);
+		addBillet(ModItems.billet_plutonium, ModItems.nugget_plutonium);
+		addBillet(ModItems.billet_pu238, ModItems.nugget_pu238);
+		addBillet(ModItems.billet_pu239, ModItems.nugget_pu239);
+		addBillet(ModItems.billet_pu240, ModItems.nugget_pu240);
+		addBillet(ModItems.billet_pu241, ModItems.nugget_pu241);
+		addBillet(ModItems.billet_pu_mix, ModItems.nugget_pu_mix);
+		addBillet(ModItems.billet_am241, ModItems.nugget_am241);
+		addBillet(ModItems.billet_am242, ModItems.nugget_am242);
+		addBillet(ModItems.billet_am_mix, ModItems.nugget_am_mix);
 		addBillet(ModItems.billet_americium_fuel, ModItems.nugget_americium_fuel);
-		addBillet(ModItems.billet_neptunium, ModItems.nugget_neptunium, NP237.nugget());
-		addBillet(ModItems.billet_polonium, ModItems.nugget_polonium, PO210.nugget());
-		addBillet(ModItems.billet_technetium, ModItems.nugget_technetium, TC99.nugget());
-		addBillet(ModItems.billet_au198, ModItems.nugget_au198, AU198.nugget());
-		addBillet(ModItems.billet_schrabidium, ModItems.nugget_schrabidium, SA326.nugget());
-		addBillet(ModItems.billet_solinium, ModItems.nugget_solinium, SA327.nugget());
+		addBillet(ModItems.billet_neptunium, ModItems.nugget_neptunium);
+		addBillet(ModItems.billet_polonium, ModItems.nugget_polonium);
+		addBillet(ModItems.billet_technetium, ModItems.nugget_technetium);
+		addBillet(ModItems.billet_au198, ModItems.nugget_au198);
+		addBillet(ModItems.billet_schrabidium, ModItems.nugget_schrabidium);
+		addBillet(ModItems.billet_solinium, ModItems.nugget_solinium);
 		addBillet(ModItems.billet_uranium_fuel, ModItems.nugget_uranium_fuel);
 		addBillet(ModItems.billet_thorium_fuel, ModItems.nugget_thorium_fuel);
 		addBillet(ModItems.billet_plutonium_fuel, ModItems.nugget_plutonium_fuel);
@@ -2545,21 +2545,21 @@ public class CraftingManager {
 		addBillet(ModItems.billet_les, ModItems.nugget_les);
 		addBillet(ModItems.billet_schrabidium_fuel, ModItems.nugget_schrabidium_fuel);
 		addBillet(ModItems.billet_hes, ModItems.nugget_hes);
-		addBillet(ModItems.billet_australium, ModItems.nugget_australium, AUSTRALIUM.nugget());
+		addBillet(ModItems.billet_australium, ModItems.nugget_australium);
 		addBillet(ModItems.billet_australium_lesser, ModItems.nugget_australium_lesser);
 		addBillet(ModItems.billet_australium_greater, ModItems.nugget_australium_greater);
-		addBillet(ModItems.billet_ac227, ModItems.nugget_ac227, AC227.nugget());
-		addBillet(ModItems.billet_bismuth, ModItems.nugget_bismuth, ANY_BISMOID.nugget());
-		addBillet(ModItems.billet_pb209, ModItems.nugget_pb209, PB209.nugget());
-		addBillet(ModItems.billet_ra226, ModItems.nugget_ra226, RA226.nugget());
-		addBillet(ModItems.billet_sr90, ModItems.nugget_sr90, SR90.nugget());
-		addBillet(ModItems.billet_co60, ModItems.nugget_co60, CO60.nugget());
-		addBillet(ModItems.billet_ra226, ModItems.nugget_ra226, RA226.nugget());
-		addBillet(ModItems.billet_gh336, ModItems.nugget_gh336, GH336.nugget());
-		addBillet(ModItems.billet_beryllium, ModItems.nugget_beryllium, BE.nugget());
-		addBillet(ModItems.billet_zirconium, ModItems.nugget_zirconium, ZR.nugget());
-		addBillet(ModItems.billet_bismuth, ModItems.nugget_bismuth, ANY_BISMOID.nugget());
-		addBillet(ModItems.billet_nuclear_waste, ModItems.nuclear_waste_tiny);
+		addBillet(ModItems.billet_ac227, ModItems.nugget_ac227);
+		addBillet(ModItems.billet_bismuth, ModItems.nugget_bismuth);
+		addBillet(ModItems.billet_pb209, ModItems.nugget_pb209);
+		addBillet(ModItems.billet_ra226, ModItems.nugget_ra226);
+		addBillet(ModItems.billet_sr90, ModItems.nugget_sr90);
+		addBillet(ModItems.billet_co60, ModItems.nugget_co60);
+		addBillet(ModItems.billet_ra226, ModItems.nugget_ra226);
+		addBillet(ModItems.billet_gh336, ModItems.nugget_gh336);
+		addBillet(ModItems.billet_beryllium, ModItems.nugget_beryllium);
+		addBillet(ModItems.billet_zirconium, ModItems.nugget_zirconium);
+		addBillet(ModItems.billet_bismuth, ModItems.nugget_bismuth);
+		addBillet(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny));
 
 		addBilletByIngot(ModItems.billet_uranium, ModItems.ingot_uranium, U.ingot());
 		addBilletByIngot(ModItems.billet_u233, ModItems.ingot_u233, U233.ingot());
@@ -2998,19 +2998,19 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(block, 1), new Object[] { slab, slab });
 	}
 
-	public static void addBillet(Item billet, Item nugget, String... ore){
+	public static void addBillet(ItemStack billet, ItemStack nugget, String... ore){
 		for(String o : ore)
 			addRecipeAuto(ItemStackUtil.itemStackFrom(billet), new Object[] { "###", "###", '#', o });
 
 		addBillet(billet, nugget);
 	}
 
-	public static void addBillet(Item billet, Item nugget){
+	public static void addBillet(ItemStack billet, ItemStack nugget){
 		addRecipeAuto(ItemStackUtil.itemStackFrom(billet), new Object[] { "###", "###", '#', nugget });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(nugget, 6), new Object[] { billet });
 	}
 
-	public static void addBilletByIngot(Item billet, ItemStack ingot, String ore){
+	public static void addBilletByIngot(ItemStack billet, ItemStack ingot, String ore){
 		for(char o : ore.toCharArray()) addShapelessAuto(ItemStackUtil.itemStackFrom(billet, 3), new Object[] { o, o });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(billet, 3), new Object[] { ingot, ingot });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ingot, 2), new Object[] { billet, billet, billet });
@@ -3021,46 +3021,51 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ingot, 2), new Object[] { billet, billet, billet });
 	}
 
+	public static void addBilletByIngot(ItemStack billet, ItemStack ingot){
+		addShapelessAuto(ItemStackUtil.itemStackFrom(billet, 3), new Object[] { ingot, ingot });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ingot, 2), new Object[] { billet, billet, billet });
+	}
+
 	public static void addBilletByIngot(Item billet, ItemStack ingot){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(billet, 3), new Object[] { ingot, ingot });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ingot, 2), new Object[] { billet, billet, billet });
 	}
 
 	//Fill rods with one billet
-	public static void addRodBillet(Item billet, Item out){
+	public static void addRodBillet(ItemStack billet, Item out){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(out), new Object[] { ModItems.rod_empty, billet });
 	}
 
 	//Fill rods with two billets
-	public static void addDualRodBillet(Item billet, Item out){
+	public static void addDualRodBillet(ItemStack billet, Item out){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(out), new Object[] { ModItems.rod_dual_empty, billet, billet });
 	}
 
 	//Fill rods with three billets
-	public static void addQuadRodBillet(Item billet, Item out){
+	public static void addQuadRodBillet(ItemStack billet, Item out){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(out), new Object[] { ModItems.rod_quad_empty, billet, billet, billet, billet });
 	}
 
 	//Fill rods with one billet + unload
-	public static void addRodBilletUnload(Item billet, Item out){
+	public static void addRodBilletUnload(ItemStack billet, Item out){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(out), new Object[] { ModItems.rod_empty, billet });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(billet, 1), new Object[] { ItemStackUtil.itemStackFrom(out, 1, 0) });
 	}
 
 	//Fill rods with two billets + unload
-	public static void addDualRodBilletUnload(Item billet, Item out){
+	public static void addDualRodBilletUnload(ItemStack billet, Item out){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(out), new Object[] { ModItems.rod_dual_empty, billet, billet });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(billet, 2), new Object[] { ItemStackUtil.itemStackFrom(out, 1, 0) });
 	}
 
 	//Fill rods with three billets + unload
-	public static void addQuadRodBilletUnload(Item billet, Item out){
+	public static void addQuadRodBilletUnload(ItemStack billet, Item out){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(out), new Object[] { ModItems.rod_quad_empty, billet, billet, billet, billet });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(billet, 4), new Object[] { ItemStackUtil.itemStackFrom(out, 1, 0) });
 	}
 
 	//Fill rods with 6 nuggets
-	public static void addRBMKRod(Item billet, Item out){
+	public static void addRBMKRod(ItemStack billet, Item out){
 		addShapelessAuto(ItemStackUtil.itemStackFrom(out), new Object[] { ModItems.rbmk_fuel_empty, billet, billet, billet, billet, billet, billet, billet, billet });
 	}
 
@@ -3071,6 +3076,11 @@ public class CraftingManager {
 	}
 
 	public static void add1To9Pair(ItemStack one, Item nine){
+		add1To9(ItemStackUtil.itemStackFrom(one), ItemStackUtil.itemStackFrom(nine, 9));
+		add9To1(ItemStackUtil.itemStackFrom(nine), ItemStackUtil.itemStackFrom(one));
+	}
+
+	public static void add1To9Pair(ItemStack one, ItemStack nine){
 		add1To9(ItemStackUtil.itemStackFrom(one), ItemStackUtil.itemStackFrom(nine, 9));
 		add9To1(ItemStackUtil.itemStackFrom(nine), ItemStackUtil.itemStackFrom(one));
 	}
@@ -3103,6 +3113,13 @@ public class CraftingManager {
 	}
 
 	private static void addMineralSet(Item nugget, ItemStack ingot, Block block) {
+		add1To9(ItemStackUtil.itemStackFrom(ingot), ItemStackUtil.itemStackFrom(nugget, 9));
+		add9To1(ItemStackUtil.itemStackFrom(nugget), ItemStackUtil.itemStackFrom(ingot));
+		add1To9(ItemStackUtil.itemStackFrom(block), ItemStackUtil.itemStackFrom(ingot, 9));
+		add9To1(ItemStackUtil.itemStackFrom(ingot), ItemStackUtil.itemStackFrom(block));
+	}
+
+	private static void addMineralSet(ItemStack nugget, ItemStack ingot, Block block) {
 		add1To9(ItemStackUtil.itemStackFrom(ingot), ItemStackUtil.itemStackFrom(nugget, 9));
 		add9To1(ItemStackUtil.itemStackFrom(nugget), ItemStackUtil.itemStackFrom(ingot));
 		add1To9(ItemStackUtil.itemStackFrom(block), ItemStackUtil.itemStackFrom(ingot, 9));

@@ -16,6 +16,7 @@ public class BulletConfiguration {
 
 	// what item this specific configuration consumes
 	public Item ammo;
+	public int ammoMeta = 0; // TODO: use this madafaka
 	// how many ammo units one item restores
 	public int ammoCount = 1;
 	// how fast the bullet is (in sanics per second, or sps)

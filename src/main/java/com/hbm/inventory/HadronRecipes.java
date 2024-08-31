@@ -171,8 +171,8 @@ public class HadronRecipes {
 				ItemStackUtil.itemStackFrom(Items.CHICKEN),
 				ItemStackUtil.itemStackFrom(Items.CHICKEN),
 				100,
-				ItemStackUtil.itemStackFrom(ModItems.nugget),
-				ItemStackUtil.itemStackFrom(ModItems.nugget),
+				ItemStackUtil.itemStackFrom(ModItems.chicken_nugget),
+				ItemStackUtil.itemStackFrom(ModItems.chicken_nugget),
 				false
 				));
 	}

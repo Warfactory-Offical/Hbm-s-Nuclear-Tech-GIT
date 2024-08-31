@@ -403,7 +403,8 @@ public class GunEnergyFactory {
 
 		BulletConfiguration bullet = new BulletConfiguration();
 
-		bullet.ammo = ModItems.nugget_euphemium;
+		bullet.ammo = ModItems.nugget;
+		bullet.ammoMeta = ModItems.nugget_euphemium.getMetadata();
 		bullet.ammoCount = 1000;
 		bullet.wear = 1;
 		bullet.velocity = 1F;

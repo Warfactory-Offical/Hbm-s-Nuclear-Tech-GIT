@@ -37,9 +37,9 @@ public class MetaItem<
         setRegistryName(name);
         setHasSubtypes(true);
 
-         for (EMaterial material : materials) {
-             OreDictManager.queueRegisterOre(shape.getOreDictionaryPrefix() + material.getNamePascalCase() + shape.getOreDictionarySuffix(), getItemStack(material));
-         }
+//         for (EMaterial material : materials) {
+//             OreDictManager.queueRegisterOre(shape.getOreDictionaryPrefix() + material.getNamePascalCase() + shape.getOreDictionarySuffix(), getItemStack(material));
+//         }
 
         ModItems.ALL_ITEMS.add(this);
     }

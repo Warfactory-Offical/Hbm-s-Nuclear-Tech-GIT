@@ -29,7 +29,7 @@ public class BlockDepthOre extends BlockDepth {
 			return ModItems.cinnebar;
 		}
 		if(this == ModBlocks.ore_depth_zirconium) {
-			return ModItems.nugget_zirconium;
+			return ModItems.nugget;
 		}
 		if(this == ModBlocks.ore_depth_nether_neodymium) {
 			return ModItems.fragment_neodymium;
@@ -58,5 +58,13 @@ public class BlockDepthOre extends BlockDepth {
 		}
 		
 		return super.quantityDropped(rand);
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		if(this == ModBlocks.ore_depth_zirconium) {
+			return ModItems.nugget_zirconium.getMetadata();
+		}
+		return super.damageDropped(state);
 	}
 }
