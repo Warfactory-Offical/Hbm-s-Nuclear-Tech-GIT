@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.explosion.ExplosionLarge;
+import com.hbm.explosion.ExplosionMining;
 import com.hbm.explosion.ExplosionNT;
 import com.hbm.explosion.ExplosionNT.ExAttrib;
 import com.hbm.interfaces.IBomb;
@@ -37,9 +38,7 @@ public class DetMiner extends Block implements IBomb {
 		if(!world.isRemote) {
 
 			world.destroyBlock(pos, false);
-			ExplosionNT explosion = new ExplosionNT(world, null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 4);
-			explosion.atttributes.add(ExAttrib.ALLDROP);
-			explosion.atttributes.add(ExAttrib.NOHURT);
+			ExplosionMining explosion = new ExplosionMining(world, null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8);
 			explosion.explode();
 
 			ExplosionLarge.spawnParticles(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 30);

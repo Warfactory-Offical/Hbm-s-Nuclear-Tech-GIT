@@ -39,7 +39,7 @@ public class ExplosionNT extends Explosion {
 
 	private Random explosionRNG = new Random();
 	private World worldObj;
-	protected int field_77289_h = 16;
+	protected int resolution = 16;
 	protected Map affectedEntities = new HashMap();
 	public float explosionSize;
 	public double explosionX;
@@ -73,7 +73,7 @@ public class ExplosionNT extends Explosion {
 	}
 	
 	public ExplosionNT overrideResolution(int res) {
-		field_77289_h = res;
+		resolution = res;
 		return this;
 	}
 
@@ -84,23 +84,14 @@ public class ExplosionNT extends Explosion {
 		}
     }
 	
-	private void doNTExplosionA() {
-		float f = this.explosionSize;
-		HashSet hashset = new HashSet();
-		int i;
-		int j;
-		int k;
-		double d5;
-		double d6;
-		double d7;
-
-		for(i = 0; i < this.field_77289_h; ++i) {
-			for(j = 0; j < this.field_77289_h; ++j) {
-				for(k = 0; k < this.field_77289_h; ++k) {
-					if(i == 0 || i == this.field_77289_h - 1 || j == 0 || j == this.field_77289_h - 1 || k == 0 || k == this.field_77289_h - 1) {
-						double d0 = (double) ((float) i / ((float) this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-						double d1 = (double) ((float) j / ((float) this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-						double d2 = (double) ((float) k / ((float) this.field_77289_h - 1.0F) * 2.0F - 1.0F);
+	private void doNTExplosionA() { float f = this.explosionSize; HashSet hashset = new HashSet(); int i; int j; int k; double d5; double d6; double d7;
+		for(i = 0; i < this.resolution; ++i) {
+			for(j = 0; j < this.resolution; ++j) {
+				for(k = 0; k < this.resolution; ++k) {
+					if(i == 0 || i == this.resolution - 1 || j == 0 || j == this.resolution - 1 || k == 0 || k == this.resolution - 1) {
+						double d0 = (double) ((float) i / ((float) this.resolution - 1.0F) * 2.0F - 1.0F);
+						double d1 = (double) ((float) j / ((float) this.resolution - 1.0F) * 2.0F - 1.0F);
+						double d2 = (double) ((float) k / ((float) this.resolution - 1.0F) * 2.0F - 1.0F);
 						double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
 						d0 /= d3;
 						d1 /= d3;
@@ -117,14 +108,15 @@ public class ExplosionNT extends Explosion {
 							BlockPos pos = new BlockPos(j1, k1, l1);
 							IBlockState block = this.worldObj.getBlockState(pos);
 
-							if(block.getMaterial() != Material.AIR) {
+							if (block.getMaterial() != Material.AIR) {
 								float f3 = this.exploder != null ? this.exploder.getExplosionResistance(this, this.worldObj, new BlockPos(j1, k1, l1), block) : block.getBlock().getExplosionResistance(worldObj, new BlockPos(j1, k1, l1), (Entity) null, this);
 								f1 -= (f3 + 0.3F) * f2;
 							}
 
-							if(f1 > 0.0F && (this.exploder == null || this.exploder.canExplosionDestroyBlock(this, this.worldObj, new BlockPos(j1, k1, l1), block, f1))) {
+							if (f1 > 0.0F && (this.exploder == null || this.exploder.canExplosionDestroyBlock(this, this.worldObj, new BlockPos(j1, k1, l1), block, f1))) {
 								hashset.add(new BlockPos(j1, k1, l1));
 							}
+
 
 							d5 += d0 * (double) f2;
 							d6 += d1 * (double) f2;
