@@ -241,7 +241,7 @@ public class ExplosionMining extends ExplosionNT {
         Vec3d direction = targetVec.subtract(startVec).normalize();
         double maxDistance = startVec.distanceTo(targetVec);
 
-        for (double d = 0; d <= maxDistance; d += 1) {
+        for (double d = 0; d <= maxDistance; d += 0.5) {
             Vec3d currentPosVec = startVec.add(direction.scale(d));
             BlockPos currentPos = new BlockPos(currentPosVec.x, currentPosVec.y, currentPosVec.z);
             IBlockState currentState = this.worldObj.getBlockState(currentPos);
@@ -258,7 +258,7 @@ public class ExplosionMining extends ExplosionNT {
                         : currentBlock.getExplosionResistance(this.worldObj, currentPos, (Entity) null, this);
 
                 //Should keep bricks intact
-                if(currentBlock.getTranslationKey().toLowerCase().contains("brick"))
+                if(currentBlock.getTranslationKey().toLowerCase().contains("brick") || currentBlock.getTranslationKey().toLowerCase().contains("concrete"))
                     return false;
                 // For some reason resistance is divided by 5...? idk why
                 if ((resistance*5f) >= 6.0F  ) {

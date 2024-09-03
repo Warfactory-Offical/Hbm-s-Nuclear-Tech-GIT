@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.hbm.entity.projectile.EntityBulletBase;
 import com.hbm.explosion.ExplosionLarge;
+import com.hbm.explosion.ExplosionMining;
 import com.hbm.explosion.ExplosionNT;
 import com.hbm.explosion.ExplosionNT.ExAttrib;
 import com.hbm.handler.BulletConfigSyncingUtil;
@@ -269,7 +270,7 @@ public class Gun4GaugeFactory {
 				if(bullet.world.isRemote)
 					return;
 				
-				ExplosionNT explosion = new ExplosionNT(bullet.world, null, bullet.posX, bullet.posY, bullet.posZ, 4);
+				ExplosionNT explosion = new ExplosionMining(bullet.world, null, bullet.posX, bullet.posY, bullet.posZ, 4);
 				explosion.atttributes.add(ExAttrib.ALLDROP);
 				explosion.atttributes.add(ExAttrib.NOHURT);
 				explosion.explode();
