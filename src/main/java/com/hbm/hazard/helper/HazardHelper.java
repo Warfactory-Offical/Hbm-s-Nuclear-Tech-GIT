@@ -1,4 +1,4 @@
-package com.hbm.hazard_old.helper;
+package com.hbm.hazard.helper;
 
 import com.hbm.config.GeneralConfig;
 import com.hbm.items.ModItems;

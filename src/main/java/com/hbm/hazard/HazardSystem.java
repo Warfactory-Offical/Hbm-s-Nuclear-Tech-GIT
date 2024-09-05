@@ -1,11 +1,11 @@
-package com.hbm.hazard_old;
+package com.hbm.hazard;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.*;
 
-import com.hbm.hazard_old.modifier.HazardModifier;
-import com.hbm.hazard_old.transformer.HazardTransformerBase;
-import com.hbm.hazard_old.type.HazardTypeBase;
+import com.hbm.hazard.modifier.HazardModifier;
+import com.hbm.hazard.transformer.HazardTransformerBase;
+import com.hbm.hazard.type.HazardTypeBase;
 import com.hbm.interfaces.Untested;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 

@@ -10,7 +10,6 @@ import com.hbm.world.generator.CellularDungeonRoom;
 import com.hbm.world.generator.DungeonToolbox;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.nbt.NBTTagCompound;
@@ -131,7 +130,7 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 			ingred = ItemStackUtil.itemStackFrom(ModItems.powder_fire);
 		} else if(r == 2) {
 			orig = bookDust;
-			ingred = ItemStackUtil.itemStackFrom(ModItems.dust);
+			ingred = ItemStackUtil.itemStackFrom(ModItems.dust_);
 		} else if(r == 3) {
 			orig = bookMercury;
 			ingred = ItemStackUtil.itemStackFrom(ModItems.nugget_mercury);

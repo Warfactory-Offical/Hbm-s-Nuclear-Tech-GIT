@@ -1,9 +1,9 @@
-package com.hbm.hazard_old.transformer;
+package com.hbm.hazard.transformer;
 
 import java.util.List;
 
-import com.hbm.hazard_old.HazardEntry;
-import com.hbm.hazard_old.HazardRegistry;
+import com.hbm.hazard.HazardEntry;
+import com.hbm.hazard.HazardRegistry;
 
 import net.minecraft.item.ItemStack;
 

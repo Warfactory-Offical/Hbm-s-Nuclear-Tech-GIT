@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.special.ItemBedrockOre;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.items.ModItems;
 
 import mezz.jei.api.ingredients.IIngredients;
@@ -98,7 +97,7 @@ public class ShredderRecipes {
 
 				for(ItemStack stack : matches) {
 					if(stack != null && !stack.isEmpty() && Item.REGISTRY.getNameForObject(stack.getItem()) != null)
-						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), ItemStackUtil.itemStackFrom(ModItems.dust));
+						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), ItemStackUtil.itemStackFrom(ModItems.dust_));
 				}
 			}
 		}
@@ -106,8 +105,8 @@ public class ShredderRecipes {
 	
 	public static void registerOverrides() {
 
-		ShredderRecipes.setRecipe(ModItems.scrap, ItemStackUtil.itemStackFrom(ModItems.dust));
-		ShredderRecipes.setRecipe(ModItems.dust, ItemStackUtil.itemStackFrom(ModItems.dust));
+		ShredderRecipes.setRecipe(ModItems.scrap, ItemStackUtil.itemStackFrom(ModItems.dust_));
+		ShredderRecipes.setRecipe(ModItems.dust_, ItemStackUtil.itemStackFrom(ModItems.dust_));
 		ShredderRecipes.setRecipe(Blocks.GLOWSTONE, ItemStackUtil.itemStackFrom(Items.GLOWSTONE_DUST, 4));
 		ShredderRecipes.setRecipe(ItemStackUtil.itemStackFrom(Blocks.QUARTZ_BLOCK, 1, 0), ItemStackUtil.itemStackFrom(ModItems.powder_quartz, 4));
 		ShredderRecipes.setRecipe(ItemStackUtil.itemStackFrom(Blocks.QUARTZ_BLOCK, 1, 1), ItemStackUtil.itemStackFrom(ModItems.powder_quartz, 4));
@@ -128,7 +127,7 @@ public class ShredderRecipes {
 		ShredderRecipes.setRecipe(Blocks.COBBLESTONE, ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1));
 		ShredderRecipes.setRecipe(Blocks.STONEBRICK, ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1));
 		ShredderRecipes.setRecipe(Blocks.GRAVEL, ItemStackUtil.itemStackFrom(Blocks.SAND, 1));
-		ShredderRecipes.setRecipe(Blocks.SAND, ItemStackUtil.itemStackFrom(ModItems.dust, 2));
+		ShredderRecipes.setRecipe(Blocks.SAND, ItemStackUtil.itemStackFrom(ModItems.dust_, 2));
 		ShredderRecipes.setRecipe(Blocks.BRICK_BLOCK, ItemStackUtil.itemStackFrom(Items.CLAY_BALL, 4));
 		ShredderRecipes.setRecipe(Blocks.BRICK_STAIRS, ItemStackUtil.itemStackFrom(Items.CLAY_BALL, 3));
 		ShredderRecipes.setRecipe(Items.FLOWER_POT, ItemStackUtil.itemStackFrom(Items.CLAY_BALL, 3));

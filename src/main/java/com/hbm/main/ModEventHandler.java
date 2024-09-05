@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import com.hbm.hazard_old.HazardSystem;
+import com.hbm.hazard.HazardSystem;
 import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.Level;

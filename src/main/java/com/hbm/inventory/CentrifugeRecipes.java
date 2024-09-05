@@ -19,7 +19,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.model.b3d.B3DModel.Bone;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class CentrifugeRecipes {
@@ -62,8 +61,8 @@ public class CentrifugeRecipes {
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.powder_cloud), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.powder_copper, 1),
 				ItemStackUtil.itemStackFrom(ModItems.sulfur, 1),
-				ItemStackUtil.itemStackFrom(ModItems.dust, 1),
-				ItemStackUtil.itemStackFrom(ModItems.dust, 1) });
+				ItemStackUtil.itemStackFrom(ModItems.dust_, 1),
+				ItemStackUtil.itemStackFrom(ModItems.dust_, 1) });
 
 		recipes.put(COAL.ore(), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.powder_coal, 2),
@@ -213,7 +212,7 @@ public class CentrifugeRecipes {
 				ItemStackUtil.itemStackFrom(ModItems.powder_paleogenite_tiny, 2),
 				ItemStackUtil.itemStackFrom(ModItems.powder_meteorite_tiny, 1),
 				ItemStackUtil.itemStackFrom(ModItems.powder_meteorite_tiny, 1),
-				ItemStackUtil.itemStackFrom(ModItems.dust, 6) });
+				ItemStackUtil.itemStackFrom(ModItems.dust_, 6) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModBlocks.block_euphemium_cluster), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium, 7),

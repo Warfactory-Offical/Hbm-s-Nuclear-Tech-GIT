@@ -1,10 +1,10 @@
-package com.hbm.hazard_old;
+package com.hbm.hazard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hbm.hazard_old.modifier.HazardModifier;
-import com.hbm.hazard_old.type.HazardTypeBase;
+import com.hbm.hazard.modifier.HazardModifier;
+import com.hbm.hazard.type.HazardTypeBase;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

@@ -30,7 +30,7 @@ public class ItemFuel extends Item {
 	
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-		if(this == ModItems.dust)
+		if(this == ModItems.dust_)
 		{
 			if(MainRegistry.polaroidID == 11)
 				list.add("Another one bites the dust!");

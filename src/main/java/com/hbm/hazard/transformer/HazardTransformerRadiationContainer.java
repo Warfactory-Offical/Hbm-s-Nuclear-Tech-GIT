@@ -1,11 +1,11 @@
-package com.hbm.hazard_old.transformer;
+package com.hbm.hazard.transformer;
 
 import java.util.List;
 
 import com.hbm.blocks.generic.BlockStorageCrate;
-import com.hbm.hazard_old.HazardEntry;
-import com.hbm.hazard_old.HazardRegistry;
-import com.hbm.hazard_old.HazardSystem;
+import com.hbm.hazard.HazardEntry;
+import com.hbm.hazard.HazardRegistry;
+import com.hbm.hazard.HazardSystem;
 import com.hbm.items.ModItems;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.ItemStackUtil;

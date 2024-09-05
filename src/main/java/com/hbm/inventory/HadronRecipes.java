@@ -140,7 +140,7 @@ public class HadronRecipes {
 				ItemStackUtil.itemStackFrom(ModItems.powder_magic),
 				500000,
 				ItemStackUtil.itemStackFrom(ModItems.particle_sparkticle),
-				ItemStackUtil.itemStackFrom(ModItems.dust),
+				ItemStackUtil.itemStackFrom(ModItems.dust_),
 				false
 				));
 		recipes.add(new HadronRecipe(

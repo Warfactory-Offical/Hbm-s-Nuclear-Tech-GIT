@@ -1,4 +1,4 @@
-package com.hbm.hazard_old.modifier;
+package com.hbm.hazard.modifier;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

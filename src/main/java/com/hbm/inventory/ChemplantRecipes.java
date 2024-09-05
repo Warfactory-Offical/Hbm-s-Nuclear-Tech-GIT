@@ -7,29 +7,22 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import static com.hbm.inventory.OreDictManager.*;
-import com.google.common.collect.Lists;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
 import com.hbm.config.MachineConfig;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.inventory.RecipesCommon.AStack;
-import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBattery;
 import com.hbm.items.machine.ItemChemistryTemplate;
-import com.hbm.items.special.ItemCell;
-import com.hbm.items.tool.ItemFluidCanister;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 //TODO: clean this shit up
 @Spaghetti("everything")
@@ -206,11 +199,11 @@ public class ChemplantRecipes {
 		
 		makeRecipe(780, "SCHRABIDATE", new AStack[] {new OreDictStack(IRON.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.schrabidic, 250) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_schrabidate, 1) }, null, 600);
 		
-		makeRecipe(790, "COLTAN_CLEANING", new AStack[] {new OreDictStack(COLTAN.dust(), 2), new OreDictStack(COAL.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 250), new FluidStack(ModForgeFluids.hydrogen, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_coltan, 1), ItemStackUtil.comparableStackFrom(ModItems.powder_niobium, 1), ItemStackUtil.comparableStackFrom(ModItems.dust, 1) }, new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 500) }, 60);
+		makeRecipe(790, "COLTAN_CLEANING", new AStack[] {new OreDictStack(COLTAN.dust(), 2), new OreDictStack(COAL.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 250), new FluidStack(ModForgeFluids.hydrogen, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_coltan, 1), ItemStackUtil.comparableStackFrom(ModItems.powder_niobium, 1), ItemStackUtil.comparableStackFrom(ModItems.dust_, 1) }, new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 500) }, 60);
 		
 		makeRecipe(800, "COLTAN_PAIN", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.powder_coltan, 1), new OreDictStack(F.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.gas, 1000), new FluidStack(ModForgeFluids.oxygen, 500) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.pain, 1000) }, 120);
 		
-		makeRecipe(810, "COLTAN_CRYSTAL", null, new FluidStack[]{ new FluidStack(ModForgeFluids.pain, 1000), new FluidStack(ModForgeFluids.acid, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.gem_tantalium, 1), ItemStackUtil.comparableStackFrom(ModItems.dust, 3) }, new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 250) }, 80);
+		makeRecipe(810, "COLTAN_CRYSTAL", null, new FluidStack[]{ new FluidStack(ModForgeFluids.pain, 1000), new FluidStack(ModForgeFluids.acid, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.gem_tantalium, 1), ItemStackUtil.comparableStackFrom(ModItems.dust_, 3) }, new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 250) }, 80);
 		
 		makeRecipe(820, "ARSENIC", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.scrap_oil, 64) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.nugget_arsenic, 1), ItemStackUtil.comparableStackFrom(ModItems.sulfur, 2) }, new FluidStack[]{ new FluidStack(ModForgeFluids.heavyoil, 1500) }, 1200);
 

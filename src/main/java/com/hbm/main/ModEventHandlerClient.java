@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.hbm.hazard_old.HazardSystem;
+import com.hbm.hazard.HazardSystem;
+import com.hbm.inventory.material.MaterialShapes;
+import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.meta.MetaItem;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -276,12 +279,18 @@ public class ModEventHandlerClient {
 		ModelLoader.registerItemVariants(ModItems.cell, list);
 
 		for(Item item : ModItems.ALL_ITEMS) {
-			if (item instanceof MetaItem metaItem) {
-				metaItem.registerModels();
+			if (item instanceof MaterialShapes shape) {
+				MainRegistry.logger.info("Registering " + shape.getTranslationKey());
+				shape.registerModels();
 			} else {
 				registerModel(item, 0);
 			}
 		}
+
+//		for (MaterialShapes shape : MaterialShapes.allShapes) {
+//			shape.registerModels();
+//		}
+
 		for(Block block : ModBlocks.ALL_BLOCKS) {
 			registerBlockModel(block, 0);
 		}

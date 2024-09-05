@@ -1,7 +1,7 @@
-package com.hbm.hazard_old.type;
+package com.hbm.hazard.type;
 
 import com.hbm.config.RadiationConfig;
-import com.hbm.hazard_old.modifier.HazardModifier;
+import com.hbm.hazard.modifier.HazardModifier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,4 +1,4 @@
-package com.hbm.hazard_old.modifier;
+package com.hbm.hazard;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public abstract class HazardModifier {
 	/**
 	 * Returns the level after applying all modifiers to it, in order.
 	 * @param stack
-	 * @param entity nullable
+	 * @param entity
 	 * @param level
 	 * @param mods
 	 * @return

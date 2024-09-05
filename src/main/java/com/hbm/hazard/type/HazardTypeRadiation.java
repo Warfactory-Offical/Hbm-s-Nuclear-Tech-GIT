@@ -1,8 +1,8 @@
-package com.hbm.hazard_old.type;
+package com.hbm.hazard.type;
 
 import com.hbm.config.GeneralConfig;
-import com.hbm.hazard_old.helper.HazardHelper;
-import com.hbm.hazard_old.modifier.HazardModifier;
+import com.hbm.hazard.helper.HazardHelper;
+import com.hbm.hazard.modifier.HazardModifier;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;

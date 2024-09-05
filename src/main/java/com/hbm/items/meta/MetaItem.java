@@ -1,5 +1,6 @@
 package com.hbm.items.meta;
 import com.hbm.inventory.OreDictManager;
+import com.hbm.main.MainRegistry;
 import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
@@ -31,15 +32,11 @@ public class MetaItem<
     public MetaItem(EShape shape, EMaterial... materials) {
         this.materials = materials;
 
-        String name = shape.getResultingItemName();
+        String name = "meta_" + shape.getResultingItemName();
 
         setTranslationKey(name);
         setRegistryName(name);
         setHasSubtypes(true);
-
-//         for (EMaterial material : materials) {
-//             OreDictManager.queueRegisterOre(shape.getOreDictionaryPrefix() + material.getNamePascalCase() + shape.getOreDictionarySuffix(), getItemStack(material));
-//         }
 
         ModItems.ALL_ITEMS.add(this);
     }

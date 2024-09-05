@@ -9,7 +9,7 @@ import com.hbm.inventory.OreDictManager.DictFrame;
  */
 public class NTMMaterial {
 
-	public final int id;
+	public final String id;
 	public String[] names;
 	public MaterialShapes[] shapes = new MaterialShapes[0];
 	public boolean omitItemGen = false;
@@ -21,7 +21,7 @@ public class NTMMaterial {
 	public int convIn;
 	public int convOut;
 	
-	public NTMMaterial(int id, DictFrame dict) {
+	public NTMMaterial(String id, DictFrame dict) {
 		
 		this.names = dict.mats;
 		this.id = id;
@@ -52,6 +52,9 @@ public class NTMMaterial {
 	/** Shapes for autogen */
 	public NTMMaterial setShapes(MaterialShapes... shapes) {
 		this.shapes = shapes;
+		for (MaterialShapes shape : shapes) {
+			shape.addMaterial(this);
+		}
 		return this;
 	}
 	
@@ -71,7 +74,11 @@ public class NTMMaterial {
 		this.moltenColor = color;
 		return this;
 	}
-	
+
+	public String getNameForItem() {
+		return id;
+	}
+
 	public static enum SmeltingBehavior {
 		NOT_SMELTABLE,	//anything that can't be smelted or otherwise doesn't belong in a smelter, like diamond. may also include things that are smeltable but turn into a different type
 		VAPORIZES,		//can't be smelted because the material would skadoodle

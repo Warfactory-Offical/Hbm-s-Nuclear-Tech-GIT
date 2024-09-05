@@ -11,7 +11,6 @@ import com.hbm.items.ModItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.HbmWorldUtility;
 import net.minecraft.world.World;
 
@@ -56,7 +55,7 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 		List<ItemStack> list = Arrays.asList(new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.powder_iodine),
 				ItemStackUtil.itemStackFrom(ModItems.powder_fire),
-				ItemStackUtil.itemStackFrom(ModItems.dust),
+				ItemStackUtil.itemStackFrom(ModItems.dust_),
 				ItemStackUtil.itemStackFrom(ModItems.nugget_mercury),
 				ItemStackUtil.itemStackFrom(ModItems.morning_glory),
 				ItemStackUtil.itemStackFrom(ModItems.syringe_metal_empty),

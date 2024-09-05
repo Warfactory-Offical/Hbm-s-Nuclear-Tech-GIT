@@ -1,6 +1,6 @@
-package com.hbm.hazard_old.modifier;
+package com.hbm.hazard.modifier;
 
-import com.hbm.hazard_old.HazardRegistry;
+import com.hbm.hazard.HazardRegistry;
 import com.hbm.items.machine.ItemRBMKPellet;
 import com.hbm.items.machine.ItemRBMKRod;
 

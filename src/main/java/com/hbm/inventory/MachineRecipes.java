@@ -2,28 +2,15 @@ package com.hbm.inventory;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import static com.hbm.inventory.OreDictManager.*;
-import com.google.common.collect.Lists;
-import com.hbm.blocks.ModBlocks;
-import com.hbm.config.GeneralConfig;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBattery;
-import com.hbm.items.special.ItemCell;
-import com.hbm.items.tool.ItemFluidCanister;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 //TODO: clean this shit up
 //Alcater: on it
@@ -68,7 +55,7 @@ public class MachineRecipes {
 			list.add(new GasCentOutput(1, ItemStackUtil.itemStackFrom(ModItems.nugget_solinium), 1));
 			list.add(new GasCentOutput(1, ItemStackUtil.itemStackFrom(ModItems.nugget_uranium), 2));
 			list.add(new GasCentOutput(5, ItemStackUtil.itemStackFrom(ModItems.powder_lead), 3));
-			list.add(new GasCentOutput(10, ItemStackUtil.itemStackFrom(ModItems.dust), 4));
+			list.add(new GasCentOutput(10, ItemStackUtil.itemStackFrom(ModItems.dust_), 4));
 			return list;
 		} else if(fluid == ModForgeFluids.sas3){
 			list.add(new GasCentOutput(4, ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium), 1));

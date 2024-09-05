@@ -164,7 +164,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_trinitite, 1), new Object[] { "###", "###", "###", '#', ModItems.trinitite });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_waste, 1), new Object[] { "###", "###", "###", '#', ModItems.nuclear_waste });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_scrap, 1), new Object[] { "##", "##", '#', ModItems.scrap });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_scrap, 1), new Object[] { "###", "###", "###", '#', ModItems.dust });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_scrap, 1), new Object[] { "###", "###", "###", '#', ModItems.dust_});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_beryllium, 1), new Object[] { "###", "###", "###", '#', BE.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_schrabidium, 1), new Object[] { "###", "###", "###", '#', SA326.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_schrabidium_cluster, 1), new Object[] { "#S#", "SAS", "#S#", '#', SA326.ingot(), 'A', SBD.ingot(), 'S', STAR.ingot() });

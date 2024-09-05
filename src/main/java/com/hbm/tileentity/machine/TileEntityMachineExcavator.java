@@ -22,8 +22,6 @@ import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
 import com.hbm.lib.Library;
 import com.hbm.lib.DirPos;
 import com.hbm.lib.ForgeDirection;
-import com.hbm.forgefluid.FFUtils;
-import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
@@ -51,7 +49,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.common.capabilities.Capability;
@@ -500,7 +497,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 				for(ItemStack stack : items) {
 					ItemStack crushed = ShredderRecipes.getShredderResult(stack).copy();
 					
-					if(crushed.getItem() == ModItems.scrap || crushed.getItem() == ModItems.dust) {
+					if(crushed.getItem() == ModItems.scrap || crushed.getItem() == ModItems.dust_) {
 						list.add(stack);
 					} else {
 						crushed.setCount(crushed.getCount() * stack.getCount());
