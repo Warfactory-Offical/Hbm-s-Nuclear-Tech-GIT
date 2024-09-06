@@ -1,11 +1,8 @@
 package com.hbm.items.tool;
 
-
-import com.hbm.inventory.material.Mats;
 import com.hbm.items.IAnimatedItem;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
@@ -16,60 +13,70 @@ import com.hbm.util.EntityDamageUtil;
 
 import api.hbm.block.IToolable;
 import api.hbm.block.IToolable.ToolType;
+import crafttweaker.api.text.ITextComponent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeCache;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.codehaus.plexus.util.CachedMap;
+import org.jetbrains.annotations.NotNull;
 
-    public class ItemBoltgun extends Item implements IAnimatedItem {
+import java.util.HashMap;
+import java.util.Map;
 
-        public ItemBoltgun() {
+public class ItemBoltgun extends Item implements IAnimatedItem {
+
+        public ItemBoltgun(String s) {
+            this.setTranslationKey(s);
+            this.setRegistryName(s);
+
             this.setMaxStackSize(1);
             this.setCreativeTab(MainRegistry.controlTab);
-            //ToolType.BOLT.register(new ItemStack(this));
+            ToolType.BOLT.register(new ItemStack(this));
+
+            ModItems.ALL_ITEMS.add(this);
         }
 
-//        @Override
-//        public Item setUnlocalizedName(String unlocalizedName) {
-//            super.setTranslationKey(unlocalizedName);
-//            this.setRegistryName(RefStrings.MODID, unlocalizedName);
-//            return this;
-//        }
+        @Override
+        public boolean onLeftClickEntity(@NotNull ItemStack stack, @NotNull EntityPlayer player, Entity entity) {
+            if (!entity.isEntityAlive()) return false;
+            World world = player.world;
 
-//        @Override
-//        public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-//            if (!entity.isEntityAlive()) return false;
-//            World world = player.world;
-//
-//            ItemStack[] bolts = {
+            ItemStack[] bolts = {
+                    // TODO
 //                    new ItemStack(ModItems.bolt_spike),
 //                    Mats.MAT_STEEL.make(ModItems.bolt),
 //                    Mats.MAT_TUNGSTEN.make(ModItems.bolt),
 //                    Mats.MAT_DURA.make(ModItems.bolt)
-//            };
-//
-//            for (ItemStack bolt : bolts) {
-//                if (consumeBolt(player, bolt)) {
-//                    handleBoltAttack(player, entity, world);
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }
+                    ModItems.bolt_tungsten.getDefaultInstance(),
+                    ModItems.bolt_dura_steel.getDefaultInstance()
+            };
+
+            for (ItemStack bolt : bolts) {
+                if (consumeBolt(player, bolt)) {
+                    handleBoltAttack(player, entity, world);
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private boolean consumeBolt(EntityPlayer player, ItemStack bolt) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack slot = player.inventory.getStackInSlot(i);
-                if (slot != null && slot.getItem() == bolt.getItem() && slot.getItemDamage() == bolt.getItemDamage()) {
+                if (slot.getItem() == bolt.getItem() && slot.getItemDamage() == bolt.getItemDamage()) {
                     player.inventory.decrStackSize(i, 1);
                     player.inventoryContainer.detectAndSendChanges();
                     return true;
@@ -83,7 +90,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
                 world.playSound(null, entity.posX, entity.posY, entity.posZ, HBMSoundHandler.boltGun, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 EntityDamageUtil.attackEntityFromIgnoreIFrame(entity, DamageSource.causePlayerDamage(player).setDamageBypassesArmor(), 10F);
 
-                //Who cares about achivements
+                //Who cares about achievements
 //                if (!entity.isEntityAlive() && entity instanceof EntityPlayer) {
 //                    ((EntityPlayer) entity).addStat(MainRegistry.achGoFish);
 //                }
@@ -118,19 +125,50 @@ import net.minecraftforge.fml.relauncher.SideOnly;
             MainRegistry.proxy.effectNT(animationData);
         }
 
-//        @Override
-//        public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fX, float fY, float fZ) {
-//            Block block = world.getBlockState(pos).getBlock();
-//
-//            if (block instanceof IToolable && ((IToolable) block).onScrew(world, player, pos, side, fX, fY, fZ, ToolType.BOLT)) {
+        private static final Map<Block, Block> boltMap = new HashMap<>();
+
+        static {
+            boltMap.put(Blocks.IRON_BLOCK, Blocks.DIRT);
+        }
+
+        @Override
+        public @NotNull EnumActionResult onItemUse(@NotNull EntityPlayer player, World world, @NotNull BlockPos pos, @NotNull EnumHand hand, @NotNull EnumFacing side, float fX, float fY, float fZ) {
+            Block block = world.getBlockState(pos).getBlock();
+
+            if (!boltMap.containsKey(block)) return EnumActionResult.PASS;
+
+            ItemStack[] bolts = {
+                    // TODO
+//                    new ItemStack(ModItems.bolt_spike),
+//                    Mats.MAT_STEEL.make(ModItems.bolt),
+//                    Mats.MAT_TUNGSTEN.make(ModItems.bolt),
+//                    Mats.MAT_DURA.make(ModItems.bolt)
+                    ModItems.bolt_tungsten.getDefaultInstance(),
+                    ModItems.bolt_dura_steel.getDefaultInstance()
+            };
+
+            for (ItemStack bolt : bolts) {
+                if (consumeBolt(player, bolt)) {
+                    if (!world.isRemote) {
+                        world.setBlockState(pos, boltMap.get(block).getDefaultState());
+                        return EnumActionResult.SUCCESS;
+                    }
+                }
+            }
+
+            return EnumActionResult.PASS;
+
+
+//            if (block instanceof IToolable && ((IToolable) block).onScrew(world, player, pos.getX(), pos.getY(), pos.getZ(), side, fX, fY, fZ, hand, ToolType.BOLT)) {
 //                if (!world.isRemote) {
 //                    handleBoltUse(world, player, pos, side, fX, fY, fZ);
+//                    return EnumActionResult.SUCCESS;
 //                }
-//                return false;
+//                return EnumActionResult.PASS;
 //            }
 //
-//            return false;
-//        }
+//            return EnumActionResult.FAIL;
+        }
 
         private void handleBoltUse(World world, EntityPlayer player, BlockPos pos, EnumFacing side, float fX, float fY, float fZ) {
             world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.boltGun, SoundCategory.PLAYERS, 1.0F, 1.0F);

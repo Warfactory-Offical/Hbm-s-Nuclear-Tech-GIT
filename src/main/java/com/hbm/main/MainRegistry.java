@@ -502,6 +502,26 @@ public class MainRegistry {
 		if(logger == null)
 			logger = event.getModLog();
 
+		{ // items
+			logger.info("ModItems: [");
+			for (Field field : ModItems.class.getDeclaredFields()) {
+                try {
+					field.setAccessible(true);
+					Object value = field.get(null);
+                    if (value instanceof Item _item) {
+						logger.info("\tModItem: {}", field.getName());
+					} else if (value instanceof ItemStack _stack) {
+						logger.info("\tModItem: {} {{ItemStack}}", field.getName());
+					} else {
+						logger.warn("\tModItem: value.field_name = {}", field.getName());
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+			logger.info("]");
+		}
+
 		if(generalOverride > 0 && generalOverride < 19) {
 			polaroidID = generalOverride;
 		} else {

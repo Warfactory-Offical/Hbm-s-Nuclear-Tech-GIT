@@ -2,6 +2,7 @@ package com.hbm.items;
 
 import com.hbm.inventory.material.*;
 import com.hbm.items.food.*;
+import com.hbm.items.tool.*;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -177,59 +178,7 @@ import com.hbm.items.special.ItemWasteLong;
 import com.hbm.items.special.ItemWasteShort;
 import com.hbm.items.special.WatzFuel;
 import com.hbm.items.special.weapon.GunB92;
-import com.hbm.items.tool.ItemAnalyzer;
-import com.hbm.items.tool.ItemAmatExtractor;
-import com.hbm.items.tool.ItemBalefireMatch;
-import com.hbm.items.tool.ItemBombCaller;
-import com.hbm.items.tool.ItemCatalog;
-import com.hbm.items.tool.ItemColtanCompass;
-import com.hbm.items.tool.ItemCounterfitKeys;
-import com.hbm.items.tool.ItemCrateCaller;
-import com.hbm.items.tool.ItemDesignator;
-import com.hbm.items.tool.ItemDesignatorManual;
-import com.hbm.items.tool.ItemDesignatorRange;
-import com.hbm.items.tool.ItemDetonator;
-import com.hbm.items.tool.ItemDiscord;
-import com.hbm.items.tool.ItemDyatlov;
-import com.hbm.items.tool.ItemFluidCanister;
-import com.hbm.items.tool.ItemFluidContainerInfinite;
-import com.hbm.items.tool.ItemFusionCore;
-import com.hbm.items.tool.ItemFilter;
-import com.hbm.items.tool.ItemGasCanister;
-import com.hbm.items.tool.ItemDosimeter;
-import com.hbm.items.tool.ItemGeigerCounter;
-import com.hbm.items.tool.ItemDigammaDiagnostic;
-import com.hbm.items.tool.ItemLungDiagnostic;
-import com.hbm.items.tool.ItemGuideBook;
-import com.hbm.items.tool.ItemKey;
-import com.hbm.items.tool.ItemLaserDetonator;
-import com.hbm.items.tool.ItemLeadBox;
-import com.hbm.items.tool.ItemLock;
-import com.hbm.items.tool.ItemMS;
-import com.hbm.items.tool.ItemMatch;
-import com.hbm.items.tool.ItemMeteorRemote;
-import com.hbm.items.tool.ItemMirrorTool;
-import com.hbm.items.tool.ItemModDoor;
-import com.hbm.items.tool.ItemMultiDetonator;
-import com.hbm.items.tool.ItemMultitoolPassive;
-import com.hbm.items.tool.ItemMultitoolTool;
-import com.hbm.items.tool.ItemOilDetector;
-import com.hbm.items.tool.ItemPeas;
-import com.hbm.items.tool.ItemRBMKTool;
-import com.hbm.items.tool.ItemSatInterface;
-import com.hbm.items.tool.ItemSurveyScanner;
-import com.hbm.items.tool.ItemSwordAbility;
-import com.hbm.items.tool.ItemSwordAbilityPower;
-import com.hbm.items.tool.ItemSwordMeteorite;
-import com.hbm.items.tool.ItemToolAbility;
 import com.hbm.items.tool.ItemToolAbility.EnumToolType;
-import com.hbm.items.tool.ItemToolAbilityPower;
-import com.hbm.items.tool.ItemTooling;
-import com.hbm.items.tool.ItemTurretControl;
-import com.hbm.items.tool.ItemWand;
-import com.hbm.items.tool.ItemWandD;
-import com.hbm.items.tool.ItemWandS;
-import com.hbm.items.tool.ItemWiring;
 import com.hbm.items.weapon.GunB92Cell;
 import com.hbm.items.weapon.GunB93;
 import com.hbm.items.weapon.GunBoltAction;
@@ -315,8 +264,6 @@ public class ModItems {
 
 	public static final Item ingot_steel_dusted = new ItemHotDusted(200, "ingot_steel_dusted").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_u238m2 = new ItemUnstable(350, 200, "ingot_u238m2").setCreativeTab(MainRegistry.partsTab);
-//
-	public static final Item blade_meteorite = new ItemHot(200, "blade_meteorite").setCreativeTab(MainRegistry.partsTab);
 
 	public static final MetaItem<ShapePart, MaterialMineral> billet = new MetaItem<>(ShapePart.BILLET, MaterialMineral.billetValues()).setCreativeTab(MainRegistry.partsTab);
 
@@ -571,7 +518,9 @@ public class ModItems {
 
 	public static final Item redstone_sword = new RedstoneSword(ToolMaterial.STONE, "redstone_sword").setCreativeTab(CreativeTabs.COMBAT);
 	public static final Item big_sword = new BigSword(ToolMaterial.DIAMOND, "big_sword").setCreativeTab(CreativeTabs.COMBAT);
-	
+
+	public static final Item blade_meteorite = new ItemHot(200, "blade_meteorite").setCreativeTab(MainRegistry.partsTab);
+
 	// Tools
 
 	public static final Item dosimeter = new ItemDosimeter("dosimeter").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
@@ -2263,7 +2212,9 @@ public class ModItems {
 	public static final Item meteorite_sword_baleful = new ItemSwordMeteorite(499F, 0, MainRegistry.matMeteorite, "meteorite_sword_baleful");
 	public static final Item meteorite_sword_warped = new ItemSwordMeteorite(2999F, 0, MainRegistry.matMeteorite, "meteorite_sword_warped");
 	public static final Item meteorite_sword_demonic = new ItemSwordMeteorite(13665F, 0, MainRegistry.matMeteorite, "meteorite_sword_demonic");
-	
+
+	public static final Item bolt_gun = new ItemBoltgun("bolt_gun");
+
 	//Templates
 	public static final Item template_folder = new ItemTemplateFolder("template_folder").setMaxStackSize(1).setCreativeTab(MainRegistry.templateTab);
 	
