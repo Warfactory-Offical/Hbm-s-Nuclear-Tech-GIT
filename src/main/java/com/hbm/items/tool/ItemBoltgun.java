@@ -1,6 +1,7 @@
 package com.hbm.items.tool;
 
 import api.hbm.block.IToolable;
+import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.IAnimatedItem;
@@ -108,6 +109,7 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
 
         static {
             boltMap.put(Blocks.IRON_BLOCK, Blocks.DIRT);
+            boltMap.put(ModBlocks.watz_casing, ModBlocks.watz_casing_bolted);
         }
 
         @Override

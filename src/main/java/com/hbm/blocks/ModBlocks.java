@@ -1346,7 +1346,11 @@ public class ModBlocks {
 	public static final Block watz_conductor = new BlockCableConnect(Material.IRON, "watz_conductor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final Block watz_core = new WatzCore(Material.IRON, "watz_core").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final int guiID_watz_multiblock = 32;
-	
+
+
+	public static final Block watz_casing = new BlockBase(Material.IRON, "watz_casing").setHardness(5.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block watz_casing_bolted = new BlockBase(Material.IRON, "watz_casing_bolted").setHardness(5.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab);
+
 	//Fwatz stuff
 	public static final Block fwatz_conductor = new BlockReactor(Material.IRON, "fwatz_conductor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final Block fwatz_cooler = new BlockReactor(Material.IRON, "fwatz_cooler").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);

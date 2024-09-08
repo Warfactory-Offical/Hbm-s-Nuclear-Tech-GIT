@@ -265,6 +265,8 @@ public class ArmorFSB extends ItemArmor {
 			if(!chestplate.effects.isEmpty()) {
 
 				for(PotionEffect i : chestplate.effects) {
+					if(i == null)
+						continue;
 					entity.addPotionEffect(new PotionEffect(i.getPotion(), i.getDuration(), i.getAmplifier(), i.getIsAmbient(), i.doesShowParticles()));
 				}
 			}
