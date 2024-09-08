@@ -122,7 +122,7 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
                 if (consumeBolt(player, bolt)) {
                     world.setBlockState(pos, boltMap.get(block).getDefaultState());
                     handleBoltUse(world, player, pos, side, fX, fY, fZ);
-                    return EnumActionResult.SUCCESS;
+                    return EnumActionResult.PASS;
                 }
             }
 

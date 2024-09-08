@@ -23,11 +23,11 @@ public class ItemRenderBoltgun extends TEISRBase {
             case FIRST_PERSON_LEFT_HAND:
             case FIRST_PERSON_RIGHT_HAND:
                 if (type == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-                    GL11.glTranslated(0.3, 0.9, -0.3);
+                    GL11.glTranslated(0.1, 0.9, -0.90);
                     GL11.glRotated(205, 0, 0, 1);
                     GL11.glTranslated(-0.2, 1.1, 0.8);
                     GL11.glRotated(-25, 0, 0, 1);
-                    GL11.glRotated(180, 1, 0, 0);
+                    GL11.glRotated(170, 1, 0, 0);
                 } else {
                     GL11.glTranslated(0, 0, 0.9);
                     GL11.glRotated(0, 0, 0, 1);
@@ -56,7 +56,7 @@ public class ItemRenderBoltgun extends TEISRBase {
             case GROUND:
             case FIXED:
             case HEAD:
-                GL11.glScalef(0.3F, 0.3F, 0.3F);
+                GL11.glScalef(0.2F, 0.2F, 0.2F);
                 GL11.glTranslated(1.75, -0.5, 0.4);
                 GL11.glRotated(180, 0, 1, 0);
                 break;
