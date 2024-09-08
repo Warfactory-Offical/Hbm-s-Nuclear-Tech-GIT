@@ -289,7 +289,7 @@ public final class HBMSoundHandler {
         bomberLoop = register("entity.bomberLoop");
         bomberSmallLoop = register("entity.bomberSmallLoop");
         bonk = register("weapon.bonk");
-		boltGun = register("hbm:item.boltgun");
+		boltGun = register("item.boltgun");
         broadcast1 = register("block.broadcast1");
         broadcast2 = register("block.broadcast2");
         broadcast3 = register("block.broadcast3");

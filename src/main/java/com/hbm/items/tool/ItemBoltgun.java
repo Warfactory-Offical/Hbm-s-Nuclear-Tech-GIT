@@ -1,5 +1,8 @@
 package com.hbm.items.tool;
 
+import api.hbm.block.IToolable;
+import com.hbm.inventory.material.MaterialShapes;
+import com.hbm.inventory.material.Mats;
 import com.hbm.items.IAnimatedItem;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
@@ -11,14 +14,15 @@ import com.hbm.render.anim.BusAnimationKeyframe;
 import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.util.EntityDamageUtil;
 
-import api.hbm.block.IToolable;
 import api.hbm.block.IToolable.ToolType;
-import crafttweaker.api.text.ITextComponent;
 import net.minecraft.block.Block;
+import net.minecraft.client.audio.Sound;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,11 +30,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeCache;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.codehaus.plexus.util.CachedMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -44,33 +46,10 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
 
             this.setMaxStackSize(1);
             this.setCreativeTab(MainRegistry.controlTab);
+
             ToolType.BOLT.register(new ItemStack(this));
 
             ModItems.ALL_ITEMS.add(this);
-        }
-
-        @Override
-        public boolean onLeftClickEntity(@NotNull ItemStack stack, @NotNull EntityPlayer player, Entity entity) {
-            if (!entity.isEntityAlive()) return false;
-            World world = player.world;
-
-            ItemStack[] bolts = {
-                    // TODO
-//                    new ItemStack(ModItems.bolt_spike),
-//                    Mats.MAT_STEEL.make(ModItems.bolt),
-//                    Mats.MAT_TUNGSTEN.make(ModItems.bolt),
-//                    Mats.MAT_DURA.make(ModItems.bolt)
-                    ModItems.bolt_tungsten.getDefaultInstance(),
-                    ModItems.bolt_dura_steel.getDefaultInstance()
-            };
-
-            for (ItemStack bolt : bolts) {
-                if (consumeBolt(player, bolt)) {
-                    handleBoltAttack(player, entity, world);
-                    return true;
-                }
-            }
-            return false;
         }
 
         private boolean consumeBolt(EntityPlayer player, ItemStack bolt) {
@@ -137,32 +116,28 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
 
             if (!boltMap.containsKey(block)) return EnumActionResult.PASS;
 
-            ItemStack[] bolts = {
-                    // TODO
-//                    new ItemStack(ModItems.bolt_spike),
-//                    Mats.MAT_STEEL.make(ModItems.bolt),
-//                    Mats.MAT_TUNGSTEN.make(ModItems.bolt),
-//                    Mats.MAT_DURA.make(ModItems.bolt)
-                    ModItems.bolt_tungsten.getDefaultInstance(),
-                    ModItems.bolt_dura_steel.getDefaultInstance()
+            ItemStack[] bolts = { // TODO: fix
+                    Mats.MAT_TUNGSTEN.make(MaterialShapes.BOLT),
+                    Mats.MAT_DURA.make(MaterialShapes.BOLT)
             };
 
             for (ItemStack bolt : bolts) {
                 if (consumeBolt(player, bolt)) {
-                    if (!world.isRemote) {
-                        world.setBlockState(pos, boltMap.get(block).getDefaultState());
-                        return EnumActionResult.SUCCESS;
-                    }
+                    world.setBlockState(pos, boltMap.get(block).getDefaultState());
+                    handleBoltUse(world, player, pos, side, fX, fY, fZ);
+                    return EnumActionResult.SUCCESS;
                 }
             }
 
             return EnumActionResult.PASS;
 
 
-//            if (block instanceof IToolable && ((IToolable) block).onScrew(world, player, pos.getX(), pos.getY(), pos.getZ(), side, fX, fY, fZ, hand, ToolType.BOLT)) {
-//                if (!world.isRemote) {
-//                    handleBoltUse(world, player, pos, side, fX, fY, fZ);
-//                    return EnumActionResult.SUCCESS;
+//            if (block instanceof IToolable toolable) {
+//                if (toolable.onScrew(world, player, pos.getX(), pos.getY(), pos.getZ(), side, fX, fY, fZ, hand, ToolType.BOLT)) {
+//                    if (!world.isRemote) {
+//                        handleBoltUse(world, player, pos, side, fX, fY, fZ);
+//                        return EnumActionResult.SUCCESS;
+//                    }
 //                }
 //                return EnumActionResult.PASS;
 //            }
@@ -170,8 +145,32 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
 //            return EnumActionResult.FAIL;
         }
 
+
+
+    @Override
+    public boolean onLeftClickEntity(@NotNull ItemStack stack, @NotNull EntityPlayer player, Entity entity) {
+        if (!entity.isEntityAlive()) return false;
+        World world = player.world;
+
+        ItemStack[] bolts = {
+                // new ItemStack(ModItems.bolt_spike), // TODO
+                Mats.MAT_STEEL.make(MaterialShapes.BOLT),
+                Mats.MAT_TUNGSTEN.make(MaterialShapes.BOLT),
+                Mats.MAT_DURA.make(MaterialShapes.BOLT)
+        };
+
+        for (ItemStack bolt : bolts) {
+            if (consumeBolt(player, bolt)) {
+                handleBoltAttack(player, entity, world);
+                return true;
+            }
+        }
+        return false;
+    }
+
         private void handleBoltUse(World world, EntityPlayer player, BlockPos pos, EnumFacing side, float fX, float fY, float fZ) {
-            world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.boltGun, SoundCategory.PLAYERS, 1.0F, 1.0F);
+             world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.boltGun, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
             player.inventoryContainer.detectAndSendChanges();
 
             double offset = 0.25;
@@ -182,10 +181,15 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
                     new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50)
             );
 
-            NBTTagCompound animationData = new NBTTagCompound();
-            animationData.setString("type", "anim");
-            animationData.setString("mode", "generic");
-            PacketDispatcher.wrapper.sendTo(new AuxParticlePacketNT(animationData, 0, 0, 0), (EntityPlayerMP) player);
+            if (player instanceof EntityPlayerMP playerMP) {
+                NBTTagCompound animationData = new NBTTagCompound();
+                animationData.setString("type", "anim");
+                animationData.setString("mode", "generic");
+                PacketDispatcher.wrapper.sendTo(new AuxParticlePacketNT(animationData, 0, 0, 0), playerMP);
+            } else {
+                // TODO: handle that
+                MainRegistry.logger.warn("Player {} not an instance of EntityPlayerMP, not sending packet", player.getName());
+            }
         }
 
         //TODO: Port the new animation class

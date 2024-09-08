@@ -1,6 +1,9 @@
 package com.hbm.inventory;
+import com.hbm.inventory.material.MaterialShapes;
+import com.hbm.items.ModItems;
 import com.hbm.util.ItemStackUtil;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 //i love you
@@ -8,6 +11,7 @@ import static com.hbm.items.ModItems.*;
 import static com.hbm.blocks.ModBlocks.*;
 import static com.hbm.inventory.OreDictManager.DictFrame.*;
 import static com.hbm.inventory.OreNames.*;
+import static com.hbm.lib.RefStrings.MODID;
 
 
 import com.hbm.config.GeneralConfig;
@@ -288,6 +292,18 @@ public class OreDictManager {
 
 	// order: nugget billet ingot dust dustTiny block crystal plate gem ore oreNether
 	public static void registerOres() {
+
+		for (MaterialShapes shape : MaterialShapes.ALL_MATERIALS) {
+			shape.getMaterials().forEach(material -> {
+				shape.getOreDictNames(material).forEach(oreDictName -> {
+					String key = String.format(oreDictName, material.getNameForOreDict());
+					ItemStack value = material.make(shape);
+
+					OreDictionary.registerOre(key, value);
+					MainRegistry.logger.info("OreDictManager: Registered {}:{} under {}", MODID, shape.getItemStackDisplayName(value), key);
+				});
+			});
+        }
 
 		//VANILLA - Fixed
 		COAL.dust(powder_coal).dustSmall(powder_coal_tiny).gem(Items.COAL).crystal(crystal_coal);

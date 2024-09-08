@@ -28,9 +28,7 @@ public class Mats {
 
 	public static List<NTMMaterial> orderedList = new ArrayList();
 	public static HashMap<String, MaterialShapes> prefixByName = new HashMap();
-	public static HashMap<String, NTMMaterial> matById = new HashMap();
 	public static HashMap<String, NTMMaterial> matByName = new HashMap();
-	//public static HashMap<String, NTMMaterial> matRemap = new HashMap();
 	public static HashMap<ComparableStack, List<MaterialStack>> materialEntries = new HashMap();
 	public static HashMap<String, List<MaterialStack>> materialOreEntries = new HashMap();
 	
@@ -93,7 +91,7 @@ public class Mats {
 	//Base metals
 	public static final NTMMaterial MAT_TITANIUM	= makeSmeltable("titanium",		TI,			0xA99E79).setShapes(INGOT, POWDER, PLATE, BLOCK);
 	public static final NTMMaterial MAT_COPPER		= makeSmeltable("copper",		CU,			0xC18336).setShapes(WIRE, INGOT, POWDER, PLATE, BLOCK);
-	public static final NTMMaterial MAT_TUNGSTEN	= makeSmeltable("tungsten",		W,			0x977474).setShapes(WIRE, INGOT, POWDER, BLOCK);
+	public static final NTMMaterial MAT_TUNGSTEN	= makeSmeltable("tungsten",		W,			0x977474).setShapes(WIRE, INGOT, POWDER, BLOCK, BOLT);
 	public static final NTMMaterial MAT_ALUMINIUM	= makeSmeltable("aluminium",		AL,			0xD0B8EB).setShapes(WIRE, INGOT, POWDER, PLATE, BLOCK);
 	public static final NTMMaterial MAT_LEAD		= makeSmeltable("lead",		PB,			0x646470).setShapes(NUGGET, INGOT, POWDER, PLATE, BLOCK);
 	public static final NTMMaterial MAT_BISMUTH		= makeSmeltable("bismuth",		df("Bismuth"), 0xB200FF).setShapes(NUGGET, BILLET, INGOT, POWDER, BLOCK);
@@ -105,10 +103,10 @@ public class Mats {
 	public static final NTMMaterial MAT_BORON		= makeSmeltable("boron",		B,			0xAD72AE).setShapes(POWDER_TINY, INGOT, POWDER, BLOCK);
 
 	//Alloys
-	public static final NTMMaterial MAT_STEEL		= makeSmeltable("steel",	STEEL,		0x4A4A4A).setShapes(POWDER_TINY, INGOT, POWDER, PLATE, BLOCK);
+	public static final NTMMaterial MAT_STEEL		= makeSmeltable("steel",	STEEL,		0x4A4A4A).setShapes(POWDER_TINY, INGOT, POWDER, PLATE, BLOCK, BOLT);
 	public static final NTMMaterial MAT_MINGRADE	= makeSmeltable("mingrade",	MINGRADE,	0xE44C0F).setShapes(WIRE, INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_ALLOY		= makeSmeltable("alloy",	ALLOY,		0xFF7318).setShapes(WIRE, INGOT, POWDER, PLATE, BLOCK);
-	public static final NTMMaterial MAT_DURA		= makeSmeltable("dura",	DURA,		0x376373).setShapes(INGOT, POWDER, BLOCK);
+	public static final NTMMaterial MAT_DURA		= makeSmeltable("dura",	DURA,		0x376373).setShapes(INGOT, POWDER, BLOCK, BOLT);
 	public static final NTMMaterial MAT_SATURN		= makeSmeltable("saturn",	BIGMT,		0x4DA3AF).setShapes(INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_STAR		= makeSmeltable("star",	STAR,		0xA5A5D3).setShapes(INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_TCALLOY		= makeSmeltable("tcalloy",	TCALLOY,	0x9CA6A6).setShapes(INGOT, POWDER);
@@ -118,16 +116,16 @@ public class Mats {
 	public static final NTMMaterial MAT_FLUX		= makeAdditive("flux",	df("Flux"),	0xDECCAD).setShapes(POWDER);
 	public static final NTMMaterial MAT_SLAG		= makeSmeltable("slag",	SLAG,		0x6C6562).setShapes(BLOCK);
 
-	public static NTMMaterial make(String id, DictFrame dict) {
-		return new NTMMaterial(id, dict);
+	public static NTMMaterial make(String name, DictFrame dict) {
+		return new NTMMaterial(name, dict);
 	}
 	
-	public static NTMMaterial makeSmeltable(String id, DictFrame dict, int color) {
-		return new NTMMaterial(id, dict).smeltable(SmeltingBehavior.SMELTABLE).setMoltenColor(color);
+	public static NTMMaterial makeSmeltable(String name, DictFrame dict, int color) {
+		return new NTMMaterial(name, dict).smeltable(SmeltingBehavior.SMELTABLE).setMoltenColor(color);
 	}
 	
-	public static NTMMaterial makeAdditive(String id, DictFrame dict, int color) {
-		return new NTMMaterial(id, dict).smeltable(SmeltingBehavior.ADDITIVE).setMoltenColor(color);
+	public static NTMMaterial makeAdditive(String name, DictFrame dict, int color) {
+		return new NTMMaterial(name, dict).smeltable(SmeltingBehavior.ADDITIVE).setMoltenColor(color);
 	}
 	
 	public static DictFrame df(String string) {

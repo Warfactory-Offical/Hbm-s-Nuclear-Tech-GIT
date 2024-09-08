@@ -1,6 +1,8 @@
 package com.hbm.inventory.material;
 
 import com.hbm.inventory.OreDictManager.DictFrame;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * Encapsulates most materials that are currently listed as DictFrames, even vanilla ones.
@@ -9,7 +11,7 @@ import com.hbm.inventory.OreDictManager.DictFrame;
  */
 public class NTMMaterial {
 
-	public final String id;
+	public final String name;
 	public String[] names;
 	public MaterialShapes[] shapes = new MaterialShapes[0];
 	public boolean omitItemGen = false;
@@ -21,21 +23,20 @@ public class NTMMaterial {
 	public int convIn;
 	public int convOut;
 	
-	public NTMMaterial(String id, DictFrame dict) {
+	public NTMMaterial(String name, DictFrame dict) {
 		
 		this.names = dict.mats;
-		this.id = id;
+		this.name = name;
 		
 		this.smeltsInto = this;
 		this.convIn = 1;
 		this.convOut = 1;
 		
-		for(String name : dict.mats) {
-			Mats.matByName.put(name, this);
-		}
+//		for(String name : dict.mats) {
+//			Mats.matByName.put(name, this);
+//		}
 		
 		Mats.orderedList.add(this);
-		Mats.matById.put(id, this);
 	}
 	
 	public String getTranslationKey() {
@@ -51,6 +52,7 @@ public class NTMMaterial {
 	
 	/** Shapes for autogen */
 	public NTMMaterial setShapes(MaterialShapes... shapes) {
+		// TODO: perhaps remove, because of adding of materials in make()
 		this.shapes = shapes;
 		for (MaterialShapes shape : shapes) {
 			shape.addMaterial(this);
@@ -76,7 +78,17 @@ public class NTMMaterial {
 	}
 
 	public String getNameForItem() {
-		return id;
+		return this.name;
+	}
+
+	public String getNameForOreDict() {
+		String[] parts = this.name.toLowerCase().split("_");
+		StringBuilder pascalCaseName = new StringBuilder();
+		for (String part : parts) {
+			pascalCaseName.append(Character.toUpperCase(part.charAt(0)))
+					.append(part.substring(1));
+		}
+		return pascalCaseName.toString();
 	}
 
 	public static enum SmeltingBehavior {
@@ -85,5 +97,19 @@ public class NTMMaterial {
 		BREAKS,			//can't be smelted because the material doesn't survive the temperatures
 		SMELTABLE,		//mostly metal
 		ADDITIVE		//stuff like coal which isn't smeltable but can be put in a crucible anyway
+	}
+
+	public ItemStack make(Item template, int amount) {
+		assert template instanceof MaterialShapes;
+		return ((MaterialShapes) template).getItemStack(this, amount);
+	}
+
+	public ItemStack make(Item template) {
+		return this.make(template, 1);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("NTMMaterial { %s }", this.name);
 	}
 }
