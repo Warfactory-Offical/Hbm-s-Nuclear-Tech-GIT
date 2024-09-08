@@ -11,6 +11,7 @@ import java.util.Random;
 
 import com.hbm.entity.item.EntityMovingPackage;
 import com.hbm.render.entity.item.RenderMovingPackage;
+import com.hbm.render.item.*;
 import com.hbm.tileentity.machine.*;
 import com.hbm.tileentity.network.TileEntityCraneSplitter;
 import org.apache.logging.log4j.Level;
@@ -358,29 +359,7 @@ import com.hbm.render.factories.RenderRubbleFactory;
 import com.hbm.render.factories.RenderSSmokeFactory;
 import com.hbm.render.factories.RenderTaintedCreeperFactory;
 import com.hbm.render.factories.ShrapnelRendererFactory;
-import com.hbm.render.item.AssemblyTemplateRender;
-import com.hbm.render.item.ChemTemplateRender;
-import com.hbm.render.item.FFIdentifierRender;
-import com.hbm.render.item.FluidBarrelRender;
-import com.hbm.render.item.FluidCanisterRender;
-import com.hbm.render.item.FluidTankRender;
-import com.hbm.render.item.ItemRenderBase;
-import com.hbm.render.item.ItemRenderCell;
-import com.hbm.render.item.ItemRenderFFFluidDuct;
-import com.hbm.render.item.ItemRenderFluidIcon;
-import com.hbm.render.item.ItemRenderGasCanister;
-import com.hbm.render.item.ItemRenderLibrary;
-import com.hbm.render.item.ItemRenderMissile;
-import com.hbm.render.item.ItemRenderMissilePart;
-import com.hbm.render.item.ItemRenderMissileGeneric;
 import com.hbm.render.item.ItemRenderMissileGeneric.RenderMissileType;
-import com.hbm.render.item.ItemRenderMultitool;
-import com.hbm.render.item.ItemRenderObj;
-import com.hbm.render.item.ItemRenderShim;
-import com.hbm.render.item.ItemRendererHot;
-import com.hbm.render.item.ItemRendererMachine;
-import com.hbm.render.item.ItemRendererMeteorSword;
-import com.hbm.render.item.ItemRendererBedrockOre;
 import com.hbm.render.item.weapon.ItemRedstoneSwordRender;
 import com.hbm.render.item.weapon.ItemRenderBFLauncher;
 import com.hbm.render.item.weapon.ItemRenderBigSword;
@@ -1111,7 +1090,8 @@ public class ClientProxy extends ServerProxy {
 		registerItemRenderer(ModItems.missile_endo, new ItemRenderMissileGeneric(RenderMissileType.TYPE_THERMAL), reg);
 		registerItemRenderer(ModItems.missile_exo, new ItemRenderMissileGeneric(RenderMissileType.TYPE_THERMAL), reg);
 		registerItemRenderer(ModItems.missile_doomsday, new ItemRenderMissileGeneric(RenderMissileType.TYPE_DOOMSDAY), reg);
-		registerItemRenderer(ModItems.missile_carrier, new ItemRenderMissileGeneric(RenderMissileType.TYPE_CARRIER), reg);	
+		registerItemRenderer(ModItems.missile_carrier, new ItemRenderMissileGeneric(RenderMissileType.TYPE_CARRIER), reg);
+        registerItemRenderer(ModItems.bolt_gun, new ItemRenderBoltgun(), reg);
 	}
 
 	public static void registerItemRenderer(Item i, TileEntityItemStackRenderer render, IRegistry<ModelResourceLocation, IBakedModel> reg){

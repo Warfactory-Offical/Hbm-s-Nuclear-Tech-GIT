@@ -1,6 +1,5 @@
 package com.hbm.items.tool;
 
-import api.hbm.block.IToolable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
@@ -17,19 +16,15 @@ import com.hbm.util.EntityDamageUtil;
 
 import api.hbm.block.IToolable.ToolType;
 import net.minecraft.block.Block;
-import net.minecraft.client.audio.Sound;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
@@ -133,18 +128,6 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
 
             return EnumActionResult.PASS;
 
-
-//            if (block instanceof IToolable toolable) {
-//                if (toolable.onScrew(world, player, pos.getX(), pos.getY(), pos.getZ(), side, fX, fY, fZ, hand, ToolType.BOLT)) {
-//                    if (!world.isRemote) {
-//                        handleBoltUse(world, player, pos, side, fX, fY, fZ);
-//                        return EnumActionResult.SUCCESS;
-//                    }
-//                }
-//                return EnumActionResult.PASS;
-//            }
-//
-//            return EnumActionResult.FAIL;
         }
 
 
