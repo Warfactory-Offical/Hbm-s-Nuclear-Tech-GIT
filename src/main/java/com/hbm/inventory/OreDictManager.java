@@ -267,6 +267,11 @@ public class OreDictManager {
 	public static final DictFrame AT209 = new DictFrame("Astatine209", "At209");
 
 	/*
+	 * ALLOYS
+	 */
+	public static final DictFrame COMPOUND = new DictFrame("Compound");
+
+	/*
 	 * COLLECTIONS
 	 */
 	/** Any form of elastic polymer */

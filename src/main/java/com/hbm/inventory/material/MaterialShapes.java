@@ -59,7 +59,7 @@ public class MaterialShapes extends Item {
 //            Mats.prefixByName.put(prefix, this);
 //        }
 
-		setCreativeTab(MainRegistry.partsTab);
+        setCreativeTab(MainRegistry.partsTab);
 
 		ModItems.ALL_ITEMS.add(this);
 		ALL_MATERIALS.add(this);
@@ -82,8 +82,14 @@ public class MaterialShapes extends Item {
 	@NotNull
 	public String getTranslationKey(ItemStack stack) {
 		int meta = stack.getMetadata();
-		if (meta < materials.size()) return "item." + String.format(this.translationKeyFormat, materials.get(meta).getNameForItem());
-		return super.getTranslationKey() + "_error";
+		if (meta < materials.size()) return "item." + String.format(
+				this.translationKeyFormat,
+				materials.get(meta).getNameForItem()
+		);
+		return "item." + String.format(
+				this.translationKeyFormat,
+				"null"
+		);
 	}
 
 	@SideOnly(Side.CLIENT)

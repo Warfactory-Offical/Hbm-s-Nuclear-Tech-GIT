@@ -246,6 +246,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import static com.hbm.inventory.material.MaterialShapes.*;
+import static com.hbm.inventory.material.Mats.*;
+
 public class ModItems {
 	
 	public static final List<Item> ALL_ITEMS = new ArrayList<Item>();
@@ -505,14 +508,9 @@ public class ModItems {
 		Mats.init();
 	}
 
-	public static ItemStack getMetaItemStack(MaterialShapes shape, NTMMaterial material, int amount) {
-		return null;
-//		return new ItemStack(shape.getItem(), amount, material.getMetadata())
-	}
-
-	public static ItemStack getMetaItemStack(MaterialShapes shape, NTMMaterial material) {
-		return getMetaItemStack(shape, material, 1);
-	}
+	public static final ItemStack bolt_dura_steel = MAT_DURA    .make(BOLT);
+	public static final ItemStack bolt_tungsten   = MAT_TUNGSTEN.make(BOLT);
+	public static final ItemStack bolt_compound   = MAT_COMPOUND.make(BOLT);
 
 	//
 
@@ -1738,12 +1736,9 @@ public class ModItems {
 	public static final Item turbine_titanium = new ItemBase("turbine_titanium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item blade_tungsten = new ItemBase("blade_tungsten").setCreativeTab(MainRegistry.partsTab);
 	public static final Item turbine_tungsten = new ItemBase("turbine_tungsten").setCreativeTab(MainRegistry.partsTab);
-	public static final Item bolt_tungsten = new ItemBase("bolt_tungsten").setCreativeTab(MainRegistry.partsTab);
 	public static final Item board_copper = new ItemBase("board_copper").setCreativeTab(MainRegistry.partsTab);
-	public static final Item bolt_dura_steel = new ItemBase("bolt_dura_steel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item pipes_steel = new ItemBase("pipes_steel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item drill_titanium = new ItemBase("drill_titanium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item bolt_compound = new ItemBase("bolt_compound").setCreativeTab(MainRegistry.partsTab);
 	public static final Item hazmat_cloth = new ItemBase("hazmat_cloth").setCreativeTab(MainRegistry.partsTab);
 	public static final Item hazmat_cloth_red = new ItemBase("hazmat_cloth_red").setCreativeTab(MainRegistry.partsTab);
 	public static final Item hazmat_cloth_grey = new ItemBase("hazmat_cloth_grey").setCreativeTab(MainRegistry.partsTab);

@@ -114,8 +114,8 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
             if (!boltMap.containsKey(block)) return EnumActionResult.PASS;
 
             ItemStack[] bolts = { // TODO: fix
-                    Mats.MAT_TUNGSTEN.make(MaterialShapes.BOLT),
-                    Mats.MAT_DURA.make(MaterialShapes.BOLT)
+                    ModItems.bolt_tungsten,
+                    ModItems.bolt_dura_steel
             };
 
             for (ItemStack bolt : bolts) {
@@ -139,9 +139,11 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
 
         ItemStack[] bolts = {
                 // new ItemStack(ModItems.bolt_spike), // TODO
-                Mats.MAT_STEEL.make(MaterialShapes.BOLT),
-                Mats.MAT_TUNGSTEN.make(MaterialShapes.BOLT),
-                Mats.MAT_DURA.make(MaterialShapes.BOLT)
+                // Mats.MAT_STEEL.make(MaterialShapes.BOLT),
+                // Mats.MAT_TUNGSTEN.make(MaterialShapes.BOLT),
+                // Mats.MAT_DURA.make(MaterialShapes.BOLT)
+                ModItems.bolt_tungsten,
+                ModItems.bolt_dura_steel
         };
 
         for (ItemStack bolt : bolts) {

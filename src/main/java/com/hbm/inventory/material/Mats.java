@@ -103,10 +103,10 @@ public class Mats {
 	public static final NTMMaterial MAT_BORON		= makeSmeltable("boron",		B,			0xAD72AE).setShapes(POWDER_TINY, INGOT, POWDER, BLOCK);
 
 	//Alloys
-	public static final NTMMaterial MAT_STEEL		= makeSmeltable("steel",	STEEL,		0x4A4A4A).setShapes(POWDER_TINY, INGOT, POWDER, PLATE, BLOCK, BOLT);
+	public static final NTMMaterial MAT_STEEL		= makeSmeltable("steel",	STEEL,		0x4A4A4A).setShapes(POWDER_TINY, INGOT, POWDER, PLATE, BLOCK);
 	public static final NTMMaterial MAT_MINGRADE	= makeSmeltable("mingrade",	MINGRADE,	0xE44C0F).setShapes(WIRE, INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_ALLOY		= makeSmeltable("alloy",	ALLOY,		0xFF7318).setShapes(WIRE, INGOT, POWDER, PLATE, BLOCK);
-	public static final NTMMaterial MAT_DURA		= makeSmeltable("dura",	DURA,		0x376373).setShapes(INGOT, POWDER, BLOCK, BOLT);
+	public static final NTMMaterial MAT_DURA		= makeSmeltable("dura_steel",	DURA,		0x376373).setShapes(INGOT, POWDER, BLOCK, BOLT);
 	public static final NTMMaterial MAT_SATURN		= makeSmeltable("saturn",	BIGMT,		0x4DA3AF).setShapes(INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_STAR		= makeSmeltable("star",	STAR,		0xA5A5D3).setShapes(INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_TCALLOY		= makeSmeltable("tcalloy",	TCALLOY,	0x9CA6A6).setShapes(INGOT, POWDER);
@@ -115,6 +115,7 @@ public class Mats {
 	public static final NTMMaterial MAT_CMB			= makeSmeltable("cmb",	CMB,		0x6F6FB4).setShapes(INGOT, POWDER, PLATE, BLOCK);
 	public static final NTMMaterial MAT_FLUX		= makeAdditive("flux",	df("Flux"),	0xDECCAD).setShapes(POWDER);
 	public static final NTMMaterial MAT_SLAG		= makeSmeltable("slag",	SLAG,		0x6C6562).setShapes(BLOCK);
+	public static final NTMMaterial MAT_COMPOUND    = make("compound", COMPOUND).setShapes(BOLT);
 
 	public static NTMMaterial make(String name, DictFrame dict) {
 		return new NTMMaterial(name, dict);
