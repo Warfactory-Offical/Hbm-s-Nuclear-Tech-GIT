@@ -2333,8 +2333,8 @@ public class ClientProxy extends ServerProxy {
 		ModItems.diamond_gavel.setTileEntityItemStackRenderer(new ItemRenderGavel());
 		ModItems.mese_gavel.setTileEntityItemStackRenderer(new ItemRenderGavel());
 		ModItems.gun_bolter.setTileEntityItemStackRenderer(new ItemRenderWeaponBolter());
-		ModItems.ingot_steel_dusted.setTileEntityItemStackRenderer(new ItemRendererHot());
         // TODO
+//		ModItems.ingot_steel_dusted.setTileEntityItemStackRenderer(new ItemRendererHot());
 //		ModItems.ingot_chainsteel.setTileEntityItemStackRenderer(new ItemRendererHot());
 //		ModItems.ingot_meteorite.setTileEntityItemStackRenderer(new ItemRendererHot());
 //		ModItems.ingot_meteorite_forged.setTileEntityItemStackRenderer(new ItemRendererHot());

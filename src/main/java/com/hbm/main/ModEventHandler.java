@@ -1148,8 +1148,15 @@ public class ModEventHandler {
 			}
 		}
 
-		if(event.getLeft().getItem() == ModItems.ingot_steel_dusted && event.getRight().getItem() == ModItems.ingot_steel_dusted &&
-				event.getLeft().getCount() ==  event.getRight().getCount()) {
+		if(ItemStackUtil.comparableStackFrom(
+				event.getLeft().getItem(),
+				event.getLeft().getCount(),
+				event.getLeft().getMetadata()
+		).equals(ItemStackUtil.comparableStackFrom(
+				event.getRight().getItem(),
+				event.getRight().getCount(),
+				event.getRight().getMetadata()
+		))) {
 
 			double h1 = ItemHot.getHeat(event.getLeft());
 			double h2 = ItemHot.getHeat(event.getRight());
@@ -1163,11 +1170,12 @@ public class ModEventHandler {
 
 				boolean done = i3 >= 10;
 
-				ItemStack out;
+				ItemStack out = null;
 				if(done){
 					out = ItemStackUtil.itemStackFrom(ModItems.ingot_chainsteel, event.getLeft().getCount());
 				} else {
-					out = ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, event.getLeft().getCount(), i3);
+					// TODO
+//					out = ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, event.getLeft().getCount(), i3);
 				}
 
 				ItemHot.heatUp(out, done ? 1D : (h1 + h2) / 2D);

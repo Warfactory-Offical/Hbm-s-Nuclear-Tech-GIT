@@ -13,7 +13,6 @@ import com.hbm.hazard.HazardSystem;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.NTMMaterial;
-import com.hbm.items.meta.MetaItem;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -341,11 +340,12 @@ public class ModEventHandlerClient {
 			for(int i = 0; i < TrackType.values().length; i++) {
 				ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 			}
-		} else if(item == ModItems.ingot_u238m2) {
-			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-			ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(RefStrings.MODID + ":hs-elements", "inventory"));
-			ModelLoader.setCustomModelResourceLocation(item, 2, new ModelResourceLocation(RefStrings.MODID + ":hs-arsenic", "inventory"));
-			ModelLoader.setCustomModelResourceLocation(item, 3, new ModelResourceLocation(RefStrings.MODID + ":hs-vault", "inventory"));
+			// TODO
+//		} else if(item == ModItems.ingot_u238m2) {
+//			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+//			ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(RefStrings.MODID + ":hs-elements", "inventory"));
+//			ModelLoader.setCustomModelResourceLocation(item, 2, new ModelResourceLocation(RefStrings.MODID + ":hs-arsenic", "inventory"));
+//			ModelLoader.setCustomModelResourceLocation(item, 3, new ModelResourceLocation(RefStrings.MODID + ":hs-vault", "inventory"));
 		} else if(item == ModItems.polaroid || item == ModItems.glitch) {
 			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName() + "_" + MainRegistry.polaroidID, "inventory"));
 		} else if(item == Item.getItemFromBlock(ModBlocks.brick_jungle_glyph)){
@@ -614,6 +614,18 @@ public class ModEventHandlerClient {
 			((TEISRBase) render).itemModel = model;
 			reg.putObject(loc, new BakedModelCustom((TEISRBase) render));
 		}
+	}
+
+	public static void swapModels(ItemStack stack, IRegistry<ModelResourceLocation, IBakedModel> reg) {
+		// TODO
+//		assert stack.getItem() instanceof MaterialShapes shape;
+//		ModelResourceLocation loc = new ModelResourceLocation(item.getRegistryName(), "inventory");
+//		IBakedModel model = reg.getObject(loc);
+//		TileEntityItemStackRenderer render = item.getTileEntityItemStackRenderer();
+//		if(render instanceof TEISRBase) {
+//			((TEISRBase) render).itemModel = model;
+//			reg.putObject(loc, new BakedModelCustom((TEISRBase) render));
+//		}
 	}
 
 	public static void swapModelsNoGui(Item item, IRegistry<ModelResourceLocation, IBakedModel> reg) {
