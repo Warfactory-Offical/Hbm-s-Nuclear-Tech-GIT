@@ -106,7 +106,7 @@ public class Mats {
 	public static final NTMMaterial MAT_STEEL		= makeSmeltable("steel",	STEEL,		0x4A4A4A).setShapes(POWDER_TINY, INGOT, POWDER, PLATE, BLOCK);
 	public static final NTMMaterial MAT_MINGRADE	= makeSmeltable("mingrade",	MINGRADE,	0xE44C0F).setShapes(WIRE, INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_ALLOY		= makeSmeltable("alloy",	ALLOY,		0xFF7318).setShapes(WIRE, INGOT, POWDER, PLATE, BLOCK);
-	public static final NTMMaterial MAT_DURA		= makeSmeltable("dura_steel",	DURA,		0x376373).setShapes(INGOT, POWDER, BLOCK, BOLT);
+	public static final NTMMaterial MAT_DURA_STEEL = makeSmeltable("dura_steel",	DURA,		0x376373).setShapes(INGOT, POWDER, BLOCK, BOLT);
 	public static final NTMMaterial MAT_SATURN		= makeSmeltable("saturn",	BIGMT,		0x4DA3AF).setShapes(INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_STAR		= makeSmeltable("star",	STAR,		0xA5A5D3).setShapes(INGOT, POWDER, BLOCK);
 	public static final NTMMaterial MAT_TCALLOY		= makeSmeltable("tcalloy",	TCALLOY,	0x9CA6A6).setShapes(INGOT, POWDER);
