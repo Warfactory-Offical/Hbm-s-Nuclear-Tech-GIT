@@ -264,7 +264,10 @@ public class ModItems {
 	public static final ItemStack bolt_tungsten   = MAT_TUNGSTEN.make(BOLT);
 	public static final ItemStack bolt_compound   = MAT_COMPOUND.make(BOLT);
 
-	public static final ItemStack ingot_ac227 = new ItemStack(new ItemHazard(ItemHazard.ac227, "ingot_ac227").setCreativeTab(MainRegistry.partsTab));
+	//FIXME
+	public static final Item ingot = INGOT;
+
+	public static final ItemStack ingot_ac227 = MAT_ACT227.make(INGOT);
 	public static final ItemStack ingot_actinium = new ItemStack(new ItemCustomLore("ingot_actinium").setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack ingot_advanced_alloy = new ItemStack(new ItemBase("ingot_advanced_alloy").setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack ingot_aluminium = new ItemStack(new ItemBase("ingot_aluminium").setCreativeTab(MainRegistry.partsTab));
