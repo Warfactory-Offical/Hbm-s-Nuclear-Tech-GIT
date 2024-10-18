@@ -141,7 +141,7 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
                 // new ItemStack(ModItems.bolt_spike), // TODO
                 // Mats.MAT_STEEL.make(MaterialShapes.BOLT),
                 // Mats.MAT_TUNGSTEN.make(MaterialShapes.BOLT),
-                // Mats.MAT_DURA.make(MaterialShapes.BOLT)
+                // Mats.MAT_DURASTEELSTEEL.make(MaterialShapes.BOLT)
                 ModItems.bolt_tungsten,
                 ModItems.bolt_dura_steel
         };

@@ -141,12 +141,17 @@ public class OreDictManager {
 	 */
 	public static final DictFrame RAREEARTH = new DictFrame("RareEarth");
 	public static final DictFrame NITANIUM = new DictFrame("Nitanium");
+	/**  SILICON */
+	public static final DictFrame SI = new DictFrame("Silicon");
 	/** TITANIUM */
 	public static final DictFrame TI = new DictFrame("Titanium");
 	/** COPPER */
 	public static final DictFrame CU = new DictFrame("Copper");
 	public static final DictFrame MINGRADE = new DictFrame("Mingrade");
 	public static final DictFrame ALLOY = new DictFrame("AdvancedAlloy");
+	public static final DictFrame BBRONZE = new DictFrame("BismuthBronze");
+	public static final DictFrame ABRONZE = new DictFrame("ArsenisBronze");
+	public static final DictFrame BSCCO = new DictFrame("BSCCO");
 	/** TUNGSTEN */
 	public static final DictFrame W = new DictFrame("Tungsten");
 	/** ALUMINUM */
@@ -158,7 +163,7 @@ public class OreDictManager {
 	public static final DictFrame CDALLOY = new DictFrame("CdAlloy");
 	/** LEAD */
 	public static final DictFrame PB = new DictFrame("Lead");
-	//public static final DictFrame BI = new DictFrame("Bismuth");
+	public static final DictFrame BI = new DictFrame("Bismuth");
 	public static final DictFrame CD = new DictFrame("Cadmium");
 	public static final DictFrame AS = new DictFrame("Arsenic");
 	/** TANTALUM */
@@ -197,11 +202,16 @@ public class OreDictManager {
 	/** SALTPETER/NITER */
 	public static final DictFrame KNO = new DictFrame("Saltpeter");
 	/** FLUORITE */
+	public static final DictFrame NA = new DictFrame("Sodium");
+	public static final DictFrame SODALITE = new DictFrame("Sodalite");
+	public static final DictFrame CA = new DictFrame("Calcium");
+	public static final DictFrame CHLOROCALCITE = new DictFrame("ChloroCalcite");
 	public static final DictFrame F = new DictFrame("Fluorite");
 	public static final DictFrame LIGNITE = new DictFrame("Lignite");
 	public static final DictFrame COALCOKE = new DictFrame("CoalCoke");
 	public static final DictFrame PETCOKE = new DictFrame("PetCoke");
 	public static final DictFrame LIGCOKE = new DictFrame("LigniteCoke");
+	public static final DictFrame CARBON = new DictFrame("Carbon");
 	public static final DictFrame CINNABAR = new DictFrame("Cinnabar");
 	public static final DictFrame BORAX = new DictFrame("Borax");
 	public static final DictFrame VOLCANIC = new DictFrame("Volcanic");
@@ -209,6 +219,8 @@ public class OreDictManager {
 	public static final DictFrame MALACHITE = new DictFrame("Malachite");
 	public static final DictFrame SLAG = new DictFrame("Slag");
 	public static final DictFrame INFERNAL = new DictFrame("InfernalCoal");
+	public static final DictFrame MOLYSITE = new DictFrame("Molysite");
+	public static final DictFrame MUD = new DictFrame("Mud");
 
 	/*
 	 * HAZARDS, MISC
@@ -270,6 +282,8 @@ public class OreDictManager {
 	 * ALLOYS
 	 */
 	public static final DictFrame COMPOUND = new DictFrame("Compound");
+	public static final DictFrame GUNMETAL = new DictFrame("GunMetal");
+	public static final DictFrame WEAPONSTEEL = new DictFrame("WeaponSteel");
 
 	/*
 	 * COLLECTIONS

@@ -35,7 +35,7 @@ public class MaterialShapes extends Item {
 	public static final MaterialShapes BILLET = new MaterialShapes("billet", null, NUGGET.quantity * 6, "billet");
 	public static final MaterialShapes GEM = new MaterialShapes("gem", null, INGOT.quantity, "gem");
 	public static final MaterialShapes CRYSTAL = new MaterialShapes("crystal", null, INGOT.quantity, "crystal");
-	public static final MaterialShapes POWDER = new MaterialShapes("powder", null, INGOT.quantity, "dust");
+	public static final MaterialShapes DUST = new MaterialShapes("powder", null, INGOT.quantity, "dust");
 	public static final MaterialShapes PLATE = new MaterialShapes("plate", null, INGOT.quantity, "plate");
 	public static final MaterialShapes CASTPLATE = new MaterialShapes("cast_plate", null, INGOT.quantity * 3, "plateTriple");
 	public static final MaterialShapes WELDEDPLATE = new MaterialShapes("welded_plate", null, INGOT.quantity * 6, "plateSextuple");
