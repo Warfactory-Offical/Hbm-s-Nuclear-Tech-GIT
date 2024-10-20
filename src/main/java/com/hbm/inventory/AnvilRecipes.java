@@ -57,13 +57,14 @@ public class AnvilRecipes {
 			smithingRecipes.add(new AnvilSmithingRecipe(1, ItemStackUtil.itemStackFrom(ModBlocks.anvil_starmetal, 1), ItemStackUtil.comparableStackFrom(anvil), new OreDictStack(STAR.ingot(), 10)));
 			smithingRecipes.add(new AnvilSmithingRecipe(1, ItemStackUtil.itemStackFrom(ModBlocks.anvil_steel, 1), ItemStackUtil.comparableStackFrom(anvil), new OreDictStack(STEEL.ingot(), 10)));
 		}
-		
-		for(int i = 0; i < 9; i++)
-			smithingRecipes.add(new AnvilSmithingHotRecipe(3, ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, 1, i + 1),
-					ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, i), ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, i)));
-		
-		smithingRecipes.add(new AnvilSmithingHotRecipe(3, ItemStackUtil.itemStackFrom(ModItems.ingot_chainsteel, 1),
-				ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, 9), ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, 9)));
+
+		//TODO
+//		for(int i = 0; i < 9; i++)
+//			smithingRecipes.add(new AnvilSmithingHotRecipe(3, ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, 1, i + 1),
+//					ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, i), ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, i)));
+//
+//		smithingRecipes.add(new AnvilSmithingHotRecipe(3, ItemStackUtil.itemStackFrom(ModItems.ingot_chainsteel, 1),
+//				ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, 9), ItemStackUtil.comparableStackFrom(ModItems.ingot_steel_dusted, 1, 9)));
 		
 		smithingRecipes.add(new AnvilSmithingHotRecipe(3, ItemStackUtil.itemStackFrom(ModItems.ingot_meteorite_forged, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_meteorite), ItemStackUtil.comparableStackFrom(ModItems.ingot_meteorite)));
 		smithingRecipes.add(new AnvilSmithingHotRecipe(3, ItemStackUtil.itemStackFrom(ModItems.blade_meteorite, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_meteorite_forged), ItemStackUtil.comparableStackFrom(ModItems.ingot_meteorite_forged)));

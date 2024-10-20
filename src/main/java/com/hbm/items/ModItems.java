@@ -268,6 +268,7 @@ public class ModItems {
 	public static final Item ingot = INGOT;
 	public static final Item nugget = NUGGET;
 
+	public static final ItemStack ingot_ac227 = MAT_ACTINIUM.make(INGOT);
 	public static final ItemStack ingot_actinium = new ItemStack(new ItemCustomLore("ingot_actinium").setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack ingot_advanced_alloy = new ItemStack(new ItemBase("ingot_advanced_alloy").setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack ingot_aluminium = new ItemStack(new ItemBase("ingot_aluminium").setCreativeTab(MainRegistry.partsTab));

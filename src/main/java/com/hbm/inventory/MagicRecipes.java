@@ -44,7 +44,8 @@ public class MagicRecipes {
 	}
 
 	public static void register() {
-		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2, 1, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2, 1, 2), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2, 1, 3)));
+		//FIXME: Had to getItem on these, though it worked fine before..?
+		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2.getItem(), 1, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2.getItem(), 1, 2), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2.getItem(), 1, 3)));
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.rod_of_discord), ItemStackUtil.comparableStackFrom(Items.ENDER_PEARL), ItemStackUtil.comparableStackFrom(ModItems.nugget_euphemium), ItemStackUtil.comparableStackFrom(Items.BLAZE_ROD)));
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.balefire_and_steel), new OreDictStack(STEEL.ingot()), ItemStackUtil.comparableStackFrom(ModItems.egg_balefire_shard)));
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.mysteryshovel), ItemStackUtil.comparableStackFrom(Items.IRON_SHOVEL), ItemStackUtil.comparableStackFrom(Items.BONE), ItemStackUtil.comparableStackFrom(ModItems.ingot_starmetal), ItemStackUtil.comparableStackFrom(ModItems.ducttape)));
