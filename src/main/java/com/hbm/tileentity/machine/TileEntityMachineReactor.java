@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.inventory.BreederRecipes;
 import com.hbm.inventory.BreederRecipes.BreederRecipe;
@@ -186,7 +187,7 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 
 			for(int i = 1; i < 2; i++) {
 				if(inventory.getStackInSlot(i).isEmpty()) {
-					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem()));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem()));
 				} else {
 					inventory.getStackInSlot(i).shrink(1);
 				}

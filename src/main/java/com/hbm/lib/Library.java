@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.annotation.Nullable;
 
+import com.hbm.util.ItemStackUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -796,14 +797,17 @@ public static boolean canConnect(IBlockAccess world, BlockPos pos, ForgeDirectio
 			return stackA.getMetadata() == stackB.getMetadata() && stackA.getItem() == stackB.getItem();
 	}
 
-	public static boolean hasInventoryItem(InventoryPlayer inventory, Item ammo) {
+	public static boolean hasInventoryItem(InventoryPlayer inventory, ItemStack stack) {
 		for(int i = 0; i < inventory.getSizeInventory(); i++) {
-			ItemStack stack = inventory.getStackInSlot(i);
-			if(stack.getItem() == ammo) {
+			if(ItemStackUtil.isSameMetaItem(inventory.getStackInSlot(i), stack)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public static boolean hasInventoryItem(InventoryPlayer inventory, Item item) {
+		return hasInventoryItem(inventory, ItemStackUtil.itemStackFrom(item));
 	}
 	
 	public static boolean hasInventoryOreDict(InventoryPlayer inventory, String name) {

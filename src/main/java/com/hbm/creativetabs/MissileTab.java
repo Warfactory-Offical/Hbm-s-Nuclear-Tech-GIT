@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemCustomMissile;
@@ -18,9 +19,9 @@ public class MissileTab extends CreativeTabs {
 	@Override
 	public ItemStack createIcon() {
 		if(ModItems.missile_nuclear != null){
-			return new ItemStack(ModItems.missile_nuclear);
+			return ItemStackUtil.itemStackFrom(ModItems.missile_nuclear);
 		}
-		return new ItemStack(Items.IRON_PICKAXE);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}
 
 	@Override

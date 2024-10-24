@@ -1,4 +1,5 @@
 package com.hbm.main;
+import com.hbm.util.ItemStackUtil;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -365,9 +366,6 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootEntry;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
@@ -375,10 +373,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -506,6 +502,26 @@ public class MainRegistry {
 		if(logger == null)
 			logger = event.getModLog();
 
+		{ // items
+			logger.info("ModItems: [");
+			for (Field field : ModItems.class.getDeclaredFields()) {
+                try {
+					field.setAccessible(true);
+					Object value = field.get(null);
+                    if (value instanceof Item _item) {
+						logger.info("\tModItem: {}", field.getName());
+					} else if (value instanceof ItemStack _stack) {
+						logger.info("\tModItem: {} {{ItemStack}}", field.getName());
+					} else {
+						logger.warn("\tModItem: value.field_name = {}", field.getName());
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+			logger.info("]");
+		}
+
 		if(generalOverride > 0 && generalOverride < 19) {
 			polaroidID = generalOverride;
 		} else {
@@ -566,35 +582,35 @@ public class MainRegistry {
 		proxy.preInit(event);
 		Library.initSuperusers();
 		
-		enumArmorMaterialSchrabidium.setRepairItem(new ItemStack(ModItems.ingot_schrabidium));
-		enumArmorMaterialHazmat.setRepairItem(new ItemStack(ModItems.hazmat_cloth));
-		enumArmorMaterialHazmat2.setRepairItem(new ItemStack(ModItems.hazmat_cloth_red));
-		enumArmorMaterialHazmat3.setRepairItem(new ItemStack(ModItems.hazmat_cloth_grey));
-		enumArmorMaterialT45.setRepairItem(new ItemStack(ModItems.plate_titanium));
-		aMatBJ.setRepairItem(new ItemStack(ModItems.plate_armor_lunar));
-		aMatAJR.setRepairItem(new ItemStack(ModItems.plate_armor_ajr));
-		aMatHEV.setRepairItem(new ItemStack(ModItems.plate_armor_hev));
-		enumArmorMaterialTitanium.setRepairItem(new ItemStack(ModItems.ingot_titanium));
-		enumArmorMaterialSteel.setRepairItem(new ItemStack(ModItems.ingot_steel));
-		enumArmorMaterialAlloy.setRepairItem(new ItemStack(ModItems.ingot_advanced_alloy));
-		enumArmorMaterialPaa.setRepairItem(new ItemStack(ModItems.plate_paa));
-		enumArmorMaterialCmb.setRepairItem(new ItemStack(ModItems.ingot_combine_steel));
-		enumArmorMaterialAusIII.setRepairItem(new ItemStack(ModItems.ingot_australium));
-		enumArmorMaterialSecurity.setRepairItem(new ItemStack(ModItems.plate_kevlar));
-		enumToolMaterialSchrabidium.setRepairItem(new ItemStack(ModItems.ingot_schrabidium));
-		enumToolMaterialHammer.setRepairItem(new ItemStack(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
-		enumToolMaterialChainsaw.setRepairItem(new ItemStack(ModItems.ingot_steel));
-		enumToolMaterialTitanium.setRepairItem(new ItemStack(ModItems.ingot_titanium));
-		enumToolMaterialSteel.setRepairItem(new ItemStack(ModItems.ingot_steel));
-		enumToolMaterialAlloy.setRepairItem(new ItemStack(ModItems.ingot_advanced_alloy));
-		enumToolMaterialCmb.setRepairItem(new ItemStack(ModItems.ingot_combine_steel));
-		enumToolMaterialBottleOpener.setRepairItem(new ItemStack(ModItems.plate_steel));
-		enumToolMaterialDesh.setRepairItem(new ItemStack(ModItems.ingot_desh));
-		enumArmorMaterialAsbestos.setRepairItem(new ItemStack(ModItems.asbestos_cloth));
-		matMeteorite.setRepairItem(new ItemStack(ModItems.plate_paa));
-		aMatLiquidator.setRepairItem(new ItemStack(ModItems.plate_lead));
-		aMatFau.setRepairItem(new ItemStack(ModItems.plate_armor_fau));
-		aMatDNS.setRepairItem(new ItemStack(ModItems.plate_armor_dnt));
+		enumArmorMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium));
+		enumArmorMaterialHazmat.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth));
+		enumArmorMaterialHazmat2.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth_red));
+		enumArmorMaterialHazmat3.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth_grey));
+		enumArmorMaterialT45.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_titanium));
+		aMatBJ.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_lunar));
+		aMatAJR.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_ajr));
+		aMatHEV.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_hev));
+		enumArmorMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_titanium));
+		enumArmorMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_steel));
+		enumArmorMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy));
+		enumArmorMaterialPaa.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
+		enumArmorMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel));
+		enumArmorMaterialAusIII.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_australium));
+		enumArmorMaterialSecurity.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_kevlar));
+		enumToolMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium));
+		enumToolMaterialHammer.setRepairItem(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
+		enumToolMaterialChainsaw.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_steel));
+		enumToolMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_titanium));
+		enumToolMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_steel));
+		enumToolMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy));
+		enumToolMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel));
+		enumToolMaterialBottleOpener.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_steel));
+		enumToolMaterialDesh.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_desh));
+		enumArmorMaterialAsbestos.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.asbestos_cloth));
+		matMeteorite.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
+		aMatLiquidator.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_lead));
+		aMatFau.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_fau));
+		aMatDNS.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_dnt));
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		GameRegistry.registerTileEntity(TileEntityDummy.class, new ResourceLocation(RefStrings.MODID, "tileentity_dummy"));
@@ -1112,7 +1128,7 @@ public class MainRegistry {
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.pink_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.kerosene, 10000));
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.red_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.diesel, 10000));
 		FluidContainerRegistry.registerContainer(ModItems.iv_xp, ModItems.iv_xp_empty, new FluidStack(ModForgeFluids.experience, 100));
-		FluidContainerRegistry.registerContainer(ModItems.nugget_mercury, null, new FluidStack(ModForgeFluids.mercury, 125));
+//		FluidContainerRegistry.registerContainer(ModItems.nugget_mercury, null, new FluidStack(ModForgeFluids.mercury, 125)); // TODO
 		FluidContainerRegistry.registerContainer(ModItems.bottle_mercury, Items.GLASS_BOTTLE, new FluidStack(ModForgeFluids.mercury, 1000));
 		FluidContainerRegistry.registerContainer(ModItems.particle_hydrogen, ModItems.particle_empty, new FluidStack(ModForgeFluids.hydrogen, 1000));
 		FluidContainerRegistry.registerContainer(ModItems.particle_amat, ModItems.particle_empty, new FluidStack(ModForgeFluids.amat, 1000));

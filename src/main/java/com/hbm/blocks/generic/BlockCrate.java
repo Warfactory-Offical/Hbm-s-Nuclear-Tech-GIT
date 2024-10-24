@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -246,7 +247,7 @@ public class BlockCrate extends BlockFalling {
     
     public static void addToListWithWeight(List<ItemStack> list, Item item, int weight) {
     	for(int i = 0; i < weight; i++)
-    		list.add(new ItemStack(item));
+    		list.add(ItemStackUtil.itemStackFrom(item));
     }
     public static void addToListWithWeight(List<ItemStack> list, ItemStack item, int weight) {
     	for(int i = 0; i < weight; i++)

@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 
@@ -16,9 +17,9 @@ public class BlockTab extends CreativeTabs {
 	@Override
 	public ItemStack createIcon() {
 		if(ModBlocks.ore_uranium != null){
-			return new ItemStack(Item.getItemFromBlock(ModBlocks.brick_concrete));
+			return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.brick_concrete));
 		}
-		return new ItemStack(Items.IRON_PICKAXE);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}
 
 }

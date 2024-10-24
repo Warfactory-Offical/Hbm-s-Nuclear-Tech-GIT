@@ -12,6 +12,7 @@ import com.hbm.lib.ModDamageSource;
 import com.hbm.main.AdvancementManager;
 import com.hbm.util.ContaminationUtil;
 
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -244,13 +245,13 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 			int i = rand.nextInt(11);
 			int j = rand.nextInt(3);
 			if(i == 0)
-				this.dropItem(ModItems.nugget_u235, j);
+				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget_u235, j), 0);
 			if(i == 1)
-				this.dropItem(ModItems.nugget_pu238, j);
+				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget_pu238, j), 0);
 			if(i == 2)
-				this.dropItem(ModItems.nugget_pu239, j);
+				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget_pu239, j), 0);
 			if(i == 3)
-				this.dropItem(ModItems.nugget_neptunium, j);
+				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget_neptunium, j), 0);
 			if(i == 4)
 				this.dropItem(ModItems.man_core, 1);
 			if(i == 5) {

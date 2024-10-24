@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -23,7 +24,7 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
     public WeightedRandomChestContentFrom1710(Item item, int meta, int minChance, int maxChance, int weight)
     {
         super(weight);
-        this.theItemId = new ItemStack(item, 1, meta);
+        this.theItemId = ItemStackUtil.itemStackFrom(item, 1, meta);
         this.theMinimumChanceToGenerateItem = minChance;
         this.theMaximumChanceToGenerateItem = maxChance;
     }

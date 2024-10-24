@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.LinkedHashMap;
 import java.util.HashMap;
@@ -26,14 +27,14 @@ public class StorageDrumRecipes {
 
 		for(int i = 0; i < ItemWasteLong.WasteClass.values().length; i++){
 			ItemWasteLong.WasteClass waste = ItemWasteLong.WasteClass.values()[i];
-			addRecipe(new ComparableStack(ModItems.nuclear_waste_long, 1, i), 
-				new ItemStack(ModItems.nuclear_waste_long_depleted, 1, i), 
+			addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nuclear_waste_long, 1, i), 
+				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_depleted, 1, i), 
 				VersatileConfig.getLongDecayChance(), 
 				waste.liquid, 
 				waste.gas
 			);
-			addRecipe(new ComparableStack(ModItems.nuclear_waste_long_tiny, 1, i), 
-				new ItemStack(ModItems.nuclear_waste_long_depleted_tiny, 1, i), 
+			addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nuclear_waste_long_tiny, 1, i), 
+				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_depleted_tiny, 1, i), 
 				(int)(VersatileConfig.getLongDecayChance()*0.1), 
 				(int)(waste.liquid*0.1), 
 				(int)(waste.gas*0.1)
@@ -42,22 +43,22 @@ public class StorageDrumRecipes {
 
 		for(int i = 0; i < ItemWasteShort.WasteClass.values().length; i++){
 			ItemWasteShort.WasteClass waste = ItemWasteShort.WasteClass.values()[i];
-			addRecipe(new ComparableStack(ModItems.nuclear_waste_short, 1, i), 
-				new ItemStack(ModItems.nuclear_waste_short_depleted, 1, i), 
+			addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nuclear_waste_short, 1, i), 
+				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_depleted, 1, i), 
 				VersatileConfig.getShortDecayChance(), 
 				waste.liquid, 
 				waste.gas
 			);
-			addRecipe(new ComparableStack(ModItems.nuclear_waste_short_tiny, 1, i), 
-				new ItemStack(ModItems.nuclear_waste_short_depleted_tiny, 1, i), 
+			addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nuclear_waste_short_tiny, 1, i), 
+				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_depleted_tiny, 1, i), 
 				(int)(VersatileConfig.getShortDecayChance()*0.1), 
 				(int)(waste.liquid*0.1), 
 				(int)(waste.gas*0.1)
 			);
 		}
 		
-		addRecipe(new ComparableStack(ModItems.ingot_au198, 1), new ItemStack(ModItems.bottle_mercury, 1), (int)(VersatileConfig.getShortDecayChance()*0.01), 500, 500);
-		addRecipe(new ComparableStack(ModItems.nugget_au198, 1), new ItemStack(ModItems.nugget_mercury, 1), (int)(VersatileConfig.getShortDecayChance()*0.001), 50, 50);
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.ingot_au198, 1), ItemStackUtil.itemStackFrom(ModItems.bottle_mercury, 1), (int)(VersatileConfig.getShortDecayChance()*0.01), 500, 500);
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nugget_au198, 1), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 1), (int)(VersatileConfig.getShortDecayChance()*0.001), 50, 50);
 	}
 
 	public static void addRecipe(ComparableStack input, ItemStack output, int chance, int wasteLiquid, int wasteGas){
@@ -69,16 +70,16 @@ public class StorageDrumRecipes {
 	public static ItemStack getOutput(ItemStack stack) {
 		if(stack == null)
 			return null;
-		return recipeOutputs.get(new ComparableStack(stack));
+		return recipeOutputs.get(ItemStackUtil.comparableStackFrom(stack));
 	}
 
 	public static int[] getWaste(ItemStack stack) {
 		if(stack == null)
 			return null;
-		return recipeWastes.get(new ComparableStack(stack));
+		return recipeWastes.get(ItemStackUtil.comparableStackFrom(stack));
 	}
 
 	public static boolean isOutputItem(ItemStack stack){
-		return outputs.contains(new ComparableStack(stack));
+		return outputs.contains(ItemStackUtil.comparableStackFrom(stack));
 	}
 }

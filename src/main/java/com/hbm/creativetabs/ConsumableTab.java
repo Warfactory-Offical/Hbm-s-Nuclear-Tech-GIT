@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 
@@ -15,9 +16,9 @@ public class ConsumableTab extends CreativeTabs {
 	@Override
 	public ItemStack createIcon() {
 		if(ModItems.bottle_nuka != null){
-			return new ItemStack(ModItems.bottle_nuka);
+			return ItemStackUtil.itemStackFrom(ModItems.bottle_nuka);
 		}
-		return new ItemStack(Items.IRON_PICKAXE);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}
 
 }

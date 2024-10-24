@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +145,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 			if(this.isRunning()){
 				ItemStack stack = inventory.getStackInSlot(2);
 				if(stack.getItem() == ModItems.meteorite_sword_baleful){
-					inventory.setStackInSlot(2, new ItemStack(ModItems.meteorite_sword_warped));
+					inventory.setStackInSlot(2, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_warped));
 				} else if(stack.hasTagCompound()){
 					NBTTagCompound nbt = stack.getTagCompound();
 					if(nbt.getBoolean("ntmContagion")) nbt.removeTag("ntmContagion");

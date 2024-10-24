@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,7 +174,7 @@ public class TileEntityMachineAssembler extends TileEntityMachineBase implements
 
 							removeItems(AssemblerRecipes.getRecipeFromTempate(inventory.getStackInSlot(4)), inventory);
 							if(inventory.getStackInSlot(0).getItem() == ModItems.meteorite_sword_alloyed)
-								inventory.setStackInSlot(0, new ItemStack(ModItems.meteorite_sword_machined));
+								inventory.setStackInSlot(0, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_machined));
 						}
 
 						power -= consumption;

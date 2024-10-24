@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,9 +23,9 @@ public class NuclearTransmutationRecipes {
 	public static void registerRecipes() {
 
 		//input, output
-		addRecipe(new OreDictStack(U.crystal()), new ItemStack(ModItems.crystal_schraranium, 1), 5_000_000L);
-		addRecipe(new OreDictStack(U.ingot()), new ItemStack(ModItems.ingot_schraranium, 1), 5_000_000L);
-		addRecipe(new OreDictStack(U.block()), new ItemStack(ModBlocks.block_schraranium, 1), 50_000_000L);
+		addRecipe(new OreDictStack(U.crystal()), ItemStackUtil.itemStackFrom(ModItems.crystal_schraranium, 1), 5_000_000L);
+		addRecipe(new OreDictStack(U.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_schraranium, 1), 5_000_000L);
+		addRecipe(new OreDictStack(U.block()), ItemStackUtil.itemStackFrom(ModBlocks.block_schraranium, 1), 50_000_000L);
 	}
 
 	public static void addRecipe(AStack input, ItemStack output, long energy){
@@ -36,13 +37,13 @@ public class NuclearTransmutationRecipes {
 		if(stack == null || stack.isEmpty())
 			return null;
 		
-		ItemStack outputItem = recipesOutput.get(new ComparableStack(stack));
+		ItemStack outputItem = recipesOutput.get(ItemStackUtil.comparableStackFrom(stack));
 		if(outputItem != null)
 			return outputItem;
 		outputItem = recipesOutput.get(new NbtComparableStack(stack));
 		if(outputItem != null)
 			return outputItem;
-		int[] ids = OreDictionary.getOreIDs(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+		int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(stack.getItem(), 1, stack.getItemDamage()));
 		for(int id = 0; id < ids.length; id++) {
 			OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(ids[id]));
 			outputItem = recipesOutput.get(oreStack);
@@ -56,13 +57,13 @@ public class NuclearTransmutationRecipes {
 		if(stack == null || stack.isEmpty())
 			return -1;
 
-		Long outputItem = recipesEnergy.get(new ComparableStack(stack));
+		Long outputItem = recipesEnergy.get(ItemStackUtil.comparableStackFrom(stack));
 		if(outputItem != null)
 			return outputItem;
 		outputItem = recipesEnergy.get(new NbtComparableStack(stack));
 		if(outputItem != null)
 			return outputItem;
-		int[] ids = OreDictionary.getOreIDs(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+		int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(stack.getItem(), 1, stack.getItemDamage()));
 		for(int id = 0; id < ids.length; id++) {
 			OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(ids[id]));
 			outputItem = recipesEnergy.get(oreStack);

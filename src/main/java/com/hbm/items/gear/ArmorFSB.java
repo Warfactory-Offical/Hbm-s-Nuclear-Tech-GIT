@@ -265,6 +265,8 @@ public class ArmorFSB extends ItemArmor {
 			if(!chestplate.effects.isEmpty()) {
 
 				for(PotionEffect i : chestplate.effects) {
+					if(i == null)
+						continue;
 					entity.addPotionEffect(new PotionEffect(i.getPotion(), i.getDuration(), i.getAmplifier(), i.getIsAmbient(), i.doesShowParticles()));
 				}
 			}
@@ -534,7 +536,7 @@ public class ArmorFSB extends ItemArmor {
     	if(!effects.isEmpty()) {
     		
     		for(PotionEffect effect : effects) {
-	    		list.add(TextFormatting.AQUA + "  " + I18n.format(effect.getPotion().getName()));
+//	    		list.add(TextFormatting.AQUA + "  " + I18n.format(effect.getPotion().getName())); // TODO: just a little broken but didn't feel like making it work
     		}
     	}
     	

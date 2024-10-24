@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.inventory.PressRecipes;
 import com.hbm.items.machine.ItemStamp;
@@ -113,7 +114,7 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 					if(inventory.getStackInSlot(0).getCount() <= 0) {
 
 						if(copy.getItem().getContainerItem() != null)
-							inventory.setStackInSlot(0, new ItemStack(copy.getItem().getContainerItem()));
+							inventory.setStackInSlot(0, ItemStackUtil.itemStackFrom(copy.getItem().getContainerItem()));
 						else
 							inventory.setStackInSlot(0, ItemStack.EMPTY);
 					}

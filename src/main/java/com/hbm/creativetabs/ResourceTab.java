@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 
@@ -16,9 +17,9 @@ public class ResourceTab extends CreativeTabs {
 	@Override
 	public ItemStack createIcon() {
 		if(ModBlocks.ore_uranium != null){
-			return new ItemStack(Item.getItemFromBlock(ModBlocks.ore_uranium));
+			return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.ore_uranium));
 		}
-		return new ItemStack(Items.IRON_PICKAXE);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}
 
 }

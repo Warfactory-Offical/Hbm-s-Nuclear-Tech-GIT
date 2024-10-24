@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -306,7 +307,7 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 								removeItems(itemInputs, inventory);
 								removeFluids(fluidInputs);
 								if(inventory.getStackInSlot(0).getItem() == ModItems.meteorite_sword_machined)
-									inventory.setStackInSlot(0, new ItemStack(ModItems.meteorite_sword_treated));
+									inventory.setStackInSlot(0, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_treated));
 							}
 
 							power -= consumption;

@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -59,7 +60,7 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 			if (tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
 				for (Entry<String, Fluid> set : FluidRegistry.getRegisteredFluids().entrySet()) {
 					if(FluidTypeHandler.noID(set.getValue())) continue;
-					ItemStack stack = new ItemStack(this, 1, 0);
+					ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 					NBTTagCompound tag = new NBTTagCompound();
 					tag.setString("fluidtype", set.getKey());
 					stack.setTagCompound(tag);
@@ -94,7 +95,7 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 	}
 	
 	public static ItemStack getStackFromFluid(Fluid f){
-		ItemStack stack = new ItemStack(ModItems.forge_fluid_identifier, 1, 0);
+		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.forge_fluid_identifier, 1, 0);
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("fluidtype", f.getName());
 		stack.setTagCompound(tag);

@@ -1,4 +1,5 @@
 package com.hbm.entity.mob;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     
     public EntityRADBeast makeLeader() {
     	this.setDropChance(EntityEquipmentSlot.MAINHAND, 1);
-    	this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.coin_radiation));
+    	this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.coin_radiation));
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(360.0D);
         this.heal(this.getMaxHealth());
     	return this;
@@ -211,7 +212,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         super.dropLoot(wasRecentlyHit, looting, source);
         if(looting > 0) {
-                this.dropItem(ModItems.nugget_polonium, looting);
+                this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget_polonium, looting), 0);
             }
             
         int count = this.rand.nextInt(3) + 1;

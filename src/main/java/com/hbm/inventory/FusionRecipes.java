@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.items.ModItems;
@@ -27,17 +28,17 @@ public class FusionRecipes {
 
 	public static ItemStack getByproduct(Fluid plasma) {
 		if(plasma == ModForgeFluids.plasma_dt){
-			return new ItemStack(ModItems.pellet_charged); 
+			return ItemStackUtil.itemStackFrom(ModItems.pellet_charged); 
 		} else if(plasma == ModForgeFluids.plasma_hd){
-			return new ItemStack(ModItems.pellet_charged);
+			return ItemStackUtil.itemStackFrom(ModItems.pellet_charged);
 		} else if(plasma == ModForgeFluids.plasma_ht){
-			return new ItemStack(ModItems.pellet_charged);
+			return ItemStackUtil.itemStackFrom(ModItems.pellet_charged);
 		} else if(plasma == ModForgeFluids.plasma_xm){
-			return new ItemStack(ModItems.powder_chlorophyte);
+			return ItemStackUtil.itemStackFrom(ModItems.powder_chlorophyte);
 		} else if(plasma == ModForgeFluids.plasma_put){
-			return new ItemStack(ModItems.powder_xe135);
+			return ItemStackUtil.itemStackFrom(ModItems.powder_xe135);
 		} else if(plasma == ModForgeFluids.plasma_bf){
-			return new ItemStack(ModItems.powder_balefire);
+			return ItemStackUtil.itemStackFrom(ModItems.powder_balefire);
 		}
 		return ItemStack.EMPTY;
 	}

@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -249,7 +250,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		this.progress[index]++;
 
 		if(inventory.getStackInSlot(0).getItem() == ModItems.meteorite_sword_machined) {
-			inventory.setStackInSlot(0, new ItemStack(ModItems.meteorite_sword_machined));
+			inventory.setStackInSlot(0, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_machined));
 		}
 
 		int templateIdx = getTemplateIndex(index);

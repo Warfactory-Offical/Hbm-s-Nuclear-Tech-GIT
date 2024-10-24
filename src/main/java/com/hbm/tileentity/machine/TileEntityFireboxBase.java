@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.lib.ForgeDirection;
@@ -59,7 +60,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 							if(inventory.getStackInSlot(i).getCount() == 0) {
 								ItemStack copy = inventory.getStackInSlot(0).copy();
 								if(copy.getItem().getContainerItem() != null)
-									inventory.setStackInSlot(i, new ItemStack(copy.getItem().getContainerItem()));
+									inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(copy.getItem().getContainerItem()));
 							}
 
 							this.wasOn = true;

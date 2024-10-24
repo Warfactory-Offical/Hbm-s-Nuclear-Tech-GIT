@@ -1,4 +1,5 @@
 package com.hbm.lib;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -453,7 +454,7 @@ public class HbmWorldGen implements IWorldGenerator {
 						TileEntitySoyuzCapsule cap = (TileEntitySoyuzCapsule)world.getTileEntity(new BlockPos(x, y, z));
 						
 						if(cap != null) {
-							cap.inventory.setStackInSlot(rand.nextInt(cap.inventory.getSlots()), new ItemStack(ModItems.record_glass));
+							cap.inventory.setStackInSlot(rand.nextInt(cap.inventory.getSlots()), ItemStackUtil.itemStackFrom(ModItems.record_glass));
 						}
 		
 						if(GeneralConfig.enableDebugMode)

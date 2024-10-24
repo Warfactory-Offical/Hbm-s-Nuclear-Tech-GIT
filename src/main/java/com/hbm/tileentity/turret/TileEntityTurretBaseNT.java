@@ -1,4 +1,5 @@
 package com.hbm.tileentity.turret;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -752,7 +753,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 			BulletConfiguration config = BulletConfigSyncingUtil.pullConfig(i);
 			
 			if(config != null && config.ammo != null) {
-				ammoStacks.add(new ItemStack(config.ammo));
+				ammoStacks.add(ItemStackUtil.itemStackFrom(config.ammo));
 			}
 		}
 		

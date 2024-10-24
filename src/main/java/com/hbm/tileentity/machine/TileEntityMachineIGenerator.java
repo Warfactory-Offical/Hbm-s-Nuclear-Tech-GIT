@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -365,7 +366,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			return;
 		
 		//i don't feel like adding null checks because they won't trigger anyway
-		inventory.setStackInSlot(2, new ItemStack(rtgPellets.inverse().get(pellets[0])));
+		inventory.setStackInSlot(2, ItemStackUtil.itemStackFrom(rtgPellets.inverse().get(pellets[0])));
 		
 		for(int i = 0; i < pellets.length - 1; i++) {
 			pellets[i] = pellets[i + 1];

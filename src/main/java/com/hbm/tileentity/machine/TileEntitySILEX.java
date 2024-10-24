@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
 
@@ -109,7 +110,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 		this.mode = EnumWavelengths.valueOf(nbt.getString("mode"));
 		
 		if(this.currentFill > 0) {
-			this.current = new ComparableStack(Item.getItemById(nbt.getInteger("item")), 1, nbt.getInteger("meta"));
+			this.current = ItemStackUtil.comparableStackFrom(Item.getItemById(nbt.getInteger("item")), 1, nbt.getInteger("meta"));
 			
 		} else {
 			this.current = null;
@@ -166,7 +167,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 		if(loadDelay > 20)
 			loadDelay = 0;
 		
-		if(loadDelay == 0 && !inventory.getStackInSlot(0).isEmpty() && getTankType() == ModForgeFluids.acid && (this.current == null || this.current.equals(new ComparableStack(inventory.getStackInSlot(0)).makeSingular()))) {
+		if(loadDelay == 0 && !inventory.getStackInSlot(0).isEmpty() && getTankType() == ModForgeFluids.acid && (this.current == null || this.current.equals(ItemStackUtil.comparableStackFrom(inventory.getStackInSlot(0)).makeSingular()))) {
 			SILEXRecipe recipe = SILEXRecipes.getOutput(inventory.getStackInSlot(0));
 			
 			if(recipe == null)
@@ -176,7 +177,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 			
 			if(load <= maxFill - this.currentFill && load <= tank.getFluidAmount()) {
 				this.currentFill += load;
-				this.current = new ComparableStack(inventory.getStackInSlot(0)).makeSingular();
+				this.current = ItemStackUtil.comparableStackFrom(inventory.getStackInSlot(0)).makeSingular();
 				tank.drain(load*3, true);
 				inventory.getStackInSlot(0).shrink(1);
 			}
@@ -266,7 +267,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 		this.currentFill = nbt.getInteger("fill");
 		
 		if(this.currentFill > 0) {
-			this.current = new ComparableStack(Item.getItemById(nbt.getInteger("item")), 1, nbt.getInteger("meta"));
+			this.current = ItemStackUtil.comparableStackFrom(Item.getItemById(nbt.getInteger("item")), 1, nbt.getInteger("meta"));
 		}
 	}
 	

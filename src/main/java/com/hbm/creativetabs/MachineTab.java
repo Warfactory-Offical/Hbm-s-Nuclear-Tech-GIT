@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 
@@ -16,8 +17,8 @@ public class MachineTab extends CreativeTabs {
 	@Override
 	public ItemStack createIcon() {
 		if(ModBlocks.reactor_element != null)
-			return new ItemStack(Item.getItemFromBlock(ModBlocks.reactor_element));
-		return new ItemStack(Items.IRON_PICKAXE);
+			return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.reactor_element));
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}
 
 }
