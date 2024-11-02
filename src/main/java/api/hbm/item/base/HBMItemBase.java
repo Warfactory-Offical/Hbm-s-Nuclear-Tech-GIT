@@ -15,6 +15,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
@@ -68,6 +69,17 @@ public abstract class HBMItemBase<T extends HBMItemBase<?>.HBMItem> extends Item
     // ========================================================
     // RENDERING
     // =======================================================
+
+    @SideOnly(Side.CLIENT)
+    public void registerColor() {
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(this::getColorForItemStack, this);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected int getColorForItemStack(ItemStack stack, int tintIndex) {
+        return 0xFFFFFF;
+    }
+
     @SideOnly(Side.CLIENT)
     public void registerModels() {
         for (Short itemKey : items.keySet()) {

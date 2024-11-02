@@ -1,8 +1,11 @@
 package api.hbm.material;
 
+import api.hbm.util.HBMUtil;
+import api.hbm.util.lang.LocaleUtils;
 import com.hbm.inventory.OreDictManager.DictFrame;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +18,6 @@ import java.util.Set;
 public class NTMMaterial {
 
 	public final String name;
-	public String[] names;
 	public MaterialShapes[] shapes = new MaterialShapes[0];
 	public Set<MatTraits> traits = new HashSet();
 	public boolean omitItemGen = false;
@@ -23,16 +25,17 @@ public class NTMMaterial {
 	public int solidColorLight = 0xFF4A00;
 	public int solidColorDark = 0x802000;
 	public int moltenColor = 0xFF4A00;
+	public final ResourceLocation resourceLocation;
 
 	public NTMMaterial smeltsInto;
 	public int convIn;
 	public int convOut;
 	
-	public NTMMaterial(String name, DictFrame dict) {
+	public NTMMaterial(String name, ResourceLocation location) {
 		
-		this.names = dict.mats;
 		this.name = name;
-		
+		this.resourceLocation = location;
+
 		this.smeltsInto = this;
 		this.convIn = 1;
 		this.convOut = 1;
@@ -43,11 +46,20 @@ public class NTMMaterial {
 		
 		Mats.orderedList.add(this);
 	}
-	
-	public String getTranslationKey() {
-		return "hbmmat." + this.names[0].toLowerCase();
+
+	public ResourceLocation getResourceLocation() {
+		return resourceLocation;
 	}
-	
+
+	public String getUnlocalizedName() {
+		ResourceLocation location = getResourceLocation();
+		return location.getNamespace() + ".hbmmat." + location.getPath();
+	}
+
+	public String getLocalizedName() {
+		return LocaleUtils.format(getUnlocalizedName());
+	}
+
 	public NTMMaterial setConversion(NTMMaterial mat, int in, int out) {
 		this.smeltsInto = mat;
 		this.convIn = in;
@@ -102,6 +114,10 @@ public class NTMMaterial {
 		return pascalCaseName.toString();
 	}
 
+	public String toCamelCaseStrng() {
+		return HBMUtil.lowerUnderscoreToUpperCamel(toString());
+	}
+
 	public static enum SmeltingBehavior {
 		NOT_SMELTABLE,	//anything that can't be smelted or otherwise doesn't belong in a smelter, like diamond. may also include things that are smeltable but turn into a different type
 		VAPORIZES,		//can't be smelted because the material would skadoodle
@@ -129,7 +145,7 @@ public class NTMMaterial {
 
 	@Override
 	public String toString() {
-		return String.format("NTMMaterial { %s }", this.name);
+		return name;
 	}
 
 

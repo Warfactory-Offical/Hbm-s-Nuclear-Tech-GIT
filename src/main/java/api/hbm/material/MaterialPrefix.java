@@ -1,9 +1,11 @@
 package api.hbm.material;
 
+import api.hbm.util.lang.LocaleUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -41,6 +43,16 @@ public class MaterialPrefix {
     public String getName() {
         return name;
     }
+
+    public String getLocalNameForItem(@NotNull NTMMaterial material) {
+        String specifiedUnlocalized = "item." + material.getUnlocalizedName() + "." + this.name;
+        if (LocaleUtils.hasKey(specifiedUnlocalized)) return LocaleUtils.format(specifiedUnlocalized);
+        String unlocalized = String.format("item.hbmmat.oreprefix.%s", this.name);
+        String matLocalized = material.getLocalizedName();
+        String formatted = LocaleUtils.format(unlocalized, matLocalized);
+        return formatted.equals(unlocalized) ? matLocalized : formatted;
+    }
+
 
     public boolean addProcessingHandler(IMaterialProcessor... handler) {
         Preconditions.checkNotNull(handler);
