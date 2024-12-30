@@ -1,5 +1,6 @@
 package api.hbm.material;
 
+import api.hbm.item.icon.HBMMaterialIconType;
 import api.hbm.util.lang.LocaleUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
@@ -16,8 +17,8 @@ public class MaterialPrefix {
 
     private final static Map<String, MaterialPrefix> PREFIXES = new HashMap<>();
 
-    public final static MaterialPrefix NUGGET = new MaterialPrefix("nugget", 1, Predicates.alwaysTrue(), null);
-    public final static MaterialPrefix INGOT = new MaterialPrefix("ingot", NUGGET.materialAmount * 9, Predicates.alwaysTrue(), null);
+    static int idCounter;
+    public final static MaterialPrefix INGOT = new MaterialPrefix("ingot", 9, HBMMaterialIconType.ingot, Predicates.alwaysTrue(), null);
 
 
     private final Set<NTMMaterial> generatedMaterials = new HashSet<>();
@@ -28,14 +29,22 @@ public class MaterialPrefix {
     private long materialAmount;
     private Predicate<NTMMaterial> genCondition;
 
+    public final HBMMaterialIconType iconType;
+
+    public final int id;
+
     @Nullable
     private Function<NTMMaterial, List<String>> tooltipFunc;
 
-    public MaterialPrefix(String name, long materialAmount, Predicate<NTMMaterial> condition, Function<NTMMaterial, @Nullable List<String>> tooltipFunc) {
+    public MaterialPrefix(String name, long materialAmount, HBMMaterialIconType iconType, Predicate<NTMMaterial> condition, Function<NTMMaterial, @Nullable List<String>> tooltipFunc) {
         this.name = name;
         this.materialAmount = materialAmount;
         this.genCondition = condition;
         this.tooltipFunc = tooltipFunc;
+
+        this.id = idCounter++;
+
+        this.iconType = iconType;
 
         PREFIXES.put(name, this);
     }
@@ -75,5 +84,8 @@ public class MaterialPrefix {
         return ignoredMaterials.contains(material);
     }
 
-
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
 }

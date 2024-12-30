@@ -1,5 +1,6 @@
 package api.hbm.material;
 
+import api.hbm.item.icon.HBMMaterialIconSet;
 import api.hbm.util.HBMUtil;
 import api.hbm.util.lang.LocaleUtils;
 import com.hbm.inventory.OreDictManager.DictFrame;
@@ -30,8 +31,10 @@ public class NTMMaterial {
 	public NTMMaterial smeltsInto;
 	public int convIn;
 	public int convOut;
+
+	public HBMMaterialIconSet iconSet;
 	
-	public NTMMaterial(String name, ResourceLocation location) {
+	public NTMMaterial(String name, ResourceLocation location, HBMMaterialIconSet iconSet) {
 		
 		this.name = name;
 		this.resourceLocation = location;
@@ -39,7 +42,9 @@ public class NTMMaterial {
 		this.smeltsInto = this;
 		this.convIn = 1;
 		this.convOut = 1;
-		
+
+		this.iconSet = iconSet;
+
 //		for(String name : dict.mats) {
 //			Mats.matByName.put(name, this);
 //		}

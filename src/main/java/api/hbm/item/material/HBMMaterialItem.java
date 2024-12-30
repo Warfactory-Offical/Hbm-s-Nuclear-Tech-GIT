@@ -1,13 +1,21 @@
 package api.hbm.item.material;
 
 import api.hbm.item.base.StandardHBMItem;
+import api.hbm.item.icon.HBMMaterialIconSet;
 import api.hbm.material.MaterialPrefix;
 import api.hbm.material.NTMMaterial;
 import api.hbm.util.registry.HBMRegistry;
 import com.hbm.main.MainRegistry;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +37,7 @@ public class HBMMaterialItem extends StandardHBMItem {
         for (NTMMaterial material : materialRegistry) {
             short i = (short) materialRegistry.getIDForObject(material);
             if (prefix != null && canGenerate(prefix, material)) {
-                addItem(i, prefix.getName() + material.name);
+                addItem(i, new UnificationEntry(prefix, material).toString());
             }
         }
     }
@@ -52,6 +60,7 @@ public class HBMMaterialItem extends StandardHBMItem {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {
         if (tintIndex == 0) {
             NTMMaterial material = getMaterial(stack);
@@ -64,11 +73,31 @@ public class HBMMaterialItem extends StandardHBMItem {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerModels() {
         Map<Short, ModelResourceLocation> alreadyRegistered = new Short2ObjectOpenHashMap<>();
         for (short item : items.keySet()) {
-            // TODO
+            HBMMaterialIconSet iconSet = getMaterial(item).iconSet;
+
+            short registrationKey = (short) (prefix.id + iconSet.id);
+            if (!alreadyRegistered.containsKey(registrationKey)) {
+                ResourceLocation resourceLocation = Objects.requireNonNull(prefix.iconType).getItemModelPath(iconSet);
+                ModelBakery.registerItemVariants(this, resourceLocation);
+                alreadyRegistered.put(registrationKey, new ModelResourceLocation(resourceLocation, "inventory"));
+            }
+            ModelResourceLocation resourceLocation = alreadyRegistered.get(registrationKey);
+            itemModels.put(item, resourceLocation);
         }
+
+        if (items.keySet().isEmpty()) {
+            HBMMaterialIconSet defaultIcon = HBMMaterialIconSet.DULL;
+            ResourceLocation defaultLocation = Objects.requireNonNull(MaterialPrefix.INGOT.iconType).getItemModelPath(defaultIcon);
+            ModelBakery.registerItemVariants(this, defaultLocation);
+        }
+    }
+
+    public MaterialPrefix getPrefix() {
+        return prefix;
     }
 
     protected static boolean canGenerate(MaterialPrefix orePrefix, NTMMaterial material) {
