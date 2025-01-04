@@ -62,9 +62,8 @@ public class BlockAMSBase extends BlockContainer implements IMultiBlock {
 			DummyBlockAMSBase.safeBreak = true;
 			world.setBlockState(pos.add(1, 0, 0), ModBlocks.dummy_port_ams_base.getDefaultState());
 			TileEntity te = world.getTileEntity(pos.add(1, 0, 0));
-			if(te instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te;
-				dummy.target = pos;
+			if(te instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			world.setBlockState(pos.add(0, 0, -1), ModBlocks.dummy_port_ams_base.getDefaultState());
 			TileEntity te2 = world.getTileEntity(pos.add(0, 0, -1));
@@ -74,15 +73,13 @@ public class BlockAMSBase extends BlockContainer implements IMultiBlock {
 			}
 			world.setBlockState(pos.add(-1, 0, 0), ModBlocks.dummy_port_ams_base.getDefaultState());
 			TileEntity te3 = world.getTileEntity(pos.add(-1, 0, 0));
-			if(te3 instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te3;
-				dummy.target = pos;
+			if(te3 instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			world.setBlockState(pos.add(0, 0, 1), ModBlocks.dummy_port_ams_base.getDefaultState());
 			TileEntity te4 = world.getTileEntity(pos.add(0, 0, 1));
-			if(te4 instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te4;
-				dummy.target = pos;
+			if(te4 instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			DummyBlockAMSBase.safeBreak = false;
 			

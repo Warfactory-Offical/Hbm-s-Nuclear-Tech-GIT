@@ -25,8 +25,8 @@ import java.util.Arrays;
 public class Assembler {
 	
 	private static class ActionAddRecipe implements IAction{
-		private IIngredient[] inputs;
-		private ItemStack output;
+		private final IIngredient[] inputs;
+		private final ItemStack output;
 		private int duration = 0;
 		public ActionAddRecipe(IItemStack output, IIngredient[] inputs, int duration){
 			this.inputs = inputs;
@@ -80,7 +80,7 @@ public class Assembler {
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private ItemStack output;
+		private final ItemStack output;
 
 		public ActionRemoveRecipe(IItemStack output){
 			this.output = CraftTweakerMC.getItemStack(output);

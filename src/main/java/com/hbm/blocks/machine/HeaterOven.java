@@ -70,10 +70,8 @@ public class HeaterOven extends BlockDummyable implements ITooltipProvider, ILoo
 
         TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterOven))
+        if (!(te instanceof TileEntityHeaterOven heater))
             return;
-
-        TileEntityHeaterOven heater = (TileEntityHeaterOven) te;
 
         List<String> text = new ArrayList<>();
         text.add(String.format("%,d", heater.heatEnergy) + " TU");

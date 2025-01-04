@@ -25,7 +25,7 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 	private static final float cableColorG = 0.16F;
 	private static final float cableColorB = 0.16F;
 
-	private ModelPylon pylon;
+	private final ModelPylon pylon;
 
 	public RenderPylon() {
 		this.pylon = new ModelPylon();
@@ -45,7 +45,7 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 			this.pylon.renderAll(0.0625F);
 		GL11.glPopMatrix();
 
-		this.renderPowerLines(pyl, x, y, z);
+		renderPowerLines(pyl, x, y, z);
 	}
 
 	public static void renderPowerLines(TileEntityPylonBase pyl, double x, double y, double z) {
@@ -56,9 +56,8 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 			BlockPos otherPylon = pyl.connected.get(i);
 			TileEntity tile = pyl.getWorld().getTileEntity(otherPylon);
 
-			if(tile instanceof TileEntityPylonBase) {
-				TileEntityPylonBase pylon = (TileEntityPylonBase) tile;
-				Vec3[] m1 = pyl.getMountPos();
+			if(tile instanceof TileEntityPylonBase pylon) {
+                Vec3[] m1 = pyl.getMountPos();
 				Vec3[] m2 = pylon.getMountPos();
 
 				int lineCount = Math.max(pyl.getConnectionType() == TileEntityPylonBase.ConnectionType.QUAD ? 4 : 1, pylon.getConnectionType() == TileEntityPylonBase.ConnectionType.QUAD ? 4 : 1);

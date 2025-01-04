@@ -36,9 +36,8 @@ public class ItemEnergy extends Item {
 
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entity) {
-		if(!worldIn.isRemote && entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if(player instanceof FakePlayer) {
+		if(!worldIn.isRemote && entity instanceof EntityPlayer player) {
+            if(player instanceof FakePlayer) {
         		worldIn.newExplosion(player, player.posX, player.posY, player.posZ, 5F, true, true);
         		return super.onItemUseFinish(stack, worldIn, entity);
         	}
@@ -293,11 +292,8 @@ public class ItemEnergy extends Item {
 		ItemStack stackR = player.getHeldItemMainhand();
 		ItemStack stackL = player.getHeldItemOffhand();
 		if(stackR == null || stackL == null) return false;
-		if(stackR.getItem() == ModItems.bottle_opener || stackL.getItem() == ModItems.bottle_opener){
-			return true;
-		}
-		return false;
-	}	
+        return stackR.getItem() == ModItems.bottle_opener || stackL.getItem() == ModItems.bottle_opener;
+    }
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
@@ -305,10 +301,10 @@ public class ItemEnergy extends Item {
 				this == ModItems.can_luna || this == ModItems.can_bepis || this == ModItems.can_breen))
 			
 			if(!hasOpener(player))
-				return ActionResult.<ItemStack> newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+				return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 
 		player.setActiveHand(hand);
-		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override

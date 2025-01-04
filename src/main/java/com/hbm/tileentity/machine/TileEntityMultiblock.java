@@ -186,9 +186,8 @@ public class TileEntityMultiblock extends TileEntity implements ITickable {
 		
 		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = target;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = target;
 		}
 	}
 	

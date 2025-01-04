@@ -76,11 +76,9 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 
 				int delay = 10 * 60 * 1000; //10min
 
-				if(sat != null && sat instanceof SatelliteMiner) {
+				if(sat != null && sat instanceof SatelliteMiner miner) {
 
-					SatelliteMiner miner = (SatelliteMiner)sat;
-
-					if(miner.lastOp + delay < System.currentTimeMillis()) {
+                    if(miner.lastOp + delay < System.currentTimeMillis()) {
 
 						EntityMinerRocket rocket = new EntityMinerRocket(world);
 						rocket.posX = pos.getX() + 0.5;
@@ -91,11 +89,9 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 						data.markDirty();
 					}
 				}
-				if(sat != null && sat instanceof SatelliteHorizons) {
-					
-					SatelliteHorizons gerald = (SatelliteHorizons)sat;
+				if(sat != null && sat instanceof SatelliteHorizons gerald) {
 
-					if(gerald.lastOp + delay < System.currentTimeMillis()) {
+                    if(gerald.lastOp + delay < System.currentTimeMillis()) {
 
 						EntityMinerRocket rocket = new EntityMinerRocket(world, (byte)1);
 						rocket.posX = pos.getX() + 0.5;
@@ -113,11 +109,9 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 
 			for(Entity e : list) {
 
-				if(e instanceof EntityMinerRocket) {
+				if(e instanceof EntityMinerRocket rocket) {
 
-					EntityMinerRocket rocket = (EntityMinerRocket)e;
-
-					if(rocket.getDataManager().get(EntityMinerRocket.TIMER) == 1 && rocket.timer == 50) {
+                    if(rocket.getDataManager().get(EntityMinerRocket.TIMER) == 1 && rocket.timer == 50) {
 						byte type = rocket.getRocketType();
 						if(type == 0){
 							unloadCargo();
@@ -152,12 +146,12 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 		rand = new Random();
 
 		for(int i = 0; i < items; i++) {
-			ItemStack stack = ((WeightedRandomObject)WeightedRandom.getRandomItem(rand, Arrays.asList(cargo))).asStack();
+			ItemStack stack = WeightedRandom.getRandomItem(rand, Arrays.asList(cargo)).asStack();
 			addToInv(stack);
 		}
 	}
 
-	private WeightedRandomObject[] cargo = new WeightedRandomObject[] { 
+	private final WeightedRandomObject[] cargo = new WeightedRandomObject[] {
 		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_aluminium, 3), 10), 
 		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_iron, 3), 10), 
 		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_titanium, 2), 8), 
@@ -185,7 +179,7 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_starmetal, 1), 1)
 	};
 
-	private WeightedRandomObject[] cargoGerald = new WeightedRandomObject[] { 
+	private final WeightedRandomObject[] cargoGerald = new WeightedRandomObject[] {
 		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_meteorite, 12), 128),
 		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 4), 64), 
 		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_combine_steel, 6), 64), 

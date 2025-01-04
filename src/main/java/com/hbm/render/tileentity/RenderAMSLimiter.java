@@ -82,25 +82,21 @@ public class RenderAMSLimiter extends TileEntitySpecialRenderer<TileEntityAMSLim
         boolean flag = false;
 		double maxSize = 5;
 		double minSize = 0.5;
-        if(meta == 2 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(0, 0, -6)) instanceof TileEntityAMSBase && !limiter.locked) {
+        if(meta == 2 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(0, 0, -6)) instanceof TileEntityAMSBase base && !limiter.locked) {
         	flag = true;
-        	TileEntityAMSBase base = (TileEntityAMSBase)tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(0, 0, -6));
-        	maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
+            maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
         }
-        if(meta == 3 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(0, 0, 6)) instanceof TileEntityAMSBase && !limiter.locked) {
+        if(meta == 3 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(0, 0, 6)) instanceof TileEntityAMSBase base && !limiter.locked) {
         	flag = true;
-        	TileEntityAMSBase base = (TileEntityAMSBase)tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(0, 0, 6));
-        	maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
+            maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
         }
-        if(meta == 4 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(-6, 0, 0)) instanceof TileEntityAMSBase && !limiter.locked) {
+        if(meta == 4 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(-6, 0, 0)) instanceof TileEntityAMSBase base && !limiter.locked) {
         	flag = true;
-        	TileEntityAMSBase base = (TileEntityAMSBase)tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(-6, 0, 0));
-        	maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
+            maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
         }
-        if(meta == 5 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(6, 0, 0)) instanceof TileEntityAMSBase && !limiter.locked) {
+        if(meta == 5 && tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(6, 0, 0)) instanceof TileEntityAMSBase base && !limiter.locked) {
         	flag = true;
-        	TileEntityAMSBase base = (TileEntityAMSBase)tileEntity.getWorld().getTileEntity(tileEntity.getPos().add(6, 0, 0));
-        	maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
+            maxSize += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
         }
         
         if(flag) {

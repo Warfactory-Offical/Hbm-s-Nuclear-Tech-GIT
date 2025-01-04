@@ -255,7 +255,7 @@ public class FFUtils {
 
 		if (HeatRecipes.hasCoolRecipe(fluid)) {
 			if(isKeyPressed){
-				String heat = Library.getShortNumber(HeatRecipes.getResultingHeat(fluid) * 1000 / HeatRecipes.getInputAmountCold(fluid));
+				String heat = Library.getShortNumber(HeatRecipes.getResultingHeat(fluid) * 1000L / HeatRecipes.getInputAmountCold(fluid));
 				texts.add("§4["+I18n.format("trait.coolable")+"]");
 				texts.add(" "+I18n.format("trait.coolable.desc", heat));
 			}
@@ -264,7 +264,7 @@ public class FFUtils {
 
 		if (HeatRecipes.hasBoilRecipe(fluid)) {
 			if(isKeyPressed){
-				String heat = Library.getShortNumber(HeatRecipes.getRequiredHeat(fluid) * 1000 / HeatRecipes.getInputAmountHot(fluid));
+				String heat = Library.getShortNumber(HeatRecipes.getRequiredHeat(fluid) * 1000L / HeatRecipes.getInputAmountHot(fluid));
 				texts.add("§3["+I18n.format("trait.boilable")+"]");
 				texts.add(" "+I18n.format("trait.boilable.desc", heat));
 			}
@@ -306,9 +306,8 @@ public class FFUtils {
 	public static boolean hasEnoughFluid(FluidTank t, FluidStack f){
 		if(f == null || f.amount == 0) return true;
 		if(t == null || t.getFluid() == null) return false;
-		if(t.getFluid().isFluidEqual(f) && t.getFluidAmount() >= f.amount) return true;
-		return false;
-	}
+        return t.getFluid().isFluidEqual(f) && t.getFluidAmount() >= f.amount;
+    }
 
 	/**
 	 * Replacement method for the old method of transferring fluids out of a
@@ -340,9 +339,8 @@ public class FFUtils {
 		TileEntity te = world.getTileEntity(toFill);
 
 		if(te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-			if(te instanceof TileEntityDummy) {
-				TileEntityDummy ted = (TileEntityDummy)te;
-				if(world.getTileEntity(ted.target) == tileEntity) {
+			if(te instanceof TileEntityDummy ted) {
+                if(world.getTileEntity(ted.target) == tileEntity) {
 					return false;
 				}
 			}
@@ -382,7 +380,7 @@ public class FFUtils {
 
 		if(slots.getStackInSlot(slot1).getItem() == ModItems.fluid_barrel_infinite && tank.getFluid() != null) {
 
-			return tank.fill(new FluidStack(tank.getFluid(), Integer.MAX_VALUE), true) > 0 ? true : false;
+			return tank.fill(new FluidStack(tank.getFluid(), Integer.MAX_VALUE), true) > 0;
 		}
 		if(FluidUtil.getFluidContained(slots.getStackInSlot(slot1)) == null) {
 
@@ -403,10 +401,9 @@ public class FFUtils {
 			return returnValue;
 		}
 		ItemStack stack = slots.getStackInSlot(slot1);
-		if(stack.getItem() instanceof IItemFluidHandler) {
+		if(stack.getItem() instanceof IItemFluidHandler handler) {
 			boolean returnValue = false;
-			IItemFluidHandler handler = (IItemFluidHandler)stack.getItem();
-			FluidStack contained = handler.drain(stack, Integer.MAX_VALUE, false);
+            FluidStack contained = handler.drain(stack, Integer.MAX_VALUE, false);
 			if(contained != null)
 				if(tank.getFluid() == null || contained.getFluid() == tank.getFluid().getFluid()) {
 					tank.fill(handler.drain(stack, Math.min(6000, tank.getCapacity() - tank.getFluidAmount()), true), true);
@@ -520,8 +517,7 @@ public class FFUtils {
 			return true;
 		if(FluidContainerRegistry.hasFluid(stack.getItem())) {
 			fluid = FluidContainerRegistry.getFluidFromItem(stack.getItem());
-			if(fluid != null && fluidRestrictor.apply(fluid))
-				return true;
+            return fluid != null && fluidRestrictor.apply(fluid);
 		}
 		return false;
 	}
@@ -557,9 +553,8 @@ public class FFUtils {
 			return fillItemAndMove(slots, slot1, slot2, tank, ifhi, fStack, stack, true);
 		}
 
-		if(stack.getItem() instanceof IItemFluidHandler) {
-			IItemFluidHandler handler = (IItemFluidHandler)stack.getItem();
-			FluidStack contained = handler.drain(stack, Integer.MAX_VALUE, false);
+		if(stack.getItem() instanceof IItemFluidHandler handler) {
+            FluidStack contained = handler.drain(stack, Integer.MAX_VALUE, false);
 			return fillItemAndMove(slots, slot1, slot2, tank, handler, contained, stack, true);
 		}
 
@@ -930,8 +925,7 @@ public class FFUtils {
 			return true;
 		if(FluidContainerRegistry.hasFluid(stack.getItem())) {
 			contained = FluidContainerRegistry.getFluidFromItem(stack.getItem());
-			if(contained != null && contained.getFluid() == fluid)
-				return true;
+            return contained != null && contained.getFluid() == fluid;
 		}
 		return false;
 	}
@@ -972,11 +966,8 @@ public class FFUtils {
 		if(tank1.getFluid() == null ^ tank2.getFluid() == null) {
 			return false;
 		}
-		if(tank1.getFluid().amount == tank2.getFluid().amount && tank1.getFluid().getFluid() == tank2.getFluid().getFluid() && tank1.getCapacity() == tank2.getCapacity()) {
-			return true;
-		}
-		return false;
-	}
+        return tank1.getFluid().amount == tank2.getFluid().amount && tank1.getFluid().getFluid() == tank2.getFluid().getFluid() && tank1.getCapacity() == tank2.getCapacity();
+    }
 
 	public static FluidTank copyTank(FluidTank tank){
 		if(tank == null)
@@ -988,11 +979,8 @@ public class FFUtils {
 		TileEntity tileentity = world.getTileEntity(pos);
 		if(tileentity != null && tileentity instanceof IFluidPipe && ((IFluidPipe)tileentity).getNetworkTrue() == net)
 			return true;
-		if(tileentity != null && !(tileentity instanceof IFluidPipe) && tileentity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing)) {
-			return true;
-		}
-		return false;
-	}
+        return tileentity != null && !(tileentity instanceof IFluidPipe) && tileentity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+    }
 
 	public static boolean checkFluidConnectablesMk2(World world, BlockPos pos, Fluid type, @Nullable EnumFacing facing){
 		TileEntity tileentity = world.getTileEntity(pos);

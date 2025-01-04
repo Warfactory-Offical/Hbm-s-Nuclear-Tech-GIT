@@ -23,10 +23,9 @@ public class GunB92Cell extends Item {
 	
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
-		if(entity instanceof EntityPlayer && getPower(stack) < 25) {
-			EntityPlayer player = (EntityPlayer) entity;
-			
-			for(int j = 0; j < player.inventory.mainInventory.size(); j++) {
+		if(entity instanceof EntityPlayer player && getPower(stack) < 25) {
+
+            for(int j = 0; j < player.inventory.mainInventory.size(); j++) {
 				if(player.inventory.mainInventory.get(j).getItem() == ModItems.gun_b92) {
 					int p = getPower(player.inventory.mainInventory.get(j));
 					if(p > 1) {

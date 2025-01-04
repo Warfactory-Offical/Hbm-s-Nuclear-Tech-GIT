@@ -92,10 +92,8 @@ public class HeaterRadioThermal extends BlockDummyable implements ITooltipProvid
 
         TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterRadioThermal))
+        if (!(te instanceof TileEntityHeaterRadioThermal heater))
             return;
-
-        TileEntityHeaterRadioThermal heater = (TileEntityHeaterRadioThermal) te;
 
         List<String> text = new ArrayList();
         text.add(String.format("%,d", heater.heatEnergy) + " TU");

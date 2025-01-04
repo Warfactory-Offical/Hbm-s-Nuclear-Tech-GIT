@@ -14,8 +14,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineRTG extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_rtg.png");
-	private TileEntityMachineRTG rtg;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_rtg.png");
+	private final TileEntityMachineRTG rtg;
 	
 	public GUIMachineRTG(InventoryPlayer invPlayer, TileEntityMachineRTG tedf) {
 		super(new ContainerMachineRTG(invPlayer, tedf));
@@ -30,7 +30,7 @@ public class GUIMachineRTG extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 69 - 52, 16, 52, rtg.power, rtg.maxPower);
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 134, guiTop + 69 - 52, 16, 52, mouseX+8, mouseY-8, new String[] {"RTG Heat " + rtg.heat + "/" + rtg.heatMax, "RTG Power " + Library.getShortNumber(rtg.heat*100)+"HE/s"});
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 134, guiTop + 69 - 52, 16, 52, mouseX+8, mouseY-8, new String[] {"RTG Heat " + rtg.heat + "/" + rtg.heatMax, "RTG Power " + Library.getShortNumber(rtg.heat* 100L)+"HE/s"});
 		
 		String[] text = new String[] { "Heat to Power Conversion 1:5" };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);

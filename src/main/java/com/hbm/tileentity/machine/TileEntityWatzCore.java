@@ -93,12 +93,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 	
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(world.getTileEntity(pos) != this)
-		{
-			return false;
-		}else{
-			return true;
-		}
+        return world.getTileEntity(pos) == this;
 	}
 	
 	@Override
@@ -190,7 +185,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 				needsUpdate = false;
 			}
 			
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 		}
 	}
@@ -208,29 +203,26 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 	
 	public void surveyPellet(ItemStack stack) {
-		if(stack != null && stack.getItem() instanceof WatzFuel)
+		if(stack != null && stack.getItem() instanceof WatzFuel fuel)
 		{
-			WatzFuel fuel = (WatzFuel)stack.getItem();
-			this.powerList += fuel.power;
+            this.powerList += fuel.power;
 			this.heatList += fuel.heat;
 		}
 	}
 	
 	public void surveyPelletAgain(ItemStack stack) {
-		if(stack.getItem() instanceof WatzFuel)
+		if(stack.getItem() instanceof WatzFuel fuel)
 		{
-			WatzFuel fuel = (WatzFuel)stack.getItem();
-			this.powerMultiplier *= fuel.powerMultiplier;
+            this.powerMultiplier *= fuel.powerMultiplier;
 			this.heatMultiplier *= fuel.heatMultiplier;
 			this.decayMultiplier *= fuel.decayMultiplier;
 		}
 	}
 	
 	public void decayPellet(int i) {
-		if(inventory.getStackInSlot(i).getItem() instanceof WatzFuel)
+		if(inventory.getStackInSlot(i).getItem() instanceof WatzFuel fuel)
 		{
-			WatzFuel fuel = (WatzFuel)inventory.getStackInSlot(i).getItem();
-			WatzFuel.setLifeTime(inventory.getStackInSlot(i), WatzFuel.getLifeTime(inventory.getStackInSlot(i)) + this.decayMultiplier);
+            WatzFuel.setLifeTime(inventory.getStackInSlot(i), WatzFuel.getLifeTime(inventory.getStackInSlot(i)) + this.decayMultiplier);
 			WatzFuel.updateDamage(inventory.getStackInSlot(i));
 			if(WatzFuel.getLifeTime(inventory.getStackInSlot(i)) >= fuel.lifeTime)
 			{
@@ -341,8 +333,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	@Override
 	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1){
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}

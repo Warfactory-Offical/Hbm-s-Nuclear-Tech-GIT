@@ -10,8 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GUICraneInserter extends GuiInfoContainer {
-    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_inserter.png");
-    private TileEntityCraneInserter inserter;
+    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_inserter.png");
+    private final TileEntityCraneInserter inserter;
 
     public GUICraneInserter(InventoryPlayer invPlayer, TileEntityCraneInserter tedf) {
         super(new ContainerCraneInserter(invPlayer, tedf));

@@ -54,11 +54,10 @@ public class GunXVL1456 extends Item {
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer))
+		if(!(entityLiving instanceof EntityPlayer player))
 			return;
-		
-		EntityPlayer player = (EntityPlayer)entityLiving;
-		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
+
+        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
 			player.getHeldItemOffhand().onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;
@@ -115,10 +114,9 @@ public class GunXVL1456 extends Item {
 	
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player1, int count) {
-		if(!(player1 instanceof EntityPlayer))
+		if(!(player1 instanceof EntityPlayer player))
 			return;
-		EntityPlayer player = (EntityPlayer)player1;
-		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
+        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
 			player.getHeldItemOffhand().getItem().onUsingTick(player.getHeldItemOffhand(), player, count);
 		}
 		World world = player.world;
@@ -166,7 +164,7 @@ public class GunXVL1456 extends Item {
 					
 					world.createExplosion(player, player.posX, player.posY, player.posZ, 10.0F, true);
 					player.attackEntityFrom(ModDamageSource.tauBlast, 1000F);
-					((EntityPlayer) player).dropItem(false);
+					player.dropItem(false);
 				}
 			}
 		}

@@ -31,7 +31,7 @@ public class RadiationWorldHandler {
 	public static void handleWorldDestruction(World world) {
 
 		//TODO fix this up for new radiation system
-		if(!(world instanceof WorldServer))
+		if(!(world instanceof WorldServer serv))
 			return;
 		if(!RadiationConfig.worldRadEffects || !GeneralConfig.enableRads)
 			return;
@@ -122,11 +122,9 @@ public class RadiationWorldHandler {
 			}
 			return;
 		}
-		
-		WorldServer serv = (WorldServer)world;
 
-		RadiationSavedData data = RadiationSavedData.getData(serv);
-		ChunkProviderServer provider = (ChunkProviderServer) serv.getChunkProvider();
+        RadiationSavedData data = RadiationSavedData.getData(serv);
+		ChunkProviderServer provider = serv.getChunkProvider();
 
 		Object[] entries = data.contamination.entrySet().toArray();
 

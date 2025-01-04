@@ -50,7 +50,7 @@ public class RenderRBMKConsole extends TileEntitySpecialRenderer<TileEntityRBMKC
 		GlStateManager.shadeModel(GL11.GL_FLAT);
 
 		///New part
-		TileEntityRBMKConsole console = (TileEntityRBMKConsole) te;
+		TileEntityRBMKConsole console = te;
 		
 		Tessellator tess = Tessellator.getInstance();
 		BufferBuilder buf = tess.getBuffer();

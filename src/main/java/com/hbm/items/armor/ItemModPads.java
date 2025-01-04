@@ -56,11 +56,9 @@ public class ItemModPads extends ItemArmorMod {
 	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		if(!entity.world.isRemote && this == ModItems.pads_static && entity instanceof EntityPlayer) {
-			
-			EntityPlayer player = (EntityPlayer) entity;
-			
-			if(player.distanceWalkedModified != player.prevDistanceWalkedModified) {
+		if(!entity.world.isRemote && this == ModItems.pads_static && entity instanceof EntityPlayer player) {
+
+            if(player.distanceWalkedModified != player.prevDistanceWalkedModified) {
 				
 				if(ArmorFSB.hasFSBArmorIgnoreCharge(player)) {
 					
@@ -68,11 +66,9 @@ public class ItemModPads extends ItemArmorMod {
 						
 						ItemStack stack = player.inventory.armorInventory.get(i);
 						
-						if(stack.getItem() instanceof ArmorFSBPowered) {
-							
-							ArmorFSBPowered powered = (ArmorFSBPowered) stack.getItem();
-							
-							long charge = powered.drain / 2;
+						if(stack.getItem() instanceof ArmorFSBPowered powered) {
+
+                            long charge = powered.drain / 2;
 							
 							if(charge == 0)
 								charge = powered.consumption / 40;

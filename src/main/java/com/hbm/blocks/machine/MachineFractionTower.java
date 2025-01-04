@@ -68,12 +68,10 @@ public class MachineFractionTower extends BlockDummyable implements ILookOverlay
 				
 				TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 				
-				if(!(te instanceof TileEntityMachineFractionTower))
+				if(!(te instanceof TileEntityMachineFractionTower frac))
 					return false;
-				
-				TileEntityMachineFractionTower frac = (TileEntityMachineFractionTower) te;
-				
-				if(player.getHeldItem(hand).isEmpty()) {
+
+                if(player.getHeldItem(hand).isEmpty()) {
 					if(world.isRemote){
 						player.sendMessage(new TextComponentTranslation("chat.fractioning.y", pos[1]));
 
@@ -134,12 +132,10 @@ public class MachineFractionTower extends BlockDummyable implements ILookOverlay
 		
 		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityMachineFractionTower))
+		if(!(te instanceof TileEntityMachineFractionTower frac))
 			return;
-		
-		TileEntityMachineFractionTower frac = (TileEntityMachineFractionTower) te;
-		
-		List<String> text = new ArrayList();
+
+        List<String> text = new ArrayList();
 
 		for(int i = 0; i < frac.types.length; i++){
 			if(frac.types[i] != null){

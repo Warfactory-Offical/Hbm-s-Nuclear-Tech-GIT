@@ -111,10 +111,9 @@ public class MissileStruct {
 	public boolean equals(Object obj) {
 		if(obj == this)
 			return true;
-		if(!(obj instanceof MissileStruct))
+		if(!(obj instanceof MissileStruct str))
 			return false;
-		MissileStruct str = (MissileStruct) obj;
-		return this.warhead == str.warhead && this.fuselage == str.fuselage && this.fins == str.fins && this.thruster == str.thruster;
+        return this.warhead == str.warhead && this.fuselage == str.fuselage && this.fins == str.fins && this.thruster == str.thruster;
 	}
 	
 	@Override

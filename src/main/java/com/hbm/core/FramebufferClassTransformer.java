@@ -51,13 +51,11 @@ public class FramebufferClassTransformer implements IClassTransformer {
 			if(method.name.equals("createFramebuffer") || method.name.equals("func_147605_b")){
 				for(int i = 0; i < method.instructions.toArray().length; i++){
 					AbstractInsnNode m = method.instructions.get(i);
-					if(m instanceof MethodInsnNode){
-						MethodInsnNode m2 = ((MethodInsnNode)m);
-						if(m2.name.equals("glTexImage2D")){
+					if(m instanceof MethodInsnNode m2){
+                        if(m2.name.equals("glTexImage2D")){
 							AbstractInsnNode node = method.instructions.get(i - 10);
-							if(node instanceof LdcInsnNode){
-								LdcInsnNode rgba_8 = (LdcInsnNode) node;
-								if(rgba_8.cst instanceof Integer && ((Integer)rgba_8.cst).intValue() == 32856){
+							if(node instanceof LdcInsnNode rgba_8){
+                                if(rgba_8.cst instanceof Integer && ((Integer)rgba_8.cst).intValue() == 32856){
 									//Change the frame buffer color storage from rgba8 to rgba16 to support hdr.
 									rgba_8.cst = 32859;
 								}

@@ -77,7 +77,7 @@ public class MachineITER extends BlockDummyable {
 	
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
-		if(!(player instanceof EntityPlayer))
+		if(!(player instanceof EntityPlayer pl))
 			return;
 		EnumHand hand = player.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 		int x = pos.getX();
@@ -85,9 +85,8 @@ public class MachineITER extends BlockDummyable {
 		int z = pos.getZ();
 
 		int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		EntityPlayer pl = (EntityPlayer) player;
 
-		int o = getOffset();
+        int o = getOffset();
 
 		ForgeDirection dir = ForgeDirection.NORTH;
 

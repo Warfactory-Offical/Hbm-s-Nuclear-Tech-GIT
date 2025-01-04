@@ -89,7 +89,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	
 	private void killBomber() {
         ExplosionLarge.explode(world, posX, posY, posZ, 5, true, false, true);
-    	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.planeShotDown, SoundCategory.HOSTILE, 25.0F, 1.0F, false);
+    	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.planeShotDown, SoundCategory.HOSTILE, 25.0F, 1.0F, false);
     }
 	
 	public boolean isBomberAlive(){
@@ -130,7 +130,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 				this.setDead();
 				
 				ExplosionLarge.explodeFire(world, posX, posY, posZ, 25, true, false, true);
-		    	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.planeCrash, SoundCategory.HOSTILE, 10.0F, 1.0F, true);
+		    	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.planeCrash, SoundCategory.HOSTILE, 10.0F, 1.0F, true);
 				
 				return;
 			}
@@ -145,12 +145,12 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 			}
 			if(type == 3) {
 
-	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
+	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
 				ExplosionChaos.spawnChlorine(world, this.posX, this.posY - 1F, this.posZ, 10, 0.5, 3);
 				
 			} else if(type == 5) {
 				
-	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
+	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
 	        	EntityRocketHoming rocket = new EntityRocketHoming(world);
 	        	rocket.setIsCritical(true);
 	        	//rocket.motionX = motionX;
@@ -168,7 +168,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	        	
 			} else if(type == 6) {
 				
-	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
+	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
 	        	EntityBoxcar rocket = new EntityBoxcar(world);
 				
 	        	rocket.posX = posX + rand.nextDouble() - 0.5;
@@ -179,12 +179,12 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	        	
 			} else if(type == 7) {
 
-	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
+	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
 				ExplosionChaos.spawnChlorine(world, this.posX, world.getHeight((int)this.posX, (int)this.posZ) + 2, this.posZ, 10, 1, 2);
 				
 			} else {
 				
-	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.bombWhistle, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
+	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.bombWhistle, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
 	        	
 				EntityBombletZeta zeta = new EntityBombletZeta(world);
 				
@@ -455,7 +455,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	protected void entityInit() {
 		init(ForgeChunkManager.requestTicket(MainRegistry.instance, world, Type.ENTITY));
         this.getDataManager().register(STYLE, Byte.valueOf((byte)0));
-        this.getDataManager().register(HEALTH, Integer.valueOf((int)50));
+        this.getDataManager().register(HEALTH, Integer.valueOf(50));
 		
 	}
 
@@ -491,7 +491,6 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 
         for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)

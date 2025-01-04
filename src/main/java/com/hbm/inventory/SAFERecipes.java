@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 public class SAFERecipes {
 
-	private static LinkedHashMap<ComparableStack, ItemStack> recipes = new LinkedHashMap<>();
+	private static final LinkedHashMap<ComparableStack, ItemStack> recipes = new LinkedHashMap<>();
 	
 	public static void registerRecipes() {
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity), ItemStackUtil.itemStackFrom(ModItems.singularity));

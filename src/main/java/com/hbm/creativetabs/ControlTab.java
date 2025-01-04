@@ -32,11 +32,9 @@ public class ControlTab extends CreativeTabs {
 
 		for(Object o : list) {
 
-			if(o instanceof ItemStack) {
+			if(o instanceof ItemStack stack) {
 
-				ItemStack stack = (ItemStack) o;
-
-				if(stack.getItem() instanceof IBatteryItem) {
+                if(stack.getItem() instanceof IBatteryItem) {
 					batteries.add(stack);
 				}
 			}
@@ -44,12 +42,10 @@ public class ControlTab extends CreativeTabs {
 
 		for(ItemStack stack : batteries) {
 
-			if(!(stack.getItem() instanceof IBatteryItem)) //shouldn't happen but just to make sure
+			if(!(stack.getItem() instanceof IBatteryItem battery)) //shouldn't happen but just to make sure
 				continue;
 
-			IBatteryItem battery = (IBatteryItem) stack.getItem();
-
-			ItemStack empty = stack.copy();
+            ItemStack empty = stack.copy();
 			ItemStack full = stack.copy();
 
 			battery.setCharge(empty, 0);

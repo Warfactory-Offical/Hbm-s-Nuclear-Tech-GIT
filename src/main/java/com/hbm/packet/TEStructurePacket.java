@@ -56,10 +56,9 @@ public class TEStructurePacket implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityStructureMarker) {
-						
-					TileEntityStructureMarker marker = (TileEntityStructureMarker) te;
-					marker.type = m.type;
+				if (te != null && te instanceof TileEntityStructureMarker marker) {
+
+                    marker.type = m.type;
 				}
 			});
 			

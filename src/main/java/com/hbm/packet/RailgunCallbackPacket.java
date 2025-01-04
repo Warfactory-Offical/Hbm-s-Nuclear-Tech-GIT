@@ -58,11 +58,9 @@ public class RailgunCallbackPacket implements IMessage {
 				try {
 					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-					if (te != null && te instanceof TileEntityRailgun) {
-							
-						TileEntityRailgun gun = (TileEntityRailgun) te;
-						
-						gun.startTime = System.currentTimeMillis();
+					if (te != null && te instanceof TileEntityRailgun gun) {
+
+                        gun.startTime = System.currentTimeMillis();
 						gun.lastPitch = gun.pitch;
 						gun.lastYaw = gun.yaw;
 						gun.pitch = m.pitch;

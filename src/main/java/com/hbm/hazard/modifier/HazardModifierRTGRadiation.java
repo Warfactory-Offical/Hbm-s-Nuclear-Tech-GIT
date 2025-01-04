@@ -16,9 +16,8 @@ public class HazardModifierRTGRadiation extends HazardModifier {
 	@Override
 	public float modify(ItemStack stack, EntityLivingBase holder, float level) {
 				
-		if(stack.getItem() instanceof ItemRTGPellet) {
-			ItemRTGPellet fuel = (ItemRTGPellet) stack.getItem();
-			double depletion = fuel.getDurabilityForDisplay(stack);
+		if(stack.getItem() instanceof ItemRTGPellet fuel) {
+            double depletion = fuel.getDurabilityForDisplay(stack);
 					
 			level = (float) (level + (this.target - level) * depletion);
 					

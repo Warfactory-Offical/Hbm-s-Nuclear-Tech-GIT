@@ -2,6 +2,7 @@ package com.hbm.packet;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 					int len = buf.readInt();
 					byte[] bytes = new byte[len];
 					buf.readBytes(bytes);
-					String name = new String(bytes, Charset.forName("ascii"));
+					String name = new String(bytes, StandardCharsets.US_ASCII);
 					inputs[j] = new OreDictStack(name, count);
 				} else if(type == 2){
 					int count = buf.readInt();
@@ -138,9 +139,8 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 			buf.writeByte(inputs.length);
 			for(int j = 0; j < inputs.length; j ++){
 				AStack stack = inputs[j];
-				if(stack instanceof NbtComparableStack){
-					NbtComparableStack nStack = (NbtComparableStack)stack;
-					buf.writeByte(0);
+				if(stack instanceof NbtComparableStack nStack){
+                    buf.writeByte(0);
 					buf.writeInt(nStack.count());
 					buf.writeInt(Item.getIdFromItem(nStack.item));
 					buf.writeInt(nStack.meta);
@@ -149,16 +149,14 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 					} catch(IOException e) {
 						e.printStackTrace();
 					}
-				} else if(stack instanceof OreDictStack){
-					OreDictStack oStack = (OreDictStack) stack;
-					buf.writeByte(1);
+				} else if(stack instanceof OreDictStack oStack){
+                    buf.writeByte(1);
 					buf.writeInt(oStack.count());
-					byte[] bytes = oStack.name.getBytes(Charset.forName("ascii"));
+					byte[] bytes = oStack.name.getBytes(StandardCharsets.US_ASCII);
 					buf.writeInt(bytes.length);
 					buf.writeBytes(bytes);
-				} else if(stack instanceof ComparableStack){
-					ComparableStack cStack = (ComparableStack) stack;
-					buf.writeByte(2);
+				} else if(stack instanceof ComparableStack cStack){
+                    buf.writeByte(2);
 					buf.writeInt(cStack.count());
 					buf.writeInt(Item.getIdFromItem(cStack.item));
 					buf.writeInt(cStack.meta);

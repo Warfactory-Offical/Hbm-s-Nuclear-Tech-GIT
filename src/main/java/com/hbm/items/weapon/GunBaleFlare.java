@@ -43,13 +43,12 @@ public class GunBaleFlare extends Item {
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer))
+		if(!(entityLiving instanceof EntityPlayer player))
 			return;
 		if (entityLiving.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) == stack && !entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty() && entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.gun_bf) {
 			entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
-		EntityPlayer player = (EntityPlayer)entityLiving;
-		int j = this.getMaxItemUseDuration(stack) - timeLeft;
+        int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
 		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, false);
 		MinecraftForge.EVENT_BUS.post(event);

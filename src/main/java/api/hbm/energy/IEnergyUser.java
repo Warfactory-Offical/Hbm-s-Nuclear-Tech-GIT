@@ -19,7 +19,7 @@ public interface IEnergyUser extends IEnergyConnector {
 	/**
 	 * Not to be used for actual energy transfer, rather special external things like EMPs and sync packets
 	 */
-	public void setPower(long power);
+    void setPower(long power);
 	
 	/**
 	 * Standard implementation for power transfer.
@@ -27,7 +27,7 @@ public interface IEnergyUser extends IEnergyConnector {
 	 * @param long power
 	 */
 	@Override
-	public default long transferPower(long power) {
+    default long transferPower(long power) {
 		long ownMaxPower = this.getMaxPower();
 		long ownPower = this.getPower();
 		if(power > ownMaxPower - ownPower) {
@@ -50,27 +50,25 @@ public interface IEnergyUser extends IEnergyConnector {
 	 * @param z
 	 * @param dir
 	 */
-	public default void sendPower(World world, BlockPos pos, ForgeDirection dir) {
+	default void sendPower(World world, BlockPos pos, ForgeDirection dir) {
 		
 		TileEntity te = world.getTileEntity(pos);
 		boolean wasSubscribed = false;
 		boolean red = false;
 		
 		// first we make sure we're not subscribed to the network that we'll be supplying
-		if(te instanceof IEnergyConductor) {
-			IEnergyConductor con = (IEnergyConductor) te;
-			
-			if(con.canConnect(dir.getOpposite()) && con.getPowerNet() != null && con.getPowerNet().isSubscribed(this)) {
+		if(te instanceof IEnergyConductor con) {
+
+            if(con.canConnect(dir.getOpposite()) && con.getPowerNet() != null && con.getPowerNet().isSubscribed(this)) {
 				con.getPowerNet().unsubscribe(this);
 				wasSubscribed = true;
 			}
 		}
 		
 		//then we add energy
-		if(te instanceof IEnergyConnector) {
-			IEnergyConnector con = (IEnergyConnector) te;
-			
-			if(con.canConnect(dir.getOpposite())) {
+		if(te instanceof IEnergyConnector con) {
+
+            if(con.canConnect(dir.getOpposite())) {
 				long oldPower = this.getPower();
 				long transfer = oldPower - con.transferPower(oldPower);
 				this.setPower(oldPower - transfer);
@@ -79,10 +77,9 @@ public interface IEnergyUser extends IEnergyConnector {
 		}
 		
 		//then we subscribe if possible
-		if(wasSubscribed && te instanceof IEnergyConductor) {
-			IEnergyConductor con = (IEnergyConductor) te;
-			
-			if(con.getPowerNet() != null && !con.getPowerNet().isSubscribed(this)) {
+		if(wasSubscribed && te instanceof IEnergyConductor con) {
+
+            if(con.getPowerNet() != null && !con.getPowerNet().isSubscribed(this)) {
 				con.getPowerNet().subscribe(this);
 			}
 		}

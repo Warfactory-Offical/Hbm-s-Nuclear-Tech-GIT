@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GUICraneGrabber extends GuiInfoContainer {
-    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_grabber.png");
+    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_grabber.png");
     public TileEntityCraneGrabber grabber;
 
     public GUICraneGrabber(InventoryPlayer invPlayer, TileEntityCraneGrabber tedf) {
@@ -39,7 +39,7 @@ public class GUICraneGrabber extends GuiInfoContainer {
 
         if(this.mc.player.getHeldItemMainhand().isEmpty()) {
             for(int i = 0; i < 9; ++i) {
-                Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
+                Slot slot = this.inventorySlots.inventorySlots.get(i);
 
                 if(this.isMouseOverSlot(slot, x, y) && grabber.matcher.modes[i] != null) {
 
@@ -51,7 +51,7 @@ public class GUICraneGrabber extends GuiInfoContainer {
                         default: label += I18nUtil.resolveKey("desc.oredictmatch")+" " + grabber.matcher.modes[i]; break;
                     }
 
-                    this.drawHoveringText(Arrays.asList(new String[] { TextFormatting.RED + I18nUtil.resolveKey("desc.rcchange"), label }), x, y - 30);
+                    this.drawHoveringText(Arrays.asList(TextFormatting.RED + I18nUtil.resolveKey("desc.rcchange"), label), x, y - 30);
                 }
             }
         }

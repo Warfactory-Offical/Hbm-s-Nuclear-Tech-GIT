@@ -113,7 +113,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 			
 			this.trySubscribe(world, pos.add(0, 2, 0), ForgeDirection.UP);
 			power = Library.chargeTEFromItems(inventory, 0, power, maxPower);
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
 
 			//reset progress if the position changes
 			if(lastTargetX != targetX ||
@@ -240,12 +240,10 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		if(te == null || !te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
 			return;
 		IItemHandler h = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		if(!(h instanceof IItemHandlerModifiable))
+		if(!(h instanceof IItemHandlerModifiable inv))
 			return;
-		
-		IItemHandlerModifiable inv = (IItemHandlerModifiable)h;
-		
-		for(int i = 9; i <= 29; i++) {
+
+        for(int i = 9; i <= 29; i++) {
 
 			if(!inventory.getStackInSlot(i).isEmpty()) {
 				int prev = inventory.getStackInSlot(i).getCount();
@@ -310,9 +308,8 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 			}
 		}
 		
-		if(normal && b instanceof IDrillInteraction) {
-			IDrillInteraction in = (IDrillInteraction) b;
-			doesBreak = in.canBreak(world, targetX, targetY, targetZ, state, this);
+		if(normal && b instanceof IDrillInteraction in) {
+            doesBreak = in.canBreak(world, targetX, targetY, targetZ, state, this);
 			if(doesBreak){
 				ItemStack drop = in.extractResource(world, targetX, targetY, targetZ, state, this);
 				
@@ -429,9 +426,8 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		if(b instanceof BlockGasBase) return false;
 		float hardness = block.getBlockHardness(world, new BlockPos(x, y, z));
 		if(hardness < 0 || hardness > 3_500_000) return false;
-		if(block.getMaterial().isLiquid()) return false;
-		return true;
-	}
+        return !block.getMaterial().isLiquid();
+    }
 
 	public int getOverdrive() {
 

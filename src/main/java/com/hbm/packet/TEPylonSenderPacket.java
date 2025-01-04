@@ -72,10 +72,9 @@ public class TEPylonSenderPacket implements IMessage {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 				
 				try {
-					if (te != null && te instanceof TileEntityPylonBase) {
-							
-						TileEntityPylonBase pyl = (TileEntityPylonBase) te;
-						if(m.addOrRemove){
+					if (te != null && te instanceof TileEntityPylonBase pyl) {
+
+                        if(m.addOrRemove){
 							pyl.addConnection(new BlockPos(m.conX, m.conY, m.conZ));
 						}else{
 							pyl.removeConnection(new BlockPos(m.conX, m.conY, m.conZ));

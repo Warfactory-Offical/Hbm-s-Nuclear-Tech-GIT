@@ -20,16 +20,16 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class CyclotronRecipes {
 
-	private static LinkedHashMap<Object, ItemStack> lithium = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> beryllium = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> carbon = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> copper = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> plutonium = new LinkedHashMap<>();
-	private static HashMap<Object, Integer> liAmat = new HashMap<>();
-	private static HashMap<Object, Integer> beAmat = new HashMap<>();
-	private static HashMap<Object, Integer> caAmat = new HashMap<>();
-	private static HashMap<Object, Integer> coAmat = new HashMap<>();
-	private static HashMap<Object, Integer> plAmat = new HashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> lithium = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> beryllium = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> carbon = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> copper = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> plutonium = new LinkedHashMap<>();
+	private static final HashMap<Object, Integer> liAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> beAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> caAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> coAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> plAmat = new HashMap<>();
 
 	public static void register() {
 

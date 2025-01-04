@@ -73,8 +73,7 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
     private final Random rand = new Random();
     public void dropContents(World world, BlockPos pos, IBlockState state, int start, int end) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof ISidedInventory) {
-            ISidedInventory tileentityfurnace = (ISidedInventory) tileEntity;
+        if(tileEntity instanceof ISidedInventory tileentityfurnace) {
             if(tileentityfurnace != null) {
 
                 for(int i1 = start; i1 < end; ++i1) {
@@ -96,7 +95,7 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
                             EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                             if(itemstack.hasTagCompound()) {
-                                entityitem.getItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+                                entityitem.getItem().setTagCompound(itemstack.getTagCompound().copy());
                             }
 
                             float f3 = 0.05F;
@@ -126,13 +125,13 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
     }
     @Override
     public IBlockState withRotation(IBlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     @Override

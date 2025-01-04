@@ -73,10 +73,9 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 			
 			if(this.isOn && !(inventory.getStackInSlot(1).getCount() == 0)) {
 				
-				if(inventory.getStackInSlot(1).getItem() instanceof ItemFELCrystal) {
-					
-					ItemFELCrystal crystal = (ItemFELCrystal) inventory.getStackInSlot(1).getItem();
-					this.mode = crystal.wavelength;
+				if(inventory.getStackInSlot(1).getItem() instanceof ItemFELCrystal crystal) {
+
+                    this.mode = crystal.wavelength;
 					
 				} else { this.mode = EnumWavelengths.NULL; }
 				
@@ -142,10 +141,9 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 							BlockPos silex_pos = new BlockPos(x + dir.offsetX, yCoord, z + dir.offsetZ);
 							TileEntity te = world.getTileEntity(silex_pos);
 						
-							if(te instanceof TileEntitySILEX) {
-								TileEntitySILEX silex = (TileEntitySILEX) te;
-								int meta = silex.getBlockMetadata() - BlockDummyable.offset;
-								if(rotationIsValid(meta, this.getBlockMetadata() - BlockDummyable.offset) && i >= 5 && silexSpacing == false	) {
+							if(te instanceof TileEntitySILEX silex) {
+                                int meta = silex.getBlockMetadata() - BlockDummyable.offset;
+								if(rotationIsValid(meta, this.getBlockMetadata() - BlockDummyable.offset) && i >= 5 && !silexSpacing) {
 									if(silex.mode != this.mode) {
 										silex.mode = this.mode;
 										this.missingValidSilex = false;
@@ -243,12 +241,8 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 	public boolean rotationIsValid(int silexMeta, int felMeta) {
 		ForgeDirection silexDir = ForgeDirection.getOrientation(silexMeta);
 		ForgeDirection felDir = ForgeDirection.getOrientation(felMeta);
-		if(silexDir == felDir || silexDir == felDir.getOpposite()) {
-			return true;
-		}
-		 
-		return false;
-	}
+        return silexDir == felDir || silexDir == felDir.getOpposite();
+    }
 
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {

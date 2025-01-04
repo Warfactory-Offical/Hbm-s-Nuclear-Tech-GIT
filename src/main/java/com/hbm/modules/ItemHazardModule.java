@@ -121,8 +121,8 @@ public class ItemHazardModule {
 
 		if(this.cryogenic > 0 && !reacher){
 			if(entity instanceof EntityLivingBase){
-				EntityLivingBase livingCEntity = (EntityLivingBase) entity;
-				boolean isProtected = entity instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer)entity);
+				EntityLivingBase livingCEntity = entity;
+				boolean isProtected = entity instanceof EntityPlayer && ArmorUtil.checkForHazmat(entity);
 				if(!isProtected){
 					livingCEntity.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 110, this.cryogenic-1));
 					livingCEntity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 110, Math.min(4, this.cryogenic-1)));
@@ -135,13 +135,13 @@ public class ItemHazardModule {
 			}
 		}
 
-		if(this.fire > 0 && !reacher && (!(entity instanceof EntityPlayer) || (entity instanceof EntityPlayer && !ArmorUtil.checkForAsbestos((EntityPlayer)entity)))){
+		if(this.fire > 0 && !reacher && (!(entity instanceof EntityPlayer) || (entity instanceof EntityPlayer && !ArmorUtil.checkForAsbestos(entity)))){
 			entity.setFire(this.fire);
 		}
 
 		if(this.toxic > 0){
 			if(entity instanceof EntityLivingBase){
-				EntityLivingBase livingTEntity = (EntityLivingBase) entity;
+				EntityLivingBase livingTEntity = entity;
 				boolean hasToxFilter = false;
 				boolean hasHazmat = false;
 				if(entity instanceof EntityPlayer){
@@ -149,7 +149,7 @@ public class ItemHazardModule {
 						ArmorUtil.damageGasMaskFilter(livingTEntity, 1);
 						hasToxFilter = true;
 					}
-					hasHazmat = ArmorUtil.checkForHazmat((EntityPlayer)entity);
+					hasHazmat = ArmorUtil.checkForHazmat(entity);
 				}
 
 				if(!hasToxFilter && !hasHazmat){
@@ -160,7 +160,7 @@ public class ItemHazardModule {
 					if(this.toxic > 4)
 						livingTEntity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 110, this.toxic));
 					if(this.toxic > 6){
-						if(entity.world.rand.nextInt((int)(2000/this.toxic)) == 0){
+						if(entity.world.rand.nextInt(2000/this.toxic) == 0){
 							livingTEntity.addPotionEffect(new PotionEffect(MobEffects.POISON, 110, this.toxic-4));
 						}
 					}
@@ -184,10 +184,9 @@ public class ItemHazardModule {
 
 		if(this.hydro && currentItem) {
 
-			if(!entity.world.isRemote && entity.isInWater() && entity instanceof EntityPlayer) {
-				
-				EntityPlayer player = (EntityPlayer) entity;
-				ItemStack held = player.getHeldItem(hand);
+			if(!entity.world.isRemote && entity.isInWater() && entity instanceof EntityPlayer player) {
+
+                ItemStack held = player.getHeldItem(hand);
 				
 				player.inventory.mainInventory.set(player.inventory.currentItem, held.getItem().getContainerItem(held));
 				player.inventoryContainer.detectAndSendChanges();
@@ -197,10 +196,9 @@ public class ItemHazardModule {
 
 		if(this.explosive > 0 && currentItem) {
 
-			if(!entity.world.isRemote && entity.isBurning() && entity instanceof EntityPlayer) {
-				
-				EntityPlayer player = (EntityPlayer) entity;
-				ItemStack held = player.getHeldItem(hand);
+			if(!entity.world.isRemote && entity.isBurning() && entity instanceof EntityPlayer player) {
+
+                ItemStack held = player.getHeldItem(hand);
 				
 				player.inventory.mainInventory.set(player.inventory.currentItem, held.getItem().getContainerItem(held));
 				player.inventoryContainer.detectAndSendChanges();
@@ -209,7 +207,7 @@ public class ItemHazardModule {
 		}
 
 		if(this.blinding && !ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.LIGHT)) {
-			((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 110, 0));
+			entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 110, 0));
 		}
 	}
 

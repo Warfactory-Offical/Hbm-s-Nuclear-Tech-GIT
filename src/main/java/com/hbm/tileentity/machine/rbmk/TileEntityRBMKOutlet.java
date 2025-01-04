@@ -43,10 +43,9 @@ public class TileEntityRBMKOutlet extends TileEntity implements IFluidHandler, I
 					if(pos != null) {
 						TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 						
-						if(te instanceof TileEntityRBMKBase) {
-							TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-							
-							int prov = Math.min(steam.getCapacity() - steam.getFluidAmount(), rbmk.steam);
+						if(te instanceof TileEntityRBMKBase rbmk) {
+
+                            int prov = Math.min(steam.getCapacity() - steam.getFluidAmount(), rbmk.steam);
 							rbmk.steam -= prov;
 							steam.fill(new FluidStack(steamType, prov), true);
 						}

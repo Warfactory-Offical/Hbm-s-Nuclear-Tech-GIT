@@ -85,12 +85,8 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 
 	public boolean hasEgg() {
 
-		if(inventory.getStackInSlot(0).getItem() == ModItems.egg_balefire) {
-			return true;
-		}
-
-		return false;
-	}
+        return inventory.getStackInSlot(0).getItem() == ModItems.egg_balefire;
+    }
 
 	public boolean hasBattery() {
 
@@ -121,7 +117,7 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 		bf.posX = pos.getX() + 0.5;
 		bf.posY = pos.getY() + 0.5;
 		bf.posZ = pos.getZ() + 0.5;
-		bf.destructionRange = (int) 250;
+		bf.destructionRange = 250;
 		world.spawnEntity(bf);
 		if(BombConfig.enableNukeClouds) {
 			EntityNukeTorex.statFacBale(world, pos.getX() + 0.5, pos.getY() + 5, pos.getZ() + 0.5, 250F);

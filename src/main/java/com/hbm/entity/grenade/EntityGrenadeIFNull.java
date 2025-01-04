@@ -46,13 +46,11 @@ public class EntityGrenadeIFNull extends EntityGrenadeBouncyBase {
     		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB((int)posX + 0.5 - 3, (int)posY + 0.5 - 3, (int)posZ + 0.5 - 3, (int)posX + 0.5 + 3, (int)posY + 0.5 + 3, (int)posZ + 0.5 + 3));
     		
     		for(Object o : list) {
-    			if(o instanceof EntityLivingBase) {
-    				EntityLivingBase e = (EntityLivingBase)o;
-    				
-    				e.setHealth(0);
-    			} else if(o instanceof Entity) {
-    				Entity e = (Entity)o;
-    				e.setDead();
+    			if(o instanceof EntityLivingBase e) {
+
+                    e.setHealth(0);
+    			} else if(o instanceof Entity e) {
+                    e.setDead();
     				e.isDead = true;
     			}
     		}

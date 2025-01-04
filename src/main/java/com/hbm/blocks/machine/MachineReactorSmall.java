@@ -82,7 +82,7 @@ public class MachineReactorSmall extends BlockContainer implements IMultiBlock {
 
         if (tileentity instanceof TileEntityMachineReactorSmall)
         {
-            InventoryHelper.dropInventoryItems(world, pos, (TileEntityMachineReactorSmall)tileentity);
+            InventoryHelper.dropInventoryItems(world, pos, tileentity);
             
             world.updateComparatorOutputLevel(pos, this);
         }
@@ -96,15 +96,13 @@ public class MachineReactorSmall extends BlockContainer implements IMultiBlock {
 			DummyBlockMachine.safeBreak = true;
 			world.setBlockState(pos.up(1), ModBlocks.dummy_block_reactor_small.getDefaultState());
 			TileEntity te = world.getTileEntity(pos.up(1));
-			if(te instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te;
-				dummy.target = pos;
+			if(te instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			world.setBlockState(pos.up(2), ModBlocks.dummy_port_reactor_small.getDefaultState());
 			TileEntity te2 = world.getTileEntity(pos.up(2));
-			if(te2 instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te2;
-				dummy.target = pos;
+			if(te2 instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			DummyBlockMachine.safeBreak = false;
 			//

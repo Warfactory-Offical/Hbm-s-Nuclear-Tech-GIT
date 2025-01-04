@@ -50,12 +50,10 @@ public class BlockHadronPower extends BlockContainer implements ILookOverlay {
 		
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityHadronPower))
+		if(!(te instanceof TileEntityHadronPower extractor))
 			return;
-		
-		TileEntityHadronPower extractor = (TileEntityHadronPower) te;
-		
-		List<String> text = new ArrayList();
+
+        List<String> text = new ArrayList();
 		text.add(Library.getShortNumber(extractor.power) + "/" + Library.getShortNumber(extractor.getMaxPower()) + " HE");
 		text.add("&["+Library.getColorProgress((double)extractor.power/(double)extractor.getMaxPower())+"&]    "+Library.getPercentage((double)extractor.power/(double)extractor.getMaxPower())+"%");
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getTranslationKey() + ".name"), 0xffff00, 0x404000, text);

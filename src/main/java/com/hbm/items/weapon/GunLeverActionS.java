@@ -54,10 +54,9 @@ public class GunLeverActionS extends Item {
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer))
+		if(!(entityLiving instanceof EntityPlayer player))
 			return;
-		EntityPlayer player = (EntityPlayer) entityLiving;
-		int j = this.getMaxItemUseDuration(stack) - timeLeft;
+        int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
 		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.ammo_20gauge));
 		MinecraftForge.EVENT_BUS.post(event);
@@ -145,9 +144,9 @@ public class GunLeverActionS extends Item {
 	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(ItemStack stack) {
 		if(MainRegistry.polaroidID == 11)
-			return ("" + I18n.format(this.getTranslationKey() + "_2.name")).trim();
+			return (I18n.format(this.getTranslationKey() + "_2.name")).trim();
 		else
-			return ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
+			return (I18n.format(this.getTranslationKey() + ".name")).trim();
 	}
 	
 	@Override

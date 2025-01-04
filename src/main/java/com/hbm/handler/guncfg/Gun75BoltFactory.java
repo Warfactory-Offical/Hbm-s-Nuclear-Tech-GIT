@@ -105,9 +105,8 @@ public class Gun75BoltFactory {
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityLivingBase) {
-					EntityLivingBase living = (EntityLivingBase) hit;
-					float f = living.getHealth();
+				if(hit instanceof EntityLivingBase living) {
+                    float f = living.getHealth();
 					f = Math.max(0, f - 2);
 					living.setHealth(f);
 

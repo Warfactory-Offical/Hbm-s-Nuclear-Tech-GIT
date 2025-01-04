@@ -63,10 +63,9 @@ public class TEFluidTypePacketTest implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof IFluidPipe) {
-					
-					IFluidPipe duct = (IFluidPipe) te;
-					if(m.type == null)
+				if (te != null && te instanceof IFluidPipe duct) {
+
+                    if(m.type == null)
 						duct.setTypeTrue(null);
 					else if(!m.type.equals(duct.getType()))
 						duct.setTypeTrue(m.type);

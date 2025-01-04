@@ -24,10 +24,9 @@ public class ItemPotatos extends ItemBattery {
     	if(getTimer(stack) > 0) {
     		setTimer(stack, getTimer(stack) - 1);
     	} else {
-    		if(entity instanceof EntityPlayer) {
-    			EntityPlayer p = (EntityPlayer) entity;
-    			
-    			if(p.getHeldItemMainhand() == stack || p.getHeldItemOffhand() == stack) {
+    		if(entity instanceof EntityPlayer p) {
+
+                if(p.getHeldItemMainhand() == stack || p.getHeldItemOffhand() == stack) {
     				
     		    	float pitch = (float)getCharge(stack) / (float)this.getMaxCharge() * 0.5F + 0.5F;
     		    	

@@ -187,9 +187,8 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 		
 		TileEntity te = world.getTileEntity(dummyPos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = pos;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = pos;
 		}
 		
 		return true;

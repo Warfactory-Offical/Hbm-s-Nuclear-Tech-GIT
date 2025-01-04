@@ -98,8 +98,8 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		
 		velocity = 0.0;
 
-		ItemMissile fuselage = (ItemMissile) template.fuselage;
-		ItemMissile thruster = (ItemMissile) template.thruster;
+		ItemMissile fuselage = template.fuselage;
+		ItemMissile thruster = template.thruster;
 
 		this.fuel = (Float)fuselage.attributes[1];
 		this.consumption = (Float)thruster.attributes[1];

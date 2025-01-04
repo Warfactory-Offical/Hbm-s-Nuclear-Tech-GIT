@@ -28,7 +28,7 @@ public class SubElementNodeEditor extends SubElement {
 	public ItemList addMenu;
 	
 	private NodeSystem currentSystem;
-	private Deque<NodeSystem> systemHistoryStack = new ArrayDeque<>();
+	private final Deque<NodeSystem> systemHistoryStack = new ArrayDeque<>();
 
 	private ControlEvent currentEvent;
 	private List<ControlEvent> sendEvents;

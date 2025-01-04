@@ -95,9 +95,8 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, 4), ModBlocks.dummy_port_radgen.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(0, 0, 4));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -113,9 +112,8 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(-4, 0, 0), ModBlocks.dummy_port_radgen.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(-4, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -131,9 +129,8 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, -4), ModBlocks.dummy_port_radgen.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(0, 0, -4));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -149,9 +146,8 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(4, 0, 0), ModBlocks.dummy_port_radgen.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(4, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -192,12 +188,12 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+		return state.getValue(FACING).getIndex();
 	}
 	
 	@Override
@@ -216,13 +212,13 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 	
 	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 }

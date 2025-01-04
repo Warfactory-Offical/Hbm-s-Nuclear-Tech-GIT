@@ -77,8 +77,7 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
     protected void tryPullHeat() {
         TileEntity con = world.getTileEntity(pos.add(0, -1, 0));
         
-        if(con instanceof IHeatSource) {
-            IHeatSource source = (IHeatSource) con;
+        if(con instanceof IHeatSource source) {
             this.heatEnergy += source.getHeatStored() * 0.85;
             source.useUpHeat(source.getHeatStored());
         }

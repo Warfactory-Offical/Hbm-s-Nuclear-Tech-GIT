@@ -213,8 +213,7 @@ public class TileEntityHeatBoiler extends TileEntity implements INBTPacketReceiv
         BlockPos blockBelow = pos.down();
         TileEntity con = world.getTileEntity(blockBelow);
 
-        if(con instanceof IHeatSource) {
-            IHeatSource source = (IHeatSource) con;
+        if(con instanceof IHeatSource source) {
             int diff = source.getHeatStored() - this.heat;
 
             if(diff == 0) {
@@ -225,8 +224,8 @@ public class TileEntityHeatBoiler extends TileEntity implements INBTPacketReceiv
                 diff = (int) Math.ceil(diff * diffusion);
                 source.useUpHeat(diff);
                 this.heat += diff;
-                if(this.heat > this.maxHeat)
-                    this.heat = this.maxHeat;
+                if(this.heat > maxHeat)
+                    this.heat = maxHeat;
                 return;
             }
         }

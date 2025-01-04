@@ -155,7 +155,7 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 
 	@Override
 	public List<String> getInEvents(){
-		return Arrays.asList("siren_set_state");
+		return List.of("siren_set_state");
 	}
 
 	@Override

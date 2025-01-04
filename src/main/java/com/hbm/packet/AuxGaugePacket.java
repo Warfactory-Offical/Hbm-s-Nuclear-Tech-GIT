@@ -95,22 +95,19 @@ public class AuxGaugePacket implements IMessage {
 				try {
 					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-					if(te instanceof TileEntityAMSLimiter) {
-						TileEntityAMSLimiter limiter = (TileEntityAMSLimiter) te;
-						if(m.id == 0)
+					if(te instanceof TileEntityAMSLimiter limiter) {
+                        if(m.id == 0)
 							limiter.locked = m.value == 1;
 						else if(m.id == 1)
 							limiter.efficiency = m.value;
-					} else if(te instanceof TileEntityAMSEmitter) {
-						TileEntityAMSEmitter emitter = (TileEntityAMSEmitter) te;
-						if(m.id == 0)
+					} else if(te instanceof TileEntityAMSEmitter emitter) {
+                        if(m.id == 0)
 							emitter.locked = m.value == 1;
 						else if(m.id == 1)
 							emitter.efficiency = m.value;
-					} else if(te instanceof TileEntityAMSBase) {
-						TileEntityAMSBase base = (TileEntityAMSBase) te;
+					} else if(te instanceof TileEntityAMSBase base) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							base.locked = m.value == 1;
 						else if(m.id == 1)
 							base.color = m.value;
@@ -118,29 +115,24 @@ public class AuxGaugePacket implements IMessage {
 							base.efficiency = m.value;
 						else if(m.id == 3)
 							base.field = m.value;
-					} else if(te instanceof TileEntityTurretCIWS) {
-						TileEntityTurretCIWS cwis = (TileEntityTurretCIWS) te;
+					} else if(te instanceof TileEntityTurretCIWS cwis) {
 
-						cwis.rotation = m.value;
-					} else if(te instanceof TileEntityTurretCheapo) {
-						TileEntityTurretCheapo cwis = (TileEntityTurretCheapo) te;
+                        cwis.rotation = m.value;
+					} else if(te instanceof TileEntityTurretCheapo cwis) {
 
-						cwis.rotation = m.value;
-					} else if(te instanceof TileEntityMachineSeleniumEngine) {
-						TileEntityMachineSeleniumEngine selenium = (TileEntityMachineSeleniumEngine) te;
+                        cwis.rotation = m.value;
+					} else if(te instanceof TileEntityMachineSeleniumEngine selenium) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							selenium.pistonCount = m.value;
 						if(m.id == 1)
 							selenium.powerCap = m.value;
-					} else if(te instanceof TileEntityMachineDiesel) {
-						TileEntityMachineDiesel selenium = (TileEntityMachineDiesel) te;
+					} else if(te instanceof TileEntityMachineDiesel selenium) {
 
-						selenium.powerCap = m.value;
-					} else if(te instanceof TileEntityMachineReactorSmall) {
-						TileEntityMachineReactorSmall reactor = (TileEntityMachineReactorSmall) te;
+                        selenium.powerCap = m.value;
+					} else if(te instanceof TileEntityMachineReactorSmall reactor) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							reactor.rods = m.value;
 						if(m.id == 1)
 							reactor.retracting = m.value == 1;
@@ -148,84 +140,70 @@ public class AuxGaugePacket implements IMessage {
 							reactor.coreHeat = m.value;
 						if(m.id == 3)
 							reactor.hullHeat = m.value;
-					} else if(te instanceof TileEntityMachineGasCent) {
-						TileEntityMachineGasCent cent = (TileEntityMachineGasCent) te;
+					} else if(te instanceof TileEntityMachineGasCent cent) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							cent.progress = m.value;
 						if(m.id == 1)
 							cent.isProgressing = m.value == 1;
-					} else if(te instanceof TileEntityMachineCentrifuge) {
-						TileEntityMachineCentrifuge cent = (TileEntityMachineCentrifuge) te;
+					} else if(te instanceof TileEntityMachineCentrifuge cent) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							cent.progress = m.value;
 						if(m.id == 1)
 							cent.isProgressing = m.value == 1;
-					} else if(te instanceof TileEntityMachineBoiler) {
-						TileEntityMachineBoiler boiler = (TileEntityMachineBoiler) te;
+					} else if(te instanceof TileEntityMachineBoiler boiler) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							boiler.heat = m.value;
 						if(m.id == 1)
 							boiler.burnTime = m.value;
-					} else if(te instanceof TileEntityMachineBoilerRTG) {
-						TileEntityMachineBoilerRTG rtgBoiler = (TileEntityMachineBoilerRTG) te;
+					} else if(te instanceof TileEntityMachineBoilerRTG rtgBoiler) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							rtgBoiler.heat = m.value;
 						if(m.id == 1)
 							rtgBoiler.rtgPower = m.value;
-					} else if(te instanceof TileEntityMachineCoal) {
-						TileEntityMachineCoal coalgen = (TileEntityMachineCoal) te;
+					} else if(te instanceof TileEntityMachineCoal coalgen) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							coalgen.burnTime = m.value;
-					} else if(te instanceof TileEntityMachineElectricFurnace) {
-						TileEntityMachineElectricFurnace furn = (TileEntityMachineElectricFurnace) te;
+					} else if(te instanceof TileEntityMachineElectricFurnace furn) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							furn.dualCookTime = m.value;
-					} else if(te instanceof TileEntityMachineArcFurnace) {
-						TileEntityMachineArcFurnace furn = (TileEntityMachineArcFurnace) te;
+					} else if(te instanceof TileEntityMachineArcFurnace furn) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							furn.dualCookTime = m.value;
-					} else if(te instanceof TileEntityMachineBoilerElectric) {
-						TileEntityMachineBoilerElectric boiler = (TileEntityMachineBoilerElectric) te;
+					} else if(te instanceof TileEntityMachineBoilerElectric boiler) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							boiler.heat = m.value;
-					} else if(te instanceof TileEntityMachineReactorLarge) {
-						TileEntityMachineReactorLarge reactor = (TileEntityMachineReactorLarge) te;
+					} else if(te instanceof TileEntityMachineReactorLarge reactor) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							reactor.size = m.value;
-					} else if(te instanceof TileEntityCompactLauncher) {
-						TileEntityCompactLauncher launcher = (TileEntityCompactLauncher) te;
-						
-						if(m.id == 0)
+					} else if(te instanceof TileEntityCompactLauncher launcher) {
+
+                        if(m.id == 0)
 							launcher.solid = m.value;
 						if(m.id == 1)
 							launcher.clearingTimer = m.value;
-					} else if(te instanceof TileEntityLaunchPad) {
-						TileEntityLaunchPad launcher = (TileEntityLaunchPad) te;
+					} else if(te instanceof TileEntityLaunchPad launcher) {
 
-						launcher.clearingTimer = m.value;
-					} else if(te instanceof TileEntityLaunchTable) {
-						TileEntityLaunchTable launcher = (TileEntityLaunchTable) te;
+                        launcher.clearingTimer = m.value;
+					} else if(te instanceof TileEntityLaunchTable launcher) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							launcher.solid = m.value;
 						if(m.id == 1)
 							launcher.padSize = PartSize.values()[m.value];
 						if(m.id == 2)
 							launcher.clearingTimer = m.value;
-					} else if(te instanceof TileEntityRailgun) {
+					} else if(te instanceof TileEntityRailgun gen) {
 
-						TileEntityRailgun gen = (TileEntityRailgun) te;
-
-						if(m.id == 0) {
+                        if(m.id == 0) {
 							Vec3 vec = Vec3.createVectorHelper(5.5, 0, 0);
 							vec.rotateAroundZ((float) (gen.pitch * Math.PI / 180D));
 							vec.rotateAroundY((float) (gen.yaw * Math.PI / 180D));
@@ -251,9 +229,8 @@ public class AuxGaugePacket implements IMessage {
 					} else if(te instanceof TileEntityMachineGenerator){
 						if(m.id == 0)
 							((TileEntityMachineGenerator) te).heat = m.value;
-					} else if(te instanceof TileEntityWatzCore){
-						TileEntityWatzCore core = (TileEntityWatzCore) te;
-						if(m.id == 0)
+					} else if(te instanceof TileEntityWatzCore core){
+                        if(m.id == 0)
 							core.powerList = m.value;
 						else if(m.id == 1)
 							core.heatList = m.value;
@@ -266,7 +243,7 @@ public class AuxGaugePacket implements IMessage {
 						else if(m.id == 5)
 							core.heat = m.value;
 					} else if(te instanceof TileEntitySlidingBlastDoor){
-						((TileEntitySlidingBlastDoor) te).shouldUseBB = m.value == 1 ? true : false;
+						((TileEntitySlidingBlastDoor) te).shouldUseBB = m.value == 1;
 					}
 				} catch(Exception x) {
 				}

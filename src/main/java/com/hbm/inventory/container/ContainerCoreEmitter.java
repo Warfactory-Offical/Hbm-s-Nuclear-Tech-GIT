@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerCoreEmitter extends Container {
 
-	private TileEntityCoreEmitter nukeBoy;
+	private final TileEntityCoreEmitter nukeBoy;
 	private EntityPlayerMP player;
 	
 	public ContainerCoreEmitter(EntityPlayer player, TileEntityCoreEmitter tedf) {
@@ -53,7 +53,7 @@ public class ContainerCoreEmitter extends Container {
 		PacketDispatcher.sendTo(new AuxGaugePacket(nukeBoy.getPos(), nukeBoy.watts, 1), player);
 		PacketDispatcher.sendTo(new AuxLongPacket(nukeBoy.getPos(), nukeBoy.prev, 0), player);
 		listener.sendWindowProperty(this, 3, nukeBoy.isOn ? 1 : 0);
-		PacketDispatcher.sendTo(new FluidTankPacket(nukeBoy.getPos(), new FluidTank[] { tank }), player);
+		PacketDispatcher.sendTo(new FluidTankPacket(nukeBoy.getPos(), tank), player);
 	}
 	
 	int power;
@@ -84,7 +84,7 @@ public class ContainerCoreEmitter extends Container {
 		}
 		if(!FFUtils.areTanksEqual(tank, nukeBoy.tank)){
 			tank = FFUtils.copyTank(nukeBoy.tank);
-			PacketDispatcher.sendTo(new FluidTankPacket(nukeBoy.getPos(), new FluidTank[] { tank }), player);
+			PacketDispatcher.sendTo(new FluidTankPacket(nukeBoy.getPos(), tank), player);
 		}
 		super.detectAndSendChanges();
 	}
@@ -93,7 +93,7 @@ public class ContainerCoreEmitter extends Container {
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int id, int data) {
 		if(id == 3)
-			nukeBoy.isOn = data > 0 ? true : false;
+			nukeBoy.isOn = data > 0;
 		if(id == 1){
 			if(Minecraft.getMinecraft().currentScreen instanceof GUICoreEmitter){
 				((GUICoreEmitter)Minecraft.getMinecraft().currentScreen).syncTextField(watts);
@@ -111,7 +111,7 @@ public class ContainerCoreEmitter extends Container {
     public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{

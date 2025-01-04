@@ -29,7 +29,7 @@ public class RenderMachineForceField extends TileEntitySpecialRenderer<TileEntit
         bindTexture(ResourceManager.radar_base_tex);
         ResourceManager.radar.renderPart("Base");
         
-        TileEntityForceField ff = (TileEntityForceField)te;
+        TileEntityForceField ff = te;
 
         GL11.glTranslated(0, 0.5D, 0);
         

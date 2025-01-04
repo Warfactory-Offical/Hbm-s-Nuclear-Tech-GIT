@@ -102,8 +102,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
             if(!lastPos.equals(newPos)) {
                 Block newBlock = world.getBlockState(newPos).getBlock();
 
-                if(newBlock instanceof IEnterableBlock) {
-                    IEnterableBlock enterable = (IEnterableBlock) newBlock;
+                if(newBlock instanceof IEnterableBlock enterable) {
 
                     EnumFacing dir = null;
 
@@ -121,8 +120,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
                         dir = EnumFacing.NORTH;
 
                     TileEntity tileEntity = world.getTileEntity(newPos);
-                    if(tileEntity instanceof TileEntityCraneBase) {
-                        TileEntityCraneBase craneBase = (TileEntityCraneBase) tileEntity;
+                    if(tileEntity instanceof TileEntityCraneBase craneBase) {
                         EnumFacing inputSide = craneBase.getInputSide();
                         if (dir == inputSide) {
                             enterBlock(enterable, newPos, dir);
@@ -135,8 +133,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
                     if(!newBlock.getMaterial(world.getBlockState(newPos)).isSolid()) {
                         newBlock = world.getBlockState(newPos.down()).getBlock();
 
-                        if(newBlock instanceof IEnterableBlock) {
-                            IEnterableBlock enterable = (IEnterableBlock) newBlock;
+                        if(newBlock instanceof IEnterableBlock enterable) {
                             enterBlockFalling(enterable, newPos);
                         }
                     }

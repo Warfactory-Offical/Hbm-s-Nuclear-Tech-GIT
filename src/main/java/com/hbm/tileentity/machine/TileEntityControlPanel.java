@@ -153,7 +153,7 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 
 	@Override
 	public List<String> getInEvents(){
-		return Arrays.asList("tick");
+		return List.of("tick");
 	}
 
 	@Override

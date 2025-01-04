@@ -57,11 +57,9 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 		
 		if(i == 0 && stack.getItem() instanceof IBatteryItem)
 			return true;
-		
-		if(!(stack.getItem() instanceof ItemStamp) && i == 2)
-			return true;
-		return false;
-	}
+
+        return !(stack.getItem() instanceof ItemStamp) && i == 2;
+    }
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(EnumFacing e){
@@ -126,8 +124,8 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 							else
 								inventory.getStackInSlot(3).grow(stack.getCount());
 							
-							inventory.getStackInSlot(2).shrink(1);;
-							if(inventory.getStackInSlot(2).isEmpty())
+							inventory.getStackInSlot(2).shrink(1);
+                            if(inventory.getStackInSlot(2).isEmpty())
 								inventory.setStackInSlot(2, ItemStack.EMPTY);
 
 							if(inventory.getStackInSlot(1).getMaxDamage() > 0){

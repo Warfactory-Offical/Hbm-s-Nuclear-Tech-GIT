@@ -79,11 +79,10 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 				
 				TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-				if(!(te instanceof TileEntityMachineCatalyticCracker))
+				if(!(te instanceof TileEntityMachineCatalyticCracker cracker))
 					return false;
 
-				TileEntityMachineCatalyticCracker cracker = (TileEntityMachineCatalyticCracker) te;
-				Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
+                Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
 				if(!CrackRecipes.hasRecipe(type)){
 					player.sendMessage(new TextComponentString("§cNo recipe found for §e"+type.getLocalizedName(new FluidStack(type, 1))));
 					return false;
@@ -141,12 +140,10 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 		
 		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityMachineCatalyticCracker))
+		if(!(te instanceof TileEntityMachineCatalyticCracker cracker))
 			return;
-		
-		TileEntityMachineCatalyticCracker cracker = (TileEntityMachineCatalyticCracker) te;
-		
-		List<String> text = new ArrayList();
+
+        List<String> text = new ArrayList();
 
 		for(int i = 0; i < cracker.types.length; i++)
 			if(cracker.types[i] != null)

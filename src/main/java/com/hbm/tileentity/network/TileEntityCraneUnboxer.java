@@ -80,9 +80,7 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
                 EnumFacing inputSide = getOutputSide(); // note the switcheroo!
                 Block b = world.getBlockState(pos.offset(inputSide)).getBlock();
 
-                if (b instanceof IConveyorBelt) {
-
-                    IConveyorBelt belt = (IConveyorBelt) b;
+                if (b instanceof IConveyorBelt belt) {
 
                     for (int index : allowed_slots) {
                         ItemStack stack = inventory.getStackInSlot(index);

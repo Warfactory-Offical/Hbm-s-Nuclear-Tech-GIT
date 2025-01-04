@@ -105,9 +105,8 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 	public static void spreadType(World worldIn, BlockPos pos, Fluid hand, Fluid pipe, int x){
 		if(x > 0){
 			TileEntity te = worldIn.getTileEntity(pos);
-			if(te != null && te instanceof TileEntityFFDuctBaseMk2){
-				TileEntityFFDuctBaseMk2 duct = (TileEntityFFDuctBaseMk2) te;
-				if(duct.getType() == pipe){
+			if(te != null && te instanceof TileEntityFFDuctBaseMk2 duct){
+                if(duct.getType() == pipe){
 					duct.setType(hand);
 					duct.markDirty();
 					spreadType(worldIn, pos.add(1, 0, 0), hand, pipe, x-1);

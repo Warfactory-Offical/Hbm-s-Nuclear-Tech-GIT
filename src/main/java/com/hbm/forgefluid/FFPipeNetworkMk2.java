@@ -63,7 +63,7 @@ public class FFPipeNetworkMk2 implements IFluidHandler {
 		int remaining = resource.amount;
 		//Drillgon200: Extra hacky compensation
 		int intRoundingCompensation = resource.amount-part*handlers.size();
-		rand.setSeed(((TileEntity)this.fillables.values().iterator().next()).getWorld().getTotalWorldTime());
+		rand.setSeed(this.fillables.values().iterator().next().getWorld().getTotalWorldTime());
 		int randomFillIndex = rand.nextInt(handlers.size());
 		for(int i = 0; i < handlers.size(); i++){
 			IFluidHandler consumer = handlers.get(i);
@@ -157,9 +157,8 @@ public class FFPipeNetworkMk2 implements IFluidHandler {
 
 	public static FFPipeNetworkMk2 buildNetwork(TileEntity te) {
 		FFPipeNetworkMk2 net = null;
-		if(te instanceof IFluidPipeMk2) {
-			IFluidPipeMk2 pipe = (IFluidPipeMk2) te;
-			if(pipe.getNetwork() != null)
+		if(te instanceof IFluidPipeMk2 pipe) {
+            if(pipe.getNetwork() != null)
 				return pipe.getNetwork();
 			Fluid type = pipe.getType();
 
@@ -191,9 +190,8 @@ public class FFPipeNetworkMk2 implements IFluidHandler {
 		if(te == null)
 			return;
 
-		if(te instanceof IFluidPipeMk2) {
-			IFluidPipeMk2 pipe = (IFluidPipeMk2) te;
-			if(pipe.getType() == type && pipe.isValidForBuilding()) {
+		if(te instanceof IFluidPipeMk2 pipe) {
+            if(pipe.getType() == type && pipe.isValidForBuilding()) {
 				if(pipe.getNetwork() == null) {
 					if(!pipes.containsKey(te.getPos())) {
 						pipes.put(te.getPos(), pipe);

@@ -28,8 +28,8 @@ import net.minecraft.util.math.BlockPos;
 
 public class RenderRBMKLid extends TileEntitySpecialRenderer<TileEntityRBMKBase> {
 
-	private ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/blocks/rbmk/rbmk_blank.png");
-	private ResourceLocation texture_glass = new ResourceLocation(RefStrings.MODID + ":textures/blocks/rbmk/rbmk_blank_glass.png");
+	private final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/blocks/rbmk/rbmk_blank.png");
+	private final ResourceLocation texture_glass = new ResourceLocation(RefStrings.MODID + ":textures/blocks/rbmk/rbmk_blank_glass.png");
 	private static final ResourceLocation texture_rods = new ResourceLocation(RefStrings.MODID + ":textures/blocks/rbmk/rbmk_element_colorable.png");
 	
 	@Override
@@ -50,11 +50,9 @@ public class RenderRBMKLid extends TileEntitySpecialRenderer<TileEntityRBMKBase>
 		float cherenkovB = 0F;
 		float cherenkovA = 0.1F;
 		
-		if(control instanceof TileEntityRBMKRod) {
-			
-			TileEntityRBMKRod rod = (TileEntityRBMKRod) control;
-			
-			if(rod.hasRod){
+		if(control instanceof TileEntityRBMKRod rod) {
+
+            if(rod.hasRod){
 				hasRod = true;
 				fuelR = rod.fuelR;
 				fuelG = rod.fuelG;
@@ -72,11 +70,10 @@ public class RenderRBMKLid extends TileEntitySpecialRenderer<TileEntityRBMKBase>
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y, z + 0.5);
-		if(!(control.getBlockType() instanceof RBMKBase))
+		if(!(control.getBlockType() instanceof RBMKBase block))
 			return;
 
-		RBMKBase block = (RBMKBase)control.getBlockType();
-		WavefrontObject columnModel = ResourceManager.rbmk_reflector;
+        WavefrontObject columnModel = ResourceManager.rbmk_reflector;
 		if(block == ModBlocks.rbmk_boiler || block == ModBlocks.rbmk_heater)
 			columnModel = ResourceManager.rbmk_rods;
 		else if(block instanceof RBMKRod)

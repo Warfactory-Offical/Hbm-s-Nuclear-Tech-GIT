@@ -123,12 +123,12 @@ public class BlockConveyorChute extends BlockConveyor {
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{FACING, TYPE});
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override //0-3 NSEW (T0) 4-7 NSEW (T1) 8-11 NSEW (T2)
     public int getMetaFromState(IBlockState state) {
-        return ((EnumFacing)state.getValue(FACING)).getIndex() - 2 + (state.getValue(TYPE)<<2);
+        return state.getValue(FACING).getIndex() - 2 + (state.getValue(TYPE)<<2);
     }
     
     @Override

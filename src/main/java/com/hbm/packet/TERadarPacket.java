@@ -1,5 +1,6 @@
 package com.hbm.packet;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.hbm.tileentity.machine.TileEntityMachineRadar;
@@ -72,13 +73,10 @@ public class TERadarPacket implements IMessage {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 				try {
-					if (te != null && te instanceof TileEntityMachineRadar) {
+					if (te != null && te instanceof TileEntityMachineRadar radar) {
 
-						TileEntityMachineRadar radar = (TileEntityMachineRadar) te;
-						radar.nearbyMissiles.clear();
-						for(int[] i : m.missiles2){
-							radar.nearbyMissiles.add(i);
-						}
+                        radar.nearbyMissiles.clear();
+                        Collections.addAll(radar.nearbyMissiles, m.missiles2);
 					}
 				} catch (Exception x) {
 				}

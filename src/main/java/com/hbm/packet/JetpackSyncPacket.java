@@ -64,9 +64,8 @@ public class JetpackSyncPacket implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				World world = Minecraft.getMinecraft().world;
 				Entity ent = world.getEntityByID(m.playerId);
-				if(ent instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) ent;
-					JetpackInfo info = JetpackHandler.get(player);
+				if(ent instanceof EntityPlayer player) {
+                    JetpackInfo info = JetpackHandler.get(player);
 					if(info == null) {
 						info = new JetpackInfo(true);
 						JetpackHandler.put(player, info);

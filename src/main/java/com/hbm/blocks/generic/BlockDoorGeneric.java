@@ -38,7 +38,7 @@ import net.minecraftforge.fml.common.Optional;
 public class BlockDoorGeneric extends BlockDummyable implements IRadResistantBlock, IPartialSealableBlock {
 
 	public DoorDecl type;
-	private boolean isRadResistant;
+	private final boolean isRadResistant;
 	
 	public BlockDoorGeneric(Material materialIn, DoorDecl type, boolean isRadResistant, String s){
 		super(materialIn, s);
@@ -126,9 +126,8 @@ public class BlockDoorGeneric extends BlockDummyable implements IRadResistantBlo
 			int[] corePos = findCore(world, pos.getX(), pos.getY(), pos.getZ());
 			if(corePos != null){
 				TileEntity core = world.getTileEntity(new BlockPos(corePos[0], corePos[1], corePos[2]));
-				if(core instanceof TileEntityDoorGeneric){
-					TileEntityDoorGeneric door = (TileEntityDoorGeneric)core;
-					door.updateRedstonePower(pos);
+				if(core instanceof TileEntityDoorGeneric door){
+                    door.updateRedstonePower(pos);
 				}
 			}
 		}

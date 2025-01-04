@@ -84,11 +84,9 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
 				int index = (i + 7) + (j + 7) * 15;
 				
-				if(te instanceof TileEntityRBMKBase) {
-					
-					TileEntityRBMKBase rbmk = (TileEntityRBMKBase)te;
-					
-					columns[index] = new RBMKColumn(rbmk.getConsoleType(), rbmk.getNBTForConsole());
+				if(te instanceof TileEntityRBMKBase rbmk) {
+
+                    columns[index] = new RBMKColumn(rbmk.getConsoleType(), rbmk.getNBTForConsole());
 					columns[index].data.setDouble("heat", rbmk.heat);
 					columns[index].data.setDouble("maxHeat", rbmk.maxHeat());
 					columns[index].data.setDouble("realSimWater", rbmk.water);
@@ -354,9 +352,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 					
 					TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + z));
 					
-					if(te instanceof TileEntityRBMKControlManual) {
-						TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
-						rod.startingLevel = rod.level;
+					if(te instanceof TileEntityRBMKControlManual rod) {
+                        rod.startingLevel = rod.level;
 						rod.setTarget(MathHelper.clamp(data.getDouble("level"), 0, 1));
 						te.markDirty();
 					}
@@ -544,7 +541,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		}
 	}
 	
-	public static enum ColumnType {
+	public enum ColumnType {
 		BLANK(0),
 		FUEL(10),
 		FUEL_SIM(90),
@@ -562,7 +559,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		
 		public int offset;
 		
-		private ColumnType(int offset) {
+		ColumnType(int offset) {
 			this.offset = offset;
 		}
 	}
@@ -600,9 +597,9 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		}
 	}
 	
-	public static enum ScreenType {
-		NONE(0 * 18),
-		COL_TEMP(1 * 18),
+	public enum ScreenType {
+		NONE(0),
+		COL_TEMP(18),
 		FUEL_TEMP(5 * 18),
 		ROD_EXTRACTION(2 * 18),
 		FLUX(6 * 18),
@@ -611,7 +608,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		
 		public int offset;
 		
-		private ScreenType(int offset) {
+		ScreenType(int offset) {
 			this.offset = offset;
 		}
 	}
@@ -631,10 +628,9 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		int i = (y + 7) * 15 + (x + 7);
 
 		TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
-		if (te instanceof TileEntityRBMKBase) {
-			TileEntityRBMKBase column = (TileEntityRBMKBase) te;
+		if (te instanceof TileEntityRBMKBase column) {
 
-			NBTTagCompound column_data = columns[i].data;
+            NBTTagCompound column_data = columns[i].data;
 			LinkedHashMap<String, Object> data_table = new LinkedHashMap<>();
 			data_table.put("type", column.getConsoleType().name());
 			data_table.put("hullTemp", column_data.getDouble("heat"));
@@ -649,33 +645,28 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			data_table.put("coreTemp", column_data.getDouble("c_coreHeat"));
 			data_table.put("coreMaxTemp", column_data.getDouble("c_maxHeat"));
 
-			if(te instanceof TileEntityRBMKRod){
-				TileEntityRBMKRod fuelChannel = (TileEntityRBMKRod)te;
-				data_table.put("fluxSlow", fuelChannel.fluxSlow);
+			if(te instanceof TileEntityRBMKRod fuelChannel){
+                data_table.put("fluxSlow", fuelChannel.fluxSlow);
 				data_table.put("fluxFast", fuelChannel.fluxFast);
 			}
 
-			if(te instanceof TileEntityRBMKBoiler){
-				TileEntityRBMKBoiler boiler = (TileEntityRBMKBoiler)te;
-				data_table.put("water", boiler.feed.getFluidAmount());
+			if(te instanceof TileEntityRBMKBoiler boiler){
+                data_table.put("water", boiler.feed.getFluidAmount());
 				data_table.put("steam", boiler.steam.getFluidAmount());
 			}
 
-			if(te instanceof TileEntityRBMKOutgasser){
-				TileEntityRBMKOutgasser irradiationChannel = (TileEntityRBMKOutgasser)te;
-				data_table.put("fluxProgress", irradiationChannel.progress);
+			if(te instanceof TileEntityRBMKOutgasser irradiationChannel){
+                data_table.put("fluxProgress", irradiationChannel.progress);
 				data_table.put("requiredFlux", irradiationChannel.duration);
 			}
 
-			if(te instanceof TileEntityRBMKCooler){
-				TileEntityRBMKCooler coolingChannel = (TileEntityRBMKCooler)te;
-				data_table.put("degreesCooledPerTick", coolingChannel.lastCooled);
+			if(te instanceof TileEntityRBMKCooler coolingChannel){
+                data_table.put("degreesCooledPerTick", coolingChannel.lastCooled);
 				data_table.put("cryogel", coolingChannel.tank.getFluidAmount());
 			}
 
-			if(te instanceof TileEntityRBMKHeater){
-				TileEntityRBMKHeater heaterChannel = (TileEntityRBMKHeater)te;
-				data_table.put("coolant", heaterChannel.tanks[0].getFluidAmount());
+			if(te instanceof TileEntityRBMKHeater heaterChannel){
+                data_table.put("coolant", heaterChannel.tanks[0].getFluidAmount());
 				data_table.put("hotcoolant", heaterChannel.tanks[1].getFluidAmount());
 			}
 
@@ -705,9 +696,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			for(int j = -7; j <= 7; j++) {
 				TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
 	
-				if (te instanceof TileEntityRBMKControlManual) {
-					TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
-					rod.startingLevel = rod.level;
+				if (te instanceof TileEntityRBMKControlManual rod) {
+                    rod.startingLevel = rod.level;
 					new_level = Math.min(1, Math.max(0, new_level));
 
 					rod.setTarget(new_level);
@@ -730,9 +720,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 
 		TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
 		
-		if (te instanceof TileEntityRBMKControlManual) {
-			TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
-			rod.startingLevel = rod.level;
+		if (te instanceof TileEntityRBMKControlManual rod) {
+            rod.startingLevel = rod.level;
 			new_level = Math.min(1, Math.max(0, new_level));
 
 			rod.setTarget(new_level);
@@ -752,9 +741,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				for(int j = -7; j <= 7; j++) {
 					TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
 
-					if (te instanceof TileEntityRBMKControlManual) {
-						TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
-						if(rod.isSameColor(color)){
+					if (te instanceof TileEntityRBMKControlManual rod) {
+                        if(rod.isSameColor(color)){
 							rod.startingLevel = rod.level;
 							new_level = Math.min(1, Math.max(0, new_level));
 
@@ -781,9 +769,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		if(new_color >= 0 && new_color <=4){
 			TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
 
-			if (te instanceof TileEntityRBMKControlManual) {
-				TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
-				rod.setColor(new_color);
+			if (te instanceof TileEntityRBMKControlManual rod) {
+                rod.setColor(new_color);
 				te.markDirty();
 				return new Object[] {"Rod at "+(x+7)+","+(7-y)+" set to color "+new_color};
 			}
@@ -799,9 +786,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			for(int j = -7; j <= 7; j++) {
 				TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
 		
-				if (te instanceof TileEntityRBMKControlManual) {
-					TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
-					rod.startingLevel = rod.level;
+				if (te instanceof TileEntityRBMKControlManual rod) {
+                    rod.startingLevel = rod.level;
 					rod.setTarget(0);
 					te.markDirty();
 					hasRods = true;

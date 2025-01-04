@@ -58,12 +58,10 @@ public class BlockGasRadonTomb extends BlockGasBase {
 
 	@Override
 	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
-		if(entity instanceof EntityLivingBase) {
+		if(entity instanceof EntityLivingBase entityLiving) {
 
 
-			EntityLivingBase entityLiving = (EntityLivingBase) entity;
-
-			if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
+            if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
 				ArmorUtil.damageGasMaskFilter(entityLiving, 4);
 				ContaminationUtil.contaminate(entityLiving, HazardType.RADIATION, ContaminationType.CREATIVE, 5F);
 			} else {

@@ -26,12 +26,10 @@ public class BlockGasRadon extends BlockGasBase {
 
 	@Override
 	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
-		if(!(entity instanceof EntityLivingBase))
+		if(!(entity instanceof EntityLivingBase entityLiving))
 			return;
-		
-		EntityLivingBase entityLiving = (EntityLivingBase) entity;
-		
-		if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
+
+        if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
 			ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 			ContaminationUtil.contaminate(entityLiving, HazardType.RADIATION, ContaminationType.CREATIVE, 0.05F);
 		} else {

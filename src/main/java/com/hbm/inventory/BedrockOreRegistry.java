@@ -47,17 +47,15 @@ public class BedrockOreRegistry {
 		boolean isBlock = false;
 		for(ItemStack item : OreDictionary.getOres(ore))
 			isBlock |= (item != null && !item.isEmpty() && item.getItem() instanceof ItemBlock);
-			if(isBlock) return true;
-		return false;
-	}
+        return isBlock;
+    }
 
 	public static boolean isActualItem(String ore){
 		boolean isActualItem = false;
 		for(ItemStack item : OreDictionary.getOres(ore))
 			isActualItem |= (item != null && !item.isEmpty() && item.getItem() != Items.AIR);
-			if(isActualItem) return true;
-		return false;
-	}
+        return isActualItem;
+    }
 
 	public static boolean tryRegister(int index, String oreName, String output){
 		if(OreDictionary.doesOreNameExist(output) && isActualItem(output)){
@@ -175,7 +173,7 @@ public class BedrockOreRegistry {
 			}
 		}
 		if(tierCount > 0)
-			return (int)(tierSum/tierCount);
+			return tierSum/tierCount;
 		return 0;
 	}
 

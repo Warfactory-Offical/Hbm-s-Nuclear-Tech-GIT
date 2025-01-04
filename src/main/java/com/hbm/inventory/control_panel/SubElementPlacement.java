@@ -228,9 +228,8 @@ public class SubElementPlacement extends SubElement {
 				tes.draw();
 			}
 		}
-		else if (c instanceof Label) {
-			Label label = (Label) c;
-			String text = label.getConfigs().get("text").toString();
+		else if (c instanceof Label label) {
+            String text = label.getConfigs().get("text").toString();
 			float scale = label.getConfigs().get("scale").getNumber()/500F;
 
 			int r = (int) (label.getConfigs().get("colorR").getNumber()*255);
@@ -245,10 +244,9 @@ public class SubElementPlacement extends SubElement {
 			gui.getFontRenderer().drawString(text, c.posX, c.posY, rgb2, false);
 			GL11.glPopMatrix();
 		}
-		else if (c instanceof DisplayText) {
-			DisplayText thing = (DisplayText) c;
+		else if (c instanceof DisplayText thing) {
 
-			String text = thing.getVar("text").toString();
+            String text = thing.getVar("text").toString();
 			float scale = thing.getConfigs().get("scale").getNumber()/500F;
 
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.white);
@@ -339,10 +337,8 @@ public class SubElementPlacement extends SubElement {
 				return false;
 			}
 		}
-		if(!RenderHelper.boxContainsOther(gui.control.getBox(), gui.currentEditControl.getBox()))
-			return false;
-		return true;
-	}
+        return RenderHelper.boxContainsOther(gui.control.getBox(), gui.currentEditControl.getBox());
+    }
 	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button){

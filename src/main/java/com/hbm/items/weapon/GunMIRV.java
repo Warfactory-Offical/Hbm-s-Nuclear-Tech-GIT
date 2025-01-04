@@ -42,10 +42,9 @@ public class GunMIRV extends Item {
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer))
+		if(!(entityLiving instanceof EntityPlayer player))
 			return;
-		EntityPlayer player = (EntityPlayer)entityLiving;
-		int j = this.getMaxItemUseDuration(stack) - timeLeft;
+        int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
 		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, false);
 		MinecraftForge.EVENT_BUS.post(event);

@@ -152,12 +152,12 @@ public class NukeN2 extends BlockContainer implements IBomb {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+		return state.getValue(FACING).getIndex();
 	}
 	
 	@Override
@@ -176,13 +176,13 @@ public class NukeN2 extends BlockContainer implements IBomb {
 	
 	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class NukeN2 extends BlockContainer implements IBomb {
 		tooltip.add("§c["+ I18nUtil.resolveKey("trait.extremebomb")+"]§r");
 		tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.n2Radius)+"§r");
 		tooltip.add("");
-		tooltip.add("§e"+I18nUtil.resolveKey("desc.chargeadds", (int)(BombConfig.n2Radius/12))+"§r");
+		tooltip.add("§e"+I18nUtil.resolveKey("desc.chargeadds", BombConfig.n2Radius/12)+"§r");
 	}
 
 }

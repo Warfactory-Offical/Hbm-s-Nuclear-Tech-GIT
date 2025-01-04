@@ -14,11 +14,9 @@ public class TileEntityProxyBase extends TileEntityLoadedBase {
 
 	public TileEntity getTE() {
 
-		if(this.getBlockType() instanceof BlockDummyable) {
+		if(this.getBlockType() instanceof BlockDummyable dummy) {
 
-			BlockDummyable dummy = (BlockDummyable)this.getBlockType();
-
-			int[] pos = dummy.findCore(world, this.pos.getX(), this.pos.getY(), this.pos.getZ());
+            int[] pos = dummy.findCore(world, this.pos.getX(), this.pos.getY(), this.pos.getZ());
 
 			if(pos != null) {
 

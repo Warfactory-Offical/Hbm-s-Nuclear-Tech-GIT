@@ -118,10 +118,9 @@ public class TileEntityWasteDrum extends TileEntityMachineBase implements ITicka
 				
 				for(int i = 0; i < 12; i++) {
 					
-					if(inventory.getStackInSlot(i).getItem() instanceof ItemRBMKRod) {
-						
-						ItemRBMKRod rod = (ItemRBMKRod) inventory.getStackInSlot(i).getItem();
-						rod.updateHeat(world, inventory.getStackInSlot(i), 0.025D);
+					if(inventory.getStackInSlot(i).getItem() instanceof ItemRBMKRod rod) {
+
+                        rod.updateHeat(world, inventory.getStackInSlot(i), 0.025D);
 						rod.provideHeat(world, inventory.getStackInSlot(i), 20D, 0.025D);
 						
 					} else if(world.rand.nextInt(r) == 0) {

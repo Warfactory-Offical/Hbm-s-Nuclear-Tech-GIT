@@ -90,7 +90,7 @@ public class TileEntitySpinnyLight extends TileEntity implements IControllable {
 	
 	@Override
 	public List<String> getInEvents(){
-		return Arrays.asList("spinny_light_power");
+		return List.of("spinny_light_power");
 	}
 
 	@Override

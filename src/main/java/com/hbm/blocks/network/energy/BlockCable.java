@@ -35,10 +35,9 @@ public class BlockCable extends BlockContainer {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (world.getTileEntity(pos) instanceof TileEntityCableBaseNT) {
-			TileEntityCableBaseNT cable = (TileEntityCableBaseNT) world.getTileEntity(pos);
+		if (world.getTileEntity(pos) instanceof TileEntityCableBaseNT cable) {
 
-			boolean posX = Library.canConnect(world, cable.getPos().add(1, 0, 0), Library.POS_X);
+            boolean posX = Library.canConnect(world, cable.getPos().add(1, 0, 0), Library.POS_X);
 			boolean negX = Library.canConnect(world, cable.getPos().add(-1, 0, 0), Library.NEG_X);
 			boolean posY = Library.canConnect(world, cable.getPos().add(0, 1, 0), Library.POS_Y);
 			boolean negY = Library.canConnect(world, cable.getPos().add(0, -1, 0), Library.NEG_Y);

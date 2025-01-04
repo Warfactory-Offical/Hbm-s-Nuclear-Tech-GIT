@@ -23,8 +23,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class MultiblockHandler {
 
-	public enum EnumDirection { North, East, South, West };
-	//                            2      5     3      4
+	public enum EnumDirection { North, East, South, West }
+    //                            2      5     3      4
 	//                           -z     +x    +z     -x
 
 	public static int EnumToInt(EnumDirection dir) {
@@ -140,9 +140,8 @@ public class MultiblockHandler {
 					if(!(a == x && b == y && c == z)) {
 						world.setBlockState(replace.setPos(a, b, c), block.getDefaultState());
 						TileEntity te = world.getTileEntity(replace.setPos(a, b, c));
-						if(te instanceof TileEntityDummy) {
-							TileEntityDummy dummy = (TileEntityDummy)te;
-							dummy.target = pos;
+						if(te instanceof TileEntityDummy dummy) {
+                            dummy.target = pos;
 						}
 					}
 				}

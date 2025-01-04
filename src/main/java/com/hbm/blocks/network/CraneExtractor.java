@@ -38,7 +38,7 @@ public class CraneExtractor extends BlockCraneBase {
         TileEntity tileentity = world.getTileEntity(pos);
 
         if(tileentity instanceof TileEntityCraneExtractor) {
-            InventoryHelper.dropInventoryItems(world, pos, (TileEntityCraneExtractor) tileentity);
+            InventoryHelper.dropInventoryItems(world, pos, tileentity);
         }
         super.breakBlock(world, pos, state);
     }

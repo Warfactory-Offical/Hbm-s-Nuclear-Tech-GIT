@@ -61,10 +61,9 @@ public class TEPumpjackPacket implements IMessage {
 				try {
 					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-					if (te != null && te instanceof TileEntityMachinePumpjack) {
-							
-						TileEntityMachinePumpjack gen = (TileEntityMachinePumpjack) te;
-						gen.rotation = m.spin;
+					if (te != null && te instanceof TileEntityMachinePumpjack gen) {
+
+                        gen.rotation = m.spin;
 						gen.isProgressing = m.progress;
 					}
 				} catch(Exception x) { }

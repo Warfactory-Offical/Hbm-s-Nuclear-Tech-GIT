@@ -180,10 +180,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	
 	public boolean canFill(Fluid fluid) {
 		if (!this.world.isRemote) {
-			if(mode == 2 || mode == 3 || (tank.getFluid() != null && tank.getFluid().getFluid() != fluid))
-				return false;
-			else
-				return true;
+            return mode != 2 && mode != 3 && (tank.getFluid() == null || tank.getFluid().getFluid() == fluid);
 		}
 		return false;
 	}
@@ -198,8 +195,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	@Override
 	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1) {
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}

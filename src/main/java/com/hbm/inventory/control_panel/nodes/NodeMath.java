@@ -154,7 +154,7 @@ public class NodeMath extends Node {
 		return op.name;
 	}
 	
-	public static enum Operation {
+	public enum Operation {
 		ADD("Add"),
 		SUB("Subtract"),
 		MULT("Multiply"),
@@ -173,7 +173,7 @@ public class NodeMath extends Node {
 		CLAMP("Clamp");
 
 		public String name;
-		private Operation(String name){
+		Operation(String name){
 			this.name = name;
 		}
 		

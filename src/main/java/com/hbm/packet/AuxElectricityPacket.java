@@ -65,10 +65,9 @@ public class AuxElectricityPacket implements IMessage {
 				try {
 					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 
-					if (te != null && te instanceof IEnergyUser) {
-						
-						IEnergyUser gen = (IEnergyUser) te;
-						gen.setPower(m.charge);
+					if (te != null && te instanceof IEnergyUser gen) {
+
+                        gen.setPower(m.charge);
 					}
 				} catch (Exception x) { }
 			});

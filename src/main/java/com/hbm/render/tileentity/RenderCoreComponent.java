@@ -96,10 +96,9 @@ public class RenderCoreComponent extends TileEntitySpecialRenderer<TileEntityMac
 	        }
         }
 
-        if(tileEntity instanceof TileEntityCoreInjector) {      
+        if(tileEntity instanceof TileEntityCoreInjector injector) {
 	        GL11.glTranslated(0, 0.5, 0);
-	        TileEntityCoreInjector injector = (TileEntityCoreInjector)tileEntity;
-	        int range = injector.beam;
+            int range = injector.beam;
 	        
 	        if(range > 0) {
 	        	RenderHelper.bindBlockTexture();

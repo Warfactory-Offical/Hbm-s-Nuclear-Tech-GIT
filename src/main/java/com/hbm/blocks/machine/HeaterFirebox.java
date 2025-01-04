@@ -67,10 +67,8 @@ public class HeaterFirebox extends BlockDummyable implements ITooltipProvider, I
 
         TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterFirebox))
+        if (!(te instanceof TileEntityHeaterFirebox heater))
             return;
-
-        TileEntityHeaterFirebox heater = (TileEntityHeaterFirebox) te;
 
         List<String> text = new ArrayList<>();
         text.add(String.format("%,d", heater.heatEnergy) + " TU");

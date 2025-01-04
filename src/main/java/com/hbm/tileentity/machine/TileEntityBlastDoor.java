@@ -298,9 +298,8 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 		
 		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = this.pos;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = this.pos;
 		}
 		
 		return true;
@@ -342,12 +341,12 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	
 	@Override
 	public List<String> getInEvents(){
-		return Arrays.asList("door_toggle");
+		return List.of("door_toggle");
 	}
 	
 	@Override
 	public List<String> getOutEvents(){
-		return Arrays.asList("door_open_state");
+		return List.of("door_open_state");
 	}
 	
 	@Override

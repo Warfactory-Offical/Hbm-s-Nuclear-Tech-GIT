@@ -8,6 +8,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IAnimatedItem {
     @SideOnly(Side.CLIENT)
-    public BusAnimation getAnimation(NBTTagCompound data, ItemStack stack);
+    BusAnimation getAnimation(NBTTagCompound data, ItemStack stack);
 }
 

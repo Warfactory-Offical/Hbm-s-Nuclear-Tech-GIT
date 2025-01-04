@@ -91,9 +91,8 @@ public class MachineSatDock extends BlockContainer implements IMultiBlock {
 		
 		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = target;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = target;
 		}
 	}
 	

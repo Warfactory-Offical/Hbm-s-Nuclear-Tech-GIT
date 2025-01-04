@@ -78,8 +78,7 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 					if(FFUtils.containsFluid(itemStack, ModForgeFluids.coolant))
 						return true;
 				if(i == 11)
-					if(itemStack.getItem() instanceof IBatteryItem)
-						return true;
+                    return itemStack.getItem() instanceof IBatteryItem;
 				return false;
 			}
 			
@@ -431,8 +430,7 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	@Override
 	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 2){
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 		}
@@ -481,7 +479,7 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	
 	private long detectPower;
 	private int detectHeat;
-	private FluidTank[] detectTanks = new FluidTank[]{null, null};
+	private final FluidTank[] detectTanks = new FluidTank[]{null, null};
 	
 	private void detectAndSendChanges() {
 		

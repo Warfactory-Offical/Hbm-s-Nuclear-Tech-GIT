@@ -359,7 +359,7 @@ public class EntityBullet extends Entity implements IProjectile {
 			float f1;
 
 			for (i = 0; i < list.size(); ++i) {
-				Entity entity1 = (Entity) list.get(i);
+				Entity entity1 = list.get(i);
 				if(entity1 instanceof EntityBullet){
 					if(((EntityBullet)entity1).shootingEntity == this.shootingEntity){
 						continue;
@@ -385,10 +385,9 @@ public class EntityBullet extends Entity implements IProjectile {
 				movingobjectposition = new RayTraceResult(entity);
 			}
 
-			if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer) {
-				EntityPlayer entityplayer = (EntityPlayer) movingobjectposition.entityHit;
+			if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer) {
 
-				if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
+                if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
 					movingobjectposition = null;
 				}
 			}
@@ -445,11 +444,10 @@ public class EntityBullet extends Entity implements IProjectile {
 						}
 
 						if (movingobjectposition.entityHit.attackEntityFrom(damagesource, (float) damage)) {
-							if (movingobjectposition.entityHit instanceof EntityLivingBase) {
-								EntityLivingBase entitylivingbase = (EntityLivingBase) movingobjectposition.entityHit;
+							if (movingobjectposition.entityHit instanceof EntityLivingBase entitylivingbase) {
 
-								if (rad) {
-									if (entitylivingbase instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer) entitylivingbase)) {
+                                if (rad) {
+									if (entitylivingbase instanceof EntityPlayer && ArmorUtil.checkForHazmat(entitylivingbase)) {
 									} else if (entitylivingbase instanceof EntityCreeper) {
 										EntityNuclearCreeper creep = new EntityNuclearCreeper(this.world);
 										creep.setLocationAndAngles(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, entitylivingbase.rotationYaw, entitylivingbase.rotationPitch);
@@ -466,7 +464,7 @@ public class EntityBullet extends Entity implements IProjectile {
 									} else if (entitylivingbase instanceof EntityLivingBase && !(entitylivingbase instanceof EntityNuclearCreeper) && !(entitylivingbase instanceof EntityMooshroom) && !(entitylivingbase instanceof EntityZombie)) {
 										entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.POISON, 2 * 60 * 20, 2));
 										entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.WITHER, 20, 4));
-										entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 60 * 20, 1));
+										entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 60 * 20, 1));
 									}
 								}
 
@@ -593,8 +591,7 @@ public class EntityBullet extends Entity implements IProjectile {
 			// this.prevRotationPitch < -180.0F; this.prevRotationPitch -=
 			// 360.0F)
 			{
-				;
-			}
+            }
 
 			/*
 			 * while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {

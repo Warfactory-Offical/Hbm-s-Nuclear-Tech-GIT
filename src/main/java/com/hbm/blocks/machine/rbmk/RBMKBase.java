@@ -76,12 +76,10 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 		
 		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityRBMKBase))
+		if(!(te instanceof TileEntityRBMKBase rbmk))
 			return false;
-		
-		TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-		
-		if(player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() instanceof ItemRBMKLid) {
+
+        if(player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() instanceof ItemRBMKLid) {
 			
 			if(!rbmk.hasLid())
 				return false;
@@ -104,11 +102,9 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 		if(pos != null) {
 			TileEntity te = source.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
-			if(te instanceof TileEntityRBMKBase) {
-				
-				TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-				
-				if(rbmk.hasLid()) {
+			if(te instanceof TileEntityRBMKBase rbmk) {
+
+                if(rbmk.hasLid()) {
 					height += 0.25F;
 				}
 			}
@@ -167,10 +163,9 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 		if(pos != null) {
 			TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
-			if(te instanceof TileEntityRBMKBase) {
-				
-				TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-				int i = rbmk.getBlockMetadata();
+			if(te instanceof TileEntityRBMKBase rbmk) {
+
+                int i = rbmk.getBlockMetadata();
 				
 				if(rbmk.hasLid() && rbmk.isLidRemovable()) {
 					

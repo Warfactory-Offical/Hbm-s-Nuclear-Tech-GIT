@@ -212,11 +212,9 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 
 			TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
-			if(te instanceof TileEntityHadronPower) {
+			if(te instanceof TileEntityHadronPower plug) {
 
-				TileEntityHadronPower plug = (TileEntityHadronPower)te;
-
-				long toDraw = Math.min(maxPower - power, plug.getPower());
+                long toDraw = Math.min(maxPower - power, plug.getPower());
 				this.setPower(power + toDraw);
 				plug.setPower(plug.getPower() - toDraw);
 			}
@@ -491,11 +489,9 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 						TileEntity te = world.getTileEntity(new BlockPos(a, b, c));
 
 						//power plugs are also ok, might as well succ some energy when passing
-						if(te instanceof TileEntityHadronPower) {
+						if(te instanceof TileEntityHadronPower plug) {
 
-							TileEntityHadronPower plug = (TileEntityHadronPower)te;
-
-							long bit = 10000;		//how much HE one "charge point" is
+                            long bit = 10000;		//how much HE one "charge point" is
 
 							int times = (int) (plug.getPower() / bit);	//how many charges the plug has to offer
 
@@ -572,10 +568,9 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		TileEntity te = world.getTileEntity(new BlockPos(nx, ny, nz));
 
 		//the next block appears to be a diode, let's see if we can enter
-		if(te instanceof TileEntityHadronDiode) {
-			TileEntityHadronDiode diode = (TileEntityHadronDiode)te;
+		if(te instanceof TileEntityHadronDiode diode) {
 
-			if(diode.getConfig(p.dir.getOpposite().ordinal()) != DiodeConfig.IN) {
+            if(diode.getConfig(p.dir.getOpposite().ordinal()) != DiodeConfig.IN) {
 				//it appears as if we have slammed into the side of a diode, ouch
 				p.expire(EnumHadronState.ERROR_DIODE_COLLISION);
 			}
@@ -591,16 +586,14 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		te = world.getTileEntity(new BlockPos(x, y, z));
 
 		//if we are currently in a diode, we might want to consider changing dirs
-		if(te instanceof TileEntityHadronDiode) {
+		if(te instanceof TileEntityHadronDiode diode) {
 
 			//since we are *in* a diode, we might want to call the warrant officer for
 			//an exemption for the coil check, because curves NEED holes to turn into, and
 			//checking for coils in spaces where there cannot be coils is quite not-good
 			p.isCheckExempt = true;
 
-			TileEntityHadronDiode diode = (TileEntityHadronDiode)te;
-
-			//the direction in which we were going anyway is an output, so we will keep going
+            //the direction in which we were going anyway is an output, so we will keep going
 			if(diode.getConfig(dir.ordinal()) == DiodeConfig.OUT) {
 				return;
 
@@ -677,7 +670,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	 */
 	private List<ForgeDirection> getRandomDirs() {
 
-		List<Integer> rands = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5} );
+		List<Integer> rands = Arrays.asList(0, 1, 2, 3, 4, 5);
 		Collections.shuffle(rands);
 		List<ForgeDirection> dirs = new ArrayList<>();
 		for(Integer i : rands) {
@@ -709,7 +702,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 				b == ModBlocks.hadron_analysis_glass;
 	}
 	
-	public static enum EnumHadronState {
+	public enum EnumHadronState {
 		IDLE(0x8080ff),
 		PROGRESS(0xffff00),
 		ANALYSIS(0xffff00),
@@ -732,11 +725,11 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		public int color;
 		public boolean showCoord;
 		
-		private EnumHadronState(int color) {
+		EnumHadronState(int color) {
 			this(color, false);
 		}
 		
-		private EnumHadronState(int color, boolean showCoord) {
+		EnumHadronState(int color, boolean showCoord) {
 			this.color = color;
 			this.showCoord = showCoord;
 		}

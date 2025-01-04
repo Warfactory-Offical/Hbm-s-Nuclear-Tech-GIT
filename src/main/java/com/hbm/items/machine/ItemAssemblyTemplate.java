@@ -53,10 +53,10 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(ItemStack stack) {
-		String s = ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
+		String s = (I18n.format(this.getTranslationKey() + ".name")).trim();
 		int damage = getTagWithRecipeNumber(stack).getInteger("type");
 		ItemStack out = damage < AssemblerRecipes.recipeList.size() ? AssemblerRecipes.recipeList.get(damage).toStack() : ItemStack.EMPTY;
-		String s1 = ("" + I18n.format((out != ItemStack.EMPTY ? out.getTranslationKey() : "") + ".name")).trim();
+		String s1 = (I18n.format((out != ItemStack.EMPTY ? out.getTranslationKey() : "") + ".name")).trim();
 
 		if (s1 != null) {
 			s = s + " " + s1;
@@ -129,15 +129,14 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 				ItemStack input = ((ComparableStack)o).toStack();
 	    		list.add(" §c"+ input.getCount() + "x " + input.getDisplayName());
 
-			} else if(o instanceof OreDictStack)  {
-				OreDictStack input = (OreDictStack) o;
-				NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+			} else if(o instanceof OreDictStack input)  {
+                NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
 
 				if(ores.size() > 0) {
 					ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
 		    		list.add(" §c"+ input.count() + "x " + inStack.getDisplayName());
 				} else {
-		    		list.add("I AM ERROR - No OrdDict match found for "+o.toString());
+		    		list.add("I AM ERROR - No OrdDict match found for "+ o);
 				}
 			}
 		}

@@ -40,10 +40,7 @@ public class NodeButton extends NodeElement {
 
     @Override
     public boolean onClick(float x, float y) {
-        if (RenderHelper.intersects2DBox(x, y, getBox())) {
-            return true;
-        }
-        return false;
+        return RenderHelper.intersects2DBox(x, y, getBox());
     }
 
     public float[] getBox() {

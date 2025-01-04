@@ -161,9 +161,8 @@ public class ItemWandD extends Item {
 		} else {
 			if(!world.isRemote){
 				RayTraceResult r = Library.rayTraceIncludeEntities(player, 50, 1);
-				if(r != null && r.entityHit instanceof EntityLivingBase){
-					EntityLivingBase ent = ((EntityLivingBase)r.entityHit);
-					ent.setHealth(0);
+				if(r != null && r.entityHit instanceof EntityLivingBase ent){
+                    ent.setHealth(0);
 					if(ent.getHealth() <= 0){
 						Vec3d norm = new Vec3d(world.rand.nextFloat()*2-1, world.rand.nextFloat()*2-1, world.rand.nextFloat()*2-1).normalize();
 						float[] planeEquation = new float[]{(float)norm.x, (float)norm.y, (float)norm.z, -ent.getEyeHeight()*0.5F*(float)norm.y};

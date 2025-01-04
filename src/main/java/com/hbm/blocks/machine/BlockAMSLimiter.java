@@ -75,15 +75,13 @@ public class BlockAMSLimiter extends BlockContainer implements IMultiBlock {
 				DummyBlockAMSLimiter.safeBreak = true;
 				world.setBlockState(pos.add(2, 0, 0), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(2, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-2, 0, 0), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-2, 0, 0));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAMSLimiter.safeBreak = false;
 				//
@@ -99,15 +97,13 @@ public class BlockAMSLimiter extends BlockContainer implements IMultiBlock {
 				DummyBlockAMSLimiter.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, 2), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(0, 0, 2));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(0, 0, -2), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(0, 0, -2));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAMSLimiter.safeBreak = false;
 				//
@@ -123,15 +119,13 @@ public class BlockAMSLimiter extends BlockContainer implements IMultiBlock {
 				DummyBlockAMSLimiter.safeBreak = true;
 				world.setBlockState(pos.add(2, 0, 0), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(2, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-2, 0, 0), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-2, 0, 0));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAMSLimiter.safeBreak = false;
 				//
@@ -147,15 +141,13 @@ public class BlockAMSLimiter extends BlockContainer implements IMultiBlock {
 				DummyBlockAMSLimiter.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, 2), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(0, 0, 2));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(0, 0, -2), ModBlocks.dummy_port_ams_limiter.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(0, 0, -2));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAMSLimiter.safeBreak = false;
 				//
@@ -197,12 +189,12 @@ public class BlockAMSLimiter extends BlockContainer implements IMultiBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+		return state.getValue(FACING).getIndex();
 	}
 	
 	@Override
@@ -219,13 +211,13 @@ public class BlockAMSLimiter extends BlockContainer implements IMultiBlock {
 	
 	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 	
 }

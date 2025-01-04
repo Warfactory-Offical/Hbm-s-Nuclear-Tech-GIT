@@ -134,9 +134,8 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 		
 		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = this.pos;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = this.pos;
 		}
 		
 		return true;

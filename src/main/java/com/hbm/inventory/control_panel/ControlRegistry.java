@@ -11,7 +11,7 @@ import com.hbm.inventory.control_panel.controls.*;
 public class ControlRegistry {
 	
 	public static Map<String, Control> registry = new HashMap<>();
-	private static Map<Class<? extends Control>, String> classToName = new HashMap<>();
+	private static final Map<Class<? extends Control>, String> classToName = new HashMap<>();
 
 	private ControlRegistry(){
 	}

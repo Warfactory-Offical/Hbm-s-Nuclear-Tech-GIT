@@ -10,7 +10,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerCraneRouter extends Container {
-    private TileEntityCraneRouter router;
+    private final TileEntityCraneRouter router;
 
     public ContainerCraneRouter(InventoryPlayer invPlayer, TileEntityCraneRouter router) {
         this.router = router;

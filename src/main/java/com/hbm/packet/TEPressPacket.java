@@ -69,17 +69,15 @@ public class TEPressPacket implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityMachinePress) {
-						
-					TileEntityMachinePress gen = (TileEntityMachinePress) te;
-					gen.item = m.item;
+				if (te != null && te instanceof TileEntityMachinePress gen) {
+
+                    gen.item = m.item;
 					gen.meta = m.meta;
 					gen.progress = m.progress;
 				}
-				if (te != null && te instanceof TileEntityMachineEPress) {
-						
-					TileEntityMachineEPress gen = (TileEntityMachineEPress) te;
-					gen.item = m.item;
+				if (te != null && te instanceof TileEntityMachineEPress gen) {
+
+                    gen.item = m.item;
 					gen.meta = m.meta;
 					gen.progress = m.progress;
 				}

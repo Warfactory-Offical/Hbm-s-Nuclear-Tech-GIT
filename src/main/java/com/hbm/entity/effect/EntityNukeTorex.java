@@ -307,11 +307,11 @@ public class EntityNukeTorex extends Entity implements IConstantRenderer {
 		}
 
 		private double motionMult = 1F;
-		private double motionConvectionMult = 0.5F;
-		private double motionLiftMult = 0.625F;
-		private double motionRingMult = 0.5F;
-		private double motionCondensationMult = 1F;
-		private double motionShockwaveMult = 1F;
+		private final double motionConvectionMult = 0.5F;
+		private final double motionLiftMult = 0.625F;
+		private final double motionRingMult = 0.5F;
+		private final double motionCondensationMult = 1F;
+		private final double motionShockwaveMult = 1F;
 		
 		
 		private void update() {
@@ -554,7 +554,7 @@ public class EntityNukeTorex extends Entity implements IConstantRenderer {
 		}
 	}
 	
-	public static enum TorexType {
+	public enum TorexType {
 		STANDARD,
 		RING,
 		CONDENSATION,

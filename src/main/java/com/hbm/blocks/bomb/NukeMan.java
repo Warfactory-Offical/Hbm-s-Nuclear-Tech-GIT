@@ -40,7 +40,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 
 	public static final PropertyInteger FACING = PropertyInteger.create("facing", 2, 5);
 	
-	private static boolean keepInventory = false;
+	private static final boolean keepInventory = false;
 	
 	public NukeMan(Material materialIn, String s) {
 		super(materialIn);
@@ -69,7 +69,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 
             if (tileentity instanceof TileEntityNukeMan)
             {
-                InventoryHelper.dropInventoryItems(world, pos, (TileEntityNukeMan)tileentity);
+                InventoryHelper.dropInventoryItems(world, pos, tileentity);
                 
                 world.updateComparatorOutputLevel(pos, this);
             }
@@ -195,14 +195,13 @@ public class NukeMan extends BlockContainer implements IBomb {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		if(!(world.getTileEntity(pos) instanceof TileEntityNukeMan))
+		if(!(world.getTileEntity(pos) instanceof TileEntityNukeMan entity))
 			return;
-		TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(pos);
         //if (p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z))
         {
         	if(entity.isReady())
@@ -221,7 +220,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 		tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.manRadius)+"§r");
 		if(!BombConfig.disableNuclear){
 			tooltip.add("§2["+ I18nUtil.resolveKey("trait.fallout")+"]"+"§r");
-			tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", (int)BombConfig.manRadius*(1+BombConfig.falloutRange/100))+"§r");
+			tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.manRadius *(1+BombConfig.falloutRange/100))+"§r");
 		}
 	}
 }

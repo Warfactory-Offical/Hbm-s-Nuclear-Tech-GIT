@@ -96,7 +96,7 @@ public class RenderTorex extends Render<EntityNukeTorex> {
 		player.attackedAtYaw = 0F;
 	}
 	
-	private Comparator cloudSorter = new Comparator() {
+	private final Comparator cloudSorter = new Comparator() {
 
 		@Override
 		public int compare(Object arg0, Object arg1) {
@@ -194,7 +194,7 @@ public class RenderTorex extends Render<EntityNukeTorex> {
 		float f4 = ActiveRenderInfo.getRotationXY();
 		float f5 = ActiveRenderInfo.getRotationXZ();
 
-		float brightness = cloud.type == cloud.type.CONDENSATION ? 0.9F : 0.75F * cloud.colorMod;
+		float brightness = cloud.type == EntityNukeTorex.TorexType.CONDENSATION ? 0.9F : 0.75F * cloud.colorMod;
 		Vec3 color = cloud.getInterpColor(partialTicks);
 		float r, g, b;
 		r =  Math.max(0.15F, (float)color.xCoord * brightness);
@@ -206,10 +206,10 @@ public class RenderTorex extends Render<EntityNukeTorex> {
 		g = Math.min(1F, g);
 		b = Math.min(1F, b);
 
-		buf.pos((double) (posX - f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ - f2 * scale - f4 * scale)).tex(1, 1).color(r, g, b, a).lightmap(br, br).endVertex();
-		buf.pos((double) (posX - f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ - f2 * scale + f4 * scale)).tex(1, 0).color(r, g, b, a).lightmap(br, br).endVertex();
-		buf.pos((double) (posX + f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ + f2 * scale + f4 * scale)).tex(0, 0).color(r, g, b, a).lightmap(br, br).endVertex();
-		buf.pos((double) (posX + f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ + f2 * scale - f4 * scale)).tex(0, 1).color(r, g, b, a).lightmap(br, br).endVertex();
+		buf.pos(posX - f1 * scale - f3 * scale, posY - f5 * scale, posZ - f2 * scale - f4 * scale).tex(1, 1).color(r, g, b, a).lightmap(br, br).endVertex();
+		buf.pos(posX - f1 * scale + f3 * scale, posY + f5 * scale, posZ - f2 * scale + f4 * scale).tex(1, 0).color(r, g, b, a).lightmap(br, br).endVertex();
+		buf.pos(posX + f1 * scale + f3 * scale, posY + f5 * scale, posZ + f2 * scale + f4 * scale).tex(0, 0).color(r, g, b, a).lightmap(br, br).endVertex();
+		buf.pos(posX + f1 * scale - f3 * scale, posY - f5 * scale, posZ + f2 * scale - f4 * scale).tex(0, 1).color(r, g, b, a).lightmap(br, br).endVertex();
 	}
 
 	private void tessellateFlare(BufferBuilder buf, double posX, double posY, double posZ, float scale, float a, float partialTicks) {
@@ -220,10 +220,10 @@ public class RenderTorex extends Render<EntityNukeTorex> {
 		float f4 = ActiveRenderInfo.getRotationXY();
 		float f5 = ActiveRenderInfo.getRotationXZ();
 		int br = (int)(a * 240);
-		buf.pos((double) (posX - f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ - f2 * scale - f4 * scale)).tex(1, 1).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
-		buf.pos((double) (posX - f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ - f2 * scale + f4 * scale)).tex(1, 0).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
-		buf.pos((double) (posX + f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ + f2 * scale + f4 * scale)).tex(0, 0).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
-		buf.pos((double) (posX + f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ + f2 * scale - f4 * scale)).tex(0, 1).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
+		buf.pos(posX - f1 * scale - f3 * scale, posY - f5 * scale, posZ - f2 * scale - f4 * scale).tex(1, 1).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
+		buf.pos(posX - f1 * scale + f3 * scale, posY + f5 * scale, posZ - f2 * scale + f4 * scale).tex(1, 0).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
+		buf.pos(posX + f1 * scale + f3 * scale, posY + f5 * scale, posZ + f2 * scale + f4 * scale).tex(0, 0).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
+		buf.pos(posX + f1 * scale - f3 * scale, posY - f5 * scale, posZ + f2 * scale - f4 * scale).tex(0, 1).color(1F, 1F, 1F, a).lightmap(br, br).endVertex();
 
 	}
 
@@ -240,7 +240,7 @@ public class RenderTorex extends Render<EntityNukeTorex> {
         	//Makes it start fast and the fade-out is nice and smooth
         	intensity = intensity * Math.pow(Math.E, -intensity) * 2.717391304D;
 
-        	renderFlash(50F * (float)flashDuration/(float)flashBaseDuration, intensity, cloud.coreHeight);
+        	renderFlash(50F * flashDuration /(float)flashBaseDuration, intensity, cloud.coreHeight);
             GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
     		GL11.glPopMatrix();
         }

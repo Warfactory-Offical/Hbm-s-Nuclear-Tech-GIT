@@ -271,7 +271,7 @@ public class EntityRainbow extends Entity implements IProjectile {
 			float f1;
 
 			for (i = 0; i < list.size(); ++i) {
-				Entity entity1 = (Entity) list.get(i);
+				Entity entity1 = list.get(i);
 
 				if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5)) {
 					f1 = 0.3F;
@@ -293,10 +293,9 @@ public class EntityRainbow extends Entity implements IProjectile {
 				movingobjectposition = new RayTraceResult(entity);
 			}
 
-			if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer) {
-				EntityPlayer entityplayer = (EntityPlayer) movingobjectposition.entityHit;
+			if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer) {
 
-				if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
+                if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
 					movingobjectposition = null;
 				}
 			}
@@ -337,10 +336,9 @@ public class EntityRainbow extends Entity implements IProjectile {
 					}
 
 					if (movingobjectposition.entityHit.attackEntityFrom(damagesource, k)) {
-						if (movingobjectposition.entityHit instanceof EntityLivingBase) {
-							EntityLivingBase entitylivingbase = (EntityLivingBase) movingobjectposition.entityHit;
+						if (movingobjectposition.entityHit instanceof EntityLivingBase entitylivingbase) {
 
-							if (this.knockbackStrength > 0) {
+                            if (this.knockbackStrength > 0) {
 								f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
 								if (f4 > 0.0F) {
@@ -495,8 +493,8 @@ public class EntityRainbow extends Entity implements IProjectile {
 	}
 
 	public void randomizeColor() {
-		this.getDataManager().set(RED, rand.nextInt(2) == 1 ? true : false);
-		this.getDataManager().set(GREEN, rand.nextInt(2) == 1 ? true : false);
-		this.getDataManager().set(BLUE, rand.nextInt(2) == 1 ? true : false);
+		this.getDataManager().set(RED, rand.nextInt(2) == 1);
+		this.getDataManager().set(GREEN, rand.nextInt(2) == 1);
+		this.getDataManager().set(BLUE, rand.nextInt(2) == 1);
 	}
 }

@@ -50,11 +50,10 @@ public class AnvilCraftPacket implements IMessage {
 
 				EntityPlayer p = ctx.getServerHandler().player;
 				
-				if(!(p.openContainer instanceof ContainerAnvil)) //player isn't even using an anvil -> bad
+				if(!(p.openContainer instanceof ContainerAnvil anvil)) //player isn't even using an anvil -> bad
 					return;
-				
-				ContainerAnvil anvil = (ContainerAnvil)p.openContainer;
-				AnvilConstructionRecipe recipe = AnvilRecipes.getConstruction().get(m.recipeIndex);
+
+                AnvilConstructionRecipe recipe = AnvilRecipes.getConstruction().get(m.recipeIndex);
 
 				if(!recipe.isTierValid(anvil.tier)) //player is using the wrong type of anvil -> bad
 					return;

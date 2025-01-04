@@ -31,9 +31,8 @@ public class ItemRendererBedrockOre extends TEISRBase {
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, itemModel);
-		if(stack.getItem() instanceof ItemBedrockOre){
-			ItemBedrockOre oreItem = (ItemBedrockOre)stack.getItem();
-			int color = BobMathUtil.interpolateColor(this.dirtyColor, ItemBedrockOre.getColor(stack), this.cleanliness);
+		if(stack.getItem() instanceof ItemBedrockOre oreItem){
+            int color = BobMathUtil.interpolateColor(this.dirtyColor, ItemBedrockOre.getColor(stack), this.cleanliness);
 			
 			if(layerTex == null){
 				layerTex = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("hbm:items/ore_bedrock_layer");

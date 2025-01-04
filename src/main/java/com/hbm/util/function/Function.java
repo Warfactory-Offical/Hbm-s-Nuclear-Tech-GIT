@@ -22,8 +22,9 @@ public abstract class Function {
     public abstract String getLabelForFuel();
     public abstract String getDangerFromFuel();
 
-    public Function withDiv(double div) { this.div = div; return this; };
-    public Function withOff(double off) { this.off = off; return this; };
+    public Function withDiv(double div) { this.div = div; return this; }
+
+    public Function withOff(double off) { this.off = off; return this; }
 
     public double getX(double x) { return x / div + off; }
     public String getXName() { return getXName(true); }
@@ -56,7 +57,7 @@ public abstract class Function {
     public static class FunctionPassive extends FunctionSingleArg {
         public FunctionPassive(double level) { super(level); }
         @Override public double effonix(double x) { return this.level; }
-        @Override public String getLabelForFuel() { return "" + String.format(Locale.US, "%,.1f", this.level); }
+        @Override public String getLabelForFuel() { return String.format(Locale.US, "%,.1f", this.level); }
         @Override public String getDangerFromFuel() { return TextFormatting.DARK_GREEN + "SAFE / PASSIVE"; }
     }
 

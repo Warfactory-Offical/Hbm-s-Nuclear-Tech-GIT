@@ -64,10 +64,9 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 					
 					TileEntity te = world.getTileEntity(pos1);
 	
-					if(te instanceof TileEntityCore) {
-						
-						TileEntityCore core = (TileEntityCore)te;
-						core.field += (int)(watts * lens.fieldMod);
+					if(te instanceof TileEntityCore core) {
+
+                        core.field += (int)(watts * lens.fieldMod);
 						this.power -= (long)(demand * lens.drainMod);
 						beam = i;
 						

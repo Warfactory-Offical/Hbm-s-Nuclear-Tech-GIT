@@ -72,10 +72,9 @@ public class MachineFENSU extends BlockDummyableMBB implements ILookOverlay {
 				te = world.getTileEntity(new BlockPos(posCore[0], posCore[1], posCore[2]));
 			}
 
-			if (te instanceof TileEntityMachineFENSU) {
-				TileEntityMachineFENSU battery = (TileEntityMachineFENSU) te;
-			
-				NBTTagCompound nbt = new NBTTagCompound();
+			if (te instanceof TileEntityMachineFENSU battery) {
+
+                NBTTagCompound nbt = new NBTTagCompound();
 				battery.writeNBT(nbt);
 
 				if(!nbt.isEmpty()) {
@@ -113,7 +112,7 @@ public class MachineFENSU extends BlockDummyableMBB implements ILookOverlay {
 							name = "dyeSilver";
 						if(name.length() > 3 && name.startsWith("dye")){
 							try {
-								EnumDyeColor color = EnumDyeColor.valueOf(name.substring(3, name.length()).toUpperCase());
+								EnumDyeColor color = EnumDyeColor.valueOf(name.substring(3).toUpperCase());
 								entity.color = color;
 								entity.markDirty();
 								world.notifyBlockUpdate(corePos, state, state, 2 | 4);
@@ -143,9 +142,8 @@ public class MachineFENSU extends BlockDummyableMBB implements ILookOverlay {
 			te = world.getTileEntity(new BlockPos(posCore[0], posCore[1], posCore[2]));
 		}
 		if(stack.hasTagCompound()){
-			if (te instanceof TileEntityMachineFENSU) {
-				TileEntityMachineFENSU battery = (TileEntityMachineFENSU) te;
-				if(stack.hasDisplayName()) {
+			if (te instanceof TileEntityMachineFENSU battery) {
+                if(stack.hasDisplayName()) {
 					battery.setCustomName(stack.getDisplayName());
 				}
 				
@@ -165,7 +163,7 @@ public class MachineFENSU extends BlockDummyableMBB implements ILookOverlay {
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 		if (tileentity instanceof TileEntityMachineFENSU) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityMachineFENSU) tileentity);
+			InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 
@@ -182,11 +180,10 @@ public class MachineFENSU extends BlockDummyableMBB implements ILookOverlay {
 		
 		TileEntity te = worldIn.getTileEntity(pos);
 		
-		if(!(te instanceof TileEntityMachineFENSU))
+		if(!(te instanceof TileEntityMachineFENSU battery))
 			return 0;
-		
-		TileEntityMachineFENSU battery = (TileEntityMachineFENSU) te;
-		return (int)battery.getPowerRemainingScaled(15L);
+
+        return (int)battery.getPowerRemainingScaled(15L);
 	}
 
 	@Override
@@ -223,11 +220,10 @@ public class MachineFENSU extends BlockDummyableMBB implements ILookOverlay {
 			
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityMachineFENSU))
+		if(!(te instanceof TileEntityMachineFENSU battery))
 			return;
 
-		TileEntityMachineFENSU battery = (TileEntityMachineFENSU) te;
-		List<String> text = new ArrayList();
+        List<String> text = new ArrayList();
 		text.add("§6<> §rStored Energy: " + Library.getShortNumber(battery.power) + "/9.22EHE");
 		if(battery.powerDelta == 0)
 			text.add("§e-- §r0HE/s");

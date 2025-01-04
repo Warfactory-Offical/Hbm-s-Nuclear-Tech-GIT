@@ -54,7 +54,7 @@ public abstract class ToolAbility {
 			this.radius = radius;
 		}
 		
-		private Set<BlockPos> pos = new HashSet<BlockPos>();
+		private final Set<BlockPos> pos = new HashSet<BlockPos>();
 
 		@Override
 		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
@@ -66,7 +66,7 @@ public abstract class ToolAbility {
 			if(b == Blocks.NETHERRACK && !ToolConfig.recursiveNetherrack)
 				return;
 			
-			List<Integer> indices = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5});
+			List<Integer> indices = Arrays.asList(0, 1, 2, 3, 4, 5);
 			Collections.shuffle(indices);
 			
 			pos.clear();
@@ -122,7 +122,7 @@ public abstract class ToolAbility {
 			
 			tool.breakExtraBlock(world, x, y, z, player, refX, refY, refZ, hand);
 			
-			List<Integer> indices = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5});
+			List<Integer> indices = Arrays.asList(0, 1, 2, 3, 4, 5);
 			Collections.shuffle(indices);
 			
 			for(Integer i : indices) {

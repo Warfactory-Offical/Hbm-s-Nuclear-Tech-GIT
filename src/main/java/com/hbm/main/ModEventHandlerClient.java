@@ -315,8 +315,7 @@ public class ModEventHandlerClient {
         } else {
             GL20.glUniform4f(GL20.glGetUniformLocation(HbmShaderManager.flashlightWorld, "colorMult"), 1.0F, 1.0F, 1.0F, 0.0F);
         }
-        if (e instanceof EntityLivingBase) {
-            EntityLivingBase living = (EntityLivingBase) e;
+        if (e instanceof EntityLivingBase living) {
             if (living.deathTime > 0 || living.hurtTime > 0) {
                 GL20.glUniform4f(GL20.glGetUniformLocation(HbmShaderManager.flashlightWorld, "colorMult"), 1.0F, 0.0F, 0.0F, 0.3F);
             } else {
@@ -505,51 +504,43 @@ public class ModEventHandlerClient {
         // deal with all these ugly things. That can wait.
         ResourceManager.init();
         Object object1 = evt.getModelRegistry().getObject(RedstoneSword.rsModel);
-        if (object1 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object1;
+        if (object1 instanceof IBakedModel model) {
             ItemRedstoneSwordRender.INSTANCE.itemModel = model;
             evt.getModelRegistry().putObject(RedstoneSword.rsModel, new ItemRenderRedstoneSword());
         }
         Object object2 = evt.getModelRegistry().getObject(ItemAssemblyTemplate.location);
-        if (object2 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object2;
+        if (object2 instanceof IBakedModel model) {
             AssemblyTemplateRender.INSTANCE.itemModel = model;
             evt.getModelRegistry().putObject(ItemAssemblyTemplate.location, new AssemblyTemplateBakedModel());
         }
 
         Object object3 = evt.getModelRegistry().getObject(GunB92.b92Model);
-        if (object3 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object3;
+        if (object3 instanceof IBakedModel model) {
             ItemRenderGunAnim.INSTANCE.b92ItemModel = model;
             evt.getModelRegistry().putObject(GunB92.b92Model, new B92BakedModel());
         }
         Object object4 = evt.getModelRegistry().getObject(ItemFluidTank.fluidTankModel);
-        if (object4 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object4;
+        if (object4 instanceof IBakedModel model) {
             FluidTankRender.INSTANCE.itemModel = model;
             evt.getModelRegistry().putObject(ItemFluidTank.fluidTankModel, new FluidTankBakedModel());
         }
         Object object5 = evt.getModelRegistry().getObject(ItemFluidTank.fluidBarrelModel);
-        if (object5 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object5;
+        if (object5 instanceof IBakedModel model) {
             FluidBarrelRender.INSTANCE.itemModel = model;
             evt.getModelRegistry().putObject(ItemFluidTank.fluidBarrelModel, new FluidBarrelBakedModel());
         }
         Object object6 = evt.getModelRegistry().getObject(ItemFluidCanister.fluidCanisterModel);
-        if (object6 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object6;
+        if (object6 instanceof IBakedModel model) {
             FluidCanisterRender.INSTANCE.itemModel = model;
             evt.getModelRegistry().putObject(ItemFluidCanister.fluidCanisterModel, new FluidCanisterBakedModel());
         }
         Object object7 = evt.getModelRegistry().getObject(ItemChemistryTemplate.chemModel);
-        if (object7 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object7;
+        if (object7 instanceof IBakedModel model) {
             ChemTemplateRender.INSTANCE.itemModel = model;
             evt.getModelRegistry().putObject(ItemChemistryTemplate.chemModel, new ChemTemplateBakedModel());
         }
         Object object8 = evt.getModelRegistry().getObject(ItemForgeFluidIdentifier.identifierModel);
-        if (object8 instanceof IBakedModel) {
-            IBakedModel model = (IBakedModel) object8;
+        if (object8 instanceof IBakedModel model) {
             FFIdentifierRender.INSTANCE.itemModel = model;
             evt.getModelRegistry().putObject(ItemForgeFluidIdentifier.identifierModel, new FFIdentifierModel());
         }
@@ -1314,8 +1305,7 @@ public class ModEventHandlerClient {
                 RenderOverhead.renderThermalSight(evt.getPartialTicks());
         }
 
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
+        if (entity instanceof EntityPlayer player) {
             net.minecraft.client.renderer.Tessellator tes = net.minecraft.client.renderer.Tessellator.getInstance();
             BufferBuilder buf = tes.getBuffer();
             if (player.getHeldItemMainhand().getItem() instanceof ItemSwordCutter && ItemSwordCutter.clicked) {
@@ -1452,9 +1442,7 @@ public class ModEventHandlerClient {
                 ArmorFSB chestplate = (ArmorFSB) plate.getItem();
                 if (chestplate.flashlightPosition != null && plate.hasTagCompound() && plate.getTagCompound().getBoolean("flActive")) {
                     Vec3d start = chestplate.flashlightPosition.rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYaw)).add(player.getPositionEyes(partialTicks));
-                    boolean volume = true;
-                    if (player == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
-                        volume = false;
+                    boolean volume = player != Minecraft.getMinecraft().player || Minecraft.getMinecraft().gameSettings.thirdPersonView != 0;
                     LightRenderer.addFlashlight(start, start.add(player.getLook(partialTicks).scale(30)), 30, 200, ResourceManager.fl_cookie, volume, true, true, true);
                 }
             }
@@ -1612,14 +1600,14 @@ public class ModEventHandlerClient {
             if (!(ArmorFSB.hasFSBArmorHelmet(player) && ((ArmorFSB) player.inventory.armorInventory.get(3).getItem()).customGeiger)) {
                 if (Library.hasInventoryItem(player.inventory, ModItems.geiger_counter) || hasBauble(player, ModItems.geiger_counter)) {
 
-                    float rads = (float) Library.getEntRadCap(player).getRads();
+                    float rads = Library.getEntRadCap(player).getRads();
 
                     RenderScreenOverlay.renderRadCounter(event.getResolution(), rads, Minecraft.getMinecraft().ingameGUI);
                 }
             }
             if (Library.hasInventoryItem(player.inventory, ModItems.digamma_diagnostic) || hasBauble(player, ModItems.digamma_diagnostic)) {
 
-                float digamma = (float) Library.getEntRadCap(player).getDigamma();
+                float digamma = Library.getEntRadCap(player).getDigamma();
 
                 RenderScreenOverlay.renderDigCounter(event.getResolution(), digamma, Minecraft.getMinecraft().ingameGUI);
             }
@@ -1634,7 +1622,7 @@ public class ModEventHandlerClient {
             World world = mc.world;
             RayTraceResult mop = mc.objectMouseOver;
 
-            if (mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
+            if (mop != null && mop.typeOfHit == Type.BLOCK) {
                 if (world.getBlockState(mop.getBlockPos()).getBlock() instanceof ILookOverlay) {
                     ((ILookOverlay) world.getBlockState(mop.getBlockPos()).getBlock()).printHook(event, world, mop.getBlockPos().getX(), mop.getBlockPos().getY(), mop.getBlockPos().getZ());
                 }
@@ -1654,8 +1642,7 @@ public class ModEventHandlerClient {
                 long time = System.currentTimeMillis() - animation.startMillis;
 
                 int duration = 0;
-                if (animation instanceof BlenderAnimation) {
-                    BlenderAnimation banim = ((BlenderAnimation) animation);
+                if (animation instanceof BlenderAnimation banim) {
                     //duration = (int) Math.ceil(banim.wrapper.anim.length * (1F/Math.abs(banim.wrapper.speedScale)));
                     EnumHand hand = i < 9 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
                     if (!Minecraft.getMinecraft().player.getHeldItem(hand).getTranslationKey().equals(banim.key))
@@ -1722,10 +1709,7 @@ public class ModEventHandlerClient {
         if (specialDeathEffectEntities.contains(event.getEntity())) {
             event.setCanceled(true);
         }
-        if (event.getEntity() instanceof AbstractClientPlayer && event.getRenderer().getMainModel() instanceof ModelBiped) {
-            AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
-
-            ModelBiped renderer = (ModelBiped) event.getRenderer().getMainModel();
+        if (event.getEntity() instanceof AbstractClientPlayer player && event.getRenderer().getMainModel() instanceof ModelBiped renderer) {
 
             if (player.getHeldItem(EnumHand.MAIN_HAND) != null && player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof IHoldableWeapon) {
                 renderer.rightArmPose = ArmPose.BOW_AND_ARROW;
@@ -1774,12 +1758,11 @@ public class ModEventHandlerClient {
 
         boolean m1 = ItemGunBase.m1;
         boolean m2 = ItemGunBase.m2;
-        if (player.getHeldItem(EnumHand.MAIN_HAND) != null && player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemGunBase) {
+        if (player.getHeldItem(EnumHand.MAIN_HAND) != null && player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemGunBase item) {
 
             if (event.getButton() == 0)
                 event.setCanceled(true);
 
-            ItemGunBase item = (ItemGunBase) player.getHeldItem(EnumHand.MAIN_HAND).getItem();
             if (event.getButton() == 0 && !m1 && !m2) {
                 ItemGunBase.m1 = true;
                 PacketDispatcher.wrapper.sendToServer(new GunButtonPacket(true, (byte) 0, EnumHand.MAIN_HAND));
@@ -1790,12 +1773,11 @@ public class ModEventHandlerClient {
                 item.startActionClient(player.getHeldItemMainhand(), player.world, player, false, EnumHand.MAIN_HAND);
             }
         }
-        if (player.getHeldItem(EnumHand.OFF_HAND) != null && player.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof ItemGunBase) {
+        if (player.getHeldItem(EnumHand.OFF_HAND) != null && player.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof ItemGunBase item) {
 
             if (event.getButton() == 0)
                 event.setCanceled(true);
 
-            ItemGunBase item = (ItemGunBase) player.getHeldItem(EnumHand.OFF_HAND).getItem();
             if (event.getButton() == 0 && !m1 && !m2) {
                 ItemGunBase.m1 = true;
                 PacketDispatcher.wrapper.sendToServer(new GunButtonPacket(true, (byte) 0, EnumHand.OFF_HAND));
@@ -1952,8 +1934,8 @@ public class ModEventHandlerClient {
             if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && !(Minecraft.getMinecraft().currentScreen instanceof GUIArmorTable)) {
 
                 list.add(TextFormatting.DARK_GRAY + "" + TextFormatting.ITALIC + "Hold <" +
-                        TextFormatting.YELLOW + "" + TextFormatting.ITALIC + "LSHIFT" +
-                        TextFormatting.DARK_GRAY + "" + TextFormatting.ITALIC + "> to display installed armor mods");
+                        TextFormatting.YELLOW + TextFormatting.ITALIC + "LSHIFT" +
+                        TextFormatting.DARK_GRAY + TextFormatting.ITALIC + "> to display installed armor mods");
 
             } else {
 

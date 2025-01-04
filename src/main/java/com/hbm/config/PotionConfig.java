@@ -19,9 +19,9 @@ public class PotionConfig {
 		});
 		doJumpBoost = CommonConfig.createConfigBool(config, CATEGORY_POTION, "8.02_doJumpBoost", "Whether Servos and Armors should give Jumpboost", true);
 		String s = CommonConfig.createConfigString(config, CATEGORY_POTION, "8.03_potionSickness", "Valid configs include \"NORMAL\" and \"TERRARIA\", otherwise potion sickness is turned off", "OFF");
-		if("normal".equals(s.toLowerCase()))
+		if("normal".equalsIgnoreCase(s))
 			potionSickness = 1;
-		if("terraria".equals(s.toLowerCase()))
+		if("terraria".equalsIgnoreCase(s))
 			potionSickness = 2;
 
 	}

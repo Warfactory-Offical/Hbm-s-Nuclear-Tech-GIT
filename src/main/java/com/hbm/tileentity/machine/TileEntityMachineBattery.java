@@ -146,18 +146,14 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		if(i == 0)
-			if(stack.getItem() instanceof IBatteryItem){
-				IBatteryItem batteryItem = ((IBatteryItem)stack.getItem());
-				if(batteryItem.getCharge(stack) > 0 && batteryItem.getDischargeRate() > 0){
+			if(stack.getItem() instanceof IBatteryItem batteryItem){
+                if(batteryItem.getCharge(stack) > 0 && batteryItem.getDischargeRate() > 0){
 					return true;
 				}
 			}
 		if(i == 2)
-			if(stack.getItem() instanceof IBatteryItem){
-				IBatteryItem batteryItem = ((IBatteryItem)stack.getItem());
-				if(batteryItem.getCharge(stack) < batteryItem.getMaxCharge() && batteryItem.getChargeRate() > 0){
-					return true;
-				}
+			if(stack.getItem() instanceof IBatteryItem batteryItem){
+                return batteryItem.getCharge(stack) < batteryItem.getMaxCharge() && batteryItem.getChargeRate() > 0;
 			}
 		return false;
 	}
@@ -174,9 +170,8 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 
 	public void tryMoveItems() {
 		ItemStack itemStackDrain = inventory.getStackInSlot(0);
-		if(itemStackDrain.getItem() instanceof IBatteryItem) {
-			IBatteryItem itemDrain = ((IBatteryItem)itemStackDrain.getItem());
-			if(itemDrain.getCharge(itemStackDrain) == 0) {
+		if(itemStackDrain.getItem() instanceof IBatteryItem itemDrain) {
+            if(itemDrain.getCharge(itemStackDrain) == 0) {
 				if(inventory.getStackInSlot(1) == null || inventory.getStackInSlot(1).isEmpty()){
 					inventory.setStackInSlot(1, itemStackDrain);
 					inventory.setStackInSlot(0, ItemStack.EMPTY);
@@ -184,9 +179,8 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 			}
 		}
 		ItemStack itemStackFill = inventory.getStackInSlot(2);
-		if(itemStackFill.getItem() instanceof IBatteryItem) {
-			IBatteryItem itemFill = ((IBatteryItem)itemStackFill.getItem());
-			if(itemFill.getCharge(itemStackFill) == itemFill.getMaxCharge()) {
+		if(itemStackFill.getItem() instanceof IBatteryItem itemFill) {
+            if(itemFill.getCharge(itemStackFill) == itemFill.getMaxCharge()) {
 				if(inventory.getStackInSlot(3) == null || inventory.getStackInSlot(3).isEmpty()){
 					inventory.setStackInSlot(3, itemStackFill);
 					inventory.setStackInSlot(2, ItemStack.EMPTY);
@@ -243,7 +237,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 
 	protected void transmitPowerFairly() {
 		
-		short mode = (short) this.getRelevantMode();
+		short mode = this.getRelevantMode();
 		
 		//HasSets to we don't have any duplicates
 		Set<IPowerNet> nets = new HashSet();
@@ -255,18 +249,16 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 			TileEntity te = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
 			
 			//if it's a cable, buffer both the network and all subscribers of the net
-			if(te instanceof IEnergyConductor) {
-				IEnergyConductor con = (IEnergyConductor) te;
-				if(con.canConnect(dir.getOpposite()) && con.getPowerNet() != null) {
+			if(te instanceof IEnergyConductor con) {
+                if(con.canConnect(dir.getOpposite()) && con.getPowerNet() != null) {
 					nets.add(con.getPowerNet());
 					con.getPowerNet().unsubscribe(this);
 					consumers.addAll(con.getPowerNet().getSubscribers());
 				}
 				
 			//if it's just a consumer, buffer it as a subscriber
-			} else if(te instanceof IEnergyConnector) {
-				IEnergyConnector con = (IEnergyConnector) te;
-				if(con.canConnect(dir.getOpposite())) {
+			} else if(te instanceof IEnergyConnector con) {
+                if(con.canConnect(dir.getOpposite())) {
 					consumers.add((IEnergyConnector) te);
 				}
 			}

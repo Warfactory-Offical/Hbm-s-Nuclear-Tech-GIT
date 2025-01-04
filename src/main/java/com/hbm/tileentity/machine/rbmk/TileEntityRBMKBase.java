@@ -148,7 +148,7 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 			}
 		} else{ // gravity fall
 			if(this.jumpheight > 0){
-				this.downwardSpeed = this.downwardSpeed + this.gravity * 0.05F;
+				this.downwardSpeed = this.downwardSpeed + gravity * 0.05F;
 				this.jumpheight = this.jumpheight - this.downwardSpeed;
 			} else {
 				this.jumpheight = 0;
@@ -209,9 +209,8 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 			if(heatCache[index] == null) {
 				TileEntity te = world.getTileEntity(new BlockPos(pos.getX() + dir.offsetX, pos.getY(), pos.getZ() + dir.offsetZ));
 				
-				if(te instanceof TileEntityRBMKBase) {
-					TileEntityRBMKBase base = (TileEntityRBMKBase) te;
-					heatCache[index] = base;
+				if(te instanceof TileEntityRBMKBase base) {
+                    heatCache[index] = base;
 				}
 			}
 			
@@ -324,10 +323,9 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 		RayTraceResult mop = mc.objectMouseOver;
 		ScaledResolution resolution = event.getResolution();
 		
-		if(mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof RBMKBase) {
-			
-			RBMKBase rbmk = (RBMKBase)world.getBlockState(mop.getBlockPos()).getBlock();
-			int[] pos = rbmk.findCore(world, mop.getBlockPos().getX(), mop.getBlockPos().getY(), mop.getBlockPos().getZ());
+		if(mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof RBMKBase rbmk) {
+
+            int[] pos = rbmk.findCore(world, mop.getBlockPos().getX(), mop.getBlockPos().getY(), mop.getBlockPos().getZ());
 			
 			if(pos == null)
 				return;
@@ -533,11 +531,9 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 		
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(te instanceof TileEntityRBMKBase) {
-			
-			TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-			
-			if(!columns.contains(rbmk)) {
+		if(te instanceof TileEntityRBMKBase rbmk) {
+
+            if(!columns.contains(rbmk)) {
 				columns.add(rbmk);
 				getFF(x + 1, y, z);
 				getFF(x - 1, y, z);

@@ -26,12 +26,7 @@ import net.minecraft.world.World;
 
 public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRadiationImmune {
 
-	private static final Predicate<EntityLiving> selector = new Predicate<EntityLiving>(){
-		@Override
-		public boolean apply(EntityLiving input) {
-			return !(input instanceof EntityCyberCrab || input instanceof EntityCreeper || input instanceof EntityNuclearCreeper);
-		}
-	};
+	private static final Predicate<EntityLiving> selector = input -> !(input instanceof EntityCyberCrab || input instanceof EntityCreeper || input instanceof EntityNuclearCreeper);
 	
 	public EntityCyberCrab(World worldIn) {
 		super(worldIn);
@@ -41,8 +36,8 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
         this.tasks.addTask(1, new EntityAIWanderAvoidWater(this, 0.5F));
         //this.tasks.addTask(2, new EntityAIAvoidEntity(this, EntityPlayer.class, 3, 0.75D, 1.0D));
         this.tasks.addTask(4, arrowAttack());
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 3, true, false, null));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityLiving>(this, EntityLiving.class, 3, true, false, selector));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 3, true, false, null));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityLiving.class, 3, true, false, selector));
 	}
 	
 	protected EntityAIAttackRanged arrowAttack(){

@@ -26,11 +26,9 @@ public class ItemDyatlov extends Item {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(!world.isRemote) {
 			
-			if(world.getBlockState(pos).getBlock() instanceof RBMKBase) {
-				
-				RBMKBase rbmk = (RBMKBase)world.getBlockState(pos).getBlock();
-				
-				int[] pos1 = rbmk.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+			if(world.getBlockState(pos).getBlock() instanceof RBMKBase rbmk) {
+
+                int[] pos1 = rbmk.findCore(world, pos.getX(), pos.getY(), pos.getZ());
 				
 				if(pos1 != null) {
 					

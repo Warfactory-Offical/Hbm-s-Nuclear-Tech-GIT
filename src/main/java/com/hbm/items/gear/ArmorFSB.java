@@ -100,10 +100,9 @@ public class ArmorFSB extends ItemArmor {
 		
 		ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 		
-		if(plate != null && plate.getItem() instanceof ArmorFSB) {
+		if(plate != null && plate.getItem() instanceof ArmorFSB chestplate) {
 
-			ArmorFSB chestplate = (ArmorFSB)plate.getItem();
-			boolean noHelmet = chestplate.noHelmet;
+            boolean noHelmet = chestplate.noHelmet;
 
 			for(EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 				if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND)
@@ -142,10 +141,9 @@ public class ArmorFSB extends ItemArmor {
 
 		ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 		
-		if(plate != null && plate.getItem() instanceof ArmorFSB) {
+		if(plate != null && plate.getItem() instanceof ArmorFSB chestplate) {
 
-			ArmorFSB chestplate = (ArmorFSB)plate.getItem();
-			boolean noHelmet = chestplate.noHelmet;
+            boolean noHelmet = chestplate.noHelmet;
 			
 			for(EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 				if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND)
@@ -363,10 +361,9 @@ public class ArmorFSB extends ItemArmor {
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity e, int itemSlot, boolean isSelected) {
 
-		if(this.armorType != EntityEquipmentSlot.CHEST || !(e instanceof EntityLivingBase))
+		if(this.armorType != EntityEquipmentSlot.CHEST || !(e instanceof EntityLivingBase entity))
 			return;
-		EntityLivingBase entity = (EntityLivingBase)e;
-		if(!hasFSBArmor(entity))
+        if(!hasFSBArmor(entity))
 			return;
 		ArmorFSB fsbarmor = (ArmorFSB) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 		
@@ -615,9 +612,9 @@ public class ArmorFSB extends ItemArmor {
         GlStateManager.disableAlpha();
         Minecraft.getMinecraft().getTextureManager().bindTexture(overlay);
         RenderHelper.startDrawingTexturedQuads();
-        RenderHelper.addVertexWithUV(0.0D, (double)resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
-        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), (double)resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
-        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
+        RenderHelper.addVertexWithUV(0.0D, resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
+        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
+        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
         RenderHelper.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
         RenderHelper.draw();
         GlStateManager.depthMask(true);

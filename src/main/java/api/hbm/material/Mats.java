@@ -186,7 +186,7 @@ public class Mats {
 
 				if(oreEntries != null) {
 					list.addAll(oreEntries);
-					break outer;
+					break;
 				}
 
 				for(Entry<String, MaterialShapes> prefixEntry : prefixByName.entrySet()) {
@@ -223,7 +223,7 @@ public class Mats {
 	public static List<MaterialStack> getSmeltingMaterialsFromItem(ItemStack stack) {
 		List<MaterialStack> baseMats = getMaterialsFromItem(stack);
 		List<MaterialStack> smelting = new ArrayList();
-		baseMats.forEach(x -> smelting.add(new MaterialStack(x.material.smeltsInto, (int) (x.amount * x.material.convOut / x.material.convIn))));
+		baseMats.forEach(x -> smelting.add(new MaterialStack(x.material.smeltsInto, x.amount * x.material.convOut / x.material.convIn)));
 		return smelting;
 	}
 

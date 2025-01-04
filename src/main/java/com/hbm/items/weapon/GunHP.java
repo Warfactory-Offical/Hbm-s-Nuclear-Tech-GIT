@@ -56,10 +56,9 @@ public class GunHP extends Item {
 	
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player1, int count) {
-		if(!(player1 instanceof EntityPlayer))
+		if(!(player1 instanceof EntityPlayer player))
 			return;
-		EntityPlayer player = (EntityPlayer) player1;
-		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_hp){
+        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_hp){
 			player.getHeldItemOffhand().getItem().onUsingTick(player.getHeldItemOffhand(), player, count);
 		}
 		World world = player.world;

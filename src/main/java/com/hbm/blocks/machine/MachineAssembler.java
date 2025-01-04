@@ -95,27 +95,23 @@ public class MachineAssembler extends BlockContainer implements IMultiBlock {
 				DummyBlockAssembler.safeBreak = true;
 				world.setBlockState(pos.add(-1, 0, 0), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(-1, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, 1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, 1));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(2, 0, 0), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(2, 0, 0));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(2, 0, 1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te4 = world.getTileEntity(pos.add(2, 0, 1));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAssembler.safeBreak = false;
 				//
@@ -132,27 +128,23 @@ public class MachineAssembler extends BlockContainer implements IMultiBlock {
 				DummyBlockAssembler.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, -1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(0, 0, -1));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, -1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, -1));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(0, 0, 2), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(0, 0, 2));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, 2), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te4 = world.getTileEntity(pos.add(-1, 0, 2));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAssembler.safeBreak = false;
 				//
@@ -169,27 +161,23 @@ public class MachineAssembler extends BlockContainer implements IMultiBlock {
 				DummyBlockAssembler.safeBreak = true;
 				world.setBlockState(pos.add(1, 0, 0), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(1, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(1, 0, -1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(1, 0, -1));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-2, 0, 0), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(-2, 0, 0));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-2, 0, -1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te4 = world.getTileEntity(pos.add(-2, 0, -1));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAssembler.safeBreak = false;
 				//
@@ -206,27 +194,23 @@ public class MachineAssembler extends BlockContainer implements IMultiBlock {
 				DummyBlockAssembler.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, 1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(0, 0, 1));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(1, 0, 1), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(1, 0, 1));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(0, 0, -2), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(0, 0, -2));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(1, 0, -2), ModBlocks.dummy_port_assembler.getDefaultState());
 				TileEntity te4 = world.getTileEntity(pos.add(1, 0, -2));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockAssembler.safeBreak = false;
 				//
@@ -242,7 +226,7 @@ public class MachineAssembler extends BlockContainer implements IMultiBlock {
 			TileEntity tileentity = world.getTileEntity(pos);
 
 			if(tileentity instanceof TileEntityMachineAssembler) {
-				InventoryHelper.dropInventoryItems(world, pos, (TileEntityMachineAssembler) tileentity);
+				InventoryHelper.dropInventoryItems(world, pos, tileentity);
 
 				world.updateComparatorOutputLevel(pos, this);
 			}
@@ -253,7 +237,7 @@ public class MachineAssembler extends BlockContainer implements IMultiBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override

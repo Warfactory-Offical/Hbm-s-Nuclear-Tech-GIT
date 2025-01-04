@@ -301,11 +301,10 @@ public class ModEventHandler {
 			EntityLivingBase entity = event.getEntityLiving();
 			World world = event.getWorld();
 
-			if(entity instanceof EntityLiving && canWear(entity)) {
+			if(entity instanceof EntityLiving mob && canWear(entity)) {
 				int randomArmorNumber = rand.nextInt(2<<16);
 				int randomHandNumber = rand.nextInt(256);
-				EntityLiving mob = (EntityLiving)entity;
-				boolean hasMainHand = !mob.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty();
+                boolean hasMainHand = !mob.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty();
 				boolean hasOffHand = !mob.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty();
 				boolean hasHat = !mob.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty();
 				boolean hasChest = !mob.getItemStackFromSlot(EntityEquipmentSlot.CHEST).isEmpty();
@@ -534,7 +533,7 @@ public class ModEventHandler {
 
 			String[] msg = message.split(" ");
 
-			String m = msg[0].substring(1, msg[0].length()).toLowerCase();
+			String m = msg[0].substring(1).toLowerCase();
 
 			if("gv".equals(m)) {
 
@@ -624,7 +623,7 @@ public class ModEventHandler {
 	public void onEntityHurt(LivingHurtEvent e) {
 		EntityLivingBase ent = e.getEntityLiving();
 		if(e.getEntityLiving() instanceof EntityPlayer) {
-			if(ArmorUtil.checkArmor((EntityPlayer) e.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
+			if(ArmorUtil.checkArmor(e.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
 				e.setCanceled(true);
 			}
 		}
@@ -632,7 +631,7 @@ public class ModEventHandler {
 
 		/// V1 ///
 		if(EntityDamageUtil.wasAttackedByV1(e.getSource())) {
-			EntityPlayer attacker = (EntityPlayer) ((EntityDamageSource)e.getSource()).getImmediateSource();
+			EntityPlayer attacker = (EntityPlayer) e.getSource().getImmediateSource();
 
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaburst");
@@ -667,7 +666,7 @@ public class ModEventHandler {
 	public void onEntityAttacked(LivingAttackEvent event) {
 		EntityLivingBase e = event.getEntityLiving();
 
-		if(e instanceof EntityPlayer && ArmorUtil.checkArmor((EntityPlayer) e, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
+		if(e instanceof EntityPlayer && ArmorUtil.checkArmor(e, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
 			if(event.getSource() != ModDamageSource.digamma){
 				e.world.playSound(null, e.posX, e.posY, e.posZ, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 5F, 1.0F + e.getRNG().nextFloat() * 0.5F);
 				event.setCanceled(true);
@@ -754,7 +753,7 @@ public class ModEventHandler {
 			return;
 
 		if(event.getEntityLiving() instanceof EntityPlayer) {
-			if(ArmorUtil.checkArmor((EntityPlayer) event.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
+			if(ArmorUtil.checkArmor(event.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
 				if(event.getSource() != ModDamageSource.digamma){
 					event.setCanceled(true);
 					event.getEntityLiving().setHealth(event.getEntityLiving().getMaxHealth());
@@ -785,8 +784,8 @@ public class ModEventHandler {
 
 		if(!event.getEntityLiving().world.isRemote) {
 
-			if(event.getSource() instanceof EntityDamageSource && ((EntityDamageSource)event.getSource()).getTrueSource() instanceof EntityPlayer
-					 && !(((EntityDamageSource)event.getSource()).getTrueSource() instanceof FakePlayer)) {
+			if(event.getSource() instanceof EntityDamageSource && event.getSource().getTrueSource() instanceof EntityPlayer
+					 && !(event.getSource().getTrueSource() instanceof FakePlayer)) {
 
 				if(event.getEntityLiving() instanceof EntitySpider && event.getEntityLiving().getRNG().nextInt(500) == 0) {
 					event.getEntityLiving().dropItem(ModItems.spider_milk, 1);
@@ -870,18 +869,16 @@ public class ModEventHandler {
 
 			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, SoundCategory.HOSTILE, 2.0F, 0.95F + entity.world.rand.nextFloat() * 0.2F);
 
-			EntityPlayer attacker = (EntityPlayer) ((EntityDamageSource)event.getSource()).getImmediateSource();
+			EntityPlayer attacker = (EntityPlayer) event.getSource().getImmediateSource();
 
 			if(attacker.getDistanceSq(entity) < 100) {
 				attacker.heal(entity.getMaxHealth() * 0.25F);
 			}
 		}
 
-		if(entity instanceof EntityPlayer) {
+		if(entity instanceof EntityPlayer player) {
 
-			EntityPlayer player = (EntityPlayer) entity;
-
-			for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 
 				ItemStack stack = player.inventory.getStackInSlot(i);
 
@@ -930,9 +927,8 @@ public class ModEventHandler {
 			NonNullList<ItemStack> armorArray = (NonNullList<ItemStack>) r_armorArray.get(entity);
 
 			// Handle equipped items for main hand and off-hand
-			if (entity instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) entity;
-				handleEquipUpdate(player, handInventory.get(0), EnumHand.MAIN_HAND);
+			if (entity instanceof EntityPlayer player) {
+                handleEquipUpdate(player, handInventory.get(0), EnumHand.MAIN_HAND);
 				handleEquipUpdate(player, handInventory.get(1), EnumHand.OFF_HAND);
 			}
 
@@ -1032,9 +1028,8 @@ public class ModEventHandler {
 
 	@SubscribeEvent
 	public void clientJoinServer(PlayerLoggedInEvent e) {
-		if(e.player instanceof EntityPlayerMP){
-			EntityPlayerMP playerMP = (EntityPlayerMP)e.player;
-			PacketDispatcher.sendTo(new AssemblerRecipeSyncPacket(AssemblerRecipes.recipeList, AssemblerRecipes.hidden), playerMP);
+		if(e.player instanceof EntityPlayerMP playerMP){
+            PacketDispatcher.sendTo(new AssemblerRecipeSyncPacket(AssemblerRecipes.recipeList, AssemblerRecipes.hidden), playerMP);
 			JetpackHandler.playerLoggedIn(e);
 			IHBMData props = HbmCapability.getData(e.player);
 

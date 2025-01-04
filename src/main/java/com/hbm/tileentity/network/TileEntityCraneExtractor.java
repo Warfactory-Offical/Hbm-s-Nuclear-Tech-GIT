@@ -131,9 +131,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
                 }
 
                 //send buffered items
-                if(b instanceof IConveyorBelt) {
-
-                    IConveyorBelt belt = (IConveyorBelt) b;
+                if(b instanceof IConveyorBelt belt) {
 
                     for(int index : allowed_slots) {
                         ItemStack stack = inventory.getStackInSlot(index);

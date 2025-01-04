@@ -136,12 +136,11 @@ public class ItemGunEgon extends ItemGunBase {
 			float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+1);
 			Vec3d look = Library.changeByAngle(player.getLook(1), angles[0], angles[1]);
 			RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, 1);
-			if(r != null && r.typeOfHit == Type.ENTITY && r.entityHit instanceof EntityLivingBase && CompatibilityConfig.isWarDim(world)){
-				EntityLivingBase ent = ((EntityLivingBase)r.entityHit);
-				if(ent instanceof EntityPlayer && ((EntityPlayer)ent).isCreative()){
+			if(r != null && r.typeOfHit == Type.ENTITY && r.entityHit instanceof EntityLivingBase ent && CompatibilityConfig.isWarDim(world)){
+                if(ent instanceof EntityPlayer && ((EntityPlayer)ent).isCreative()){
 					return;
 				}
-				this.charge = this.charge * this.chargeScaling;
+				this.charge = this.charge * chargeScaling;
 				float damage = Math.min(ent.getHealth(), this.charge);
 				ent.getCombatTracker().trackDamage(ModDamageSource.gluon, ent.getHealth(), damage);
 				ent.setHealth(ent.getHealth()-damage);
@@ -191,7 +190,7 @@ public class ItemGunEgon extends ItemGunBase {
 	}
 	
 	public static float[] getBeamDirectionOffset(float time){
-		float sinval = MathHelper.sin(time*1.2F)+MathHelper.sin(time*0.8F-10)+MathHelper.sin(time*1.0F+10);
+		float sinval = MathHelper.sin(time*1.2F)+MathHelper.sin(time*0.8F-10)+MathHelper.sin(time +10);
 		sinval/=3;
 		float sinval2 = MathHelper.sin(time*0.6F)+MathHelper.sin(time*0.2F+20)+MathHelper.sin(time*0.1F+20);
 		sinval/=3;

@@ -52,9 +52,8 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 				for(int i = 0; i < inv.getSizeInventory(); i ++){
 					
 					ItemStack stack = inv.getStackInSlot(i);
-					if(stack != null && stack.getItem() instanceof IBatteryItem) {
-						IBatteryItem battery = (IBatteryItem) stack.getItem();
-						totalCapacity += battery.getMaxCharge();
+					if(stack != null && stack.getItem() instanceof IBatteryItem battery) {
+                        totalCapacity += battery.getMaxCharge();
 						totalEnergy += battery.getCharge(stack);
 						charge += Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
 					}
@@ -117,10 +116,9 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 				if(chargeBudget > 0 && power > 0){
 					ItemStack stack = inv.getStackInSlot(i);
 					
-					if(stack != null && stack.getItem() instanceof IBatteryItem) {
-						IBatteryItem battery = (IBatteryItem) stack.getItem();
-						
-						long toCharge = Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
+					if(stack != null && stack.getItem() instanceof IBatteryItem battery) {
+
+                        long toCharge = Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
 						toCharge = Math.min(toCharge, chargeBudget);
 						toCharge = Math.min(toCharge, power);
 						battery.chargeBattery(stack, toCharge);

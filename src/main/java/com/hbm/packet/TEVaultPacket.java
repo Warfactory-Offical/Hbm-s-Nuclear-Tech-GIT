@@ -65,19 +65,17 @@ public class TEVaultPacket implements IMessage {
 			TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 			try {
-				if (te != null && te instanceof TileEntityVaultDoor) {
+				if (te != null && te instanceof TileEntityVaultDoor vault) {
 
-					TileEntityVaultDoor vault = (TileEntityVaultDoor) te;
-					vault.state = IDoor.DoorState.values()[m.state];
+                    vault.state = IDoor.DoorState.values()[m.state];
 					if(m.sysTime == 1)
 						vault.sysTime = System.currentTimeMillis();
 					vault.type = m.type;
 				}
 				
-				if (te != null && te instanceof TileEntityBlastDoor) {
+				if (te != null && te instanceof TileEntityBlastDoor vault) {
 
-					TileEntityBlastDoor vault = (TileEntityBlastDoor) te;
-					vault.state = IDoor.DoorState.values()[m.state];
+                    vault.state = IDoor.DoorState.values()[m.state];
 					if(m.sysTime == 1)
 						vault.sysTime = System.currentTimeMillis();
 				}

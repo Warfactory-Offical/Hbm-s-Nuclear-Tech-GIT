@@ -83,10 +83,8 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
-		if(slot == 3)
-			return true;
-		return false;
-	}
+        return slot == 3;
+    }
 	
 	@Override
 	public void update() {
@@ -103,14 +101,9 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 			//Battery Item
 			power = Library.chargeItemsFromTE(inventory, 2, power, maxPower);
 			
-			boolean trigger = true;
-			
-			if(isItemValid() && this.burnTime == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !isItemValid() || this.burnTime != 0;
+
+            if(trigger)
             {
                 MachineCoal.updateBlockState(this.burnTime > 0, this.world, this.pos);
             }
@@ -158,19 +151,12 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	
 	public boolean isItemValid() {
 
-		if(inventory.getStackInSlot(1) != ItemStack.EMPTY && TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(1)) > 0)
-		{
-			return true;
-		}
-		
-		return false;
-	}
+        return inventory.getStackInSlot(1) != ItemStack.EMPTY && TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(1)) > 0;
+    }
 	
 	protected boolean inputValidForTank(int tank, int slot){
 		if(inventory.getStackInSlot(slot) != null && !inventory.getStackInSlot(slot).isEmpty()){
-			if(isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
-				return true;	
-			}
+            return isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
 		}
 		return false;
 	}
@@ -218,8 +204,7 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	@Override
 	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1){
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}

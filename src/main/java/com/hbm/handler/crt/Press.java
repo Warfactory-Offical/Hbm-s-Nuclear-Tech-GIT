@@ -34,11 +34,11 @@ public class Press {
 	}
 	private static class ActionAddRecipe implements IAction {
 
-		private RecipesCommon.AStack input;
+		private final RecipesCommon.AStack input;
 
-		private ItemStack output;
+		private final ItemStack output;
 
-		private int type;
+		private final int type;
 
 		public ActionAddRecipe(IItemStack output, IIngredient input, int type) {
 			this.output = CraftTweakerMC.getItemStack(output);

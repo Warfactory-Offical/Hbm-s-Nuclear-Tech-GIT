@@ -128,10 +128,9 @@ public class AuxButtonPacket implements IMessage {
 				//try {
 					TileEntity te = p.world.getTileEntity(pos);
 					
-					if (te instanceof TileEntityMachineReactorSmall) {
-						TileEntityMachineReactorSmall reactor = (TileEntityMachineReactorSmall)te;
-						
-						if(m.id == 0)
+					if (te instanceof TileEntityMachineReactorSmall reactor) {
+
+                        if(m.id == 0)
 							reactor.retracting = m.value == 1;
 						if(m.id == 1) {
 							reactor.compress(m.value);
@@ -150,25 +149,22 @@ public class AuxButtonPacket implements IMessage {
 						}
 					}
 					
-					*/if (te instanceof TileEntityForceField) {
-						TileEntityForceField field = (TileEntityForceField)te;
-						
-						field.isOn = !field.isOn;
+					*/if (te instanceof TileEntityForceField field) {
+
+                    field.isOn = !field.isOn;
 					}
 					
-					if (te instanceof TileEntityReactorControl) {
-						TileEntityReactorControl control = (TileEntityReactorControl)te;
-						
-						if(m.id == 1)
+					if (te instanceof TileEntityReactorControl control) {
+
+                        if(m.id == 1)
 							control.auto = m.value == 1;
 						
 						if(control.link != null) {
 							TileEntity reac = p.world.getTileEntity(control.link);
 							
-							if (reac instanceof TileEntityMachineReactorSmall) {
-								TileEntityMachineReactorSmall reactor = (TileEntityMachineReactorSmall)reac;
-								
-								if(m.id == 0)
+							if (reac instanceof TileEntityMachineReactorSmall reactor) {
+
+                                if(m.id == 0)
 									reactor.retracting = m.value == 0;
 								
 								if(m.id == 2) {
@@ -176,10 +172,9 @@ public class AuxButtonPacket implements IMessage {
 								}
 							}
 							
-							if (reac instanceof TileEntityMachineReactorLarge) {
-								TileEntityMachineReactorLarge reactor = (TileEntityMachineReactorLarge)reac;
-								
-								if(m.id == 0) {
+							if (reac instanceof TileEntityMachineReactorLarge reactor) {
+
+                                if(m.id == 0) {
 									reactor.rods = m.value;
 								}
 								
@@ -191,10 +186,9 @@ public class AuxButtonPacket implements IMessage {
 						
 					}
 					TileEntity reac = p.world.getTileEntity(new BlockPos(m.x, m.y, m.z));
-					if (reac instanceof TileEntityMachineReactorLarge) {
-						TileEntityMachineReactorLarge reactor = (TileEntityMachineReactorLarge)reac;
-						
-						if(m.id == 0) {
+					if (reac instanceof TileEntityMachineReactorLarge reactor) {
+
+                        if(m.id == 0) {
 							reactor.rods = m.value;
 						}
 						
@@ -203,22 +197,19 @@ public class AuxButtonPacket implements IMessage {
 						}
 					}
 					
-					if (te instanceof TileEntityMachineMissileAssembly) {
-						TileEntityMachineMissileAssembly assembly = (TileEntityMachineMissileAssembly)te;
-						
-						assembly.construct();
+					if (te instanceof TileEntityMachineMissileAssembly assembly) {
+
+                        assembly.construct();
 					}
 					
-					if (te instanceof TileEntityLaunchTable) {
-						TileEntityLaunchTable launcher = (TileEntityLaunchTable)te;
-						
-						launcher.padSize = PartSize.values()[m.value];
+					if (te instanceof TileEntityLaunchTable launcher) {
+
+                        launcher.padSize = PartSize.values()[m.value];
 					}
 					
-					if (te instanceof TileEntityRailgun) {
-						TileEntityRailgun gun = (TileEntityRailgun)te;
-						
-						if(m.id == 0) {
+					if (te instanceof TileEntityRailgun gun) {
+
+                        if(m.id == 0) {
 							if(gun.setAngles(false)) {
 								p.world.playSound(null, m.x, m.y, m.z, HBMSoundHandler.buttonYes, SoundCategory.BLOCKS, 1.0F, 1.0F);
 								p.world.playSound(null, m.x, m.y, m.z, HBMSoundHandler.railgunOrientation, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -239,16 +230,14 @@ public class AuxButtonPacket implements IMessage {
 							}
 						}
 					}
-					if (te instanceof TileEntityBarrel) {
-						TileEntityBarrel barrel = (TileEntityBarrel)te;
+					if (te instanceof TileEntityBarrel barrel) {
 
-						barrel.mode = (short) ((barrel.mode + 1) % TileEntityBarrel.modes);
+                        barrel.mode = (short) ((barrel.mode + 1) % TileEntityBarrel.modes);
 						barrel.markDirty();
 					}
-					if (te instanceof TileEntityCoreEmitter) {
-						TileEntityCoreEmitter core = (TileEntityCoreEmitter)te;
+					if (te instanceof TileEntityCoreEmitter core) {
 
-						if(m.id == 0) {
+                        if(m.id == 0) {
 							core.watts = m.value;
 						}
 						if(m.id == 1) {
@@ -256,26 +245,23 @@ public class AuxButtonPacket implements IMessage {
 						}
 					}
 					
-					if (te instanceof TileEntityCoreStabilizer) {
-						TileEntityCoreStabilizer core = (TileEntityCoreStabilizer)te;
+					if (te instanceof TileEntityCoreStabilizer core) {
 
-						if(m.id == 0) {
+                        if(m.id == 0) {
 							core.watts = m.value;
 						}
 					}
 					
-					if (te instanceof TileEntitySoyuzLauncher) {
-						TileEntitySoyuzLauncher launcher = (TileEntitySoyuzLauncher)te;
+					if (te instanceof TileEntitySoyuzLauncher launcher) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							launcher.mode = (byte) m.value;
 						if(m.id == 1)
 							launcher.startCountdown();
 					}
-					if (te instanceof TileEntityMachineBattery) {
-						TileEntityMachineBattery bat = (TileEntityMachineBattery)te;
+					if (te instanceof TileEntityMachineBattery bat) {
 
-						if(m.id == 0) {
+                        if(m.id == 0) {
 							bat.redLow = (short) ((bat.redLow + 1) % 4);
 							bat.markDirty();
 						}
@@ -294,20 +280,17 @@ public class AuxButtonPacket implements IMessage {
 							bat.markDirty();
 						}
 					}
-					if (te instanceof TileEntityMachineMiningLaser) {
-						TileEntityMachineMiningLaser laser = (TileEntityMachineMiningLaser)te;
+					if (te instanceof TileEntityMachineMiningLaser laser) {
 
-						laser.isOn = !laser.isOn;
+                        laser.isOn = !laser.isOn;
 					}
 
-					if(te instanceof TileEntityMachineRadar) {
-						TileEntityMachineRadar radar = (TileEntityMachineRadar)te;
-						radar.handleButtonPacket(m.value, m.id);
+					if(te instanceof TileEntityMachineRadar radar) {
+                        radar.handleButtonPacket(m.value, m.id);
 					}
 					/// yes ///
-					if(te instanceof TileEntityMachineBase) {
-						TileEntityMachineBase base = (TileEntityMachineBase)te;
-						base.handleButtonPacket(m.value, m.id);
+					if(te instanceof TileEntityMachineBase base) {
+                        base.handleButtonPacket(m.value, m.id);
 					}
 					
 				//} catch (Exception x) { }

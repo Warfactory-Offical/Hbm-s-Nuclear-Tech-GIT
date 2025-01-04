@@ -166,33 +166,29 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 				int f1 = 0, f2 = 0, f3 = 0, f4 = 0;
 				int booster = 0;
 
-				if(world.getTileEntity(pos.add(6, 0, 0)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(6, 0, 0));
-					if(!te.locked && te.getBlockMetadata() == 4) {
+				if(world.getTileEntity(pos.add(6, 0, 0)) instanceof TileEntityAMSLimiter te) {
+                    if(!te.locked && te.getBlockMetadata() == 4) {
 						f1 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(-6, 0, 0)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(-6, 0, 0));
-					if(!te.locked && te.getBlockMetadata() == 5) {
+				if(world.getTileEntity(pos.add(-6, 0, 0)) instanceof TileEntityAMSLimiter te) {
+                    if(!te.locked && te.getBlockMetadata() == 5) {
 						f2 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(0, 0, 6)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(0, 0, 6));
-					if(!te.locked && te.getBlockMetadata() == 2) {
+				if(world.getTileEntity(pos.add(0, 0, 6)) instanceof TileEntityAMSLimiter te) {
+                    if(!te.locked && te.getBlockMetadata() == 2) {
 						f3 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(0, 0, -6)) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(0, 0, -6));
-					if(!te.locked && te.getBlockMetadata() == 3) {
+				if(world.getTileEntity(pos.add(0, 0, -6)) instanceof TileEntityAMSLimiter te) {
+                    if(!te.locked && te.getBlockMetadata() == 3) {
 						f4 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
@@ -207,9 +203,8 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 				if(booster > 0)
 					mode = 2;
 				
-				if(world.getTileEntity(pos.add(0, 9, 0)) instanceof TileEntityAMSEmitter) {
-					TileEntityAMSEmitter te = (TileEntityAMSEmitter)world.getTileEntity(pos.add(0, 9, 0));
-						this.efficiency = te.efficiency;
+				if(world.getTileEntity(pos.add(0, 9, 0)) instanceof TileEntityAMSEmitter te) {
+                    this.efficiency = te.efficiency;
 				}
 				
 				this.color = -1;
@@ -244,7 +239,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 						fuelMod *= ItemCatalyst.getFuelMod(inventory.getStackInSlot(i));
 					}
 
-					powerBase = (int)ItemAMSCore.getPowerBase(inventory.getStackInSlot(12));
+					powerBase = ItemAMSCore.getPowerBase(inventory.getStackInSlot(12));
 					heatBase = (int)ItemAMSCore.getHeatBase(inventory.getStackInSlot(12));
 					fuelBase = (int)ItemAMSCore.getFuelBase(inventory.getStackInSlot(12));
 					
@@ -257,7 +252,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 							tanks[2].getFluidAmount() > 0 && tanks[3].getFluidAmount() > 0) {
 
 						power += (powerBase * powerMod * gauss(1, (heat - (maxHeat / 2)) / maxHeat)) / 1000 * getFuelPower(tanks[2].getFluid()) * getFuelPower(tanks[3].getFluid());
-						heat += (heatBase * heatMod) / (float)(this.field / 100F);
+						heat += (heatBase * heatMod) / (this.field / 100F);
 						tanks[2].drain((int)(fuelBase * fuelMod), true);
 						tanks[3].drain((int)(fuelBase * fuelMod), true);
 						
@@ -299,7 +294,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, color, 1), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, efficiency, 2), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, field, 3), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-			PacketDispatcher.wrapper.sendToAllTracking(new FluidTankPacket(pos, new FluidTank[] {tanks[0], tanks[1], tanks[2], tanks[3]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			PacketDispatcher.wrapper.sendToAllTracking(new FluidTankPacket(pos, tanks[0], tanks[1], tanks[2], tanks[3]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 		}
 	}
 	
@@ -505,8 +500,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 	@Override
 	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 4){
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 			tanks[2].readFromNBT(tags[2]);

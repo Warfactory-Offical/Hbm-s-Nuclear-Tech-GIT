@@ -81,11 +81,9 @@ public class GunDartFactory {
 					if(Library.hasInventoryItem(((EntityPlayer) hit).inventory, ModItems.ingot_meteorite_forged))
 						return;
 
-					if(bullet.shooter instanceof EntityPlayer) {
+					if(bullet.shooter instanceof EntityPlayer shooter) {
 
-						EntityPlayer shooter = (EntityPlayer) bullet.shooter;
-
-						for(EnumHand hand : EnumHand.values())
+                        for(EnumHand hand : EnumHand.values())
 							if(shooter.getHeldItem(hand) != null && shooter.getHeldItem(hand).getItem() == ModItems.gun_darter) {
 								ItemGunDart.writePlayer(shooter.getHeldItem(hand), (EntityPlayer)hit);
 								shooter.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);

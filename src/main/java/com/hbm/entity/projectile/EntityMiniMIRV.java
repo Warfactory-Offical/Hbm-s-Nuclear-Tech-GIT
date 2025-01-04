@@ -298,7 +298,7 @@ public class EntityMiniMIRV extends Entity implements IProjectile {
 
             for (i = 0; i < list.size(); ++i)
             {
-                Entity entity1 = (Entity)list.get(i);
+                Entity entity1 = list.get(i);
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
@@ -324,9 +324,8 @@ public class EntityMiniMIRV extends Entity implements IProjectile {
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer)
             {
-                EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
 
                 if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
                 {
@@ -367,9 +366,8 @@ public class EntityMiniMIRV extends Entity implements IProjectile {
 
                     if (movingobjectposition.entityHit.attackEntityFrom(damagesource, k))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
+                        if (movingobjectposition.entityHit instanceof EntityLivingBase entitylivingbase)
                         {
-                            EntityLivingBase entitylivingbase = (EntityLivingBase)movingobjectposition.entityHit;
 
                             if (this.knockbackStrength > 0)
                             {
@@ -453,7 +451,6 @@ public class EntityMiniMIRV extends Entity implements IProjectile {
 
             for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
-                ;
             }
 
             while (this.rotationPitch - this.prevRotationPitch >= 180.0F)

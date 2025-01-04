@@ -99,7 +99,7 @@ public class Vec3
      */
     public Vec3 normalize()
     {
-        double d0 = (double)MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
+        double d0 = MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
         return d0 < 1.0E-4D ? createVectorHelper(0.0D, 0.0D, 0.0D) : createVectorHelper(this.xCoord / d0, this.yCoord / d0, this.zCoord / d0);
     }
 
@@ -145,7 +145,7 @@ public class Vec3
         double d0 = p_72438_1_.xCoord - this.xCoord;
         double d1 = p_72438_1_.yCoord - this.yCoord;
         double d2 = p_72438_1_.zCoord - this.zCoord;
-        return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
     public double distanceTo(double x, double y, double z)
@@ -153,7 +153,7 @@ public class Vec3
         double d0 = x - this.xCoord;
         double d1 = y - this.yCoord;
         double d2 = z - this.zCoord;
-        return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
     public double distanceTo(Entity e)
@@ -161,7 +161,7 @@ public class Vec3
         double d0 = e.posX - this.xCoord;
         double d1 = e.posY - this.yCoord;
         double d2 = e.posZ - this.zCoord;
-        return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
     /**
@@ -191,7 +191,7 @@ public class Vec3
      */
     public double length()
     {
-        return (double)MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
+        return MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
     }
     
     public double lengthSquared(){

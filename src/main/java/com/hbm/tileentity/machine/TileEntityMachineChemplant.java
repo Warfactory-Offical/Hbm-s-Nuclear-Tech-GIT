@@ -74,7 +74,7 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 	int speed = 100;
 	private long detectPower;
 	private boolean detectIsProgressing;
-	private FluidTank[] detectTanks = new FluidTank[]{null, null, null, null};
+	private final FluidTank[] detectTanks = new FluidTank[]{null, null, null, null};
 
 	public TileEntityMachineChemplant() {
 		super(21);
@@ -401,10 +401,9 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 		if(te1Valid && te2Valid) {
 			IItemHandler iTe1 = te1.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			IItemHandler iTe2e = te2.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			if(!(iTe2e instanceof IItemHandlerModifiable))
+			if(!(iTe2e instanceof IItemHandlerModifiable iTe2))
 				return false;
-			IItemHandlerModifiable iTe2 = (IItemHandlerModifiable) iTe2e;
-			boolean openSlot = false;
+            boolean openSlot = false;
 			boolean existingTemplate = false;
 			boolean filledContainer = false;
 			//Check if there's an existing template and an open slot
@@ -556,28 +555,21 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 		if(Library.isArrayEmpty(fluids))
 			return true;
 		if(fluids.length == 2){
-			if((fluids[0] == null || fluids[0].amount <= tanks[0].getFluidAmount()) && (fluids[1] == null || fluids[1].amount <= tanks[1].getFluidAmount()))
-				return true;
+            return (fluids[0] == null || fluids[0].amount <= tanks[0].getFluidAmount()) && (fluids[1] == null || fluids[1].amount <= tanks[1].getFluidAmount());
 		}else{
-			if(fluids[0] == null || fluids[0].amount <= tanks[0].getFluidAmount())
-				return true;
+            return fluids[0] == null || fluids[0].amount <= tanks[0].getFluidAmount();
 		}
-
-		return false;
-	}
+    }
 
 	public boolean hasSpaceForFluids(FluidStack[] fluids) {
 		if(Library.isArrayEmpty(fluids))
 			return true;
 		if(fluids.length == 2){
-			if((fluids[0] == null || tanks[2].fill(fluids[0], false) == fluids[0].amount) && (fluids[1] == null || fluids[1] != null && tanks[3].fill(fluids[1], false) == fluids[1].amount))
-				return true;
+            return (fluids[0] == null || tanks[2].fill(fluids[0], false) == fluids[0].amount) && (fluids[1] == null || fluids[1] != null && tanks[3].fill(fluids[1], false) == fluids[1].amount);
 		}else{
-			if(fluids[0] == null || tanks[2].fill(fluids[0], false) == fluids[0].amount)
-				return true;
+            return fluids[0] == null || tanks[2].fill(fluids[0], false) == fluids[0].amount;
 		}
-		return false;
-	}
+    }
 
 	public void removeFluids(FluidStack[] fluids) {
 		if(Library.isArrayEmpty(fluids))
@@ -820,13 +812,11 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 
 				if(st.isApplicable(sta) && array.getStackInSlot(i).getCount() > 0) {
 					array.getStackInSlot(i).shrink(1);
-					;
 
-					if(array.getStackInSlot(i).isEmpty())
+                    if(array.getStackInSlot(i).isEmpty())
 						array.setStackInSlot(i, ItemStack.EMPTY);
-					;
 
-					return true;
+                    return true;
 				}
 			}
 		}
@@ -883,7 +873,7 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 	public void fillFluidInit(FluidTank tank) {
 		int meta = world.getBlockState(pos).getValue(MachineChemplant.FACING);
 		MutableBlockPos fill = new BlockPos.MutableBlockPos();
-		boolean update = false || needsUpdate;
+		boolean update = needsUpdate;
 		if(meta == 5) {
 			update = FFUtils.fillFluid(this, tank, world, fill.setPos(pos.getX() - 2, pos.getY(), pos.getZ()), 2000) || update;
 			update = FFUtils.fillFluid(this, tank, world, fill.setPos(pos.getX() - 2, pos.getY(), pos.getZ() + 1), 2000) || update;
@@ -942,8 +932,7 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 	@Override
 	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 4) {
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 			tanks[2].readFromNBT(tags[2]);
@@ -1010,8 +999,8 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 
 	private class ChemplantFluidHandler implements IFluidHandler {
 
-		private FluidTank[] tanks;
-		private Fluid[] tankTypes;
+		private final FluidTank[] tanks;
+		private final Fluid[] tankTypes;
 
 		public ChemplantFluidHandler(FluidTank[] tanks, Fluid[] tankTypes) {
 			this.tanks = tanks;

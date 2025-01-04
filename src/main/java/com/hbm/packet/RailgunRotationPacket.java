@@ -58,11 +58,9 @@ public class RailgunRotationPacket implements IMessage {
 				try {
 					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-					if (te != null && te instanceof TileEntityRailgun) {
-							
-						TileEntityRailgun gun = (TileEntityRailgun) te;
-						
-						gun.pitch = m.pitch;
+					if (te != null && te instanceof TileEntityRailgun gun) {
+
+                        gun.pitch = m.pitch;
 						gun.yaw = m.yaw;
 					}
 					

@@ -54,10 +54,9 @@ public class GunButtonPacket implements IMessage {
 					
 					EntityPlayer p = ctx.getServerHandler().player;
 					
-					if(p.getHeldItem(m.hand) != null && p.getHeldItem(m.hand).getItem() instanceof ItemGunBase) {
-						ItemGunBase item = (ItemGunBase)p.getHeldItem(m.hand).getItem();
-						
-						switch(m.button) {
+					if(p.getHeldItem(m.hand) != null && p.getHeldItem(m.hand).getItem() instanceof ItemGunBase item) {
+
+                        switch(m.button) {
 						case 0: ItemGunBase.setIsMouseDown(p.getHeldItem(m.hand), m.state);
 								if(m.state)
 									item.startAction(p.getHeldItem(m.hand), p.world, p, true, m.hand);

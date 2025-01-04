@@ -51,7 +51,7 @@ public class TileEntityBMPowerBox extends TileEntity implements IControllable {
 
 	@Override
 	public List<String> getOutEvents(){
-		return Arrays.asList("lever_toggle");
+		return List.of("lever_toggle");
 	}
 	
 	@Override

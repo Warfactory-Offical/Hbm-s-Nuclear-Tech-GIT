@@ -14,7 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class EntityGrenadeNuclear extends EntityGrenadeBouncyBase {
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
 
     public EntityGrenadeNuclear(World p_i1773_1_)
     {

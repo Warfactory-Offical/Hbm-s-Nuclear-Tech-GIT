@@ -51,7 +51,7 @@ public class NodeSystem {
 	public Control parent;
 	public List<Node> nodes = new ArrayList<>();
 	public List<NodeOutput> outputNodes = new ArrayList<>();
-	private Map<String, DataValue> vars = new HashMap<>();
+	private final Map<String, DataValue> vars = new HashMap<>();
 
 	// an array of subsystems owned by the various nodes sharing a system layer (sublayering is then done recursively)
 	// ○|￣|_   <-- me

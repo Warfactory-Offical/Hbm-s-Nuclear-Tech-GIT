@@ -44,12 +44,11 @@ public class GunSuicide extends Item {
     
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-    	if(!(entityLiving instanceof EntityPlayer))
+    	if(!(entityLiving instanceof EntityPlayer player))
     		return;
     	if(this.ammo == null)
     		this.ammo = ModItems.gun_revolver_ammo;
-    	EntityPlayer player = (EntityPlayer)entityLiving;
-    	int j = this.getMaxItemUseDuration(stack) - timeLeft;
+        int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
         ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ammo));
         MinecraftForge.EVENT_BUS.post(event);

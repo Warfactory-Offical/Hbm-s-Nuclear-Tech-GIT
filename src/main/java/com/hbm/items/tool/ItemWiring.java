@@ -85,11 +85,9 @@ public class ItemWiring extends Item {
 							}
 						}
 						TileEntity target = world.getTileEntity(coreB);
-						if(target instanceof TileEntityPylonBase) {
+						if(target instanceof TileEntityPylonBase targetPylon) {
 
-							TileEntityPylonBase targetPylon = (TileEntityPylonBase) target;
-
-							if(TileEntityPylonBase.canConnect(thisPylon, targetPylon)){
+                            if(TileEntityPylonBase.canConnect(thisPylon, targetPylon)){
 								thisPylon.addConnection(targetPylon.getPos());
 								targetPylon.addConnection(thisPylon.getPos());
 

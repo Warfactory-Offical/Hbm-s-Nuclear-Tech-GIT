@@ -99,9 +99,9 @@ public class EntityEffectHandler {
 		RadiationSavedData data = RadiationSavedData.getData(world);
 		
 		if(!world.isRemote) {
-			int ix = (int)MathHelper.floor(entity.posX);
-			int iy = (int)MathHelper.floor(entity.posY);
-			int iz = (int)MathHelper.floor(entity.posZ);
+			int ix = MathHelper.floor(entity.posX);
+			int iy = MathHelper.floor(entity.posY);
+			int iz = MathHelper.floor(entity.posZ);
 
 			float rad = data.getRadNumFromCoord(new BlockPos(ix, iy, iz));
 			
@@ -215,10 +215,9 @@ public class EntityEffectHandler {
 			
 			int contagion = HbmLivingProps.getContagion(entity);
 			
-			if(entity instanceof EntityPlayer) {
-				
-				EntityPlayer player = (EntityPlayer) entity;
-				int randSlot = rand.nextInt(player.inventory.mainInventory.size());
+			if(entity instanceof EntityPlayer player) {
+
+                int randSlot = rand.nextInt(player.inventory.mainInventory.size());
 				ItemStack stack = player.inventory.getStackInSlot(randSlot);
 				
 				if(rand.nextInt(100) == 0) {
@@ -255,9 +254,8 @@ public class EntityEffectHandler {
 					
 					for(Entity ent : list) {
 						
-						if(ent instanceof EntityLivingBase) {
-							EntityLivingBase living = (EntityLivingBase) ent;
-							if(HbmLivingProps.getContagion(living) <= 0 && !ArmorUtil.checkForHazmatOnly(living) && !ArmorRegistry.hasProtection(living, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.BACTERIA)) {
+						if(ent instanceof EntityLivingBase living) {
+                            if(HbmLivingProps.getContagion(living) <= 0 && !ArmorUtil.checkForHazmatOnly(living) && !ArmorRegistry.hasProtection(living, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.BACTERIA)) {
 								HbmLivingProps.setContagion(living, 3 * hour);
 							}
 						}
@@ -279,7 +277,7 @@ public class EntityEffectHandler {
 				}
 				
 				//two hours in, give 'em the full blast
-				if(contagion < 1 * hour && rand.nextInt(100) == 0) {
+				if(contagion < hour && rand.nextInt(100) == 0) {
 					entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100, 0));
 					entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 300, 4));
 				}
@@ -400,7 +398,6 @@ public class EntityEffectHandler {
 	}
 
 	private static boolean canVomit(Entity e) {
-		if(e.isCreatureType(EnumCreatureType.WATER_CREATURE, false)) return false;
-		return true;
-	}
+        return !e.isCreatureType(EnumCreatureType.WATER_CREATURE, false);
+    }
 }

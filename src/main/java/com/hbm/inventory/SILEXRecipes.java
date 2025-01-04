@@ -28,9 +28,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class SILEXRecipes {
 
-	private static LinkedHashMap<Object, SILEXRecipe> recipes = new LinkedHashMap<>();
-	private static HashMap<ComparableStack, ComparableStack> itemTranslation = new HashMap<>();
-	private static HashMap<String, String> dictTranslation = new HashMap<>();
+	private static final LinkedHashMap<Object, SILEXRecipe> recipes = new LinkedHashMap<>();
+	private static final HashMap<ComparableStack, ComparableStack> itemTranslation = new HashMap<>();
+	private static final HashMap<String, String> dictTranslation = new HashMap<>();
 	
 	public static void register() {
 
@@ -409,7 +409,7 @@ public class SILEXRecipes {
 			recipes.put(ItemStackUtil.comparableStackFrom(ModItems.rbmk_pellet_hea241, 1, i), new SILEXRecipe(600, 100, EnumWavelengths.UV)
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_am241), 85 - 15 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 6 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 4 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_coal_tiny), 2 + 2 * i)) );
@@ -418,7 +418,7 @@ public class SILEXRecipes {
 			recipes.put(ItemStackUtil.comparableStackFrom(ModItems.rbmk_pellet_hea241, 1, i + 5), new SILEXRecipe(600, 100, EnumWavelengths.UV)
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_am241), 85 - 15 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 6 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 4 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_xe135_tiny), 2 + 2 * i)) );
@@ -429,7 +429,7 @@ public class SILEXRecipes {
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_am241), 91 - 16 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 2 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 2 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_coal_tiny), 2 + 2 * i)) );
 		}
@@ -438,7 +438,7 @@ public class SILEXRecipes {
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_am241), 91 - 16 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 2 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 2 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_xe135_tiny), 2 + 2 * i)) );
 		}
@@ -480,8 +480,8 @@ public class SILEXRecipes {
 		for(int i = 0; i < 5; i++) {
 			recipes.put(ItemStackUtil.comparableStackFrom(ModItems.rbmk_pellet_flashlead, 1, i + 5), new SILEXRecipe(600, 100, EnumWavelengths.XRAY)
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_xe135_tiny), 1))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_pb209), 8 - 1 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_au198), 8 - 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_pb209), 8 - i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget_au198), 8 - i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_balefire), 1 + 2 * i)) );
 		}
 		for(int i = 0; i < 5; i++) {	

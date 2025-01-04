@@ -56,10 +56,10 @@ public abstract class HBMItemBase<T extends HBMItemBase<?>.HBMItem> extends Item
     protected static final ModelResourceLocation MISSING_LOCATION = new ModelResourceLocation("builtin/missing",
             "inventory");
 
-    private CreativeTabs[] defaultCreativeTabs = new CreativeTabs[] {MainRegistry.resourceTab};
+    private final CreativeTabs[] defaultCreativeTabs = new CreativeTabs[] {MainRegistry.resourceTab};
     private final Set<CreativeTabs> additionalCreativeTabs = new ObjectArraySet<>();
 
-    private String translationKey = "hbmitem";
+    private final String translationKey = "hbmitem";
     protected final short idOffset;
 
     public HBMItemBase(short offset) {

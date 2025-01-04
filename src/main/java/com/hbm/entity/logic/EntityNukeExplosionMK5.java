@@ -58,7 +58,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 	EntityFalloutUnderGround falloutBall;
 	EntityFalloutRain falloutRain;
 
-	private int nukeTickNumber = 0;
+	private final int nukeTickNumber = 0;
 
 
 	public EntityNukeExplosionMK5(World world) {
@@ -267,7 +267,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 
 		EntityNukeExplosionMK5 mk5 = new EntityNukeExplosionMK5(world);
 
-		mk5.strength = (int)(2*r);
+		mk5.strength = 2*r;
 		mk5.radius = r;
 
 		mk5.setPosition(x, y, z);

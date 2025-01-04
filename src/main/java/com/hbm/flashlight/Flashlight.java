@@ -194,9 +194,8 @@ public class Flashlight {
 	
 	private static void applyBobbing(float partialTicks, Mat4 matrix, Mat3 rotMatrix)
     {
-		if (Minecraft.getMinecraft().getRenderViewEntity() instanceof EntityPlayer)
+		if (Minecraft.getMinecraft().getRenderViewEntity() instanceof EntityPlayer entityplayer)
         {
-            EntityPlayer entityplayer = (EntityPlayer)Minecraft.getMinecraft().getRenderViewEntity();
             float f = entityplayer.distanceWalkedModified - entityplayer.prevDistanceWalkedModified;
             float f1 = -(entityplayer.distanceWalkedModified + f * partialTicks);
             float f2 = entityplayer.prevCameraYaw + (entityplayer.cameraYaw - entityplayer.prevCameraYaw) * partialTicks;

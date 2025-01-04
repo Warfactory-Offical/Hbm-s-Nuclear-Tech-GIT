@@ -65,8 +65,7 @@ public class TileEntityHeaterOven extends TileEntityFireboxBase implements IConf
     protected void tryPullHeat() {
         TileEntity te = world.getTileEntity(pos.offset(EnumFacing.DOWN));
 
-        if (te instanceof IHeatSource) {
-            IHeatSource source = (IHeatSource) te;
+        if (te instanceof IHeatSource source) {
             int toPull = Math.max(Math.min(source.getHeatStored(), this.getMaxHeat() - this.heatEnergy), 0);
             this.heatEnergy += toPull * heatEff;
             source.useUpHeat(toPull);

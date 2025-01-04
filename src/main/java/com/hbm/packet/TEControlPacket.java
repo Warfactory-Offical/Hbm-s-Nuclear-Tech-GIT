@@ -112,10 +112,9 @@ public class TEControlPacket implements IMessage {
 
 				try {
 					
-					if(te instanceof TileEntityReactorControl) {
-						TileEntityReactorControl control = (TileEntityReactorControl)te;
+					if(te instanceof TileEntityReactorControl control) {
 
-						control.hullHeat = m.hullHeat;
+                        control.hullHeat = m.hullHeat;
 						control.coreHeat = m.coreHeat;
 						control.fuel = m.fuel;
 						control.water = m.water;

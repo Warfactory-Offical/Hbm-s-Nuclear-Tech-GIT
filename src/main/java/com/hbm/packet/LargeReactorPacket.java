@@ -72,9 +72,8 @@ public class LargeReactorPacket implements IMessage {
 		public IMessage onMessage(LargeReactorPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
-				if(te instanceof TileEntityMachineReactorLarge){
-					TileEntityMachineReactorLarge r = (TileEntityMachineReactorLarge)te;
-					r.rods = m.rods;
+				if(te instanceof TileEntityMachineReactorLarge r){
+                    r.rods = m.rods;
 					r.coreHeat = m.coreHeat;
 					r.hullHeat = m.hullHeat;
 					r.fuel = m.fuel;

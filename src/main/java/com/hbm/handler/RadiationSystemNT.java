@@ -74,7 +74,7 @@ public class RadiationSystemNT {
 	public static float minRadRate = 0.000005F;
 
 	/**Per world radiation storage data*/
-	private static Map<World, WorldRadiationData> worldMap = new HashMap<>();
+	private static final Map<World, WorldRadiationData> worldMap = new HashMap<>();
 	/**A tick counter so radiation only updates once every second.*/
 	private static int ticks;
 	
@@ -201,11 +201,8 @@ public class RadiationSystemNT {
 		}
 		//Finally, check if the chunk has a sub chunk at the specified y level
 		SubChunkRadiationStorage sc = st.getForYLevel(pos.getY());
-		if(sc == null){
-			return false;
-		}
-		return true;
-	}
+        return sc != null;
+    }
 	
 	/**
 	 * Gets the sub chunk from the specified pos. Loads it if it doesn't exist
@@ -301,14 +298,12 @@ public class RadiationSystemNT {
 				oList.addAll(world.loadedEntityList);
 
 				for(Object e : oList) {
-					if(e instanceof EntityLivingBase) {
+					if(e instanceof EntityLivingBase entity) {
 
 						// effect for radiation
-						EntityLivingBase entity = (EntityLivingBase) e;
 
-						if(entity instanceof EntityPlayer){
-							EntityPlayer player = (EntityPlayer) entity;
-							if(RadiationConfig.neutronActivation){
+                        if(entity instanceof EntityPlayer player){
+                            if(RadiationConfig.neutronActivation){
 								double recievedRadiation = ContaminationUtil.getNoNeutronPlayerRads(player)*0.00004D-(0.00004D * RadiationConfig.neutronActivationThreshold); //20Rad/s threshold
 								float neutronRads = ContaminationUtil.getPlayerNeutronRads(player);
 								if(neutronRads > 0){
@@ -327,7 +322,7 @@ public class RadiationSystemNT {
 							}
 						}
 
-						float eRad = (float)HbmLivingProps.getRadiation(entity);
+						float eRad = HbmLivingProps.getRadiation(entity);
 
 						if(eRad >= 200 && entity.getHealth() > 0 && entity instanceof EntityCreeper) {
 
@@ -354,9 +349,8 @@ public class RadiationSystemNT {
 							entity.setDead();
 							continue;
 
-						} else if(eRad >= 600 && entity instanceof EntityVillager) {
-							EntityVillager vil = (EntityVillager)entity;
-							EntityZombieVillager creep = new EntityZombieVillager(world);
+						} else if(eRad >= 600 && entity instanceof EntityVillager vil) {
+                            EntityZombieVillager creep = new EntityZombieVillager(world);
 							creep.setProfession(vil.getProfession());
 							creep.setForgeProfession(vil.getProfessionForge());
 							creep.setChild(vil.isChild());
@@ -376,9 +370,8 @@ public class RadiationSystemNT {
 									world.spawnEntity(creep);
 							entity.setDead();
 							continue;
-						} else if(eRad >= 800 && entity instanceof EntityHorse) {
-							EntityHorse horsie = (EntityHorse)entity;
-							EntityZombieHorse zomhorsie = new EntityZombieHorse(world);
+						} else if(eRad >= 800 && entity instanceof EntityHorse horsie) {
+                            EntityZombieHorse zomhorsie = new EntityZombieHorse(world);
 							zomhorsie.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
 							zomhorsie.setGrowingAge(horsie.getGrowingAge());
 							zomhorsie.setTemper(horsie.getTemper());
@@ -472,7 +465,7 @@ public class RadiationSystemNT {
 							if(world.rand.nextInt(800) == 0)
 								entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * 20, 0));
 							if(world.rand.nextInt(1000) == 0)
-								entity.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 1 * 20, 0));
+								entity.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 20, 0));
 
 							if(entity instanceof EntityPlayerMP)
 								AdvancementManager.grantAchievement((EntityPlayerMP) entity, AdvancementManager.achRadPoison);
@@ -952,7 +945,7 @@ public class RadiationSystemNT {
 	}
 	
 	//To reduce a lot of reallocations
-	private static Queue<BlockPos> stack = new ArrayDeque<>(1024);
+	private static final Queue<BlockPos> stack = new ArrayDeque<>(1024);
 	
 	/**
 	 * Builds a pocket using a flood fill.
@@ -1219,11 +1212,11 @@ public class RadiationSystemNT {
 	public static class ChunkRadiationStorage {
 		//Half a megabyte is good enough isn't it? Right?
 		//This is going to come back to bite me later, isn't it.
-		private static ByteBuffer buf = ByteBuffer.allocate(524288);
+		private static final ByteBuffer buf = ByteBuffer.allocate(524288);
 		
 		public WorldRadiationData parent;
-		private Chunk chunk;
-		private SubChunkRadiationStorage[] chunks = new SubChunkRadiationStorage[16];
+		private final Chunk chunk;
+		private final SubChunkRadiationStorage[] chunks = new SubChunkRadiationStorage[16];
 		
 		public ChunkRadiationStorage(WorldRadiationData parent, Chunk chunk) {
 			this.parent = parent;
@@ -1369,7 +1362,7 @@ public class RadiationSystemNT {
 			ByteBuffer data = ByteBuffer.wrap(tag.getByteArray("chunkRadData"));
 			//For each chunk, try to deserialize it
 			for(int i = 0; i < chunks.length; i ++){
-				boolean subChunkExists = data.get() == 1 ? true : false;
+				boolean subChunkExists = data.get() == 1;
 				if(subChunkExists){
 					//Y level could be implicitly defined with i, but this works too
 					int yLevel = data.getShort();
@@ -1385,7 +1378,7 @@ public class RadiationSystemNT {
 							parent.addActivePocket(st.pockets[j]);
 						}
 					}
-					boolean perBlockDataExists = data.get() == 1 ? true : false;
+					boolean perBlockDataExists = data.get() == 1;
 					if(perBlockDataExists){
 						//If the per block data exists, read indices sequentially and set each array slot to the rad pocket at that index
 						st.pocketsByBlock = new RadPocket[16*16*16];
@@ -1430,12 +1423,12 @@ public class RadiationSystemNT {
 		public World world;
 
 		//Keep two lists to avoid concurrent modification. If one is being iterated over, mark it dirty in the other set.
-		private Set<BlockPos> dirtyChunks = new HashSet<>();
-		private Set<BlockPos> dirtyChunks2 = new HashSet<>();
+		private final Set<BlockPos> dirtyChunks = new HashSet<>();
+		private final Set<BlockPos> dirtyChunks2 = new HashSet<>();
 		private boolean iteratingDirty = false;
 		
 		//Active pockets are the pockets that have radiation in them and so then need to be updated
-		private Set<RadPocket> activePockets = new HashSet<>();
+		private final Set<RadPocket> activePockets = new HashSet<>();
 		public Map<ChunkPos, ChunkRadiationStorage> data = new HashMap<>();
 		
 		public WorldRadiationData(World world) {

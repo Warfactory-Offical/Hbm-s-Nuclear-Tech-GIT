@@ -80,10 +80,9 @@ public class TEFFPacket implements IMessage {
 
 				try {
 					
-					if(te instanceof TileEntityForceField) {
-						TileEntityForceField ff = (TileEntityForceField)te;
+					if(te instanceof TileEntityForceField ff) {
 
-						ff.radius = m.rad;
+                        ff.radius = m.rad;
 						ff.health = m.health;
 						ff.maxHealth = m.maxHealth;
 						ff.power = m.power;

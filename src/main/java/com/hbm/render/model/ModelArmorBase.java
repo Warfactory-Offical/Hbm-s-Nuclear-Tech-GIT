@@ -44,8 +44,7 @@ public class ModelArmorBase extends ModelBiped {
 
         super.setRotationAngles(walkCycle, walkAmplitude, idleCycle, headYaw, headPitch, scale, entity);
 
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
+        if (entity instanceof EntityPlayer player) {
             this.isSneak = player.isSneaking();
         }
 

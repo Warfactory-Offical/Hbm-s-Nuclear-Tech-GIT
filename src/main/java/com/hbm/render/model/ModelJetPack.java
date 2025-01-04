@@ -120,13 +120,8 @@ public class ModelJetPack extends ModelBiped {
 
 	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if (player.isSneaking()) {
-				this.isSneak = true;
-			} else {
-				this.isSneak = false;
-			}
+		if (entity instanceof EntityPlayer player) {
+            this.isSneak = player.isSneaking();
 			/*ItemStack itemstack = player.inventory.getCurrentItem();
 			this.heldItemRight = itemstack != null ? 1 : 0;
 

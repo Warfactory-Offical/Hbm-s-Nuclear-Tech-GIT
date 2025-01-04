@@ -54,14 +54,13 @@ public class GunBrimstone extends Item {
 		if(ent.getHeldItemMainhand() == stack && ent.getHeldItemOffhand().getItem() == ModItems.gun_brimstone){
 			ent.getHeldItemOffhand().getItem().onUsingTick(ent.getHeldItemOffhand(), ent, count);
 		}
-		if(!(ent instanceof EntityPlayer))
+		if(!(ent instanceof EntityPlayer player))
 			return;
-		EntityPlayer player = (EntityPlayer)ent;
-		World world = player.world;
+        World world = player.world;
 
 		boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-		if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.ammo_566_gold)) && count % 1 == 0) {
+		if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.ammo_566_gold)) && 0 == 0) {
 			
 			
 			EntityLaser laser = new EntityLaser(world, player, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);

@@ -153,9 +153,8 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 				if(!(e instanceof EntityLivingBase))
 					e.setDead();
 				
-				if(!world.isRemote && e instanceof EntityItem) {
-					EntityItem item = (EntityItem) e;
-					ItemStack stack = item.getItem();
+				if(!world.isRemote && e instanceof EntityItem item) {
+                    ItemStack stack = item.getItem();
 					
 					if(stack.getItem() == ModItems.pellet_antimatter || stack.getItem() == ModItems.flame_pony) {
 						this.setDead();

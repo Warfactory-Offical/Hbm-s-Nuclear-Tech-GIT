@@ -91,10 +91,9 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 	private boolean hasElectrodes() {
 		
 		if(!inventory.getStackInSlot(2).isEmpty() && !inventory.getStackInSlot(3).isEmpty() && !inventory.getStackInSlot(4).isEmpty()) {
-			if((inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode_desh) &&
-					(inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode_desh) &&
-					(inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode_desh))
-				return true;
+            return (inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode_desh) &&
+                    (inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode_desh) &&
+                    (inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode_desh);
 		}
 		
 		return false;
@@ -197,14 +196,9 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 				dualCookTime = 0;
 			}
 			
-			boolean trigger = true;
-			
-			if(hasPower() && canProcess() && this.dualCookTime == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !hasPower() || !canProcess() || this.dualCookTime != 0;
+
+            if(trigger)
             {
                 flag1 = true;
                 MachineArcFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
@@ -260,8 +254,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 			return itemStack.getItem() == ModItems.arc_electrode_burnt;
 
 		if(slot == 5)
-			if (itemStack.getItem() instanceof IBatteryItem && ((IBatteryItem)itemStack.getItem()).getCharge(itemStack) == 0)
-				return true;
+            return itemStack.getItem() instanceof IBatteryItem && ((IBatteryItem) itemStack.getItem()).getCharge(itemStack) == 0;
 		
 		return false;
 	}

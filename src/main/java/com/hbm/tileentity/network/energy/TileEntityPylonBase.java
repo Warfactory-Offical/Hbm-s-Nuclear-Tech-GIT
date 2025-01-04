@@ -70,10 +70,9 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 		if(te == this)
 			return;
 		
-		if(te instanceof TileEntityPylonBase) {
-			TileEntityPylonBase pylon = (TileEntityPylonBase) te;
-			
-			if(pylon.connected.contains(this.pos)){
+		if(te instanceof TileEntityPylonBase pylon) {
+
+            if(pylon.connected.contains(this.pos)){
 				pylon.removeConnection(this.pos);
 				if (!world.isRemote)
 					PacketDispatcher.wrapper.sendToAllAround(new TEPylonSenderPacket(targetPos.getX(), targetPos.getY(), targetPos.getZ(), pos.getX(), pos.getY(), pos.getZ(), false), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
@@ -97,11 +96,9 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 			
 			TileEntity te = world.getTileEntity(targetPos);
 			
-			if(te instanceof IEnergyConductor) {
-				
-				IEnergyConductor conductor = (IEnergyConductor) te;
-				
-				if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
+			if(te instanceof IEnergyConductor conductor) {
+
+                if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
 					conductor.getPowerNet().joinLink(this);
 				}
 				
@@ -186,7 +183,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 
-	public static enum ConnectionType {
+	public enum ConnectionType {
 		SINGLE,
 		QUAD
 		//more to follow

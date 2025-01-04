@@ -129,13 +129,12 @@ public abstract class BlockDummyable extends BlockContainer {
     
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
-    	if(!(player instanceof EntityPlayer))
+    	if(!(player instanceof EntityPlayer pl))
 			return;
 		
     	world.setBlockToAir(pos);
-    	
-		EntityPlayer pl = (EntityPlayer) player;
-		EnumHand hand = pl.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+
+        EnumHand hand = pl.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 		
 		int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		int o = -getOffset();
@@ -318,7 +317,7 @@ public abstract class BlockDummyable extends BlockContainer {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{META});
+		return new BlockStateContainer(this, META);
 	}
 	
 	@Override

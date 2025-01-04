@@ -75,12 +75,10 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 		
 		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityHeaterElectric))
+		if(!(te instanceof TileEntityHeaterElectric heater))
 			return;
-		
-		TileEntityHeaterElectric heater = (TileEntityHeaterElectric) te;
 
-		List<String> text = new ArrayList();
+        List<String> text = new ArrayList();
 		text.add(String.format("%,d", heater.heatEnergy) + " TU");
 		text.add("§a-> §r" + heater.getConsumption() + " HE/t");
 		text.add("§c<- §r" + heater.getHeatGen() + " TU/t");
@@ -101,10 +99,9 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 		
 		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityHeaterElectric)) return false;
-		
-		TileEntityHeaterElectric tile = (TileEntityHeaterElectric) te;
-		if(tool == ToolType.SCREWDRIVER)
+		if(!(te instanceof TileEntityHeaterElectric tile)) return false;
+
+        if(tool == ToolType.SCREWDRIVER)
             tile.toggleSettingUp();
         else
             tile.toggleSettingDown();

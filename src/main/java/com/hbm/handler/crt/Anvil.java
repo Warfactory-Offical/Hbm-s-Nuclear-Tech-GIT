@@ -23,11 +23,11 @@ import java.util.Arrays;
 @ZenClass("mods.ntm.Anvil")
 public class Anvil {
 	private static class ActionAddRecipe implements IAction {
-		private RecipesCommon.AStack[] inputs;
+		private final RecipesCommon.AStack[] inputs;
 
-		private ItemStack[] output;
+		private final ItemStack[] output;
 
-		private int tier;
+		private final int tier;
 
 		public ActionAddRecipe(IItemStack[] output, IIngredient[] inputs, int tier) {
 			this.output = CraftTweakerMC.getItemStacks(output);
@@ -62,7 +62,7 @@ public class Anvil {
 	}
 
 	public static class ActionRemoveRecipe implements IAction{
-		private ItemStack[]  output;
+		private final ItemStack[]  output;
 		private RecipesCommon.AStack[] inputs;
 
 		public ActionRemoveRecipe(IItemStack[] output){

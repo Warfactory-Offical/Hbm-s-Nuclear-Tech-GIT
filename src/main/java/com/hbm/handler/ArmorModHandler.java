@@ -56,14 +56,12 @@ public class ArmorModHandler {
 		if(!(armor.getItem() instanceof ItemArmor))
 			return false;
 		
-		if(!(mod.getItem() instanceof ItemArmorMod))
+		if(!(mod.getItem() instanceof ItemArmorMod aMod))
 			return false;
 		
 		EntityEquipmentSlot type = ((ItemArmor)armor.getItem()).armorType;
-		
-		ItemArmorMod aMod = (ItemArmorMod)mod.getItem();
-		
-		return (type == EntityEquipmentSlot.HEAD && aMod.helmet) || (type == EntityEquipmentSlot.CHEST && aMod.chestplate) || (type == EntityEquipmentSlot.LEGS && aMod.leggings) || (type == EntityEquipmentSlot.FEET && aMod.boots);
+
+        return (type == EntityEquipmentSlot.HEAD && aMod.helmet) || (type == EntityEquipmentSlot.CHEST && aMod.chestplate) || (type == EntityEquipmentSlot.LEGS && aMod.leggings) || (type == EntityEquipmentSlot.FEET && aMod.boots);
 	}
 	
 	/**

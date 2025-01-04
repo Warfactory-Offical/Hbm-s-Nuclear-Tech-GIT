@@ -35,11 +35,9 @@ public class TileEntityCableBaseNT extends TileEntity implements ITickable, IEne
 			
 			TileEntity te = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
 			
-			if(te instanceof IEnergyConductor) {
-				
-				IEnergyConductor conductor = (IEnergyConductor) te;
-				
-				if(!conductor.canConnect(dir.getOpposite()))
+			if(te instanceof IEnergyConductor conductor) {
+
+                if(!conductor.canConnect(dir.getOpposite()))
 					continue;
 				
 				if(this.getPowerNet() == null && conductor.getPowerNet() != null) {

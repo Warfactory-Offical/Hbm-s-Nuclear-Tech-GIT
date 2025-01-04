@@ -62,12 +62,10 @@ public class MachineCharger extends BlockContainer implements ITooltipProvider, 
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityCharger))
+		if(!(te instanceof TileEntityCharger charger))
 			return;
-		
-		TileEntityCharger charger = (TileEntityCharger) te;
-		
-		List<String> text = new ArrayList();
+
+        List<String> text = new ArrayList();
 
 		if(charger.totalCapacity > 0){
 			text.add(Library.getShortNumber(charger.totalEnergy) + "/" + Library.getShortNumber(charger.totalCapacity) + " HE");

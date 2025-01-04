@@ -62,9 +62,9 @@ public class DetCord extends Block implements IBomb {
 				ExplosionLarge.explode(world, pos.getX(), pos.getY(), pos.getZ(), 20, true, false, false);
 			}
 			if(this == ModBlocks.det_n2) {
-				world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, (int)(BombConfig.n2Radius/12) * 5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
+				world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, (BombConfig.n2Radius/12) * 5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
 				if(BombConfig.enableNukeClouds) {
-					EntityNukeTorex.statFac(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, (int)(BombConfig.n2Radius/12) * 5);
+					EntityNukeTorex.statFac(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, (BombConfig.n2Radius/12) * 5);
 				}
 			}
 			if(this == ModBlocks.det_nuke) {
@@ -78,7 +78,7 @@ public class DetCord extends Block implements IBomb {
 				bf.posX = pos.getX() + 0.5;
 				bf.posY = pos.getY() + 0.5;
 				bf.posZ = pos.getZ() + 0.5;
-				bf.destructionRange = (int) 130;
+				bf.destructionRange = 130;
 				world.spawnEntity(bf);
 				if(BombConfig.enableNukeClouds) {
 					EntityNukeTorex.statFacBale(world, pos.getX() + 0.5, pos.getY() + 5, pos.getZ() + 0.5, 130F);
@@ -91,14 +91,14 @@ public class DetCord extends Block implements IBomb {
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		if(this == ModBlocks.det_n2){
 			tooltip.add("§c[Extreme Bomb]§r");
-			tooltip.add(" §eRadius: "+((int)(BombConfig.n2Radius/12) * 5)+"m§r");
+			tooltip.add(" §eRadius: "+((BombConfig.n2Radius/12) * 5)+"m§r");
 		}
 		if(this == ModBlocks.det_nuke){
 			tooltip.add("§2[Nuclear Bomb]§r");
 			tooltip.add(" §eRadius: "+BombConfig.missileRadius+"m§r");
 			if(!BombConfig.disableNuclear){
 				tooltip.add("§2[Fallout]§r");
-				tooltip.add(" §aRadius: "+(int)BombConfig.missileRadius*(1+BombConfig.falloutRange/100)+"m§r");
+				tooltip.add(" §aRadius: "+ BombConfig.missileRadius *(1+BombConfig.falloutRange/100)+"m§r");
 			}
 		}
 		if(this == ModBlocks.det_bale){

@@ -54,10 +54,9 @@ public class TEAssemblerPacket implements IMessage {
 				BlockPos pos = new BlockPos(m.x, m.y, m.z);
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 
-				if (te != null && te instanceof TileEntityMachineAssembler) {
-						
-					TileEntityMachineAssembler gen = (TileEntityMachineAssembler) te;
-					gen.isProgressing = m.progress;
+				if (te != null && te instanceof TileEntityMachineAssembler gen) {
+
+                    gen.isProgressing = m.progress;
 				}
 			});
 			

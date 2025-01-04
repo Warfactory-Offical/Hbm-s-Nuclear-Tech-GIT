@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 
 public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 
-	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS));
+	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
 	
 	public float prevHealth;
 	
@@ -66,7 +66,7 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 
-		if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect) source).getImmediateSource() instanceof EntityEgg && rand.nextInt(10) == 0) {
+		if(source instanceof EntityDamageSourceIndirect && source.getImmediateSource() instanceof EntityEgg && rand.nextInt(10) == 0) {
 			this.experienceValue = 0;
 			this.setHealth(0);
 			return true;

@@ -27,7 +27,7 @@ public class ExplosionNukeRayBatched {
 
 	public HashMap<ChunkPos, BitSet> perChunk = new HashMap<ChunkPos, BitSet>();
 	public List<ChunkPos> orderedChunks = new ArrayList();
-	private CoordComparator comparator = new CoordComparator();
+	private final CoordComparator comparator = new CoordComparator();
 	public boolean isContained = true;
 	int posX;
 	int posY;
@@ -197,8 +197,8 @@ public class ExplosionNukeRayBatched {
 			int chunkX = ExplosionNukeRayBatched.this.posX >> 4;
 			int chunkZ = ExplosionNukeRayBatched.this.posZ >> 4;
 
-			int diff1 = Math.abs((chunkX - (int) (o1.getXStart() >> 4))) + Math.abs((chunkZ - (int) (o1.getZStart() >> 4)));
-			int diff2 = Math.abs((chunkX - (int) (o2.getXStart() >> 4))) + Math.abs((chunkZ - (int) (o2.getZStart() >> 4)));
+			int diff1 = Math.abs((chunkX - (o1.getXStart() >> 4))) + Math.abs((chunkZ - (o1.getZStart() >> 4)));
+			int diff2 = Math.abs((chunkX - (o2.getXStart() >> 4))) + Math.abs((chunkZ - (o2.getZStart() >> 4)));
 			
 			return diff1 > diff2 ? 1 : diff1 < diff2 ? -1 : 0;
 		}

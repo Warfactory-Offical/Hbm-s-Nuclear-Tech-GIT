@@ -35,9 +35,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class CrystallizerRecipes {
 
 	//'Object' is either a ComparableStack or the String for the ore dict
-	private static LinkedHashMap<Object, ItemStack> itemOutputRecipes = new LinkedHashMap<Object, ItemStack>();
-	private static HashMap<Object, FluidStack> fluidInputRecipes = new HashMap<Object, FluidStack>();
-	private static HashSet<Fluid> allowedFluids = new HashSet<Fluid>();
+	private static final LinkedHashMap<Object, ItemStack> itemOutputRecipes = new LinkedHashMap<Object, ItemStack>();
+	private static final HashMap<Object, FluidStack> fluidInputRecipes = new HashMap<Object, FluidStack>();
+	private static final HashSet<Fluid> allowedFluids = new HashSet<Fluid>();
 	private static List<CrystallizerRecipe> jeiCrystalRecipes = null;
 
 	public static void register() {
@@ -185,9 +185,8 @@ public class CrystallizerRecipes {
 
 		for(Entry<Object, ItemStack> entry : CrystallizerRecipes.itemOutputRecipes.entrySet()) {
 			List<ItemStack> ingredients;
-			if(entry.getKey() instanceof String) {
-				String oreKey = (String)entry.getKey();
-				ingredients = OreDictionary.getOres(oreKey);
+			if(entry.getKey() instanceof String oreKey) {
+                ingredients = OreDictionary.getOres(oreKey);
 			}else{
 				ItemStack stack = ((ComparableStack)entry.getKey()).toStack();
 				ingredients = new ArrayList<ItemStack>();
@@ -198,7 +197,7 @@ public class CrystallizerRecipes {
 
 			List<List<ItemStack>> totalInput = new ArrayList<List<ItemStack>>();
 			totalInput.add(ingredients);
-			totalInput.add(Arrays.asList(inputFluid));
+			totalInput.add(List.of(inputFluid));
 
 
 			jeiCrystalRecipes.add(new CrystallizerRecipe(totalInput, outputItem));

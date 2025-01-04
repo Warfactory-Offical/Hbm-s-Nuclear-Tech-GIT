@@ -105,13 +105,8 @@ public class ModelM65 extends ModelBiped {
 	@Override
 	public void setRotationAngles(float f2, float f3, float f4, float f5, float f6, float f7, Entity entity) {
 		
-		if(entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if (player.isSneaking()) {
-				this.isSneak = true;
-			} else {
-				this.isSneak = false;
-			}
+		if(entity instanceof EntityPlayer player) {
+            this.isSneak = player.isSneaking();
 		}
 		super.setRotationAngles(f2, f3, f4, f5, f6, f7, entity);
 		this.mask.rotationPointX = this.bipedHead.rotationPointX;

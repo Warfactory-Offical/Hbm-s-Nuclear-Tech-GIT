@@ -68,13 +68,11 @@ public class TrappedBrick extends BlockContainer {
 		int z = pos.getZ();
 		int meta = world.getBlockState(pos).getValue(TYPE);
 
-    	if(world.isRemote || Trap.get(meta).type != TrapType.ON_STEP || !(entity instanceof EntityPlayer)) {
+    	if(world.isRemote || Trap.get(meta).type != TrapType.ON_STEP || !(entity instanceof EntityPlayer player)) {
     		return;
     	}
 
-    	EntityPlayer player = (EntityPlayer)entity;
-
-		switch(Trap.get(meta)) {
+        switch(Trap.get(meta)) {
 		case FIRE:
 			if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock().isReplaceable(world, new BlockPos(x, y + 1, z)))
 				world.setBlockState(new BlockPos(x, y + 1, z), Blocks.FIRE.getDefaultState());
@@ -164,12 +162,12 @@ public class TrappedBrick extends BlockContainer {
 			}
 	}
 	
-	public static enum TrapType {
+	public enum TrapType {
 		ON_STEP,
 		DETECTOR
 	}
 
-	public static enum Trap {
+	public enum Trap {
 
 		FALLING_ROCKS(TrapType.DETECTOR),
 		FIRE(TrapType.ON_STEP),
@@ -189,7 +187,7 @@ public class TrappedBrick extends BlockContainer {
 
 		public TrapType type;
 
-		private Trap(TrapType type) {
+		Trap(TrapType type) {
 			this.type = type;
 		}
 

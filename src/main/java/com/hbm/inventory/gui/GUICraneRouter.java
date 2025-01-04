@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GUICraneRouter extends GuiInfoContainer {
-    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_router.png");
-    private TileEntityCraneRouter router;
+    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_router.png");
+    private final TileEntityCraneRouter router;
 
     public GUICraneRouter(InventoryPlayer invPlayer, TileEntityCraneRouter tedf) {
         super(new ContainerCraneRouter(invPlayer, tedf));

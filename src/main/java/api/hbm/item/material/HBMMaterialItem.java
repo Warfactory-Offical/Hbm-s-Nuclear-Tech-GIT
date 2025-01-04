@@ -89,7 +89,7 @@ public class HBMMaterialItem extends StandardHBMItem {
             itemModels.put(item, resourceLocation);
         }
 
-        if (items.keySet().isEmpty()) {
+        if (items.isEmpty()) {
             HBMMaterialIconSet defaultIcon = HBMMaterialIconSet.DULL;
             ResourceLocation defaultLocation = Objects.requireNonNull(MaterialPrefix.INGOT.iconType).getItemModelPath(defaultIcon);
             ModelBakery.registerItemVariants(this, defaultLocation);

@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public class WasteDrumRecipes {
 
 	public static LinkedHashMap<Item, ItemStack> recipes = new LinkedHashMap<>();
-	private static HashSet<Item> outputs = new HashSet<>();
+	private static final HashSet<Item> outputs = new HashSet<>();
 	
 	public static void registerRecipes() {
 

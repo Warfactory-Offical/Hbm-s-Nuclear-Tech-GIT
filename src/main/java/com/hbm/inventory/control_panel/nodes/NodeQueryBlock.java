@@ -55,8 +55,7 @@ public class NodeQueryBlock extends Node {
         dataSelector.list.itemNames.clear();
         if (blockPos != null && !blockPos.isEmpty()) {
             TileEntity tile = ctrl.panel.parent.getControlWorld().getTileEntity(getPos(blockPos));
-            if (tile instanceof IControllable) {
-                IControllable te = (IControllable) tile;
+            if (tile instanceof IControllable te) {
                 for (Map.Entry<String, DataValue> var : te.getQueryData().entrySet()) {
                     dataSelector.list.addItems(var.getKey());
                 }
@@ -86,8 +85,7 @@ public class NodeQueryBlock extends Node {
         if (!dataName.isEmpty()) {
             TileEntity tile = ctrl.panel.parent.getControlWorld().getTileEntity(getPos(blockPos));
 
-            if (tile instanceof IControllable) {
-                IControllable te = (IControllable) tile;
+            if (tile instanceof IControllable te) {
                 if (te.getQueryData().containsKey(dataName)) {
                     return te.getQueryData().get(dataName);
                 }

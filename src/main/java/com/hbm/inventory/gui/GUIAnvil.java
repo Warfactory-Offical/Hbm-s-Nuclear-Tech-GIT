@@ -39,14 +39,14 @@ public class GUIAnvil extends GuiContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_anvil.png");
 	
-	private int tier;
-	private List<AnvilConstructionRecipe> originList = new ArrayList<>();
-	private List<AnvilConstructionRecipe> recipes = new ArrayList<>();
+	private final int tier;
+	private final List<AnvilConstructionRecipe> originList = new ArrayList<>();
+	private final List<AnvilConstructionRecipe> recipes = new ArrayList<>();
 	int index;
 	int size;
 	int selection;
 	private GuiTextField search;
-	private EntityPlayer player;
+	private final EntityPlayer player;
 
 	public GUIAnvil(EntityPlayer player, int tier) {
 		super(new ContainerAnvil(player.inventory, tier));
@@ -232,9 +232,8 @@ public class GUIAnvil extends GuiContainer {
 				ItemStack input = ((ComparableStack) stack).toStack();
 				list.add(">" + input.getCount() + "x " + input.getDisplayName());
 				
-			} else if(stack instanceof OreDictStack) {
-				OreDictStack input = (OreDictStack) stack;
-				NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+			} else if(stack instanceof OreDictStack input) {
+                NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
 				
 				if(ores.size() > 0) {
 					ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
@@ -270,9 +269,8 @@ public class GUIAnvil extends GuiContainer {
 				ItemStack input = ((ComparableStack) stack).toStack();
 				list.add(input.getDisplayName().toLowerCase());
 				
-			} else if(stack instanceof OreDictStack) {
-				OreDictStack input = (OreDictStack) stack;
-				NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+			} else if(stack instanceof OreDictStack input) {
+                NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
 				
 				if(ores.size() > 0) {
 					for(ItemStack ore : ores) {

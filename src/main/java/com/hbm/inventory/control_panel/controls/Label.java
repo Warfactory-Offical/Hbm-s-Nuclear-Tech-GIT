@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class Label extends Control {
 
-    private float[] color = new float[] {1, 1, 1};
+    private final float[] color = new float[] {1, 1, 1};
     private String text = "label";
     private int scale = 25;
 

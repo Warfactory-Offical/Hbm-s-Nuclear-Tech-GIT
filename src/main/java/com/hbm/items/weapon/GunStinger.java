@@ -44,11 +44,10 @@ public class GunStinger extends Item {
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer))
+		if(!(entityLiving instanceof EntityPlayer player))
 			return;
-		
-		EntityPlayer player = (EntityPlayer)entityLiving;
-		if(player.getHeldItemMainhand() == stack && (player.getHeldItemOffhand().getItem() == ModItems.gun_stinger || player.getHeldItemOffhand().getItem() == ModItems.gun_skystinger)){
+
+        if(player.getHeldItemMainhand() == stack && (player.getHeldItemOffhand().getItem() == ModItems.gun_stinger || player.getHeldItemOffhand().getItem() == ModItems.gun_skystinger)){
 			player.getHeldItemOffhand().onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;

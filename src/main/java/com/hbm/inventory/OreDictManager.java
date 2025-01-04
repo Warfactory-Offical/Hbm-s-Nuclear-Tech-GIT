@@ -552,7 +552,7 @@ public class OreDictManager {
 
 	private static boolean recursionBrake = false;
 
-	private static Map<String, ItemStack> toRegisterItemStacks = new LinkedHashMap<>();
+	private static final Map<String, ItemStack> toRegisterItemStacks = new LinkedHashMap<>();
 
     public static void queueRegisterOre(String entryName, ItemStack stack) {
 		toRegisterItemStacks.put(entryName, stack);
@@ -770,8 +770,8 @@ public class OreDictManager {
 
 	public static class DictGroup {
 
-		private String groupName;
-		private HashSet<String> names = new HashSet();
+		private final String groupName;
+		private final HashSet<String> names = new HashSet();
 
 		public DictGroup(String groupName) {
 			this.groupName = groupName;
@@ -786,7 +786,7 @@ public class OreDictManager {
 		}
 
 		public DictGroup addNames(String... names) {
-			for(String mat : names) this.names.add(mat);
+            Collections.addAll(this.names, names);
 			return this;
 		}
 		public DictGroup addFrames(DictFrame... frames) {

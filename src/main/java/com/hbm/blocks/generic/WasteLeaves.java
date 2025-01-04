@@ -70,12 +70,10 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand){
-    	return;
     }
 
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random){
-    	return;
     }
 
 	@Override
@@ -111,13 +109,11 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 
 	@Override
 	public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune){
-		return;
-	}
+    }
 
 	@Override
 	protected void dropApple(World worldIn, BlockPos pos, IBlockState state, int chance){
-		return;
-	}
+    }
 
 	@Override
 	public BlockPlanks.EnumType getWoodType(int meta){
@@ -143,6 +139,5 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 
 	@Override
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items){
-		return;
-	}
+    }
 }

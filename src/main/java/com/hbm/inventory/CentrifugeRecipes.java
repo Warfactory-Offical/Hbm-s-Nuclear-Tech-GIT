@@ -23,7 +23,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class CentrifugeRecipes {
 
-	private static LinkedHashMap<Object, ItemStack[]> recipes = new LinkedHashMap<Object, ItemStack[]>();
+	private static final LinkedHashMap<Object, ItemStack[]> recipes = new LinkedHashMap<Object, ItemStack[]>();
 	private static List<CentrifugeRecipe> centrifugeRecipes = null;
 	
 	public static void register() {
@@ -379,7 +379,7 @@ public class CentrifugeRecipes {
 		@Override
 		public void getIngredients(IIngredients ingredients) {
 			if(inputs != null){
-				ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(inputs));
+				ingredients.setInputLists(VanillaTypes.ITEM, List.of(inputs));
 			} else {
 				ingredients.setInput(VanillaTypes.ITEM, input);
 			}

@@ -48,12 +48,10 @@ public class MachineDeuteriumExtractor extends BlockContainer implements ILookOv
 		
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityDeuteriumExtractor))
+		if(!(te instanceof TileEntityDeuteriumExtractor extractor))
 			return;
-		
-		TileEntityDeuteriumExtractor extractor = (TileEntityDeuteriumExtractor) te;
-		
-		List<String> text = new ArrayList();
+
+        List<String> text = new ArrayList();
 		text.add(Library.getShortNumber(extractor.power) + "/" + Library.getShortNumber(extractor.getMaxPower()) + " HE");
 		
 		if(extractor.tanks[0] != null)

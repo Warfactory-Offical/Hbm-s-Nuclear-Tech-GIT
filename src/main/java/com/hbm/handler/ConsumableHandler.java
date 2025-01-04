@@ -174,8 +174,7 @@ public class ConsumableHandler {
 
     private static void handleJetpackTank(Context context) {
         ItemStack jetpack = context.target.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        if (jetpack.getItem() instanceof JetpackBase) {
-            JetpackBase jetItem = (JetpackBase) jetpack.getItem();
+        if (jetpack.getItem() instanceof JetpackBase jetItem) {
             if (jetItem.fuel != ModForgeFluids.kerosene) return;
 
             int newFuel = Math.min(JetpackBase.getFuel(jetpack) + 1000, jetItem.maxFuel);

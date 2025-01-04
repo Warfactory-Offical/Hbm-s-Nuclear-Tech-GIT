@@ -334,11 +334,9 @@ public class BulletConfigFactory {
 					
 					if(!Library.isObstructed(bullet.world, bullet.posX, bullet.posY, bullet.posZ, e.posX, e.posY + e.getEyeHeight(), e.posZ)) {
 						
-						if(e instanceof EntityLivingBase) {
-		
-							EntityLivingBase entityLiving = (EntityLivingBase) e;
-							
-							if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_CHLORINE)) {
+						if(e instanceof EntityLivingBase entityLiving) {
+
+                            if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_CHLORINE)) {
 								ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 							} else {
 								PotionEffect eff0 = new PotionEffect(MobEffects.POISON, duration, 2, true, false);

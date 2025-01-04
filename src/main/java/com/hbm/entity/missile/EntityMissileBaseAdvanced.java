@@ -82,7 +82,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	}
 
 	public void setAcceleration(double multiplier){
-		this.acceleration = multiplier;
+		acceleration = multiplier;
 	}
 
 	@Override

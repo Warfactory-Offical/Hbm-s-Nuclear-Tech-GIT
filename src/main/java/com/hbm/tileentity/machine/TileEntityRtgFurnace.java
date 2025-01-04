@@ -163,14 +163,9 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 			}else{
 				dualCookTime = 0;
 			}
-			boolean trigger = true;
-			
-			if(hasPower() && canProcess() && this.dualCookTime == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !hasPower() || !canProcess() || this.dualCookTime != 0;
+
+            if(trigger)
             {
                 flag1 = true;
                 MachineRtgFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
@@ -196,11 +191,8 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 				return true;
 			}
 		}
-		if(slot == 4){
-			return true;
-		}
-		return false;
-	}
+        return slot == 4;
+    }
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
@@ -208,11 +200,8 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 			if(stack.getItem() instanceof ItemRTGPellet)
 				return true;
 		}
-		if(i == 0){
-			return true;
-		}
-		return false;
-	}
+        return i == 0;
+    }
 	
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {

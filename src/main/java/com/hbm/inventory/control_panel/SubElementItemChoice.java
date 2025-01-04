@@ -28,14 +28,14 @@ public class SubElementItemChoice extends SubElement {
 		pageLeft = gui.addButton(new GuiButton(gui.currentButtonId(), cX-80, cY+92, 15, 20, "<"));
 		pageRight = gui.addButton(new GuiButton(gui.currentButtonId(), cX+65, cY+92, 15, 20, ">"));
 
-		buttons.add(gui.addButton(new GuiButton(1000, cX-80, (cY-90) + (0%7)*25, 160, 20, "Button")));
-		buttons.add(gui.addButton(new GuiButton(1001, cX-80, (cY-90) + (1%7)*25, 160, 20, "Switch")));
+		buttons.add(gui.addButton(new GuiButton(1000, cX-80, (cY - 90), 160, 20, "Button")));
+		buttons.add(gui.addButton(new GuiButton(1001, cX-80, (cY-90) + 25, 160, 20, "Switch")));
 		buttons.add(gui.addButton(new GuiButton(1002, cX-80, (cY-90) + (2%7)*25, 160, 20, "Display")));
 		buttons.add(gui.addButton(new GuiButton(1003, cX-80, (cY-90) + (3%7)*25, 160, 20, "Indicator")));
 		buttons.add(gui.addButton(new GuiButton(1004, cX-80, (cY-90) + (4%7)*25, 160, 20, "Knob")));
 		buttons.add(gui.addButton(new GuiButton(1005, cX-80, (cY-90) + (5%7)*25, 160, 20, "Dial")));
 		buttons.add(gui.addButton(new GuiButton(1006, cX-80, (cY-90) + (6%7)*25, 160, 20, "Label")));
-		buttons.add(gui.addButton(new GuiButton(1007, cX-80, (cY-90) + (7%7)*25, 160, 20, "Slider")));
+		buttons.add(gui.addButton(new GuiButton(1007, cX-80, (cY - 90), 160, 20, "Slider")));
 
 		numPages = (buttons.size()+6)/7;
 		super.initGui();

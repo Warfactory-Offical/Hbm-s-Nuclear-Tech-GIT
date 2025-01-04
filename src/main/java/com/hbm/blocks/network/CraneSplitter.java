@@ -112,8 +112,7 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
         if (core == null) return;
         pos = new BlockPos(core[0], core[1], core[2]);
         TileEntity tile = world.getTileEntity(pos);
-        if (!(tile instanceof TileEntityCraneSplitter)) return;
-        TileEntityCraneSplitter splitter = (TileEntityCraneSplitter) tile;
+        if (!(tile instanceof TileEntityCraneSplitter splitter)) return;
 
         boolean pos1 = splitter.getPosition();
         EnumFacing rot = getCustomMap(splitter.getBlockMetadata()).rotateY().rotateY().rotateY();
@@ -176,8 +175,7 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
         if (core == null) return;
         pos = new BlockPos(core[0], core[1], core[2]);
         TileEntity tile = world.getTileEntity(pos);
-        if (!(tile instanceof TileEntityCraneSplitter)) return;
-        TileEntityCraneSplitter splitter = (TileEntityCraneSplitter) tile;
+        if (!(tile instanceof TileEntityCraneSplitter splitter)) return;
 
         boolean pos1 = splitter.getPosition();
         ItemStack stack = entity.getItemStack();

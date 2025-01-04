@@ -55,17 +55,15 @@ public class BlockClorine extends Block {
 	
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if(!(entity instanceof EntityLivingBase))
+		if(!(entity instanceof EntityLivingBase entityLiving))
 			return;
-		
-		EntityLivingBase entityLiving = (EntityLivingBase) entity;
-		
-		if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_CHLORINE)) {
+
+        if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_CHLORINE)) {
 			ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 		} else {
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * 20, 0));
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.POISON, 20 * 20, 2));
-			entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, 1 * 20, 1));
+			entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, 20, 1));
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 30 * 20, 1));
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 30 * 20, 2));
 		}

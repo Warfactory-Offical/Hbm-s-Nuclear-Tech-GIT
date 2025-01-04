@@ -27,9 +27,9 @@ public class EntityMissileN2 extends EntityMissileBaseAdvanced {
 	@Override
 	public void onImpact() {
    	
-    	this.world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, (int)(BombConfig.n2Radius/12) * 5, posX, posY, posZ));
+    	this.world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, (BombConfig.n2Radius/12) * 5, posX, posY, posZ));
     	if(BombConfig.enableNukeClouds) {
-			EntityNukeTorex.statFac(world, this.posX, this.posY, this.posZ, (int)(BombConfig.n2Radius/12) * 5);
+			EntityNukeTorex.statFac(world, this.posX, this.posY, this.posZ, (BombConfig.n2Radius/12) * 5);
 		}
 	}
 

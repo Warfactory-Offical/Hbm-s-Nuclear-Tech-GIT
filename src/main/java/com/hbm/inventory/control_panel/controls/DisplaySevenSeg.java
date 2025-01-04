@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class DisplaySevenSeg extends Control {
 
-    private float[] color = new float[] {1, 1, 1};
+    private final float[] color = new float[] {1, 1, 1};
     private int digitCount = 1;
     private boolean isDecimal = false;
 

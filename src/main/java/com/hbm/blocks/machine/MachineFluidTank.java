@@ -85,12 +85,12 @@ public class MachineFluidTank extends BlockContainer implements IMultiBlock {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing) state.getValue(FACING)).getIndex();
+		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class MachineFluidTank extends BlockContainer implements IMultiBlock {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
 		if(tileentity instanceof TileEntityMachineFluidTank) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityMachineFluidTank) tileentity);
+			InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 		super.breakBlock(worldIn, pos, state);
@@ -146,27 +146,23 @@ public class MachineFluidTank extends BlockContainer implements IMultiBlock {
 				DummyBlockFluidTank.safeBreak = true;
 				world.setBlockState(pos.add(1, 0, 1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(1, 0, 1));
-				if(te instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te1 = world.getTileEntity(pos.add(1, 0, -1));
-				if(te1 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te1;
-					dummy.target = pos;
+				if(te1 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, 1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, 1));
-				if(te2 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(-1, 0, -1));
-				if(te3 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
@@ -185,33 +181,29 @@ public class MachineFluidTank extends BlockContainer implements IMultiBlock {
 				DummyBlockFluidTank.safeBreak = true;
 				world.setBlockState(pos.add(1, 0, 1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(1, 0, 1));
-				if(te instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te1 = world.getTileEntity(pos.add(1, 0, -1));
-				if(te1 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te1;
-					dummy.target = pos;
+				if(te1 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(-1, 0, 1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, 1));
-				if(te2 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(-1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(-1, 0, -1));
-				if(te3 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
@@ -230,33 +222,29 @@ public class MachineFluidTank extends BlockContainer implements IMultiBlock {
 				DummyBlockFluidTank.safeBreak = true;
 				world.setBlockState(pos.add(1, 0, 1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te = world.getTileEntity(pos.add(1, 0, 1));
-				if(te instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te;
-					dummy.target = pos;
+				if(te instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te1 = world.getTileEntity(pos.add(1, 0, -1));
-				if(te1 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te1;
-					dummy.target = pos;
+				if(te1 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(-1, 0, 1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, 1));
-				if(te2 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(-1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(-1, 0, -1));
-				if(te3 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
@@ -283,25 +271,22 @@ public class MachineFluidTank extends BlockContainer implements IMultiBlock {
 				}
 				world.setBlockState(pos.add(1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te1 = world.getTileEntity(pos.add(1, 0, -1));
-				if(te1 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te1;
-					dummy.target = pos;
+				if(te1 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(-1, 0, 1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, 1));
-				if(te2 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te2;
-					dummy.target = pos;
+				if(te2 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}
 				world.setBlockState(pos.add(-1, 0, -1), ModBlocks.dummy_port_fluidtank.getDefaultState());
 				TileEntity te3 = world.getTileEntity(pos.add(-1, 0, -1));
-				if(te3 instanceof TileEntityDummyFluidPort) {
-					TileEntityDummyFluidPort dummy = (TileEntityDummyFluidPort)te3;
-					dummy.target = pos;
+				if(te3 instanceof TileEntityDummyFluidPort dummy) {
+                    dummy.target = pos;
 					
 					
 				}

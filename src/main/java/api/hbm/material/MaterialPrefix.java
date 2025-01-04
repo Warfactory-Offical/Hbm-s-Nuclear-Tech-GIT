@@ -26,15 +26,15 @@ public class MaterialPrefix {
 
     private final ArrayList<IMaterialProcessor> processors = new ArrayList<>();
     private final String name;
-    private long materialAmount;
-    private Predicate<NTMMaterial> genCondition;
+    private final long materialAmount;
+    private final Predicate<NTMMaterial> genCondition;
 
     public final HBMMaterialIconType iconType;
 
     public final int id;
 
     @Nullable
-    private Function<NTMMaterial, List<String>> tooltipFunc;
+    private final Function<NTMMaterial, List<String>> tooltipFunc;
 
     public MaterialPrefix(String name, long materialAmount, HBMMaterialIconType iconType, Predicate<NTMMaterial> condition, Function<NTMMaterial, @Nullable List<String>> tooltipFunc) {
         this.name = name;

@@ -38,7 +38,7 @@ public class ItemSimpleConsumable extends ItemCustomLore {
 		if(!world.isRemote && this.useActionServer != null)
 			this.useActionServer.accept(stack, player);
 		
-		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -72,9 +72,8 @@ public class ItemSimpleConsumable extends ItemCustomLore {
 	}
 	
 	public static void tryAddItem(EntityLivingBase entity, ItemStack stack) {
-		if(entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if(!player.inventory.addItemStackToInventory(stack)) {
+		if(entity instanceof EntityPlayer player) {
+            if(!player.inventory.addItemStackToInventory(stack)) {
 				player.dropItem(stack, false);
 			}
 		}

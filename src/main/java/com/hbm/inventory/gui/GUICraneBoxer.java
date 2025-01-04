@@ -17,10 +17,10 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 
 public class GUICraneBoxer extends GuiInfoContainer {
-    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_boxer.png");
-    private TileEntityCraneBoxer boxer;
+    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_boxer.png");
+    private final TileEntityCraneBoxer boxer;
 
-    private String[] modeDesc = new String[] { 
+    private final String[] modeDesc = new String[] {
         "desc.conveyor.boxer.mode1",
         "desc.conveyor.boxer.mode2",
         "desc.conveyor.boxer.mode4",

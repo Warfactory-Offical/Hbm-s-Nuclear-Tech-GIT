@@ -52,8 +52,7 @@ public class HeaterOilburner extends BlockDummyable implements ITooltipProvider,
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(playerIn.getHeldItem(hand).getItem() instanceof ItemTooling){
-            ItemTooling tool = (ItemTooling)playerIn.getHeldItem(hand).getItem();
+        if(playerIn.getHeldItem(hand).getItem() instanceof ItemTooling tool){
             if(tool.getType() == ToolType.SCREWDRIVER || tool.getType() == ToolType.HAND_DRILL)
                 return false;
         }
@@ -99,10 +98,8 @@ public class HeaterOilburner extends BlockDummyable implements ITooltipProvider,
 
         TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterOilburner))
+        if (!(te instanceof TileEntityHeaterOilburner heater))
             return;
-
-        TileEntityHeaterOilburner heater = (TileEntityHeaterOilburner) te;
 
         List<String> text = new ArrayList();
         text.add(String.format("%,d", heater.heatEnergy) + " TU");
@@ -130,9 +127,8 @@ public class HeaterOilburner extends BlockDummyable implements ITooltipProvider,
 
         TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterOilburner)) return false;
+        if (!(te instanceof TileEntityHeaterOilburner tile)) return false;
 
-        TileEntityHeaterOilburner tile = (TileEntityHeaterOilburner) te;
         if(tool == ToolType.SCREWDRIVER)
             tile.toggleSettingUp();
         else

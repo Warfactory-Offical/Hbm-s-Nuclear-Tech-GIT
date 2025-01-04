@@ -57,10 +57,9 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 
 	@Optional.Method(modid="redstoneflux")
 	public int transferToRFMachine(TileEntity entity, int rf, EnumFacing dir){
-		if(entity != null && entity instanceof IEnergyReceiver) {
-				
-			IEnergyReceiver receiver = (IEnergyReceiver) entity;
-			return receiver.receiveEnergy(dir, rf, false);
+		if(entity != null && entity instanceof IEnergyReceiver receiver) {
+
+            return receiver.receiveEnergy(dir, rf, false);
 		}
 		return 0;
 	}

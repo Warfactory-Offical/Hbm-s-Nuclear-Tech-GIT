@@ -80,7 +80,7 @@ public class AssemblerRecipes {
 
 		template = dir;
 
-		List<File> files = Arrays.asList(dir.listFiles());
+		File[] files = dir.listFiles();
 		for(File file : files) {
 			if(file.getName().equals("hbmAssembler.json")) {
 				config = file;
@@ -1045,9 +1045,8 @@ public class AssemblerRecipes {
 		if(ins != null) {
 			
 			AStack[] news = new AStack[ins.length + 1];
-			
-			for(int i = 0; i < ins.length; i++)
-				news[i] = ins[i];
+
+            System.arraycopy(ins, 0, news, 0, ins.length);
 			
 			news[news.length - 1] = ItemStackUtil.comparableStackFrom(ModItems.circuit_tantalium, amount);
 			
@@ -1149,12 +1148,11 @@ public class AssemblerRecipes {
 			MainRegistry.logger.log(Level.WARN, "Could not parse assembler output itemstack from \"" + parts[1] + "\" on line " + line + ". Skipping...");
 			return;
 		}
-		if(!(stack instanceof ComparableStack)){
+		if(!(stack instanceof ComparableStack cStack)){
 			MainRegistry.logger.log(Level.WARN, "Oredict stacks are not allowed as assembler outputs! Line number: " + line + " Skipping...");
 			return;
 		}
-		ComparableStack cStack = (ComparableStack) stack;
-		recipes.remove(cStack);
+        recipes.remove(cStack);
 		time.remove(cStack);
 		recipeList.remove(cStack);
 	}

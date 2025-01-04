@@ -413,7 +413,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		return false;
 	}
 	
-	private HashSet<BlockPos> recursionBrake = new HashSet();
+	private final HashSet<BlockPos> recursionBrake = new HashSet();
 	private int minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
 	
 	protected void breakRecursively(BlockPos drillPos, int depth) {
@@ -478,9 +478,8 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 					items.clear();
 					items.add(result.copy());
 				}
-			} else if(b instanceof IDrillInteraction) {
-				IDrillInteraction in = (IDrillInteraction) b;
-				if(in.canBreak(world, drillPos.getX(), drillPos.getY(), drillPos.getZ(), bState, this)){
+			} else if(b instanceof IDrillInteraction in) {
+                if(in.canBreak(world, drillPos.getX(), drillPos.getY(), drillPos.getZ(), bState, this)){
 					ItemStack drop = in.extractResource(world, drillPos.getX(), drillPos.getY(), drillPos.getZ(), bState, this);
 					
 					if(drop != null) {
@@ -664,12 +663,10 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		if(te == null || !te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.toEnumFacing()))
 			return;
 		IItemHandler h = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.toEnumFacing());
-		if(!(h instanceof IItemHandlerModifiable))
+		if(!(h instanceof IItemHandlerModifiable inv))
 			return;
-		
-		IItemHandlerModifiable inv = (IItemHandlerModifiable)h;
-		
-		for(EntityItem entityItem : items) {
+
+        for(EntityItem entityItem : items) {
 			if(entityItem.isDead) continue;
 			ItemStack stack = entityItem.getItem();
 			if(stack.getCount() <= 0 || stack.isEmpty()){
@@ -689,10 +686,9 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 	protected void collectBedrock(BlockPos pos) {
 		if(tank.getFluid() == null) return;
 		TileEntity oreTile = world.getTileEntity(pos);
-		if(oreTile instanceof TileEntityBedrockOre) {
-			TileEntityBedrockOre ore = (TileEntityBedrockOre) oreTile;
-			
-			if(ore.oreName == null)
+		if(oreTile instanceof TileEntityBedrockOre ore) {
+
+            if(ore.oreName == null)
 				return;
 			if(ore.tier > this.getInstalledDrill().tier)
 				return;
@@ -725,9 +721,8 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		if(b instanceof BlockGasBase) return true;
 		float hardness = block.getBlockHardness(world, pos);
 		if(hardness < 0 || hardness > 3_500_000) return true;
-		if(block.getMaterial().isLiquid()) return true;
-		return false;
-	}
+        return block.getMaterial().isLiquid();
+    }
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {

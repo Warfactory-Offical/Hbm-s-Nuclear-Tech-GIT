@@ -139,8 +139,8 @@ public class DiFurnaceRecipes {
 	}
 
 	public static void removeRecipe(ItemStack output){
-		diRecipes.values().removeIf(value -> areItemStacksEqual(value,output));;
-	}
+		diRecipes.values().removeIf(value -> areItemStacksEqual(value,output));
+    }
 	public static void addFuel(AStack fuel, int power){
 		diFuels.put(fuel, power);
 	}

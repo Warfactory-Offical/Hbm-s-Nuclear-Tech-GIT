@@ -386,9 +386,8 @@ public class Gun4GaugeFactory {
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityLivingBase) {
-					EntityLivingBase living = (EntityLivingBase) hit;
-					float f = living.getHealth();
+				if(hit instanceof EntityLivingBase living) {
+                    float f = living.getHealth();
 					f = Math.max(0, f - 2);
 					living.setHealth(f);
 
@@ -421,10 +420,9 @@ public class Gun4GaugeFactory {
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) hit;
+				if(hit instanceof EntityPlayer player) {
 
-					//TODO does bewitchment have something like this?
+                    //TODO does bewitchment have something like this?
 					/*IExtendedEntityProperties prop = player.getExtendedProperties("WitcheryExtendedPlayer");
 
 					if(prop != null) {
@@ -456,10 +454,9 @@ public class Gun4GaugeFactory {
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) hit;
+				if(hit instanceof EntityPlayer player) {
 
-					player.inventory.dropAllItems();
+                    player.inventory.dropAllItems();
 				}
 			}
 		};

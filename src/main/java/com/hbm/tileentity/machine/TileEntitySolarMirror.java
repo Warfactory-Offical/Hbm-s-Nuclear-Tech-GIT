@@ -49,9 +49,8 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 
 			TileEntity te = world.getTileEntity(new BlockPos(tX, tY - 1, tZ));
 
-			if(te instanceof TileEntitySolarBoiler) {
-				TileEntitySolarBoiler boiler = (TileEntitySolarBoiler)te;
-				boiler.heatInput += sunHeat;
+			if(te instanceof TileEntitySolarBoiler boiler) {
+                boiler.heatInput += sunHeat;
 			}
 		}
 	}

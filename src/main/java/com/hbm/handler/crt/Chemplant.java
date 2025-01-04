@@ -23,15 +23,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class Chemplant {
 	
 	private static class ActionAddChemplantRecipe implements IAction{
-		private int index;
-		private String name;
-		private ItemStack[] inputItems;
-		private String[] inputFluids;
-		private Integer[] inputAmounts; 
-		private String[] outputFluids; 
-		private Integer[] outputAmounts; 
-		private ItemStack[] outputItems;
-		private int duration;
+		private final int index;
+		private final String name;
+		private final ItemStack[] inputItems;
+		private final String[] inputFluids;
+		private final Integer[] inputAmounts;
+		private final String[] outputFluids;
+		private final Integer[] outputAmounts;
+		private final ItemStack[] outputItems;
+		private final int duration;
 		public ActionAddChemplantRecipe(
 			int index,
 			String name,
@@ -191,7 +191,7 @@ public class Chemplant {
 
 	//
 	private static class ActionRemoveChemplantRecipe implements IAction{
-		private int index;
+		private final int index;
 		public ActionRemoveChemplantRecipe(int index){
 			this.index = index;
 		}

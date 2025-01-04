@@ -41,7 +41,7 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 
 	public BlockNTMOre(String name, int harvestLvl, int xp) {
 		super();
-		this.xp = xp;
+		BlockNTMOre.xp = xp;
 		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		this.setCreativeTab(MainRegistry.controlTab);

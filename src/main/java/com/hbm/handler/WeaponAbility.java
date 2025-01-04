@@ -82,11 +82,9 @@ public abstract class WeaponAbility {
 		@Override
 		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
 			
-			if(victim instanceof EntityLivingBase) {
-				
-				EntityLivingBase living = (EntityLivingBase) victim;
-				
-				living.setHealth(living.getHealth() - amount);
+			if(victim instanceof EntityLivingBase living) {
+
+                living.setHealth(living.getHealth() - amount);
 				player.heal(amount);
 			}
 		}
@@ -114,11 +112,9 @@ public abstract class WeaponAbility {
 		@Override
 		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
 			
-			if(victim instanceof EntityLivingBase) {
-				
-				EntityLivingBase living = (EntityLivingBase) victim;
+			if(victim instanceof EntityLivingBase living) {
 
-				living.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration * 20, 4));
+                living.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration * 20, 4));
 				living.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, duration * 20, 4));
 			}
 		}
@@ -146,11 +142,9 @@ public abstract class WeaponAbility {
 		@Override
 		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
 
-			if(victim instanceof EntityLivingBase) {
+			if(victim instanceof EntityLivingBase living) {
 
-				EntityLivingBase living = (EntityLivingBase) victim;
-
-				living.addPotionEffect(new PotionEffect(HbmPotion.phosphorus, duration * 20, 4));
+                living.addPotionEffect(new PotionEffect(HbmPotion.phosphorus, duration * 20, 4));
 			}
 		}
 
@@ -176,11 +170,9 @@ public abstract class WeaponAbility {
 		@Override
 		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
 
-			if(victim instanceof EntityLivingBase) {
+			if(victim instanceof EntityLivingBase living) {
 
-				EntityLivingBase living = (EntityLivingBase) victim;
-
-				if(living.getHealth() <= 0.0F) {
+                if(living.getHealth() <= 0.0F) {
 
 					WeightedRandomObject[] ammo = new WeightedRandomObject[] {
 							new WeightedRandomObject(ModItems.ammo_12gauge, 10),
@@ -214,7 +206,7 @@ public abstract class WeaponAbility {
 
 					for(int i = 0; i < count; i++) {
 
-						living.dropItem(((WeightedRandomObject)WeightedRandom.getRandomItem(living.getRNG(), Arrays.asList(ammo))).asItem(), 1);
+						living.dropItem(WeightedRandom.getRandomItem(living.getRNG(), Arrays.asList(ammo)).asItem(), 1);
 						world.spawnEntity(new EntityXPOrb(world, living.posX, living.posY, living.posZ, 1));
 					}
 
@@ -249,11 +241,9 @@ public abstract class WeaponAbility {
 		@Override
 		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
 
-			if(victim instanceof EntityLivingBase && ((EntityLivingBase) victim).getHealth() <= 0.0F) {
+			if(victim instanceof EntityLivingBase living && ((EntityLivingBase) victim).getHealth() <= 0.0F) {
 
-				EntityLivingBase living = (EntityLivingBase) victim;
-
-				if(living instanceof EntitySkeleton) {
+                if(living instanceof EntitySkeleton) {
 					living.entityDropItem(new ItemStack(Items.SKULL, 1, 0), 0.0F);
 				} else if(living instanceof EntityWitherSkeleton){
 					living.entityDropItem(ItemCell.getFullCell(ModForgeFluids.amat), 0.0F);
@@ -265,7 +255,7 @@ public abstract class WeaponAbility {
 
 					ItemStack head = new ItemStack(Items.SKULL, 1, 3);
 					head.setTagCompound(new NBTTagCompound());
-					head.getTagCompound().setString("SkullOwner", ((EntityPlayer) living).getDisplayName().getUnformattedText());
+					head.getTagCompound().setString("SkullOwner", living.getDisplayName().getUnformattedText());
 					living.entityDropItem(head, 0.0F);
 				} else {
 					living.entityDropItem(new ItemStack(Items.ROTTEN_FLESH, 3, 0), 0.0F);

@@ -20,9 +20,9 @@ import net.minecraft.item.ItemStack;
 public class BlastFurnace {
 	
 	private static class ActionAddRecipe implements IAction{
-		private RecipesCommon.AStack input1;
-		private RecipesCommon.AStack input2;
-		private ItemStack output;
+		private final RecipesCommon.AStack input1;
+		private final RecipesCommon.AStack input2;
+		private final ItemStack output;
 		public ActionAddRecipe(IIngredient input1, IIngredient input2, IItemStack output){
 			this.input1 = NTMCraftTweaker.IIngredientToAStack(input1);
 			this.input2 =  NTMCraftTweaker.IIngredientToAStack(input2);
@@ -111,7 +111,7 @@ public class BlastFurnace {
 	}
 
 	public static class ActionAddFuel implements IAction{
-		private ItemStack input;
+		private final ItemStack input;
 		private int heatLvl = 0;
 
 		public ActionAddFuel(IIngredient input, int heatLvl){
@@ -142,7 +142,7 @@ public class BlastFurnace {
 	}
 
 	public static class ActionRemoveFuel implements IAction{
-		private ItemStack input;
+		private final ItemStack input;
 
 		public ActionRemoveFuel(IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);

@@ -56,10 +56,9 @@ public class TETurbofanPacket implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityMachineTurbofan) {
-						
-					TileEntityMachineTurbofan gen = (TileEntityMachineTurbofan) te;
-					gen.isRunning = m.isRunning;
+				if (te != null && te instanceof TileEntityMachineTurbofan gen) {
+
+                    gen.isRunning = m.isRunning;
 				}
 			});
 			

@@ -31,22 +31,19 @@ public class ItemRBMKLid extends Item {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos bpos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		Block b = world.getBlockState(bpos).getBlock();
 		
-		if(!world.isRemote && b instanceof RBMKBase) {
-			RBMKBase rbmk = (RBMKBase) b;
-			
-			int[] pos = rbmk.findCore(world, bpos.getX(), bpos.getY(), bpos.getZ());
+		if(!world.isRemote && b instanceof RBMKBase rbmk) {
+
+            int[] pos = rbmk.findCore(world, bpos.getX(), bpos.getY(), bpos.getZ());
 			
 			if(pos == null)
 				return EnumActionResult.FAIL;
 			
 			TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
-			if(!(te instanceof TileEntityRBMKBase))
+			if(!(te instanceof TileEntityRBMKBase tile))
 				return EnumActionResult.FAIL;
-			
-			TileEntityRBMKBase tile = (TileEntityRBMKBase) te;
-			
-			if(tile.hasLid())
+
+            if(tile.hasLid())
 				return EnumActionResult.FAIL;
 			
 			int meta = RBMKBase.DIR_NORMAL_LID.ordinal();

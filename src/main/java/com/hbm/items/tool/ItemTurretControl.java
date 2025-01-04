@@ -49,10 +49,9 @@ public class ItemTurretControl extends Item {
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
-		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
+		if (entity instanceof EntityPlayer player) {
 
-			if (player.getHeldItem(EnumHand.MAIN_HAND).equals(stack) || player.getHeldItem(EnumHand.OFF_HAND).equals(stack)) {
+            if (player.getHeldItem(EnumHand.MAIN_HAND).equals(stack) || player.getHeldItem(EnumHand.OFF_HAND).equals(stack)) {
 				if (stack.hasTagCompound()) {
 					int x = stack.getTagCompound().getInteger("xCoord");
 					int y = stack.getTagCompound().getInteger("yCoord");
@@ -61,10 +60,9 @@ public class ItemTurretControl extends Item {
 					
 					TileEntity te = worldIn.getTileEntity(pos);
 
-					if (te != null && te instanceof TileEntityTurretBase) {
-						TileEntityTurretBase turret = (TileEntityTurretBase) te;
+					if (te != null && te instanceof TileEntityTurretBase turret) {
 
-						if (!turret.isAI) {
+                        if (!turret.isAI) {
 							turret.rotationYaw = player.rotationYaw;
 							turret.rotationPitch = player.rotationPitch;
 							if (turret.rotationPitch < -60)
@@ -89,9 +87,9 @@ public class ItemTurretControl extends Item {
 	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if (stack.getTagCompound() != null) {
 			list.add(I18nUtil.resolveKey("desc.turrectcontrol"));
-			list.add("X: " + String.valueOf(stack.getTagCompound().getInteger("xCoord")));
-			list.add("Y: " + String.valueOf(stack.getTagCompound().getInteger("yCoord")));
-			list.add("Z: " + String.valueOf(stack.getTagCompound().getInteger("zCoord")));
+			list.add("X: " + stack.getTagCompound().getInteger("xCoord"));
+			list.add("Y: " + stack.getTagCompound().getInteger("yCoord"));
+			list.add("Z: " + stack.getTagCompound().getInteger("zCoord"));
 		} else {
 			list.add(I18nUtil.resolveKey("desc.turrectcontrol.noconnect"));
 		}
@@ -167,10 +165,9 @@ public class ItemTurretControl extends Item {
 
 				TileEntity te = worldIn.getTileEntity(pos);
 
-				if (te != null && te instanceof TileEntityTurretBase) {
-					TileEntityTurretBase turret = (TileEntityTurretBase) te;
+				if (te != null && te instanceof TileEntityTurretBase turret) {
 
-					if (!turret.isAI) {
+                    if (!turret.isAI) {
 						((TurretBase) worldIn.getBlockState(pos).getBlock()).executeReleaseAction(worldIn, j, entityLiving.rotationYaw, entityLiving.rotationPitch, pos);
 					}
 				}
@@ -206,23 +203,20 @@ public class ItemTurretControl extends Item {
 			if (world.getBlockState(pos).getBlock() instanceof TurretBase) {
 
 				TileEntity te = world.getTileEntity(pos);
-				if (te != null && te instanceof TileEntityTurretBase) {
-					TileEntityTurretBase turret = (TileEntityTurretBase) te;
-					if (!turret.isAI && turret.ammo > 0) {
+				if (te != null && te instanceof TileEntityTurretBase turret) {
+                    if (!turret.isAI && turret.ammo > 0) {
 						if (((TurretBase) world.getBlockState(pos).getBlock()).executeHoldAction(world, stack.getMaxItemUseDuration() - count, mob.rotationYaw, mob.rotationPitch, pos))
 							turret.ammo--;
 					}
 				}
 			}
 
-			if ((world.getBlockState(pos).getBlock() instanceof TurretBaseNT) && (mob instanceof EntityPlayer)) {
-				EntityPlayer player = (EntityPlayer) mob;
-				TileEntity te = world.getTileEntity(pos);
+			if ((world.getBlockState(pos).getBlock() instanceof TurretBaseNT) && (mob instanceof EntityPlayer player)) {
+                TileEntity te = world.getTileEntity(pos);
 
-				if(te != null && te instanceof TileEntityTurretBaseNT) {
-					TileEntityTurretBaseNT turret = (TileEntityTurretBaseNT) te;
+				if(te != null && te instanceof TileEntityTurretBaseNT turret) {
 
-					RayTraceResult rpos = Library.rayTrace(player, 200, 1, true, true, false);
+                    RayTraceResult rpos = Library.rayTrace(player, 200, 1, true, true, false);
 					
 					if(pos == null)
 						rpos = Library.rayTrace(player, 200, 1);

@@ -30,11 +30,10 @@ public class RTGUtil {
 			if(inventory.getStackInSlot(i) == ItemStack.EMPTY)
 				continue;
 			
-			if(!(inventory.getStackInSlot(i).getItem() instanceof ItemRTGPellet))
+			if(!(inventory.getStackInSlot(i).getItem() instanceof ItemRTGPellet pellet))
 				continue;
-			
-			final ItemRTGPellet pellet = (ItemRTGPellet) inventory.getStackInSlot(i).getItem();
-			newHeat += getPower(pellet, inventory.getStackInSlot(i));
+
+            newHeat += getPower(pellet, inventory.getStackInSlot(i));
 			inventory.setStackInSlot(i, ItemRTGPellet.handleDecay(inventory.getStackInSlot(i), pellet));
 		}
 		

@@ -70,29 +70,29 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 		}
 	}
 	
-	private static String[] bookIodine = new String[] {
+	private static final String[] bookIodine = new String[] {
 			"Alright you will not believe this, but old man weathervane finally managed to show up again since he left two weeks ago and what's more surprising is the fact that he actually decided to spill the beans on what they were doing in the canyon:",
 			"Apparently the morons form R&D discovered a compound that is mostly inorganic, pretty much like a toxin in nature, but get this: The dying cells will reproduce said toxin and excete it through the skin, creating an aerosol that is highly contageous.",
 			"It's just like a virus, but not a virus. The composition is weird, you can mix it in any household bottle but you do have to get the order right. The doc told me that the first ingredient which is just §4powdered iodine§r crystals goes into slot §4"
 	};
-	private static String[] bookPhosphorous = new String[] {
+	private static final String[] bookPhosphorous = new String[] {
 			"Heyo, it's me again. I assume you got my last memo, the doc wasn't too happy about it. I'll have to do this quick, the dunderheads from R&D are currently moaning again, probably over money. Again. Anyway, doc weathervane found that the second",
 			"Ingredient is §4red phosphorous powder§r, which has to be mixed into slot §4"
 	};
-	private static String[] bookDust = new String[] {
+	private static final String[] bookDust = new String[] {
 			"The doc was furious when he found out that the R&D dorks kept the one remaining sample, ranting about gross negligence this and a doomsday scenario that. I told him to chill for a minute, getting all worked up isn't good for his blood pressure, not",
 			"that he has much blood left to begin with. One of the R&D morons slipped some more info into last week's circular, they call their little concoction \"§6§lMKU§r\" whatever that means, and that it contains actual household lint. Can you believe that?",
 			"One of the most dangerous inventions of theirs and it contains §4dust§r. Strangely they also mentioned that it goes into slot §4"
 	};
-	private static String[] bookMercury = new String[] {
+	private static final String[] bookMercury = new String[] {
 			"Well that settles that. Not counting the vomitting blood part, the toxicological report mostly resembles that of mercury poisoning. Why? because our little mix also contains mercury! I just wonder where all that stuff comes from when being replicated by the body?", 
 			"Whatever, the §4mercury drop§r goes into slot §4"
 	};
-	private static String[] bookFlower = new String[] {
+	private static final String[] bookFlower = new String[] {
 			"Remember when i mentioned in my first memo that the compound is mostly anorganic? Well guess what, the old man shared the fourth ingredient: Ipomoea nil, a genus of flower. Morning glory! It might be due to its low sulfur content, whatever might be the case,",
 			"it does not work with other flowers. The §4morning glory§r goes into slot §4"
 	};
-	private static String[] bookSyringe = new String[] {
+	private static final String[] bookSyringe = new String[] {
 			"A little addendum to my fifth message, obviously you have to store this MKU stuff in a container. The R&D nuts used regular metal syringes that they got from medical. Surplus ware i presume, they got thousands of needles just lying around.", 
 			"The §4metal syringe§r goes into slot §4"
 	};
@@ -145,7 +145,7 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 		String[] copy = new String[orig.length];
 		
 		for(int i = 0; i < orig.length; i++) {
-			copy[i] = orig[i] + ""; //Strings are reference types and i'm really not counting on my luck here
+			copy[i] = orig[i]; //Strings are reference types and i'm really not counting on my luck here
 		}
 		
 		copy[copy.length - 1] += getSlot(world, ingred);

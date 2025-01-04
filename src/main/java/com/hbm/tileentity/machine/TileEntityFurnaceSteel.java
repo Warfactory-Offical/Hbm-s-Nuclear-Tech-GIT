@@ -36,7 +36,7 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	public int heat;
 	public static final int maxHeat = 100_000;
 	public static final double diffusion = 0.05D;
-	private ItemStack[] lastItems = new ItemStack[3];
+	private final ItemStack[] lastItems = new ItemStack[3];
 	
 	public boolean wasOn = false;
 	    
@@ -192,9 +192,8 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 		BlockPos blockBelow = pos.down();
 		TileEntity con = world.getTileEntity(blockBelow);
 		
-		if(con instanceof IHeatSource) {
-			IHeatSource source = (IHeatSource) con;
-			int diff = source.getHeatStored() - this.heat;
+		if(con instanceof IHeatSource source) {
+            int diff = source.getHeatStored() - this.heat;
 			
 			if(diff == 0) {
 				return;

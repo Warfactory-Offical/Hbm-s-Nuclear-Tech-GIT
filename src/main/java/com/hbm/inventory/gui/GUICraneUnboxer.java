@@ -13,8 +13,8 @@ import java.io.IOException;
 
 public class GUICraneUnboxer extends GuiInfoContainer {
 
-    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_unboxer.png");
-    private TileEntityCraneUnboxer unboxer;
+    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_unboxer.png");
+    private final TileEntityCraneUnboxer unboxer;
 
     public GUICraneUnboxer(InventoryPlayer invPlayer, TileEntityCraneUnboxer tedf) {
         super(new ContainerCraneUnboxer(invPlayer, tedf));

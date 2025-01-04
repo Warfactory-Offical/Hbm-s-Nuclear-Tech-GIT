@@ -29,11 +29,9 @@ public class ItemCounterfitKeys extends Item {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityLockableBase) {
-			
-			TileEntityLockableBase locked = (TileEntityLockableBase) te;
-			
-			if(locked.isLocked()) {
+		if(te instanceof TileEntityLockableBase locked) {
+
+            if(locked.isLocked()) {
 				ItemStack st = new ItemStack(ModItems.key_fake);
 				ItemKeyPin.setPins(st, locked.getPins());
 				

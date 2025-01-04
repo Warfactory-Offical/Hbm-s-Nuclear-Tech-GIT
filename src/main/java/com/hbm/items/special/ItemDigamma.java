@@ -28,9 +28,8 @@ public class ItemDigamma extends ItemHazard {
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
 		super.onUpdate(stack, worldIn, entity, itemSlot, isSelected);
-		if(entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			ContaminationUtil.applyDigammaData(player, 1F / ((float) digamma));
+		if(entity instanceof EntityPlayer player) {
+            ContaminationUtil.applyDigammaData(player, 1F / ((float) digamma));
 		}
 	}
 	

@@ -17,9 +17,9 @@ import net.minecraft.tileentity.TileEntity;
 public class PowerNet implements IPowerNet {
 	
 	private boolean valid = true;
-	private HashMap<Integer, IEnergyConductor> links = new HashMap();
-	private HashMap<Integer, Integer> proxies = new HashMap();
-	private List<IEnergyConnector> subscribers = new ArrayList();
+	private final HashMap<Integer, IEnergyConductor> links = new HashMap();
+	private final HashMap<Integer, Integer> proxies = new HashMap();
+	private final List<IEnergyConnector> subscribers = new ArrayList();
 
 	public static List<PowerNet> trackingInstances = null;
 	protected long totalTransfer = 0;
@@ -204,9 +204,8 @@ public class PowerNet implements IPowerNet {
 				
 				totalGiven += (given - con.transferPower(given));
 
-				if(con instanceof TileEntity) {
-					TileEntity tile = (TileEntity) con;
-					tile.getWorld().markChunkDirty(tile.getPos(), tile);
+				if(con instanceof TileEntity tile) {
+                    tile.getWorld().markChunkDirty(tile.getPos(), tile);
 				}
 			}
 			
@@ -275,9 +274,8 @@ public class PowerNet implements IPowerNet {
 				
 				totalGiven += (given - con.transferPower(given));
 
-				if(con instanceof TileEntity) {
-					TileEntity tile = (TileEntity) con;
-					tile.getWorld().markChunkDirty(tile.getPos(), tile);
+				if(con instanceof TileEntity tile) {
+                    tile.getWorld().markChunkDirty(tile.getPos(), tile);
 				}
 			}
 			

@@ -23,12 +23,10 @@ public class BlockGasMonoxide extends BlockGasBase {
 
 	@Override
 	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
-		if(!(entity instanceof EntityLivingBase))
+		if(!(entity instanceof EntityLivingBase entityLiving))
 			return;
-		
-		EntityLivingBase entityLiving = (EntityLivingBase) entity;
-		
-		if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_MONOXIDE))
+
+        if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_MONOXIDE))
 			ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 		else
 			entityLiving.attackEntityFrom(ModDamageSource.monoxide, 1);

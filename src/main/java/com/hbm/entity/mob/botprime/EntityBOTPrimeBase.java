@@ -20,11 +20,8 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT {
 
 	protected final Predicate<Entity> selector = ent -> {
 
-		if(ent instanceof EntityWormBaseNT && ((EntityWormBaseNT) ent).getHeadID() == EntityBOTPrimeBase.this.getHeadID())
-			return false;
-
-		return true;
-	};
+        return !(ent instanceof EntityWormBaseNT) || ((EntityWormBaseNT) ent).getHeadID() != EntityBOTPrimeBase.this.getHeadID();
+    };
 
 	public EntityBOTPrimeBase(World world) {
 		super(world);
@@ -71,12 +68,10 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT {
 	
 	protected void laserAttack(Entity target, boolean head) {
 
-		if(!(target instanceof EntityLivingBase))
+		if(!(target instanceof EntityLivingBase living))
 			return;
 
-		EntityLivingBase living = (EntityLivingBase) target;
-
-		if(head) {
+        if(head) {
 
 			for(int i = 0; i < 5; i++) {
 
