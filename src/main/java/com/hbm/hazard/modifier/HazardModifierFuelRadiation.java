@@ -1,5 +1,6 @@
 package com.hbm.hazard.modifier;
 
+import com.hbm.hazard.HazardModifier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 

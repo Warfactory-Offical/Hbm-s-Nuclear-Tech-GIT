@@ -423,9 +423,9 @@ public class ModItems {
 	public static final ItemStack billet_zfb_pu241 = new ItemStack(new ItemHazard(ItemHazard.zfb_pu241 * ItemHazard.billet, "billet_zfb_pu241").setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack billet_zirconium = new ItemStack(new ItemBase("billet_zirconium").setCreativeTab(MainRegistry.partsTab));
 
-	public static final Item nugget = NUGGET;
+	//public static final Item nugget = NUGGET;
 
-	public static final ItemStack nugget_mercury = MAT_MERCURY.make(NUGGET); // new ItemStack(new ItemHazard("nugget_mercury").addToxic(2).toItem().setCreativeTab(MainRegistry.partsTab));
+	public static final ItemStack nugget_mercury = new ItemStack(new ItemHazard("nugget_mercury").addToxic(2).toItem().setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack nugget_ac227 = new ItemStack(new ItemHazard(ItemHazard.ac227 * ItemHazard.nugget, "nugget_ac227").setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack nugget_actinium = new ItemStack(new ItemBase("nugget_actinium").setCreativeTab(MainRegistry.partsTab));
 	public static final ItemStack nugget_am_mix = new ItemStack(new ItemHazard(ItemHazard.amrg * ItemHazard.nugget, "nugget_am_mix").setCreativeTab(MainRegistry.partsTab));

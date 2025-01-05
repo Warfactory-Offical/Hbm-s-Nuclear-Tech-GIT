@@ -4,7 +4,7 @@ package com.hbm.items.machine;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
-import com.hbm.util.EnumUtil;
+//import com.hbm.util.EnumUtil;
 import com.hbm.util.function.Function;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;

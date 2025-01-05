@@ -23,10 +23,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
+@SuppressWarnings("ALL") //SHUT
 public class ExplosionNukeRayBatched {
 
-	public HashMap<ChunkPos, BitSet> perChunk = new HashMap<ChunkPos, BitSet>();
-	public List<ChunkPos> orderedChunks = new ArrayList();
+	public HashMap<ChunkPos, BitSet> perChunk = new HashMap<>();
+	public List<ChunkPos> orderedChunks = new ArrayList<>();
 	private final CoordComparator comparator = new CoordComparator();
 	public boolean isContained = true;
 	int posX;
@@ -46,7 +47,7 @@ public class ExplosionNukeRayBatched {
 	private static final int minY = 0;
 
 	public boolean isAusf3Complete = false;
-	public int rayCheckInterval = 100;
+	public int rayCheckInterval;
 
 	public ExplosionNukeRayBatched(World world, int x, int y, int z, int strength, int radius) {
 		this.world = world;
@@ -126,7 +127,7 @@ public class ExplosionNukeRayBatched {
 			// Get Cartesian coordinates for spherical coordinates
 			vec = this.getSpherical2cartesian();
 
-			radius = (int)Math.ceil(this.radius);
+			radius = (int) (double) this.radius;
 			rayStrength = strength * 0.3F;
 
 			//Finding the end of the ray
@@ -149,7 +150,7 @@ public class ExplosionNukeRayBatched {
 				if(b.getExplosionResistance(null) >= 2_000_000)
 					break;
 
-				rayStrength -= Math.pow(getNukeResistance(blockState, b)+1, 3 * ((double) (r = (r > 0) ? r : 1)) / ((double) radius))-1;
+				rayStrength -= (float) (Math.pow(getNukeResistance(blockState, b)+1, 3 * ((double) (r = (r > 0) ? r : 1)) / ((double) radius))-1);
 
 				//save block positions in to-destroy-boolean[] until rayStrength is 0 
 				if(rayStrength > 0){
@@ -200,7 +201,7 @@ public class ExplosionNukeRayBatched {
 			int diff1 = Math.abs((chunkX - (o1.getXStart() >> 4))) + Math.abs((chunkZ - (o1.getZStart() >> 4)));
 			int diff2 = Math.abs((chunkX - (o2.getXStart() >> 4))) + Math.abs((chunkZ - (o2.getZStart() >> 4)));
 			
-			return diff1 > diff2 ? 1 : diff1 < diff2 ? -1 : 0;
+			return Integer.compare(diff1, diff2);
 		}
 	}
 

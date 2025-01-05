@@ -164,14 +164,12 @@ public class HazardSystem {
 		for(int i = 0; i < player.inventory.mainInventory.size(); i++) {
 			
 			ItemStack stack = player.inventory.mainInventory.get(i);
-			if(stack != null) {
-				applyHazards(stack, player);
-				
-				if(stack.isEmpty()) {
-					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-				}
-			}
-		}
+            applyHazards(stack, player);
+
+            if(stack.isEmpty()) {
+                player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+            }
+        }
 		
 		for(ItemStack stack : player.inventory.armorInventory) {
 			if(stack != null) {
@@ -185,10 +183,8 @@ public class HazardSystem {
 		for(int i = 0; i < 6; i++) {
 			ItemStack stack = entity.getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
 
-			if(stack != null) {
-				applyHazards(stack, entity);
-			}
-		}
+            applyHazards(stack, entity);
+        }
 	}
 	
 	@SideOnly(Side.CLIENT)

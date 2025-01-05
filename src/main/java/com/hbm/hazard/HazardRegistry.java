@@ -4,15 +4,7 @@ import static com.hbm.blocks.ModBlocks.*;
 import static com.hbm.items.ModItems.*;
 
 import com.hbm.hazard.transformer.HazardTransformerRadiationNBT;
-import com.hbm.hazard.type.HazardTypeAsbestos;
-import com.hbm.hazard.type.HazardTypeBase;
-import com.hbm.hazard.type.HazardTypeBlinding;
-import com.hbm.hazard.type.HazardTypeCoal;
-import com.hbm.hazard.type.HazardTypeDigamma;
-import com.hbm.hazard.type.HazardTypeExplosive;
-import com.hbm.hazard.type.HazardTypeHot;
-import com.hbm.hazard.type.HazardTypeHydroactive;
-import com.hbm.hazard.type.HazardTypeRadiation;
+import com.hbm.hazard.type.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -92,6 +84,7 @@ public class HazardRegistry {
 	public static final float zfb_pu241 = pu241 * 0.5F;
 	public static final float zfb_am_mix = amrg * 0.5F;
 	public static final float bf = 300_000.0F; //Balefire
+	public static final float radspice = 20_000.0F;
 
 
 	public static final float sr = sa326 * 0.1F; //Scharanium
@@ -102,6 +95,7 @@ public class HazardRegistry {
 	public static final float wstv = 7.5F;
 	public static final float yc = u * 1.2F; //Yellowcake
 	public static final float fo = 10F; //Fallout
+	public static final float ts = 25.0F;
 
 	public static final float nugget = 0.1F;
 	public static final float ingot = 1.0F;
@@ -129,7 +123,8 @@ public class HazardRegistry {
 	public static final HazardTypeBase COAL = new HazardTypeCoal();
 	public static final HazardTypeBase HYDROACTIVE = new HazardTypeHydroactive();
 	public static final HazardTypeBase EXPLOSIVE = new HazardTypeExplosive();
-	
+	public static final HazardTypeBase TOXIC = new HazardTypeToxic();
+
 	public static void registerItems() {
 		
 		HazardSystem.register(Items.GUNPOWDER, makeData(EXPLOSIVE, 1F));

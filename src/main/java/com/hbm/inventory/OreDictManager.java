@@ -33,6 +33,7 @@ import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 //the more i optimize this, the more it starts looking like gregtech
+@SuppressWarnings("unused")
 public class OreDictManager {
 
 	/** Alternate, additional names for ore dict registration. Used mostly for DictGroups */

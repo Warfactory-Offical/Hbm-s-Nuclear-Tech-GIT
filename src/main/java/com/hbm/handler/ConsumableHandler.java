@@ -1,5 +1,4 @@
 package com.hbm.handler;
-import com.hbm.main.MainRegistry;
 import com.hbm.util.ItemStackUtil;
 
 import com.hbm.capability.HbmLivingProps;
@@ -62,9 +61,7 @@ public class ConsumableHandler {
     }
 
     private static TriConsumer<ItemStack, EntityPlayer, EntityLivingBase> hitAction(Consumer<Context> consumer) {
-        return (stack, attacker, target)->{
-            consumer.accept(new Context(target.world, attacker, target, EnumHand.MAIN_HAND));
-        };
+        return (stack, attacker, target)-> consumer.accept(new Context(target.world, attacker, target, EnumHand.MAIN_HAND));
     }
 
 
@@ -79,7 +76,8 @@ public class ConsumableHandler {
         return context.getActionResult();
     }
 
-    public static boolean handleHit(ItemStack stack,  EntityPlayer player, EntityLivingBase target ){
+    @SuppressWarnings("SameReturnValue") //It should always return false
+    public static boolean handleHit(ItemStack stack, EntityPlayer player, EntityLivingBase target ){
         if(!hitActions.containsKey(stack.getItem()))
             return false;
         hitActions.get(stack.getItem()).accept(stack, player, target);

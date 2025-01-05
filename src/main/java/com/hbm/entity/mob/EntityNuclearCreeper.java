@@ -33,6 +33,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +80,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean attackEntityFrom(@NotNull DamageSource source, float amount) {
 
         if (source == ModDamageSource.radiation || source == ModDamageSource.mudPoisoning) {
             this.heal(amount);
@@ -130,7 +131,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(@NotNull NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
 
         if (this.dataManager.get(POWERED)) {
@@ -146,7 +147,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-    public void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(@NotNull NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.dataManager.set(POWERED, compound.getBoolean("powered"));
 
@@ -210,7 +211,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
      * Returns the sound this mob makes when it is hurt.
      */
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_CREEPER_HURT;
     }
 
@@ -218,7 +219,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
      * Returns the sound this mob makes on death.
      */
     @Override
-    protected SoundEvent getDeathSound() {
+    protected @NotNull SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_CREEPER_DEATH;
     }
 
@@ -226,7 +227,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
      * Called when the mob's health reaches 0.
      */
     @Override
-    public void onDeath(DamageSource damageSource) {
+    public void onDeath(@NotNull DamageSource damageSource) {
         super.onDeath(damageSource);
 
         List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(10, 10, 10));
@@ -277,7 +278,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 
 
     @Override
-    public boolean attackEntityAsMob(Entity p_70652_1_) {
+    public boolean attackEntityAsMob(@NotNull Entity p_70652_1_) {
         return true;
     }
 
@@ -324,7 +325,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
      * Called when a lightning bolt hits the entity.
      */
     @Override
-    public void onStruckByLightning(EntityLightningBolt p_70077_1_) {
+    public void onStruckByLightning(@NotNull EntityLightningBolt p_70077_1_) {
         super.onStruckByLightning(p_70077_1_);
         this.dataManager.set(POWERED, Boolean.TRUE);
     }
@@ -334,10 +335,10 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
      * gets into the saddle on a pig.
      */
     @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+    protected boolean processInteract(EntityPlayer player, @NotNull EnumHand hand) {
         ItemStack itemstack = player.inventory.getCurrentItem();
 
-        if (itemstack != null && itemstack.getItem() == Items.FLINT_AND_STEEL) {
+        if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
             this.world.playSound(null, this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
             player.swingArm(hand);
 
