@@ -17,6 +17,7 @@ public class HBMMaterialIconType {
     static int idCounter = 0;
 
     public static final HBMMaterialIconType ingot = new HBMMaterialIconType("ingot");
+    public static final HBMMaterialIconType nugget = new HBMMaterialIconType("nugget");
 
     public final String name;
     public final int id;

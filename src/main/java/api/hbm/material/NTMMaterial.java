@@ -26,6 +26,7 @@ public class NTMMaterial {
 	public int solidColorLight = 0xFF4A00;
 	public int solidColorDark = 0x802000;
 	public int moltenColor = 0xFF4A00;
+	public final NTMMaterialFlags materialFlags;
 	public final ResourceLocation resourceLocation;
 
 	public NTMMaterial smeltsInto;
