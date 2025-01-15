@@ -21,26 +21,25 @@ public class MaterialPrefix {
     public static final long M = 3628800;
     static int idCounter;
 
-
-
+    //ADD HERE IF YOU WANT NEW SHAPES
     public final static MaterialPrefix INGOT = new MaterialPrefix("ingot", M, HBMMaterialIconType.ingot, Predicates.alwaysTrue(), hasOreProperty, null);
     public static final MaterialPrefix NUGGET = new MaterialPrefix("nugget", M/9, HBMMaterialIconType.nugget, Predicates.alwaysTrue(), ntmMaterial -> ntmMaterial.hasFlag(NUGGET), null );
-    public static final MaterialPrefix FRAGMENT = new MaterialPrefix("fragment", M/9, HBMMaterialIconType.fragment, ntmMaterial -> ntmMaterial.hasFlag(FRAGMENT) && !ntmMaterial.hasFlag(NUGGET));
-    public static final MaterialPrefix DUSTTINY = new MaterialPrefix("powder_tiny", M/9, HBMMaterialIconType.dustTiny,  hasPowderProperty);
-    public static final MaterialPrefix WIRE = new MaterialPrefix("wire", M/8, HBMMaterialIconType.wire, ntmMaterial -> ntmMaterial.hasFlag(WIRE));
-    public static final MaterialPrefix DENSEWIRE = new MaterialPrefix("dense_wire",  M, HBMMaterialIconType.denseWire, ntmMaterial -> ntmMaterial.hasFlag(DENSE_WIRE));
-    public static final MaterialPrefix BILLET = new MaterialPrefix("billet", M/6, HBMMaterialIconType.billet, ntmMaterial -> ntmMaterial.materialFlags.hasFlag(BILLET));
-    public static final MaterialPrefix GEM = new MaterialPrefix("gem", M, HBMMaterialIconType.gem, hasGemProperty);
-    public static final MaterialPrefix CRYSTAL = new MaterialPrefix("crystal", 2*M, HBMMaterialIconType.crystal, hasOreProperty); //TODO: implement has ore for this one
-    public static final MaterialPrefix DUST = new MaterialPrefix("powder", M, HBMMaterialIconType.powder, hasPowderProperty);
-    public static final MaterialPrefix PLATE = new MaterialPrefix("plate", M, HBMMaterialIconType.plate, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(PLATE)));
-    public static final MaterialPrefix CASTPLATE = new MaterialPrefix("cast_plate", 3*M, HBMMaterialIconType.castPlate, hasIngotProperty.and(ntmMaterial -> ntmMaterial.materialFlags.hasFlag(CAST_PLATE)));
-    public static final MaterialPrefix WELDEDPLATE = new MaterialPrefix("welded_plate", M*6, HBMMaterialIconType.weldedPlate, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(WELDED_PLATE)));
-    public static final MaterialPrefix SHELL = new MaterialPrefix("shell", M*4, HBMMaterialIconType.shell, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(SHELL)));
-    public static final MaterialPrefix PIPE = new MaterialPrefix("ntmpipe", M*3, HBMMaterialIconType.pipe, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(PIPE)));
-    public static final MaterialPrefix BLOCK = new MaterialPrefix("block", M*9, HBMMaterialIconType.block, hasIngotProperty.or(ntmMaterial -> ntmMaterial.hasFlag(BLOCK)));
-    public static final MaterialPrefix HEAVY_COMPONENT = new MaterialPrefix("heavy_component", M*(256*3), HBMMaterialIconType.heavyComponent, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(CASTPLATE)));
-    public static final MaterialPrefix BOLT = new MaterialPrefix("bolt", M/8, HBMMaterialIconType.bolt, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(BOLT)));
+    public static final MaterialPrefix FRAGMENT = new MaterialPrefix("fragment", M/9, HBMMaterialIconType.fragment, ntmMaterial -> ntmMaterial.hasFlag(FRAGMENT) && !ntmMaterial.hasFlag(NUGGET), null);
+    public static final MaterialPrefix DUSTTINY = new MaterialPrefix("powder_tiny", M/9, HBMMaterialIconType.dustTiny,  hasPowderProperty, null);
+    public static final MaterialPrefix WIRE = new MaterialPrefix("wire", M/8, HBMMaterialIconType.wire, ntmMaterial -> ntmMaterial.hasFlag(WIRE), null);
+    public static final MaterialPrefix DENSEWIRE = new MaterialPrefix("dense_wire",  M, HBMMaterialIconType.denseWire, ntmMaterial -> ntmMaterial.hasFlag(DENSE_WIRE), null);
+    public static final MaterialPrefix BILLET = new MaterialPrefix("billet", M/6, HBMMaterialIconType.billet, ntmMaterial -> ntmMaterial.materialFlags.hasFlag(BILLET), null);
+    public static final MaterialPrefix GEM = new MaterialPrefix("gem", M, HBMMaterialIconType.gem, hasGemProperty, null);
+    public static final MaterialPrefix CRYSTAL = new MaterialPrefix("crystal", 2*M, HBMMaterialIconType.crystal, hasOreProperty, null); //TODO: implement has ore for this one
+    public static final MaterialPrefix DUST = new MaterialPrefix("powder", M, HBMMaterialIconType.powder, hasPowderProperty, null);
+    public static final MaterialPrefix PLATE = new MaterialPrefix("plate", M, HBMMaterialIconType.plate, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(PLATE)), null);
+    public static final MaterialPrefix CASTPLATE = new MaterialPrefix("cast_plate", 3*M, HBMMaterialIconType.castPlate, hasIngotProperty.and(ntmMaterial -> ntmMaterial.materialFlags.hasFlag(CAST_PLATE)), null);
+    public static final MaterialPrefix WELDEDPLATE = new MaterialPrefix("welded_plate", M*6, HBMMaterialIconType.weldedPlate, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(WELDED_PLATE)), null);
+    public static final MaterialPrefix SHELL = new MaterialPrefix("shell", M*4, HBMMaterialIconType.shell, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(SHELL)), null);
+    public static final MaterialPrefix PIPE = new MaterialPrefix("ntmpipe", M*3, HBMMaterialIconType.pipe, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(PIPE)),  null);
+    public static final MaterialPrefix BLOCK = new MaterialPrefix("block", M*9, HBMMaterialIconType.block, hasIngotProperty.or(ntmMaterial -> ntmMaterial.hasFlag(BLOCK)), null);
+    public static final MaterialPrefix HEAVY_COMPONENT = new MaterialPrefix("heavy_component", M*(256*3), HBMMaterialIconType.heavyComponent, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(CASTPLATE)), null);
+    public static final MaterialPrefix BOLT = new MaterialPrefix("bolt", M/8, HBMMaterialIconType.bolt, hasIngotProperty.and(ntmMaterial -> ntmMaterial.hasFlag(BOLT)), null);
 
 //    public static final MaterialPrefix QUANTUM = new MaterialPrefix("quantum", M/72, HBMMaterialIconType.quantum, Predicates.alwaysTrue(), null); // 1/72 of an ingot, allows the ingot to be divisible through 2, 4, 6, 8, 9, 12, 24 and 36 (idk why we need it)
 //    public static final MaterialPrefix QUART = new MaterialPrefix("quart", null, 162, "quart"); cant find it in game?

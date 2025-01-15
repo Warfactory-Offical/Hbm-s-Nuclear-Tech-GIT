@@ -18,6 +18,23 @@ public class HBMMaterialIconType {
 
     public static final HBMMaterialIconType ingot = new HBMMaterialIconType("ingot");
     public static final HBMMaterialIconType nugget = new HBMMaterialIconType("nugget");
+    public static final HBMMaterialIconType fragment = new HBMMaterialIconType("fragment");
+    public static final HBMMaterialIconType dustTiny = new HBMMaterialIconType("dustTiny");
+    public static final HBMMaterialIconType wire = new HBMMaterialIconType("wire");
+    public static final HBMMaterialIconType denseWire = new HBMMaterialIconType("denseWire");
+    public static final HBMMaterialIconType billet = new HBMMaterialIconType("billet");
+    public static final HBMMaterialIconType gem = new HBMMaterialIconType("gem");
+    public static final HBMMaterialIconType crystal = new HBMMaterialIconType("crystal");
+    public static final HBMMaterialIconType powder = new HBMMaterialIconType("powder");
+    public static final HBMMaterialIconType plate = new HBMMaterialIconType("plate");
+    public static final HBMMaterialIconType castPlate = new HBMMaterialIconType("castPlate");
+    public static final HBMMaterialIconType weldedPlate = new HBMMaterialIconType("weldedPlate");
+    public static final HBMMaterialIconType shell = new HBMMaterialIconType("shell");
+    public static final HBMMaterialIconType pipe = new HBMMaterialIconType("pipe");
+    public static final HBMMaterialIconType block = new HBMMaterialIconType("block");
+    public static final HBMMaterialIconType heavyComponent = new HBMMaterialIconType("heavyComponent");
+    public static final HBMMaterialIconType bolt = new HBMMaterialIconType("bolt");
+
 
     public final String name;
     public final int id;
