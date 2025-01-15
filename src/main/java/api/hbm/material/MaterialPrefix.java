@@ -8,6 +8,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import static api.hbm.material.MaterialPrefix.Conditions.*;
 
 import java.util.*;
 import java.util.function.Function;
@@ -21,11 +22,6 @@ public class MaterialPrefix {
     static int idCounter;
 
 
-    public static final Predicate<NTMMaterial> hasOreProperty = mat -> mat.hasProperty(PropertyKey.ORE);
-    public static final Predicate<NTMMaterial> hasGemProperty = mat -> mat.hasProperty(PropertyKey.GEM);
-    public static final Predicate<NTMMaterial> hasPowderProperty = mat -> mat.hasProperty(PropertyKey.POWDER);
-    public static final Predicate<NTMMaterial> hasIngotProperty = mat -> mat.hasProperty(PropertyKey.INGOT);
-    public static final Predicate<NTMMaterial> hasBedrockOreProperty = mat -> mat.hasProperty(PropertyKey.BEDROCK_ORE);
 
     public final static MaterialPrefix INGOT = new MaterialPrefix("ingot", M, HBMMaterialIconType.ingot, Predicates.alwaysTrue(), hasOreProperty, null);
     public static final MaterialPrefix NUGGET = new MaterialPrefix("nugget", M/9, HBMMaterialIconType.nugget, Predicates.alwaysTrue(), ntmMaterial -> ntmMaterial.hasFlag(NUGGET), null );
@@ -123,7 +119,11 @@ public class MaterialPrefix {
     }
 
     public static class Conditions {
-        public static final Predicate<Material> hasIngotProperty = mat -> mat.hasProperty(PropertyKey.INGOT);
+        public static final Predicate<NTMMaterial> hasOreProperty = ntmMaterial -> ntmMaterial.hasProperty(PropertyKey.ORE);
+        public static final Predicate<NTMMaterial> hasGemProperty = ntmMaterial -> ntmMaterial.hasProperty(PropertyKey.GEM);
+        public static final Predicate<NTMMaterial> hasPowderProperty = ntmMaterial -> ntmMaterial.hasProperty(PropertyKey.POWDER);
+        public static final Predicate<NTMMaterial> hasIngotProperty = ntmMaterial -> ntmMaterial.hasProperty(PropertyKey.INGOT);
+        public static final Predicate<NTMMaterial> hasBedrockOreProperty = ntmMaterial -> ntmMaterial.hasProperty(PropertyKey.BEDROCK_ORE);
     }
 
     @Override
