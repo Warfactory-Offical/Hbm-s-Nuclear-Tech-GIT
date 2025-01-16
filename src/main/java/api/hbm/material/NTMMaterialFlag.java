@@ -1,6 +1,5 @@
-package api.hbm.material.info;
+package api.hbm.material;
 
-import com.hbm.main.MainRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 import java.util.Arrays;
@@ -9,31 +8,33 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
-public class MaterialFlags {
-    private static final Set<MaterialFlag> FLAG_REGISTRY = new HashSet<>();
+public class NTMMaterialFlag {
 
     private final String name;
 
-    private final Set<MaterialFlag> requiredFlags;
+    private final Set<NTMMaterialFlag> requiredFlags;
     private final Set<PropertyKey<?>> requiredProperties;
 
-    private MaterialFlag(String name, Set<MaterialFlag> requiredFlags, Set<PropertyKey<?>> requiredProperties) {
+    private NTMMaterialFlag(String name, Set<NTMMaterialFlag> requiredFlags, Set<PropertyKey<?>> requiredProperties) {
         this.name = name;
         this.requiredFlags = requiredFlags;
         this.requiredProperties = requiredProperties;
         FLAG_REGISTRY.add(this);
     }
 
-    protected Set<MaterialFlag> verifyFlag(Material material) {
+    public static NTMMaterialFlag getByName(String name) {
+        return FLAG_REGISTRY.stream().filter(f -> f.toString().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    protected Set<NTMMaterialFlag> verifyFlag(Material material) {
         requiredProperties.forEach(key -> {
             if (!material.hasProperty(key)) {
-                MainRegistry.logger.warn("Material {} does not have required property {} for flag {}!",
+                GTLog.logger.warn("Material {} does not have required property {} for flag {}!",
                         material.getUnlocalizedName(), key.toString(), this.name);
             }
         });
 
-        Set<MaterialFlag> thisAndDependencies = new HashSet<>(requiredFlags);
+        Set<NTMMaterialFlag> thisAndDependencies = new HashSet<>(requiredFlags);
         thisAndDependencies.addAll(requiredFlags.stream()
                 .map(f -> f.verifyFlag(material))
                 .flatMap(Collection::stream)
@@ -47,15 +48,11 @@ public class MaterialFlags {
         return this.name;
     }
 
-    public static MaterialFlag getByName(String name) {
-        return FLAG_REGISTRY.stream().filter(f -> f.toString().equalsIgnoreCase(name)).findFirst().orElse(null);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MaterialFlag that = (MaterialFlag) o;
+        NTMMaterialFlag that = (NTMMaterialFlag) o;
         return name.equals(that.name);
     }
 
@@ -68,14 +65,14 @@ public class MaterialFlags {
 
         final String name;
 
-        final Set<MaterialFlag> requiredFlags = new ObjectOpenHashSet<>();
+        final Set<NTMMaterialFlag> requiredFlags = new ObjectOpenHashSet<>();
         final Set<PropertyKey<?>> requiredProperties = new ObjectOpenHashSet<>();
 
         public Builder(String name) {
             this.name = name;
         }
 
-        public Builder requireFlags(MaterialFlag... flags) {
+        public Builder requireFlags(NTMMaterialFlag... flags) {
             requiredFlags.addAll(Arrays.asList(flags));
             return this;
         }
@@ -85,8 +82,8 @@ public class MaterialFlags {
             return this;
         }
 
-        public MaterialFlag build() {
-            return new MaterialFlag(name, requiredFlags, requiredProperties);
+        public NTMMaterialFlag build() {
+            return new NTMMaterialFlag(name, requiredFlags, requiredProperties);
         }
     }
 }
