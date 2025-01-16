@@ -1,5 +1,6 @@
 package api.hbm.material;
 
+import api.hbm.material.properties.PropertyKey;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 import java.util.Arrays;
