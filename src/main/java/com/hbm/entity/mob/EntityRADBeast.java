@@ -1,4 +1,5 @@
 package com.hbm.entity.mob;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
@@ -18,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -212,7 +212,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         super.dropLoot(wasRecentlyHit, looting, source);
         if(looting > 0) {
-                this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget_polonium, looting), 0);
+                this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.POLONIUM), looting), 0);
             }
             
         int count = this.rand.nextInt(3) + 1;

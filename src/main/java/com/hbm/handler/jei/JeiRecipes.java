@@ -1,4 +1,5 @@
 package com.hbm.handler.jei;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -8,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.hbm.blocks.ModBlocks;
-import com.hbm.config.GeneralConfig;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.forgefluid.SpecialContainerFillLists.EnumCell;
 import com.hbm.forgefluid.SpecialContainerFillLists.EnumCanister;
@@ -42,10 +41,8 @@ import com.hbm.inventory.MagicRecipes.MagicRecipe;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.NbtComparableStack;
-import com.hbm.inventory.ChemplantRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemAssemblyTemplate;
-import com.hbm.items.machine.ItemChemistryTemplate;
 import com.hbm.items.machine.ItemFluidIcon;
 import com.hbm.items.machine.ItemFluidTank;
 import com.hbm.items.machine.ItemFELCrystal.EnumWavelengths;
@@ -53,7 +50,6 @@ import com.hbm.items.special.ItemCell;
 import com.hbm.items.tool.ItemFluidCanister;
 import com.hbm.items.tool.ItemGasCanister;
 import com.hbm.lib.Library;
-import com.hbm.main.MainRegistry;
 import com.hbm.util.WeightedRandomObject;
 import com.hbm.util.Tuple.Quartet;
 import com.hbm.util.Tuple.Pair;
@@ -66,8 +62,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -865,8 +859,8 @@ public class JeiRecipes {
 			return cmbRecipes;
 		cmbRecipes = new ArrayList<CMBFurnaceRecipe>();
 		
-		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy), ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten)), ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel, 4)));
-		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.powder_advanced_alloy), ItemStackUtil.itemStackFrom(ModItems.powder_magnetized_tungsten)), ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel, 4)));
+		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN))), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL), 4)));
+		cmbRecipes.add(new CMBFurnaceRecipe(Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.powder_advanced_alloy), ItemStackUtil.itemStackFrom(ModItems.powder_magnetized_tungsten)), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL), 4)));
 		
 		return cmbRecipes;
 	}

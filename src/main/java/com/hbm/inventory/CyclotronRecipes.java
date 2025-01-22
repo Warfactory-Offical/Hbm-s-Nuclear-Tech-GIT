@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.LinkedHashMap;
@@ -98,7 +99,7 @@ public class CyclotronRecipes {
 
 		makeRecipe(plutonium, plAmat, PU.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_tennessine), plA);
 		makeRecipe(plutonium, plAmat, ItemStackUtil.comparableStackFrom(ModItems.powder_tennessine), ItemStackUtil.itemStackFrom(ModItems.powder_reiium), plA);
-		makeRecipe(plutonium, plAmat, ItemStackUtil.comparableStackFrom(ModItems.pellet_charged), ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 6), 200);
+		makeRecipe(plutonium, plAmat, ItemStackUtil.comparableStackFrom(ModItems.pellet_charged), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 6), 200);
 		makeRecipe(plutonium, plAmat, new NbtComparableStack(ItemCell.getFullCell(ModForgeFluids.amat)), ItemCell.getFullCell(ModForgeFluids.aschrab), 0);
 		/// PLUTONIUM END ///
 

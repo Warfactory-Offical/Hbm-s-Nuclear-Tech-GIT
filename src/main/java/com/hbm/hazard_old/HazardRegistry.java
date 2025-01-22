@@ -1,4 +1,5 @@
 package com.hbm.hazard_old;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import static com.hbm.blocks.ModBlocks.*;
@@ -349,52 +350,52 @@ public class HazardRegistry {
 //		HazardSystem.register(debris_shrapnel, makeData(RADIATION, 2.5F));
 //		HazardSystem.register(debris_element, makeData(RADIATION, 100F));
 		
-		HazardSystem.register(nugget_uranium_fuel, makeData(RADIATION, uf * nugget));
-		HazardSystem.register(billet_uranium_fuel, makeData(RADIATION, uf * billet));
-		HazardSystem.register(ingot_uranium_fuel, makeData(RADIATION, uf * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), makeData(RADIATION, uf * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), makeData(RADIATION, uf * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), makeData(RADIATION, uf * ingot));
 		HazardSystem.register(block_uranium_fuel, makeData(RADIATION, uf * block));
 		
-		HazardSystem.register(nugget_plutonium_fuel, makeData(RADIATION, puf * nugget));
-		HazardSystem.register(billet_plutonium_fuel, makeData(RADIATION, puf * billet));
-		HazardSystem.register(ingot_plutonium_fuel, makeData(RADIATION, puf * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), makeData(RADIATION, puf * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), makeData(RADIATION, puf * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), makeData(RADIATION, puf * ingot));
 		HazardSystem.register(block_plutonium_fuel, makeData(RADIATION, puf * block));
 		
-		HazardSystem.register(nugget_thorium_fuel, makeData(RADIATION, thf * nugget));
-		HazardSystem.register(billet_thorium_fuel, makeData(RADIATION, thf * billet));
-		HazardSystem.register(ingot_thorium_fuel, makeData(RADIATION, thf * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), makeData(RADIATION, thf * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), makeData(RADIATION, thf * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), makeData(RADIATION, thf * ingot));
 		HazardSystem.register(block_thorium_fuel, makeData(RADIATION, thf * block));
 		
-		HazardSystem.register(nugget_neptunium_fuel, makeData(RADIATION, npf * nugget));
-		HazardSystem.register(billet_neptunium_fuel, makeData(RADIATION, npf * billet));
-		HazardSystem.register(ingot_neptunium_fuel, makeData(RADIATION, npf * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), makeData(RADIATION, npf * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), makeData(RADIATION, npf * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), makeData(RADIATION, npf * ingot));
 		
-		HazardSystem.register(nugget_mox_fuel, makeData(RADIATION, mox * nugget));
-		HazardSystem.register(billet_mox_fuel, makeData(RADIATION, mox * billet));
-		HazardSystem.register(ingot_mox_fuel, makeData(RADIATION, mox * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), makeData(RADIATION, mox * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), makeData(RADIATION, mox * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), makeData(RADIATION, mox * ingot));
 		HazardSystem.register(block_mox_fuel, makeData(RADIATION, mox * block));
 		
-		HazardSystem.register(nugget_americium_fuel, makeData(RADIATION, amf * nugget));
-		HazardSystem.register(billet_americium_fuel, makeData(RADIATION, amf * billet));
-		HazardSystem.register(ingot_americium_fuel, makeData(RADIATION, amf * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.AMERICIUM_FUEL), makeData(RADIATION, amf * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), makeData(RADIATION, amf * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.AMERICIUM_FUEL), makeData(RADIATION, amf * ingot));
 		
-		HazardSystem.register(nugget_schrabidium_fuel, makeData().addEntry(RADIATION, saf * nugget).addEntry(BLINDING, 5F * nugget));
-		HazardSystem.register(billet_schrabidium_fuel, makeData().addEntry(RADIATION, saf * billet).addEntry(BLINDING, 5F * billet));
-		HazardSystem.register(ingot_schrabidium_fuel, makeData().addEntry(RADIATION, saf * ingot).addEntry(BLINDING, 5F * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), makeData().addEntry(RADIATION, saf * nugget).addEntry(BLINDING, 5F * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), makeData().addEntry(RADIATION, saf * billet).addEntry(BLINDING, 5F * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), makeData().addEntry(RADIATION, saf * ingot).addEntry(BLINDING, 5F * ingot));
 		HazardSystem.register(block_schrabidium_fuel, makeData().addEntry(RADIATION, saf * block).addEntry(BLINDING, 5F * block));
 		
-		HazardSystem.register(nugget_hes, makeData(RADIATION, saf * nugget));
-		HazardSystem.register(billet_hes, makeData(RADIATION, saf * billet));
-		HazardSystem.register(ingot_hes, makeData(RADIATION, saf * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.HES), makeData(RADIATION, saf * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.HES), makeData(RADIATION, saf * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.HES), makeData(RADIATION, saf * ingot));
 		
-		HazardSystem.register(nugget_les, makeData(RADIATION, saf * nugget));
-		HazardSystem.register(billet_les, makeData(RADIATION, saf * billet));
-		HazardSystem.register(ingot_les, makeData(RADIATION, saf * ingot));
+		HazardSystem.register(ModItems.nugget.getItemStack(MaterialMineral.LES), makeData(RADIATION, saf * nugget));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.LES), makeData(RADIATION, saf * billet));
+		HazardSystem.register(ModItems.ingot.getItemStack(MaterialMineral.LES), makeData(RADIATION, saf * ingot));
 
-		HazardSystem.register(billet_balefire_gold, makeData(RADIATION, au198 * billet));
-		HazardSystem.register(billet_flashlead, makeData().addEntry(RADIATION, pb209 * 1.25F * billet).addEntry(HOT, 7F));
-		HazardSystem.register(billet_po210be, makeData(RADIATION, pobe * billet));
-		HazardSystem.register(billet_ra226be, makeData(RADIATION, rabe * billet));
-		HazardSystem.register(billet_pu238be, makeData(RADIATION, pube * billet));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.BALEFIRE_GOLD), makeData(RADIATION, au198 * billet));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.FLASHLEAD), makeData().addEntry(RADIATION, pb209 * 1.25F * billet).addEntry(HOT, 7F));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.PO210BE), makeData(RADIATION, pobe * billet));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.RA226BE), makeData(RADIATION, rabe * billet));
+		HazardSystem.register(ModItems.billet.getItemStack(MaterialMineral.PU238BE), makeData(RADIATION, pube * billet));
 		
 		registerRTGPellet(pellet_rtg, pu238 * rtg, 0, 3F);
 		registerRTGPellet(pellet_rtg_radium, ra226 * rtg, 0);

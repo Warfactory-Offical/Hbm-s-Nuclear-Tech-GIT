@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -45,10 +46,10 @@ public class MagicRecipes {
 
 	public static void register() {
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2, 1, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2, 1, 2), ItemStackUtil.comparableStackFrom(ModItems.ingot_u238m2, 1, 3)));
-		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.rod_of_discord), ItemStackUtil.comparableStackFrom(Items.ENDER_PEARL), ItemStackUtil.comparableStackFrom(ModItems.nugget_euphemium), ItemStackUtil.comparableStackFrom(Items.BLAZE_ROD)));
+		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.rod_of_discord), ItemStackUtil.comparableStackFrom(Items.ENDER_PEARL), ItemStackUtil.comparableStackFrom(ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM)), ItemStackUtil.comparableStackFrom(Items.BLAZE_ROD)));
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.balefire_and_steel), new OreDictStack(STEEL.ingot()), ItemStackUtil.comparableStackFrom(ModItems.egg_balefire_shard)));
-		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.mysteryshovel), ItemStackUtil.comparableStackFrom(Items.IRON_SHOVEL), ItemStackUtil.comparableStackFrom(Items.BONE), ItemStackUtil.comparableStackFrom(ModItems.ingot_starmetal), ItemStackUtil.comparableStackFrom(ModItems.ducttape)));
-		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.ingot_electronium), ItemStackUtil.comparableStackFrom(ModItems.pellet_charged), ItemStackUtil.comparableStackFrom(ModItems.pellet_charged), new OreDictStack(DNT.ingot()), new OreDictStack(DNT.ingot())));
+		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.mysteryshovel), ItemStackUtil.comparableStackFrom(Items.IRON_SHOVEL), ItemStackUtil.comparableStackFrom(Items.BONE), ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STARMETAL)), ItemStackUtil.comparableStackFrom(ModItems.ducttape)));
+		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ELECTRONIUM)), ItemStackUtil.comparableStackFrom(ModItems.pellet_charged), ItemStackUtil.comparableStackFrom(ModItems.pellet_charged), new OreDictStack(DNT.ingot()), new OreDictStack(DNT.ingot())));
 
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.ammo_44_pip),
 				ItemStackUtil.comparableStackFrom(ModItems.ammo_44),
@@ -64,7 +65,7 @@ public class MagicRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.ammo_44),
 				ItemStackUtil.comparableStackFrom(ModItems.powder_magic),
 				ItemStackUtil.comparableStackFrom(ModItems.powder_magic),
-				ItemStackUtil.comparableStackFrom(ModItems.ingot_starmetal)));
+				ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STARMETAL))));
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.gun_bf),
 				ItemStackUtil.comparableStackFrom(ModItems.gun_fatman),
 				ItemStackUtil.comparableStackFrom(ModItems.egg_balefire_shard),
@@ -88,7 +89,7 @@ public class MagicRecipes {
 		recipes.add(new MagicRecipe(ItemStackUtil.itemStackFrom(ModItems.gun_darter),
 				new OreDictStack(STEEL.plate()),
 				new OreDictStack(STEEL.plate()),
-				ItemStackUtil.comparableStackFrom(ModItems.ingot_polymer),
+				ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER)),
 				new OreDictStack(GOLD.plate())));
 	}
 

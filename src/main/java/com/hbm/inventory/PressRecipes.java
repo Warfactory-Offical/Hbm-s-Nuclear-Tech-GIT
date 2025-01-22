@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -9,8 +10,6 @@ import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.util.Tuple.Pair;
 import com.hbm.items.ModItems;
 import com.hbm.inventory.RecipesCommon.AStack;
-import com.hbm.inventory.RecipesCommon.NbtComparableStack;
-import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 
 import net.minecraft.init.Blocks;
@@ -54,7 +53,7 @@ public class PressRecipes {
 		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(ModItems.biomass), ItemStackUtil.itemStackFrom(ModItems.biomass_compressed)); 
 		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(ModItems.powder_lignite), ItemStackUtil.itemStackFrom(ModItems.briquette_lignite)); 
 		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(ModItems.meteorite_sword_reforged), ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_hardened)); 
-		addRecipe(PressType.FLAT, new OreDictStack("fuelCoke"), ItemStackUtil.itemStackFrom(ModItems.ingot_graphite));
+		addRecipe(PressType.FLAT, new OreDictStack("fuelCoke"), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.GRAPHITE)));
 		addRecipe(PressType.FLAT, new OreDictStack("sugarcane"), ItemStackUtil.itemStackFrom(Items.PAPER, 2));
 		addRecipe(PressType.FLAT, ItemStackUtil.comparableStackFrom(Blocks.LOG, 1, 3), ItemStackUtil.itemStackFrom(ModItems.ball_resin, 1));
 

@@ -8,6 +8,7 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.interfaces.IBulletHurtBehavior;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.items.weapon.ItemGunDart;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
@@ -78,7 +79,7 @@ public class GunDartFactory {
 
 				if(hit instanceof EntityPlayer) {
 
-					if(Library.hasInventoryItem(((EntityPlayer) hit).inventory, ModItems.ingot_meteorite_forged))
+					if(Library.hasInventoryItem(((EntityPlayer) hit).inventory, ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)))
 						return;
 
 					if(bullet.shooter instanceof EntityPlayer) {

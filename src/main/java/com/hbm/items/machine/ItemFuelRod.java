@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
@@ -82,25 +83,25 @@ public class ItemFuelRod extends ItemHazard {
     }
 
     public ItemStack getUncrafting(){
-    	if(this == ModItems.rod_uranium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_uranium_fuel);
-    	if(this == ModItems.rod_dual_uranium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_uranium_fuel, 2);
-    	if(this == ModItems.rod_quad_uranium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_uranium_fuel, 4);
+    	if(this == ModItems.rod_uranium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL));
+    	if(this == ModItems.rod_dual_uranium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), 2);
+    	if(this == ModItems.rod_quad_uranium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), 4);
     	
-    	if(this == ModItems.rod_thorium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_thorium_fuel);
-    	if(this == ModItems.rod_dual_thorium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_thorium_fuel, 2);
-    	if(this == ModItems.rod_quad_thorium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_thorium_fuel, 4);
+    	if(this == ModItems.rod_thorium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL));
+    	if(this == ModItems.rod_dual_thorium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), 2);
+    	if(this == ModItems.rod_quad_thorium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), 4);
     	
-    	if(this == ModItems.rod_plutonium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_plutonium_fuel);
-    	if(this == ModItems.rod_dual_plutonium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_plutonium_fuel, 2);
-    	if(this == ModItems.rod_quad_plutonium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_plutonium_fuel, 4);
+    	if(this == ModItems.rod_plutonium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
+    	if(this == ModItems.rod_dual_plutonium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 2);
+    	if(this == ModItems.rod_quad_plutonium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 4);
     	
-    	if(this == ModItems.rod_mox_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_mox_fuel);
-    	if(this == ModItems.rod_dual_mox_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_mox_fuel, 2);
-    	if(this == ModItems.rod_quad_mox_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_mox_fuel, 4);
+    	if(this == ModItems.rod_mox_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL));
+    	if(this == ModItems.rod_dual_mox_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), 2);
+    	if(this == ModItems.rod_quad_mox_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), 4);
     	
-    	if(this == ModItems.rod_schrabidium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_schrabidium_fuel);
-    	if(this == ModItems.rod_dual_schrabidium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_schrabidium_fuel, 2);
-    	if(this == ModItems.rod_quad_schrabidium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet_schrabidium_fuel, 4);
+    	if(this == ModItems.rod_schrabidium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
+    	if(this == ModItems.rod_dual_schrabidium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 2);
+    	if(this == ModItems.rod_quad_schrabidium_fuel) return ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 4);
     	return ItemStack.EMPTY;
     }
 }

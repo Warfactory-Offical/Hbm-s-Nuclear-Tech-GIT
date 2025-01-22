@@ -10,6 +10,7 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.interfaces.IBulletImpactBehavior;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
@@ -404,7 +405,7 @@ public class GunEnergyFactory {
 		BulletConfiguration bullet = new BulletConfiguration();
 
 		bullet.ammo = ModItems.nugget;
-		bullet.ammoMeta = ModItems.nugget_euphemium.getMetadata();
+		bullet.ammoMeta = ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM).getMetadata();
 		bullet.ammoCount = 1000;
 		bullet.wear = 1;
 		bullet.velocity = 1F;

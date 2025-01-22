@@ -1,4 +1,5 @@
 package com.hbm.items.weapon;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
@@ -288,7 +289,7 @@ public class ItemClip extends Item {
 			if(Library.hasInventoryItem(player.inventory, ModItems.gun_mp))
 				ItemSimpleConsumable.tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.ammo_566_gold, 34));
 			if(Library.hasInventoryItem(player.inventory, ModItems.gun_zomg))
-				ItemSimpleConsumable.tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium, 1));
+				ItemSimpleConsumable.tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM), 1));
 			if(Library.hasInventoryItem(player.inventory, ModItems.gun_emp))
 				ItemSimpleConsumable.tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.gun_emp_ammo, 8));
 			if(Library.hasInventoryItem(player.inventory, ModItems.gun_revolver_inverted))

@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -34,23 +35,23 @@ public class BobmazonOfferFactory {
 	public static void init() {
 
 		int inflation = 5;
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), Requirement.NUCLEAR, 6 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_u233), Requirement.NUCLEAR, 20 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_u238), Requirement.NUCLEAR, 15 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_th232), Requirement.NUCLEAR, 4 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium), Requirement.NUCLEAR, 25 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_titanium), Requirement.STEEL, 2 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_copper), Requirement.STEEL, 2 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_red_copper), Requirement.STEEL, 4 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten), Requirement.STEEL, 3 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_aluminium), Requirement.STEEL, 2 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_steel), Requirement.STEEL, 4 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_lead), Requirement.STEEL, 2 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_polymer), Requirement.OIL, 8 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium_fuel), Requirement.NUCLEAR, 18 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_thorium_fuel), Requirement.NUCLEAR, 16 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_desh), Requirement.OIL, 16 * inflation));
-		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_saturnite), Requirement.STEEL, 8 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), Requirement.NUCLEAR, 6 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U233)), Requirement.NUCLEAR, 20 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U238)), Requirement.NUCLEAR, 15 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TH232)), Requirement.NUCLEAR, 4 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM)), Requirement.NUCLEAR, 25 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM)), Requirement.STEEL, 2 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), Requirement.STEEL, 2 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER)), Requirement.STEEL, 4 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN)), Requirement.STEEL, 3 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM)), Requirement.STEEL, 2 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)), Requirement.STEEL, 4 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD)), Requirement.STEEL, 2 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER)), Requirement.OIL, 8 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL)), Requirement.NUCLEAR, 18 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL)), Requirement.NUCLEAR, 16 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH)), Requirement.OIL, 16 * inflation));
+		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SATURNITE)), Requirement.STEEL, 8 * inflation));
 		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.lithium), Requirement.CHEMICS, 6 * inflation));
 		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.solid_fuel), Requirement.OIL, 4 * inflation));
 		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.lignite), Requirement.STEEL, 2 * inflation));
@@ -196,11 +197,11 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.machine_refinery, 1), Requirement.HIDDEN, 8 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.machine_fluidtank, 4), Requirement.HIDDEN, 3 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.barrel_antimatter, 4), Requirement.HIDDEN, 3 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 64), Requirement.HIDDEN, 2 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_copper, 64), Requirement.HIDDEN, 2 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_red_copper, 64), Requirement.HIDDEN, 2 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_titanium, 64), Requirement.HIDDEN, 2 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten, 64), Requirement.HIDDEN, 2 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 64), Requirement.HIDDEN, 2 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER), 64), Requirement.HIDDEN, 2 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER), 64), Requirement.HIDDEN, 2 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM), 64), Requirement.HIDDEN, 2 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN), 64), Requirement.HIDDEN, 2 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher_core, 1), Requirement.HIDDEN, 3 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher_core_large, 1), Requirement.HIDDEN, 3 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher, 40), Requirement.HIDDEN, 7 * inflation));
@@ -216,8 +217,8 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.spawn_ufo, 1), Requirement.STEEL, 100 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.sat_laser, 1), Requirement.HIDDEN, 8 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.sat_gerald, 1), Requirement.HIDDEN, 320 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.billet_yharonite, 4), Requirement.HIDDEN, 160 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot_electronium, 1), Requirement.HIDDEN, 160 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.YHARONITE), 4), Requirement.HIDDEN, 160 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ELECTRONIUM), 1), Requirement.HIDDEN, 160 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.book_of_, 1), Requirement.HIDDEN, 160 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.mysteryshovel, 1), Requirement.HIDDEN, 160 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.ntm_dirt, 1), Requirement.HIDDEN, 160 * inflation));

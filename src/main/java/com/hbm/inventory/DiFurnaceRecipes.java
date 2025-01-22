@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -14,14 +15,12 @@ import com.hbm.config.GeneralConfig;
 import com.hbm.util.Tuple.Pair;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.NbtComparableStack;
-import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.items.tool.ItemFluidCanister;
 import com.hbm.items.ModItems;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,49 +45,49 @@ public class DiFurnaceRecipes {
 
 		addRecipe(new OreDictStack(CU.plate()), new OreDictStack(PB.plate()), ItemStackUtil.itemStackFrom(ModItems.neutron_reflector, 1));
 
-		addRecipe(new OreDictStack(IRON.ingot()), new OreDictStack(COAL.gem()), ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 2));
-		addRecipe(new OreDictStack(IRON.dust()), new OreDictStack(COAL.gem()), ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 2));
-		addRecipe(new OreDictStack(IRON.ingot()), new OreDictStack(COAL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 2));
-		addRecipe(new OreDictStack(IRON.dust()), new OreDictStack(COAL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 2));
+		addRecipe(new OreDictStack(IRON.ingot()), new OreDictStack(COAL.gem()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 2));
+		addRecipe(new OreDictStack(IRON.dust()), new OreDictStack(COAL.gem()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 2));
+		addRecipe(new OreDictStack(IRON.ingot()), new OreDictStack(COAL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 2));
+		addRecipe(new OreDictStack(IRON.dust()), new OreDictStack(COAL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 2));
 
-		addRecipe(new OreDictStack(U238.ingot()), new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_ferrouranium, 1));
-		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(U238.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_ferrouranium, 1));
+		addRecipe(new OreDictStack(U238.ingot()), new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.FERROURANIUM), 1));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(U238.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.FERROURANIUM), 1));
 		
-		addRecipe(new OreDictStack(CU.ingot()), new OreDictStack(REDSTONE.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_red_copper, 2));
-		addRecipe(new OreDictStack(CU.dust()), new OreDictStack(REDSTONE.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_red_copper, 2));
+		addRecipe(new OreDictStack(CU.ingot()), new OreDictStack(REDSTONE.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER), 2));
+		addRecipe(new OreDictStack(CU.dust()), new OreDictStack(REDSTONE.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER), 2));
 
 		addRecipe(new NbtComparableStack(ItemFluidCanister.getFullCanister(ModForgeFluids.diesel)), ItemStackUtil.comparableStackFrom(Items.SLIME_BALL), ItemStackUtil.itemStackFrom(ModItems.canister_napalm, 1));
 		
-		addRecipe(new OreDictStack(MINGRADE.ingot()), new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy, 2));
-		addRecipe(new OreDictStack(MINGRADE.dust()), new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy, 2));
-		addRecipe(new OreDictStack(MINGRADE.ingot()), new OreDictStack(STEEL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy, 2));
-		addRecipe(new OreDictStack(MINGRADE.dust()), new OreDictStack(STEEL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy, 2));
+		addRecipe(new OreDictStack(MINGRADE.ingot()), new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY), 2));
+		addRecipe(new OreDictStack(MINGRADE.dust()), new OreDictStack(STEEL.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY), 2));
+		addRecipe(new OreDictStack(MINGRADE.ingot()), new OreDictStack(STEEL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY), 2));
+		addRecipe(new OreDictStack(MINGRADE.dust()), new OreDictStack(STEEL.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY), 2));
 
-		addRecipe(new OreDictStack(W.ingot()), new OreDictStack(SA326.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten, 1));
-		addRecipe(new OreDictStack(W.dust()), new OreDictStack(SA326.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten, 1));
+		addRecipe(new OreDictStack(W.ingot()), new OreDictStack(SA326.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 1));
+		addRecipe(new OreDictStack(W.dust()), new OreDictStack(SA326.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 1));
 
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.plate_mixed), new OreDictStack(GOLD.plate()), ItemStackUtil.itemStackFrom(ModItems.plate_paa, 2));
 		
-		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(W.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
-		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(W.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
-		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(W.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
-		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(W.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
+		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(W.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(W.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
+		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(W.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(W.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
 
-		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(CO.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
-		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(CO.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
-		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(CO.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
-		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(CO.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 2));
+		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(CO.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(CO.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
+		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(CO.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(CO.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 2));
 
-		addRecipe(new OreDictStack(BIGMT.ingot()), ItemStackUtil.comparableStackFrom(ModItems.powder_meteorite), ItemStackUtil.itemStackFrom(ModItems.ingot_starmetal, 2));
+		addRecipe(new OreDictStack(BIGMT.ingot()), ItemStackUtil.comparableStackFrom(ModItems.powder_meteorite), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STARMETAL), 2));
 
-		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(TC99.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot_tcalloy, 1));
-		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(TC99.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot_tcalloy, 1));
+		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(TC99.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TCALLOY), 1));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(TC99.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TCALLOY), 1));
 
-		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(CD.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot_cdalloy, 1));
-		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(CD.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot_cdalloy, 1));
+		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(CD.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CDALLOY), 1));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(CD.nugget()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CDALLOY), 1));
 
-		addRecipe(ItemStackUtil.comparableStackFrom(Item.getItemFromBlock(ModBlocks.block_meteor)), new OreDictStack(CO.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_meteorite));
-		addRecipe(ItemStackUtil.comparableStackFrom(Item.getItemFromBlock(ModBlocks.block_meteor)), new OreDictStack(CO.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot_meteorite));
+		addRecipe(ItemStackUtil.comparableStackFrom(Item.getItemFromBlock(ModBlocks.block_meteor)), new OreDictStack(CO.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE)));
+		addRecipe(ItemStackUtil.comparableStackFrom(Item.getItemFromBlock(ModBlocks.block_meteor)), new OreDictStack(CO.dust()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE)));
 
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.meteorite_sword_hardened), new OreDictStack(CO.ingot()), ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_alloyed));
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.meteorite_sword_hardened), new OreDictStack(CO.dust()), ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_alloyed));

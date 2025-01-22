@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
@@ -15,8 +16,8 @@ public class PartsTab extends CreativeTabs {
 
 	@Override
 	public ItemStack createIcon() {
-		if(ModItems.ingot_uranium != null){
-			return ItemStackUtil.itemStackFrom(ModItems.ingot_uranium);
+		if(ModItems.ingot.getItemStack(MaterialMineral.URANIUM) != null){
+			return ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM));
 		}
 		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}

@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
@@ -7,29 +8,22 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import static com.hbm.inventory.OreDictManager.*;
-import com.google.common.collect.Lists;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
 import com.hbm.config.MachineConfig;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.inventory.RecipesCommon.AStack;
-import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBattery;
 import com.hbm.items.machine.ItemChemistryTemplate;
-import com.hbm.items.special.ItemCell;
-import com.hbm.items.tool.ItemFluidCanister;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 //TODO: clean this shit up
 @Spaghetti("everything")
@@ -121,9 +115,9 @@ public class ChemplantRecipes {
 		makeRecipe(370, "CRYOGEL", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_ice, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.coolant, 1800) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 2000) }, 50);
 		
 		if(GeneralConfig.enableBabyMode) {
-			makeRecipe(380, "DESH", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_desh_mix, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.lightoil, 200) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot_desh, 1) }, null, 300);
+			makeRecipe(380, "DESH", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_desh_mix, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.lightoil, 200) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH), 1) }, null, 300);
 		} else {
-			makeRecipe(380, "DESH", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_desh_mix, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.mercury, 200), new FluidStack(ModForgeFluids.lightoil, 200) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot_desh, 1) }, null, 300);
+			makeRecipe(380, "DESH", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_desh_mix, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.mercury, 200), new FluidStack(ModForgeFluids.lightoil, 200) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH), 1) }, null, 300);
 		}
 		
 		makeRecipe(390, "NITAN", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_nitan_mix, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.kerosene, 600), new FluidStack(ModForgeFluids.mercury, 200) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.nitan, 1000) }, 50);
@@ -142,11 +136,11 @@ public class ChemplantRecipes {
 		
 		makeRecipe(460, "CIRCUIT_5", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_gold, 1), ItemStackUtil.comparableStackFrom(ModItems.wire_schrabidium, 4), new OreDictStack(DIAMOND.dust(), 1), new OreDictStack(DESH.ingot(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 800), new FluidStack(ModForgeFluids.petroleum, 400) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_schrabidium, 1) }, null, 250);
 		
-		makeRecipe(470, "POLYMER", new AStack[] { new OreDictStack(COAL.gem(), 2), new OreDictStack(F.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.petroleum, 600) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot_polymer, 1) }, null, 100);
+		makeRecipe(470, "POLYMER", new AStack[] { new OreDictStack(COAL.gem(), 2), new OreDictStack(F.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.petroleum, 600) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER), 1) }, null, 100);
 		
-		makeRecipe(480, "BAKELITE", null, new FluidStack[]{ new FluidStack(ModForgeFluids.aromatics, 500), new FluidStack(ModForgeFluids.petroleum, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot_bakelite, 1) }, null, 100);
+		makeRecipe(480, "BAKELITE", null, new FluidStack[]{ new FluidStack(ModForgeFluids.aromatics, 500), new FluidStack(ModForgeFluids.petroleum, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BAKELITE), 1) }, null, 100);
 		
-		makeRecipe(490, "RUBBER", new AStack[] { new OreDictStack(S.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.unsaturateds, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot_rubber, 1) }, null, 100);
+		makeRecipe(490, "RUBBER", new AStack[] { new OreDictStack(S.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.unsaturateds, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RUBBER), 1) }, null, 100);
 		
 		makeRecipe(500, "DYNAMITE", new AStack[] { ItemStackUtil.comparableStackFrom(Items.SUGAR), new OreDictStack(KNO.dust()), new OreDictStack(KEY_SAND) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ball_dynamite, 2) }, null, 50);
 		
@@ -170,15 +164,15 @@ public class ChemplantRecipes {
 		
 		makeRecipe(600, "SAS3", new AStack[] { new OreDictStack(SA326.dust(), 1), new OreDictStack(S.dust(), 2) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 2000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.sas3, 1000) }, 200);
 		
-		makeRecipe(610, "DYN_SCHRAB", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_higgs, 1), new OreDictStack(U.ingot(), 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.coolant, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_schrabidium, 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 50) }, 20*30);
+		makeRecipe(610, "DYN_SCHRAB", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_higgs, 1), new OreDictStack(U.ingot(), 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.coolant, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM), 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 50) }, 20*30);
 		
-		makeRecipe(620, "DYN_STR", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_strange, 1), ItemStackUtil.comparableStackFrom(ModItems.nugget_radspice, 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.egg_balefire, 4) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 200) }, 20*60);
+		makeRecipe(620, "DYN_STR", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_strange, 1), ItemStackUtil.comparableStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RADSPICE), 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.egg_balefire, 4) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 200) }, 20*60);
 		
-		makeRecipe(630, "DYN_EUPH", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_dark, 1), new OreDictStack(SA327.ingot(), 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 16) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 2000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_euphemium, 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 100) }, 20*60*2);
+		makeRecipe(630, "DYN_EUPH", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_dark, 1), new OreDictStack(SA327.ingot(), 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 16) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 2000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM), 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 100) }, 20*60*2);
 		
-		makeRecipe(640, "DYN_DNT", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_sparkticle, 1), new OreDictStack(SBD.ingot(), 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 32) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 4000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_dineutronium, 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 400) }, 20*60*5);
+		makeRecipe(640, "DYN_DNT", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_sparkticle, 1), new OreDictStack(SBD.ingot(), 8), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 32) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 4000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DINEUTRONIUM), 8) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 400) }, 20*60*5);
 		
-		makeRecipe(650, "DYN_EL", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_digamma, 1), new OreDictStack(DNT.ingot(), 16), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 64) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 8000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot_electronium, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 800) }, 20*60*10);
+		makeRecipe(650, "DYN_EL", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.particle_digamma, 1), new OreDictStack(DNT.ingot(), 16), ItemStackUtil.comparableStackFrom(ModItems.catalyst_clay, 64) }, new FluidStack[]{ new FluidStack(ModForgeFluids.cryogel, 8000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.particle_empty, 1), ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ELECTRONIUM), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.watz, 800) }, 20*60*10);
 		
 		makeRecipe(660, "CORDITE", new AStack[] {new OreDictStack(KNO.dust(), 2), new OreDictStack(KEY_PLANKS, 1), ItemStackUtil.comparableStackFrom(Items.SUGAR, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.heatingoil, 200) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.cordite, 4) }, null, 40);
 		
@@ -198,7 +192,7 @@ public class ChemplantRecipes {
 		
 		makeRecipe(740, "XENON_OXY", null, new FluidStack[]{ new FluidStack(ModForgeFluids.oxygen, 250) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.xenon, 50) }, 20);
 		
-		makeRecipe(750, "SATURN", new AStack[] {new OreDictStack(DURA.dust(), 1), new OreDictStack(P_RED.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 100), new FluidStack(ModForgeFluids.mercury, 50) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot_saturnite, 2) }, null, 60);
+		makeRecipe(750, "SATURN", new AStack[] {new OreDictStack(DURA.dust(), 1), new OreDictStack(P_RED.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 100), new FluidStack(ModForgeFluids.mercury, 50) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SATURNITE), 2) }, null, 60);
 		
 		makeRecipe(760, "BALEFIRE", new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.egg_balefire_shard, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.kerosene, 6000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_balefire, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.balefire, 8000) }, 100);
 		
@@ -212,7 +206,7 @@ public class ChemplantRecipes {
 		
 		makeRecipe(810, "COLTAN_CRYSTAL", null, new FluidStack[]{ new FluidStack(ModForgeFluids.pain, 1000), new FluidStack(ModForgeFluids.acid, 500) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.gem_tantalium, 1), ItemStackUtil.comparableStackFrom(ModItems.dust, 3) }, new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 250) }, 80);
 		
-		makeRecipe(820, "ARSENIC", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.scrap_oil, 64) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.nugget_arsenic, 1), ItemStackUtil.comparableStackFrom(ModItems.sulfur, 2) }, new FluidStack[]{ new FluidStack(ModForgeFluids.heavyoil, 1500) }, 1200);
+		makeRecipe(820, "ARSENIC", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.scrap_oil, 64) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.nugget.getItemStack(MaterialMineral.ARSENIC), 1), ItemStackUtil.comparableStackFrom(ModItems.sulfur, 2) }, new FluidStack[]{ new FluidStack(ModForgeFluids.heavyoil, 1500) }, 1200);
 
 		makeRecipe(830, "VIT_LIQUID", new AStack[] {ItemStackUtil.comparableStackFrom(ModBlocks.sand_lead, 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.wastefluid, 1000) }, new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.nuclear_waste_vitrified, 1) }, null, 100);
 		
@@ -224,7 +218,7 @@ public class ChemplantRecipes {
 		
 		makeRecipe(870, "FRACKSOL", new AStack[] { new OreDictStack(S.dust()) }, new FluidStack[]{ new FluidStack(ModForgeFluids.petroleum, 100), new FluidStack(FluidRegistry.WATER, 1000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.fracksol, 1000) }, 20);
 		
-		makeRecipe(880, "OSMIRIDIUM_DEATH", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_paleogenite), new OreDictStack(F.dust(), 8), ItemStackUtil.comparableStackFrom(ModItems.nugget_bismuth, 4) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000), new FluidStack(ModForgeFluids.sas3, 1000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.liquid_osmiridium, 1000) }, 240);
+		makeRecipe(880, "OSMIRIDIUM_DEATH", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.powder_paleogenite), new OreDictStack(F.dust(), 8), ItemStackUtil.comparableStackFrom(ModItems.nugget.getItemStack(MaterialMineral.BISMUTH), 4) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000), new FluidStack(ModForgeFluids.sas3, 1000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.liquid_osmiridium, 1000) }, 240);
 		
 		// makeRecipe(0, "FP_SMEAR, new AStack[] { ItemStackUtil.comparableStackFrom() }, new FluidStack[]{ new FluidStack() }, null, null, 100);
 		

@@ -1,4 +1,5 @@
 package com.hbm.crafting.handlers;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
@@ -11,7 +12,6 @@ import com.hbm.items.ModItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.HbmWorldUtility;
 import net.minecraft.world.World;
 
@@ -57,7 +57,7 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 				ItemStackUtil.itemStackFrom(ModItems.powder_iodine),
 				ItemStackUtil.itemStackFrom(ModItems.powder_fire),
 				ItemStackUtil.itemStackFrom(ModItems.dust),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_mercury),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY)),
 				ItemStackUtil.itemStackFrom(ModItems.morning_glory),
 				ItemStackUtil.itemStackFrom(ModItems.syringe_metal_empty),
 				null,

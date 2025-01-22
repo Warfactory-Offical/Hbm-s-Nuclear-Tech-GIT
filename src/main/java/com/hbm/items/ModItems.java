@@ -295,7 +295,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -319,240 +318,20 @@ public class ModItems {
 	// MetaItems
 
 	public static final MetaItem<ShapePart, MaterialMineral> ingot = new MetaItem<>(ShapePart.INGOT, MaterialMineral.ingotValues()).setCreativeTab(MainRegistry.partsTab);
+	public static final MetaItem<ShapePart, MaterialMineral> billet = new MetaItem<>(ShapePart.BILLET, MaterialMineral.billetValues()).setCreativeTab(MainRegistry.partsTab);
+	public static final MetaItem<ShapePart, MaterialMineral> nugget = new MetaItem<>(ShapePart.NUGGET, MaterialMineral.nuggetValues()).setCreativeTab(MainRegistry.partsTab);
 
 	public static final Item ingot_steel_dusted = new ItemHotDusted(200, "ingot_steel_dusted").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_u238m2 = new ItemUnstable(350, 200, "ingot_u238m2").setCreativeTab(MainRegistry.partsTab);
-
-	public static final ItemStack ingot_steel = ingot.getItemStack(MaterialMineral.STEEL);
-	public static final ItemStack ingot_titanium = ingot.getItemStack(MaterialMineral.TITANIUM);
-	public static final ItemStack ingot_copper = ingot.getItemStack(MaterialMineral.COPPER);
-	public static final ItemStack ingot_red_copper = ingot.getItemStack(MaterialMineral.RED_COPPER);
-	public static final ItemStack ingot_advanced_alloy = ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY);
-	public static final ItemStack ingot_tungsten = ingot.getItemStack(MaterialMineral.TUNGSTEN);
-	public static final ItemStack ingot_aluminium = ingot.getItemStack(MaterialMineral.ALUMINIUM);
-	public static final ItemStack ingot_beryllium = ingot.getItemStack(MaterialMineral.BERYLLIUM);
-	public static final ItemStack ingot_lead = ingot.getItemStack(MaterialMineral.LEAD);
-	public static final ItemStack ingot_asbestos = ingot.getItemStack(MaterialMineral.ASBESTOS);
-	public static final ItemStack ingot_magnetized_tungsten = ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN);
-	public static final ItemStack ingot_combine_steel = ingot.getItemStack(MaterialMineral.COMBINE_STEEL);
-	public static final ItemStack ingot_dura_steel = ingot.getItemStack(MaterialMineral.DURA_STEEL);
-	public static final ItemStack ingot_technetium = ingot.getItemStack(MaterialMineral.TECHNETIUM);
-	public static final ItemStack ingot_tcalloy = ingot.getItemStack(MaterialMineral.TCALLOY);
-	public static final ItemStack ingot_cdalloy = ingot.getItemStack(MaterialMineral.CDALLOY);
-	public static final ItemStack ingot_polymer = ingot.getItemStack(MaterialMineral.POLYMER);
-	public static final ItemStack ingot_bakelite = ingot.getItemStack(MaterialMineral.BAKELITE);
-	public static final ItemStack ingot_rubber = ingot.getItemStack(MaterialMineral.RUBBER);
-	public static final ItemStack ingot_biorubber = ingot.getItemStack(MaterialMineral.BIORUBBER);
-	public static final ItemStack ingot_desh = ingot.getItemStack(MaterialMineral.DESH);
-	public static final ItemStack ingot_saturnite = ingot.getItemStack(MaterialMineral.SATURNITE);
-	public static final ItemStack ingot_ferrouranium = ingot.getItemStack(MaterialMineral.FERROURANIUM);
-	public static final ItemStack ingot_starmetal = ingot.getItemStack(MaterialMineral.STARMETAL);
-	public static final ItemStack ingot_osmiridium = ingot.getItemStack(MaterialMineral.OSMIRIDIUM);
-	public static final ItemStack ingot_euphemium = ingot.getItemStack(MaterialMineral.EUPHEMIUM);
-	public static final ItemStack ingot_dineutronium = ingot.getItemStack(MaterialMineral.DINEUTRONIUM);
-	public static final ItemStack ingot_cadmium = ingot.getItemStack(MaterialMineral.CADMIUM);
-	public static final ItemStack ingot_bismuth = ingot.getItemStack(MaterialMineral.BISMUTH);
-	public static final ItemStack ingot_arsenic = ingot.getItemStack(MaterialMineral.ARSENIC);
-	public static final ItemStack ingot_zirconium = ingot.getItemStack(MaterialMineral.ZIRCONIUM);
-	public static final ItemStack ingot_th232 = ingot.getItemStack(MaterialMineral.TH232);
-	public static final ItemStack ingot_uranium = ingot.getItemStack(MaterialMineral.URANIUM);
-	public static final ItemStack ingot_u233 = ingot.getItemStack(MaterialMineral.U233);
-	public static final ItemStack ingot_u235 = ingot.getItemStack(MaterialMineral.U235);
-	public static final ItemStack ingot_u238 = ingot.getItemStack(MaterialMineral.U238);
-	public static final ItemStack ingot_plutonium = ingot.getItemStack(MaterialMineral.PLUTONIUM);
-	public static final ItemStack ingot_pu238 = ingot.getItemStack(MaterialMineral.PU238);
-	public static final ItemStack ingot_pu239 = ingot.getItemStack(MaterialMineral.PU239);
-	public static final ItemStack ingot_pu240 = ingot.getItemStack(MaterialMineral.PU240);
-	public static final ItemStack ingot_pu241 = ingot.getItemStack(MaterialMineral.PU241);
-	public static final ItemStack ingot_pu_mix = ingot.getItemStack(MaterialMineral.PU_MIX);
-	public static final ItemStack ingot_am241 = ingot.getItemStack(MaterialMineral.AM241);
-	public static final ItemStack ingot_am242 = ingot.getItemStack(MaterialMineral.AM242);
-	public static final ItemStack ingot_am_mix = ingot.getItemStack(MaterialMineral.AM_MIX);
-	public static final ItemStack ingot_schraranium = ingot.getItemStack(MaterialMineral.SCHRARANIUM);
-	public static final ItemStack ingot_schrabidium = ingot.getItemStack(MaterialMineral.SCHRABIDIUM);
-	public static final ItemStack ingot_schrabidate = ingot.getItemStack(MaterialMineral.SCHRABIDATE);
-	public static final ItemStack ingot_solinium = ingot.getItemStack(MaterialMineral.SOLINIUM);
-	public static final ItemStack ingot_thorium_fuel = ingot.getItemStack(MaterialMineral.THORIUM_FUEL);
-	public static final ItemStack ingot_uranium_fuel = ingot.getItemStack(MaterialMineral.URANIUM_FUEL);
-	public static final ItemStack ingot_mox_fuel = ingot.getItemStack(MaterialMineral.MOX_FUEL);
-	public static final ItemStack ingot_plutonium_fuel = ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL);
-	public static final ItemStack ingot_neptunium_fuel = ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL);
-	public static final ItemStack ingot_americium_fuel = ingot.getItemStack(MaterialMineral.AMERICIUM_FUEL);
-	public static final ItemStack ingot_les = ingot.getItemStack(MaterialMineral.LES);
-	public static final ItemStack ingot_schrabidium_fuel = ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL);
-	public static final ItemStack ingot_hes = ingot.getItemStack(MaterialMineral.HES);
-	public static final ItemStack ingot_neptunium = ingot.getItemStack(MaterialMineral.NEPTUNIUM);
-	public static final ItemStack ingot_tennessine = ingot.getItemStack(MaterialMineral.TENNESSINE);
-	public static final ItemStack ingot_polonium = ingot.getItemStack(MaterialMineral.POLONIUM);
-	public static final ItemStack ingot_phosphorus = ingot.getItemStack(MaterialMineral.PHOSPHORUS);
-	public static final ItemStack ingot_boron = ingot.getItemStack(MaterialMineral.BORON);
-	public static final ItemStack ingot_graphite = ingot.getItemStack(MaterialMineral.GRAPHITE);
-	public static final ItemStack ingot_fiberglass = ingot.getItemStack(MaterialMineral.FIBERGLASS);
-	public static final ItemStack ingot_smore = ingot.getItemStack(MaterialMineral.SMORE);
-	public static final ItemStack ingot_niobium = ingot.getItemStack(MaterialMineral.NIOBIUM);
-	public static final ItemStack ingot_actinium = ingot.getItemStack(MaterialMineral.ACTINIUM);
-	public static final ItemStack ingot_neodymium = ingot.getItemStack(MaterialMineral.NEODYMIUM);
-	public static final ItemStack ingot_bromine = ingot.getItemStack(MaterialMineral.BROMINE);
-	public static final ItemStack ingot_caesium = ingot.getItemStack(MaterialMineral.CAESIUM);
-	public static final ItemStack ingot_cerium = ingot.getItemStack(MaterialMineral.CERIUM);
-	public static final ItemStack ingot_lanthanium = ingot.getItemStack(MaterialMineral.LANTHANIUM);
-	public static final ItemStack ingot_tantalium = ingot.getItemStack(MaterialMineral.TANTALIUM);
-	public static final ItemStack ingot_astatine = ingot.getItemStack(MaterialMineral.ASTATINE);
-	public static final ItemStack ingot_firebrick = ingot.getItemStack(MaterialMineral.FIREBRICK);
-	public static final ItemStack ingot_cobalt = ingot.getItemStack(MaterialMineral.COBALT);
-	public static final ItemStack ingot_co60 = ingot.getItemStack(MaterialMineral.CO60);
-	public static final ItemStack ingot_strontium = ingot.getItemStack(MaterialMineral.STRONTIUM);
-	public static final ItemStack ingot_sr90 = ingot.getItemStack(MaterialMineral.SR90);
-	public static final ItemStack ingot_iodine = ingot.getItemStack(MaterialMineral.IODINE);
-	public static final ItemStack ingot_i131 = ingot.getItemStack(MaterialMineral.I131);
-	public static final ItemStack ingot_au198 = ingot.getItemStack(MaterialMineral.AU198);
-	public static final ItemStack ingot_pb209 = ingot.getItemStack(MaterialMineral.PB209);
-	public static final ItemStack ingot_ra226 = ingot.getItemStack(MaterialMineral.RA226);
-	public static final ItemStack ingot_ac227 = ingot.getItemStack(MaterialMineral.AC227);
-	public static final ItemStack ingot_gh336 = ingot.getItemStack(MaterialMineral.GH336);
-	public static final ItemStack ingot_radspice = ingot.getItemStack(MaterialMineral.RADSPICE);
-	public static final ItemStack ingot_electronium = ingot.getItemStack(MaterialMineral.ELECTRONIUM);
-	public static final ItemStack ingot_reiium = ingot.getItemStack(MaterialMineral.REIIUM);
-	public static final ItemStack ingot_weidanium = ingot.getItemStack(MaterialMineral.WEIDANIUM);
-	public static final ItemStack ingot_australium = ingot.getItemStack(MaterialMineral.AUSTRALIUM);
-	public static final ItemStack ingot_verticium = ingot.getItemStack(MaterialMineral.VERTICIUM);
-	public static final ItemStack ingot_unobtainium = ingot.getItemStack(MaterialMineral.UNOBTAINIUM);
-	public static final ItemStack ingot_daffergon = ingot.getItemStack(MaterialMineral.DAFFERGON);
-	public static final ItemStack ingot_chainsteel = ingot.getItemStack(MaterialMineral.CHAINSTEEL);
-	public static final ItemStack ingot_meteorite = ingot.getItemStack(MaterialMineral.METEORITE);
-	public static final ItemStack ingot_meteorite_forged = ingot.getItemStack(MaterialMineral.METEORITE_FORGED);
-
 	public static final Item blade_meteorite = new ItemHot(200, "blade_meteorite").setCreativeTab(MainRegistry.partsTab);
-
-	public static final MetaItem<ShapePart, MaterialMineral> billet = new MetaItem<>(ShapePart.BILLET, MaterialMineral.billetValues()).setCreativeTab(MainRegistry.partsTab);
-
 	public static final Item billet_nuclear_waste = new ItemContaminating(ItemHazard.wst * ItemHazard.billet, "billet_nuclear_waste").setCreativeTab(MainRegistry.partsTab);
-
-	public static final ItemStack billet_th232 = billet.getItemStack(MaterialMineral.TH232);
-	public static final ItemStack billet_uranium = billet.getItemStack(MaterialMineral.URANIUM);
-	public static final ItemStack billet_u233 = billet.getItemStack(MaterialMineral.U233);
-	public static final ItemStack billet_u235 = billet.getItemStack(MaterialMineral.U235);
-	public static final ItemStack billet_u238 = billet.getItemStack(MaterialMineral.U238);
-	public static final ItemStack billet_plutonium = billet.getItemStack(MaterialMineral.PLUTONIUM);
-	public static final ItemStack billet_pu238 = billet.getItemStack(MaterialMineral.PU238);
-	public static final ItemStack billet_pu239 = billet.getItemStack(MaterialMineral.PU239);
-	public static final ItemStack billet_pu240 = billet.getItemStack(MaterialMineral.PU240);
-	public static final ItemStack billet_pu241 = billet.getItemStack(MaterialMineral.PU241);
-	public static final ItemStack billet_pu_mix = billet.getItemStack(MaterialMineral.PU_MIX);
-	public static final ItemStack billet_am241 = billet.getItemStack(MaterialMineral.AM241);
-	public static final ItemStack billet_am242 = billet.getItemStack(MaterialMineral.AM242);
-	public static final ItemStack billet_am_mix = billet.getItemStack(MaterialMineral.AM_MIX);
-	public static final ItemStack billet_neptunium = billet.getItemStack(MaterialMineral.NEPTUNIUM);
-	public static final ItemStack billet_polonium = billet.getItemStack(MaterialMineral.POLONIUM);
-	public static final ItemStack billet_technetium = billet.getItemStack(MaterialMineral.TECHNETIUM);
-	public static final ItemStack billet_co60 = billet.getItemStack(MaterialMineral.CO60);
-	public static final ItemStack billet_sr90 = billet.getItemStack(MaterialMineral.SR90);
-	public static final ItemStack billet_au198 = billet.getItemStack(MaterialMineral.AU198);
-	public static final ItemStack billet_pb209 = billet.getItemStack(MaterialMineral.PB209);
-	public static final ItemStack billet_ra226 = billet.getItemStack(MaterialMineral.RA226);
-	public static final ItemStack billet_ac227 = billet.getItemStack(MaterialMineral.AC227);
-	public static final ItemStack billet_gh336 = billet.getItemStack(MaterialMineral.GH336);
-	public static final ItemStack billet_beryllium = billet.getItemStack(MaterialMineral.BERYLLIUM);
-	public static final ItemStack billet_bismuth = billet.getItemStack(MaterialMineral.BISMUTH);
-	public static final ItemStack billet_zirconium = billet.getItemStack(MaterialMineral.ZIRCONIUM);
-	public static final ItemStack billet_zfb_bismuth = billet.getItemStack(MaterialMineral.ZFB_BISMUTH);
-	public static final ItemStack billet_zfb_pu241 = billet.getItemStack(MaterialMineral.ZFB_PU241);
-	public static final ItemStack billet_zfb_am_mix = billet.getItemStack(MaterialMineral.ZFB_AM_MIX);
-	public static final ItemStack billet_schrabidium = billet.getItemStack(MaterialMineral.SCHRABIDIUM);
-	public static final ItemStack billet_solinium = billet.getItemStack(MaterialMineral.SOLINIUM);
-	public static final ItemStack billet_thorium_fuel = billet.getItemStack(MaterialMineral.THORIUM_FUEL);
-	public static final ItemStack billet_uranium_fuel = billet.getItemStack(MaterialMineral.URANIUM_FUEL);
-	public static final ItemStack billet_mox_fuel = billet.getItemStack(MaterialMineral.MOX_FUEL);
-	public static final ItemStack billet_plutonium_fuel = billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL);
-	public static final ItemStack billet_neptunium_fuel = billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL);
-	public static final ItemStack billet_americium_fuel = billet.getItemStack(MaterialMineral.AMERICIUM_FUEL);
-	public static final ItemStack billet_les = billet.getItemStack(MaterialMineral.LES);
-	public static final ItemStack billet_schrabidium_fuel = billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL);
-	public static final ItemStack billet_hes = billet.getItemStack(MaterialMineral.HES);
-	public static final ItemStack billet_po210be = billet.getItemStack(MaterialMineral.PO210BE);
-	public static final ItemStack billet_ra226be = billet.getItemStack(MaterialMineral.RA226BE);
-	public static final ItemStack billet_pu238be = billet.getItemStack(MaterialMineral.PU238BE);
-	public static final ItemStack billet_australium = billet.getItemStack(MaterialMineral.AUSTRALIUM);
-	public static final ItemStack billet_australium_lesser = billet.getItemStack(MaterialMineral.AUSTRALIUM_LESSER);
-	public static final ItemStack billet_australium_greater = billet.getItemStack(MaterialMineral.AUSTRALIUM_GREATER);
-	public static final ItemStack billet_unobtainium = billet.getItemStack(MaterialMineral.UNOBTAINIUM);
-	public static final ItemStack billet_yharonite = billet.getItemStack(MaterialMineral.YHARONITE);
-	public static final ItemStack billet_balefire_gold = billet.getItemStack(MaterialMineral.BALEFIRE_GOLD);
-	public static final ItemStack billet_flashlead = billet.getItemStack(MaterialMineral.FLASHLEAD);
-
-	public static final MetaItem<ShapePart, MaterialMineral> nugget = new MetaItem<>(ShapePart.NUGGET, MaterialMineral.nuggetValues()).setCreativeTab(MainRegistry.partsTab);
-
 	public static final Item nugget_u238m2 = new ItemUnstable(60, 2000, "nugget_u238m2").setCreativeTab(MainRegistry.partsTab);
 
-	public static final ItemStack nugget_uranium = nugget.getItemStack(MaterialMineral.URANIUM);
-	public static final ItemStack nugget_u233 = nugget.getItemStack(MaterialMineral.U233);
-	public static final ItemStack nugget_u235 = nugget.getItemStack(MaterialMineral.U235);
-	public static final ItemStack nugget_u238 = nugget.getItemStack(MaterialMineral.U238);
-	public static final ItemStack nugget_plutonium = nugget.getItemStack(MaterialMineral.PLUTONIUM);
-	public static final ItemStack nugget_pu238 = nugget.getItemStack(MaterialMineral.PU238);
-	public static final ItemStack nugget_pu239 = nugget.getItemStack(MaterialMineral.PU239);
-	public static final ItemStack nugget_pu240 = nugget.getItemStack(MaterialMineral.PU240);
-	public static final ItemStack nugget_th232 = nugget.getItemStack(MaterialMineral.TH232);
-	public static final ItemStack nugget_pu241 = nugget.getItemStack(MaterialMineral.PU241);
-	public static final ItemStack nugget_pu_mix = nugget.getItemStack(MaterialMineral.PU_MIX);
-	public static final ItemStack nugget_am241 = nugget.getItemStack(MaterialMineral.AM241);
-	public static final ItemStack nugget_am242 = nugget.getItemStack(MaterialMineral.AM242);
-	public static final ItemStack nugget_am_mix = nugget.getItemStack(MaterialMineral.AM_MIX);
-	public static final ItemStack nugget_technetium = nugget.getItemStack(MaterialMineral.TECHNETIUM);
-	public static final ItemStack nugget_neptunium = nugget.getItemStack(MaterialMineral.NEPTUNIUM);
-	public static final ItemStack nugget_polonium = nugget.getItemStack(MaterialMineral.POLONIUM);
-	public static final ItemStack nugget_thorium_fuel = nugget.getItemStack(MaterialMineral.THORIUM_FUEL);
-	public static final ItemStack nugget_uranium_fuel = nugget.getItemStack(MaterialMineral.URANIUM_FUEL);
-	public static final ItemStack nugget_mox_fuel = nugget.getItemStack(MaterialMineral.MOX_FUEL);
-	public static final ItemStack nugget_plutonium_fuel = nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL);
-	public static final ItemStack nugget_neptunium_fuel = nugget.getItemStack(MaterialMineral.NEPTUNIUM_FUEL);
-	public static final ItemStack nugget_americium_fuel = nugget.getItemStack(MaterialMineral.AMERICIUM_FUEL);
-	public static final ItemStack nugget_les = nugget.getItemStack(MaterialMineral.LES);
-	public static final ItemStack nugget_schrabidium_fuel = nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL);
-	public static final ItemStack nugget_hes = nugget.getItemStack(MaterialMineral.HES);
-	public static final ItemStack nugget_lead = nugget.getItemStack(MaterialMineral.LEAD);
-	public static final ItemStack nugget_beryllium = nugget.getItemStack(MaterialMineral.BERYLLIUM);
-	public static final ItemStack nugget_cadmium = nugget.getItemStack(MaterialMineral.CADMIUM);
-	public static final ItemStack nugget_bismuth = nugget.getItemStack(MaterialMineral.BISMUTH);
-	public static final ItemStack nugget_arsenic = nugget.getItemStack(MaterialMineral.ARSENIC);
-	public static final ItemStack nugget_zirconium = nugget.getItemStack(MaterialMineral.ZIRCONIUM);
-	public static final ItemStack nugget_tantalium = nugget.getItemStack(MaterialMineral.TANTALIUM);
-	public static final ItemStack nugget_desh = nugget.getItemStack(MaterialMineral.DESH);
-	public static final ItemStack nugget_osmiridium = nugget.getItemStack(MaterialMineral.OSMIRIDIUM);
-	public static final ItemStack nugget_schrabidium = nugget.getItemStack(MaterialMineral.SCHRABIDIUM);
-	public static final ItemStack nugget_solinium = nugget.getItemStack(MaterialMineral.SOLINIUM);
-	public static final ItemStack nugget_euphemium = nugget.getItemStack(MaterialMineral.EUPHEMIUM);
-	public static final ItemStack nugget_dineutronium = nugget.getItemStack(MaterialMineral.DINEUTRONIUM);
-	public static final ItemStack nugget_actinium = nugget.getItemStack(MaterialMineral.ACTINIUM);
-	public static final ItemStack nugget_ac227 = nugget.getItemStack(MaterialMineral.AC227);
-	public static final ItemStack nugget_cobalt = nugget.getItemStack(MaterialMineral.COBALT);
-	public static final ItemStack nugget_co60 = nugget.getItemStack(MaterialMineral.CO60);
-	public static final ItemStack nugget_strontium = nugget.getItemStack(MaterialMineral.STRONTIUM);
-	public static final ItemStack nugget_sr90 = nugget.getItemStack(MaterialMineral.SR90);
-	public static final ItemStack nugget_pb209 = nugget.getItemStack(MaterialMineral.PB209);
-	public static final ItemStack nugget_gh336 = nugget.getItemStack(MaterialMineral.GH336);
-	public static final ItemStack nugget_au198 = nugget.getItemStack(MaterialMineral.AU198);
-	public static final ItemStack nugget_ra226 = nugget.getItemStack(MaterialMineral.RA226);
-	public static final ItemStack nugget_radspice = nugget.getItemStack(MaterialMineral.RADSPICE);
-	public static final ItemStack nugget_reiium = nugget.getItemStack(MaterialMineral.REIIUM);
-	public static final ItemStack nugget_weidanium = nugget.getItemStack(MaterialMineral.WEIDANIUM);
-	public static final ItemStack nugget_australium = nugget.getItemStack(MaterialMineral.AUSTRALIUM);
-	public static final ItemStack nugget_australium_lesser = nugget.getItemStack(MaterialMineral.AUSTRALIUM_LESSER);
-	public static final ItemStack nugget_australium_greater = nugget.getItemStack(MaterialMineral.AUSTRALIUM_GREATER);
-	public static final ItemStack nugget_verticium = nugget.getItemStack(MaterialMineral.VERTICIUM);
-	public static final ItemStack nugget_unobtainium = nugget.getItemStack(MaterialMineral.UNOBTAINIUM);
-	public static final ItemStack nugget_unobtainium_lesser = nugget.getItemStack(MaterialMineral.UNOBTAINIUM_LESSER);
-	public static final ItemStack nugget_unobtainium_greater = nugget.getItemStack(MaterialMineral.UNOBTAINIUM_GREATER);
-	public static final ItemStack nugget_daffergon = nugget.getItemStack(MaterialMineral.DAFFERGON);
-	public static final ItemStack nugget_mercury = nugget.getItemStack(MaterialMineral.MERCURY);
-
-	//
-
+	//random stuff
 	public static final Item redstone_sword = new RedstoneSword(ToolMaterial.STONE, "redstone_sword").setCreativeTab(CreativeTabs.COMBAT);
 	public static final Item big_sword = new BigSword(ToolMaterial.DIAMOND, "big_sword").setCreativeTab(CreativeTabs.COMBAT);
 	
 	// Tools
-
 	public static final Item dosimeter = new ItemDosimeter("dosimeter").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
 	public static final Item geiger_counter = new ItemGeigerCounter("geiger_counter").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
 	public static final Item digamma_diagnostic = new ItemDigammaDiagnostic("digamma_diagnostic").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
@@ -2060,7 +1839,7 @@ public class ModItems {
 			.addBreakAbility(new ToolAbility.HammerAbility(4))
 			.addBreakAbility(new ToolAbility.RecursionAbility(9));
 	
-	public static final ToolMaterial matDecCobalt = EnumHelper.addToolMaterial("HBM_COBALT2", 4, 1000, 15.0F, 2.5F, 25).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt));
+	public static final ToolMaterial matDecCobalt = EnumHelper.addToolMaterial("HBM_COBALT2", 4, 1000, 15.0F, 2.5F, 25).setRepairItem(ItemStackUtil.itemStackFrom(ingot.getItemStack(MaterialMineral.COBALT)));
 	public static final Item cobalt_decorated_sword = new ItemSwordAbility(15F, 0, matDecCobalt, "cobalt_decorated_sword");
 	public static final Item cobalt_decorated_pickaxe = new ItemToolAbility(6F, -2.8F, 0, matDecCobalt, EnumToolType.PICKAXE, "cobalt_decorated_pickaxe")
 			.addBreakAbility(new ToolAbility.RecursionAbility(4))
@@ -2080,7 +1859,7 @@ public class ModItems {
 			.addBreakAbility(new LuckAbility(3));
 	public static final Item cobalt_decorated_hoe = new ModHoe(matDecCobalt, "cobalt_decorated_hoe").setCreativeTab(CreativeTabs.TOOLS);
 	
-	public static final ToolMaterial matStarmetal = EnumHelper.addToolMaterial("HBM_STARMETAL", 3, 1000, 20.0F, 2.5F, 30).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_starmetal));
+	public static final ToolMaterial matStarmetal = EnumHelper.addToolMaterial("HBM_STARMETAL", 3, 1000, 20.0F, 2.5F, 30).setRepairItem(ItemStackUtil.itemStackFrom(ingot.getItemStack(MaterialMineral.STARMETAL)));
 	public static final Item starmetal_sword = new ItemSwordAbility(25F, 0, matStarmetal, "starmetal_sword")
 			.addHitAbility(new WeaponAbility.BeheaderAbility())
 			.addHitAbility(new WeaponAbility.StunAbility(3));
@@ -2131,7 +1910,7 @@ public class ModItems {
 	
 	public static final Item cmb_hoe = new ModHoe(MainRegistry.enumToolMaterialCmb, "cmb_hoe").setMaxStackSize(1).setCreativeTab(CreativeTabs.TOOLS);
 	
-	public static final ToolMaterial matBismuth = EnumHelper.addToolMaterial("HBM_BISMUTH", 4, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_bismuth));
+	public static final ToolMaterial matBismuth = EnumHelper.addToolMaterial("HBM_BISMUTH", 4, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ingot.getItemStack(MaterialMineral.BISMUTH)));
 	public static final Item bismuth_pickaxe = new ItemToolAbility(15F, -2.8F, 0, matBismuth, EnumToolType.MINER, "bismuth_pickaxe")
 			.addBreakAbility(new ToolAbility.HammerAbility(2))
 			.addBreakAbility(new ToolAbility.RecursionAbility(4))
@@ -2143,7 +1922,7 @@ public class ModItems {
 			.addHitAbility(new WeaponAbility.BeheaderAbility())
 			.setDepthRockBreaker();
 	
-	public static final ToolMaterial matVolcano = EnumHelper.addToolMaterial("HBM_VOLCANIC", 4, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_bismuth));
+	public static final ToolMaterial matVolcano = EnumHelper.addToolMaterial("HBM_VOLCANIC", 4, 0, 50F, 0.0F, 200).setRepairItem(ItemStackUtil.itemStackFrom(ingot.getItemStack(MaterialMineral.BISMUTH)));
 	public static final Item volcanic_pickaxe = new ItemToolAbility(15F, -2.8F, 0, matVolcano, EnumToolType.MINER, "volcanic_pickaxe")
 			.addBreakAbility(new ToolAbility.HammerAbility(2))
 			.addBreakAbility(new ToolAbility.RecursionAbility(4))

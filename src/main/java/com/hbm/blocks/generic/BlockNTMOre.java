@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.main.MainRegistry;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.modules.ItemHazardModule;
@@ -214,39 +215,39 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	@Override
 	public int damageDropped(IBlockState state) {
 		if(this == ModBlocks.ore_asbestos || this == ModBlocks.ore_gneiss_asbestos || this == ModBlocks.basalt_asbestos){
-			return ModItems.ingot_asbestos.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.ASBESTOS).getMetadata();
 		}
 		if(this == ModBlocks.deco_aluminium)
 		{
-			return ModItems.ingot_aluminium.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM).getMetadata();
 		}
 		if(this == ModBlocks.deco_beryllium)
 		{
-			return ModItems.ingot_beryllium.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM).getMetadata();
 		}
 		if(this == ModBlocks.deco_lead)
 		{
-			return ModItems.ingot_lead.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.LEAD).getMetadata();
 		}
 		if(this == ModBlocks.deco_red_copper)
 		{
-			return ModItems.ingot_red_copper.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER).getMetadata();
 		}
 		if(this == ModBlocks.deco_steel)
 		{
-			return ModItems.ingot_steel.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.STEEL).getMetadata();
 		}
 		if(this == ModBlocks.deco_titanium)
 		{
-			return ModItems.ingot_titanium.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.TITANIUM).getMetadata();
 		}
 		if(this == ModBlocks.deco_tungsten)
 		{
-			return ModItems.ingot_tungsten.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN).getMetadata();
 		}
 		if(this == ModBlocks.deco_asbestos)
 		{
-			return ModItems.ingot_asbestos.getMetadata();
+			return ModItems.ingot.getItemStack(MaterialMineral.ASBESTOS).getMetadata();
 		}
 		return 0;
 	}

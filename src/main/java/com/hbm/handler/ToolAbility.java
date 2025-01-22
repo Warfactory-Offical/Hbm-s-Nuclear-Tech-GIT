@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
@@ -475,7 +476,7 @@ public abstract class ToolAbility {
 
 			if(mercury > 0) {
 				world.setBlockToAir(new BlockPos(x, y, z));
-				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, mercury)));
+				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), mercury)));
 			}
 		}
 

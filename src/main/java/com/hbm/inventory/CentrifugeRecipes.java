@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.model.b3d.B3DModel.Bone;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class CentrifugeRecipes {
@@ -30,33 +30,33 @@ public class CentrifugeRecipes {
 	public static void register() {
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.waste_uranium), new ItemStack[] {
-				ItemStackUtil.itemStackFrom(ModItems.nugget_pu_mix, 2),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_plutonium, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_technetium, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU_MIX), 2),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TECHNETIUM), 1),
 				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 2) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.waste_plutonium), new ItemStack[] {
-				ItemStackUtil.itemStackFrom(ModItems.nugget_pu_mix, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_pu_mix, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_technetium, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU_MIX), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU_MIX), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TECHNETIUM), 1),
 				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 3) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.waste_mox), new ItemStack[] {
-				ItemStackUtil.itemStackFrom(ModItems.nugget_pu_mix, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_technetium, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_u238, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU_MIX), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TECHNETIUM), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U238), 1),
 				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 3) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.waste_schrabidium), new ItemStack[] {
-				ItemStackUtil.itemStackFrom(ModItems.nugget_beryllium, 2),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_lead, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_solinium, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.BERYLLIUM), 2),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.LEAD), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SOLINIUM), 1),
 				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 2) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.waste_thorium), new ItemStack[] {
-				ItemStackUtil.itemStackFrom(ModItems.nugget_u238, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_th232, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_u233, 2),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U238), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TH232), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U233), 2),
 				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 2) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.powder_cloud), new ItemStack[] {
@@ -146,13 +146,13 @@ public class CentrifugeRecipes {
 		recipes.put(SA326.ore(), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium, 1),
 				ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_solinium, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SOLINIUM), 1),
 				ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 		
 		recipes.put(RAREEARTH.ore(), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_zirconium, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_zirconium, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM), 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM), 1),
 				ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 
 		recipes.put(CINNABAR.ore(), new ItemStack[] {
@@ -164,13 +164,13 @@ public class CentrifugeRecipes {
 		recipes.put(PU.ore(), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 1),
 				ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_polonium, 3),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.POLONIUM), 3),
 				ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 		
 		recipes.put(U.ore(), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 1),
 				ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 1),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_ra226, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RA226), 1),
 				ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 		
 		recipes.put(TH232.ore(), new ItemStack[] {
@@ -188,7 +188,7 @@ public class CentrifugeRecipes {
 		recipes.put(REDSTONE.ore(), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(Items.REDSTONE, 3),
 				ItemStackUtil.itemStackFrom(Items.REDSTONE, 3),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 1),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 1),
 				ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModBlocks.ore_tikite), new ItemStack[] {
@@ -216,32 +216,32 @@ public class CentrifugeRecipes {
 				ItemStackUtil.itemStackFrom(ModItems.dust, 6) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(ModBlocks.block_euphemium_cluster), new ItemStack[] {
-				ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium, 7),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM), 7),
 				ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium, 4),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_starmetal, 2),
-				ItemStackUtil.itemStackFrom(ModItems.nugget_solinium, 2) });
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STARMETAL), 2),
+				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SOLINIUM), 2) });
 		
 		recipes.put(P_RED.ore(), new ItemStack[] {
 				ItemStackUtil.itemStackFrom(Items.BLAZE_POWDER, 2),
 				ItemStackUtil.itemStackFrom(ModItems.powder_fire, 2),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_phosphorus),
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PHOSPHORUS)),
 				ItemStackUtil.itemStackFrom(Blocks.NETHERRACK) });
 		
 		recipes.put(ItemStackUtil.comparableStackFrom(Items.BLAZE_ROD), new ItemStack[] {ItemStackUtil.itemStackFrom(Items.BLAZE_POWDER, 1), ItemStackUtil.itemStackFrom(Items.BLAZE_POWDER, 1), ItemStackUtil.itemStackFrom(ModItems.powder_fire, 1), ItemStackUtil.itemStackFrom(ModItems.powder_fire, 1) });
 		
-		recipes.put(SRN.ingot(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 1), ItemStackUtil.itemStackFrom(ModItems.nugget_uranium, 3), ItemStackUtil.itemStackFrom(ModItems.nugget_plutonium, 2) });
+		recipes.put(SRN.ingot(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 1), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.URANIUM), 3), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM), 2) });
 		
 		recipes.put(COAL.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_coal, 3), ItemStackUtil.itemStackFrom(ModItems.powder_coal, 3), ItemStackUtil.itemStackFrom(ModItems.powder_coal, 3), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(IRON.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_iron, 2), ItemStackUtil.itemStackFrom(ModItems.powder_iron, 2), ItemStackUtil.itemStackFrom(ModItems.powder_titanium, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
-		recipes.put(GOLD.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_gold, 2), ItemStackUtil.itemStackFrom(ModItems.powder_gold, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
-		recipes.put(REDSTONE.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(Items.REDSTONE, 3), ItemStackUtil.itemStackFrom(Items.REDSTONE, 3), ItemStackUtil.itemStackFrom(Items.REDSTONE, 3), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 3) });
+		recipes.put(GOLD.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_gold, 2), ItemStackUtil.itemStackFrom(ModItems.powder_gold, 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
+		recipes.put(REDSTONE.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(Items.REDSTONE, 3), ItemStackUtil.itemStackFrom(Items.REDSTONE, 3), ItemStackUtil.itemStackFrom(Items.REDSTONE, 3), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 3) });
 		recipes.put(LAPIS.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_lapis, 8), ItemStackUtil.itemStackFrom(ModItems.powder_lapis, 8), ItemStackUtil.itemStackFrom(ModItems.powder_cobalt, 1), ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 		recipes.put(DIAMOND.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_diamond, 1), ItemStackUtil.itemStackFrom(ModItems.powder_diamond, 1), ItemStackUtil.itemStackFrom(ModItems.powder_diamond, 1), ItemStackUtil.itemStackFrom(ModItems.powder_diamond, 1) });
-		recipes.put(U.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_ra226, 2), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
-		recipes.put(TH232.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_thorium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_thorium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 1), ItemStackUtil.itemStackFrom(ModItems.nugget_ra226, 1) });
+		recipes.put(U.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RA226), 2), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
+		recipes.put(TH232.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_thorium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_thorium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 1), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RA226), 1) });
 		recipes.put(PU.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_polonium, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(TI.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_titanium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_titanium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_iron, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
-		recipes.put(S.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.sulfur, 4), ItemStackUtil.itemStackFrom(ModItems.sulfur, 4), ItemStackUtil.itemStackFrom(ModItems.powder_iron, 1), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 1) });
+		recipes.put(S.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.sulfur, 4), ItemStackUtil.itemStackFrom(ModItems.sulfur, 4), ItemStackUtil.itemStackFrom(ModItems.powder_iron, 1), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 1) });
 		recipes.put(KNO.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.niter, 3), ItemStackUtil.itemStackFrom(ModItems.niter, 3), ItemStackUtil.itemStackFrom(ModItems.niter, 3), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(CU.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_copper, 2), ItemStackUtil.itemStackFrom(ModItems.powder_copper, 2), ItemStackUtil.itemStackFrom(ModItems.sulfur, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(W.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_tungsten, 2), ItemStackUtil.itemStackFrom(ModItems.powder_tungsten, 2), ItemStackUtil.itemStackFrom(ModItems.powder_iron, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
@@ -249,14 +249,14 @@ public class CentrifugeRecipes {
 		recipes.put(F.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.fluorite, 3), ItemStackUtil.itemStackFrom(ModItems.fluorite, 3), ItemStackUtil.itemStackFrom(ModItems.fluorite, 3), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(BE.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_beryllium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_beryllium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_quartz, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(PB.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_lead, 2), ItemStackUtil.itemStackFrom(ModItems.powder_lead, 2), ItemStackUtil.itemStackFrom(ModItems.powder_gold, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
-		recipes.put(SRN.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_uranium, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_plutonium, 2) });
+		recipes.put(SRN.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.URANIUM), 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM), 2) });
 		recipes.put(SA326.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 1), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
-		recipes.put(RAREEARTH.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1), ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1), ItemStackUtil.itemStackFrom(ModItems.nugget_zirconium, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_zirconium, 2) });
+		recipes.put(RAREEARTH.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1), ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM), 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM), 2) });
 		recipes.put(CINNABAR.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.cinnebar, 3), ItemStackUtil.itemStackFrom(ModItems.cinnebar, 3), ItemStackUtil.itemStackFrom(Items.REDSTONE, 2), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
-		recipes.put(P_RED.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_fire, 3), ItemStackUtil.itemStackFrom(ModItems.powder_fire, 3), ItemStackUtil.itemStackFrom(ModItems.ingot_phosphorus, 2), ItemStackUtil.itemStackFrom(Items.BLAZE_POWDER, 2) });
+		recipes.put(P_RED.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_fire, 3), ItemStackUtil.itemStackFrom(ModItems.powder_fire, 3), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PHOSPHORUS), 2), ItemStackUtil.itemStackFrom(Items.BLAZE_POWDER, 2) });
 		recipes.put(ItemStackUtil.comparableStackFrom(ModItems.crystal_trixite), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 3), ItemStackUtil.itemStackFrom(ModItems.powder_cobalt, 3), ItemStackUtil.itemStackFrom(ModItems.powder_spark_mix, 1), ItemStackUtil.itemStackFrom(ModItems.powder_nitan_mix, 2) });
 		recipes.put(LI.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_lithium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_lithium, 2), ItemStackUtil.itemStackFrom(ModItems.powder_quartz, 1), ItemStackUtil.itemStackFrom(ModItems.fluorite, 1) });
-		recipes.put(STAR.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_dura_steel, 3), ItemStackUtil.itemStackFrom(ModItems.powder_cobalt, 3), ItemStackUtil.itemStackFrom(ModItems.powder_astatine, 2), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 5) });
+		recipes.put(STAR.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_dura_steel, 3), ItemStackUtil.itemStackFrom(ModItems.powder_cobalt, 3), ItemStackUtil.itemStackFrom(ModItems.powder_astatine, 2), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 5) });
 		recipes.put(CO.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_cobalt, 2), ItemStackUtil.itemStackFrom(ModItems.powder_iron, 3), ItemStackUtil.itemStackFrom(ModItems.powder_copper, 3), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(ASBESTOS.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_asbestos, 2), ItemStackUtil.itemStackFrom(ModItems.powder_asbestos, 2), ItemStackUtil.itemStackFrom(ModItems.powder_boron_tiny, 1), ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 
@@ -302,14 +302,14 @@ public class CentrifugeRecipes {
 	}
 
 	public static ItemStack getNugget(String oreName){
-		if(oreName.equals("oreLead") || oreName.equals("oreCopper")) return ItemStackUtil.itemStackFrom(ModItems.nugget_cadmium, 1);
-		if(oreName.equals("oreGold") || oreName.equals("oreTungsten")) return ItemStackUtil.itemStackFrom(ModItems.nugget_bismuth, 1);
-		if(oreName.equals("oreUranium")) return ItemStackUtil.itemStackFrom(ModItems.nugget_ra226, 1);
-		if(oreName.equals("oreThorium")) return ItemStackUtil.itemStackFrom(ModItems.nugget_technetium, 1);
+		if(oreName.equals("oreLead") || oreName.equals("oreCopper")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.CADMIUM), 1);
+		if(oreName.equals("oreGold") || oreName.equals("oreTungsten")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.BISMUTH), 1);
+		if(oreName.equals("oreUranium")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RA226), 1);
+		if(oreName.equals("oreThorium")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TECHNETIUM), 1);
 		if(oreName.equals("oreStarmetal")) return ItemStackUtil.itemStackFrom(ModItems.powder_meteorite_tiny, 1);
-		if(oreName.equals("oreRedstone")) return ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 1);
-		if(oreName.equals("oreRedPhosphorus")) return ItemStackUtil.itemStackFrom(ModItems.nugget_arsenic, 1);
-		if(oreName.equals("oreNeodymium")) return ItemStackUtil.itemStackFrom(ModItems.nugget_tantalium, 1);
+		if(oreName.equals("oreRedstone")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 1);
+		if(oreName.equals("oreRedPhosphorus")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.ARSENIC), 1);
+		if(oreName.equals("oreNeodymium")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TANTALIUM), 1);
 		return ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1);
 	}
 

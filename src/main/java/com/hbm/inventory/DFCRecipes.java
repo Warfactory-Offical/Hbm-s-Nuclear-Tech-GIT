@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.hbm.lib.Library;
-import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.items.ModItems;
 
@@ -34,11 +34,11 @@ public class DFCRecipes {
 		
 		DFCRecipes.setRecipe(100000L, ModItems.marshmallow, ItemStackUtil.itemStackFrom(ModItems.marshmallow_roasted));
 		
-		DFCRecipes.setRecipe(2000000L, REDSTONE.dust(), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury));
+		DFCRecipes.setRecipe(2000000L, REDSTONE.dust(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY)));
 		DFCRecipes.setRecipe(2000000L, REDSTONE.block(), ItemStackUtil.itemStackFrom(ModItems.bottle_mercury));
 		
 		DFCRecipes.setRecipe(10000000L, W.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_magnetized_tungsten));
-		DFCRecipes.setRecipe(10000000L, W.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten));
+		DFCRecipes.setRecipe(10000000L, W.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN)));
 		
 		DFCRecipes.setRecipe(60000000L, MAGTUNG.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_chlorophyte));
 		DFCRecipes.setRecipe(60000000L, MAGTUNG.ingot(), ItemStackUtil.itemStackFrom(ModItems.powder_chlorophyte));
@@ -47,38 +47,38 @@ public class DFCRecipes {
 		
 		DFCRecipes.setRecipe(600000000L, ModItems.powder_balefire, ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard));
 
-		DFCRecipes.setRecipe(800000000L, ModItems.billet_thorium_fuel, ItemStackUtil.itemStackFrom(ModItems.billet_zfb_bismuth));
+		DFCRecipes.setRecipe(800000000L, ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZFB_BISMUTH)));
 
 		DFCRecipes.setRecipe(1200000000L, Items.STICK, ItemStackUtil.itemStackFrom(Blocks.LOG));
 		DFCRecipes.setRecipe(1200000000L, Blocks.STONE, ItemStackUtil.itemStackFrom(Blocks.IRON_ORE));
 		DFCRecipes.setRecipe(1200000000L, Blocks.GRAVEL, ItemStackUtil.itemStackFrom(Blocks.COAL_ORE));
 		DFCRecipes.setRecipe(1200000000L, Blocks.NETHERRACK, ItemStackUtil.itemStackFrom(Blocks.QUARTZ_ORE));
 		
-		DFCRecipes.setRecipe(1500000000L, ModItems.nugget_unobtainium_lesser, ItemStackUtil.itemStackFrom(ModItems.nugget_unobtainium_greater));
+		DFCRecipes.setRecipe(1500000000L, ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_LESSER), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_GREATER)));
 		
-		DFCRecipes.setRecipe(2000000000L, U.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium));
-		DFCRecipes.setRecipe(2000000000L, U.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium));
+		DFCRecipes.setRecipe(2000000000L, U.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM)));
+		DFCRecipes.setRecipe(2000000000L, U.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)));
 		DFCRecipes.setRecipe(2000000000L, U.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium));
 		
 		DFCRecipes.setRecipe(2500000000L, ModItems.powder_nitan_mix, ItemStackUtil.itemStackFrom(ModItems.powder_spark_mix));
 		DFCRecipes.setRecipe(5000000000L, ModItems.particle_hydrogen, ItemStackUtil.itemStackFrom(ModItems.particle_amat));
 		
-		DFCRecipes.setRecipe(20000000000L, PU.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium));
-		DFCRecipes.setRecipe(20000000000L, PU.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot_euphemium));
+		DFCRecipes.setRecipe(20000000000L, PU.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM)));
+		DFCRecipes.setRecipe(20000000000L, PU.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM)));
 		DFCRecipes.setRecipe(20000000000L, PU.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_euphemium));
 
 		DFCRecipes.setRecipe(30000000000L, ModItems.particle_amat, ItemStackUtil.itemStackFrom(ModItems.particle_aschrab));
 
-		DFCRecipes.setRecipe(40000000000L, VERTICIUM.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget_radspice));
-		DFCRecipes.setRecipe(40000000000L, VERTICIUM.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot_radspice));
+		DFCRecipes.setRecipe(40000000000L, VERTICIUM.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RADSPICE)));
+		DFCRecipes.setRecipe(40000000000L, VERTICIUM.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RADSPICE)));
 		DFCRecipes.setRecipe(40000000000L, VERTICIUM.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_radspice));
 		
-		DFCRecipes.setRecipe(50000000000L, ModItems.billet_polonium, ItemStackUtil.itemStackFrom(ModItems.billet_yharonite));
+		DFCRecipes.setRecipe(50000000000L, ModItems.billet.getItemStack(MaterialMineral.POLONIUM), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.YHARONITE)));
 			
 		DFCRecipes.setRecipe(100000000000L, ModItems.meteorite_sword_warped, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_demonic));
 		
 		DFCRecipes.setRecipe(200000000000L, SBD.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_dineutronium));
-		DFCRecipes.setRecipe(200000000000L, SBD.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot_dineutronium));
+		DFCRecipes.setRecipe(200000000000L, SBD.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DINEUTRONIUM)));
 		
 		DFCRecipes.setRecipe(400000000000L, U238.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2));
 		DFCRecipes.setRecipe(420000000000L, U238.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget_u238m2));

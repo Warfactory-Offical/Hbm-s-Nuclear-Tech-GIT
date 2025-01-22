@@ -1,4 +1,5 @@
 package com.hbm.main;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.lang.reflect.Field;
@@ -273,7 +274,7 @@ public class ModEventHandler {
 		int randomChance = 64;
 
 		// Check for specific smelting results and handle rewards
-		if (ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) || ItemStackUtil.isSameMetaItem(smeltedItem, ModItems.ingot_uranium)) {
+		if (ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) || ItemStackUtil.isSameMetaItem(smeltedItem, ModItems.ingot.getItemStack(MaterialMineral.URANIUM))) {
 			Item rewardItem = ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) ? ModItems.lodestone : ModItems.quartz_plutonium;
 
 			if (event.player.getRNG().nextInt(randomChance) == 0) {
@@ -1105,7 +1106,7 @@ public class ModEventHandler {
 
             event.setCost(10);
 		}
-		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot_meteorite) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot_meteorite) &&
+		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE)) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE)) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
 			double h1 = ItemHot.getHeat(event.getLeft());
@@ -1113,14 +1114,14 @@ public class ModEventHandler {
 
 			if(h1 >= 0.5 && h2 >= 0.5) {
 
-				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.ingot_meteorite_forged);
+				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED));
 				ItemHot.heatUp(out, (h1 + h2) / 2D);
 				event.setOutput(out);
 	            event.setCost(10);
 			}
 		}
 
-		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot_meteorite_forged) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot_meteorite_forged) &&
+		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
 			double h1 = ItemHot.getHeat(event.getLeft());
@@ -1135,7 +1136,7 @@ public class ModEventHandler {
 			}
 		}
 
-		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.meteorite_sword_seared) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot_meteorite_forged) &&
+		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.meteorite_sword_seared) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
 			double h2 = ItemHot.getHeat(event.getRight());
@@ -1165,7 +1166,7 @@ public class ModEventHandler {
 
 				ItemStack out;
 				if(done){
-					out = ItemStackUtil.itemStackFrom(ModItems.ingot_chainsteel, event.getLeft().getCount());
+					out = ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), event.getLeft().getCount());
 				} else {
 					out = ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, event.getLeft().getCount(), i3);
 				}

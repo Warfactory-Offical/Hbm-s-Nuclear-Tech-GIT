@@ -1,4 +1,5 @@
 package com.hbm.main;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.io.File;
@@ -562,7 +563,7 @@ public class MainRegistry {
 		proxy.preInit(event);
 		Library.initSuperusers();
 		
-		enumArmorMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium));
+		enumArmorMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)));
 		enumArmorMaterialHazmat.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth));
 		enumArmorMaterialHazmat2.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth_red));
 		enumArmorMaterialHazmat3.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth_grey));
@@ -570,22 +571,22 @@ public class MainRegistry {
 		aMatBJ.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_lunar));
 		aMatAJR.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_ajr));
 		aMatHEV.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_hev));
-		enumArmorMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_titanium));
-		enumArmorMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_steel));
-		enumArmorMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy));
+		enumArmorMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM)));
+		enumArmorMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)));
+		enumArmorMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)));
 		enumArmorMaterialPaa.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
-		enumArmorMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel));
-		enumArmorMaterialAusIII.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_australium));
+		enumArmorMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL)));
+		enumArmorMaterialAusIII.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AUSTRALIUM)));
 		enumArmorMaterialSecurity.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_kevlar));
-		enumToolMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium));
+		enumToolMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)));
 		enumToolMaterialHammer.setRepairItem(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
-		enumToolMaterialChainsaw.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_steel));
-		enumToolMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_titanium));
-		enumToolMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_steel));
-		enumToolMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy));
-		enumToolMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel));
+		enumToolMaterialChainsaw.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)));
+		enumToolMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM)));
+		enumToolMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)));
+		enumToolMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)));
+		enumToolMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL)));
 		enumToolMaterialBottleOpener.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_steel));
-		enumToolMaterialDesh.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot_desh));
+		enumToolMaterialDesh.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH)));
 		enumArmorMaterialAsbestos.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.asbestos_cloth));
 		matMeteorite.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
 		aMatLiquidator.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_lead));
@@ -1109,7 +1110,7 @@ public class MainRegistry {
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.pink_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.kerosene, 10000));
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.red_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.diesel, 10000));
 		FluidContainerRegistry.registerContainer(ModItems.iv_xp, ModItems.iv_xp_empty, new FluidStack(ModForgeFluids.experience, 100));
-		FluidContainerRegistry.registerContainer(ModItems.nugget_mercury, null, new FluidStack(ModForgeFluids.mercury, 125));
+		FluidContainerRegistry.registerContainer(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), null, new FluidStack(ModForgeFluids.mercury, 125));
 		FluidContainerRegistry.registerContainer(ModItems.bottle_mercury, Items.GLASS_BOTTLE, new FluidStack(ModForgeFluids.mercury, 1000));
 		FluidContainerRegistry.registerContainer(ModItems.particle_hydrogen, ModItems.particle_empty, new FluidStack(ModForgeFluids.hydrogen, 1000));
 		FluidContainerRegistry.registerContainer(ModItems.particle_amat, ModItems.particle_empty, new FluidStack(ModForgeFluids.amat, 1000));
@@ -1143,10 +1144,10 @@ public class MainRegistry {
 	}
 
 	private void registerReactorFuels(){
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.URANIUM, ModItems.nugget_uranium_fuel);
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.URANIUM, ModItems.ingot_uranium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.URANIUM, ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.URANIUM, ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(81, ReactorFuelType.URANIUM, Item.getItemFromBlock(ModBlocks.block_uranium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.URANIUM, ModItems.billet_uranium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.URANIUM, ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.URANIUM, ModItems.rod_uranium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.URANIUM, ModItems.rod_dual_uranium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.URANIUM, ModItems.rod_quad_uranium_fuel);
@@ -1154,10 +1155,10 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(12, ReactorFuelType.URANIUM, ModItems.rod_dual_empty, ModItems.rod_dual_uranium_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(24, ReactorFuelType.URANIUM, ModItems.rod_quad_empty, ModItems.rod_quad_uranium_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.PLUTONIUM, ModItems.nugget_plutonium_fuel);
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.PLUTONIUM, ModItems.ingot_plutonium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.PLUTONIUM, ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.PLUTONIUM, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(81, ReactorFuelType.PLUTONIUM, Item.getItemFromBlock(ModBlocks.block_plutonium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.PLUTONIUM, ModItems.billet_plutonium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.PLUTONIUM, ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.PLUTONIUM, ModItems.rod_plutonium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.PLUTONIUM, ModItems.rod_dual_plutonium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.PLUTONIUM, ModItems.rod_quad_plutonium_fuel);
@@ -1165,9 +1166,9 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(12, ReactorFuelType.PLUTONIUM, ModItems.rod_dual_empty, ModItems.rod_dual_plutonium_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(24, ReactorFuelType.PLUTONIUM, ModItems.rod_quad_empty, ModItems.rod_quad_plutonium_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.MOX, ModItems.nugget_mox_fuel);
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.MOX, ModItems.ingot_mox_fuel);
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.MOX, ModItems.billet_mox_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.MOX, ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.MOX, ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.MOX, ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.MOX, ModItems.rod_mox_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.MOX, ModItems.rod_dual_mox_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.MOX, ModItems.rod_quad_mox_fuel);
@@ -1175,10 +1176,10 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(12, ReactorFuelType.MOX, ModItems.rod_dual_empty, ModItems.rod_dual_mox_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(24, ReactorFuelType.MOX, ModItems.rod_quad_empty, ModItems.rod_quad_mox_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(10, ReactorFuelType.SCHRABIDIUM, ModItems.nugget_schrabidium_fuel);
-		TileEntityMachineReactorLarge.registerFuelEntry(90, ReactorFuelType.SCHRABIDIUM, ModItems.ingot_schrabidium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(10, ReactorFuelType.SCHRABIDIUM, ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(90, ReactorFuelType.SCHRABIDIUM, ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(810, ReactorFuelType.SCHRABIDIUM, Item.getItemFromBlock(ModBlocks.block_schrabidium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(60, ReactorFuelType.SCHRABIDIUM, ModItems.billet_schrabidium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(60, ReactorFuelType.SCHRABIDIUM, ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(60, ReactorFuelType.SCHRABIDIUM, ModItems.rod_schrabidium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(120, ReactorFuelType.SCHRABIDIUM, ModItems.rod_dual_schrabidium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(240, ReactorFuelType.SCHRABIDIUM, ModItems.rod_quad_schrabidium_fuel);
@@ -1186,10 +1187,10 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(120, ReactorFuelType.SCHRABIDIUM, ModItems.rod_dual_empty, ModItems.rod_dual_schrabidium_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(240, ReactorFuelType.SCHRABIDIUM, ModItems.rod_quad_empty, ModItems.rod_quad_schrabidium_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.THORIUM, ModItems.nugget_thorium_fuel);
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.THORIUM, ModItems.ingot_thorium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.THORIUM, ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.THORIUM, ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(81, ReactorFuelType.THORIUM, Item.getItemFromBlock(ModBlocks.block_thorium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.THORIUM, ModItems.billet_thorium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.THORIUM, ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL));
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.THORIUM, ModItems.rod_thorium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.THORIUM, ModItems.rod_dual_thorium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.THORIUM, ModItems.rod_quad_thorium_fuel);

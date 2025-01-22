@@ -1,4 +1,5 @@
 package com.hbm.main;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.Map.Entry;
@@ -182,7 +183,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_dura_steel, 1), new Object[] { "###", "###", "###", '#', DURA.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_saturnite, 1), new Object[] { "###", "###", "###", '#', BIGMT.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_ra226, 1), new Object[] { "###", "###", "###", '#', RA226.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_radspice, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot_radspice });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_radspice, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot.getItemStack(MaterialMineral.RADSPICE)});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_polymer, 1), new Object[] { "###", "###", "###", '#', POLYMER.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_bakelite, 1), new Object[] { "###", "###", "###", '#', BAKELITE.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_rubber, 1), new Object[] { "###", "###", "###", '#', RUBBER.ingot() });
@@ -196,15 +197,15 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.hazmat, 8), new Object[] { "###", "# #", "###", '#', ModItems.hazmat_cloth });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth, 1), new Object[] { "#", '#', ModBlocks.hazmat });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium_fuel, 1), new Object[] { U235.nugget(), U235.nugget(), U235.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium_fuel, 1), new Object[] { U233.nugget(), U233.nugget(), U233.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_thorium_fuel, 1), new Object[] { U233.nugget(), U233.nugget(), U233.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium_fuel, 1), new Object[] { PU238.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU240.nugget(), PU240.nugget(), PU240.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_mox_fuel, 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_mox_fuel, 1), new Object[] { U235.nugget(), U235.nugget(), U235.nugget(), U238.nugget(), U238.nugget(), PU238.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium_fuel, 1), new Object[] { SA326.nugget(), SA326.nugget(), SA326.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_hes, 1), new Object[] { SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_les, 1), new Object[] { SA326.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 1), new Object[] { U235.nugget(), U235.nugget(), U235.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 1), new Object[] { U233.nugget(), U233.nugget(), U233.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), 1), new Object[] { U233.nugget(), U233.nugget(), U233.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 1), new Object[] { PU238.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU240.nugget(), PU240.nugget(), PU240.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 1), new Object[] { U235.nugget(), U235.nugget(), U235.nugget(), U238.nugget(), U238.nugget(), PU238.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 1), new Object[] { SA326.nugget(), SA326.nugget(), SA326.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.HES), 1), new Object[] { SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LES), 1), new Object[] { SA326.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
 
 		//AMMO CLIP UNCRAFTING
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.gun_revolver_iron_ammo, 24), new Object[] { ItemStackUtil.itemStackFrom(ModItems.clip_revolver_iron) });
@@ -240,119 +241,119 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.gun_defabricator_ammo, 16), new Object[] { ItemStackUtil.itemStackFrom(ModItems.clip_defabricator) });
 
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_copper, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_copper) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_copper) });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.fluorite, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_fluorite) });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.niter, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_niter) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_red_copper, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_red_copper) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_steel) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_red_copper) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_steel) });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.sulfur, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_sulfur) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_titanium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_titanium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_tungsten) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_uranium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_th232, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_thorium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_lead, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_lead) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_titanium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_tungsten) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_uranium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TH232), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_thorium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_lead) });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.trinitite, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_trinitite) });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_waste) });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_waste_painted) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_beryllium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_beryllium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_schrabidium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_euphemium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_euphemium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_advanced_alloy) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_magnetized_tungsten) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_combine_steel) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_australium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_australium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_weidanium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_weidanium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_reiium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_reiium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_unobtainium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_unobtainium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_daffergon, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_daffergon) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_verticium, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_verticium) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_desh, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_desh) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_dura_steel) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_saturnite, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_saturnite) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_ra226, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_ra226) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_radspice, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_radspice) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_polymer, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_polymer) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_bakelite, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_bakelite) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_rubber, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_rubber) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_beryllium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_schrabidium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_euphemium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_advanced_alloy) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_magnetized_tungsten) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_combine_steel) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AUSTRALIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_australium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.WEIDANIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_weidanium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.REIIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_reiium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.UNOBTAINIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_unobtainium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DAFFERGON), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_daffergon) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.VERTICIUM), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_verticium) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_desh) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_dura_steel) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SATURNITE), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_saturnite) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RA226), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_ra226) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RADSPICE), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_radspice) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_polymer) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BAKELITE), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_bakelite) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RUBBER), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_rubber) });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.powder_yellowcake, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_yellowcake) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_au198, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_au198) });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_starmetal, 9), new Object[] { "#", '#', ModBlocks.block_starmetal });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AU198), 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_au198) });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STARMETAL), 9), new Object[] { "#", '#', ModBlocks.block_starmetal });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium, 1), new Object[] { "###", "###", "###", '#', PU.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_plutonium, 9), new Object[] { "#", '#', PU.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu238, 1), new Object[] { "###", "###", "###", '#', PU238.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_pu238, 9), new Object[] { "#", '#', PU238.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu239, 1), new Object[] { "###", "###", "###", '#', PU239.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_pu239, 9), new Object[] { "#", '#', PU239.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu240, 1), new Object[] { "###", "###", "###", '#', PU240.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_pu240, 9), new Object[] { "#", '#', PU240.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_th232, 1), new Object[] { "###", "###", "###", '#', TH232.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_th232, 9), new Object[] { "#", '#', TH232.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium, 1), new Object[] { "###", "###", "###", '#', U.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_uranium, 9), new Object[] { "#", '#', U.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u233, 1), new Object[] { "###", "###", "###", '#',U233.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_u233, 9), new Object[] { "#", '#',U233.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u235, 1), new Object[] { "###", "###", "###", '#', U235.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_u235, 9), new Object[] { "#", '#', U235.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u238, 1), new Object[] { "###", "###", "###", '#', U238.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_u238, 9), new Object[] { "#", '#', U238.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_neptunium, 1), new Object[] { "###", "###", "###", '#', NP237.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_neptunium, 9), new Object[] { "#", '#', NP237.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_polonium, 1), new Object[] { "###", "###", "###", '#', PO210.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_polonium, 9), new Object[] { "#", '#', PO210.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_lead, 1), new Object[] { "###", "###", "###", '#', PB.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_lead, 9), new Object[] { "#", '#', PB.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_beryllium, 1), new Object[] { "###", "###", "###", '#', BE.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_beryllium, 9), new Object[] { "#", '#', BE.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium, 1), new Object[] { "###", "###", "###", '#', SA326.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 9), new Object[] { "#", '#', SA326.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_uranium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_uranium_fuel, 9), new Object[] { "#", '#', ModItems.ingot_uranium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_thorium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_thorium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_thorium_fuel, 9), new Object[] { "#", '#', ModItems.ingot_thorium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_plutonium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_plutonium_fuel, 9), new Object[] { "#", '#', ModItems.ingot_plutonium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_mox_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_mox_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_mox_fuel, 9), new Object[] { "#", '#', ModItems.ingot_mox_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_schrabidium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium_fuel, 9), new Object[] { "#", '#', ModItems.ingot_schrabidium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_hes, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_hes });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_hes, 9), new Object[] { "#", '#', ModItems.ingot_hes });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_les, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_les });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_les, 9), new Object[] { "#", '#', ModItems.ingot_les });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_australium, 1), new Object[] { "###", "###", "###", '#', AUSTRALIUM.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_australium, 9), new Object[] { "#", '#', AUSTRALIUM.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_weidanium, 1), new Object[] { "###", "###", "###", '#', WEIDANIUM.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_weidanium, 9), new Object[] { "#", '#', WEIDANIUM.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_reiium, 1), new Object[] { "###", "###", "###", '#', REIIUM.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_reiium, 9), new Object[] { "#", '#', REIIUM.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_unobtainium, 1), new Object[] { "###", "###", "###", '#', UNOBTAINIUM.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_unobtainium, 9), new Object[] { "#", '#', UNOBTAINIUM.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_daffergon, 1), new Object[] { "###", "###", "###", '#', DAFFERGON.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_daffergon, 9), new Object[] { "#", '#', DAFFERGON.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_verticium, 1), new Object[] { "###", "###", "###", '#', VERTICIUM.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_verticium, 9), new Object[] { "#", '#', VERTICIUM.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 1), new Object[] { "###", "###", "###", '#', PU.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM), 9), new Object[] { "#", '#', PU.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU238), 1), new Object[] { "###", "###", "###", '#', PU238.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU238), 9), new Object[] { "#", '#', PU238.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU239), 1), new Object[] { "###", "###", "###", '#', PU239.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU239), 9), new Object[] { "#", '#', PU239.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU240), 1), new Object[] { "###", "###", "###", '#', PU240.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU240), 9), new Object[] { "#", '#', PU240.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TH232), 1), new Object[] { "###", "###", "###", '#', TH232.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TH232), 9), new Object[] { "#", '#', TH232.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 1), new Object[] { "###", "###", "###", '#', U.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.URANIUM), 9), new Object[] { "#", '#', U.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U233), 1), new Object[] { "###", "###", "###", '#',U233.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U233), 9), new Object[] { "#", '#',U233.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U235), 1), new Object[] { "###", "###", "###", '#', U235.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U235), 9), new Object[] { "#", '#', U235.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U238), 1), new Object[] { "###", "###", "###", '#', U238.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U238), 9), new Object[] { "#", '#', U238.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM), 1), new Object[] { "###", "###", "###", '#', NP237.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM), 9), new Object[] { "#", '#', NP237.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLONIUM), 1), new Object[] { "###", "###", "###", '#', PO210.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.POLONIUM), 9), new Object[] { "#", '#', PO210.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD), 1), new Object[] { "###", "###", "###", '#', PB.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.LEAD), 9), new Object[] { "#", '#', PB.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM), 1), new Object[] { "###", "###", "###", '#', BE.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.BERYLLIUM), 9), new Object[] { "#", '#', BE.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM), 1), new Object[] { "###", "###", "###", '#', SA326.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 9), new Object[] { "#", '#', SA326.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 1), new Object[] { "###", "###", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), 9), new Object[] { "#", '#', ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), 1), new Object[] { "###", "###", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), 9), new Object[] { "#", '#', ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 1), new Object[] { "###", "###", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 9), new Object[] { "#", '#', ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 1), new Object[] { "###", "###", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), 9), new Object[] { "#", '#', ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 1), new Object[] { "###", "###", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 9), new Object[] { "#", '#', ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.HES), 1), new Object[] { "###", "###", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.HES)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.HES), 9), new Object[] { "#", '#', ModItems.ingot.getItemStack(MaterialMineral.HES)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LES), 1), new Object[] { "###", "###", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.LES)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.LES), 9), new Object[] { "#", '#', ModItems.ingot.getItemStack(MaterialMineral.LES)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AUSTRALIUM), 1), new Object[] { "###", "###", "###", '#', AUSTRALIUM.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM), 9), new Object[] { "#", '#', AUSTRALIUM.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.WEIDANIUM), 1), new Object[] { "###", "###", "###", '#', WEIDANIUM.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.WEIDANIUM), 9), new Object[] { "#", '#', WEIDANIUM.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.REIIUM), 1), new Object[] { "###", "###", "###", '#', REIIUM.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.REIIUM), 9), new Object[] { "#", '#', REIIUM.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.UNOBTAINIUM), 1), new Object[] { "###", "###", "###", '#', UNOBTAINIUM.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM), 9), new Object[] { "#", '#', UNOBTAINIUM.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DAFFERGON), 1), new Object[] { "###", "###", "###", '#', DAFFERGON.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.DAFFERGON), 9), new Object[] { "#", '#', DAFFERGON.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.VERTICIUM), 1), new Object[] { "###", "###", "###", '#', VERTICIUM.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.VERTICIUM), 9), new Object[] { "#", '#', VERTICIUM.ingot() });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_ac227, 1), new Object[] { "###", "###", "###", '#', AC227.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_ac227, 9), new Object[] { "#", '#', AC227.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_actinium, 1), new Object[] { "###", "###", "###", '#', AC.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_actinium, 9), new Object[] { "#", '#', AC.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt, 1), new Object[] { "###", "###", "###", '#', CO.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_cobalt, 9), new Object[] { "#", '#', CO.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_sr90, 1), new Object[] { "###", "###", "###", '#', SR90.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_sr90, 9), new Object[] { "#", '#', SR90.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_strontium, 1), new Object[] { "###", "###", "###", '#', SR.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_strontium, 9), new Object[] { "#", '#', SR.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pb209, 1), new Object[] { "###", "###", "###", '#', PB209.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_pb209, 9), new Object[] { "#", '#', PB209.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_gh336, 1), new Object[] { "###", "###", "###", '#', GH336.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_gh336, 9), new Object[] { "#", '#', GH336.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AC227), 1), new Object[] { "###", "###", "###", '#', AC227.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AC227), 9), new Object[] { "#", '#', AC227.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ACTINIUM), 1), new Object[] { "###", "###", "###", '#', AC.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.ACTINIUM), 9), new Object[] { "#", '#', AC.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COBALT), 1), new Object[] { "###", "###", "###", '#', CO.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.COBALT), 9), new Object[] { "#", '#', CO.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SR90), 1), new Object[] { "###", "###", "###", '#', SR90.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SR90), 9), new Object[] { "#", '#', SR90.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STRONTIUM), 1), new Object[] { "###", "###", "###", '#', SR.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.STRONTIUM), 9), new Object[] { "#", '#', SR.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PB209), 1), new Object[] { "###", "###", "###", '#', PB209.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PB209), 9), new Object[] { "#", '#', PB209.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.GH336), 1), new Object[] { "###", "###", "###", '#', GH336.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.GH336), 9), new Object[] { "#", '#', GH336.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2, 1), new Object[] { "###", "###", "###", '#',ModItems.nugget_u238m2 });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_u238m2, 9), new Object[] { "#", '#', ModItems.ingot_u238m2 });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_ra226, 1), new Object[] { "###", "###", "###", '#', RA226.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_ra226, 9), new Object[] { "#", '#', RA226.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_desh, 1), new Object[] { "###", "###", "###", '#', DESH.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_desh, 9), new Object[] { "#", '#', DESH.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RA226), 1), new Object[] { "###", "###", "###", '#', RA226.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RA226), 9), new Object[] { "#", '#', RA226.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH), 1), new Object[] { "###", "###", "###", '#', DESH.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.DESH), 9), new Object[] { "#", '#', DESH.ingot() });
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_radspice, 1), new Object[] { CO60.dust(), SR90.dust(), I131.dust(), CS137.dust(), XE135.dust(), AU198.dust(), PB209.dust(), AT209.dust(), AC227.dust() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_radspice_tiny, 1), new Object[] { CO60.dustTiny(), SR90.dustTiny(), I131.dustTiny(), CS137.dustTiny(), XE135.dustTiny(), AU198.dustTiny(), PB209.dustTiny(), AT209.dustTiny(), AC227.dustTiny() });
@@ -374,8 +375,8 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.powder_actinium_tiny, 9), new Object[] { "#", '#', AC.dust() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.powder_meteorite, 1), new Object[] { "###", "###", "###", '#', ModItems.powder_meteorite_tiny });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.powder_meteorite_tiny, 9), new Object[] { "#", '#', ModItems.powder_meteorite });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_solinium, 1), new Object[] { "###", "###", "###", '#', SA327.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_solinium, 9), new Object[] { "#", '#', SA327.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SOLINIUM), 1), new Object[] { "###", "###", "###", '#', SA327.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SOLINIUM), 9), new Object[] { "#", '#', SA327.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste, 1), new Object[] { "###", "###", "###", '#', ModItems.nuclear_waste_tiny });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 9), new Object[] { "#", '#', ModItems.nuclear_waste });
 
@@ -394,11 +395,11 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_lead, 1), new Object[] { ModItems.rod_empty, PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_schrabidium, 1), new Object[] { ModItems.rod_empty, SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_solinium, 1), new Object[] { ModItems.rod_empty, SA327.nugget(), SA327.nugget(), SA327.nugget(), SA327.nugget(), SA327.nugget(), SA327.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_uranium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_thorium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_plutonium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_mox_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_schrabidium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_uranium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_thorium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_plutonium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_mox_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_schrabidium_fuel, 1), new Object[] { ModItems.rod_empty, ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL)});
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_euphemium, 1), new Object[] { ModItems.rod_empty, EUPH.nugget(), EUPH.nugget(), EUPH.nugget(), EUPH.nugget(), EUPH.nugget(), EUPH.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_australium, 1), new Object[] { ModItems.rod_empty, AUSTRALIUM.nugget(), AUSTRALIUM.nugget(), AUSTRALIUM.nugget(), AUSTRALIUM.nugget(), AUSTRALIUM.nugget(), AUSTRALIUM.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_weidanium, 1), new Object[] { ModItems.rod_empty, WEIDANIUM.nugget(), WEIDANIUM.nugget(), WEIDANIUM.nugget(), WEIDANIUM.nugget(), WEIDANIUM.nugget(), WEIDANIUM.nugget() });
@@ -415,31 +416,31 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_rgp, 1), new Object[] { ModItems.rod_empty, PURG.nugget(), PURG.nugget(), PURG.nugget(), PURG.nugget(), PURG.nugget(), PURG.nugget() });
 
 
-		addRodBilletUnload(ModItems.billet_uranium, ModItems.rod_uranium);
-		addRodBilletUnload(ModItems.billet_u233, ModItems.rod_u233);
-		addRodBilletUnload(ModItems.billet_u235, ModItems.rod_u235);
-		addRodBilletUnload(ModItems.billet_u238, ModItems.rod_u238);
-		addRodBilletUnload(ModItems.billet_th232, ModItems.rod_th232);
-		addRodBilletUnload(ModItems.billet_plutonium, ModItems.rod_plutonium);
-		addRodBilletUnload(ModItems.billet_pu238, ModItems.rod_pu238);
-		addRodBilletUnload(ModItems.billet_pu239, ModItems.rod_pu239);
-		addRodBilletUnload(ModItems.billet_pu240, ModItems.rod_pu240);
-		addRodBilletUnload(ModItems.billet_neptunium, ModItems.rod_neptunium);
-		addRodBilletUnload(ModItems.billet_polonium, ModItems.rod_polonium);
-		addRodBilletUnload(ModItems.billet_schrabidium, ModItems.rod_schrabidium);
-		addRodBilletUnload(ModItems.billet_solinium, ModItems.rod_solinium);
-		addRodBillet(ModItems.billet_uranium_fuel, ModItems.rod_uranium_fuel);
-		addRodBillet(ModItems.billet_thorium_fuel, ModItems.rod_thorium_fuel);
-		addRodBillet(ModItems.billet_plutonium_fuel, ModItems.rod_plutonium_fuel);
-		addRodBillet(ModItems.billet_mox_fuel, ModItems.rod_mox_fuel);
-		addRodBillet(ModItems.billet_schrabidium_fuel, ModItems.rod_schrabidium_fuel);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.URANIUM), ModItems.rod_uranium);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U233), ModItems.rod_u233);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U235), ModItems.rod_u235);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U238), ModItems.rod_u238);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.TH232), ModItems.rod_th232);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM), ModItems.rod_plutonium);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU238), ModItems.rod_pu238);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU239), ModItems.rod_pu239);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU240), ModItems.rod_pu240);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM), ModItems.rod_neptunium);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.POLONIUM), ModItems.rod_polonium);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM), ModItems.rod_schrabidium);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.SOLINIUM), ModItems.rod_solinium);
+		addRodBillet(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.rod_uranium_fuel);
+		addRodBillet(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.rod_thorium_fuel);
+		addRodBillet(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.rod_plutonium_fuel);
+		addRodBillet(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.rod_mox_fuel);
+		addRodBillet(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.rod_schrabidium_fuel);
 		addRodBilletUnload(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ModItems.rod_waste );
 
 
-		addRodBilletUnload(ModItems.billet_ac227, ModItems.rod_ac227);
-		addRodBilletUnload(ModItems.billet_ra226, ModItems.rod_ra226);
-		addRodBilletUnload(ModItems.billet_pu_mix, ModItems.rod_rgp);
-		addRodBilletUnload(ModItems.billet_co60, ModItems.rod_co60);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.AC227), ModItems.rod_ac227);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.RA226), ModItems.rod_ra226);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), ModItems.rod_rgp);
+		addRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.CO60), ModItems.rod_co60);
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_empty, 2), new Object[] { ModItems.rod_dual_empty });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_empty, 1), new Object[] { ModItems.rod_empty, ModItems.rod_empty });
@@ -457,11 +458,11 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_lead, 1), new Object[] { ModItems.rod_dual_empty, PB.ingot(), PB.nugget(), PB.nugget(), PB.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_schrabidium, 1), new Object[] { ModItems.rod_dual_empty, SA326.ingot(), SA326.nugget(), SA326.nugget(), SA326.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_solinium, 1), new Object[] { ModItems.rod_dual_empty, SA327.ingot(), SA327.nugget(), SA327.nugget(), SA327.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_uranium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_thorium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_plutonium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_mox_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_schrabidium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_uranium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_thorium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_plutonium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_mox_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_schrabidium_fuel, 1), new Object[] { ModItems.rod_dual_empty, ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL)});
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_balefire, 1), new Object[] { ModItems.rod_dual_empty, ModItems.egg_balefire_shard, ModItems.egg_balefire_shard });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_euphemium, 1), new Object[] { ModItems.rod_quad_empty, EUPH.nugget() });
 
@@ -472,30 +473,30 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_rgp, 1), new Object[] { ModItems.rod_dual_empty, PURG.ingot(), PURG.nugget(), PURG.nugget(), PURG.nugget()});
 
 
-		addDualRodBilletUnload(ModItems.billet_uranium, ModItems.rod_dual_uranium);
-		addDualRodBilletUnload(ModItems.billet_u233, ModItems.rod_dual_u233);
-		addDualRodBilletUnload(ModItems.billet_u235, ModItems.rod_dual_u235);
-		addDualRodBilletUnload(ModItems.billet_u238, ModItems.rod_dual_u238);
-		addDualRodBilletUnload(ModItems.billet_th232, ModItems.rod_dual_th232);
-		addDualRodBilletUnload(ModItems.billet_plutonium, ModItems.rod_dual_plutonium);
-		addDualRodBilletUnload(ModItems.billet_pu238, ModItems.rod_dual_pu238);
-		addDualRodBilletUnload(ModItems.billet_pu239, ModItems.rod_dual_pu239);
-		addDualRodBilletUnload(ModItems.billet_pu240, ModItems.rod_dual_pu240);
-		addDualRodBilletUnload(ModItems.billet_neptunium, ModItems.rod_dual_neptunium);
-		addDualRodBilletUnload(ModItems.billet_polonium, ModItems.rod_dual_polonium);
-		addDualRodBilletUnload(ModItems.billet_schrabidium, ModItems.rod_dual_schrabidium);
-		addDualRodBilletUnload(ModItems.billet_solinium, ModItems.rod_dual_solinium);
-		addDualRodBillet(ModItems.billet_uranium_fuel, ModItems.rod_dual_uranium_fuel);
-		addDualRodBillet(ModItems.billet_thorium_fuel, ModItems.rod_dual_thorium_fuel);
-		addDualRodBillet(ModItems.billet_plutonium_fuel, ModItems.rod_dual_plutonium_fuel);
-		addDualRodBillet(ModItems.billet_mox_fuel, ModItems.rod_dual_mox_fuel);
-		addDualRodBillet(ModItems.billet_schrabidium_fuel, ModItems.rod_dual_schrabidium_fuel);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.URANIUM), ModItems.rod_dual_uranium);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U233), ModItems.rod_dual_u233);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U235), ModItems.rod_dual_u235);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U238), ModItems.rod_dual_u238);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.TH232), ModItems.rod_dual_th232);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM), ModItems.rod_dual_plutonium);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU238), ModItems.rod_dual_pu238);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU239), ModItems.rod_dual_pu239);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU240), ModItems.rod_dual_pu240);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM), ModItems.rod_dual_neptunium);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.POLONIUM), ModItems.rod_dual_polonium);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM), ModItems.rod_dual_schrabidium);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.SOLINIUM), ModItems.rod_dual_solinium);
+		addDualRodBillet(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.rod_dual_uranium_fuel);
+		addDualRodBillet(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.rod_dual_thorium_fuel);
+		addDualRodBillet(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.rod_dual_plutonium_fuel);
+		addDualRodBillet(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.rod_dual_mox_fuel);
+		addDualRodBillet(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.rod_dual_schrabidium_fuel);
 		addDualRodBilletUnload(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ModItems.rod_dual_waste);
 
-		addDualRodBilletUnload(ModItems.billet_ac227, ModItems.rod_dual_ac227);
-		addDualRodBilletUnload(ModItems.billet_ra226, ModItems.rod_dual_ra226);
-		addDualRodBilletUnload(ModItems.billet_pu_mix, ModItems.rod_dual_rgp);
-		addDualRodBilletUnload(ModItems.billet_co60, ModItems.rod_dual_co60);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.AC227), ModItems.rod_dual_ac227);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.RA226), ModItems.rod_dual_ra226);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), ModItems.rod_dual_rgp);
+		addDualRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.CO60), ModItems.rod_dual_co60);
 
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_lithium, 1), new Object[] { ModItems.rod_empty, LI.ingot() });
@@ -522,11 +523,11 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_lead, 1), new Object[] { ModItems.rod_quad_empty, PB.ingot(), PB.ingot(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_schrabidium, 1), new Object[] { ModItems.rod_quad_empty, SA326.ingot(), SA326.ingot(), SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget(), SA326.nugget() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_solinium, 1), new Object[] { ModItems.rod_quad_empty, SA327.ingot(), SA327.ingot(), SA327.nugget(), SA327.nugget(), SA327.nugget(), SA327.nugget(), SA327.nugget(), SA327.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_uranium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot_uranium_fuel, ModItems.ingot_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel, ModItems.nugget_uranium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_thorium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot_thorium_fuel, ModItems.ingot_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel, ModItems.nugget_thorium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_plutonium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot_plutonium_fuel, ModItems.ingot_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel, ModItems.nugget_plutonium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_mox_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot_mox_fuel, ModItems.ingot_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel, ModItems.nugget_mox_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_schrabidium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot_schrabidium_fuel, ModItems.ingot_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel, ModItems.nugget_schrabidium_fuel });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_uranium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_thorium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_plutonium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_mox_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_schrabidium_fuel, 1), new Object[] { ModItems.rod_quad_empty, ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL)});
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_balefire, 1), new Object[] { ModItems.rod_quad_empty, ModItems.egg_balefire_shard, ModItems.egg_balefire_shard, ModItems.egg_balefire_shard, ModItems.egg_balefire_shard });
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_ac227, 1), new Object[] { ModItems.rod_quad_empty, AC227.ingot(), AC227.ingot(), AC227.nugget(), AC227.nugget(), AC227.nugget(), AC227.nugget(), AC227.nugget(), AC227.nugget() });
@@ -538,67 +539,67 @@ public class CraftingManager {
 
 
 
-		addQuadRodBilletUnload(ModItems.billet_uranium, ModItems.rod_quad_uranium);
-		addQuadRodBilletUnload(ModItems.billet_u233, ModItems.rod_quad_u233);
-		addQuadRodBilletUnload(ModItems.billet_u235, ModItems.rod_quad_u235);
-		addQuadRodBilletUnload(ModItems.billet_u238, ModItems.rod_quad_u238);
-		addQuadRodBilletUnload(ModItems.billet_th232, ModItems.rod_quad_th232);
-		addQuadRodBilletUnload(ModItems.billet_plutonium, ModItems.rod_quad_plutonium);
-		addQuadRodBilletUnload(ModItems.billet_pu238, ModItems.rod_quad_pu238);
-		addQuadRodBilletUnload(ModItems.billet_pu239, ModItems.rod_quad_pu239);
-		addQuadRodBilletUnload(ModItems.billet_pu240, ModItems.rod_quad_pu240);
-		addQuadRodBilletUnload(ModItems.billet_neptunium, ModItems.rod_quad_neptunium);
-		addQuadRodBilletUnload(ModItems.billet_polonium, ModItems.rod_quad_polonium);
-		addQuadRodBilletUnload(ModItems.billet_schrabidium, ModItems.rod_quad_schrabidium);
-		addQuadRodBilletUnload(ModItems.billet_solinium, ModItems.rod_quad_solinium);
-		addQuadRodBillet(ModItems.billet_uranium_fuel, ModItems.rod_quad_uranium_fuel);
-		addQuadRodBillet(ModItems.billet_thorium_fuel, ModItems.rod_quad_thorium_fuel);
-		addQuadRodBillet(ModItems.billet_plutonium_fuel, ModItems.rod_quad_plutonium_fuel);
-		addQuadRodBillet(ModItems.billet_mox_fuel, ModItems.rod_quad_mox_fuel);
-		addQuadRodBillet(ModItems.billet_schrabidium_fuel, ModItems.rod_quad_schrabidium_fuel);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.URANIUM), ModItems.rod_quad_uranium);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U233), ModItems.rod_quad_u233);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U235), ModItems.rod_quad_u235);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.U238), ModItems.rod_quad_u238);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.TH232), ModItems.rod_quad_th232);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM), ModItems.rod_quad_plutonium);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU238), ModItems.rod_quad_pu238);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU239), ModItems.rod_quad_pu239);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU240), ModItems.rod_quad_pu240);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM), ModItems.rod_quad_neptunium);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.POLONIUM), ModItems.rod_quad_polonium);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM), ModItems.rod_quad_schrabidium);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.SOLINIUM), ModItems.rod_quad_solinium);
+		addQuadRodBillet(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.rod_quad_uranium_fuel);
+		addQuadRodBillet(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.rod_quad_thorium_fuel);
+		addQuadRodBillet(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.rod_quad_plutonium_fuel);
+		addQuadRodBillet(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.rod_quad_mox_fuel);
+		addQuadRodBillet(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.rod_quad_schrabidium_fuel);
 		addQuadRodBilletUnload(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ModItems.rod_quad_waste);
 
-		addQuadRodBilletUnload(ModItems.billet_ac227, ModItems.rod_quad_ac227);
-		addQuadRodBilletUnload(ModItems.billet_ra226, ModItems.rod_quad_ra226);
-		addQuadRodBilletUnload(ModItems.billet_pu_mix, ModItems.rod_quad_rgp);
-		addQuadRodBilletUnload(ModItems.billet_co60, ModItems.rod_quad_co60);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.AC227), ModItems.rod_quad_ac227);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.RA226), ModItems.rod_quad_ra226);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), ModItems.rod_quad_rgp);
+		addQuadRodBilletUnload(ModItems.billet.getItemStack(MaterialMineral.CO60), ModItems.rod_quad_co60);
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_zfb_bismuth), new Object[] { ZR.nugget(), ZR.nugget(), ZR.nugget(),  U.nugget(), PU241.nugget(), ANY_BISMOID.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_zfb_pu241), new Object[] { ZR.nugget(), ZR.nugget(), ZR.nugget(),  U235.nugget(), PU240.nugget(), PU241.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_zfb_am_mix), new Object[] { ZR.nugget(), ZR.nugget(), ZR.nugget(),  PU241.nugget(), PU241.nugget(), AMRG.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZFB_BISMUTH)), new Object[] { ZR.nugget(), ZR.nugget(), ZR.nugget(),  U.nugget(), PU241.nugget(), ANY_BISMOID.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZFB_PU241)), new Object[] { ZR.nugget(), ZR.nugget(), ZR.nugget(),  U235.nugget(), PU240.nugget(), PU241.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZFB_AM_MIX)), new Object[] { ZR.nugget(), ZR.nugget(), ZR.nugget(),  PU241.nugget(), PU241.nugget(), AMRG.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_zfb_bismuth, 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), U.billet(), PU241.billet(), ANY_BISMOID.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_zfb_pu241, 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), U235.billet(), PU240.billet(), PU241.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_zfb_am_mix, 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), PU241.billet(), PU241.billet(), AMRG.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZFB_BISMUTH), 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), U.billet(), PU241.billet(), ANY_BISMOID.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZFB_PU241), 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), U235.billet(), PU240.billet(), PU241.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZFB_AM_MIX), 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), PU241.billet(), PU241.billet(), AMRG.billet() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_unobtainium), new Object[] { ModItems.nugget_radspice, AMRG.nugget(), ModItems.nugget_unobtainium_lesser, ModItems.nugget_unobtainium_greater, ModItems.nugget_unobtainium_greater, ModItems.nugget_unobtainium_greater });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.UNOBTAINIUM)), new Object[] {ModItems.nugget.getItemStack(MaterialMineral.RADSPICE), AMRG.nugget(), ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_LESSER), ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_GREATER), ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_GREATER), ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_GREATER)});
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_water, 1), new Object[] { ModItems.rod_empty, Items.WATER_BUCKET });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_dual_water, 1), new Object[] { ModItems.rod_dual_empty, Items.WATER_BUCKET, Items.WATER_BUCKET });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rod_quad_water, 1), new Object[] { ModItems.rod_quad_empty, Items.WATER_BUCKET, Items.WATER_BUCKET, Items.WATER_BUCKET, Items.WATER_BUCKET });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_lead, 6), new Object[] { ModItems.rod_lead });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.LEAD), 6), new Object[] { ModItems.rod_lead });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.lithium, 1), new Object[] { ModItems.rod_lithium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_cobalt, 6), new Object[] { ModItems.rod_cobalt });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_australium, 6), new Object[] { ModItems.rod_australium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_weidanium, 6), new Object[] { ModItems.rod_weidanium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_reiium, 6), new Object[] { ModItems.rod_reiium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_unobtainium, 6), new Object[] { ModItems.rod_unobtainium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_daffergon, 6), new Object[] { ModItems.rod_daffergon });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_verticium, 6), new Object[] { ModItems.rod_verticium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium, 6), new Object[] { ModItems.rod_euphemium });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.COBALT), 6), new Object[] { ModItems.rod_cobalt });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM), 6), new Object[] { ModItems.rod_australium });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.WEIDANIUM), 6), new Object[] { ModItems.rod_weidanium });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.REIIUM), 6), new Object[] { ModItems.rod_reiium });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM), 6), new Object[] { ModItems.rod_unobtainium });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.DAFFERGON), 6), new Object[] { ModItems.rod_daffergon });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.VERTICIUM), 6), new Object[] { ModItems.rod_verticium });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM), 6), new Object[] { ModItems.rod_euphemium });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard, 1), new Object[] { ModItems.rod_balefire });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard, 1), new Object[] { ModItems.rod_balefire_blazing });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_lead, 12), new Object[] { ModItems.rod_dual_lead });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.LEAD), 12), new Object[] { ModItems.rod_dual_lead });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.lithium, 2), new Object[] { ModItems.rod_dual_lithium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_cobalt, 12), new Object[] { ModItems.rod_dual_cobalt });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.COBALT), 12), new Object[] { ModItems.rod_dual_cobalt });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard, 2), new Object[] { ModItems.rod_dual_balefire });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard, 2), new Object[] { ModItems.rod_dual_balefire_blazing });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_lead, 24), new Object[] { ModItems.rod_quad_lead });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.LEAD), 24), new Object[] { ModItems.rod_quad_lead });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.lithium, 4), new Object[] { ModItems.rod_quad_lithium });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_cobalt, 24), new Object[] { ModItems.rod_quad_cobalt });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.COBALT), 24), new Object[] { ModItems.rod_quad_cobalt });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard, 4), new Object[] { ModItems.rod_quad_balefire });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard, 4), new Object[] { ModItems.rod_quad_balefire_blazing });
 
@@ -645,11 +646,11 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.deco_titanium), new Object[] { TI.ingot(), ModBlocks.steel_scaffold });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.deco_tungsten), new Object[] { W.ingot(), ModBlocks.steel_scaffold });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium, 1), new Object[] { "#", '#', ModItems.rod_quad_euphemium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM), 1), new Object[] { "#", '#', ModItems.rod_quad_euphemium });
 		//Drillgon200: Gone, reduced.
 		//addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_euphemium, 1), new Object[] { "###", "###", "###", '#', ModItems.rod_quad_euphemium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_euphemium, 1), new Object[] { "###", "###", "###", '#', EUPH.nugget() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium, 9), new Object[] { "#", '#', EUPH.ingot() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM), 1), new Object[] { "###", "###", "###", '#', EUPH.nugget() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM), 9), new Object[] { "#", '#', EUPH.ingot() });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.coil_copper, 1), new Object[] { "WWW", "WIW", "WWW", 'W', ModItems.wire_red_copper, 'I', IRON.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.coil_advanced_alloy, 1), new Object[] { "WWW", "WIW", "WWW", 'W', ModItems.wire_advanced_alloy, 'I', IRON.ingot() });
@@ -712,7 +713,7 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.missile_emp, 1), new Object[] { ModItems.missile_assembly, ModItems.ducttape, ModBlocks.emp_bomb, ModItems.circuit_targeting_tier3 });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.missile_anti_ballistic, 1), new Object[] { ModItems.missile_generic, ModItems.circuit_targeting_tier3 });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_difurnace_ext, 1), new Object[] { " C ", "BGB", "BGB", 'C', CU.plate(), 'B', ModItems.ingot_firebrick, 'G', ModBlocks.steel_grate });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_difurnace_ext, 1), new Object[] { " C ", "BGB", "BGB", 'C', CU.plate(), 'B', ModItems.ingot.getItemStack(MaterialMineral.FIREBRICK), 'G', ModBlocks.steel_grate });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_uf6_tank, 1), new Object[] { "WTW", "WTW", "SRS", 'S', IRON.plate(), 'W', ModItems.coil_tungsten, 'T', ModItems.tank_steel, 'W', ModItems.coil_tungsten, 'R', MINGRADE.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_puf6_tank, 1), new Object[] { "WTW", "WTW", "SRS", 'S', STEEL.plate(), 'W', ModItems.coil_tungsten, 'T', ModItems.tank_steel, 'W', ModItems.coil_tungsten, 'R', MINGRADE.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_nuke_furnace_off, 1), new Object[] { "SSS", "LFL", "CCC", 'S', STEEL.plate(), 'C', ModItems.board_copper, 'L', PB.plate(), 'F', Item.getItemFromBlock(Blocks.FURNACE) });
@@ -805,8 +806,8 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_bismuth, 1), new Object[] {"QUQ", "BCB", "QTQ", 'Q', ModBlocks.glass_quartz, 'U', U.ingot(), 'T', TH232.ingot(), 'B', ANY_BISMOID.nugget(), 'C', ModItems.crystal_rare });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_cmb, 1), new Object[] {"QBQ", "CSC", "QBQ", 'Q', ModBlocks.glass_quartz, 'B', STAR.ingot(), 'C', PB209.nugget(), 'S', XE135.dust() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_dem, 1), new Object[] {"QDQ", "SBS", "QDQ", 'Q', ModBlocks.glass_quartz, 'D', CMB.ingot(), 'B', ModItems.demon_core_open, 'S', GH336.nugget()});
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_bale, 1), new Object[] {"QDQ", "SBS", "QDQ", 'Q', ModBlocks.glass_trinitite, 'D', ModItems.ingot_verticium, 'B', ModItems.rbmk_pellet_balefire, 'S', ModItems.nugget_radspice });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_digamma, 1), new Object[] {"QUQ", "UEU", "QUQ", 'Q', ModBlocks.glass_ash, 'U', ModItems.undefined, 'E', ModItems.ingot_electronium } );
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_bale, 1), new Object[] {"QDQ", "SBS", "QDQ", 'Q', ModBlocks.glass_trinitite, 'D', ModItems.ingot.getItemStack(MaterialMineral.VERTICIUM), 'B', ModItems.rbmk_pellet_balefire, 'S', ModItems.nugget.getItemStack(MaterialMineral.RADSPICE)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_digamma, 1), new Object[] {"QUQ", "UEU", "QUQ", 'Q', ModBlocks.glass_ash, 'U', ModItems.undefined, 'E', ModItems.ingot.getItemStack(MaterialMineral.ELECTRONIUM)} );
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.stamp_stone_flat, 1), new Object[] { " R ", "III", "SSS", 'R', REDSTONE.dust(), 'I', "ingotBrick", 'S', "stone" });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.stamp_iron_flat, 1), new Object[] { " R ", "III", "SSS", 'R', REDSTONE.dust(), 'I', "ingotBrick", 'S', IRON.ingot() });
@@ -1328,7 +1329,7 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_ice, 4), new Object[] { Items.SNOWBALL, KNO.dust(), REDSTONE.dust() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_poison, 4), new Object[] { Items.SPIDER_EYE, REDSTONE.dust(), "gemQuartz" });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.pill_herbal), new Object[] { COAL.dust(), Items.POISONOUS_POTATO, Items.NETHER_WART, Items.BEETROOT });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.pellet_gas, 2), new Object[] { Items.WATER_BUCKET, "dustGlowstone", STEEL.plate() , ModItems.ingot_iodine});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.pellet_gas, 2), new Object[] { Items.WATER_BUCKET, "dustGlowstone", STEEL.plate() , ModItems.ingot.getItemStack(MaterialMineral.IODINE)});
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.flame_pony, 1), new Object[] { " O ", "DPD", " O ", 'D', ItemStackUtil.itemStackFrom(Items.DYE, 1, 11), 'O', ItemStackUtil.itemStackFrom(Items.DYE, 1, 9), 'P', Items.PAPER });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.flame_conspiracy, 1), new Object[] { " S ", "STS", " S ", 'S', new IngredientContainsTag(ItemFluidCanister.getFullCanister(ModForgeFluids.diesel)), 'T', STEEL.ingot() });
@@ -1387,8 +1388,8 @@ public class CraftingManager {
 		addRecipeAuto(ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_100), new Object[] { "W W", "BPB", "SSS", 'W', ModItems.wire_magnetized_tungsten, 'P', ModItems.plate_dineutronium, 'S', ModItems.powder_spark_mix, 'B', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_25) });
 		addRecipeAuto(ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_1000), new Object[] { "PCP", "CSC", "PCP", 'S', ModItems.singularity_spark, 'P', ModItems.powder_spark_mix, 'C', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_100) });
 		addRecipeAuto(ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_2500), new Object[] { "SCS", "CVC", "SCS", 'C', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_100), 'V', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_1000), 'S', ModItems.powder_spark_mix });
-		addRecipeAuto(ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_10000), new Object[] { "OPO", "VSV", "OPO", 'S', ModItems.singularity_spark, 'V', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_2500), 'O', ModItems.ingot_osmiridium, 'P', ModItems.plate_dineutronium });
-		addRecipeAuto(ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_power), new Object[] { "YPY", "CSC", "YPY", 'S', ModItems.singularity_spark, 'C', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_10000), 'Y', ModItems.billet_yharonite, 'P', ModItems.plate_dineutronium });
+		addRecipeAuto(ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_10000), new Object[] { "OPO", "VSV", "OPO", 'S', ModItems.singularity_spark, 'V', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_2500), 'O', ModItems.ingot.getItemStack(MaterialMineral.OSMIRIDIUM), 'P', ModItems.plate_dineutronium });
+		addRecipeAuto(ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_power), new Object[] { "YPY", "CSC", "YPY", 'S', ModItems.singularity_spark, 'C', ItemBattery.getEmptyBattery(ModItems.battery_spark_cell_10000), 'Y', ModItems.billet.getItemStack(MaterialMineral.YHARONITE), 'P', ModItems.plate_dineutronium });
 
 		addRecipeAuto(ItemBattery.getFullBattery(ModItems.battery_su), new Object[] { "P", "R", "C", 'P', Items.PAPER, 'R', REDSTONE.dust(), 'C', COAL.dust() });
 		addRecipeAuto(ItemBattery.getFullBattery(ModItems.battery_su), new Object[] { "P", "C", "R", 'P', Items.PAPER, 'R', REDSTONE.dust(), 'C', COAL.dust() });
@@ -1530,10 +1531,10 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.hazmat_paa_legs, 1), new Object[] { "EEE", "EIE", "E E", 'E', ModItems.plate_paa, 'I', ModItems.liquidator_legs });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.hazmat_paa_boots, 1), new Object[] { "E E", "EIE", 'E', ModItems.plate_paa, 'I', ModItems.liquidator_boots });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_helmet, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_helmet, 'N', OreDictManager.getReflector(), 'G', ModItems.billet_gh336, 'X', ModItems.powder_verticium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_plate, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_plate, 'N', OreDictManager.getReflector(), 'G', ModItems.billet_gh336, 'X', ModItems.powder_verticium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_legs, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_legs, 'N', OreDictManager.getReflector(), 'G', ModItems.billet_gh336, 'X', ModItems.powder_verticium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_boots, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_boots, 'N', OreDictManager.getReflector(), 'G', ModItems.billet_gh336, 'X', ModItems.powder_verticium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_helmet, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_helmet, 'N', OreDictManager.getReflector(), 'G', ModItems.billet.getItemStack(MaterialMineral.GH336), 'X', ModItems.powder_verticium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_plate, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_plate, 'N', OreDictManager.getReflector(), 'G', ModItems.billet.getItemStack(MaterialMineral.GH336), 'X', ModItems.powder_verticium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_legs, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_legs, 'N', OreDictManager.getReflector(), 'G', ModItems.billet.getItemStack(MaterialMineral.GH336), 'X', ModItems.powder_verticium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.paa_boots, 1), new Object[] { "XGX", "NEN", 'E', ModItems.hazmat_paa_boots, 'N', OreDictManager.getReflector(), 'G', ModItems.billet.getItemStack(MaterialMineral.GH336), 'X', ModItems.powder_verticium });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.goggles, 1), new Object[] { "P P", "GPG", 'G', KEY_ANYPANE, 'P', STEEL.plate() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask, 1), new Object[] { "PPP", "GPG", " F ", 'G', KEY_ANYPANE, 'P', STEEL.plate(), 'F', IRON.plate() });
@@ -1634,7 +1635,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.inf_water, 1), new Object[] { "222", "131", "222", '1', Items.WATER_BUCKET, '2', AL.plate(), '3', Items.DIAMOND });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1), new Object[] { B.dustTiny(), B.dustTiny(), AC.dustTiny(), LA.dustTiny(), CE.dustTiny(), CO.dustTiny(), LI.dustTiny(), ND.dustTiny(), NB.dustTiny() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 9), new Object[] { B.dust(), B.dust(), AC.dust(), LA.dust(), CE.dust(), CO.dust(), LI.dust(), ND.dust(), NB.dust() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_desh_ready, 1), new Object[] { ModItems.powder_desh_mix, ModItems.nugget_mercury, ModItems.nugget_mercury, COAL.dust() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_desh_ready, 1), new Object[] { ModItems.powder_desh_mix, ModItems.nugget.getItemStack(MaterialMineral.MERCURY), ModItems.nugget.getItemStack(MaterialMineral.MERCURY), COAL.dust() });
 
 		//not so Temporary Crappy Recipes
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gun_revolver_pip, 1), new Object[] { " G ", "SSP", " TI", 'G', KEY_ANYPANE, 'S', STEEL.plate(), 'P', ModItems.mechanism_revolver_2, 'T', ModItems.wire_tungsten, 'I', ANY_PLASTIC.ingot() });
@@ -1722,7 +1723,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.absorber_green, 1), new Object[] { "ICI", "CPC", "ICI", 'I', ANY_PLASTIC.ingot(), 'C', ModItems.powder_desh_mix, 'P', ModBlocks.absorber_red });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.absorber_pink, 1), new Object[] { "ICI", "CPC", "ICI", 'I', BIGMT.ingot(), 'C', ModItems.powder_nitan_mix, 'P', ModBlocks.absorber_green });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.decon, 1), new Object[] { "BGB", "SAS", "BSB", 'B', BE.ingot(), 'G', Blocks.IRON_BARS, 'S', STEEL.ingot(), 'A', ModBlocks.absorber });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.decon_digamma, 1), new Object[] { "BGB", "SAS", "BTB", 'S', ModItems.billet_flashlead, 'G', ModItems.fmn, 'B',ModItems.plate_desh, 'A', ModBlocks.decon , 'T', ModItems.xanax});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.decon_digamma, 1), new Object[] { "BGB", "SAS", "BTB", 'S', ModItems.billet.getItemStack(MaterialMineral.FLASHLEAD), 'G', ModItems.fmn, 'B',ModItems.plate_desh, 'A', ModBlocks.decon , 'T', ModItems.xanax});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.radsensor, 1), new Object[] { "IGI", "LCL", "IRI", 'I', CE.ingot(), 'L', PB.plate(), 'G', ModItems.geiger_counter , 'C', Items.COMPARATOR, 'R', Items.REDSTONE});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_geo, 1), new Object[] { "ITI", "PCP", "ITI", 'I', DURA.ingot(), 'T', ModItems.thermo_element, 'P', ModItems.board_copper, 'C', ModBlocks.red_wire_coated });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_amgen, 1), new Object[] { "ITI", "TAT", "ITI", 'I', ALLOY.ingot(), 'T', ModItems.thermo_element, 'A', ModBlocks.absorber });
@@ -1741,11 +1742,11 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_americium), new Object[] { AM241.billet(), AM241.billet(), AM241.billet(), IRON.plate() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_balefire), new Object[] { ModItems.egg_balefire, ModItems.egg_balefire, ModItems.egg_balefire, IRON.plate() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_bismuth, 3), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_bismuth) });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_lead, 2), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_lead) });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 12), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_mercury) });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_neptunium, 3), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_neptunium) });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_zirconium, 3), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_zirconium) });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.BISMUTH), 3), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_bismuth) });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD), 2), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_lead) });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 12), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_mercury) });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM), 3), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_neptunium) });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.ZIRCONIUM), 3), new Object[] { ItemStackUtil.itemStackFrom(ModItems.pellet_rtg_depleted_zirconium) });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.pink_planks, 4), new Object[] { "W", 'W', ModBlocks.pink_log });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.decontamination_module, 1), new Object[] { "GAG", "WTW", "GAG", 'W', AC.ingot(), 'T', ModBlocks.decon, 'G', RA226.nugget(), 'A', TCALLOY.ingot() });
@@ -1861,7 +1862,7 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ams_catalyst_schrabidium, 1), new Object[] { ModItems.ams_catalyst_blank, ModItems.rune_hagalaz, ModItems.rune_hagalaz, ModItems.rune_jera, ModItems.rune_jera, SA326.dust(), SA326.dust(), SA326.dust(), SA326.dust() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ams_catalyst_euphemium, 1), new Object[] { ModItems.ams_catalyst_blank, ModItems.rune_hagalaz, ModItems.rune_jera, ModItems.rune_jera, ModItems.rune_jera, EUPH.dust(), EUPH.dust(), EUPH.dust(), EUPH.dust() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ams_catalyst_dineutronium, 1), new Object[] { ModItems.ams_catalyst_blank, ModItems.rune_jera, ModItems.rune_jera, ModItems.rune_jera, ModItems.rune_jera, DNT.dust(), DNT.dust(), DNT.dust(), DNT.dust() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.dfc_core, 1), new Object[] { "DLD", "LML", "DLD", 'D', ModItems.ingot_bismuth, 'L', DNT.block(), 'M', KEY_CIRCUIT_BISMUTH });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.dfc_core, 1), new Object[] { "DLD", "LML", "DLD", 'D', ModItems.ingot.getItemStack(MaterialMineral.BISMUTH), 'L', DNT.block(), 'M', KEY_CIRCUIT_BISMUTH });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.dfc_emitter, 1), new Object[] { "SDS", "TXL", "SDS", 'S', OSMIRIDIUM.ingot(), 'D', ModItems.plate_desh, 'T', ModBlocks.machine_transformer_dnt, 'X', ModItems.crystal_xen, 'L', ModItems.sat_head_laser });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.dfc_receiver, 1), new Object[] { "SDS", "TXL", "SDS", 'S', OSMIRIDIUM.ingot(), 'D', ModItems.plate_desh, 'T', ModBlocks.machine_transformer_dnt, 'X', ItemStackUtil.itemStackFrom(ModBlocks.sellafield_core), 'L', ModItems.hull_small_steel });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.dfc_injector, 1), new Object[] { "SDS", "TXL", "SDS", 'S', OSMIRIDIUM.ingot(), 'D', CMB.plate(), 'T', ModBlocks.machine_fluidtank, 'X', ModItems.motor, 'L', ModItems.pipes_steel });
@@ -1872,8 +1873,8 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.barrel_antimatter, 1), new Object[] { "IPI", "IPI", "IPI", 'I', BIGMT.plate(), 'P', ModItems.coil_advanced_torus });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.tesla, 1), new Object[] { "CCC", "PIP", "WTW", 'C', ModItems.coil_copper, 'I', IRON.ingot(), 'P', ANY_PLASTIC.ingot(), 'T', ModBlocks.machine_transformer, 'W', KEY_PLANKS });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.bottle_mercury, 1), new Object[] { "###", "#B#", "###", '#', ModItems.nugget_mercury, 'B', Items.GLASS_BOTTLE });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 8), new Object[] { "#", '#', ModItems.bottle_mercury });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.bottle_mercury, 1), new Object[] { "###", "#B#", "###", '#', ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 'B', Items.GLASS_BOTTLE });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 8), new Object[] { "#", '#', ModItems.bottle_mercury });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire, 1), new Object[] { "###", "###", "###", '#', ModItems.egg_balefire_shard });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.egg_balefire_shard, 9), new Object[] { "#", '#', ModItems.egg_balefire });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_44_phosphorus, 8), new Object[] { "BBB", "BAB", "BBB", 'B', ModItems.ammo_44, 'A', P_WHITE.ingot() });
@@ -1884,31 +1885,31 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_u233, 1), new Object[] { "###", "###", "###", '#',U233.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_u235, 1), new Object[] { "###", "###", "###", '#', U235.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_u238, 1), new Object[] { "###", "###", "###", '#', U238.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_uranium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot_uranium_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_uranium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL)});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_neptunium, 1), new Object[] { "###", "###", "###", '#', NP237.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_polonium, 1), new Object[] { "###", "###", "###", '#', PO210.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_plutonium, 1), new Object[] { "###", "###", "###", '#', PU.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_pu238, 1), new Object[] { "###", "###", "###", '#', PU238.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_pu239, 1), new Object[] { "###", "###", "###", '#', PU239.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_pu240, 1), new Object[] { "###", "###", "###", '#', PU240.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_plutonium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot_plutonium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_thorium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot_thorium_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_plutonium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_thorium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL)});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_solinium, 1), new Object[] { "###", "###", "###", '#', SA327.ingot() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_schrabidium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot_schrabidium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u233, 9), new Object[] { "#", '#', U233.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u235, 9), new Object[] { "#", '#', U235.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u238, 9), new Object[] { "#", '#', U238.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium_fuel, 9), new Object[] { "#", '#', ModBlocks.block_uranium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_neptunium, 9), new Object[] { "#", '#', NP237.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_polonium, 9), new Object[] { "#", '#', PO210.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium, 9), new Object[] { "#", '#', PU.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu238, 9), new Object[] { "#", '#', PU238.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu239, 9), new Object[] { "#", '#', PU239.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu240, 9), new Object[] { "#", '#', PU240.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium_fuel, 9), new Object[] { "#", '#', ModBlocks.block_plutonium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_thorium_fuel, 9), new Object[] { "#", '#', ModBlocks.block_thorium_fuel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_solinium, 9), new Object[] { "#", '#', SA327.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium_fuel, 9), new Object[] { "#", '#', ModBlocks.block_schrabidium_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_schrabidium_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U233), 9), new Object[] { "#", '#', U233.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U235), 9), new Object[] { "#", '#', U235.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U238), 9), new Object[] { "#", '#', U238.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 9), new Object[] { "#", '#', ModBlocks.block_uranium_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM), 9), new Object[] { "#", '#', NP237.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLONIUM), 9), new Object[] { "#", '#', PO210.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 9), new Object[] { "#", '#', PU.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU238), 9), new Object[] { "#", '#', PU238.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU239), 9), new Object[] { "#", '#', PU239.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU240), 9), new Object[] { "#", '#', PU240.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 9), new Object[] { "#", '#', ModBlocks.block_plutonium_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), 9), new Object[] { "#", '#', ModBlocks.block_thorium_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SOLINIUM), 9), new Object[] { "#", '#', SA327.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 9), new Object[] { "#", '#', ModBlocks.block_schrabidium_fuel });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_4gauge, 12), new Object[] { " I ", "GCL", " P ", 'I', ModItems.pellet_buckshot, 'G', ANY_SMOKELESS.dust(), 'C', ModItems.casing_50, 'P', ModItems.primer_50, 'L', ANY_RUBBER.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_4gauge_slug, 12), new Object[] { " I ", "GCL", " P ", 'I', PB.ingot(), 'G', ANY_SMOKELESS.dust(), 'C', ModItems.casing_50, 'P', ModItems.primer_50, 'L', ANY_RUBBER.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_4gauge_flechette, 12), new Object[] { " I ", "GCL", " P ", 'I', ModItems.pellet_flechette, 'G', ANY_SMOKELESS.dust(), 'C', ModItems.casing_50, 'P', ModItems.primer_50, 'L', ANY_RUBBER.ingot() });
@@ -1916,7 +1917,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_4gauge_explosive, 6), new Object[] { " I ", "GCL", " P ", 'I', ANY_PLASTICEXPLOSIVE.ingot(), 'G', ANY_SMOKELESS.dust(), 'C', ModItems.casing_50, 'P', ModItems.primer_50, 'L', ANY_RUBBER.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_4gauge_semtex, 4), new Object[] { " I ", "GCL", " P ", 'I', ModBlocks.det_miner, 'G', ANY_SMOKELESS.dust(), 'C', ModItems.casing_50, 'P', ModItems.primer_50, 'L', ANY_RUBBER.ingot() });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_mox_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot_mox_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_mox_fuel, 1), new Object[] { "###", "###", "###", '#', ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL)});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_lithium, 1), new Object[] { "###", "###", "###", '#', LI.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_white_phosphorus, 1), new Object[] { "###", "###", "###", '#', P_WHITE.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_red_phosphorus, 1), new Object[] { "###", "###", "###", '#', P_RED.dust() });
@@ -1925,18 +1926,18 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_fiberglass, 1), new Object[] { "###", "###", "###", '#', FIBER.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_cobalt, 1), new Object[] { "###", "###", "###", '#', CO.ingot() });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_aluminium, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_aluminium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_copper, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_copper });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_tungsten });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_red_copper, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_red_copper });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_advanced_alloy });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM), 1), new Object[] { "###", "###", "###", '#', ModItems.wire_aluminium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER), 1), new Object[] { "###", "###", "###", '#', ModItems.wire_copper });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN), 1), new Object[] { "###", "###", "###", '#', ModItems.wire_tungsten });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER), 1), new Object[] { "###", "###", "###", '#', ModItems.wire_red_copper });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY), 1), new Object[] { "###", "###", "###", '#', ModItems.wire_advanced_alloy });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(Items.GOLD_INGOT, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_gold });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_schrabidium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten, 1), new Object[] { "###", "###", "###", '#', ModItems.wire_magnetized_tungsten });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM), 1), new Object[] { "###", "###", "###", '#', ModItems.wire_schrabidium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 1), new Object[] { "###", "###", "###", '#', ModItems.wire_magnetized_tungsten });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_mox_fuel, 9), new Object[] { "#", '#', ModBlocks.block_mox_fuel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 9), new Object[] { "#", '#', ModBlocks.block_mox_fuel });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.lithium, 9), new Object[] { "#", '#', LI.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_phosphorus, 9), new Object[] { "#", '#', P_WHITE.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PHOSPHORUS), 9), new Object[] { "#", '#', P_WHITE.block() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.powder_fire, 9), new Object[] { "#", '#', P_RED.block() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.plate_polymer, 9), new Object[] { "#", '#', ModBlocks.block_insulator });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.plate_polymer, 8), new Object[] { "DD", 'D', ANY_PLASTIC.ingot() });
@@ -1947,9 +1948,9 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.plate_polymer, 4), new Object[] { "BB", 'B', "ingotBrick" });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.plate_polymer, 4), new Object[] { "BB", 'B', "ingotNetherBrick" });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_asbestos, 9), new Object[] { "#", '#', ASBESTOS.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_fiberglass, 9), new Object[] { "#", '#', FIBER.block() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt, 9), new Object[] { "#", '#', CO.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ASBESTOS), 9), new Object[] { "#", '#', ASBESTOS.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.FIBERGLASS), 9), new Object[] { "#", '#', FIBER.block() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COBALT), 9), new Object[] { "#", '#', CO.block() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.mechanism_special, 1), new Object[] { "PCI", "ISS", "PCI", 'P',ModItems.plate_desh, 'C', ModItems.coil_advanced_alloy, 'I', STAR.ingot(), 'S', ModItems.circuit_targeting_tier3 });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gun_ks23, 1), new Object[] { "PPM", "SWL", 'P', STEEL.plate(), 'M', ModItems.mechanism_rifle_1, 'S', Items.STICK, 'W', ModItems.wire_tungsten, 'L', KEY_LOG });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.gun_sauer, 1), new Object[] { ModItems.ducttape, ModItems.gun_ks23, Blocks.LEVER, ModItems.gun_ks23 });
@@ -2047,10 +2048,10 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.fau_plate, 1), new Object[] { "MCM", "PBP", "PSP", 'M', ModItems.motor_desh, 'C', ModItems.demon_core_closed, 'P', ModItems.plate_armor_fau, 'B', ModItems.schrabidium_plate, 'S', ModBlocks.ancient_scrap });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.fau_legs, 1), new Object[] { "MPM", "PBP", "PDP", 'M', ModItems.motor_desh, 'P', ModItems.plate_armor_fau, 'B', ModItems.schrabidium_legs, 'D', PO210.billet() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.fau_boots, 1), new Object[] { "PDP", "PBP", 'P', ModItems.plate_armor_fau, 'D', PO210.billet(), 'B', ModItems.schrabidium_boots });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_helmet, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot_chainsteel, 'B', ModItems.bj_helmet, 'C', ModItems.circuit_targeting_tier6 });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_plate, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot_chainsteel, 'B', ModItems.bj_plate_jetpack, 'C', ModItems.singularity_spark });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_legs, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot_chainsteel, 'B', ModItems.bj_legs, 'C', ModItems.coin_worm });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_boots, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot_chainsteel, 'B', ModItems.bj_boots, 'C', ModItems.demon_core_closed });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_helmet, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), 'B', ModItems.bj_helmet, 'C', ModItems.circuit_targeting_tier6 });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_plate, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), 'B', ModItems.bj_plate_jetpack, 'C', ModItems.singularity_spark });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_legs, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), 'B', ModItems.bj_legs, 'C', ModItems.coin_worm });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.dns_boots, 1), new Object[] { "PCP", "PBP", "PSP", 'P', ModItems.plate_armor_dnt, 'S', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), 'B', ModItems.bj_boots, 'C', ModItems.demon_core_closed });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_shell, 4), new Object[] { " T ", "GHG", "CCC", 'T', Blocks.TNT, 'G', Items.GUNPOWDER, 'H', ModItems.hull_small_steel, 'C', CU.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_shell, 5), new Object[] { " T ", "GHG", "CCC", 'T', Blocks.TNT, 'G', ModItems.ballistite, 'H', ModItems.hull_small_steel, 'C', CU.ingot() });
@@ -2066,7 +2067,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_shell_apfsds_du, 6), new Object[] { " I ", "GIG", "CCC", 'I', U238.ingot(), 'G', ModItems.cordite, 'C', CU.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_shell_w9, 1), new Object[] { " P ", "NSN", " P ", 'P', PU239.nugget(), 'N', OreDictManager.getReflector(), 'S', ModItems.ammo_shell_explosive });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_smore), new Object[] { Items.WHEAT, ItemStackUtil.itemStackFrom(ModItems.marshmallow_roasted, 1), ItemStackUtil.itemStackFrom(Items.DYE, 1, 3) });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SMORE)), new Object[] { Items.WHEAT, ItemStackUtil.itemStackFrom(ModItems.marshmallow_roasted, 1), ItemStackUtil.itemStackFrom(Items.DYE, 1, 3) });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.marshmallow), new Object[] { Items.STICK, Items.SUGAR, Items.WHEAT_SEEDS });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.coltass, 1), new Object[] { "ACA", "CXC", "ACA", 'A', ALLOY.ingot(), 'C', ModItems.cinnebar, 'X', Items.COMPASS });
@@ -2083,11 +2084,11 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.basalt_tiles, 4), new Object[] { "CC", "CC", 'C', ModBlocks.basalt_brick });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.barrel_tcalloy, 1), new Object[] { "IPI", "I I", "IPI", 'I', TCALLOY.ingot(), 'P', TI.plate() });
 
-		addMineralSet(ModItems.nugget_cadmium, ModItems.ingot_cadmium, ModBlocks.block_cadmium);
-		addMineralSet(ModItems.nugget_bismuth, ModItems.ingot_bismuth, ModBlocks.block_bismuth);
-		addMineralSet(ModItems.nugget_tantalium, ModItems.ingot_tantalium, ModBlocks.block_tantalium);
-		addMineralSet(ModItems.nugget_zirconium, ModItems.ingot_zirconium, ModBlocks.block_zirconium);
-		addMineralSet(ModItems.nugget_dineutronium, ModItems.ingot_dineutronium, ModBlocks.block_dineutronium);
+		addMineralSet(ModItems.nugget.getItemStack(MaterialMineral.CADMIUM), ModItems.ingot.getItemStack(MaterialMineral.CADMIUM), ModBlocks.block_cadmium);
+		addMineralSet(ModItems.nugget.getItemStack(MaterialMineral.BISMUTH), ModItems.ingot.getItemStack(MaterialMineral.BISMUTH), ModBlocks.block_bismuth);
+		addMineralSet(ModItems.nugget.getItemStack(MaterialMineral.TANTALIUM), ModItems.ingot.getItemStack(MaterialMineral.TANTALIUM), ModBlocks.block_tantalium);
+		addMineralSet(ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM), ModItems.ingot.getItemStack(MaterialMineral.ZIRCONIUM), ModBlocks.block_zirconium);
+		addMineralSet(ModItems.nugget.getItemStack(MaterialMineral.DINEUTRONIUM), ModItems.ingot.getItemStack(MaterialMineral.DINEUTRONIUM), ModBlocks.block_dineutronium);
 
 		add1To9Pair(ModItems.powder_xe135, ModItems.powder_xe135_tiny);
 		add1To9Pair(ModItems.powder_cs137, ModItems.powder_cs137_tiny);
@@ -2101,29 +2102,29 @@ public class CraftingManager {
 		add1To9Pair(ModItems.powder_ac227, ModItems.powder_ac227_tiny);
 		add1To9Pair(ModItems.powder_radspice, ModItems.powder_radspice_tiny);
 
-		add1To9Pair(ModItems.ingot_technetium, ModItems.nugget_technetium);
-		add1To9Pair(ModItems.ingot_arsenic, ModItems.nugget_arsenic);
-		add1To9Pair(ModItems.ingot_co60, ModItems.nugget_co60);
-		add1To9Pair(ModItems.ingot_au198, ModItems.nugget_au198);
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.TECHNETIUM), ModItems.nugget.getItemStack(MaterialMineral.TECHNETIUM));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.ARSENIC), ModItems.nugget.getItemStack(MaterialMineral.ARSENIC));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.CO60), ModItems.nugget.getItemStack(MaterialMineral.CO60));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.AU198), ModItems.nugget.getItemStack(MaterialMineral.AU198));
 
-		add1To9Pair(ModItems.ingot_pu241, ModItems.nugget_pu241);
-		add1To9Pair(ModItems.ingot_am241, ModItems.nugget_am241);
-		add1To9Pair(ModItems.ingot_am242, ModItems.nugget_am242);
-		add1To9Pair(ModItems.ingot_am_mix, ModItems.nugget_am_mix);
-		add1To9Pair(ModItems.ingot_americium_fuel, ModItems.nugget_americium_fuel);
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.PU241), ModItems.nugget.getItemStack(MaterialMineral.PU241));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.AM241), ModItems.nugget.getItemStack(MaterialMineral.AM241));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.AM242), ModItems.nugget.getItemStack(MaterialMineral.AM242));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.AM_MIX), ModItems.nugget.getItemStack(MaterialMineral.AM_MIX));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.AMERICIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.AMERICIUM_FUEL));
 
 		add1To9Pair(ModItems.powder_coal, ModItems.powder_coal_tiny);
 
 		add1To9Pair(ModBlocks.sand_gold, ModItems.powder_gold);
 		add1To9Pair(ModBlocks.sand_gold198, ModItems.powder_au198);
 		add1To9Pair(ModBlocks.block_coltan, ModItems.fragment_coltan);
-		add1To9Pair(ModBlocks.block_smore, ModItems.ingot_smore);
+		add1To9Pair(ModBlocks.block_smore, ModItems.ingot.getItemStack(MaterialMineral.SMORE));
 		add1To9Pair(ModItems.nuclear_waste_vitrified, ModItems.nuclear_waste_vitrified_tiny);
 		add1To9Pair(ModBlocks.block_waste_vitrified, ModItems.nuclear_waste_vitrified);
-		add1To9Pair(ModBlocks.block_niobium, ModItems.ingot_niobium);
-		add1To9Pair(ModBlocks.block_boron, ModItems.ingot_boron);
+		add1To9Pair(ModBlocks.block_niobium, ModItems.ingot.getItemStack(MaterialMineral.NIOBIUM));
+		add1To9Pair(ModBlocks.block_boron, ModItems.ingot.getItemStack(MaterialMineral.BORON));
 		add1To9Pair(ModItems.powder_boron, ModItems.powder_boron_tiny);
-		add1To9Pair(ModBlocks.block_graphite, ModItems.ingot_graphite);
+		add1To9Pair(ModBlocks.block_graphite, ModItems.ingot.getItemStack(MaterialMineral.GRAPHITE));
 		add1To9Pair(ModBlocks.block_coke, ModItems.coke);
 		add1To9Pair(ModBlocks.block_lignite, ModItems.lignite);
 		add1To9Pair(ModBlocks.block_coal_infernal, ModItems.coal_infernal);
@@ -2131,8 +2132,8 @@ public class CraftingManager {
 		add1To9Pair(ModBlocks.block_solid_fuel_presto, ModItems.solid_fuel_presto);
 		add1To9Pair(ModBlocks.block_solid_fuel_presto_triplet, ModItems.solid_fuel_presto_triplet);
 
-		add1To9Pair(ModItems.ingot_osmiridium, ModItems.nugget_osmiridium);
-		add1To9Pair(ModItems.ingot_radspice, ModItems.nugget_radspice);
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.OSMIRIDIUM), ModItems.nugget.getItemStack(MaterialMineral.OSMIRIDIUM));
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.RADSPICE), ModItems.nugget.getItemStack(MaterialMineral.RADSPICE));
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.circuit_bismuth_raw, 1), new Object[] { "RPR", "ABA", "RPR", 'R', REDSTONE.dust(), 'P', ANY_PLASTIC.ingot(), 'A', (GeneralConfig.enable528 ? ModItems.circuit_tantalium : ASBESTOS.ingot()), 'B', ANY_BISMOID.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.circuit_arsenic_raw, 1), new Object[] { "RPR", "ABA", "RPR", 'R', REDSTONE.dust(), 'P', ANY_PLASTIC.ingot(), 'A', (GeneralConfig.enable528 ? ModItems.circuit_tantalium : ASBESTOS.ingot()), 'B', AS.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.circuit_tantalium_raw, 1), new Object[] { "RWR", "PTP", "RWR", 'R', REDSTONE.dust(), 'W', ModItems.wire_gold, 'P', CU.plate(), 'T', TA.nugget() });
@@ -2151,10 +2152,10 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_gold), new Object[] { "NBN", "PCP", "NBN", 'N',TA.nugget(), 'B', AU198.billet(), 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_polonium });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_lead), new Object[] { "NBN", "PCP", "NBN", 'N',TA.nugget(), 'B', PB209.billet(), 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_gold });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_americium), new Object[] { "NBN", "PCP", "NBN", 'N',TA.nugget(), 'B', AM241.billet(), 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_lead });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_balefire), new Object[] { "NBN", "PCP", "NBN", 'N', ModItems.nugget_radspice, 'B', ModItems.pellet_rtg_balefire, 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_americium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_schrabidium), new Object[] { "NBN", "PCP", "NBN", 'N', ModItems.nugget_unobtainium_greater, 'B', SA326.billet(), 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_balefire });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_yharonite), new Object[] { "NBN", "PCP", "NBN", 'N', DNT.nugget(), 'B', ModItems.billet_yharonite, 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_schrabidium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_electronium), new Object[] { "NBN", "PCP", "NBN", 'N', ModItems.nugget_u238m2, 'B', ModItems.glitch, 'P', ModItems.ingot_electronium, 'C', ModItems.battery_sc_yharonite });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_balefire), new Object[] { "NBN", "PCP", "NBN", 'N', ModItems.nugget.getItemStack(MaterialMineral.RADSPICE), 'B', ModItems.pellet_rtg_balefire, 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_americium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_schrabidium), new Object[] { "NBN", "PCP", "NBN", 'N', ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_GREATER), 'B', SA326.billet(), 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_balefire });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_yharonite), new Object[] { "NBN", "PCP", "NBN", 'N', DNT.nugget(), 'B', ModItems.billet.getItemStack(MaterialMineral.YHARONITE), 'P', ANY_PLASTIC.ingot(), 'C', ModItems.battery_sc_schrabidium });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.battery_sc_electronium), new Object[] { "NBN", "PCP", "NBN", 'N', ModItems.nugget_u238m2, 'B', ModItems.glitch, 'P', ModItems.ingot.getItemStack(MaterialMineral.ELECTRONIUM), 'C', ModItems.battery_sc_yharonite });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.hadron_coil_alloy, 1), new Object[] { "WWW", "WCW", "WWW", 'W', ModItems.wire_advanced_alloy, 'C', ModBlocks.fusion_conductor });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.hadron_coil_gold, 1), new Object[] { "PGP", "PCP", "PGP", 'G', GOLD.dust(), 'C', ModBlocks.hadron_coil_alloy, 'P', IRON.plate() });
@@ -2175,41 +2176,41 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.steel_grate, 4), new Object[] { "SS", "SS", 'S', ModBlocks.steel_beam });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.pile_rod_uranium, 1), new Object[] { " U ", "PUP", " U ", 'P', IRON.plate(), 'U', U.billet() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.pile_rod_source, 1), new Object[] { " U ", "PUP", " U ", 'P', IRON.plate(), 'U', ModItems.billet_ra226be });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.pile_rod_source, 1), new Object[] { " U ", "PUP", " U ", 'P', IRON.plate(), 'U', ModItems.billet.getItemStack(MaterialMineral.RA226BE)});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.pile_rod_boron, 1), new Object[] { "B", "W", "B", 'B',  B.ingot(), 'W', KEY_PLANKS });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.rbmk_fuel_empty, 1), new Object[] { "ZRZ", "Z Z", "ZRZ", 'Z',  ZR.ingot(), 'R', ModItems.rod_quad_empty });
-		addRBMKRod(ModItems.billet_uranium, ModItems.rbmk_fuel_ueu);
-		addRBMKRod(ModItems.billet_uranium_fuel, ModItems.rbmk_fuel_meu);
-		addRBMKRod(ModItems.billet_u233, ModItems.rbmk_fuel_heu233);
-		addRBMKRod(ModItems.billet_u235, ModItems.rbmk_fuel_heu235);
-		addRBMKRod(ModItems.billet_thorium_fuel, ModItems.rbmk_fuel_thmeu);
-		addRBMKRod(ModItems.billet_mox_fuel, ModItems.rbmk_fuel_mox);
-		addRBMKRod(ModItems.billet_plutonium_fuel, ModItems.rbmk_fuel_lep);
-		addRBMKRod(ModItems.billet_pu_mix, ModItems.rbmk_fuel_mep);
-		addRBMKRod(ModItems.billet_pu239, ModItems.rbmk_fuel_hep239);
-		addRBMKRod(ModItems.billet_pu241, ModItems.rbmk_fuel_hep241);
-		addRBMKRod(ModItems.billet_americium_fuel, ModItems.rbmk_fuel_lea);
-		addRBMKRod(ModItems.billet_am_mix, ModItems.rbmk_fuel_mea);
-		addRBMKRod(ModItems.billet_am241, ModItems.rbmk_fuel_hea241);
-		addRBMKRod(ModItems.billet_am242, ModItems.rbmk_fuel_hea242);
-		addRBMKRod(ModItems.billet_neptunium_fuel, ModItems.rbmk_fuel_men);
-		addRBMKRod(ModItems.billet_neptunium, ModItems.rbmk_fuel_hen);
-		addRBMKRod(ModItems.billet_po210be, ModItems.rbmk_fuel_po210be);
-		addRBMKRod(ModItems.billet_ra226be, ModItems.rbmk_fuel_ra226be);
-		addRBMKRod(ModItems.billet_pu238be, ModItems.rbmk_fuel_pu238be);
-		addRBMKRod(ModItems.billet_australium_lesser, ModItems.rbmk_fuel_leaus);
-		addRBMKRod(ModItems.billet_australium_greater, ModItems.rbmk_fuel_heaus);
-		addRBMKRod(ModItems.billet_unobtainium, ModItems.rbmk_fuel_unobtainium);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.URANIUM), ModItems.rbmk_fuel_ueu);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.rbmk_fuel_meu);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.U233), ModItems.rbmk_fuel_heu233);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.U235), ModItems.rbmk_fuel_heu235);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.rbmk_fuel_thmeu);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.rbmk_fuel_mox);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.rbmk_fuel_lep);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), ModItems.rbmk_fuel_mep);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.PU239), ModItems.rbmk_fuel_hep239);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.PU241), ModItems.rbmk_fuel_hep241);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), ModItems.rbmk_fuel_lea);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.AM_MIX), ModItems.rbmk_fuel_mea);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.AM241), ModItems.rbmk_fuel_hea241);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.AM242), ModItems.rbmk_fuel_hea242);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), ModItems.rbmk_fuel_men);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM), ModItems.rbmk_fuel_hen);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.PO210BE), ModItems.rbmk_fuel_po210be);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.RA226BE), ModItems.rbmk_fuel_ra226be);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.PU238BE), ModItems.rbmk_fuel_pu238be);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM_LESSER), ModItems.rbmk_fuel_leaus);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM_GREATER), ModItems.rbmk_fuel_heaus);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.UNOBTAINIUM), ModItems.rbmk_fuel_unobtainium);
 //		addRBMKRod(ModItems.egg_balefire_shard, ModItems.rbmk_fuel_balefire);
-		addRBMKRod(ModItems.billet_les, ModItems.rbmk_fuel_les);
-		addRBMKRod(ModItems.billet_schrabidium_fuel, ModItems.rbmk_fuel_mes);
-		addRBMKRod(ModItems.billet_hes, ModItems.rbmk_fuel_hes);
-		addRBMKRod(ModItems.billet_balefire_gold, ModItems.rbmk_fuel_balefire_gold);
-		addRBMKRod(ModItems.billet_flashlead, ModItems.rbmk_fuel_flashlead);
-		addRBMKRod(ModItems.billet_zfb_bismuth, ModItems.rbmk_fuel_zfb_bismuth);
-		addRBMKRod(ModItems.billet_zfb_pu241, ModItems.rbmk_fuel_zfb_pu241);
-		addRBMKRod(ModItems.billet_zfb_am_mix, ModItems.rbmk_fuel_zfb_am_mix);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.LES), ModItems.rbmk_fuel_les);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.rbmk_fuel_mes);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.HES), ModItems.rbmk_fuel_hes);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.BALEFIRE_GOLD), ModItems.rbmk_fuel_balefire_gold);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.FLASHLEAD), ModItems.rbmk_fuel_flashlead);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.ZFB_BISMUTH), ModItems.rbmk_fuel_zfb_bismuth);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.ZFB_PU241), ModItems.rbmk_fuel_zfb_pu241);
+		addRBMKRod(ModItems.billet.getItemStack(MaterialMineral.ZFB_AM_MIX), ModItems.rbmk_fuel_zfb_am_mix);
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.rbmk_fuel_drx, 1), new Object[] { ModItems.rbmk_fuel_balefire, ModItems.particle_digamma });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.rbmk_lid, 4), new Object[] { "PPP", "CCC", "PPP", 'P', STEEL.plate(), 'C', ModBlocks.concrete_asbestos });
@@ -2249,7 +2250,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cladding_ghiorsium, 1), new Object[] { "DPD", "PRP", "DPD", 'R', ModItems.cladding_paa, 'P', GH336.ingot(), 'D', ModItems.ducttape });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cladding_euphemium, 1), new Object[] { "DPD", "PRP", "DPD", 'R', ModItems.cladding_ghiorsium, 'P', ModItems.plate_euphemium, 'D', ModItems.ducttape });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cladding_di, 1), new Object[] { "DPD", "PRP", "DPD", 'R', ModItems.cladding_euphemium, 'P', ModItems.plate_dineutronium, 'D', ModItems.ducttape });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cladding_electronium, 1), new Object[] { "DPD", "PRP", "DPD", 'R', ModItems.cladding_di, 'P', ModItems.ingot_electronium, 'D', ModItems.ducttape });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cladding_electronium, 1), new Object[] { "DPD", "PRP", "DPD", 'R', ModItems.cladding_di, 'P', ModItems.ingot.getItemStack(MaterialMineral.ELECTRONIUM), 'D', ModItems.ducttape });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cladding_obsidian, 1), new Object[] { "OOO", "PDP", "OOO", 'O', Blocks.OBSIDIAN, 'P', STEEL.plate(), 'D', ModItems.ducttape });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cladding_iron, 1), new Object[] { "OOO", "PDP", "OOO", 'O', IRON.plate(), 'P', ANY_RUBBER.ingot(), 'D', ModItems.ducttape });
 
@@ -2262,10 +2263,10 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_kevlar, 1), new Object[] { "KIK", "IDI", "KIK", 'K', ModItems.plate_kevlar, 'I', ANY_RUBBER.ingot(), 'D', ModItems.ducttape });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_sapi, 1), new Object[] { "PKP", "DPD", "PKP", 'P', ANY_PLASTIC.ingot(), 'K', ModItems.insert_kevlar, 'D', ModItems.ducttape });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_esapi, 1), new Object[] { "PKP", "DSD", "PKP", 'P', ANY_PLASTIC.ingot(), 'K', ModItems.insert_sapi, 'D', ModItems.ducttape, 'S', BIGMT.plate() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_xsapi, 1), new Object[] { "PKP", "DSD", "PKP", 'P', ASBESTOS.ingot(), 'K', ModItems.insert_esapi, 'D', ModItems.ducttape, 'S', ModItems.ingot_meteorite_forged });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_xsapi, 1), new Object[] { "PKP", "DSD", "PKP", 'P', ASBESTOS.ingot(), 'K', ModItems.insert_esapi, 'D', ModItems.ducttape, 'S', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)});
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_ghiorsium, 1), new Object[] { "PKP", "KSK", "PKP", 'P', ModItems.ducttape, 'K', GH336.ingot(), 'S', U238.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_di, 1), new Object[] { "PKP", "KSK", "PKP", 'P', ModItems.ducttape, 'K', ModItems.plate_dineutronium, 'S', ModItems.insert_ghiorsium });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_yharonite, 1), new Object[] { "YIY", "IYI", "YIY", 'Y', ModItems.billet_yharonite, 'I', ModItems.insert_du });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.insert_yharonite, 1), new Object[] { "YIY", "IYI", "YIY", 'Y', ModItems.billet.getItemStack(MaterialMineral.YHARONITE), 'I', ModItems.insert_du });
 
 		//Servos
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.servo_set, 1), new Object[] { "MBM", "PBP", "MBM", 'M', ModItems.motor, 'B', ModItems.bolt_tungsten, 'P', IRON.plate() });
@@ -2294,7 +2295,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.medal_ghoul, 1), new Object[] { "GEG", "BFB", "GEG", 'G',ModItems.nugget_u238m2, 'B', ModBlocks.pribris_digamma, 'E', ModItems.glitch, 'F', ModItems.medal_liquidator });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.injector_5htp, 1), new Object[] { ModItems.five_htp, ModItems.circuit_targeting_tier1, BIGMT.plate() });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.injector_knife, 1), new Object[] { ModItems.injector_5htp, Items.IRON_SWORD });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.shackles, 1), new Object[] { "CIC", "C C", "I I", 'I', ModItems.ingot_chainsteel, 'C', ModBlocks.chain });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.shackles, 1), new Object[] { "CIC", "C C", "I I", 'I', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), 'C', ModBlocks.chain });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.black_diamond, 1), new Object[] { "NIN", "IGI", "NIN", 'N',AU198.nugget(), 'I', ModItems.ink, 'G', VOLCANIC.gem() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.protection_charm, 1), new Object[] { " M ", "MDM", " M ", 'M', ModItems.fragment_meteorite, 'D', DIAMOND.gem() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.meteor_charm, 1), new Object[] { " M ", "MDM", " M ", 'M', ModItems.fragment_meteorite, 'D', VOLCANIC.gem() });
@@ -2309,11 +2310,11 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.drax_mk2, 1), new Object[] { "SCS", "IDI", "FEF", 'S', STAR.ingot(), 'C', ModItems.crystal_trixite, 'I', BIGMT.ingot(), 'D', ModItems.drax, 'F', ModItems.fusion_core, 'E', ModItems.circuit_targeting_tier5 });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.drax_mk3, 1), new Object[] { "ECE", "CDC", "SBS", 'E', ModBlocks.block_euphemium_cluster, 'C', SA326.crystal(), 'D', ModItems.drax_mk2, 'S', ModItems.circuit_targeting_tier6, 'B', ItemBattery.getFullBattery(ModItems.battery_spark) });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_sword, 1), new Object[] { " I ", " I ", "SBS", 'I', CO.ingot(), 'S', ModItems.ingot_meteorite_forged, 'B', ModItems.cobalt_sword });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_pickaxe, 1), new Object[] { "III", " B ", " S ", 'I', CO.ingot(), 'S', ModItems.ingot_meteorite_forged, 'B', ModItems.cobalt_pickaxe });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_axe, 1), new Object[] { "II", "IB", " S", 'I', CO.ingot(), 'S', ModItems.ingot_meteorite_forged, 'B', ModItems.cobalt_axe });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_shovel, 1), new Object[] { "I", "B", "S", 'I', CO.ingot(), 'S', ModItems.ingot_meteorite_forged, 'B', ModItems.cobalt_shovel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_hoe, 1), new Object[] { "II", " B", " S", 'I', CO.ingot(), 'S', ModItems.ingot_meteorite_forged, 'B', ModItems.cobalt_hoe });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_sword, 1), new Object[] { " I ", " I ", "SBS", 'I', CO.ingot(), 'S', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 'B', ModItems.cobalt_sword });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_pickaxe, 1), new Object[] { "III", " B ", " S ", 'I', CO.ingot(), 'S', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 'B', ModItems.cobalt_pickaxe });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_axe, 1), new Object[] { "II", "IB", " S", 'I', CO.ingot(), 'S', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 'B', ModItems.cobalt_axe });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_shovel, 1), new Object[] { "I", "B", "S", 'I', CO.ingot(), 'S', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 'B', ModItems.cobalt_shovel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.cobalt_decorated_hoe, 1), new Object[] { "II", " B", " S", 'I', CO.ingot(), 'S', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 'B', ModItems.cobalt_hoe });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.starmetal_sword, 1), new Object[] { " I ", " I ", "SBS", 'I', STAR.ingot(), 'S', CO.ingot(), 'B', ModItems.cobalt_decorated_sword });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.starmetal_pickaxe, 1), new Object[] { "III", " B ", " S ", 'I', STAR.ingot(), 'S', CO.ingot(), 'B', ModItems.cobalt_decorated_pickaxe });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.starmetal_axe, 1), new Object[] { "II", "IB", " S", 'I', STAR.ingot(), 'S', CO.ingot(), 'B', ModItems.cobalt_decorated_axe });
@@ -2322,8 +2323,8 @@ public class CraftingManager {
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.chlorophyte_pickaxe, 1), new Object[] { " SD", "APS", "FA ", 'S', ModItems.blades_steel, 'D', ModItems.powder_chlorophyte, 'A', FIBER.ingot(), 'P', ModItems.bismuth_pickaxe, 'F', ModItems.bolt_dura_steel });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.chlorophyte_pickaxe, 1), new Object[] { " SD", "APS", "FA ", 'S', ModItems.blades_steel, 'D', ModItems.powder_chlorophyte, 'A', FIBER.ingot(), 'P', ModItems.volcanic_pickaxe, 'F', ModItems.bolt_dura_steel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.bismuth_pickaxe, 1), new Object[] { " BM", "BPB", "TB ", 'B', ANY_BISMOID.ingot(), 'M', ModItems.ingot_meteorite, 'P', ModItems.starmetal_pickaxe, 'T', ModItems.bolt_tungsten });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.volcanic_pickaxe, 1), new Object[] { " BM", "BPB", "TB ", 'B', VOLCANIC.gem(), 'M', ModItems.ingot_meteorite, 'P', ModItems.starmetal_pickaxe, 'T', ModItems.bolt_tungsten });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.bismuth_pickaxe, 1), new Object[] { " BM", "BPB", "TB ", 'B', ANY_BISMOID.ingot(), 'M', ModItems.ingot.getItemStack(MaterialMineral.METEORITE), 'P', ModItems.starmetal_pickaxe, 'T', ModItems.bolt_tungsten });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.volcanic_pickaxe, 1), new Object[] { " BM", "BPB", "TB ", 'B', VOLCANIC.gem(), 'M', ModItems.ingot.getItemStack(MaterialMineral.METEORITE), 'P', ModItems.starmetal_pickaxe, 'T', ModItems.bolt_tungsten });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.mese_pickaxe, 1), new Object[] { " SD", "APS", "FA ", 'S', ModItems.blades_desh, 'D', DNT.dust(), 'A', ModItems.plate_paa, 'P', ModItems.chlorophyte_pickaxe, 'F', ModItems.shimmer_handle });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.upgrade_nullifier, 1), new Object[] { "SPS", "PUP", "SPS", 'S', STEEL.plate(), 'P',P_RED.dust(), 'U', ModItems.upgrade_template });
@@ -2366,8 +2367,8 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.wood_gavel, 1), new Object[] { "SWS", " R ", " R ", 'S', KEY_SLAB, 'W', KEY_LOG, 'R', "stickWood" });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.lead_gavel, 1), new Object[] { "PIP", "IGI", "PIP", 'P', ModItems.pellet_buckshot, 'I', PB.ingot(), 'G', ModItems.wood_gavel });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.mech_key, 1), new Object[] { "MCM", "MKM", "MMM", 'M', ModItems.ingot_meteorite_forged, 'C', ModItems.coin_maskman, 'K', ModItems.key });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.spawn_ufo, 1), new Object[] { "MMM", "DCD", "MMM", 'M', ModItems.ingot_meteorite, 'D', DNT.ingot(), 'C', ModItems.coin_worm });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.mech_key, 1), new Object[] { "MCM", "MKM", "MMM", 'M', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 'C', ModItems.coin_maskman, 'K', ModItems.key });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.spawn_ufo, 1), new Object[] { "MMM", "DCD", "MMM", 'M', ModItems.ingot.getItemStack(MaterialMineral.METEORITE), 'D', DNT.ingot(), 'C', ModItems.coin_worm });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.particle_empty, 2), new Object[] { "STS", "G G", "STS", 'S', STEEL.plate(), 'T', W.ingot(), 'G', KEY_ANYPANE });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.particle_hydrogen, 1), new Object[] { ModItems.particle_empty, new IngredientContainsTag(ItemFluidTank.getFullTank(ModForgeFluids.hydrogen)) });
@@ -2424,21 +2425,21 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.machine_detector, 1), new Object[] { "IRI", "CTC", "IRI", 'I', ModItems.plate_polymer, 'R', Items.REDSTONE, 'C', ModItems.wire_red_copper, 'T', ModItems.coil_tungsten });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.meteorite_sword, 1), new Object[] { "  B", "GB ", "SG ", 'B', ModItems.blade_meteorite, 'G', GOLD.plate(), 'S', Items.STICK });
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.powder_semtex_mix, 1), new Object[] { ModItems.solid_fuel, ModItems.ballistite, KNO.dust() });
-		add9To1(ModItems.ingot_aluminium, ModBlocks.block_aluminium);
-		add1To9(ModBlocks.block_aluminium, ModItems.ingot_aluminium);
+		add9To1(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM), ModBlocks.block_aluminium);
+		add1To9(ModBlocks.block_aluminium, ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM));
 
-		add9To1(ModItems.ingot_schraranium, ModBlocks.block_schraranium);
-		add1To9(ModBlocks.block_schraranium, ModItems.ingot_schraranium);
+		add9To1(ModItems.ingot.getItemStack(MaterialMineral.SCHRARANIUM), ModBlocks.block_schraranium);
+		add1To9(ModBlocks.block_schraranium, ModItems.ingot.getItemStack(MaterialMineral.SCHRARANIUM));
 
 		add1To9Pair(ModItems.powder_paleogenite, ModItems.powder_paleogenite_tiny);
-		add1To9Pair(ModBlocks.block_lanthanium, ModItems.ingot_lanthanium);
-		add1To9Pair(ModBlocks.block_actinium, ModItems.ingot_actinium);
+		add1To9Pair(ModBlocks.block_lanthanium, ModItems.ingot.getItemStack(MaterialMineral.LANTHANIUM));
+		add1To9Pair(ModBlocks.block_actinium, ModItems.ingot.getItemStack(MaterialMineral.ACTINIUM));
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_tritium), new Object[] {new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.tritium))});
 		addShapelessAuto(ItemCell.getFullCell(ModForgeFluids.tritium, 9), new Object[] {ModBlocks.block_tritium});
-		add1To9Pair(ModBlocks.block_schrabidate, ModItems.ingot_schrabidate);
+		add1To9Pair(ModBlocks.block_schrabidate, ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDATE));
 
-		add9To1(ModItems.ingot_dineutronium, ModBlocks.block_dineutronium);
-		add1To9(ModBlocks.block_dineutronium, ModItems.ingot_dineutronium);
+		add9To1(ModItems.ingot.getItemStack(MaterialMineral.DINEUTRONIUM), ModBlocks.block_dineutronium);
+		add1To9(ModBlocks.block_dineutronium, ModItems.ingot.getItemStack(MaterialMineral.DINEUTRONIUM));
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.canteen_fab, 1), new Object[] { "VMV", "MVM", "VMV", 'V', ModItems.canteen_vodka, 'M', ModItems.powder_magic });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.fireworks, 1), new Object[] { "PPP", "PPP", "WIW", 'P', Items.PAPER, 'W', KEY_PLANKS, 'I', IRON.ingot() });
 
@@ -2477,7 +2478,7 @@ public class CraftingManager {
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter, 1), new Object[] { "I", "F", 'F', ModItems.filter_coal, 'I', IRON.plate() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_mono, 1), new Object[] { "ZZZ", "ZCZ", "ZZZ", 'Z', ZR.nugget(), 'C', ModItems.catalyst_clay });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_combo, 1), new Object[] { "ZCZ", "CFC", "ZCZ", 'Z', ZR.ingot(), 'C', ModItems.catalyst_clay, 'F', ModItems.gas_mask_filter });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_radon, 1), new Object[] { "ZCZ", "NFN", "ZCZ", 'Z', ModItems.nugget_verticium, 'N', ModItems.powder_radspice, 'C', ModItems.insert_xsapi, 'F', ModItems.gas_mask_filter_combo });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_radon, 1), new Object[] { "ZCZ", "NFN", "ZCZ", 'Z', ModItems.nugget.getItemStack(MaterialMineral.VERTICIUM), 'N', ModItems.powder_radspice, 'C', ModItems.insert_xsapi, 'F', ModItems.gas_mask_filter_combo });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_rag, 1), new Object[] { "I", "F", 'F', ModItems.rag_damp, 'I', IRON.ingot() });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_piss, 1), new Object[] { "I", "F", 'F', ModItems.rag_piss, 'I', IRON.ingot() });
 
@@ -2491,9 +2492,9 @@ public class CraftingManager {
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.demon_core_open, 1), new Object[] { ModItems.demon_core_closed, ModItems.screwdriver });
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModBlocks.lamp_demon, 1), new Object[] { " D ", "S S", 'D', ModItems.demon_core_closed, 'S', STEEL.ingot() });
 
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.crucible, 1, 3), new Object[] { "MEM", "YDY", "YCY", 'M', ModItems.ingot_meteorite_forged, 'E', EUPH.ingot(), 'Y', ModItems.billet_yharonite, 'D', ModItems.demon_core_closed, 'C', ModItems.ingot_chainsteel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.hf_sword), new Object[] { "MEM", "YDY", "YCY", 'M', ModItems.blade_meteorite, 'E', ModItems.ingot_radspice, 'Y', UNOBTAINIUM.billet(), 'D', ModItems.particle_strange, 'C', ModItems.ingot_chainsteel });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.hs_sword), new Object[] { "MEM", "YDY", "YCY", 'M', ModItems.blade_meteorite, 'E', GH336.ingot(), 'Y', ModItems.billet_gh336, 'D', ModItems.particle_dark, 'C', ModItems.ingot_chainsteel });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.crucible, 1, 3), new Object[] { "MEM", "YDY", "YCY", 'M', ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 'E', EUPH.ingot(), 'Y', ModItems.billet.getItemStack(MaterialMineral.YHARONITE), 'D', ModItems.demon_core_closed, 'C', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.hf_sword), new Object[] { "MEM", "YDY", "YCY", 'M', ModItems.blade_meteorite, 'E', ModItems.ingot.getItemStack(MaterialMineral.RADSPICE), 'Y', UNOBTAINIUM.billet(), 'D', ModItems.particle_strange, 'C', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL)});
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.hs_sword), new Object[] { "MEM", "YDY", "YCY", 'M', ModItems.blade_meteorite, 'E', GH336.ingot(), 'Y', ModItems.billet.getItemStack(MaterialMineral.GH336), 'D', ModItems.particle_dark, 'C', ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL)});
 
 		for(int i = 0; i < ItemWasteLong.WasteClass.values().length; i++) {
 			add1To9PairSameMeta(ModItems.nuclear_waste_long, ModItems.nuclear_waste_long_tiny, i);
@@ -2510,190 +2511,190 @@ public class CraftingManager {
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ashglasses, 1), new Object[] { "I I", "GPG", 'I', ModItems.plate_polymer, 'G', ModBlocks.glass_ash, 'P', ANY_PLASTIC.ingot() });
 
-		addMineralSet(ModItems.nugget_pu_mix, ModItems.ingot_pu_mix, ModBlocks.block_pu_mix);
-		add1To9Pair(ModItems.ingot_neptunium_fuel, ModItems.nugget_neptunium_fuel);
+		addMineralSet(ModItems.nugget.getItemStack(MaterialMineral.PU_MIX), ModItems.ingot.getItemStack(MaterialMineral.PU_MIX), ModBlocks.block_pu_mix);
+		add1To9Pair(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM_FUEL));
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_uranium, 2), new Object[] { ModItems.billet_uranium_fuel, U238.billet() });
-		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.billet_uranium, 2), new Object[] { "ABC", "BB ", "BB ", 'A', U238.billet(), 'B', U238.nugget(), 'C', U235.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), U238.billet() });
+		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM), 2), new Object[] { "ABC", "BB ", "BB ", 'A', U238.billet(), 'B', U238.nugget(), 'C', U235.nugget() });
 
-		addBillet(ModItems.billet_uranium, ModItems.nugget_uranium);
-		addBillet(ModItems.billet_u233, ModItems.nugget_u233);
-		addBillet(ModItems.billet_u235, ModItems.nugget_u235);
-		addBillet(ModItems.billet_u238, ModItems.nugget_u238);
-		addBillet(ModItems.billet_th232, ModItems.nugget_th232);
-		addBillet(ModItems.billet_plutonium, ModItems.nugget_plutonium);
-		addBillet(ModItems.billet_pu238, ModItems.nugget_pu238);
-		addBillet(ModItems.billet_pu239, ModItems.nugget_pu239);
-		addBillet(ModItems.billet_pu240, ModItems.nugget_pu240);
-		addBillet(ModItems.billet_pu241, ModItems.nugget_pu241);
-		addBillet(ModItems.billet_pu_mix, ModItems.nugget_pu_mix);
-		addBillet(ModItems.billet_am241, ModItems.nugget_am241);
-		addBillet(ModItems.billet_am242, ModItems.nugget_am242);
-		addBillet(ModItems.billet_am_mix, ModItems.nugget_am_mix);
-		addBillet(ModItems.billet_americium_fuel, ModItems.nugget_americium_fuel);
-		addBillet(ModItems.billet_neptunium, ModItems.nugget_neptunium);
-		addBillet(ModItems.billet_polonium, ModItems.nugget_polonium);
-		addBillet(ModItems.billet_technetium, ModItems.nugget_technetium);
-		addBillet(ModItems.billet_au198, ModItems.nugget_au198);
-		addBillet(ModItems.billet_schrabidium, ModItems.nugget_schrabidium);
-		addBillet(ModItems.billet_solinium, ModItems.nugget_solinium);
-		addBillet(ModItems.billet_uranium_fuel, ModItems.nugget_uranium_fuel);
-		addBillet(ModItems.billet_thorium_fuel, ModItems.nugget_thorium_fuel);
-		addBillet(ModItems.billet_plutonium_fuel, ModItems.nugget_plutonium_fuel);
-		addBillet(ModItems.billet_neptunium_fuel, ModItems.nugget_neptunium_fuel);
-		addBillet(ModItems.billet_mox_fuel, ModItems.nugget_mox_fuel);
-		addBillet(ModItems.billet_les, ModItems.nugget_les);
-		addBillet(ModItems.billet_schrabidium_fuel, ModItems.nugget_schrabidium_fuel);
-		addBillet(ModItems.billet_hes, ModItems.nugget_hes);
-		addBillet(ModItems.billet_australium, ModItems.nugget_australium);
-		addBillet(ModItems.billet_australium_lesser, ModItems.nugget_australium_lesser);
-		addBillet(ModItems.billet_australium_greater, ModItems.nugget_australium_greater);
-		addBillet(ModItems.billet_ac227, ModItems.nugget_ac227);
-		addBillet(ModItems.billet_bismuth, ModItems.nugget_bismuth);
-		addBillet(ModItems.billet_pb209, ModItems.nugget_pb209);
-		addBillet(ModItems.billet_ra226, ModItems.nugget_ra226);
-		addBillet(ModItems.billet_sr90, ModItems.nugget_sr90);
-		addBillet(ModItems.billet_co60, ModItems.nugget_co60);
-		addBillet(ModItems.billet_ra226, ModItems.nugget_ra226);
-		addBillet(ModItems.billet_gh336, ModItems.nugget_gh336);
-		addBillet(ModItems.billet_beryllium, ModItems.nugget_beryllium);
-		addBillet(ModItems.billet_zirconium, ModItems.nugget_zirconium);
-		addBillet(ModItems.billet_bismuth, ModItems.nugget_bismuth);
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.URANIUM), ModItems.nugget.getItemStack(MaterialMineral.URANIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.U233), ModItems.nugget.getItemStack(MaterialMineral.U233));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.U235), ModItems.nugget.getItemStack(MaterialMineral.U235));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.U238), ModItems.nugget.getItemStack(MaterialMineral.U238));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.TH232), ModItems.nugget.getItemStack(MaterialMineral.TH232));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PU238), ModItems.nugget.getItemStack(MaterialMineral.PU238));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PU239), ModItems.nugget.getItemStack(MaterialMineral.PU239));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PU240), ModItems.nugget.getItemStack(MaterialMineral.PU240));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PU241), ModItems.nugget.getItemStack(MaterialMineral.PU241));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), ModItems.nugget.getItemStack(MaterialMineral.PU_MIX));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AM241), ModItems.nugget.getItemStack(MaterialMineral.AM241));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AM242), ModItems.nugget.getItemStack(MaterialMineral.AM242));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AM_MIX), ModItems.nugget.getItemStack(MaterialMineral.AM_MIX));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.AMERICIUM_FUEL));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM), ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.POLONIUM), ModItems.nugget.getItemStack(MaterialMineral.POLONIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.TECHNETIUM), ModItems.nugget.getItemStack(MaterialMineral.TECHNETIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AU198), ModItems.nugget.getItemStack(MaterialMineral.AU198));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.SOLINIUM), ModItems.nugget.getItemStack(MaterialMineral.SOLINIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM_FUEL));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.LES), ModItems.nugget.getItemStack(MaterialMineral.LES));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.HES), ModItems.nugget.getItemStack(MaterialMineral.HES));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM), ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM_LESSER), ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM_LESSER));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM_GREATER), ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM_GREATER));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.AC227), ModItems.nugget.getItemStack(MaterialMineral.AC227));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.BISMUTH), ModItems.nugget.getItemStack(MaterialMineral.BISMUTH));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.PB209), ModItems.nugget.getItemStack(MaterialMineral.PB209));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.RA226), ModItems.nugget.getItemStack(MaterialMineral.RA226));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.SR90), ModItems.nugget.getItemStack(MaterialMineral.SR90));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.CO60), ModItems.nugget.getItemStack(MaterialMineral.CO60));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.RA226), ModItems.nugget.getItemStack(MaterialMineral.RA226));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.GH336), ModItems.nugget.getItemStack(MaterialMineral.GH336));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.BERYLLIUM), ModItems.nugget.getItemStack(MaterialMineral.BERYLLIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.ZIRCONIUM), ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM));
+		addBillet(ModItems.billet.getItemStack(MaterialMineral.BISMUTH), ModItems.nugget.getItemStack(MaterialMineral.BISMUTH));
 		addBillet(ItemStackUtil.itemStackFrom(ModItems.billet_nuclear_waste), ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny));
 
-		addBilletByIngot(ModItems.billet_uranium, ModItems.ingot_uranium, U.ingot());
-		addBilletByIngot(ModItems.billet_u233, ModItems.ingot_u233, U233.ingot());
-		addBilletByIngot(ModItems.billet_u235, ModItems.ingot_u235, U235.ingot());
-		addBilletByIngot(ModItems.billet_u238, ModItems.ingot_u238, U238.ingot());
-		addBilletByIngot(ModItems.billet_th232, ModItems.ingot_th232, TH232.ingot());
-		addBilletByIngot(ModItems.billet_plutonium, ModItems.ingot_plutonium, PU.ingot());
-		addBilletByIngot(ModItems.billet_pu238, ModItems.ingot_pu238, PU238.ingot());
-		addBilletByIngot(ModItems.billet_pu239, ModItems.ingot_pu239, PU239.ingot());
-		addBilletByIngot(ModItems.billet_pu240, ModItems.ingot_pu240, PU240.ingot());
-		addBilletByIngot(ModItems.billet_pu241, ModItems.ingot_pu241, PU241.ingot());
-		addBilletByIngot(ModItems.billet_pu_mix, ModItems.ingot_pu_mix, PURG.ingot());
-		addBilletByIngot(ModItems.billet_am241, ModItems.ingot_am241, AM241.ingot());
-		addBilletByIngot(ModItems.billet_am242, ModItems.ingot_am242, AM242.ingot());
-		addBilletByIngot(ModItems.billet_am_mix, ModItems.ingot_am_mix, AMRG.ingot());
-		addBilletByIngot(ModItems.billet_americium_fuel, ModItems.ingot_americium_fuel);
-		addBilletByIngot(ModItems.billet_neptunium, ModItems.ingot_neptunium, NP237.ingot());
-		addBilletByIngot(ModItems.billet_polonium, ModItems.ingot_polonium, PO210.ingot());
-		addBilletByIngot(ModItems.billet_technetium, ModItems.ingot_technetium, TC99.ingot());
-		addBilletByIngot(ModItems.billet_au198, ModItems.ingot_au198, AU198.ingot());
-		addBilletByIngot(ModItems.billet_schrabidium, ModItems.ingot_schrabidium, SA326.ingot());
-		addBilletByIngot(ModItems.billet_solinium, ModItems.ingot_solinium, SA327.ingot());
-		addBilletByIngot(ModItems.billet_uranium_fuel, ModItems.ingot_uranium_fuel);
-		addBilletByIngot(ModItems.billet_thorium_fuel, ModItems.ingot_thorium_fuel);
-		addBilletByIngot(ModItems.billet_plutonium_fuel, ModItems.ingot_plutonium_fuel);
-		addBilletByIngot(ModItems.billet_neptunium_fuel, ModItems.ingot_neptunium_fuel);
-		addBilletByIngot(ModItems.billet_mox_fuel, ModItems.ingot_mox_fuel);
-		addBilletByIngot(ModItems.billet_les, ModItems.ingot_les);
-		addBilletByIngot(ModItems.billet_schrabidium_fuel, ModItems.ingot_schrabidium_fuel);
-		addBilletByIngot(ModItems.billet_hes, ModItems.ingot_hes);
-		addBilletByIngot(ModItems.billet_australium, ModItems.ingot_australium, AUSTRALIUM.ingot());
-		addBilletByIngot(ModItems.billet_ac227, ModItems.ingot_ac227, AC227.ingot());
-		addBilletByIngot(ModItems.billet_bismuth, ModItems.ingot_bismuth, ANY_BISMOID.ingot());
-		addBilletByIngot(ModItems.billet_pb209, ModItems.ingot_pb209, PB209.ingot());
-		addBilletByIngot(ModItems.billet_ra226, ModItems.ingot_ra226, RA226.ingot());
-		addBilletByIngot(ModItems.billet_sr90, ModItems.ingot_sr90, SR90.ingot());
-		addBilletByIngot(ModItems.billet_co60, ModItems.ingot_co60, CO60.ingot());
-		addBilletByIngot(ModItems.billet_ra226, ModItems.ingot_ra226, RA226.ingot());
-		addBilletByIngot(ModItems.billet_gh336, ModItems.ingot_gh336, GH336.ingot());
-		addBilletByIngot(ModItems.billet_beryllium, ModItems.ingot_beryllium, BE.ingot());
-		addBilletByIngot(ModItems.billet_zirconium, ModItems.ingot_zirconium, ZR.ingot());
-		addBilletByIngot(ModItems.billet_bismuth, ModItems.ingot_bismuth, ANY_BISMOID.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.URANIUM), ModItems.ingot.getItemStack(MaterialMineral.URANIUM), U.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.U233), ModItems.ingot.getItemStack(MaterialMineral.U233), U233.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.U235), ModItems.ingot.getItemStack(MaterialMineral.U235), U235.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.U238), ModItems.ingot.getItemStack(MaterialMineral.U238), U238.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.TH232), ModItems.ingot.getItemStack(MaterialMineral.TH232), TH232.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM), ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), PU.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PU238), ModItems.ingot.getItemStack(MaterialMineral.PU238), PU238.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PU239), ModItems.ingot.getItemStack(MaterialMineral.PU239), PU239.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PU240), ModItems.ingot.getItemStack(MaterialMineral.PU240), PU240.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PU241), ModItems.ingot.getItemStack(MaterialMineral.PU241), PU241.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), ModItems.ingot.getItemStack(MaterialMineral.PU_MIX), PURG.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.AM241), ModItems.ingot.getItemStack(MaterialMineral.AM241), AM241.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.AM242), ModItems.ingot.getItemStack(MaterialMineral.AM242), AM242.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.AM_MIX), ModItems.ingot.getItemStack(MaterialMineral.AM_MIX), AMRG.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.AMERICIUM_FUEL));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM), ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM), NP237.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.POLONIUM), ModItems.ingot.getItemStack(MaterialMineral.POLONIUM), PO210.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.TECHNETIUM), ModItems.ingot.getItemStack(MaterialMineral.TECHNETIUM), TC99.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.AU198), ModItems.ingot.getItemStack(MaterialMineral.AU198), AU198.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM), ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM), SA326.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.SOLINIUM), ModItems.ingot.getItemStack(MaterialMineral.SOLINIUM), SA327.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.LES), ModItems.ingot.getItemStack(MaterialMineral.LES));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.HES), ModItems.ingot.getItemStack(MaterialMineral.HES));
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM), ModItems.ingot.getItemStack(MaterialMineral.AUSTRALIUM), AUSTRALIUM.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.AC227), ModItems.ingot.getItemStack(MaterialMineral.AC227), AC227.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.BISMUTH), ModItems.ingot.getItemStack(MaterialMineral.BISMUTH), ANY_BISMOID.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.PB209), ModItems.ingot.getItemStack(MaterialMineral.PB209), PB209.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.RA226), ModItems.ingot.getItemStack(MaterialMineral.RA226), RA226.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.SR90), ModItems.ingot.getItemStack(MaterialMineral.SR90), SR90.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.CO60), ModItems.ingot.getItemStack(MaterialMineral.CO60), CO60.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.RA226), ModItems.ingot.getItemStack(MaterialMineral.RA226), RA226.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.GH336), ModItems.ingot.getItemStack(MaterialMineral.GH336), GH336.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.BERYLLIUM), ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM), BE.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.ZIRCONIUM), ModItems.ingot.getItemStack(MaterialMineral.ZIRCONIUM), ZR.ingot());
+		addBilletByIngot(ModItems.billet.getItemStack(MaterialMineral.BISMUTH), ModItems.ingot.getItemStack(MaterialMineral.BISMUTH), ANY_BISMOID.ingot());
 		addBilletByIngot(ModItems.billet_nuclear_waste, ModItems.nuclear_waste);
 
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_thorium_fuel, 3), new Object[] { TH232.block(), TH232.block(), U233.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_thorium_fuel, 3), new Object[] { TH232.ingot(), TH232.ingot(), U233.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_thorium_fuel, 3), new Object[] { TH232.billet(), TH232.billet(), U233.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_thorium_fuel, 1), new Object[] { TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), U233.nugget(), U233.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL), 3), new Object[] { TH232.ingot(), TH232.ingot(), U233.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), 3), new Object[] { TH232.billet(), TH232.billet(), U233.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL), 1), new Object[] { TH232.nugget(), TH232.nugget(), TH232.nugget(), TH232.nugget(), U233.nugget(), U233.nugget() });
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_uranium_fuel, 6), new Object[] { U238.block(), U238.block(), U238.block(), U238.block(), U238.block(), U235.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium_fuel, 6), new Object[] { U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U235.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_uranium_fuel, 6), new Object[] { U238.billet(), U238.billet(), U238.billet(), U238.billet(), U238.billet(), U235.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_uranium_fuel, 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U235.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 6), new Object[] { U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U235.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), 6), new Object[] { U238.billet(), U238.billet(), U238.billet(), U238.billet(), U238.billet(), U235.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), U235.nugget() });
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_plutonium_fuel, 3), new Object[] { U238.block(), PURG.block(), PURG.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium_fuel, 3), new Object[] { U238.ingot(), PURG.ingot(), PURG.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_plutonium_fuel, 3), new Object[] { U238.billet(), PURG.billet(), PURG.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_plutonium_fuel, 1), new Object[] { PURG.nugget(), PURG.nugget(), PURG.nugget(), PURG.nugget(), U238.nugget(), U238.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 3), new Object[] { U238.ingot(), PURG.ingot(), PURG.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 3), new Object[] { U238.billet(), PURG.billet(), PURG.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 1), new Object[] { PURG.nugget(), PURG.nugget(), PURG.nugget(), PURG.nugget(), U238.nugget(), U238.nugget() });
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_pu_mix, 3), new Object[] { PU239.block(), PU239.block(), PU240.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu_mix, 3), new Object[] { PU239.ingot(), PU239.ingot(), PU240.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_pu_mix, 3), new Object[] { PU239.billet(), PU239.billet(), PU240.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_pu_mix, 1), new Object[] { PU239.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU240.nugget(), PU240.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU_MIX), 3), new Object[] { PU239.ingot(), PU239.ingot(), PU240.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), 3), new Object[] { PU239.billet(), PU239.billet(), PU240.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU_MIX), 1), new Object[] { PU239.nugget(), PU239.nugget(), PU239.nugget(), PU239.nugget(), PU240.nugget(), PU240.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_americium_fuel, 3), new Object[] { U238.ingot(), U238.ingot(), AMRG.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_americium_fuel, 3), new Object[] { U238.billet(), U238.billet(), AMRG.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_americium_fuel, 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), AMRG.nugget(), AMRG.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AMERICIUM_FUEL), 3), new Object[] { U238.ingot(), U238.ingot(), AMRG.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), 3), new Object[] { U238.billet(), U238.billet(), AMRG.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), AMRG.nugget(), AMRG.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_am_mix, 3), new Object[] { AM241.ingot(), AM242.ingot(), AM242.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_am_mix, 3), new Object[] { AM241.billet(), AM242.billet(), AM242.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_am_mix, 1), new Object[] { AM241.nugget(), AM241.nugget(), AM242.nugget(), AM242.nugget(), AM242.nugget(), AM242.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AM_MIX), 3), new Object[] { AM241.ingot(), AM242.ingot(), AM242.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.AM_MIX), 3), new Object[] { AM241.billet(), AM242.billet(), AM242.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.AM_MIX), 1), new Object[] { AM241.nugget(), AM241.nugget(), AM242.nugget(), AM242.nugget(), AM242.nugget(), AM242.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_neptunium_fuel, 27), new Object[] { U238.block(), U238.block(), NP237.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_neptunium_fuel, 3), new Object[] { U238.ingot(), U238.ingot(), NP237.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_neptunium_fuel, 3), new Object[] { U238.billet(), U238.billet(), NP237.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_neptunium_fuel, 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), NP237.nugget(), NP237.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), 27), new Object[] { U238.block(), U238.block(), NP237.block() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), 3), new Object[] { U238.ingot(), U238.ingot(), NP237.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), 3), new Object[] { U238.billet(), U238.billet(), NP237.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), 1), new Object[] { U238.nugget(), U238.nugget(), U238.nugget(), U238.nugget(), NP237.nugget(), NP237.nugget() });
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_mox_fuel, 3), new Object[] { U238.block(), U235.block(), PURG.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_mox_fuel, 3), new Object[] { U238.ingot(), U235.ingot(), PURG.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_mox_fuel, 3), new Object[] { U238.billet(), U235.billet(), PURG.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_mox_fuel, 1), new Object[] { U238.nugget(), U238.nugget(), U235.nugget(), U235.nugget(), PURG.nugget(), PURG.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 3), new Object[] { U238.ingot(), U235.ingot(), PURG.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), 3), new Object[] { U238.billet(), U235.billet(), PURG.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), 1), new Object[] { U238.nugget(), U238.nugget(), U235.nugget(), U235.nugget(), PURG.nugget(), PURG.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_les, 54), new Object[] { SA326.block(), NP237.block(), NP237.block(), NP237.block(), NP237.block(), BE.block(), BE.block(), BE.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_les, 9), new Object[] { SA326.ingot(), NP237.ingot(), NP237.ingot(), NP237.ingot(), NP237.ingot(), BE.ingot(), BE.ingot(), BE.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_les, 9), new Object[] { SA326.billet(), NP237.billet(), NP237.billet(), NP237.billet(), NP237.billet(), BE.billet(), BE.billet(), BE.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_les, 9), new Object[] { SA326.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.LES), 54), new Object[] { SA326.block(), NP237.block(), NP237.block(), NP237.block(), NP237.block(), BE.block(), BE.block(), BE.block() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LES), 9), new Object[] { SA326.ingot(), NP237.ingot(), NP237.ingot(), NP237.ingot(), NP237.ingot(), BE.ingot(), BE.ingot(), BE.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.LES), 9), new Object[] { SA326.billet(), NP237.billet(), NP237.billet(), NP237.billet(), NP237.billet(), BE.billet(), BE.billet(), BE.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.LES), 9), new Object[] { SA326.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), NP237.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
 
 		addShapelessAuto(ItemStackUtil.itemStackFrom(ModBlocks.block_schrabidium_fuel, 3), new Object[] { SA326.block(), NP237.block(), BE.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium_fuel, 3), new Object[] { SA326.ingot(), NP237.ingot(), BE.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_schrabidium_fuel, 3), new Object[] { SA326.billet(), NP237.billet(), BE.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium_fuel, 3), new Object[] { SA326.nugget(), NP237.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 3), new Object[] { SA326.ingot(), NP237.ingot(), BE.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 3), new Object[] { SA326.billet(), NP237.billet(), BE.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 3), new Object[] { SA326.nugget(), NP237.nugget(), BE.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_hes, 54), new Object[] { SA326.block(), SA326.block(), NP237.block(), BE.block() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_hes, 4), new Object[] { SA326.ingot(), SA326.ingot(), NP237.ingot(), BE.ingot() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_hes, 4), new Object[] { SA326.billet(), SA326.billet(), NP237.billet(), BE.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_hes, 4), new Object[] { SA326.nugget(), SA326.nugget(), NP237.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.HES), 54), new Object[] { SA326.block(), SA326.block(), NP237.block(), BE.block() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.HES), 4), new Object[] { SA326.ingot(), SA326.ingot(), NP237.ingot(), BE.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.HES), 4), new Object[] { SA326.billet(), SA326.billet(), NP237.billet(), BE.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.HES), 4), new Object[] { SA326.nugget(), SA326.nugget(), NP237.nugget(), BE.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_po210be, 1), new Object[] { PO210.nugget(), PO210.nugget(), PO210.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_pu238be, 1), new Object[] { PU238.nugget(), PU238.nugget(), PU238.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_ra226be, 1), new Object[] { RA226.nugget(), RA226.nugget(), RA226.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PO210BE), 1), new Object[] { PO210.nugget(), PO210.nugget(), PO210.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU238BE), 1), new Object[] { PU238.nugget(), PU238.nugget(), PU238.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.RA226BE), 1), new Object[] { RA226.nugget(), RA226.nugget(), RA226.nugget(), BE.nugget(), BE.nugget(), BE.nugget() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_uranium_fuel, 9), new Object[] { U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U235.ingot() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), 9), new Object[] { U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U238.ingot(), U235.ingot() });
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium, 2), new Object[] { U.billet(), U.billet(), U.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u233, 2), new Object[] { U233.billet(), U233.billet(), U233.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u235, 2), new Object[] { U235.billet(), U235.billet(), U235.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_u238, 2), new Object[] { U238.billet(), U238.billet(), U238.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium, 2), new Object[] { PU.billet(), PU.billet(), PU.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu238, 2), new Object[] { PU238.billet(), PU238.billet(), PU238.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu239, 2), new Object[] { PU239.billet(), PU239.billet(), PU239.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu240, 2), new Object[] { PU240.billet(), PU240.billet(), PU240.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu241, 2), new Object[] { PU241.billet(), PU241.billet(), PU241.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_pu_mix, 2), new Object[] { PURG.billet(), PURG.billet(), PURG.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_am241, 2), new Object[] { AM241.billet(), AM241.billet(), AM241.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_am242, 2), new Object[] { AM242.billet(), AM242.billet(), AM242.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_am_mix, 2), new Object[] { AMRG.billet(), AMRG.billet(), AMRG.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium_fuel, 2), new Object[] { ModItems.billet_uranium_fuel, ModItems.billet_uranium_fuel, ModItems.billet_uranium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium_fuel, 2), new Object[] { ModItems.billet_plutonium_fuel, ModItems.billet_plutonium_fuel, ModItems.billet_plutonium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_americium_fuel, 2), new Object[] { ModItems.billet_americium_fuel, ModItems.billet_americium_fuel, ModItems.billet_americium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_mox_fuel, 2), new Object[] { ModItems.billet_mox_fuel, ModItems.billet_mox_fuel, ModItems.billet_mox_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_neptunium, 2), new Object[] { NP237.billet(), NP237.billet(), NP237.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_neptunium_fuel, 2), new Object[] { ModItems.billet_neptunium_fuel, ModItems.billet_neptunium_fuel, ModItems.billet_neptunium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_polonium, 2), new Object[] { PO210.billet(), PO210.billet(), PO210.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_technetium, 2), new Object[] {TC99.billet(),TC99.billet(),TC99.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 2), new Object[] { SA326.billet(), SA326.billet(), SA326.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_solinium, 2), new Object[] { SA327.billet(), SA327.billet(), SA327.billet() });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_les, 2), new Object[] { ModItems.billet_les, ModItems.billet_les, ModItems.billet_les });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium_fuel, 2), new Object[] {ModItems.billet_schrabidium_fuel,ModItems.billet_schrabidium_fuel,ModItems.billet_schrabidium_fuel });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot_hes, 2), new Object[] { ModItems.billet_hes, ModItems.billet_hes, ModItems.billet_hes });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 2), new Object[] { U.billet(), U.billet(), U.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U233), 2), new Object[] { U233.billet(), U233.billet(), U233.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U235), 2), new Object[] { U235.billet(), U235.billet(), U235.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U238), 2), new Object[] { U238.billet(), U238.billet(), U238.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 2), new Object[] { PU.billet(), PU.billet(), PU.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU238), 2), new Object[] { PU238.billet(), PU238.billet(), PU238.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU239), 2), new Object[] { PU239.billet(), PU239.billet(), PU239.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU240), 2), new Object[] { PU240.billet(), PU240.billet(), PU240.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU241), 2), new Object[] { PU241.billet(), PU241.billet(), PU241.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU_MIX), 2), new Object[] { PURG.billet(), PURG.billet(), PURG.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AM241), 2), new Object[] { AM241.billet(), AM241.billet(), AM241.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AM242), 2), new Object[] { AM242.billet(), AM242.billet(), AM242.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AM_MIX), 2), new Object[] { AMRG.billet(), AMRG.billet(), AMRG.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AMERICIUM_FUEL), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.AMERICIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL), ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM), 2), new Object[] { NP237.billet(), NP237.billet(), NP237.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLONIUM), 2), new Object[] { PO210.billet(), PO210.billet(), PO210.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TECHNETIUM), 2), new Object[] {TC99.billet(),TC99.billet(),TC99.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 2), new Object[] { SA326.billet(), SA326.billet(), SA326.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SOLINIUM), 2), new Object[] { SA327.billet(), SA327.billet(), SA327.billet() });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LES), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.LES), ModItems.billet.getItemStack(MaterialMineral.LES), ModItems.billet.getItemStack(MaterialMineral.LES)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL), ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL)});
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.HES), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.HES), ModItems.billet.getItemStack(MaterialMineral.HES), ModItems.billet.getItemStack(MaterialMineral.HES)});
 
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_balefire_gold, 1), new Object[] { AU198.billet(), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)), ModItems.pellet_charged });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_flashlead, 2), new Object[] { ModItems.billet_balefire_gold, PB209.billet(), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)) });
-		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet_flashlead, 2), new Object[] { AU198.billet(), PB209.billet(), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)), ModItems.pellet_charged });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.BALEFIRE_GOLD), 1), new Object[] { AU198.billet(), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)), ModItems.pellet_charged });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.FLASHLEAD), 2), new Object[] {ModItems.billet.getItemStack(MaterialMineral.BALEFIRE_GOLD), PB209.billet(), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)) });
+		addShapelessAuto(ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.FLASHLEAD), 2), new Object[] { AU198.billet(), PB209.billet(), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)), new IngredientContainsTag(ItemCell.getFullCell(ModForgeFluids.amat)), ModItems.pellet_charged });
 
 		addRecipeAuto(ItemStackUtil.itemStackFrom(ModItems.ammo_dgk, 1), new Object[] { "LLL", "GGG", "CCC", 'L', PB.plate(), 'G', ANY_SMOKELESS.dust(), 'C', CU.ingot() });
 
@@ -2790,123 +2791,123 @@ public class CraftingManager {
 	}
 
 	public static void addSmelting(){
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_thorium), ItemStackUtil.itemStackFrom(ModItems.ingot_th232), 3.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), 6.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_uranium_scorched), ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), 6.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), 12.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_uranium_scorched), ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), 12.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_plutonium), ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium), 24.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_titanium), ItemStackUtil.itemStackFrom(ModItems.ingot_titanium), 3.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_copper), ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 2.5F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_tungsten), ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten), 6.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_tungsten), ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten), 12.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_aluminium), ItemStackUtil.itemStackFrom(ModItems.ingot_aluminium), 2.5F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_lead), ItemStackUtil.itemStackFrom(ModItems.ingot_lead), 3.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_beryllium), ItemStackUtil.itemStackFrom(ModItems.ingot_beryllium), 2.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_schrabidium), ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium), 128.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_schrabidium), ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium), 256.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot_uranium, 2), 12.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_thorium), ItemStackUtil.itemStackFrom(ModItems.ingot_th232, 2), 6.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_titanium), ItemStackUtil.itemStackFrom(ModItems.ingot_titanium, 3), 6.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_copper), ItemStackUtil.itemStackFrom(ModItems.ingot_copper, 3), 5.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_tungsten), ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten, 3), 12.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_aluminium), ItemStackUtil.itemStackFrom(ModItems.ingot_aluminium, 3), 5.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_lead), ItemStackUtil.itemStackFrom(ModItems.ingot_lead, 3), 6.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_thorium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TH232)), 3.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), 6.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_uranium_scorched), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), 6.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), 12.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_uranium_scorched), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), 12.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_plutonium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM)), 24.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_titanium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM)), 3.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_copper), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 2.5F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_tungsten), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN)), 6.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_tungsten), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN)), 12.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_aluminium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM)), 2.5F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_lead), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD)), 3.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_beryllium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM)), 2.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_schrabidium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)), 128.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_schrabidium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)), 256.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 2), 12.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_thorium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TH232), 2), 6.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_titanium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM), 3), 6.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_copper), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER), 3), 5.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_tungsten), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN), 3), 12.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_aluminium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM), 3), 5.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_lead), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD), 3), 6.0F);
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_lithium), ItemStackUtil.itemStackFrom(ModItems.lithium), 20.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_starmetal), ItemStackUtil.itemStackFrom(ModItems.ingot_starmetal), 50.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_cobalt), ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt), 2.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_cobalt), ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt), 2.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_meteor_starmetal), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STARMETAL)), 50.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_cobalt), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COBALT)), 2.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_nether_cobalt), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COBALT)), 2.0F);
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_cinnebar), ItemStackUtil.itemStackFrom(ModItems.cinnebar), 1.0F);
 
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_iron), ItemStackUtil.itemStackFrom(Items.IRON_INGOT), 5.0F);
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_gold), ItemStackUtil.itemStackFrom(Items.GOLD_INGOT), 5.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), 12.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_uranium_scorched), ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), 12.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_copper), ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 5F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_uranium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), 12.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_uranium_scorched), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), 12.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_copper), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 5F);
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_lithium), ItemStackUtil.itemStackFrom(ModItems.lithium), 10F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_schrabidium), ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium), 256.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_gneiss_schrabidium), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)), 256.0F);
 		;
 
-		GameRegistry.addSmelting(ModItems.casing_357, ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 0.1F);
-		GameRegistry.addSmelting(ModItems.casing_44, ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 0.1F);
-		GameRegistry.addSmelting(ModItems.casing_9, ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 0.1F);
-		GameRegistry.addSmelting(ModItems.casing_50, ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 0.1F);
-		GameRegistry.addSmelting(ModItems.casing_buckshot, ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 0.1F);
+		GameRegistry.addSmelting(ModItems.casing_357, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 0.1F);
+		GameRegistry.addSmelting(ModItems.casing_44, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 0.1F);
+		GameRegistry.addSmelting(ModItems.casing_9, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 0.1F);
+		GameRegistry.addSmelting(ModItems.casing_50, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 0.1F);
+		GameRegistry.addSmelting(ModItems.casing_buckshot, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 0.1F);
 
 		GameRegistry.addSmelting(ModItems.circuit_schrabidium, ItemStackUtil.itemStackFrom(ModItems.circuit_gold, 1), 1.0F);
 		GameRegistry.addSmelting(ModItems.circuit_gold, ItemStackUtil.itemStackFrom(ModItems.circuit_red_copper, 1), 1.0F);
 		GameRegistry.addSmelting(ModItems.circuit_red_copper, ItemStackUtil.itemStackFrom(ModItems.circuit_copper, 1), 1.0F);
 		GameRegistry.addSmelting(ModItems.circuit_copper, ItemStackUtil.itemStackFrom(ModItems.circuit_aluminium, 1), 1.0F);
 
-		GameRegistry.addSmelting(ModItems.powder_australium, ItemStackUtil.itemStackFrom(ModItems.ingot_australium), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_weidanium, ItemStackUtil.itemStackFrom(ModItems.ingot_weidanium), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_reiium, ItemStackUtil.itemStackFrom(ModItems.ingot_reiium), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_unobtainium, ItemStackUtil.itemStackFrom(ModItems.ingot_unobtainium), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_daffergon, ItemStackUtil.itemStackFrom(ModItems.ingot_daffergon), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_verticium, ItemStackUtil.itemStackFrom(ModItems.ingot_verticium), 5.0F);
-		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_australium), ItemStackUtil.itemStackFrom(ModItems.nugget_australium), 2.5F);
+		GameRegistry.addSmelting(ModItems.powder_australium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AUSTRALIUM)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_weidanium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.WEIDANIUM)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_reiium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.REIIUM)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_unobtainium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.UNOBTAINIUM)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_daffergon, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DAFFERGON)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_verticium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.VERTICIUM)), 5.0F);
+		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_australium), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM)), 2.5F);
 
-		GameRegistry.addSmelting(ModItems.powder_radspice, ItemStackUtil.itemStackFrom(ModItems.ingot_radspice), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_lead, ItemStackUtil.itemStackFrom(ModItems.ingot_lead), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_neptunium, ItemStackUtil.itemStackFrom(ModItems.ingot_neptunium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_polonium, ItemStackUtil.itemStackFrom(ModItems.ingot_polonium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_schrabidium, ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_aluminium, ItemStackUtil.itemStackFrom(ModItems.ingot_aluminium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_beryllium, ItemStackUtil.itemStackFrom(ModItems.ingot_beryllium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_copper, ItemStackUtil.itemStackFrom(ModItems.ingot_copper), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_radspice, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RADSPICE)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_lead, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_neptunium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_polonium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLONIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_schrabidium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_aluminium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_beryllium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_copper, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER)), 1.0F);
 		GameRegistry.addSmelting(ModItems.powder_gold, ItemStackUtil.itemStackFrom(Items.GOLD_INGOT), 1.0F);
 		GameRegistry.addSmelting(ModItems.powder_iron, ItemStackUtil.itemStackFrom(Items.IRON_INGOT), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_titanium, ItemStackUtil.itemStackFrom(ModItems.ingot_titanium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_tungsten, ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_uranium, ItemStackUtil.itemStackFrom(ModItems.ingot_uranium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_thorium, ItemStackUtil.itemStackFrom(ModItems.ingot_th232), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_plutonium, ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_advanced_alloy, ItemStackUtil.itemStackFrom(ModItems.ingot_advanced_alloy), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_combine_steel, ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_magnetized_tungsten, ItemStackUtil.itemStackFrom(ModItems.ingot_magnetized_tungsten), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_red_copper, ItemStackUtil.itemStackFrom(ModItems.ingot_red_copper), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_steel, ItemStackUtil.itemStackFrom(ModItems.ingot_steel), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_titanium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_tungsten, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_uranium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_thorium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TH232)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_plutonium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_advanced_alloy, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_combine_steel, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_magnetized_tungsten, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_red_copper, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_steel, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)), 1.0F);
 		GameRegistry.addSmelting(ModItems.powder_lithium, ItemStackUtil.itemStackFrom(ModItems.lithium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_dura_steel, ItemStackUtil.itemStackFrom(ModItems.ingot_dura_steel), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_polymer, ItemStackUtil.itemStackFrom(ModItems.ingot_polymer), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_bakelite, ItemStackUtil.itemStackFrom(ModItems.ingot_bakelite), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_lanthanium, ItemStackUtil.itemStackFrom(ModItems.ingot_lanthanium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_actinium, ItemStackUtil.itemStackFrom(ModItems.ingot_actinium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_boron, ItemStackUtil.itemStackFrom(ModItems.ingot_boron), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_desh, ItemStackUtil.itemStackFrom(ModItems.ingot_desh), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_cobalt, ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_schrabidate, ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidate), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_asbestos, ItemStackUtil.itemStackFrom(ModItems.ingot_asbestos), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_cadmium, ItemStackUtil.itemStackFrom(ModItems.ingot_cadmium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_bismuth, ItemStackUtil.itemStackFrom(ModItems.ingot_bismuth), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_zirconium, ItemStackUtil.itemStackFrom(ModItems.ingot_zirconium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_tcalloy, ItemStackUtil.itemStackFrom(ModItems.ingot_tcalloy), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_cdalloy, ItemStackUtil.itemStackFrom(ModItems.ingot_cdalloy), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_au198, ItemStackUtil.itemStackFrom(ModItems.ingot_au198), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_tantalium, ItemStackUtil.itemStackFrom(ModItems.ingot_tantalium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_astatine, ItemStackUtil.itemStackFrom(ModItems.ingot_astatine), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_ac227, ItemStackUtil.itemStackFrom(ModItems.ingot_ac227), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_co60, ItemStackUtil.itemStackFrom(ModItems.ingot_co60), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_bromine, ItemStackUtil.itemStackFrom(ModItems.ingot_bromine), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_cerium, ItemStackUtil.itemStackFrom(ModItems.ingot_cerium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_caesium, ItemStackUtil.itemStackFrom(ModItems.ingot_caesium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_iodine, ItemStackUtil.itemStackFrom(ModItems.ingot_iodine), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_i131, ItemStackUtil.itemStackFrom(ModItems.ingot_i131), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_neodymium, ItemStackUtil.itemStackFrom(ModItems.ingot_neodymium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_pb209, ItemStackUtil.itemStackFrom(ModItems.ingot_pb209), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_ra226, ItemStackUtil.itemStackFrom(ModItems.ingot_ra226), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_strontium, ItemStackUtil.itemStackFrom(ModItems.ingot_strontium), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_sr90, ItemStackUtil.itemStackFrom(ModItems.ingot_sr90), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_tennessine, ItemStackUtil.itemStackFrom(ModItems.ingot_tennessine), 1.0F);
-		GameRegistry.addSmelting(ModItems.powder_niobium, ItemStackUtil.itemStackFrom(ModItems.ingot_niobium), 1.0F);
-		GameRegistry.addSmelting(ModItems.ball_resin, ItemStackUtil.itemStackFrom(ModItems.ingot_biorubber), 0.1F);
+		GameRegistry.addSmelting(ModItems.powder_dura_steel, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DURA_STEEL)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_polymer, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_bakelite, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BAKELITE)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_lanthanium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LANTHANIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_actinium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ACTINIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_boron, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BORON)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_desh, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_cobalt, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COBALT)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_schrabidate, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDATE)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_asbestos, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ASBESTOS)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_cadmium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CADMIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_bismuth, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BISMUTH)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_zirconium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ZIRCONIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_tcalloy, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TCALLOY)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_cdalloy, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CDALLOY)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_au198, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AU198)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_tantalium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TANTALIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_astatine, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ASTATINE)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_ac227, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AC227)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_co60, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CO60)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_bromine, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BROMINE)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_cerium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CERIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_caesium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CAESIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_iodine, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.IODINE)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_i131, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.I131)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_neodymium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEODYMIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_pb209, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PB209)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_ra226, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RA226)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_strontium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STRONTIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_sr90, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SR90)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_tennessine, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TENNESSINE)), 1.0F);
+		GameRegistry.addSmelting(ModItems.powder_niobium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NIOBIUM)), 1.0F);
+		GameRegistry.addSmelting(ModItems.ball_resin, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BIORUBBER)), 0.1F);
 
-		GameRegistry.addSmelting(ModItems.powder_cobalt_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget_cobalt), 0.1F);
-		GameRegistry.addSmelting(ModItems.powder_co60_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget_co60), 0.1F);
-		GameRegistry.addSmelting(ModItems.powder_pb209_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget_pb209), 0.1F);
-		GameRegistry.addSmelting(ModItems.powder_sr90_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget_sr90), 0.1F);
-		GameRegistry.addSmelting(ModItems.powder_au198_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget_au198), 0.1F);
-		GameRegistry.addSmelting(ModItems.powder_radspice_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget_radspice), 0.1F);
+		GameRegistry.addSmelting(ModItems.powder_cobalt_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.COBALT)), 0.1F);
+		GameRegistry.addSmelting(ModItems.powder_co60_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.CO60)), 0.1F);
+		GameRegistry.addSmelting(ModItems.powder_pb209_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PB209)), 0.1F);
+		GameRegistry.addSmelting(ModItems.powder_sr90_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SR90)), 0.1F);
+		GameRegistry.addSmelting(ModItems.powder_au198_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AU198)), 0.1F);
+		GameRegistry.addSmelting(ModItems.powder_radspice_tiny, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RADSPICE)), 0.1F);
 
 		GameRegistry.addSmelting(ModItems.rag_damp, ItemStackUtil.itemStackFrom(ModItems.rag), 0.1F);
 		GameRegistry.addSmelting(ModItems.rag_piss, ItemStackUtil.itemStackFrom(ModItems.rag), 0.1F);
@@ -2917,41 +2918,41 @@ public class CraftingManager {
 		GameRegistry.addSmelting(ModItems.briquette_lignite, ItemStackUtil.itemStackFrom(ModItems.coke), 1.0F);
 		GameRegistry.addSmelting(ModItems.oil_tar, ItemStackUtil.itemStackFrom(ModItems.powder_coal), 1.0F);
 
-		GameRegistry.addSmelting(ModItems.combine_scrap, ItemStackUtil.itemStackFrom(ModItems.ingot_combine_steel), 1.0F);
+		GameRegistry.addSmelting(ModItems.combine_scrap, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL)), 1.0F);
 
 		GameRegistry.addSmelting(Items.BONE, ItemStackUtil.itemStackFrom(Items.SLIME_BALL, 3), 0.0F);
 		GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(Items.DYE, 1, 15), ItemStackUtil.itemStackFrom(Items.SLIME_BALL, 1), 0.0F);
 		GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1), ItemStackUtil.itemStackFrom(Blocks.COBBLESTONE, 1), 0.0F);
 		GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(ModBlocks.gravel_obsidian), ItemStackUtil.itemStackFrom(Blocks.OBSIDIAN), 0.0F);
 
-		GameRegistry.addSmelting(ModItems.powder_euphemium, ItemStackUtil.itemStackFrom(ModItems.ingot_euphemium), 10.0F);
-		GameRegistry.addSmelting(ModItems.powder_dineutronium, ItemStackUtil.itemStackFrom(ModItems.ingot_dineutronium), 5.0F);
-		GameRegistry.addSmelting(ModItems.powder_osmiridium, ItemStackUtil.itemStackFrom(ModItems.ingot_osmiridium), 10.0F);
+		GameRegistry.addSmelting(ModItems.powder_euphemium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM)), 10.0F);
+		GameRegistry.addSmelting(ModItems.powder_dineutronium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DINEUTRONIUM)), 5.0F);
+		GameRegistry.addSmelting(ModItems.powder_osmiridium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.OSMIRIDIUM)), 10.0F);
 
 		GameRegistry.addSmelting(ModItems.lodestone, ItemStackUtil.itemStackFrom(ModItems.crystal_iron, 1), 5.0F);
 		GameRegistry.addSmelting(ModItems.crystal_iron, ItemStackUtil.itemStackFrom(Items.IRON_INGOT, 2), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_gold, ItemStackUtil.itemStackFrom(Items.GOLD_INGOT, 2), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_redstone, ItemStackUtil.itemStackFrom(Items.REDSTONE, 6), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_uranium, ItemStackUtil.itemStackFrom(ModItems.ingot_uranium, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_thorium, ItemStackUtil.itemStackFrom(ModItems.ingot_th232, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_plutonium, ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_titanium, ItemStackUtil.itemStackFrom(ModItems.ingot_titanium, 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_uranium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_thorium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TH232), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_plutonium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_titanium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM), 2), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_sulfur, ItemStackUtil.itemStackFrom(ModItems.sulfur, 6), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_niter, ItemStackUtil.itemStackFrom(ModItems.niter, 6), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_copper, ItemStackUtil.itemStackFrom(ModItems.ingot_copper, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_tungsten, ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_aluminium, ItemStackUtil.itemStackFrom(ModItems.ingot_aluminium, 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_copper, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_tungsten, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_aluminium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM), 2), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_fluorite, ItemStackUtil.itemStackFrom(ModItems.fluorite, 6), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_beryllium, ItemStackUtil.itemStackFrom(ModItems.ingot_beryllium, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_lead, ItemStackUtil.itemStackFrom(ModItems.ingot_lead, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_schrabidium, ItemStackUtil.itemStackFrom(ModItems.ingot_schrabidium, 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_beryllium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_lead, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_schrabidium, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM), 2), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_rare, ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_phosphorus, ItemStackUtil.itemStackFrom(ModItems.powder_fire, 6), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_lithium, ItemStackUtil.itemStackFrom(ModItems.lithium, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_starmetal, ItemStackUtil.itemStackFrom(ModItems.ingot_starmetal, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_trixite, ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium, 4), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_starmetal, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STARMETAL), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_trixite, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 4), 2.0F);
 		GameRegistry.addSmelting(ModItems.crystal_cinnebar, ItemStackUtil.itemStackFrom(ModItems.cinnebar, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_cobalt, ItemStackUtil.itemStackFrom(ModItems.ingot_cobalt, 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_cobalt, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COBALT), 2), 2.0F);
 
 		GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(ModBlocks.gravel_diamond), ItemStackUtil.itemStackFrom(Items.DIAMOND), 3.0F);
 		GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(ModBlocks.sand_uranium), ItemStackUtil.itemStackFrom(ModBlocks.glass_uranium), 0.25F);
@@ -2964,18 +2965,18 @@ public class CraftingManager {
 		GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(ModBlocks.ash_digamma), ItemStackUtil.itemStackFrom(ModBlocks.glass_ash), 10F);
 		GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(ModBlocks.basalt), ItemStackUtil.itemStackFrom(ModBlocks.basalt_smooth), 0.1F);
 		GameRegistry.addSmelting(ModItems.crystal_diamond, ItemStackUtil.itemStackFrom(Items.DIAMOND, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.crystal_schraranium, ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 2), 2.0F);
-		GameRegistry.addSmelting(ModItems.ingot_schraranium, ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 1), 2.0F);
+		GameRegistry.addSmelting(ModItems.crystal_schraranium, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 2), 2.0F);
+		GameRegistry.addSmelting(ModItems.ingot.getItemStack(MaterialMineral.SCHRARANIUM), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 1), 2.0F);
 
-		GameRegistry.addSmelting(ModItems.ingot_chainsteel, ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.ingot_chainsteel)), 1.0F);
+		GameRegistry.addSmelting(ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL))), 1.0F);
 		for(int i = 0; i < 10; i++)
 			GameRegistry.addSmelting(ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, 1, i), ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.ingot_steel_dusted, 1, i)), 1.0F);
-		GameRegistry.addSmelting(ModItems.ingot_meteorite, ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.ingot_meteorite)), 1.0F);
-		GameRegistry.addSmelting(ModItems.ingot_meteorite_forged, ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.ingot_meteorite_forged)), 1.0F);
+		GameRegistry.addSmelting(ModItems.ingot.getItemStack(MaterialMineral.METEORITE), ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE))), 1.0F);
+		GameRegistry.addSmelting(ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED))), 1.0F);
 		GameRegistry.addSmelting(ModItems.blade_meteorite, ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.blade_meteorite)), 1.0F);
 		GameRegistry.addSmelting(ModItems.meteorite_sword, ItemHot.heatUp(ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_seared)), 1.0F);
 
-		GameRegistry.addSmelting(ModItems.ball_fireclay, ItemStackUtil.itemStackFrom(ModItems.ingot_firebrick, 1), 0.1F);
+		GameRegistry.addSmelting(ModItems.ball_fireclay, ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.FIREBRICK), 1), 0.1F);
 	}
 
 	public static void addBedrockOreSmelting(){

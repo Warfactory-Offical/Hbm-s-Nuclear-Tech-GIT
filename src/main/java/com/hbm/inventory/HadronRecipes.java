@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -81,10 +82,10 @@ public class HadronRecipes {
 				));
 		recipes.add(new HadronRecipe(
 				ItemStackUtil.itemStackFrom(ModItems.particle_higgs),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_australium),
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AUSTRALIUM)),
 				10000,
 				ItemStackUtil.itemStackFrom(ModItems.particle_empty),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_verticium),
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.VERTICIUM)),
 				false
 				));
 		recipes.add(new HadronRecipe(
@@ -97,10 +98,10 @@ public class HadronRecipes {
 				));
 		recipes.add(new HadronRecipe(
 				ItemStackUtil.itemStackFrom(ModItems.particle_tachyon),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_verticium),
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.VERTICIUM)),
 				40000,
 				ItemStackUtil.itemStackFrom(ModItems.particle_empty),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_unobtainium),
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.UNOBTAINIUM)),
 				false
 				));
 		recipes.add(new HadronRecipe(
@@ -145,10 +146,10 @@ public class HadronRecipes {
 				));
 		recipes.add(new HadronRecipe(
 				ItemStackUtil.itemStackFrom(ModItems.particle_sparkticle),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_unobtainium),
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.UNOBTAINIUM)),
 				600000,
 				ItemStackUtil.itemStackFrom(ModItems.particle_empty),
-				ItemStackUtil.itemStackFrom(ModItems.ingot_daffergon),
+				ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DAFFERGON)),
 				false
 				));
 		recipes.add(new HadronRecipe(

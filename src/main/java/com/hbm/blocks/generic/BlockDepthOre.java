@@ -5,6 +5,7 @@ import java.util.Random;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 
+import com.hbm.items.meta.materials.MaterialMineral;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 
@@ -63,7 +64,7 @@ public class BlockDepthOre extends BlockDepth {
 	@Override
 	public int damageDropped(IBlockState state) {
 		if(this == ModBlocks.ore_depth_zirconium) {
-			return ModItems.nugget_zirconium.getMetadata();
+			return ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM).getMetadata();
 		}
 		return super.damageDropped(state);
 	}

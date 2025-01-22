@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.Map.Entry;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.special.ItemBedrockOre;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.items.ModItems;
 
 import mezz.jei.api.ingredients.IIngredients;
@@ -164,7 +164,7 @@ public class ShredderRecipes {
 		ShredderRecipes.setRecipe(ModBlocks.ore_rare, ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 1));
 		ShredderRecipes.setRecipe(Blocks.DIAMOND_ORE, ItemStackUtil.itemStackFrom(ModBlocks.gravel_diamond, 2));
 		ShredderRecipes.setRecipe(ModBlocks.boxcar, ItemStackUtil.itemStackFrom(ModItems.powder_steel, 32));
-		ShredderRecipes.setRecipe(ModItems.ingot_schrabidate, ItemStackUtil.itemStackFrom(ModItems.powder_schrabidate, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDATE), ItemStackUtil.itemStackFrom(ModItems.powder_schrabidate, 1));
 		ShredderRecipes.setRecipe(ModBlocks.block_schrabidate, ItemStackUtil.itemStackFrom(ModItems.powder_schrabidate, 9));
 		ShredderRecipes.setRecipe(ModItems.coal_infernal, ItemStackUtil.itemStackFrom(ModItems.powder_coal, 3));
 		ShredderRecipes.setRecipe(Items.REEDS, ItemStackUtil.itemStackFrom(Items.SUGAR, 2));
@@ -203,7 +203,7 @@ public class ShredderRecipes {
 		ShredderRecipes.setRecipe(ModBlocks.deco_pipe_framed_red, ItemStackUtil.itemStackFrom(ModItems.powder_steel, 1));
 		ShredderRecipes.setRecipe(ModBlocks.deco_pipe_framed_marked, ItemStackUtil.itemStackFrom(ModItems.powder_steel, 1));
 		
-		ShredderRecipes.setRecipe(ModItems.ingot_schraranium, ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 2));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.SCHRARANIUM), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 2));
 		ShredderRecipes.setRecipe(ModItems.crystal_coal, ItemStackUtil.itemStackFrom(ModItems.powder_coal, 3));
 		ShredderRecipes.setRecipe(ModItems.crystal_iron, ItemStackUtil.itemStackFrom(ModItems.powder_iron, 3));
 		ShredderRecipes.setRecipe(ModItems.crystal_gold, ItemStackUtil.itemStackFrom(ModItems.powder_gold, 3));
@@ -221,7 +221,7 @@ public class ShredderRecipes {
 		ShredderRecipes.setRecipe(ModItems.crystal_aluminium, ItemStackUtil.itemStackFrom(ModItems.powder_aluminium, 3));
 		ShredderRecipes.setRecipe(ModItems.crystal_fluorite, ItemStackUtil.itemStackFrom(ModItems.fluorite, 8));
 		ShredderRecipes.setRecipe(ModItems.crystal_beryllium, ItemStackUtil.itemStackFrom(ModItems.powder_beryllium, 3));
-		ShredderRecipes.setRecipe(ModItems.crystal_schraranium, ItemStackUtil.itemStackFrom(ModItems.nugget_schrabidium, 3));
+		ShredderRecipes.setRecipe(ModItems.crystal_schraranium, ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM), 3));
 		ShredderRecipes.setRecipe(ModItems.crystal_lead, ItemStackUtil.itemStackFrom(ModItems.powder_lead, 3));
 		ShredderRecipes.setRecipe(ModItems.crystal_schrabidium, ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium, 3));
 		ShredderRecipes.setRecipe(ModItems.crystal_rare, ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 2));
@@ -258,28 +258,28 @@ public class ShredderRecipes {
 		ShredderRecipes.setRecipe(ModBlocks.steel_grate, ItemStackUtil.itemStackFrom(ModItems.powder_steel_tiny, 3));
 		ShredderRecipes.setRecipe(ModItems.pipes_steel, ItemStackUtil.itemStackFrom(ModItems.powder_steel, 27));
 		
-		ShredderRecipes.setRecipe(ModItems.ingot_schrabidate, ItemStackUtil.itemStackFrom(ModItems.powder_schrabidate, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDATE), ItemStackUtil.itemStackFrom(ModItems.powder_schrabidate, 1));
 		ShredderRecipes.setRecipe(ModBlocks.block_schrabidate, ItemStackUtil.itemStackFrom(ModItems.powder_schrabidate, 9));
-		ShredderRecipes.setRecipe(ModItems.ingot_ac227, ItemStackUtil.itemStackFrom(ModItems.powder_ac227, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_co60, ItemStackUtil.itemStackFrom(ModItems.powder_co60, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_ra226, ItemStackUtil.itemStackFrom(ModItems.powder_ra226, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_sr90, ItemStackUtil.itemStackFrom(ModItems.powder_sr90, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_ra226, ItemStackUtil.itemStackFrom(ModItems.powder_ra226, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_pb209, ItemStackUtil.itemStackFrom(ModItems.powder_pb209, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_astatine, ItemStackUtil.itemStackFrom(ModItems.powder_astatine, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.AC227), ItemStackUtil.itemStackFrom(ModItems.powder_ac227, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.CO60), ItemStackUtil.itemStackFrom(ModItems.powder_co60, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.RA226), ItemStackUtil.itemStackFrom(ModItems.powder_ra226, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.SR90), ItemStackUtil.itemStackFrom(ModItems.powder_sr90, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.RA226), ItemStackUtil.itemStackFrom(ModItems.powder_ra226, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.PB209), ItemStackUtil.itemStackFrom(ModItems.powder_pb209, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.ASTATINE), ItemStackUtil.itemStackFrom(ModItems.powder_astatine, 1));
 
-		ShredderRecipes.setRecipe(ModItems.ingot_tennessine, ItemStackUtil.itemStackFrom(ModItems.powder_tennessine, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_bromine, ItemStackUtil.itemStackFrom(ModItems.powder_bromine, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_caesium, ItemStackUtil.itemStackFrom(ModItems.powder_caesium, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_cerium, ItemStackUtil.itemStackFrom(ModItems.powder_cerium, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_co60, ItemStackUtil.itemStackFrom(ModItems.powder_co60, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_strontium, ItemStackUtil.itemStackFrom(ModItems.powder_strontium, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_sr90, ItemStackUtil.itemStackFrom(ModItems.powder_sr90, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_iodine, ItemStackUtil.itemStackFrom(ModItems.powder_iodine, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_i131, ItemStackUtil.itemStackFrom(ModItems.powder_i131, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_radspice, ItemStackUtil.itemStackFrom(ModItems.powder_radspice, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_polymer, ItemStackUtil.itemStackFrom(ModItems.powder_polymer, 1));
-		ShredderRecipes.setRecipe(ModItems.ingot_bakelite, ItemStackUtil.itemStackFrom(ModItems.powder_bakelite, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.TENNESSINE), ItemStackUtil.itemStackFrom(ModItems.powder_tennessine, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.BROMINE), ItemStackUtil.itemStackFrom(ModItems.powder_bromine, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.CAESIUM), ItemStackUtil.itemStackFrom(ModItems.powder_caesium, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.CERIUM), ItemStackUtil.itemStackFrom(ModItems.powder_cerium, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.CO60), ItemStackUtil.itemStackFrom(ModItems.powder_co60, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.STRONTIUM), ItemStackUtil.itemStackFrom(ModItems.powder_strontium, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.SR90), ItemStackUtil.itemStackFrom(ModItems.powder_sr90, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.IODINE), ItemStackUtil.itemStackFrom(ModItems.powder_iodine, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.I131), ItemStackUtil.itemStackFrom(ModItems.powder_i131, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.RADSPICE), ItemStackUtil.itemStackFrom(ModItems.powder_radspice, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.POLYMER), ItemStackUtil.itemStackFrom(ModItems.powder_polymer, 1));
+		ShredderRecipes.setRecipe(ModItems.ingot.getItemStack(MaterialMineral.BAKELITE), ItemStackUtil.itemStackFrom(ModItems.powder_bakelite, 1));
 
 		ShredderRecipes.setRecipe(ModBlocks.turret_light, ItemStackUtil.itemStackFrom(ModItems.powder_steel, 16));
 		ShredderRecipes.setRecipe(ModBlocks.turret_heavy, ItemStackUtil.itemStackFrom(ModItems.powder_steel, 16));

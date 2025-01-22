@@ -1,4 +1,5 @@
 package com.hbm.world.generator.room;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
@@ -10,7 +11,6 @@ import com.hbm.world.generator.CellularDungeonRoom;
 import com.hbm.world.generator.DungeonToolbox;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,7 +134,7 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 			ingred = ItemStackUtil.itemStackFrom(ModItems.dust);
 		} else if(r == 3) {
 			orig = bookMercury;
-			ingred = ItemStackUtil.itemStackFrom(ModItems.nugget_mercury);
+			ingred = ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY));
 		} else if(r == 4) {
 			orig = bookFlower;
 			ingred = ItemStackUtil.itemStackFrom(ModItems.morning_glory);

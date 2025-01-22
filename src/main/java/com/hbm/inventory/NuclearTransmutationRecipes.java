@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
@@ -8,7 +9,6 @@ import com.hbm.items.ModItems;
 import com.hbm.blocks.ModBlocks;
 import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.inventory.RecipesCommon.AStack;
-import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.NbtComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 
@@ -24,7 +24,7 @@ public class NuclearTransmutationRecipes {
 
 		//input, output
 		addRecipe(new OreDictStack(U.crystal()), ItemStackUtil.itemStackFrom(ModItems.crystal_schraranium, 1), 5_000_000L);
-		addRecipe(new OreDictStack(U.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot_schraranium, 1), 5_000_000L);
+		addRecipe(new OreDictStack(U.ingot()), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRARANIUM), 1), 5_000_000L);
 		addRecipe(new OreDictStack(U.block()), ItemStackUtil.itemStackFrom(ModBlocks.block_schraranium, 1), 50_000_000L);
 	}
 

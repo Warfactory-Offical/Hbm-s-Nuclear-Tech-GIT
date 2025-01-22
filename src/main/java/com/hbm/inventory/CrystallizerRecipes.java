@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidIcon;
-import com.hbm.items.special.ItemBedrockOre;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
@@ -71,12 +71,12 @@ public class CrystallizerRecipes {
 		addRecipe(ItemStackUtil.comparableStackFrom(ModBlocks.ore_tikite), new FluidStack(ModForgeFluids.sulfuric_acid, 500), ItemStackUtil.itemStackFrom(ModItems.crystal_trixite));
 		addRecipe(SRN.ingot(), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.crystal_schraranium));
 		
-		addRecipe(KEY_SAND, new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.ingot_fiberglass));
+		addRecipe(KEY_SAND, new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.FIBERGLASS)));
 		addRecipe(ItemStackUtil.comparableStackFrom(Blocks.COBBLESTONE), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModBlocks.reinforced_stone));
 		addRecipe(ItemStackUtil.comparableStackFrom(ModBlocks.gravel_obsidian), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModBlocks.brick_obsidian));
-		addRecipe(REDSTONE.block(), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury));
+		addRecipe(REDSTONE.block(), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY)));
 		
-		addRecipe(CINNABAR.gem(), new FluidStack(ModForgeFluids.sulfuric_acid, 500), ItemStackUtil.itemStackFrom(ModItems.nugget_mercury, 3));
+		addRecipe(CINNABAR.gem(), new FluidStack(ModForgeFluids.sulfuric_acid, 500), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 3));
 		addRecipe(COAL.block(), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModBlocks.block_graphite));
 		addRecipe(ItemStackUtil.comparableStackFrom(ModBlocks.stone_gneiss), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.powder_lithium));
 		
@@ -85,9 +85,9 @@ public class CrystallizerRecipes {
 		addRecipe(EMERALD.dust(), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(Items.EMERALD));
 		addRecipe(LAPIS.dust(), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(Items.DYE, 1, 4));
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.powder_semtex_mix), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.ingot_semtex));
-		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.powder_desh_ready), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.ingot_desh));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.powder_desh_ready), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH)));
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.powder_meteorite), new FluidStack(ModForgeFluids.acid, 500), ItemStackUtil.itemStackFrom(ModItems.fragment_meteorite, 1));
-		addRecipe(CD.dust(), new FluidStack(ModForgeFluids.fishoil, 250), ItemStackUtil.itemStackFrom(ModItems.ingot_rubber));
+		addRecipe(CD.dust(), new FluidStack(ModForgeFluids.fishoil, 250), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.RUBBER)));
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.powder_impure_osmiridium), new FluidStack(ModForgeFluids.schrabidic, 1000), ItemStackUtil.itemStackFrom(ModItems.crystal_osmiridium, 1));
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.meteorite_sword_treated), new FluidStack(ModForgeFluids.sulfuric_acid, 8000), ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_etched, 1));
 		

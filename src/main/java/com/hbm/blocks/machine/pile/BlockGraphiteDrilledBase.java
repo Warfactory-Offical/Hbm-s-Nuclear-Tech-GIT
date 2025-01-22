@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.pile;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
@@ -49,7 +50,7 @@ public class BlockGraphiteDrilledBase extends BlockHazardFuel {
 	
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
-		drops.add(ItemStackUtil.itemStackFrom(ModItems.ingot_graphite, 8));
+		drops.add(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.GRAPHITE), 8));
 	}
 	
 	@Override

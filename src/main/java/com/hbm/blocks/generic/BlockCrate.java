@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -121,22 +122,22 @@ public class BlockCrate extends BlockFalling {
     	BlockCrate.addToListWithWeight(weaponList, ModItems.gun_bolt_action, 7);
     	
     	//Lead Crate
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_uranium, 10);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_u238, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_plutonium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_pu240, 6);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_neptunium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_uranium_fuel, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_plutonium_fuel, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_mox_fuel, 6);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_uranium, 10);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_u238, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_plutonium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_pu240, 6);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_neptunium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_uranium_fuel, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_plutonium_fuel, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_mox_fuel, 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 10);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.U238), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.PU240), 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.URANIUM), 10);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.U238), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.PU240), 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), 6);
     	BlockCrate.addToListWithWeight(leadList, ItemCell.getFullCell(ModForgeFluids.deuterium), 8);
     	BlockCrate.addToListWithWeight(leadList, ItemCell.getFullCell(ModForgeFluids.tritium), 8);
     	BlockCrate.addToListWithWeight(leadList, ItemCell.getFullCell(ModForgeFluids.uf6), 8);

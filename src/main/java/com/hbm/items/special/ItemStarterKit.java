@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
@@ -8,7 +9,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBattery;
-import com.hbm.items.machine.ItemFluidTank;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.handler.ArmorUtil;
@@ -99,10 +99,10 @@ public class ItemStarterKit extends Item {
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.stamp_titanium_flat, 1));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.stamp_titanium_plate, 1));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.stamp_titanium_wire, 1));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_lead, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_copper, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_uranium, 32));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 32));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.geiger_counter, 1));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.radaway, 8));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.radx, 2));
@@ -113,13 +113,13 @@ public class ItemStarterKit extends Item {
 		
 		if(this == ModItems.nuke_advanced_kit)
 		{
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_plutonium, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_steel, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_copper, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_tungsten, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_lead, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_aluminium, 64));
-			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot_polymer, 32));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COPPER), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.LEAD), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM), 64));
+			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER), 32));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModBlocks.machine_difurnace_off, 3));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModBlocks.machine_gascent, 3));
 			player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModBlocks.machine_centrifuge, 2));
