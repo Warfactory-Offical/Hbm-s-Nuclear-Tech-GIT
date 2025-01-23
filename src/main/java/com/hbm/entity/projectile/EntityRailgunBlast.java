@@ -22,14 +22,14 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public class EntityRailgunBlast extends Entity implements IChunkLoader {
 
-	public EntityRailgunBlast(World w) {
+	public EntityRailgunBlast(final World w) {
 		super(w);
 	}
 
 	private Ticket loaderTicket;
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 
 			if(ticket != null) {
@@ -48,11 +48,11 @@ public class EntityRailgunBlast extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ)
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ)
     {
         if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -68,7 +68,7 @@ public class EntityRailgunBlast extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -88,9 +88,9 @@ public class EntityRailgunBlast extends Entity implements IChunkLoader {
 		this.setLocationAndAngles(posX + this.motionX, posY + this.motionY, posZ + this.motionZ, 0, 0);
 		rotation();
 
-		Vec3d vec3 = new Vec3d(this.posX, this.posY, this.posZ);
-		Vec3d vec31 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		RayTraceResult movingobjectposition = this.world.rayTraceBlocks(vec3, vec31);
+		final Vec3d vec3 = new Vec3d(this.posX, this.posY, this.posZ);
+		final Vec3d vec31 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		final RayTraceResult movingobjectposition = this.world.rayTraceBlocks(vec3, vec31);
 
 		if(movingobjectposition != null) {
 
@@ -116,12 +116,11 @@ public class EntityRailgunBlast extends Entity implements IChunkLoader {
 	}
 
 	public void rotation() {
-		float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+		final float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 		for(this.rotationPitch = (float) (Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
-			;
-		}
+        }
 
 		while(this.rotationPitch - this.prevRotationPitch >= 180.0F) {
 			this.prevRotationPitch += 360.0F;
@@ -137,15 +136,15 @@ public class EntityRailgunBlast extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean isInRangeToRenderDist(final double distance) {
 		return distance < 500000;
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 	}
 }

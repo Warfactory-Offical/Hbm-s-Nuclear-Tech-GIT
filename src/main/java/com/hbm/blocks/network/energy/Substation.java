@@ -20,12 +20,12 @@ import net.minecraft.world.World;
 
 public class Substation extends BlockDummyable implements ITooltipProvider {
 
-	public Substation(Material materialIn, String s) {
+	public Substation(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= 12)
 			return new TileEntitySubstation();
@@ -47,8 +47,8 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity te = world.getTileEntity(pos);
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        final TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntityPylonBase) {
             ((TileEntityPylonBase)te).disconnectAll();
         }
@@ -56,7 +56,7 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
     }
 
 	@Override
-	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
 		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o + 1);
@@ -65,8 +65,8 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
 		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o - 1);
 	}
 
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-        this.addStandardInfo((List)list);
-        super.addInformation(stack, worldIn, (List)list, flagIn);
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+        this.addStandardInfo(list);
+        super.addInformation(stack, worldIn, list, flagIn);
     }
 }

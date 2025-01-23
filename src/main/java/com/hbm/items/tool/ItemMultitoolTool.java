@@ -1,11 +1,8 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-import java.util.Set;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -19,9 +16,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Set;
+
 public class ItemMultitoolTool extends ItemTool {
 
-	public ItemMultitoolTool(float f, ToolMaterial materialIn, Set<Block> effectiveBlocksIn, String s) {
+	public ItemMultitoolTool(final float f, final ToolMaterial materialIn, final Set<Block> effectiveBlocksIn, final String s) {
 		super(f, 0, materialIn, effectiveBlocksIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -30,23 +30,23 @@ public class ItemMultitoolTool extends ItemTool {
 	}
 	
 	@Override
-	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+	public float getDestroySpeed(final ItemStack stack, final IBlockState state) {
 		return this.efficiency;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		if(player.isSneaking()) {
 			
 	        world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 2.0F, 1.0F);
 	        
 			if(this == ModItems.multitool_dig) {
-				ItemStack item = new ItemStack(ModItems.multitool_silk, 1, stack.getItemDamage());
+				final ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_silk, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.SILK_TOUCH, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if (this == ModItems.multitool_silk) {
-				ItemStack item = new ItemStack(ModItems.multitool_ext, 1, stack.getItemDamage());
+				final ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_ext, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.FIRE_ASPECT, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			}
@@ -56,12 +56,12 @@ public class ItemMultitoolTool extends ItemTool {
 	}
 	
 	@Override
-	public boolean canHarvestBlock(IBlockState blockIn) {
+	public boolean canHarvestBlock(final IBlockState blockIn) {
 		return true;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.multitool_dig) {
 			tooltip.add("Breaks blocks extremely fast");
 			tooltip.add("Extra drops for ores");

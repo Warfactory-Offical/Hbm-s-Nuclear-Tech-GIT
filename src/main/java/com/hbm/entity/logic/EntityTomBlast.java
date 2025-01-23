@@ -33,7 +33,7 @@ public class EntityTomBlast extends Entity implements IChunkLoader {
 	public boolean did = false;
 	private Ticket loaderTicket;
 	
-	public EntityTomBlast(World worldIn) {
+	public EntityTomBlast(final World worldIn) {
 		super(worldIn);
 	}
 
@@ -54,7 +54,7 @@ public class EntityTomBlast extends Entity implements IChunkLoader {
         	this.did = true;
         }
         
-        long start = System.currentTimeMillis();
+        final long start = System.currentTimeMillis();
 		boolean flag = false;
 		int columnsProcessed = 0;
 		while(!(columnsProcessed % 32 == 0 && System.currentTimeMillis()+1 > start + BombConfig.mk5)) {
@@ -85,7 +85,7 @@ public class EntityTomBlast extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -104,10 +104,10 @@ public class EntityTomBlast extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -123,7 +123,7 @@ public class EntityTomBlast extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -131,7 +131,7 @@ public class EntityTomBlast extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(final NBTTagCompound nbt) {
 		age = nbt.getInteger("age");
 		destructionRange = nbt.getInteger("destructionRange");
 		did = nbt.getBoolean("did");
@@ -143,7 +143,7 @@ public class EntityTomBlast extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("age", age);
 		nbt.setInteger("destructionRange", destructionRange);
 		nbt.setBoolean("did", did);

@@ -17,13 +17,13 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderCloudRainbow extends Render<EntityCloudFleijaRainbow> {
 
 	private static final ResourceLocation objTesterModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/sphere.obj");
-	private IModelCustom blastModel;
+	private final IModelCustom blastModel;
     public float scale = 0;
     public float ring = 0;
 	//Drillgon200: Hey I figured out how to use a lambda!
     public static final IRenderFactory<EntityCloudFleijaRainbow> FACTORY = (RenderManager manage) -> {return new RenderCloudRainbow(manage);};
     
-	protected RenderCloudRainbow(RenderManager renderManager) {
+	protected RenderCloudRainbow(final RenderManager renderManager) {
 		super(renderManager);
 		//Drillgon200: Yes, I know, I shouldn't be using advanced model loader anymore
 		blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
@@ -31,8 +31,8 @@ public class RenderCloudRainbow extends Render<EntityCloudFleijaRainbow> {
 	}
 	
 	@Override
-	public void doRender(EntityCloudFleijaRainbow cloud, double x, double y, double z, float entityYaw,
-			float partialTicks) {
+	public void doRender(final EntityCloudFleijaRainbow cloud, final double x, final double y, final double z, final float entityYaw,
+                         final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT);
         GL11.glTranslated(x, y, z);
@@ -70,11 +70,11 @@ public class RenderCloudRainbow extends Render<EntityCloudFleijaRainbow> {
 	}
 
 	@Override
-	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {
+	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityCloudFleijaRainbow entity) {
+	protected ResourceLocation getEntityTexture(final EntityCloudFleijaRainbow entity) {
 		return null;
 	}
 

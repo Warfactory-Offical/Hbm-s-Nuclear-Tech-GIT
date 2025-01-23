@@ -12,18 +12,18 @@ public class RenderFalloutUnderground extends Render<EntityFalloutUnderGround> {
 
 	public static final IRenderFactory<EntityFalloutUnderGround> FACTORY = (RenderManager man) -> {return new RenderFalloutUnderground(man);};
 	
-	protected RenderFalloutUnderground(RenderManager renderManager) {
+	protected RenderFalloutUnderground(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityFalloutUnderGround entity, double x, double y, double z, float entityYaw, float partialTicks) {}
+	public void doRender(final EntityFalloutUnderGround entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {}
 
 	@Override
-	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
+	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityFalloutUnderGround entity) {
+	protected ResourceLocation getEntityTexture(final EntityFalloutUnderGround entity) {
 		return null;
 	}
 

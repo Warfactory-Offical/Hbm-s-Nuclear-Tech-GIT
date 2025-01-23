@@ -15,10 +15,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIRBMKRod extends GuiContainer {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_rbmk_element.png");
-	private TileEntityRBMKRod rod;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_rbmk_element.png");
+	private final TileEntityRBMKRod rod;
 
-	public GUIRBMKRod(InventoryPlayer invPlayer, TileEntityRBMKRod tedf) {
+	public GUIRBMKRod(final InventoryPlayer invPlayer, final TileEntityRBMKRod tedf) {
 		super(new ContainerRBMKRod(invPlayer, tedf));
 		rod = tedf;
 		
@@ -27,21 +27,21 @@ public class GUIRBMKRod extends GuiContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = I18n.format(this.rod.getName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = I18n.format(this.rod.getName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks){
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -50,12 +50,12 @@ public class GUIRBMKRod extends GuiContainer {
 		if(rod.inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
 			drawTexturedModalRect(guiLeft + 34, guiTop + 21, 176, 0, 18, 67);
 			
-			double depletion = 1D - ItemRBMKRod.getEnrichment(rod.inventory.getStackInSlot(0));
-			int d = (int)(depletion * 67);
+			final double depletion = 1D - ItemRBMKRod.getEnrichment(rod.inventory.getStackInSlot(0));
+			final int d = (int)(depletion * 67);
 			drawTexturedModalRect(guiLeft + 34, guiTop + 21, 194, 0, 18, d);
 			
-			double xenon = ItemRBMKRod.getPoisonLevel(rod.inventory.getStackInSlot(0));
-			int x = (int)(xenon * 58);
+			final double xenon = ItemRBMKRod.getPoisonLevel(rod.inventory.getStackInSlot(0));
+			final int x = (int)(xenon * 58);
 			drawTexturedModalRect(guiLeft + 126, guiTop + 82 - x, 212, 58 - x, 14, x);
 		}
 	}

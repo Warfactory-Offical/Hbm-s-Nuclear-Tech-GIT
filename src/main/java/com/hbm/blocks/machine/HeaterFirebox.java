@@ -24,12 +24,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class HeaterFirebox extends BlockDummyable implements ITooltipProvider, ILookOverlay {
 
-	public HeaterFirebox(Material mat, String s) {
+	public HeaterFirebox(final Material mat, final String s) {
 		super(Material.IRON, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= 12)
 			return new TileEntityHeaterFirebox();
@@ -38,7 +38,7 @@ public class HeaterFirebox extends BlockDummyable implements ITooltipProvider, I
 	}
 	
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		return standardOpenBehavior(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
 	}
 
@@ -53,26 +53,24 @@ public class HeaterFirebox extends BlockDummyable implements ITooltipProvider, I
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		this.addStandardInfo(list);
 		super.addInformation(stack, worldIn, list, flagIn);
 	}
 
 	@Override
-    public void printHook(Pre event, World world, int x, int y, int z) {
-        int[] pos = this.findCore(world, x, y, z);
+    public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+        final int[] pos = this.findCore(world, x, y, z);
 
         if (pos == null)
             return;
 
-        TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+        final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterFirebox))
+        if (!(te instanceof TileEntityHeaterFirebox heater))
             return;
 
-        TileEntityHeaterFirebox heater = (TileEntityHeaterFirebox) te;
-
-        List<String> text = new ArrayList<>();
+        final List<String> text = new ArrayList<>();
         text.add(String.format("%,d", heater.heatEnergy) + " TU");
         text.add("§c<- §r"+String.format("%,d", heater.burnHeat) + " TU/t");
         ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getTranslationKey() + ".name"), 0xffff00, 0x404000, text);

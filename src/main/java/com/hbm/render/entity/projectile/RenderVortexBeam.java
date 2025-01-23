@@ -20,24 +20,24 @@ public class RenderVortexBeam extends Render<EntityBeamBase> {
 
 	public static final IRenderFactory<EntityBeamBase> FACTORY = man -> new RenderVortexBeam(man);
 	
-	protected RenderVortexBeam(RenderManager renderManager) {
+	protected RenderVortexBeam(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityBeamBase laser, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBeamBase laser, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 
-		EntityPlayer player = laser.world.getPlayerEntityByName(laser.getDataManager().get(EntityBeamBase.PLAYER_NAME));
+		final EntityPlayer player = laser.world.getPlayerEntityByName(laser.getDataManager().get(EntityBeamBase.PLAYER_NAME));
 
 		if(player != null) {
 
 			GL11.glTranslated(x, y, z);
 
-			RayTraceResult pos = Library.rayTrace(player, 100, 1);
+			final RayTraceResult pos = Library.rayTrace(player, 100, 1);
 
-			Vec3 skeleton = Vec3.createVectorHelper(pos.hitVec.x - player.posX, pos.hitVec.y - player.posY - player.getEyeHeight(), pos.hitVec.z - player.posZ);
-			int init = (int) -(System.currentTimeMillis() % 360);
+			final Vec3 skeleton = Vec3.createVectorHelper(pos.hitVec.x - player.posX, pos.hitVec.y - player.posY - player.getEyeHeight(), pos.hitVec.z - player.posZ);
+			final int init = (int) -(System.currentTimeMillis() % 360);
 
 	        BeamPronter.prontBeam(skeleton, EnumWaveType.SPIRAL, EnumBeamType.SOLID, 0x000040, 0x2020d0, init, 1, 0F, 4, 0.005F);
 	        BeamPronter.prontBeam(skeleton, EnumWaveType.RANDOM, EnumBeamType.LINE, 0x8080ff, 0x8080ff, init, (int)skeleton.length() * 3 + 1, 0.01F, 1, 0.01F);
@@ -47,7 +47,7 @@ public class RenderVortexBeam extends Render<EntityBeamBase> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBeamBase entity) {
+	protected ResourceLocation getEntityTexture(final EntityBeamBase entity) {
 		return null;
 	}
 

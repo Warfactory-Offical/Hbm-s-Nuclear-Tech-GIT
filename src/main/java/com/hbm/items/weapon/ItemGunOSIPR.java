@@ -11,19 +11,19 @@ import net.minecraft.world.World;
 
 public class ItemGunOSIPR extends ItemGunBase {
 
-	public ItemGunOSIPR(GunConfiguration config, GunConfiguration alt, String s) {
+	public ItemGunOSIPR(final GunConfiguration config, final GunConfiguration alt, final String s) {
 		super(config, alt, s);
 	}
 	
 	@Override
-	protected void altFire(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	protected void altFire(final ItemStack stack, final World world, final EntityPlayer player, final EnumHand hand) {
 		
 		setCharge(stack, 1);
 		world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.osiprCharging, SoundCategory.PLAYERS, 1.0F, 1F);
 	}
 	
 	@Override
-	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand hand) {
+	protected void updateServer(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand hand) {
 		super.updateServer(stack, world, player, slot, hand);
 		
 		if(hand == null) {
@@ -31,10 +31,10 @@ public class ItemGunOSIPR extends ItemGunBase {
 			return;
 		}
 		
-		int i = getCharge(stack);
+		final int i = getCharge(stack);
 		
 		if(i >= 20) {
-			EntityCombineBall entityarrow = new EntityCombineBall(player.world, player, 3.0F, hand);
+			final EntityCombineBall entityarrow = new EntityCombineBall(player.world, player, 3.0F, hand);
 			entityarrow.setDamage(1000);
 			world.spawnEntity(entityarrow);
 			world.playSound(null, player.posX, player.posY, player.posZ, altConfig.firingSound, SoundCategory.PLAYERS, 1.0F, 1F);
@@ -46,17 +46,17 @@ public class ItemGunOSIPR extends ItemGunBase {
 	}
 	
 	@Override
-	protected boolean tryShoot(ItemStack stack, World world, EntityPlayer player, boolean main) {
+	protected boolean tryShoot(final ItemStack stack, final World world, final EntityPlayer player, final boolean main) {
 		
 		return super.tryShoot(stack, world, player, main) && getCharge(stack) == 0;
 	}
 	
 	/// CMB charge state ///
-	public static void setCharge(ItemStack stack, int i) {
+	public static void setCharge(final ItemStack stack, final int i) {
 		writeNBT(stack, "cmb_charge", i);
 	}
 	
-	public static int getCharge(ItemStack stack) {
+	public static int getCharge(final ItemStack stack) {
 		return readNBT(stack, "cmb_charge");
 	}
 }

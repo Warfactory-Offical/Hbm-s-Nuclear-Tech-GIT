@@ -23,10 +23,10 @@ public class ParticleGiblet extends Particle {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/particle/meat.png");
 	
-	private float momentumYaw;
-	private float momentumPitch;
+	private final float momentumYaw;
+	private final float momentumPitch;
 	
-	public ParticleGiblet(World worldIn, double posXIn, double posYIn, double posZIn, double mX, double mY, double mZ){
+	public ParticleGiblet(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final double mX, final double mY, final double mZ){
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.motionX = mX;
 		this.motionY = mY;
@@ -54,33 +54,33 @@ public class ParticleGiblet extends Particle {
 			//this.rotationPitch += this.momentumPitch;
 			//this.rotationYaw += this.momentumYaw;
 			
-			Particle fx = new ParticleBlockDust.Factory().createParticle(-1, world, posX, posY, posZ, 0, 0, 0, Block.getStateId(Blocks.REDSTONE_BLOCK.getDefaultState()));
+			final Particle fx = new ParticleBlockDust.Factory().createParticle(-1, world, posX, posY, posZ, 0, 0, 0, Block.getStateId(Blocks.REDSTONE_BLOCK.getDefaultState()));
 			HbmParticleUtility.setMaxAge(fx, 20 + rand.nextInt(20));
 			Minecraft.getMinecraft().effectRenderer.addEffect(fx);
 		}
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
 		GL11.glPushMatrix();
 		GlStateManager.disableLighting();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 
-		float f10 = this.particleScale * 0.1F;
-		float f11 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-		float f12 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-		float f13 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+		final float f10 = this.particleScale * 0.1F;
+		final float f11 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
+		final float f12 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
+		final float f13 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = tes.getBuffer();
 		GlStateManager.color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
 		GlStateManager.glNormal3f(0, 1, 0);
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buf.pos((double) (f11 - rotationX * f10 - rotationXY * f10), (double) (f12 - rotationZ * f10), (double) (f13 - rotationYZ * f10 - rotationXZ * f10)).tex((double) 0, (double) 0).endVertex();
-		buf.pos((double) (f11 - rotationX * f10 + rotationXY * f10), (double) (f12 + rotationZ * f10), (double) (f13 - rotationYZ * f10 + rotationXZ * f10)).tex((double) 0, (double) 1).endVertex();
-		buf.pos((double) (f11 + rotationX * f10 + rotationXY * f10), (double) (f12 + rotationZ * f10), (double) (f13 + rotationYZ * f10 + rotationXZ * f10)).tex((double) 1, (double) 1).endVertex();
-		buf.pos((double) (f11 + rotationX * f10 - rotationXY * f10), (double) (f12 - rotationZ * f10), (double) (f13 + rotationYZ * f10 - rotationXZ * f10)).tex((double) 1, (double) 0).endVertex();
+		buf.pos(f11 - rotationX * f10 - rotationXY * f10, f12 - rotationZ * f10, f13 - rotationYZ * f10 - rotationXZ * f10).tex(0, 0).endVertex();
+		buf.pos(f11 - rotationX * f10 + rotationXY * f10, f12 + rotationZ * f10, f13 - rotationYZ * f10 + rotationXZ * f10).tex(0, 1).endVertex();
+		buf.pos(f11 + rotationX * f10 + rotationXY * f10, f12 + rotationZ * f10, f13 + rotationYZ * f10 + rotationXZ * f10).tex(1, 1).endVertex();
+		buf.pos(f11 + rotationX * f10 - rotationXY * f10, f12 - rotationZ * f10, f13 + rotationYZ * f10 - rotationXZ * f10).tex(1, 0).endVertex();
 		tes.draw();
 		GL11.glPopMatrix();
 	}

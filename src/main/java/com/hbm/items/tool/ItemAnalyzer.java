@@ -1,14 +1,11 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
+import api.hbm.energy.IEnergyConnector;
 import com.hbm.interfaces.IFluidPipe;
 import com.hbm.items.ModItems;
 import com.hbm.tileentity.machine.TileEntityDummy;
 import com.hbm.tileentity.machine.TileEntityLockableBase;
 import com.hbm.tileentity.network.energy.TileEntityPylonBase;
-
-import api.hbm.energy.IEnergyConnector;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,9 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemAnalyzer extends Item {
 
-	public ItemAnalyzer(String s) {
+	public ItemAnalyzer(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -32,8 +31,8 @@ public class ItemAnalyzer extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		Block block = world.getBlockState(pos).getBlock();
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final Block block = world.getBlockState(pos).getBlock();
 		TileEntity te = world.getTileEntity(pos);
 		
 		if(world.isRemote) {
@@ -66,8 +65,8 @@ public class ItemAnalyzer extends Item {
 				if(parts.length == 0)
 					parts = new String[]{"error"};
 				
-				String post = parts[parts.length - 1];
-				String name = post.split("@")[0];
+				final String post = parts[parts.length - 1];
+				final String name = post.split("@")[0];
 
 				player.sendMessage(new TextComponentString(
 						"Tile Entity: " + name));
@@ -95,7 +94,7 @@ public class ItemAnalyzer extends Item {
 					player.sendMessage(new TextComponentString(
 							"Connections:"));
 					
-					List<BlockPos> connections = ((TileEntityPylonBase)te).connected;
+					final List<BlockPos> connections = ((TileEntityPylonBase)te).connected;
 					
 					for(int i = 0; i < connections.size(); i++) {
 						player.sendMessage(new TextComponentString(

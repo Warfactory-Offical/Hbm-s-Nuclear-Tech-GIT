@@ -1,34 +1,32 @@
 package com.hbm.items.tool;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import com.hbm.items.ModItems;
-import com.hbm.capability.HbmLivingProps;
 import com.hbm.items.gear.ArmorFSB;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.util.ContaminationUtil;
-
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.EnumHand;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles")})
 public class ItemDosimeter extends Item implements IBauble {
 	
 	Random rand = new Random();
 
-	public ItemDosimeter(String s){
+	public ItemDosimeter(final String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -36,7 +34,7 @@ public class ItemDosimeter extends Item implements IBauble {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean bool) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int i, final boolean bool) {
 		
 		if(!(entity instanceof EntityLivingBase) || world.isRemote)
 			return;
@@ -46,12 +44,12 @@ public class ItemDosimeter extends Item implements IBauble {
 			if(ArmorFSB.hasFSBArmor((EntityPlayer)entity) && ((ArmorFSB)((EntityPlayer)entity).inventory.armorInventory.get(2).getItem()).geigerSound)
 				return;
 			
-			double x = ContaminationUtil.getActualPlayerRads((EntityPlayer)entity);
+			final double x = ContaminationUtil.getActualPlayerRads((EntityPlayer)entity);
 			
 			if(world.getTotalWorldTime() % 5 == 0) {
 				
 				if(x > 0.001) {
-					List<Integer> list = new ArrayList<Integer>();
+					final List<Integer> list = new ArrayList<Integer>();
 
 					if(x < 0.5)
 						list.add(0);
@@ -62,7 +60,7 @@ public class ItemDosimeter extends Item implements IBauble {
 					if(x >= 1 && x >= 2)
 						list.add(3);
 				
-					int r = list.get(rand.nextInt(list.size()));
+					final int r = list.get(rand.nextInt(list.size()));
 					
 					if(r > 0)
 						world.playSound(null, entity.posX, entity.posY, entity.posZ, HBMSoundHandler.geigerSounds[r-1], SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -75,7 +73,7 @@ public class ItemDosimeter extends Item implements IBauble {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
 		
 		if(!world.isRemote) {
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -86,12 +84,12 @@ public class ItemDosimeter extends Item implements IBauble {
 	}
 
 	@Override
-	public BaubleType getBaubleType(ItemStack itemstack){
+	public BaubleType getBaubleType(final ItemStack itemstack){
 		return BaubleType.TRINKET;
 	}
 
 	@Override
-	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+	public void onWornTick(final ItemStack itemstack, final EntityLivingBase player) {
 		onUpdate(itemstack, player.world, player, 0, true);
 	}
 }

@@ -15,7 +15,7 @@ public class AnvilSmithingRecipe {
 	AStack right;
 	boolean shapeless = false;
 	
-	public AnvilSmithingRecipe(int tier, ItemStack out, AStack left, AStack right) {
+	public AnvilSmithingRecipe(final int tier, final ItemStack out, final AStack left, final AStack right) {
 		this.tier = tier;
 		this.output = out;
 		this.left = left;
@@ -28,11 +28,11 @@ public class AnvilSmithingRecipe {
 		return this;
 	}
 	
-	public boolean matches(ItemStack left, ItemStack right) {
+	public boolean matches(final ItemStack left, final ItemStack right) {
 		return matchesInt(left, right) != -1;
 	}
 	
-	public int matchesInt(ItemStack left, ItemStack right) {
+	public int matchesInt(final ItemStack left, final ItemStack right) {
 		
 		if(doesStackMatch(left, this.left) && doesStackMatch(right, this.right))
 			return 0;
@@ -44,7 +44,7 @@ public class AnvilSmithingRecipe {
 		return -1;
 	}
 	
-	public boolean doesStackMatch(ItemStack input, AStack recipe) {
+	public boolean doesStackMatch(final ItemStack input, final AStack recipe) {
 		return recipe.matchesRecipe(input, false);
 	}
 	
@@ -60,11 +60,11 @@ public class AnvilSmithingRecipe {
 		return output.copy();
 	}
 	
-	public ItemStack getOutput(ItemStack left, ItemStack right) {
+	public ItemStack getOutput(final ItemStack left, final ItemStack right) {
 		return getSimpleOutput();
 	}
 	
-	public int amountConsumed(int index, boolean mirrored) {
+	public int amountConsumed(final int index, final boolean mirrored) {
 		
 		if(index == 0)
 			return mirrored ? right.stacksize : left.stacksize;

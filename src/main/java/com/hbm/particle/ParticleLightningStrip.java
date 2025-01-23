@@ -34,25 +34,25 @@ public class ParticleLightningStrip extends Particle {
 	public float width = 0.004F;
 	public boolean doTransform = false;
 	
-	public ParticleLightningStrip(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleLightningStrip(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleMaxAge = 122;
 	}
 	
-	public void setNewPoint(Vec3d point){
-		float scale = 0.01F;
-		float scale2 = 0.002F;
-		Vec3d pos = point.add((world.rand.nextFloat()*2-1)*scale, (world.rand.nextFloat()*2-1)*scale, (world.rand.nextFloat()*2-1)*scale);
+	public void setNewPoint(final Vec3d point){
+		final float scale = 0.01F;
+		final float scale2 = 0.002F;
+		final Vec3d pos = point.add((world.rand.nextFloat()*2-1)*scale, (world.rand.nextFloat()*2-1)*scale, (world.rand.nextFloat()*2-1)*scale);
 		Vec3d motion = new Vec3d((world.rand.nextFloat()*2-1)*scale2, (world.rand.nextFloat()*2-1)*scale2, (world.rand.nextFloat()*2-1)*scale2);
 		LightningNode fork = null;
 		if(points.size() >= 1){
 			Vec3d direction = point.subtract(points.get(points.size()-1).ogPos);
-			double dot = direction.dotProduct(pos.subtract(points.get(points.size()-1).ogPos));
-			Vec3d project = direction.scale(dot/direction.lengthSquared());
+			final double dot = direction.dotProduct(pos.subtract(points.get(points.size()-1).ogPos));
+			final Vec3d project = direction.scale(dot/direction.lengthSquared());
 			direction = direction.normalize();
 			motion = motion.add(pos.subtract(project).normalize().scale(motionScaleTan)).add(direction.scale(motionScaleNorm));
 			if(world.rand.nextFloat() < forkChance){
-				LightningGenInfo i = new LightningGenInfo();
+				final LightningGenInfo i = new LightningGenInfo();
 				i.randAmount = 0.03F;
 				i.subdivisions = 3;
 				i.subdivRecurse = 1;
@@ -60,7 +60,7 @@ public class ParticleLightningStrip extends Particle {
 				fork = LightningGenerator.generateLightning(new Vec3d(0, 0, 0), BobMathUtil.randVecInCone(direction, 20).scale(-0.3F), i);
 			}
 		}
-		LightningPoint lPoint = new LightningPoint(point, pos, motion);
+		final LightningPoint lPoint = new LightningPoint(point, pos, motion);
 		
 		lPoint.fork = fork;
 		points.add(lPoint);
@@ -75,7 +75,7 @@ public class ParticleLightningStrip extends Particle {
 		if(this.particleAge > this.particleMaxAge){
 			this.setExpired();
 		}
-		for(LightningPoint p : points){
+		for(final LightningPoint p : points){
 			p.prevPos = p.pos;
 			p.pos = p.pos.add(p.motion);
 			p.motion = p.motion.scale(0.96);
@@ -83,7 +83,7 @@ public class ParticleLightningStrip extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		if(points.size() >= 2){
 			if(doTransform){
 				GL11.glPushMatrix();
@@ -94,13 +94,13 @@ public class ParticleLightningStrip extends Particle {
 			ResourceManager.lightning.use();
 		    ResourceManager.lightning.uniform4f("duck", 1F, 1F, 1F, 1F);
 		    ResourceManager.lightning.uniform1f("age", this.particleAge+partialTicks);
-		    int list = GL11.glGenLists(1);
+		    final int list = GL11.glGenLists(1);
 		    GL11.glNewList(list, GL11.GL_COMPILE);
-		    float time = (this.particleAge+partialTicks)*0.012F;
-		    List<Vec3d> currentPoints = new ArrayList<>(points.size());
+		    final float time = (this.particleAge+partialTicks)*0.012F;
+		    final List<Vec3d> currentPoints = new ArrayList<>(points.size());
 		    for(int i = 0; i < points.size(); i++){
-		    	LightningPoint p = points.get(i);
-		    	Vec3d pos = BobMathUtil.lerp(p.prevPos, p.pos, partialTicks);
+		    	final LightningPoint p = points.get(i);
+		    	final Vec3d pos = BobMathUtil.lerp(p.prevPos, p.pos, partialTicks);
 		    	float override = (float)(i)/(float)points.size();
 		    	
 		    	override = 1-MathHelper.clamp(override-time*time*time, 0.001F, 1F);
@@ -144,7 +144,7 @@ public class ParticleLightningStrip extends Particle {
 		Vec3d motion;
 		LightningNode fork = null;
 		
-		public LightningPoint(Vec3d ogPos, Vec3d pos, Vec3d motion) {
+		public LightningPoint(final Vec3d ogPos, final Vec3d pos, final Vec3d motion) {
 			this.ogPos = ogPos;
 			this.pos = pos;
 			this.prevPos = pos;

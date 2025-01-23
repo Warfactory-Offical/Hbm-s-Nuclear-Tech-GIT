@@ -30,7 +30,7 @@ public class ItemBobmazonPacket implements IMessage {
 		
 	}
 
-	public ItemBobmazonPacket(EntityPlayer player, Offer offer)
+	public ItemBobmazonPacket(final EntityPlayer player, final Offer offer)
 	{
 		if(player.getHeldItemMainhand().getItem() == ModItems.bobmazon_materials)
 			this.offer = BobmazonOfferFactory.materials.indexOf(offer);
@@ -45,27 +45,27 @@ public class ItemBobmazonPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		offer = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(offer);
 	}
 
 	public static class Handler implements IMessageHandler<ItemBobmazonPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(ItemBobmazonPacket m, MessageContext ctx) {
+		public IMessage onMessage(final ItemBobmazonPacket m, final MessageContext ctx) {
 			
-			EntityPlayerMP p = ctx.getServerHandler().player;
+			final EntityPlayerMP p = ctx.getServerHandler().player;
 			
 			p.getServer().addScheduledTask(() -> {
-				World world = p.world;
+				final World world = p.world;
 
-				Item mainHand = p.getHeldItemMainhand().getItem();
-				Item offHand = p.getHeldItemOffhand().getItem();
+				final Item mainHand = p.getHeldItemMainhand().getItem();
+				final Item offHand = p.getHeldItemOffhand().getItem();
 				Offer offer = null;
 				if(mainHand == ModItems.bobmazon_materials || offHand == ModItems.bobmazon_materials)
 					offer = BobmazonOfferFactory.materials.get(m.offer);
@@ -86,9 +86,9 @@ public class ItemBobmazonPacket implements IMessage {
 					return;
 				}
 				
-				ItemStack stack = offer.offer;
+				final ItemStack stack = offer.offer;
 				
-				Advancement req = offer.requirement.getAchievement();
+				final Advancement req = offer.requirement.getAchievement();
 				
 				if(req != null && p.getAdvancements().getProgress(req).isDone() || p.capabilities.isCreativeMode) {
 					
@@ -97,8 +97,8 @@ public class ItemBobmazonPacket implements IMessage {
 						payCaps(p, offer.cost);
 						p.inventoryContainer.detectAndSendChanges();
 						
-						Random rand = world.rand;
-						EntityBobmazon bob = new EntityBobmazon(world);
+						final Random rand = world.rand;
+						final EntityBobmazon bob = new EntityBobmazon(world);
 						bob.posX = p.posX + rand.nextGaussian() * 10;
 						bob.posY = 300;
 						bob.posZ = p.posZ + rand.nextGaussian() * 10;
@@ -118,17 +118,17 @@ public class ItemBobmazonPacket implements IMessage {
 			return null;
 		}
 		
-		private int countCaps(EntityPlayer player) {
+		private int countCaps(final EntityPlayer player) {
 			
 			int count = 0;
 			
 			for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 				
-				ItemStack stack = player.inventory.getStackInSlot(i);
+				final ItemStack stack = player.inventory.getStackInSlot(i);
 				
 				if(stack != null) {
 					
-					Item item = stack.getItem();
+					final Item item = stack.getItem();
 					
 					if(item == ModItems.cap_fritz ||
 							item == ModItems.cap_korl ||
@@ -146,18 +146,18 @@ public class ItemBobmazonPacket implements IMessage {
 			return count;
 		}
 		
-		private void payCaps(EntityPlayer player, int price) {
+		private void payCaps(final EntityPlayer player, int price) {
 			
 			if(price == 0)
 				return;
 			
 			for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 				
-				ItemStack stack = player.inventory.getStackInSlot(i);
+				final ItemStack stack = player.inventory.getStackInSlot(i);
 				
 				if(stack != null) {
 					
-					Item item = stack.getItem();
+					final Item item = stack.getItem();
 					
 					if(item == ModItems.cap_fritz ||
 							item == ModItems.cap_korl ||
@@ -168,7 +168,7 @@ public class ItemBobmazonPacket implements IMessage {
 							item == ModItems.cap_star ||
 							item == ModItems.cap_sunset) {
 						
-						int size = stack.getCount();
+						final int size = stack.getCount();
 						for(int j = 0; j < size; j++) {
 							
 							player.inventory.decrStackSize(i, 1);

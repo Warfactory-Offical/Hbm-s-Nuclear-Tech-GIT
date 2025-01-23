@@ -16,9 +16,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineCyclotron extends Container {
 
-	private TileEntityMachineCyclotron cyclotron;
+	private final TileEntityMachineCyclotron cyclotron;
 	
-	public ContainerMachineCyclotron(InventoryPlayer invPlayer, TileEntityMachineCyclotron tile) {
+	public ContainerMachineCyclotron(final InventoryPlayer invPlayer, final TileEntityMachineCyclotron tile) {
 		cyclotron = tile;
 		
 		//Input
@@ -62,13 +62,13 @@ public class ContainerMachineCyclotron extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int index)
+    public ItemStack transferStackInSlot(final EntityPlayer player, final int index)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot slot = (Slot) this.inventorySlots.get(index);
+		final Slot slot = this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack stack = slot.getStack();
+			final ItemStack stack = slot.getStack();
 			var3 = stack.copy();
 
 			if(index <= 15) {
@@ -116,7 +116,7 @@ public class ContainerMachineCyclotron extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return cyclotron.isUseableByPlayer(player);
 	}
 	

@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 public class RenderBMPowerBox extends TileEntitySpecialRenderer<TileEntityBMPowerBox> {
 
 	@Override
-	public void render(TileEntityBMPowerBox te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+	public void render(final TileEntityBMPowerBox te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
 		GL11.glPushMatrix();
 		GL11.glTranslated(x+0.5, y, z+0.5);
 		switch(te.getBlockMetadata() >> 1){
@@ -30,11 +30,11 @@ public class RenderBMPowerBox extends TileEntitySpecialRenderer<TileEntityBMPowe
 		bindTexture(ResourceManager.bm_box_lever_tex);
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		ResourceManager.bm_box_lever.renderPart("box");
-		float rx = 0.077964F;
-		float ry = 0.456887F;
-		float rz = 0.104706F;
+		final float rx = 0.077964F;
+		final float ry = 0.456887F;
+		final float rz = 0.104706F;
 		GL11.glTranslated(rx, ry, rz);
-		float time = (float)MathHelper.clamp((double)(te.getWorld().getTotalWorldTime()-te.ticksPlaced+partialTicks)*0.1, 0, 1);
+		final float time = (float)MathHelper.clamp((double)(te.getWorld().getTotalWorldTime()-te.ticksPlaced+partialTicks)*0.1, 0, 1);
 		GL11.glRotated((te.getBlockMetadata()&1) == 1 ? time*180 : (1-time)*180, 0, 0, 1);
 		GL11.glTranslated(-rx, -ry, -rz);
 		ResourceManager.bm_box_lever.renderPart("lever");

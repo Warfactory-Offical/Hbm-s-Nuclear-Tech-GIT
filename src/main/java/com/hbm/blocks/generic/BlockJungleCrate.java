@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -17,7 +18,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockJungleCrate extends Block {
 
-	public BlockJungleCrate(Material materialIn, String s) {
+	public BlockJungleCrate(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,21 +29,21 @@ public class BlockJungleCrate extends Block {
 	Random rand = new Random();
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		drops.add(new ItemStack(Items.GOLD_INGOT, 4 + rand.nextInt(4)));
-		drops.add(new ItemStack(Items.GOLD_NUGGET, 8 + rand.nextInt(10)));
-		drops.add(new ItemStack(ModItems.powder_gold, 2 + rand.nextInt(3)));
-		drops.add(new ItemStack(ModItems.wire_gold, 2 + rand.nextInt(2)));
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune) {
+		drops.add(ItemStackUtil.itemStackFrom(Items.GOLD_INGOT, 4 + rand.nextInt(4)));
+		drops.add(ItemStackUtil.itemStackFrom(Items.GOLD_NUGGET, 8 + rand.nextInt(10)));
+		drops.add(ItemStackUtil.itemStackFrom(ModItems.powder_gold, 2 + rand.nextInt(3)));
+		drops.add(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 2 + rand.nextInt(2)));
 
         if(rand.nextInt(2) == 0)
-        	drops.add(new ItemStack(ModItems.plate_gold, 1 + rand.nextInt(2)));
+        	drops.add(ItemStackUtil.itemStackFrom(ModItems.plate_gold, 1 + rand.nextInt(2)));
 
         if(rand.nextInt(3) == 0)
-        	drops.add(new ItemStack(ModItems.crystal_gold));
+        	drops.add(ItemStackUtil.itemStackFrom(ModItems.crystal_gold));
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	

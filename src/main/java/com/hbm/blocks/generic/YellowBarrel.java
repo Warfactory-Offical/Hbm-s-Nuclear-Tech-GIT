@@ -25,7 +25,7 @@ public class YellowBarrel extends Block {
 	public static final AxisAlignedBB BARREL_BB = new AxisAlignedBB(2 * 0.0625F, 0.0F, 2 * 0.0625F, 14 * 0.0625F, 1.0F, 14 * 0.0625F);
 	Random rand = new Random();
 	
-	public YellowBarrel(Material materialIn, String s) {
+	public YellowBarrel(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,7 +34,7 @@ public class YellowBarrel extends Block {
 	}
 	
 	@Override
-	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn) {
+	public void onExplosionDestroy(final World worldIn, final BlockPos pos, final Explosion explosionIn) {
 		if (!worldIn.isRemote && worldIn instanceof WorldServer) {
 			((WorldServer)worldIn).addScheduledTask(() -> {
         		explode(worldIn, pos.getX(), pos.getY(), pos.getZ());
@@ -42,7 +42,7 @@ public class YellowBarrel extends Block {
         }
 	}
 	
-	public void explode(World p_149695_1_, int x, int y, int z) {
+	public void explode(final World p_149695_1_, final int x, final int y, final int z) {
 		if(rand.nextInt(3) == 0) {
 			p_149695_1_.setBlockState(new BlockPos(x, y, z), ModBlocks.toxic_block.getDefaultState());
 		} else {
@@ -54,32 +54,32 @@ public class YellowBarrel extends Block {
 	}
 	
 	@Override
-	public boolean canDropFromExplosion(Explosion explosionIn) {
+	public boolean canDropFromExplosion(final Explosion explosionIn) {
 		return false;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		return BARREL_BB;
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 		super.updateTick(world, pos, state, rand);
         
 		if(this == ModBlocks.yellow_barrel){
@@ -92,19 +92,19 @@ public class YellowBarrel extends Block {
 	}
 	
 	@Override
-	public int tickRate(World worldIn) {
+	public int tickRate(final World worldIn) {
 		return 20;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
 		worldIn.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + rand.nextFloat() * 0.5F + 0.25F, pos.getY() + 1.1F, pos.getZ() + rand.nextFloat() * 0.5F + 0.25F, 0.0D, 0.0D, 0.0D);
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
 		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
 	}

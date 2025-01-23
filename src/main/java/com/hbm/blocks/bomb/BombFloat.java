@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class BombFloat extends Block implements IBomb {
 
-	public BombFloat(Material materialIn, String s) {
+	public BombFloat(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,7 +26,7 @@ public class BombFloat extends Block implements IBomb {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
         if (worldIn.isBlockPowered(pos))
         {
         	explode(worldIn, pos);
@@ -34,7 +34,7 @@ public class BombFloat extends Block implements IBomb {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(final World world, final BlockPos pos) {
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.sparkShoot, SoundCategory.BLOCKS, 5.0f, world.rand.nextFloat() * 0.2F + 0.9F);
 		
 		if(!world.isRemote) {
@@ -45,7 +45,7 @@ public class BombFloat extends Block implements IBomb {
     		}
     		if(this == ModBlocks.emp_bomb) {
     			ExplosionNukeGeneric.empBlast(world, pos.getX(), pos.getY(), pos.getZ(), 50);
-    			EntityEMPBlast wave = new EntityEMPBlast(world, 50);
+    			final EntityEMPBlast wave = new EntityEMPBlast(world, 50);
     			wave.posX = pos.getX() + 0.5;
     			wave.posY = pos.getY() + 0.5;
     			wave.posZ = pos.getZ() + 0.5;

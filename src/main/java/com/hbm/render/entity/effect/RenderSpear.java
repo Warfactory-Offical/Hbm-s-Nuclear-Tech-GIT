@@ -23,12 +23,12 @@ public class RenderSpear extends Render<EntitySpear> {
 
 	public static final IRenderFactory<EntitySpear> FACTORY = man -> new RenderSpear(man);
 	
-	protected RenderSpear(RenderManager renderManager){
+	protected RenderSpear(final RenderManager renderManager){
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntitySpear entity, double x, double y, double z, float entityYaw, float partialTicks){
+	public void doRender(final EntitySpear entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks){
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x, (float) y + 15, (float) z);
 		GlStateManager.enableLighting();
@@ -37,14 +37,14 @@ public class RenderSpear extends Render<EntitySpear> {
 		GL11.glRotated(180, 1, 0, 0);
 		GL11.glScaled(2, 2, 2);
 		
-		EntitySpear spear = (EntitySpear) entity;
+		final EntitySpear spear = entity;
 		
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.lance_tex);
 		ResourceManager.lance.renderPart("Spear");
 		
 		if(spear.ticksInGround > 0) {
-			float occupancy = Math.min((spear.ticksInGround + partialTicks) / 100F, 1F);
+			final float occupancy = Math.min((spear.ticksInGround + partialTicks) / 100F, 1F);
 			GlStateManager.color(1F, 1F, 1F, occupancy);
 
 			GlStateManager.disableLighting();
@@ -71,15 +71,15 @@ public class RenderSpear extends Render<EntitySpear> {
 		GL11.glPopMatrix();
 	}
 
-	private void renderFlash(double intensity) {
+	private void renderFlash(final double intensity) {
 
 		GL11.glScalef(0.2F, 0.2F, 0.2F);
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buf = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder buf = tessellator.getBuffer();
 		RenderHelper.disableStandardItemLighting();
 
-		Random random = new Random(432L);
+		final Random random = new Random(432L);
 		GlStateManager.disableTexture2D();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		GlStateManager.enableBlend();
@@ -90,7 +90,7 @@ public class RenderSpear extends Render<EntitySpear> {
 
 		GL11.glPushMatrix();
 
-		float scale = 25;
+		final float scale = 25;
 
 		for(int i = 0; i < 64; i++) {
 
@@ -100,14 +100,14 @@ public class RenderSpear extends Render<EntitySpear> {
 			GL11.glRotatef(random.nextFloat() * 360.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(random.nextFloat() * 360.0F, 0.0F, 1.0F, 0.0F);
 
-			float vert1 = (random.nextFloat() * 20.0F + 5.0F + 1 * 10.0F) * (float) (intensity * intensity * scale);
-			float vert2 = (random.nextFloat() * 2.0F + 1.0F + 1 * 2.0F) * (float) (intensity * intensity * scale);
+			final float vert1 = (random.nextFloat() * 20.0F + 5.0F + 1 * 10.0F) * (float) (intensity * intensity * scale);
+			final float vert2 = (random.nextFloat() * 2.0F + 1.0F + 1 * 2.0F) * (float) (intensity * intensity * scale);
 
 			buf.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 			buf.pos(0, 0, 0).color(1.0F, 0.6F, 0.6F, (float) (intensity * intensity) * 2F).endVertex();
 			buf.pos(-0.866D * vert2, vert1, -0.5F * vert2).color(1.0F, 0.6F, 0.6F, 0.0F).endVertex();
 			buf.pos(0.866D * vert2, vert1, -0.5F * vert2).color(1.0F, 0.6F, 0.6F, 0.0F).endVertex();
-			buf.pos(0.0D, vert1, 1.0F * vert2).color(1.0F, 0.6F, 0.6F, 0.0F).endVertex();
+			buf.pos(0.0D, vert1, vert2).color(1.0F, 0.6F, 0.6F, 0.0F).endVertex();
 			buf.pos(-0.866D * vert2, vert1, -0.5F * vert2).color(1.0F, 0.6F, 0.6F, 0.0F).endVertex();
 			tessellator.draw();
 		}
@@ -125,7 +125,7 @@ public class RenderSpear extends Render<EntitySpear> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySpear entity){
+	protected ResourceLocation getEntityTexture(final EntitySpear entity){
 		return ResourceManager.lance_tex;
 	}
 

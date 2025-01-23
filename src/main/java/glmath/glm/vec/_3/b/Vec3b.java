@@ -17,31 +17,31 @@ public class Vec3b extends FuncRelational{
         this(0);
     }
 
-    public Vec3b(int i) {
+    public Vec3b(final int i) {
         this(i, i, i);
     }
 
-    public Vec3b(byte b) {
+    public Vec3b(final byte b) {
         this(b, b, b);
     }
 
-    public Vec3b(byte x, byte y, byte z) {
+    public Vec3b(final byte x, final byte y, final byte z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3b(int x, int y, int z) {
+    public Vec3b(final int x, final int y, final int z) {
         this.x = (byte) x;
         this.y = (byte) y;
         this.z = (byte) z;
     }
 
-    public Vec3b set(int x, int y, int z) {
+    public Vec3b set(final int x, final int y, final int z) {
         return set((byte) x, (byte) y, (byte) z);
     }
 
-    public Vec3b set(byte x, byte y, byte z) {
+    public Vec3b set(final byte x, final byte y, final byte z) {
         this.x = x;
         this.y = y;
         this.z = z;

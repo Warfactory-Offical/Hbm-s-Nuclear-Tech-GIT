@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -41,7 +42,7 @@ public class MachineArcFurnace extends BlockContainer {
 	private final boolean isActive;
 	private static boolean keepInventory;
 
-	public MachineArcFurnace(Material materialIn, boolean active, String s) {
+	public MachineArcFurnace(final Material materialIn, final boolean active, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -51,33 +52,33 @@ public class MachineArcFurnace extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineArcFurnace();
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.machine_arc_furnace_off);
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.machine_arc_furnace_off);
+	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
+		return ItemStackUtil.itemStackFrom(ModBlocks.machine_arc_furnace_off);
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
 		this.setDefaultFacing(worldIn, pos, state);
 	}
 
-	private void setDefaultFacing(World worldIn, BlockPos pos, IBlockState state) {
+	private void setDefaultFacing(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if(!worldIn.isRemote) {
-			IBlockState iblockstate = worldIn.getBlockState(pos.north());
-			IBlockState iblockstate1 = worldIn.getBlockState(pos.south());
-			IBlockState iblockstate2 = worldIn.getBlockState(pos.west());
-			IBlockState iblockstate3 = worldIn.getBlockState(pos.east());
-			EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
+			final IBlockState iblockstate = worldIn.getBlockState(pos.north());
+			final IBlockState iblockstate1 = worldIn.getBlockState(pos.south());
+			final IBlockState iblockstate2 = worldIn.getBlockState(pos.west());
+			final IBlockState iblockstate3 = worldIn.getBlockState(pos.east());
+			EnumFacing enumfacing = state.getValue(FACING);
 
 			if(enumfacing == EnumFacing.NORTH && iblockstate.isFullBlock() && !iblockstate1.isFullBlock()) {
 				enumfacing = EnumFacing.SOUTH;
@@ -94,11 +95,11 @@ public class MachineArcFurnace extends BlockContainer {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 
 		if(stack.hasDisplayName()) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
+			final TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if(tileentity instanceof TileEntityMachineArcFurnace) {
 				((TileEntityMachineArcFurnace) tileentity).setCustomName(stack.getDisplayName());
@@ -107,11 +108,11 @@ public class MachineArcFurnace extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			TileEntityMachineArcFurnace entity = (TileEntityMachineArcFurnace) world.getTileEntity(pos);
+			final TileEntityMachineArcFurnace entity = (TileEntityMachineArcFurnace) world.getTileEntity(pos);
 			if(entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_arc, world, pos.getX(), pos.getY(), pos.getZ());
 			}
@@ -121,10 +122,10 @@ public class MachineArcFurnace extends BlockContainer {
 		}
 	}
 
-	public static void updateBlockState(boolean isProcessing, World world, BlockPos pos) {
-		EnumFacing e = world.getBlockState(pos).getValue(FACING);
-		boolean b = world.getBlockState(pos).getValue(RODS);
-		TileEntity entity = world.getTileEntity(pos);
+	public static void updateBlockState(final boolean isProcessing, final World world, final BlockPos pos) {
+		final EnumFacing e = world.getBlockState(pos).getValue(FACING);
+		final boolean b = world.getBlockState(pos).getValue(RODS);
+		final TileEntity entity = world.getTileEntity(pos);
 		keepInventory = true;
 
 		if(isProcessing && world.getBlockState(pos).getBlock() != ModBlocks.machine_arc_furnace_on) {
@@ -142,12 +143,12 @@ public class MachineArcFurnace extends BlockContainer {
 	}
 
 	//Drillgon200: Why does it work now.
-	public static boolean updateBlockRods(boolean hasRods, World world, BlockPos pos) {
+	public static boolean updateBlockRods(final boolean hasRods, final World world, final BlockPos pos) {
 		boolean returnVal = false;
-		boolean b = world.getBlockState(pos).getValue(RODS);
-		EnumFacing e = world.getBlockState(pos).getValue(FACING);
-		Block block = world.getBlockState(pos).getBlock();
-		TileEntity entity = world.getTileEntity(pos);
+		final boolean b = world.getBlockState(pos).getValue(RODS);
+		final EnumFacing e = world.getBlockState(pos).getValue(FACING);
+		final Block block = world.getBlockState(pos).getBlock();
+		final TileEntity entity = world.getTileEntity(pos);
 		keepInventory = true;
 		
 		if(hasRods && !b) {
@@ -167,7 +168,7 @@ public class MachineArcFurnace extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if(!keepInventory)
 			InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
@@ -175,14 +176,14 @@ public class MachineArcFurnace extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
 		if(isActive) {
-			EnumFacing e = worldIn.getBlockState(pos).getValue(FACING);
-			float f = pos.getX() + 0.5F;
-			float f1 = pos.getY() + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
-			float f2 = pos.getZ() + 0.5F;
-			float f3 = 0.52F;
-			float f4 = rand.nextFloat() * 0.6F - 0.3F;
+			final EnumFacing e = worldIn.getBlockState(pos).getValue(FACING);
+			final float f = pos.getX() + 0.5F;
+			final float f1 = pos.getY() + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
+			final float f2 = pos.getZ() + 0.5F;
+			final float f3 = 0.52F;
+			final float f4 = rand.nextFloat() * 0.6F - 0.3F;
 
 			if(e == EnumFacing.WEST) {
 				worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, f - f3, f1, f2 + f4, 0.0D, 0.0D, 0.0D);
@@ -201,30 +202,30 @@ public class MachineArcFurnace extends BlockContainer {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(RODS, false);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING, RODS });
+		return new BlockStateContainer(this, FACING, RODS);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		int meta = ((EnumFacing) state.getValue(FACING)).getIndex() << 1;
+	public int getMetaFromState(final IBlockState state) {
+		int meta = state.getValue(FACING).getIndex() << 1;
 		meta += state.getValue(RODS) ? 1 : 0;
 		return meta;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		boolean rods = (meta & 1) == 1 ? true : false;
+		final boolean rods = (meta & 1) == 1;
 		meta = meta >> 1;
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
@@ -236,13 +237,13 @@ public class MachineArcFurnace extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 }

@@ -11,11 +11,11 @@ package glmath.glm.vec._2;
  */
 abstract class BooleanOperators extends BasicOperators {
 
-    public boolean equals(Vec2 b) {
+    public boolean equals(final Vec2 b) {
         return glmath.glm.Glm.equals((Vec2) this, b);
     }
 
-    public boolean notEquals(Vec2 b) {
+    public boolean notEquals(final Vec2 b) {
         return glmath.glm.Glm.notEquals((Vec2) this, b);
     }
 }

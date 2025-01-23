@@ -113,7 +113,7 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 	}
 
 
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 		
 		switch(meta) {
 		case 0: this.scanMissiles = !this.scanMissiles; break;
@@ -123,9 +123,9 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 		}
 	}
 
-	public boolean isEntityApproaching(Entity e){
-		boolean xAxisApproaching = (pos.getX() < e.posX  && e.motionX < 0) || (pos.getX() > e.posX  && e.motionX > 0);
-		boolean zAxisApproaching = (pos.getZ() < e.posZ && e.motionZ < 0) || (pos.getZ() > e.posZ && e.motionZ > 0);
+	public boolean isEntityApproaching(final Entity e){
+		final boolean xAxisApproaching = (pos.getX() < e.posX  && e.motionX < 0) || (pos.getX() > e.posX  && e.motionX > 0);
+		final boolean zAxisApproaching = (pos.getZ() < e.posZ && e.motionZ < 0) || (pos.getZ() > e.posZ && e.motionZ > 0);
 		return xAxisApproaching && zAxisApproaching;
 	}
 	
@@ -135,9 +135,9 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 		entList.clear();
 		jammed = false;
 		
-		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() + 0.5 - WeaponConfig.radarRange, 0D, pos.getZ() + 0.5 - WeaponConfig.radarRange, pos.getX() + 0.5 + WeaponConfig.radarRange, 10000, pos.getZ() + 0.5 + WeaponConfig.radarRange));
+		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() + 0.5 - WeaponConfig.radarRange, 0D, pos.getZ() + 0.5 - WeaponConfig.radarRange, pos.getX() + 0.5 + WeaponConfig.radarRange, 10000, pos.getZ() + 0.5 + WeaponConfig.radarRange));
 
-		for(Entity e : list) {
+		for(final Entity e : list) {
 			
 			if(e.posY < pos.getY() + WeaponConfig.radarBuffer)
 				continue;
@@ -176,15 +176,15 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 			/// PROXIMITY ///
 			if(redMode) {
 				
-				double maxRange = WeaponConfig.radarRange * Math.sqrt(2D);
+				final double maxRange = WeaponConfig.radarRange * Math.sqrt(2D);
 				
 				int power = 0;
 				
 				for(int i = 0; i < entList.size(); i++) {
 					
-					Entity e = entList.get(i);
-					double dist = Math.sqrt(Math.pow(e.posX - pos.getX(), 2) + Math.pow(e.posZ - pos.getZ(), 2));
-					int p = 15 - (int)Math.floor(dist / maxRange * 15);
+					final Entity e = entList.get(i);
+					final double dist = Math.sqrt(Math.pow(e.posX - pos.getX(), 2) + Math.pow(e.posZ - pos.getZ(), 2));
+					final int p = 15 - (int)Math.floor(dist / maxRange * 15);
 					
 					if(p > power)
 						power = p;
@@ -213,7 +213,7 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 	
 	private void sendMissileData() {
 		
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setLong("power", power);
 		data.setBoolean("scanMissiles", scanMissiles);
 		data.setBoolean("scanPlayers", scanPlayers);
@@ -233,7 +233,7 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		this.nearbyMissiles.clear();
 		this.power = data.getLong("power");
 		this.scanMissiles = data.getBoolean("scanMissiles");
@@ -242,21 +242,21 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 		this.redMode = data.getBoolean("redMode");
 		this.jammed = data.getBoolean("jammed");
 
-		int count = data.getInteger("count");
+		final int count = data.getInteger("count");
 
 		for(int i = 0; i < count; i++) {
 
-			int x = data.getInteger("x" + i);
-			int z = data.getInteger("z" + i);
-			int type = data.getInteger("type" + i);
-			int y = data.getInteger("y" + i);
+			final int x = data.getInteger("x" + i);
+			final int z = data.getInteger("z" + i);
+			final int type = data.getInteger("type" + i);
+			final int y = data.getInteger("y" + i);
 
 			this.nearbyMissiles.add(new int[] {x, z, type, y});
 		}
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		scanMissiles =compound.getBoolean("scanMissiles");
 		scanPlayers = compound.getBoolean("scanPlayers");
@@ -266,7 +266,7 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setBoolean("scanMissiles", scanMissiles);
 		compound.setBoolean("scanPlayers", scanPlayers);
@@ -275,12 +275,12 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements ITi
 		return super.writeToNBT(compound);
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		if(power != i)
 			markDirty();
 		power = i;

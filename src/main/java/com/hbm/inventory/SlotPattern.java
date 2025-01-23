@@ -12,12 +12,12 @@ public class SlotPattern extends SlotItemHandler {
 
     protected boolean canHover = true;
 
-    public SlotPattern(IItemHandler inv, int index, int x, int y) {
+    public SlotPattern(final IItemHandler inv, final int index, final int x, final int y) {
         super(inv, index, x, y);
     }
 
     @Override
-    public boolean canTakeStack(EntityPlayer player) {
+    public boolean canTakeStack(final EntityPlayer player) {
         return true;
     }
 
@@ -27,7 +27,7 @@ public class SlotPattern extends SlotItemHandler {
     }
 
     @Override
-    public int getItemStackLimit(ItemStack stack) {
+    public int getItemStackLimit(final ItemStack stack) {
         return 1;
     }
 
@@ -37,7 +37,7 @@ public class SlotPattern extends SlotItemHandler {
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
+    public boolean isItemValid(final ItemStack stack) {
         return stack != null;
     }
 

@@ -16,16 +16,16 @@ public class RenderMissileDoomsday extends Render<EntityMissileDoomsday> {
 
 	public static final IRenderFactory<EntityMissileDoomsday> FACTORY = (RenderManager man) -> {return new RenderMissileDoomsday(man);};
 	
-	protected RenderMissileDoomsday(RenderManager renderManager) {
+	protected RenderMissileDoomsday(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityMissileDoomsday missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileDoomsday missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-		double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+		final double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
 		x = renderPos[0];
 		y = renderPos[1];
 		z = renderPos[2];
@@ -43,7 +43,7 @@ public class RenderMissileDoomsday extends Render<EntityMissileDoomsday> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileDoomsday entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileDoomsday entity) {
 		return ResourceManager.missileDoomsday_tex;
 	}
 

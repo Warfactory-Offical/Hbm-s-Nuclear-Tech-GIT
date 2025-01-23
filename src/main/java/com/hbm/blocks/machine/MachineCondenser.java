@@ -22,7 +22,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class MachineCondenser extends BlockContainer implements ILookOverlay {
 
-	public MachineCondenser(Material mat, String s) {
+	public MachineCondenser(final Material mat, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -31,26 +31,24 @@ public class MachineCondenser extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		return new TileEntityCondenser();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 			
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityCondenser))
+		if(!(te instanceof TileEntityCondenser chungus))
 			return;
-		
-		TileEntityCondenser chungus = (TileEntityCondenser) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 
 		text.add("§a-> §r" + ModForgeFluids.spentsteam.getLocalizedName(new FluidStack(ModForgeFluids.spentsteam, 1)) + ": " + chungus.tanks[0].getFluidAmount() + "/" + chungus.tanks[0].getCapacity() + "mB");
 		text.add("§c<- §r" + FluidRegistry.WATER.getLocalizedName(new FluidStack(FluidRegistry.WATER, 1)) + ": " + chungus.tanks[1].getFluidAmount() + "/" + chungus.tanks[1].getCapacity() + "mB");

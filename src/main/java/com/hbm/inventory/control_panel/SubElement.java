@@ -8,10 +8,10 @@ public class SubElement {
 	
 	public boolean lock = false;
 	
-	public SubElement(GuiControlEdit gui) {
+	public SubElement(final GuiControlEdit gui) {
 		this.gui = gui;
 	}
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(final GuiButton button){
 	}
 	protected void initGui(){
 		enableButtons(false);
@@ -20,13 +20,13 @@ public class SubElement {
 	}
 	protected void renderBackground(){
 	}
-	protected void enableButtons(boolean enable){
+	protected void enableButtons(final boolean enable){
 	}
-	protected void keyTyped(char typedChar, int code){
+	protected void keyTyped(final char typedChar, final int code){
 	}
-	protected void mouseClicked(int mouseX, int mouseY, int button){
+	protected void mouseClicked(final int mouseX, final int mouseY, final int button){
 	}
-	protected void mouseReleased(int mouseX, int mouseY, int state){
+	protected void mouseReleased(final int mouseX, final int mouseY, final int state){
 	}
 	protected void update(){
 	}

@@ -20,19 +20,19 @@ public class B92BakedModel implements IBakedModel {
 	TransformType type;
 	
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
 		
 		return type != TransformType.GUI ? Collections.emptyList() : ItemRenderGunAnim.INSTANCE.b92ItemModel.getQuads(state, side, rand);
 	}
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return type != TransformType.GUI ? false : ItemRenderGunAnim.INSTANCE.b92ItemModel.isAmbientOcclusion();
+		return type == TransformType.GUI && ItemRenderGunAnim.INSTANCE.b92ItemModel.isAmbientOcclusion();
 	}
 
 	@Override
 	public boolean isGui3d() {
-		return type != TransformType.GUI ? false :ItemRenderGunAnim.INSTANCE.b92ItemModel.isGui3d();
+		return type == TransformType.GUI && ItemRenderGunAnim.INSTANCE.b92ItemModel.isGui3d();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class B92BakedModel implements IBakedModel {
 	}
 	
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(final TransformType cameraTransformType) {
 		
 		ItemRenderGunAnim.INSTANCE.type = cameraTransformType;
 		this.type = cameraTransformType;

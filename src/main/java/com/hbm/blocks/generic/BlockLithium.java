@@ -22,7 +22,7 @@ public class BlockLithium extends Block implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public BlockLithium(Material materialIn, String s) {
+	public BlockLithium(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -37,7 +37,7 @@ public class BlockLithium extends Block implements IItemHazard {
 		return module;
 	}
 
-	private boolean touchesWater(World world, int x, int y, int z) {
+	private boolean touchesWater(final World world, final int x, final int y, final int z) {
 
 		if(world.isRemote)
 			return false;
@@ -51,7 +51,7 @@ public class BlockLithium extends Block implements IItemHazard {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if(touchesWater(world, pos.getX(), pos.getY(), pos.getZ())) {
 			world.destroyBlock(pos, false);
 			world.newExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 15, false, true);
@@ -59,7 +59,7 @@ public class BlockLithium extends Block implements IItemHazard {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World world, final BlockPos pos, final IBlockState state) {
 		if(touchesWater(world, pos.getX(), pos.getY(), pos.getZ())) {
 			world.destroyBlock(pos, false);
 			world.newExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 15, false, true);
@@ -67,7 +67,7 @@ public class BlockLithium extends Block implements IItemHazard {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add("It's not my fault you didn't pay");
 		tooltip.add("attention in chemistry class.");
@@ -75,11 +75,11 @@ public class BlockLithium extends Block implements IItemHazard {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
+	public void randomDisplayTick(final IBlockState stateIn, final World world, final BlockPos pos, final Random rand) {
 		if(world.isRainingAt(pos.up())) {
 
-			float ox = rand.nextFloat();
-			float oz = rand.nextFloat();
+			final float ox = rand.nextFloat();
+			final float oz = rand.nextFloat();
 
 			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + ox, pos.getY() + 1, pos.getZ() + oz, 0.0D, 0.0D, 0.0D);
 		}

@@ -19,10 +19,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineCompactLauncher extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_launch_table_small.png");
-	private TileEntityCompactLauncher launcher;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_launch_table_small.png");
+	private final TileEntityCompactLauncher launcher;
 	
-	public GUIMachineCompactLauncher(InventoryPlayer invPlayer, TileEntityCompactLauncher tedf) {
+	public GUIMachineCompactLauncher(final InventoryPlayer invPlayer, final TileEntityCompactLauncher tedf) {
 		super(new ContainerCompactLauncher(invPlayer, tedf));
 		launcher = tedf;
 		
@@ -31,43 +31,43 @@ public class GUIMachineCompactLauncher extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 36, 16, 34, launcher.tanks[0], launcher.tankTypes[0]);
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 36, 16, 34, launcher.tanks[1], launcher.tankTypes[1]);
-		String[] text2 = I18nUtil.resolveKeyArray("desc.solidfuellaunch", launcher.solid);
+		final String[] text2 = I18nUtil.resolveKeyArray("desc.solidfuellaunch", launcher.solid);
 		
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 88 - 52, 16, 52, text2);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 113, 34, 6, launcher.power, TileEntityCompactLauncher.maxPower);
 
-		String[] text = I18nUtil.resolveKeyArray("desc.guimachcomplauncher1");
+		final String[] text = I18nUtil.resolveKeyArray("desc.guimachcomplauncher1");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		
-		String[] text1 = I18nUtil.resolveKeyArray("desc.guimachcomplauncher2");
+		final String[] text1 = I18nUtil.resolveKeyArray("desc.guimachcomplauncher2");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer( int i, int j) {
-		String name = this.launcher.hasCustomInventoryName() ? this.launcher.getInventoryName() : I18n.format(this.launcher.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.launcher.hasCustomInventoryName() ? this.launcher.getInventoryName() : I18n.format(this.launcher.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		int i = (int)launcher.getPowerScaled(34);
+		final int i = (int)launcher.getPowerScaled(34);
 		drawTexturedModalRect(guiLeft + 134, guiTop + 113, 176, 96, i, 6);
 		
-		int j = (int)launcher.getSolidScaled(52);
+		final int j = launcher.getSolidScaled(52);
 		drawTexturedModalRect(guiLeft + 152, guiTop + 88 - j, 176, 96 - j, 16, j);
 		
 		if(launcher.isMissileValid())
@@ -103,7 +103,7 @@ public class GUIMachineCompactLauncher extends GuiInfoContainer {
 		MissileMultipart missile;
 		
 		if(launcher.isMissileValid()) {
-			ItemStack custom = launcher.inventory.getStackInSlot(0);
+			final ItemStack custom = launcher.inventory.getStackInSlot(0);
 			
 			missile = new MissileMultipart();
 			
@@ -111,8 +111,8 @@ public class GUIMachineCompactLauncher extends GuiInfoContainer {
 		
 			GL11.glTranslatef(guiLeft + 88, guiTop + 115, 100);
 			
-			double size = 5 * 18;
-			double scale = size / Math.max(missile.getHeight(), 6);
+			final double size = 5 * 18;
+			final double scale = size / Math.max(missile.getHeight(), 6);
 
 			GL11.glRotatef(90, 0, 1, 0);
 			GL11.glTranslated(missile.getHeight() / 2D * scale, 0, 0);

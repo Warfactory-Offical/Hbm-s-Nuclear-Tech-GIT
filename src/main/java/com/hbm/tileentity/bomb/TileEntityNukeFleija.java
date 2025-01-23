@@ -15,14 +15,14 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityNukeFleija extends TileEntity {
 
 	public ItemStackHandler inventory = new ItemStackHandler(11){
-		protected void onContentsChanged(int slot) {
+		protected void onContentsChanged(final int slot) {
 			super.onContentsChanged(slot);
 			markDirty();
-		};
-	};
+		}
+    };
 	private String customName;
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -31,27 +31,26 @@ public class TileEntityNukeFleija extends TileEntity {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		NBTTagCompound tag = inventory.serializeNBT();
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+		final NBTTagCompound tag = inventory.serializeNBT();
 		compound.setTag("inventory", tag);
 		return super.writeToNBT(compound);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if (compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? true
-				: super.hasCapability(capability, facing);
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 				? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory)
 				: super.getCapability(capability, facing);
@@ -65,7 +64,7 @@ public class TileEntityNukeFleija extends TileEntity {
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 
@@ -76,18 +75,14 @@ public class TileEntityNukeFleija extends TileEntity {
 
 	public boolean isReady() {
 
-		if (inventory.getStackInSlot(0).getItem() == ModItems.fleija_igniter
-				&& inventory.getStackInSlot(1).getItem() == ModItems.fleija_igniter
-				&& inventory.getStackInSlot(2).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(3).getItem() == ModItems.fleija_propellant
-				&& inventory.getStackInSlot(4).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(5).getItem() == ModItems.fleija_core
-				&& inventory.getStackInSlot(6).getItem() == ModItems.fleija_core && inventory.getStackInSlot(7).getItem() == ModItems.fleija_core
-				&& inventory.getStackInSlot(8).getItem() == ModItems.fleija_core && inventory.getStackInSlot(9).getItem() == ModItems.fleija_core
-				&& inventory.getStackInSlot(10).getItem() == ModItems.fleija_core) {
-			return true;
-		}
-
-		return false;
-	}
+        return inventory.getStackInSlot(0).getItem() == ModItems.fleija_igniter
+                && inventory.getStackInSlot(1).getItem() == ModItems.fleija_igniter
+                && inventory.getStackInSlot(2).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(3).getItem() == ModItems.fleija_propellant
+                && inventory.getStackInSlot(4).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(5).getItem() == ModItems.fleija_core
+                && inventory.getStackInSlot(6).getItem() == ModItems.fleija_core && inventory.getStackInSlot(7).getItem() == ModItems.fleija_core
+                && inventory.getStackInSlot(8).getItem() == ModItems.fleija_core && inventory.getStackInSlot(9).getItem() == ModItems.fleija_core
+                && inventory.getStackInSlot(10).getItem() == ModItems.fleija_core;
+    }
 
 	public void clearSlots() {
 		for (int i = 0; i < inventory.getSlots(); i++) {

@@ -1,4 +1,5 @@
 package com.hbm.render.item;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -34,14 +35,14 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		TYPE_CARRIER
 	}
 	
-	public ItemRenderMissileGeneric(RenderMissileType category) {
+	public ItemRenderMissileGeneric(final RenderMissileType category) {
 		this.category = category;
 	}
 
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 	
-		Consumer<TextureManager> renderer = renderers.get(new ComparableStack(item).makeSingular());
+		final Consumer<TextureManager> renderer = renderers.get(ItemStackUtil.comparableStackFrom(item).makeSingular());
 		if(renderer == null) return;
 		
 		GL11.glPushMatrix();
@@ -68,7 +69,7 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		switch(type) {
 		case THIRD_PERSON_LEFT_HAND:
 		case THIRD_PERSON_RIGHT_HAND:
-			double s = 0.15;
+			final double s = 0.15;
 			GL11.glTranslated(0.5, -0.25, 0.25);
 			GL11.glScaled(s, s, s);
 			GL11.glScaled(guiScale, guiScale, guiScale);
@@ -76,7 +77,7 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 			break;
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			double heldScale = 0.1;
+			final double heldScale = 0.1;
 			GL11.glTranslated(0.5, 0.25, 0.3);
 			GL11.glScaled(heldScale, heldScale, heldScale);
 			GL11.glScaled(guiScale, guiScale, guiScale);
@@ -84,12 +85,12 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		case GROUND:
 		case FIXED:
 		case HEAD:
-			double s2 = 0.15;
+			final double s2 = 0.15;
 			GL11.glScaled(s2, s2, s2);
 			break;
 		case GUI:
 			RenderHelper.enableGUIStandardItemLighting();
-			double s3 = 0.0625;
+			final double s3 = 0.0625;
 			GL11.glScaled(s3, s3, s3);
 			GL11.glTranslated(15 - guiOffset, 1 + guiOffset, 0);
 			GL11.glScaled(guiScale, guiScale, guiScale);
@@ -107,11 +108,11 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		GL11.glPopMatrix();
 	}
 	
-	public static Consumer<TextureManager> generateStandard(ResourceLocation texture, IModelCustom model) { return generateWithScale(texture, model, 1F); }
-	public static Consumer<TextureManager> generateLarge(ResourceLocation texture, IModelCustom model) { return generateWithScale(texture, model, 1.5F); }
-	public static Consumer<TextureManager> generateDouble(ResourceLocation texture, IModelCustom model) { return generateWithScale(texture, model, 2F); }
+	public static Consumer<TextureManager> generateStandard(final ResourceLocation texture, final IModelCustom model) { return generateWithScale(texture, model, 1F); }
+	public static Consumer<TextureManager> generateLarge(final ResourceLocation texture, final IModelCustom model) { return generateWithScale(texture, model, 1.5F); }
+	public static Consumer<TextureManager> generateDouble(final ResourceLocation texture, final IModelCustom model) { return generateWithScale(texture, model, 2F); }
 	
-	public static Consumer<TextureManager> generateWithScale(ResourceLocation texture, IModelCustom model, float scale) {
+	public static Consumer<TextureManager> generateWithScale(final ResourceLocation texture, final IModelCustom model, final float scale) {
 		return x -> {
 			GL11.glScalef(scale, scale, scale);
 			GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -122,40 +123,40 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 	
 	public static void init() {
 
-		renderers.put(new ComparableStack(ModItems.missile_taint), generateStandard(ResourceManager.missileTaint_tex, ResourceManager.missileTaint));
-		renderers.put(new ComparableStack(ModItems.missile_micro), generateStandard(ResourceManager.missileMicro_tex, ResourceManager.missileTaint));
-		renderers.put(new ComparableStack(ModItems.missile_bhole), generateStandard(ResourceManager.missileMicroBHole_tex, ResourceManager.missileTaint));
-		renderers.put(new ComparableStack(ModItems.missile_schrabidium), generateStandard(ResourceManager.missileMicroSchrab_tex, ResourceManager.missileTaint));
-		renderers.put(new ComparableStack(ModItems.missile_emp), generateStandard(ResourceManager.missileMicroEMP_tex, ResourceManager.missileTaint));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_taint), generateStandard(ResourceManager.missileTaint_tex, ResourceManager.missileTaint));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_micro), generateStandard(ResourceManager.missileMicro_tex, ResourceManager.missileTaint));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_bhole), generateStandard(ResourceManager.missileMicroBHole_tex, ResourceManager.missileTaint));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_schrabidium), generateStandard(ResourceManager.missileMicroSchrab_tex, ResourceManager.missileTaint));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_emp), generateStandard(ResourceManager.missileMicroEMP_tex, ResourceManager.missileTaint));
 		
-		renderers.put(new ComparableStack(ModItems.missile_generic), generateStandard(ResourceManager.missileV2_HE_tex, ResourceManager.missileV2));
-		renderers.put(new ComparableStack(ModItems.missile_incendiary), generateStandard(ResourceManager.missileV2_IN_tex, ResourceManager.missileV2));
-		renderers.put(new ComparableStack(ModItems.missile_cluster), generateStandard(ResourceManager.missileV2_CL_tex, ResourceManager.missileV2));
-		renderers.put(new ComparableStack(ModItems.missile_buster), generateStandard(ResourceManager.missileV2_BU_tex, ResourceManager.missileV2));
-		renderers.put(new ComparableStack(ModItems.missile_anti_ballistic), generateStandard(ResourceManager.missileAA_tex, ResourceManager.missileAB));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_generic), generateStandard(ResourceManager.missileV2_HE_tex, ResourceManager.missileV2));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_incendiary), generateStandard(ResourceManager.missileV2_IN_tex, ResourceManager.missileV2));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_cluster), generateStandard(ResourceManager.missileV2_CL_tex, ResourceManager.missileV2));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_buster), generateStandard(ResourceManager.missileV2_BU_tex, ResourceManager.missileV2));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_anti_ballistic), generateStandard(ResourceManager.missileAA_tex, ResourceManager.missileAB));
 		
-		renderers.put(new ComparableStack(ModItems.missile_strong), generateLarge(ResourceManager.missileStrong_HE_tex, ResourceManager.missileStrong));
-		renderers.put(new ComparableStack(ModItems.missile_incendiary_strong), generateLarge(ResourceManager.missileStrong_IN_tex, ResourceManager.missileStrong));
-		renderers.put(new ComparableStack(ModItems.missile_cluster_strong), generateLarge(ResourceManager.missileStrong_CL_tex, ResourceManager.missileStrong));
-		renderers.put(new ComparableStack(ModItems.missile_buster_strong), generateLarge(ResourceManager.missileStrong_BU_tex, ResourceManager.missileStrong));
-		renderers.put(new ComparableStack(ModItems.missile_emp_strong), generateLarge(ResourceManager.missileStrong_EMP_tex, ResourceManager.missileStrong));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_strong), generateLarge(ResourceManager.missileStrong_HE_tex, ResourceManager.missileStrong));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_incendiary_strong), generateLarge(ResourceManager.missileStrong_IN_tex, ResourceManager.missileStrong));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_cluster_strong), generateLarge(ResourceManager.missileStrong_CL_tex, ResourceManager.missileStrong));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_buster_strong), generateLarge(ResourceManager.missileStrong_BU_tex, ResourceManager.missileStrong));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_emp_strong), generateLarge(ResourceManager.missileStrong_EMP_tex, ResourceManager.missileStrong));
 		
-		renderers.put(new ComparableStack(ModItems.missile_burst), generateStandard(ResourceManager.missileHuge_HE_tex, ResourceManager.missileHuge));
-		renderers.put(new ComparableStack(ModItems.missile_inferno), generateStandard(ResourceManager.missileHuge_IN_tex, ResourceManager.missileHuge));
-		renderers.put(new ComparableStack(ModItems.missile_rain), generateStandard(ResourceManager.missileHuge_CL_tex, ResourceManager.missileHuge));
-		renderers.put(new ComparableStack(ModItems.missile_drill), generateStandard(ResourceManager.missileHuge_BU_tex, ResourceManager.missileHuge));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_burst), generateStandard(ResourceManager.missileHuge_HE_tex, ResourceManager.missileHuge));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_inferno), generateStandard(ResourceManager.missileHuge_IN_tex, ResourceManager.missileHuge));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_rain), generateStandard(ResourceManager.missileHuge_CL_tex, ResourceManager.missileHuge));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_drill), generateStandard(ResourceManager.missileHuge_BU_tex, ResourceManager.missileHuge));
 
-		renderers.put(new ComparableStack(ModItems.missile_nuclear), generateLarge(ResourceManager.missileNuclear_tex, ResourceManager.missileNuclear));
-		renderers.put(new ComparableStack(ModItems.missile_nuclear_cluster), generateLarge(ResourceManager.missileMIRV_tex, ResourceManager.missileNuclear));
-		renderers.put(new ComparableStack(ModItems.missile_volcano), generateLarge(ResourceManager.missileVolcano_tex, ResourceManager.missileNuclear));
-		renderers.put(new ComparableStack(ModItems.missile_n2), generateLarge(ResourceManager.missileN2_tex, ResourceManager.missileNuclear));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_nuclear), generateLarge(ResourceManager.missileNuclear_tex, ResourceManager.missileNuclear));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_nuclear_cluster), generateLarge(ResourceManager.missileMIRV_tex, ResourceManager.missileNuclear));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_volcano), generateLarge(ResourceManager.missileVolcano_tex, ResourceManager.missileNuclear));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_n2), generateLarge(ResourceManager.missileN2_tex, ResourceManager.missileNuclear));
 		
-		renderers.put(new ComparableStack(ModItems.missile_endo), generateLarge(ResourceManager.missileEndo_tex, ResourceManager.missileThermo));
-		renderers.put(new ComparableStack(ModItems.missile_exo), generateLarge(ResourceManager.missileExo_tex, ResourceManager.missileThermo));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_endo), generateLarge(ResourceManager.missileEndo_tex, ResourceManager.missileThermo));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_exo), generateLarge(ResourceManager.missileExo_tex, ResourceManager.missileThermo));
 
-		renderers.put(new ComparableStack(ModItems.missile_doomsday), generateDouble(ResourceManager.missileDoomsday_tex, ResourceManager.missileDoomsday));
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_doomsday), generateDouble(ResourceManager.missileDoomsday_tex, ResourceManager.missileDoomsday));
 
-		renderers.put(new ComparableStack(ModItems.missile_carrier), x -> {
+		renderers.put(ItemStackUtil.comparableStackFrom(ModItems.missile_carrier), x -> {
 			GL11.glScalef(2F, 2F, 2F);
 			x.bindTexture(ResourceManager.missileCarrier_tex);
 			ResourceManager.missileCarrier.renderAll();

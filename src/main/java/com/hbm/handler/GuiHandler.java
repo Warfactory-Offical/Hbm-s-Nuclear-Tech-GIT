@@ -137,20 +137,20 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 public class GuiHandler implements IGuiHandler {
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		
-		TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
 		if(entity instanceof IGUIProvider) {
 			return ((IGUIProvider) entity).provideContainer(ID, player, world, x, y, z);
 		}
 		
-		IBlockState b = world.getBlockState(new BlockPos(x, y, z));
+		final IBlockState b = world.getBlockState(new BlockPos(x, y, z));
 		
 		if(b instanceof IGUIProvider) {
 			return ((IGUIProvider) b).provideContainer(ID, player, world, x, y, z);
 		}
 		
-		ItemStack item = player.getHeldItemMainhand();
+		final ItemStack item = player.getHeldItemMainhand();
 		
 		if(item != null && item.getItem() instanceof IGUIProvider) {
 			return ((IGUIProvider) item.getItem()).provideContainer(ID, player, world, x, y, z);
@@ -745,21 +745,21 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 
-		TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
 
 		if(entity instanceof IGUIProvider) {
 			return ((IGUIProvider) entity).provideGUI(ID, player, world, x, y, z);
 		}
 		
-		IBlockState b = world.getBlockState(new BlockPos(x, y, z));
+		final IBlockState b = world.getBlockState(new BlockPos(x, y, z));
 		
 		if(b instanceof IGUIProvider) {
 			return ((IGUIProvider) b).provideGUI(ID, player, world, x, y, z);
 		}
 		
-		ItemStack item = player.getHeldItemMainhand();
+		final ItemStack item = player.getHeldItemMainhand();
 		
 		if(item != null && item.getItem() instanceof IGUIProvider) {
 			return ((IGUIProvider) item.getItem()).provideGUI(ID, player, world, x, y, z);

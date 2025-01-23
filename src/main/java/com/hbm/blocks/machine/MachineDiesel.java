@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 public class MachineDiesel extends BlockContainer {
 
-	public MachineDiesel(Material materialIn, String s) {
+	public MachineDiesel(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,18 +33,18 @@ public class MachineDiesel extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineDiesel();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityMachineDiesel entity = (TileEntityMachineDiesel) world.getTileEntity(pos);
+			final TileEntityMachineDiesel entity = (TileEntityMachineDiesel) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_diesel, world, pos.getX(), pos.getY(), pos.getZ());
@@ -56,24 +56,24 @@ public class MachineDiesel extends BlockContainer {
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add(I18n.format("trait.fuelefficiency"));
-		for(FuelGrade grade : FuelGrade.values()) {
-			Double efficiency = TileEntityMachineDiesel.fuelEfficiency.get(grade);
+		for(final FuelGrade grade : FuelGrade.values()) {
+			final Double efficiency = TileEntityMachineDiesel.fuelEfficiency.get(grade);
 
 			if(efficiency != null) {
-				int eff = (int) (efficiency * 100);
+				final int eff = (int) (efficiency * 100);
 				list.add(" "+I18n.format("trait.fuelefficiency.desc", I18n.format(grade.getGrade()), eff));
 			}
 		}

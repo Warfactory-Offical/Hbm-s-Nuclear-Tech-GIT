@@ -134,16 +134,16 @@ public class Watz {
 		}
 	};
 
-	public boolean generateReactor(World world, Random rand, BlockPos pos) {
-		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		int x = pos.getX() - 3;
-		int y = pos.getY();
-		int z = pos.getZ() - 3;
+	public boolean generateReactor(final World world, final Random rand, final BlockPos pos) {
+		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		final int x = pos.getX() - 3;
+		final int y = pos.getY();
+		final int z = pos.getZ() - 3;
 
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 13; j++) {
 				for(int k = 0; k < 7; k++) {
-					String c = watz[j][i].substring(k, k + 1);
+					final String c = watz[j][i].substring(k, k + 1);
 					Block b = Blocks.AIR;
 
 					if(c.equals("W"))
@@ -165,25 +165,25 @@ public class Watz {
 				}
 			}
 		}
-		world.setBlockState(mPos.setPos(x + 3, y + 6, z + 0), ModBlocks.watz_hatch.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[2]), 3);
-		world.setBlockState(mPos.setPos(x + 0, y + 6, z + 3), ModBlocks.watz_hatch.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[4]), 3);
+		world.setBlockState(mPos.setPos(x + 3, y + 6, z), ModBlocks.watz_hatch.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[2]), 3);
+		world.setBlockState(mPos.setPos(x, y + 6, z + 3), ModBlocks.watz_hatch.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[4]), 3);
 		world.setBlockState(mPos.setPos(x + 3, y + 6, z + 6), ModBlocks.watz_hatch.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
 		world.setBlockState(mPos.setPos(x + 6, y + 6, z + 3), ModBlocks.watz_hatch.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[5]), 3);
 		return true;
 	}
 
-	public static boolean checkHull(World world, BlockPos pos) {
-		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		int x = pos.getX() - 3;
-		int y = pos.getY() - 6;
-		int z = pos.getZ() - 3;
+	public static boolean checkHull(final World world, final BlockPos pos) {
+		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		final int x = pos.getX() - 3;
+		final int y = pos.getY() - 6;
+		final int z = pos.getZ() - 3;
 		
-		boolean flag = true;
+		final boolean flag = true;
 		
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 13; j++) {
 				for(int k = 0; k < 7; k++) {
-					String c = watz[j][i].substring(k, k + 1);
+					final String c = watz[j][i].substring(k, k + 1);
 					Block b = Blocks.AIR;
 					boolean flag2 = false;
 

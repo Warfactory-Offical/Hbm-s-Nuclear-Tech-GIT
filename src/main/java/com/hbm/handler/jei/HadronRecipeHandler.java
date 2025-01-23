@@ -25,7 +25,7 @@ public static final ResourceLocation gui_rl = new ResourceLocation(RefStrings.MO
 	protected final IDrawableAnimated progressAnimated;
 	public static IDrawableStatic analysis;
 	
-	public HadronRecipeHandler(IGuiHelper help) {
+	public HadronRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 16, 17, 135, 52);
 		
 		progressStatic = help.createDrawable(gui_rl, 18, 86, 22, 16);
@@ -55,13 +55,13 @@ public static final ResourceLocation gui_rl = new ResourceLocation(RefStrings.MO
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 43, 18);
 	}
 	
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, HadronRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final HadronRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		guiItemStacks.init(0, true, 0, 17);
 		guiItemStacks.init(1, true, 18, 17);
 		

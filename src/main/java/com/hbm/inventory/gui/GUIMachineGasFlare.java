@@ -23,10 +23,10 @@ import java.io.IOException;
 
 public class GUIMachineGasFlare extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/generators/gui_flare_stack.png");
-	private TileEntityMachineGasFlare flare;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/generators/gui_flare_stack.png");
+	private final TileEntityMachineGasFlare flare;
 	
-	public GUIMachineGasFlare(InventoryPlayer invPlayer, TileEntityMachineGasFlare tedf) {
+	public GUIMachineGasFlare(final InventoryPlayer invPlayer, final TileEntityMachineGasFlare tedf) {
 		super(new ContainerMachineGasFlare(invPlayer, tedf));
 		flare = tedf;
 		
@@ -35,7 +35,7 @@ public class GUIMachineGasFlare extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 16, 35, 10, mouseX, mouseY, I18nUtil.resolveKeyArray("flare.valve"));
@@ -47,36 +47,36 @@ public class GUIMachineGasFlare extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int mouseButton) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int mouseButton) throws IOException {
 		super.mouseClicked(x, y, mouseButton);
 
 		if(guiLeft + 89 <= x && guiLeft + 89 + 16 > x && guiTop + 16 < y && guiTop + 16 + 10 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("valve", true);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, flare.getPos()));
 
 		} else if(guiLeft + 89 <= x && guiLeft + 89 + 16 > x && guiTop + 50 < y && guiTop + 50 + 14 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("dial", true);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, flare.getPos()));
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer( int i, int j) {
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		int j = (int)flare.getPowerScaled(52);
+		final int j = (int)flare.getPowerScaled(52);
 		drawTexturedModalRect(guiLeft + 143, guiTop + 69 - j, 176, 94 - j, 16, j);
 
 		if(flare.isOn) {

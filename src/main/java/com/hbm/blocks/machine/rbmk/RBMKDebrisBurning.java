@@ -19,22 +19,22 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class RBMKDebrisBurning extends RBMKDebris {
 
-	public RBMKDebrisBurning(String s){
+	public RBMKDebrisBurning(final String s){
 		super(s);
 	}
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 
 		return 100 + world.rand.nextInt(20);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		if(!world.isRemote) {
 			
 			if(rand.nextInt(5) == 0) {
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "rbmkflame");
 				data.setInteger("maxAge", 300);
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.getX() + 0.25 + rand.nextDouble() * 0.5, pos.getY() + 1.75, pos.getZ() + 0.25 + rand.nextDouble() * 0.5), new TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 1.75, pos.getZ() + 0.5, 75));
@@ -42,12 +42,12 @@ public class RBMKDebrisBurning extends RBMKDebris {
 				world.playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
 			}
 
-			ForgeDirection dir = ForgeDirection.getOrientation(world.rand.nextInt(6));
+			final ForgeDirection dir = ForgeDirection.getOrientation(world.rand.nextInt(6));
 			
 			ContaminationUtil.radiate(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 32, 0, 0, 50);
 						
 			//Foam helps stop the fire; Boron smothers it. 1.66% chance every 100-120 seconds for one side
-			int chance = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock() == ModBlocks.sand_boron ? 10 : 100;
+			final int chance = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock() == ModBlocks.sand_boron ? 10 : 100;
 			
 			if(rand.nextInt(chance) == 0) {
 				world.setBlockState(pos, ModBlocks.pribris.getDefaultState());
@@ -58,12 +58,12 @@ public class RBMKDebrisBurning extends RBMKDebris {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state){
+	public void onBlockAdded(final World world, final BlockPos pos, final IBlockState state){
 		super.onBlockAdded(world, pos, state);
 
 		if(!world.isRemote) {
 			if(world.rand.nextInt(3) == 0) {
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "rbmkflame");
 				data.setInteger("maxAge", 300);
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.getX() + 0.25 + world.rand.nextDouble() * 0.5, pos.getY() + 1.75, pos.getZ() + 0.25 + world.rand.nextDouble() * 0.5), new TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 1.75, pos.getZ() + 0.5, 75));

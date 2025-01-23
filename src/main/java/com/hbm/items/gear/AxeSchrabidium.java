@@ -2,13 +2,12 @@ package com.hbm.items.gear;
 
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 
 public class AxeSchrabidium extends ItemAxe {
-	public AxeSchrabidium(ToolMaterial t, String s){
+	public AxeSchrabidium(final ToolMaterial t, final String s){
 		super(t, t.getAttackDamage(), -3.2F);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -18,7 +17,7 @@ public class AxeSchrabidium extends ItemAxe {
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 }

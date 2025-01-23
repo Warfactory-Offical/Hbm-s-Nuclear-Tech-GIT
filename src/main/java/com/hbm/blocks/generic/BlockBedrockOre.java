@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -14,7 +15,7 @@ import net.minecraft.world.World;
 
 public class BlockBedrockOre extends Block implements IDrillInteraction {
 
-	public BlockBedrockOre(String s) {
+	public BlockBedrockOre(final String s) {
 		super(Material.ROCK);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -23,26 +24,26 @@ public class BlockBedrockOre extends Block implements IDrillInteraction {
 	}
 
 	@Override
-	public boolean canBreak(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
+	public boolean canBreak(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
 		return drill.getDrillRating() > 70;
 	}
 
 	@Override
-	public ItemStack extractResource(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
+	public ItemStack extractResource(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
 		
 		if(drill.getDrillRating() > 70)
 			return null;
 		
-		Item drop = this.getDrop();
+		final Item drop = this.getDrop();
 		
 		if(drop == null)
 			return null;
 		
-		return world.rand.nextInt(50) == 0 ? new ItemStack(drop) : null;
+		return world.rand.nextInt(50) == 0 ? ItemStackUtil.itemStackFrom(drop) : null;
 	}
 
 	@Override
-	public float getRelativeHardness(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
+	public float getRelativeHardness(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
 		return 30;
 	}
 	

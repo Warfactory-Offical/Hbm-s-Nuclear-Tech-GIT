@@ -20,7 +20,7 @@ public class ItemAMSCore extends Item {
 	float heatBase;
 	float fuelBase;
 	
-	public ItemAMSCore(int powerBase, float heatBase, float fuelBase, String s) {
+	public ItemAMSCore(final int powerBase, final float heatBase, final float fuelBase, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.powerBase = powerBase;
@@ -31,7 +31,7 @@ public class ItemAMSCore extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if (this == ModItems.ams_core_sing) {
 			list.add("A modified undefined state of spacetime");
 			list.add("used to aid in inter-gluon fusion and");
@@ -87,7 +87,7 @@ public class ItemAMSCore extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		if(this == ModItems.ams_core_thingy)
     	{
     		return EnumRarity.EPIC;
@@ -98,28 +98,23 @@ public class ItemAMSCore extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack) {
-		if(this == ModItems.ams_core_thingy && MainRegistry.polaroidID == 11)
-    	{
-    		return true;
-    	}
-    	
-    	return false;
-	}
+	public boolean hasEffect(final ItemStack stack) {
+        return this == ModItems.ams_core_thingy && MainRegistry.polaroidID == 11;
+    }
 	
-	public static int getPowerBase(ItemStack stack) {
+	public static int getPowerBase(final ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemAMSCore))
 			return 0;
 		return ((ItemAMSCore)stack.getItem()).powerBase;
     }
     
-    public static float getHeatBase(ItemStack stack) {
+    public static float getHeatBase(final ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemAMSCore))
 			return 1F;
 		return ((ItemAMSCore)stack.getItem()).heatBase;
     }
     
-    public static float getFuelBase(ItemStack stack) {
+    public static float getFuelBase(final ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemAMSCore))
 			return 1F;
 		return ((ItemAMSCore)stack.getItem()).fuelBase;

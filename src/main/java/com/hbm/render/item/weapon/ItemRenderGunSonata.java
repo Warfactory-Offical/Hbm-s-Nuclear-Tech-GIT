@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class ItemRenderGunSonata extends TEISRBase {
 
-	private static ResourceLocation sonata_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/weapons/ModelLeverAction.png");
+	private static final ResourceLocation sonata_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/weapons/ModelLeverAction.png");
 	protected ModelLeverAction leveraction;
 
 	public ItemRenderGunSonata() {
@@ -22,7 +22,7 @@ public class ItemRenderGunSonata extends TEISRBase {
 	}
 
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(sonata_rl);
 		switch (type) {
 		case FIRST_PERSON_LEFT_HAND:

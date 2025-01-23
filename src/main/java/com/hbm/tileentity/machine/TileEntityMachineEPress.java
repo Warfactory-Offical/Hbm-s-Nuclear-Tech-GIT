@@ -42,7 +42,7 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 		return "container.epress";
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -51,35 +51,33 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack){
+	public boolean isItemValidForSlot(final int i, final ItemStack stack){
 		if(stack.getItem() instanceof ItemStamp && i == 1)
 			return true;
 		
 		if(i == 0 && stack.getItem() instanceof IBatteryItem)
 			return true;
-		
-		if(!(stack.getItem() instanceof ItemStamp) && i == 2)
-			return true;
-		return false;
-	}
+
+        return !(stack.getItem() instanceof ItemStamp) && i == 2;
+    }
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
 		return e.ordinal() == 0 ? new int[] { 3 } : new int[]{ 0, 1, 2 };
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
 		return slot == 3;
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setInteger("progress", progress);
 		compound.setLong("power", power);
 		compound.setBoolean("ret", isRetracting);
@@ -88,7 +86,7 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		progress = compound.getInteger("progress");
 		power = compound.getInteger("power");
 		isRetracting = compound.getBoolean("ret");
@@ -106,10 +104,10 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 			
 			if(power >= 100 && !(world.isBlockPowered(pos))) {
 
-				int speed = 25;
+				final int speed = 25;
 				
 				if(!inventory.getStackInSlot(1).isEmpty() && !inventory.getStackInSlot(2).isEmpty()) {
-					ItemStack stack = PressRecipes.getPressResult(inventory.getStackInSlot(2).copy(), inventory.getStackInSlot(1).copy());
+					final ItemStack stack = PressRecipes.getPressResult(inventory.getStackInSlot(2).copy(), inventory.getStackInSlot(1).copy());
 					if(stack != null &&
 							(inventory.getStackInSlot(3).isEmpty() ||
 							(inventory.getStackInSlot(3).getItem() == stack.getItem() &&
@@ -126,8 +124,8 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 							else
 								inventory.getStackInSlot(3).grow(stack.getCount());
 							
-							inventory.getStackInSlot(2).shrink(1);;
-							if(inventory.getStackInSlot(2).isEmpty())
+							inventory.getStackInSlot(2).shrink(1);
+                            if(inventory.getStackInSlot(2).isEmpty())
 								inventory.setStackInSlot(2, ItemStack.EMPTY);
 
 							if(inventory.getStackInSlot(1).getMaxDamage() > 0){
@@ -194,11 +192,11 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 		
 	}
 	
-	public long getPowerScaled(int i) {
+	public long getPowerScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 
-	public int getProgressScaled(int i) {
+	public int getProgressScaled(final int i) {
 		return (progress * i) / maxProgress;
 	}
 	
@@ -215,7 +213,7 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 		
 	}
@@ -231,12 +229,12 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return super.getCapability(capability, facing);
 	}
 }

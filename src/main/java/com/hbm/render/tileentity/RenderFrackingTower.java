@@ -13,13 +13,13 @@ import net.minecraft.util.ResourceLocation;
 public class RenderFrackingTower extends TileEntitySpecialRenderer<TileEntityMachineFrackingTower> {
 
         @Override
-    public boolean isGlobalRenderer(TileEntityMachineFrackingTower te)
+    public boolean isGlobalRenderer(final TileEntityMachineFrackingTower te)
     {
         return true;
     }
 
     @Override
-    public void render(TileEntityMachineFrackingTower te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(final TileEntityMachineFrackingTower te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 
         GlStateManager.pushMatrix();
 

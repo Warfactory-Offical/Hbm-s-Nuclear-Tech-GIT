@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,9 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 public class MachineBattery extends BlockContainer implements ILookOverlay {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	private long maxPower;
+	private final long maxPower;
 
-	public MachineBattery(Material materialIn, long power, String s) {
+	public MachineBattery(final Material materialIn, final long power, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -51,7 +52,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineBattery();
 	}
 
@@ -60,18 +61,18 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
 		this.setDefaultFacing(worldIn, pos, state);
 	}
 
-	private void setDefaultFacing(World worldIn, BlockPos pos, IBlockState state) {
+	private void setDefaultFacing(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if (!worldIn.isRemote) {
-			IBlockState iblockstate = worldIn.getBlockState(pos.north());
-			IBlockState iblockstate1 = worldIn.getBlockState(pos.south());
-			IBlockState iblockstate2 = worldIn.getBlockState(pos.west());
-			IBlockState iblockstate3 = worldIn.getBlockState(pos.east());
-			EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
+			final IBlockState iblockstate = worldIn.getBlockState(pos.north());
+			final IBlockState iblockstate1 = worldIn.getBlockState(pos.south());
+			final IBlockState iblockstate2 = worldIn.getBlockState(pos.west());
+			final IBlockState iblockstate3 = worldIn.getBlockState(pos.east());
+			EnumFacing enumfacing = state.getValue(FACING);
 
 			if (enumfacing == EnumFacing.NORTH && iblockstate.isFullBlock() && !iblockstate1.isFullBlock()) {
 				enumfacing = EnumFacing.SOUTH;
@@ -88,22 +89,22 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing) state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state) {
+		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
 		if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
@@ -114,30 +115,29 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return null;
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+	public boolean removedByPlayer(final IBlockState state, final World world, final BlockPos pos, final EntityPlayer player, final boolean willHarvest){
 		if(!player.capabilities.isCreativeMode && !world.isRemote && willHarvest) {
 			
-			ItemStack drop = new ItemStack(this);
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof TileEntityMachineBattery) {
-				TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
-			
-				NBTTagCompound nbt = new NBTTagCompound();
+			final ItemStack drop = ItemStackUtil.itemStackFrom(this);
+			final TileEntity te = world.getTileEntity(pos);
+			if (te instanceof TileEntityMachineBattery battery) {
+
+                final NBTTagCompound nbt = new NBTTagCompound();
 				battery.writeNBT(nbt);
 
 				if(!nbt.isEmpty()) {
@@ -151,22 +151,21 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 
-		TileEntity te = worldIn.getTileEntity(pos);
+		final TileEntity te = worldIn.getTileEntity(pos);
 		if(stack.hasTagCompound()){
-			if (te instanceof TileEntityMachineBattery) {
-				TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
-				if(stack.hasDisplayName()) {
+			if (te instanceof TileEntityMachineBattery battery) {
+                if(stack.hasDisplayName()) {
 					battery.setCustomName(stack.getDisplayName());
 				}
 				try {
-					NBTTagCompound stackNBT = stack.getTagCompound();
+					final NBTTagCompound stackNBT = stack.getTagCompound();
 					if(stackNBT.hasKey("NBT_PERSISTENT_KEY")){
 						battery.readNBT(stackNBT);
 					}
-				} catch(Exception ex) {
+				} catch(final Exception ex) {
 					ex.printStackTrace();
 				}
 			}
@@ -174,13 +173,13 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityMachineBattery entity = (TileEntityMachineBattery) world.getTileEntity(pos);
+			final TileEntityMachineBattery entity = (TileEntityMachineBattery) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_battery, world, pos.getX(), pos.getY(), pos.getZ());
@@ -192,10 +191,10 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+		final TileEntity tileentity = worldIn.getTileEntity(pos);
 		if (tileentity instanceof TileEntityMachineBattery) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityMachineBattery) tileentity);
+			InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 
@@ -203,33 +202,32 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(IBlockState state){
+	public boolean hasComparatorInputOverride(final IBlockState state){
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos){
+	public int getComparatorInputOverride(final IBlockState blockState, final World worldIn, final BlockPos pos){
 		
-		TileEntity te = worldIn.getTileEntity(pos);
+		final TileEntity te = worldIn.getTileEntity(pos);
 		
-		if(!(te instanceof TileEntityMachineBattery))
+		if(!(te instanceof TileEntityMachineBattery battery))
 			return 0;
-		
-		TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
-		return (int)battery.getPowerRemainingScaled(15L);
+
+        return (int)battery.getPowerRemainingScaled(15L);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, list, flagIn);
 		long charge = 0L;
 		if(stack.hasTagCompound()){
-			NBTTagCompound nbt = stack.getTagCompound();
+			final NBTTagCompound nbt = stack.getTagCompound();
 			if(nbt.hasKey("NBT_PERSISTENT_KEY")){
 				charge = nbt.getCompoundTag("NBT_PERSISTENT_KEY").getLong("power");
 			}
@@ -238,7 +236,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 		if(charge == 0L){
 			list.add("§c0§4/" + Library.getShortNumber(this.maxPower) + "HE §c(0.0%)§r");
 		}else {
-			double percent = Math.round(charge*1000L/this.maxPower)*0.1D;
+			final double percent = Math.round(charge*1000L/this.maxPower)*0.1D;
 			String color = "§e";
 			String color2 = "§6"; 
 			if(percent < 25){
@@ -253,15 +251,14 @@ public class MachineBattery extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 			
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityMachineBattery))
+		if(!(te instanceof TileEntityMachineBattery battery))
 			return;
 
-		TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
-		List<String> text = new ArrayList();
+        final List<String> text = new ArrayList();
 		text.add(Library.getShortNumber(battery.power) + "/" + Library.getShortNumber(getMaxPower()) + " HE");
 		if(battery.powerDelta == 0){
 			text.add("§e-- §r0HE/s");

@@ -10,22 +10,22 @@ public class AudioWrapperClient extends AudioWrapper {
 
 	AudioDynamic sound;
 	
-	public AudioWrapperClient(SoundEvent source, SoundCategory cat) {
+	public AudioWrapperClient(final SoundEvent source, final SoundCategory cat) {
 		if(source != null)
 			sound = new AudioDynamic(source, cat);
 	}
 	
-	public void updatePosition(float x, float y, float z) {
+	public void updatePosition(final float x, final float y, final float z) {
 		if(sound != null)
 			sound.setPosition(x, y, z);
 	}
 	
-	public void updateVolume(float volume) {
+	public void updateVolume(final float volume) {
 		if(sound != null)
 			sound.setVolume(volume);
 	}
 	
-	public void updatePitch(float pitch) {
+	public void updatePitch(final float pitch) {
 		if(sound != null)
 			sound.setPitch(pitch);
 	}

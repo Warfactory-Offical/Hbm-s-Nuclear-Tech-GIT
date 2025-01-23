@@ -53,10 +53,10 @@ public class LightRenderer {
 	
 	public static Field r_setTileEntities;
 	
-	private static Set<Class<?>> blacklistedObjects = new HashSet<>();
+	private static final Set<Class<?>> blacklistedObjects = new HashSet<>();
 
-	private static List<DirectionalLight> flashlights = new ArrayList<>();
-	private static List<PointLight> point_lights = new ArrayList<>();
+	private static final List<DirectionalLight> flashlights = new ArrayList<>();
+	private static final List<PointLight> point_lights = new ArrayList<>();
 	
 	public static int width;
 	public static int height;
@@ -78,28 +78,28 @@ public class LightRenderer {
 	
 	private static boolean lock = false;
 
-	public static void addPointLight(Vec3d pos, float energy){
+	public static void addPointLight(final Vec3d pos, final float energy){
 		addPointLight(pos, new Vec3d(1, 1, 1), energy);
 	}
 	
-	public static void addPointLight(Vec3d pos, Vec3d color, float energy){
+	public static void addPointLight(final Vec3d pos, final Vec3d color, final float energy){
 		addPointLight(new PointLight(pos, color, energy));
 	}
-	public static void addPointLight(PointLight light){
+	public static void addPointLight(final PointLight light){
 		if(!GeneralConfig.flashlight || lock || point_lights.size() > MAX_POINT_LIGHTS)
 			return;
 		point_lights.add(light);
 	}
 	
-	public static void addFlashlight(Vec3d start, Vec3d end, float degrees, float brightness, ResourceLocation cookie) {
+	public static void addFlashlight(final Vec3d start, final Vec3d end, final float degrees, final float brightness, final ResourceLocation cookie) {
 		addFlashlight(start, end, degrees, brightness, cookie, false, false);
 	}
 
-	public static void addFlashlight(Vec3d start, Vec3d end, float degrees, float brightness, ResourceLocation cookie, boolean ent, boolean tes) {
+	public static void addFlashlight(final Vec3d start, final Vec3d end, final float degrees, final float brightness, final ResourceLocation cookie, final boolean ent, final boolean tes) {
 		addFlashlight(start, end, degrees, brightness, cookie, true, true, ent, tes);
 	}
 
-	public static void addFlashlight(Vec3d start, Vec3d end, float degrees, float brightness, ResourceLocation cookie, boolean vol, boolean sha, boolean ent, boolean tes) {
+	public static void addFlashlight(final Vec3d start, final Vec3d end, final float degrees, final float brightness, final ResourceLocation cookie, final boolean vol, final boolean sha, final boolean ent, final boolean tes) {
 		if(!GeneralConfig.flashlight || lock || flashlights.size() > MAX_DIRECTIONAL_LIGHTS)
 			return;
 		flashlights.add(new DirectionalLight(start, end, degrees, brightness, cookie, vol, sha, ent, tes));
@@ -112,7 +112,7 @@ public class LightRenderer {
 			return;
 		lock = true;
 		//long lTime = System.nanoTime();
-		Framebuffer mcFbo = Minecraft.getMinecraft().getFramebuffer();
+		final Framebuffer mcFbo = Minecraft.getMinecraft().getFramebuffer();
 		if(width != mcFbo.framebufferWidth || height != mcFbo.framebufferHeight) {
 			width = mcFbo.framebufferWidth;
 			height = mcFbo.framebufferHeight;
@@ -120,12 +120,12 @@ public class LightRenderer {
 		}
 		clearAlbedoBuffer();
 		GlStateManager.color(1, 1, 1, 1);
-		float partialTicks = MainRegistry.proxy.partialTicks();
-		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
-		Set<RenderChunk> chunksToRender = new HashSet<>();
-		Set<Entity> entitiesToRender = new HashSet<>();
-		Set<TileEntity> tilesToRender = new HashSet<>();
-		for(DirectionalLight l : flashlights){
+		final float partialTicks = MainRegistry.proxy.partialTicks();
+		final Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
+		final Set<RenderChunk> chunksToRender = new HashSet<>();
+		final Set<Entity> entitiesToRender = new HashSet<>();
+		final Set<TileEntity> tilesToRender = new HashSet<>();
+		for(final DirectionalLight l : flashlights){
 			accumulateRenderObjects(l);
 			chunksToRender.addAll(l.chunksToRender);
 			if(l.entities){
@@ -135,7 +135,7 @@ public class LightRenderer {
 				tilesToRender.addAll(l.tilesToRender);
 			}
 		}
-		for(PointLight p : point_lights){
+		for(final PointLight p : point_lights){
 			accumulateRenderObjects(p);
 			chunksToRender.addAll(p.chunksToRender);
 			if(p.entities){
@@ -146,10 +146,10 @@ public class LightRenderer {
 			}
 		}
 		
-		double entPosX = renderView.lastTickPosX + (renderView.posX - renderView.lastTickPosX) * partialTicks;
-		double entPosY = renderView.lastTickPosY + (renderView.posY - renderView.lastTickPosY) * partialTicks;
-		double entPosZ = renderView.lastTickPosZ + (renderView.posZ - renderView.lastTickPosZ) * partialTicks;
-		Vec3d playerPos = new Vec3d(entPosX, entPosY, entPosZ);
+		final double entPosX = renderView.lastTickPosX + (renderView.posX - renderView.lastTickPosX) * partialTicks;
+		final double entPosY = renderView.lastTickPosY + (renderView.posY - renderView.lastTickPosY) * partialTicks;
+		final double entPosZ = renderView.lastTickPosZ + (renderView.posZ - renderView.lastTickPosZ) * partialTicks;
+		final Vec3d playerPos = new Vec3d(entPosX, entPosY, entPosZ);
 		
 		GLCompat.bindFramebuffer(GLCompat.GL_FRAMEBUFFER, albedoFbo);
 		renderObjects(playerPos, chunksToRender, entitiesToRender, tilesToRender, ResourceManager.albedo, partialTicks);
@@ -160,7 +160,7 @@ public class LightRenderer {
 		}
 		clearAccumulationBuffer();
 		boolean didRenderVolume = false;
-		for(DirectionalLight l : flashlights){
+		for(final DirectionalLight l : flashlights){
 			l.setupViewProjectionMatrix(playerPos);
 			//Render Shadows
 			if(l.shadows){
@@ -179,7 +179,7 @@ public class LightRenderer {
 			GLCompat.bindFramebuffer(GLCompat.GL_FRAMEBUFFER, lightAccFbo);
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(SourceFactor.ONE, DestFactor.ONE);
-			Vec3d vec = l.end.subtract(l.start).normalize();
+			final Vec3d vec = l.end.subtract(l.start).normalize();
 			if(playerPos.add(ActiveRenderInfo.getCameraPosition()).subtract(l.start).normalize().dotProduct(vec) < Math.cos(Math.toRadians(l.degrees+10))){
 				GlStateManager.enableCull();
 				RenderHelper.renderConeMesh(l.start.subtract(playerPos), vec, (float) l.height, (float)l.radius*1.1F, 12);
@@ -208,15 +208,15 @@ public class LightRenderer {
 			}
 			GlStateManager.disableBlend();
 		}
-		for(PointLight light : point_lights){
+		for(final PointLight light : point_lights){
 			ResourceManager.pointlight_post.use();
 			sendPointLightUniforms(light, playerPos, ResourceManager.pointlight_post);
 			GLCompat.bindFramebuffer(GLCompat.GL_FRAMEBUFFER, lightAccFbo);
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(SourceFactor.ONE, DestFactor.ONE);
-			float rad = light.radius + 0.1F;
+			final float rad = light.radius + 0.1F;
 			if(playerPos.add(ActiveRenderInfo.getCameraPosition()).squareDistanceTo(light.pos) > rad*rad){
-				Vec3d diff = light.pos.subtract(playerPos);
+				final Vec3d diff = light.pos.subtract(playerPos);
 				GL11.glPushMatrix();
 				GL11.glTranslated(diff.x, diff.y, diff.z);
 				GL11.glScaled(light.radius, light.radius, light.radius);
@@ -274,23 +274,23 @@ public class LightRenderer {
 		//System.out.println(System.nanoTime()-lTime);
 	}
 
-	private static void volumetricRender(DirectionalLight light, Vec3d playerPos){
+	private static void volumetricRender(final DirectionalLight light, final Vec3d playerPos){
 		Vec3d vec = light.end.subtract(light.start);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		ResourceManager.cone_volume.use();
-		Shader shader = ResourceManager.cone_volume;
-		float height = (float) vec.length();
+		final Shader shader = ResourceManager.cone_volume;
+		final float height = (float) vec.length();
 		shader.uniform1f("height", height);
 		vec = vec.normalize();
 		shader.uniform1f("cosAngle", (float) Math.cos(Math.toRadians(light.degrees)));
-		Vec3d pos = light.start.subtract(playerPos);
+		final Vec3d pos = light.start.subtract(playerPos);
 		shader.uniform3f("pos", (float) pos.x, (float) pos.y, (float) pos.z);
 		shader.uniform3f("direction", (float) vec.x, (float) vec.y, (float) vec.z);
 		shader.uniform1f("radius", (float) light.radius * 0.5F);
 		shader.uniform1f("useShadows", light.shadows ? 1 : 0);
 	
-		Vec3d camPos = ActiveRenderInfo.getCameraPosition();
+		final Vec3d camPos = ActiveRenderInfo.getCameraPosition();
 		shader.uniform3f("camPos", (float) camPos.x, (float) camPos.y, (float) camPos.z);
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(light.cookie);
@@ -335,7 +335,7 @@ public class LightRenderer {
 		GlStateManager.disableBlend();
 	}
 	
-	private static void renderObjects(Vec3d playerPos, Collection<RenderChunk> chunksToRender, Collection<Entity> entitiesToRender, Collection<TileEntity> tilesToRender, Shader shader, float partialTicks) {
+	private static void renderObjects(final Vec3d playerPos, final Collection<RenderChunk> chunksToRender, final Collection<Entity> entitiesToRender, final Collection<TileEntity> tilesToRender, final Shader shader, final float partialTicks) {
 		RenderHelper.bindBlockTexture();
 		GlStateManager.enableTexture2D();
 		shader.use();
@@ -344,14 +344,14 @@ public class LightRenderer {
 		RenderHelper.disableBlockVBOs();
 		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, 0);
 
-		for(Entity ent : entitiesToRender){
+		for(final Entity ent : entitiesToRender){
         	Minecraft.getMinecraft().getRenderManager().renderEntityStatic(ent, partialTicks, false);
         	if(GL11.glGetInteger(GLCompat.GL_CURRENT_PROGRAM) != shader.getShaderId()){
         		blacklistedObjects.add(ent.getClass());
         		shader.use();
         	}
         }
-        for(TileEntity te : tilesToRender){
+        for(final TileEntity te : tilesToRender){
         	TileEntityRendererDispatcher.instance.render(te, partialTicks, -1);
         	if(GL11.glGetInteger(GLCompat.GL_CURRENT_PROGRAM) != shader.getShaderId()){
         		blacklistedObjects.add(te.getClass());
@@ -362,21 +362,21 @@ public class LightRenderer {
         HbmShaderManager2.releaseShader();
 	}
 
-	private static void accumulateRenderObjects(ILight d) {
+	private static void accumulateRenderObjects(final ILight d) {
 		AxisAlignedBB box = d.getBoundingBox();
 		box = new AxisAlignedBB(MathHelper.floor(box.minX / 16.0D) * 16, MathHelper.floor(MathHelper.clamp(box.minY, 0, 255) / 16.0D) * 16, MathHelper.floor(box.minZ / 16.0D) * 16, MathHelper.ceil(box.maxX / 16.0D) * 16, MathHelper.ceil(MathHelper.clamp(box.maxY, 0, 255) / 16.0D) * 16, MathHelper.ceil(box.maxZ / 16.0D) * 16);
-		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
+		final Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
 		for(int i = (int) box.minX; i < box.maxX; i += 16) {
 			for(int j = (int) box.minY; j < box.maxY; j += 16) {
 				for(int k = (int) box.minZ; k < box.maxZ; k += 16) {
 					if(!Minecraft.getMinecraft().world.isBlockLoaded(new BlockPos(i, j, k)))
 						continue;
-					RenderChunk chunk = RenderHelper.getRenderChunk(new BlockPos(i, j, k));
-					ClassInheritanceMultiMap<Entity> classinheritancemultimap = Minecraft.getMinecraft().world.getChunk(chunk.getPosition()).getEntityLists()[chunk.getPosition().getY() / 16];
+					final RenderChunk chunk = RenderHelper.getRenderChunk(new BlockPos(i, j, k));
+					final ClassInheritanceMultiMap<Entity> classinheritancemultimap = Minecraft.getMinecraft().world.getChunk(chunk.getPosition()).getEntityLists()[chunk.getPosition().getY() / 16];
 					if(d.intersects(chunk.boundingBox)) {
 						d.addChunkToRender(chunk);
 						if(d.doesTiles()) {
-							for(TileEntity te : chunk.compiledChunk.getTileEntities()) {
+							for(final TileEntity te : chunk.compiledChunk.getTileEntities()) {
 								if(blacklistedObjects.contains(te.getClass()))
 									continue;
 								if(d.intersects(te.getRenderBoundingBox())) {
@@ -385,7 +385,7 @@ public class LightRenderer {
 							}
 						}
 						if(d.doesEnts()) {
-							for(Entity ent : classinheritancemultimap) {
+							for(final Entity ent : classinheritancemultimap) {
 								if(blacklistedObjects.contains(ent.getClass()))
 									continue;
 								if(ent != renderView && d.intersects(ent.getRenderBoundingBox().grow(0.5D))) {
@@ -401,10 +401,9 @@ public class LightRenderer {
 			try {
 				if(r_setTileEntities == null)
 					r_setTileEntities = ReflectionHelper.findField(RenderGlobal.class, "setTileEntities", "field_181024_n");
-				@SuppressWarnings("unchecked")
-				Set<TileEntity> globals = (Set<TileEntity>) r_setTileEntities.get(Minecraft.getMinecraft().renderGlobal);
+				@SuppressWarnings("unchecked") final Set<TileEntity> globals = (Set<TileEntity>) r_setTileEntities.get(Minecraft.getMinecraft().renderGlobal);
 				synchronized(globals) {
-					for(TileEntity te : globals) {
+					for(final TileEntity te : globals) {
 						if(blacklistedObjects.contains(te.getClass()))
 							continue;
 						if(d.intersects(te.getRenderBoundingBox())) {
@@ -412,13 +411,13 @@ public class LightRenderer {
 						}
 					}
 				}
-			} catch(IllegalArgumentException | IllegalAccessException e) {
+			} catch(final IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	private static void renderShadowForLight(Vec3d entPos, DirectionalLight l, float partialTicks) {
+	private static void renderShadowForLight(final Vec3d entPos, final DirectionalLight l, final float partialTicks) {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPushMatrix();
 		l.projectionMatrix.store(ClientProxy.AUX_GL_BUFFER);
@@ -439,9 +438,9 @@ public class LightRenderer {
 		GL11.glPopMatrix();
 	}
 	
-	private static void sendPostShaderUniforms(DirectionalLight light, Vec3d entityPos, Shader shader){
-		Vec3d pos = light.start.subtract(entityPos);
-		float height = (float) light.end.subtract(light.start).length();
+	private static void sendPostShaderUniforms(final DirectionalLight light, final Vec3d entityPos, final Shader shader){
+		final Vec3d pos = light.start.subtract(entityPos);
+		final float height = (float) light.end.subtract(light.start).length();
 		shader.uniform1f("height", height);
 		shader.uniform3f("fs_Pos", (float)pos.x, (float)pos.y, (float)pos.z);
 		shader.uniform2f("zNearFar", 0.05F, Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16 * MathHelper.SQRT_2);
@@ -476,9 +475,9 @@ public class LightRenderer {
 		shader.uniformMatrix4("inv_ViewProjectionMatrix", false, ClientProxy.AUX_GL_BUFFER);
 	}
 	
-	private static void sendPointLightUniforms(PointLight light, Vec3d entityPos, Shader shader){
-		Vec3d pos = light.pos.subtract(entityPos);
-		Vec3d camPos = ActiveRenderInfo.getCameraPosition();
+	private static void sendPointLightUniforms(final PointLight light, final Vec3d entityPos, final Shader shader){
+		final Vec3d pos = light.pos.subtract(entityPos);
+		final Vec3d camPos = ActiveRenderInfo.getCameraPosition();
 		shader.uniform3f("light_pos", (float)pos.x, (float)pos.y, (float)pos.z);
 		shader.uniform3f("cam_pos", (float)camPos.x, (float)camPos.y, (float)camPos.z);
 		shader.uniform1f("brightness", light.energy);
@@ -610,7 +609,7 @@ public class LightRenderer {
 		public boolean entities;
 		public boolean tileentities;
 
-		public DirectionalLight(Vec3d start, Vec3d end, float deg, float b, ResourceLocation cookie, boolean volume, boolean shadows, boolean entities, boolean tileentities) {
+		public DirectionalLight(final Vec3d start, final Vec3d end, final float deg, final float b, final ResourceLocation cookie, final boolean volume, final boolean shadows, final boolean entities, final boolean tileentities) {
 			this.start = start;
 			this.end = end;
 			this.degrees = deg;
@@ -628,8 +627,8 @@ public class LightRenderer {
 				entsToRender = new ArrayList<>();
 			}
 
-			double radians = Math.toRadians(degrees);
-			Vec3d startToEnd = end.subtract(start);
+			final double radians = Math.toRadians(degrees);
+			final Vec3d startToEnd = end.subtract(start);
 			height = startToEnd.length();
 			radius = height * Math.tan(radians);
 			
@@ -647,11 +646,11 @@ public class LightRenderer {
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		}
 		
-		public void setupViewProjectionMatrix(Vec3d entPos){
+		public void setupViewProjectionMatrix(final Vec3d entPos){
 			GL11.glPushMatrix();
 			GL11.glLoadIdentity();
-			Vec3d startToEnd = end.subtract(start);
-			Vec3d angles = BobMathUtil.getEulerAngles(startToEnd.normalize());
+			final Vec3d startToEnd = end.subtract(start);
+			final Vec3d angles = BobMathUtil.getEulerAngles(startToEnd.normalize());
 			
 		    GL11.glRotated(-angles.y+270, 1, 0, 0);
 		    GL11.glRotated(-angles.x+180, 0, 1, 0);
@@ -673,17 +672,17 @@ public class LightRenderer {
 		}
 
 		@Override
-		public void addEntToRender(Entity e) {
+		public void addEntToRender(final Entity e) {
 			entsToRender.add(e);
 		}
 
 		@Override
-		public void addTileToRender(TileEntity t) {
+		public void addTileToRender(final TileEntity t) {
 			tilesToRender.add(t);
 		}
 
 		@Override
-		public void addChunkToRender(RenderChunk r) {
+		public void addChunkToRender(final RenderChunk r) {
 			chunksToRender.add(r);
 		}
 
@@ -698,7 +697,7 @@ public class LightRenderer {
 		}
 
 		@Override
-		public boolean intersects(AxisAlignedBB box) {
+		public boolean intersects(final AxisAlignedBB box) {
 			return Library.isBoxCollidingCone(box, start, end, degrees);
 		}
 	}
@@ -718,15 +717,15 @@ public class LightRenderer {
 		public List<TileEntity> tilesToRender;
 		public List<Entity> entsToRender;
 		
-		public PointLight(Vec3d pos, float energy) {
+		public PointLight(final Vec3d pos, final float energy) {
 			this(pos, new Vec3d(1, 1, 1), energy);
 		}
 		
-		public PointLight(Vec3d pos, Vec3d color, float energy) {
+		public PointLight(final Vec3d pos, final Vec3d color, final float energy) {
 			this(pos, color, energy, true, true);
 		}
 		
-		public PointLight(Vec3d pos, Vec3d color, float energy, boolean tile, boolean ent) {
+		public PointLight(final Vec3d pos, final Vec3d color, final float energy, final boolean tile, final boolean ent) {
 			this.pos = pos;
 			this.color = color;
 			this.energy = energy;
@@ -749,17 +748,17 @@ public class LightRenderer {
 		}
 
 		@Override
-		public void addEntToRender(Entity e) {
+		public void addEntToRender(final Entity e) {
 			entsToRender.add(e);
 		}
 
 		@Override
-		public void addTileToRender(TileEntity t) {
+		public void addTileToRender(final TileEntity t) {
 			tilesToRender.add(t);
 		}
 
 		@Override
-		public void addChunkToRender(RenderChunk r) {
+		public void addChunkToRender(final RenderChunk r) {
 			chunksToRender.add(r);
 		}
 
@@ -774,8 +773,8 @@ public class LightRenderer {
 		}
 
 		@Override
-		public boolean intersects(AxisAlignedBB box) {
-			Vec3d closestOnBox = new Vec3d(MathHelper.clamp(pos.x, box.minX, box.maxX), MathHelper.clamp(pos.y, box.minY, box.maxY), MathHelper.clamp(pos.z, box.minZ, box.maxZ));
+		public boolean intersects(final AxisAlignedBB box) {
+			final Vec3d closestOnBox = new Vec3d(MathHelper.clamp(pos.x, box.minX, box.maxX), MathHelper.clamp(pos.y, box.minY, box.maxY), MathHelper.clamp(pos.z, box.minZ, box.maxZ));
 			return closestOnBox.squareDistanceTo(pos) < radius*radius;
 		}
 		

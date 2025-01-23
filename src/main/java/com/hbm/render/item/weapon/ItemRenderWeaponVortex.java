@@ -15,7 +15,7 @@ import net.minecraft.util.EnumHand;
 public class ItemRenderWeaponVortex extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.vortex_tex);
@@ -24,7 +24,7 @@ public class ItemRenderWeaponVortex extends TEISRBase {
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			double[] recoil = HbmAnimations.getRelevantTransformation("VORTEX_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+			final double[] recoil = HbmAnimations.getRelevantTransformation("VORTEX_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 			//Scaled up by 10 from the regular scale amount so the item bobbing affects the gun less.
 			GL11.glScaled(0.5, 0.4, 0.5);
 			if(type == TransformType.FIRST_PERSON_RIGHT_HAND){

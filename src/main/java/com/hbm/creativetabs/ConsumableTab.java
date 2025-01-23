@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 
@@ -8,16 +9,16 @@ import net.minecraft.item.ItemStack;
 
 public class ConsumableTab extends CreativeTabs {
 
-	public ConsumableTab(int index, String label) {
+	public ConsumableTab(final int index, final String label) {
 		super(index, label);
 	}
 
 	@Override
 	public ItemStack createIcon() {
 		if(ModItems.bottle_nuka != null){
-			return new ItemStack(ModItems.bottle_nuka);
+			return ItemStackUtil.itemStackFrom(ModItems.bottle_nuka);
 		}
-		return new ItemStack(Items.IRON_PICKAXE);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
 	}
 
 }

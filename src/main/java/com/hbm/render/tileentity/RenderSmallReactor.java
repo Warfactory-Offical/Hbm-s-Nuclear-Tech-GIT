@@ -17,12 +17,12 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 public class RenderSmallReactor extends TileEntitySpecialRenderer<TileEntityMachineReactorSmall>{
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineReactorSmall te) {
+	public boolean isGlobalRenderer(final TileEntityMachineReactorSmall te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachineReactorSmall reactor, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineReactorSmall reactor, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -48,15 +48,15 @@ public class RenderSmallReactor extends TileEntitySpecialRenderer<TileEntityMach
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 	        GlStateManager.disableAlpha();
 
-	        Tessellator tess = Tessellator.getInstance();
-	        BufferBuilder buf = tess.getBuffer();
+	        final Tessellator tess = Tessellator.getInstance();
+	        final BufferBuilder buf = tess.getBuffer();
 
 	        for(double d = 0.285; d < 0.7; d += 0.025) {
 
 		        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-		        float intensity = 0.002F + (0.003F * reactor.coreHeat / 1000F);
-		        double top = 1.375;
-		        double bottom = 1.375;
+		        final float intensity = 0.002F + (0.003F * reactor.coreHeat / 1000F);
+		        final double top = 1.375;
+		        final double bottom = 1.375;
 
 		        buf.pos(d, bottom - d, -d).color(0.4F, 0.9F, 1.0F, intensity).endVertex();
 		        buf.pos(d, top + d, -d).color(0.4F, 0.9F, 1.0F, intensity).endVertex();

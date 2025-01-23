@@ -16,7 +16,7 @@ public class MovingSoundRocket extends MovingSound {
 	public static List<MovingSoundRocket> globalSoundList = new ArrayList<MovingSoundRocket>();
 	public Entity rocket;
 	
-	public MovingSoundRocket(SoundEvent soundIn, Entity rocket) {
+	public MovingSoundRocket(final SoundEvent soundIn, final Entity rocket) {
 		super(soundIn, SoundCategory.NEUTRAL);
 		this.rocket = rocket;
 		this.repeat = true;
@@ -32,9 +32,9 @@ public class MovingSoundRocket extends MovingSound {
 			this.xPosF = (float)rocket.posX;
 			this.yPosF = (float)rocket.posY;
 			this.zPosF = (float)rocket.posZ;
-			EntityPlayerSP player = Minecraft.getMinecraft().player;
+			final EntityPlayerSP player = Minecraft.getMinecraft().player;
 			float dist = 0;
-			float iVolume = 100;
+			final float iVolume = 100;
 			if(player != null) {
 				dist = (float)Math.sqrt(Math.pow(xPosF - player.posX, 2) + Math.pow(yPosF - player.posY, 2) + Math.pow(zPosF - player.posZ, 2));
 				volume = (dist / iVolume) * -2 + 2;

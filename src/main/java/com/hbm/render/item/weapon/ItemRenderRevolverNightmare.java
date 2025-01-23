@@ -28,7 +28,7 @@ public class ItemRenderRevolverNightmare extends TEISRBase {
 	
 	//Drillgon200: push and pop matrix are done in the method calling this one
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		if(stack.getItem() == ModItems.gun_revolver_nightmare)
 			Minecraft.getMinecraft().renderEngine.bindTexture(n1Loc);
 		if(stack.getItem() == ModItems.gun_revolver_nightmare2)

@@ -31,7 +31,7 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 		if(!world.isRemote) {
 			
 			if(world.getTotalWorldTime() % 20 == 0) { //doesn't have to happen constantly
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+				final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 				this.trySubscribe(world, pos.add(dir.offsetX * 3, 0, dir.offsetZ * 3), dir);
 			}
 			
@@ -46,7 +46,7 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 				this.isOn = true;
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setByte("s", (byte) this.setting);
 			data.setInteger("h", this.heatEnergy);
 			data.setBoolean("o", isOn);
@@ -55,14 +55,14 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.setting = nbt.getByte("s");
 		this.heatEnergy = nbt.getInteger("h");
 		this.isOn = nbt.getBoolean("o");
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.power = nbt.getLong("power");
@@ -71,7 +71,7 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setLong("power", power);
@@ -81,11 +81,10 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	}
 	
 	protected void tryPullHeat() {
-		TileEntity con = world.getTileEntity(pos.add(0, -1, 0));
+		final TileEntity con = world.getTileEntity(pos.add(0, -1, 0));
 		
-		if(con instanceof IHeatSource) {
-			IHeatSource source = (IHeatSource) con;
-			this.heatEnergy += source.getHeatStored() * 0.85;
+		if(con instanceof IHeatSource source) {
+            this.heatEnergy += source.getHeatStored() * 0.85;
 			source.useUpHeat(source.getHeatStored());
 		}
 	}
@@ -124,7 +123,7 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	}
 
 	@Override
-	public void setPower(long power) {
+	public void setPower(final long power) {
 		this.power = power;
 	}
 
@@ -134,7 +133,7 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	}
 
 	@Override
-	public void useUpHeat(int heat) {
+	public void useUpHeat(final int heat) {
 		this.heatEnergy = Math.max(0, this.heatEnergy - heat);
 	}
 	

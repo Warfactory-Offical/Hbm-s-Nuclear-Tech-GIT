@@ -2,6 +2,7 @@ package com.hbm.inventory.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.lang.Math;
 
@@ -25,12 +26,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineBattery extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_battery.png");
-	private TileEntityMachineBattery battery;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_battery.png");
+	private final TileEntityMachineBattery battery;
 
-	private ConnectionPriority lastPrio = ConnectionPriority.LOW;
+	private final ConnectionPriority lastPrio = ConnectionPriority.LOW;
 
-	public GUIMachineBattery(InventoryPlayer invPlayer, TileEntityMachineBattery tedf) {
+	public GUIMachineBattery(final InventoryPlayer invPlayer, final TileEntityMachineBattery tedf) {
 		super(new ContainerMachineBattery(invPlayer, tedf));
 		battery = tedf;
 		
@@ -39,7 +40,7 @@ public class GUIMachineBattery extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		String deltaText = Library.getShortNumber(Math.abs(battery.powerDelta)) + "HE/s";
@@ -50,7 +51,7 @@ public class GUIMachineBattery extends GuiInfoContainer {
 		else 
 			deltaText = TextFormatting.YELLOW + "0HE/s";
 
-		String[] info = new String[] { Library.getShortNumber(battery.power)+"HE/"+Library.getShortNumber(battery.getMaxPower())+"HE", deltaText};
+		final String[] info = new String[] { Library.getShortNumber(battery.power)+"HE/"+Library.getShortNumber(battery.getMaxPower())+"HE", deltaText};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 71, guiTop + 69 - 52, 34, 52, mouseX, mouseY, info);
 
 		String lang = null;
@@ -60,23 +61,22 @@ public class GUIMachineBattery extends GuiInfoContainer {
 			case HIGH: lang = "high"; break;
 		}
 
-		List<String> priority = new ArrayList();
+		final List<String> priority = new ArrayList();
 		priority.add(I18nUtil.resolveKey("battery.priority." + lang));
 		priority.add(I18nUtil.resolveKey("battery.priority.recommended"));
-		String[] desc = I18nUtil.resolveKeyArray("battery.priority." + lang + ".desc");
-		for(String s : desc) 
-			priority.add(s);
+		final String[] desc = I18nUtil.resolveKeyArray("battery.priority." + lang + ".desc");
+        Collections.addAll(priority, desc);
 		
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 151, guiTop + 16, 16, 16, mouseX, mouseY, priority.toArray(new String[priority.size()]));
 
-		String[] text = I18nUtil.resolveKeyArray("desc.guimachbattery");
+		final String[] text = I18nUtil.resolveKeyArray("desc.guimachbattery");
 				
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	@Override
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
 		
     	if(guiLeft + 6 <= x && guiLeft + 6 + 18 > x && guiTop + 33 < y && guiTop + 33 + 18 >= y) {
@@ -99,7 +99,7 @@ public class GUIMachineBattery extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
 		String name = this.battery.hasCustomInventoryName() ? this.battery.getInventoryName() : I18n.format(this.battery.getInventoryName());
 		name += (" (" + Library.getShortNumber(battery.power) + " HE)");
 		
@@ -108,21 +108,21 @@ public class GUIMachineBattery extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY) {
 		super.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
 		if(battery.power > 0) {
-			int i = (int)battery.getPowerRemainingScaled(52);
+			final int i = (int)battery.getPowerRemainingScaled(52);
 			drawTexturedModalRect(guiLeft + 71, guiTop + 69 - i, 176, 52 - i, 34, i);
 		}
 		
-		int i = battery.redLow;
+		final int i = battery.redLow;
 		drawTexturedModalRect(guiLeft + 7, guiTop + 34, 176, 52 + i * 18, 18, 18);
 		
-		int j = battery.redHigh;
+		final int j = battery.redHigh;
 		drawTexturedModalRect(guiLeft + 151, guiTop + 34, 176, 52 + j * 18, 18, 18);
 
 		drawTexturedModalRect(guiLeft + 152, guiTop + 17, 194, 52 + battery.priority.ordinal() * 16, 16, 16);

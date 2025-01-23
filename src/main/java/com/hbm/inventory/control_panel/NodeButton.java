@@ -14,22 +14,22 @@ import java.util.function.Consumer;
 
 public class NodeButton extends NodeElement {
 
-    public NodeButton(String name, Node parent, int idx) {
+    public NodeButton(final String name, final Node parent, final int idx) {
         super(parent, idx);
         this.name = name;
         resetOffset();
     }
 
     @Override
-    public void render(float mX, float mY){
+    public void render(final float mX, final float mY){
         Minecraft.getMinecraft().getTextureManager().bindTexture(NodeSystem.node_tex);
         Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        float x = offsetX+4;
-        float y = offsetY+8;
+        final float x = offsetX+4;
+        final float y = offsetY+8;
         RenderHelper.drawGuiRectBatchedColor(x, y, 0F, 0.890625F, 32, 6, 0.609375F, 0.984375F, 1, 1, 1, 1);
         Tessellator.getInstance().draw();
 
-        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, 0);
         GL11.glScaled(0.35, 0.35, 0.35);
@@ -39,11 +39,8 @@ public class NodeButton extends NodeElement {
     }
 
     @Override
-    public boolean onClick(float x, float y) {
-        if (RenderHelper.intersects2DBox(x, y, getBox())) {
-            return true;
-        }
-        return false;
+    public boolean onClick(final float x, final float y) {
+        return RenderHelper.intersects2DBox(x, y, getBox());
     }
 
     public float[] getBox() {

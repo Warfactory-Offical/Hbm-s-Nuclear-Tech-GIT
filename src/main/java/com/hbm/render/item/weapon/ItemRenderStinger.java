@@ -23,7 +23,7 @@ public class ItemRenderStinger extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GL11.glPushMatrix();
 		if(itemStackIn.getItem() == ModItems.gun_stinger)
 			Minecraft.getMinecraft().renderEngine.bindTexture(stinger_rl);

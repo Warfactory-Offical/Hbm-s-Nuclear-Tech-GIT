@@ -21,23 +21,23 @@ public class RenderTaintCrab extends RenderLiving<EntityTaintCrab> {
 		return new RenderTaintCrab(man);
 	};
 
-	public RenderTaintCrab(RenderManager rendermanagerIn) {
+	public RenderTaintCrab(final RenderManager rendermanagerIn) {
 		super(rendermanagerIn, new ModelTaintCrab(), 1.0F);
 		this.shadowOpaque = 0.0F;
 	}
 
 	@Override
-	public void doRender(EntityTaintCrab entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityTaintCrab entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y + 1.25, z);
 
-		double sx = entity.posX;
-		double sy = entity.posY + 1.25;
-		double sz = entity.posZ;
+		final double sx = entity.posX;
+		final double sy = entity.posY + 1.25;
+		final double sz = entity.posZ;
 
-		for(double[] target : ((EntityTaintCrab) entity).targets) {
+		for(final double[] target : entity.targets) {
 
-			double length = Math.sqrt(Math.pow(target[0] - sx, 2) + Math.pow(target[1] - sy, 2) + Math.pow(target[2] - sz, 2));
+			final double length = Math.sqrt(Math.pow(target[0] - sx, 2) + Math.pow(target[1] - sy, 2) + Math.pow(target[2] - sz, 2));
 
 			BeamPronter.prontBeam(Vec3.createVectorHelper(target[0] - sx, target[1] - sy, target[2] - sz), EnumWaveType.RANDOM, EnumBeamType.SOLID, 0x0051C4, 0x606060, (int) (entity.world.getTotalWorldTime() % 1000 + 1), (int) (length * 5), 0.125F, 2, 0.03125F);
 		}
@@ -47,7 +47,7 @@ public class RenderTaintCrab extends RenderLiving<EntityTaintCrab> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTaintCrab entity) {
+	protected ResourceLocation getEntityTexture(final EntityTaintCrab entity) {
 		return ResourceManager.taintcrab_tex;
 	}
 

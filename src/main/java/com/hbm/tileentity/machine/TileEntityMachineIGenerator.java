@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,7 +108,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			if(temperature > maxTemperature)
 				temperature = maxTemperature;
 			
-			int displayHeat = temperature;
+			final int displayHeat = temperature;
 			
 			rtgAction();
 			
@@ -116,8 +117,8 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			
 			this.power = Library.chargeItemsFromTE(inventory, 6, power, maxPower);
 			
-			NBTTagCompound data = new NBTTagCompound();
-			int[] rtgs = new int[pellets.length];
+			final NBTTagCompound data = new NBTTagCompound();
+			final int[] rtgs = new int[pellets.length];
 			
 			for(int i = 0; i < pellets.length; i++) {
 				if(pellets[i] != null)
@@ -150,13 +151,13 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
-		int[] rtgs = nbt.getIntArray("rtgs");
+	public void networkUnpack(final NBTTagCompound nbt) {
+		final int[] rtgs = nbt.getIntArray("rtgs");
 		
 		if(rtgs != null) {
 			for(int i = 0; i < pellets.length; i++) {
 				
-				int pellet = rtgs[i];
+				final int pellet = rtgs[i];
 				if(pellet >= 0 && pellet < IGenRTG.values().length) {
 					pellets[i] = IGenRTG.values()[pellet];
 				} else {
@@ -179,7 +180,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 		if(meta == 0)
 			pushPellet();
 		if(meta == 1)
@@ -195,7 +196,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		
 		if(this.burnTime <= 0) {
 			
-			int time = TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(0)) / 2;
+			final int time = TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(0)) / 2;
 			
 			if(time > 0) {
 				
@@ -229,13 +230,13 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	 */
 	private void fuelAction() {
 		
-		int heat = getHeatFromFuel(tanks[1].getFluid());
+		final int heat = getHeatFromFuel(tanks[1].getFluid());
 		
-		int maxBurn = 2;
+		final int maxBurn = 2;
 		
 		if(tanks[1].getFluidAmount() > 0) {
 			
-			int burn = Math.min(maxBurn, tanks[1].getFluidAmount());
+			final int burn = Math.min(maxBurn, tanks[1].getFluidAmount());
 			
 			tanks[1].drain(burn, true);
 			temperature += heat * burn;
@@ -255,7 +256,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		fluidHeat.put(ModForgeFluids.nitan, 2500);
 	}
 	
-	public int getHeatFromFuel(FluidStack fluid) {
+	public int getHeatFromFuel(final FluidStack fluid) {
 		if(fluid == null)
 			return 0;
 		return fluidHeat.get(fluid.getFluid());
@@ -274,7 +275,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 				rtg += 15;
 		}
 		
-		int pow = Math.min(this.temperature, rtg);
+		final int pow = Math.min(this.temperature, rtg);
 		
 		this.temperature -= pow;
 		this.power += pow;
@@ -288,7 +289,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	 */
 	private void rotorAction() {
 		
-		int conversion = getConversion();
+		final int conversion = getConversion();
 		
 		if(temperature > 10 && tanks[0].getFluidAmount() > 0)
 			tanks[0].drain(1, true);
@@ -308,7 +309,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	 */
 	private void generatorAction() {
 		
-		double balanceFactor = 0.25D;
+		final double balanceFactor = 0.25D;
 		
 		this.power += this.torque * balanceFactor;
 		torque -= getBrake();
@@ -335,7 +336,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		
 		if(!inventory.getStackInSlot(1).isEmpty()) {
 			
-			IGenRTG pellet = IGenRTG.getPellet(inventory.getStackInSlot(1).getItem());
+			final IGenRTG pellet = IGenRTG.getPellet(inventory.getStackInSlot(1).getItem());
 			
 			if(pellet != null) {
 				
@@ -365,7 +366,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			return;
 		
 		//i don't feel like adding null checks because they won't trigger anyway
-		inventory.setStackInSlot(2, new ItemStack(rtgPellets.inverse().get(pellets[0])));
+		inventory.setStackInSlot(2, ItemStackUtil.itemStackFrom(rtgPellets.inverse().get(pellets[0])));
 		
 		for(int i = 0; i < pellets.length - 1; i++) {
 			pellets[i] = pellets[i + 1];
@@ -397,15 +398,15 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	int ignoreNext = 0;
-	public void setDialByAngle(float angle) {
+	public void setDialByAngle(final float angle) {
 		this.limiter = (angle - 45F) / 270F;
 		ignoreNext = 5;
 	}
 	
 	public void sendIGenPower() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 		
-		int[] rot = MultiblockHandlerXR.rotate(new int [] {1,0,4,0,8,8}, dir.toEnumFacing());
+		final int[] rot = MultiblockHandlerXR.rotate(new int [] {1,0,4,0,8,8}, dir.toEnumFacing());
 		
 		for(int ix = -rot[4]; ix <= rot[5]; ix++) {
 			for(int iz = -rot[2]; iz <= rot[3]; iz++) {
@@ -422,7 +423,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource != null){
 			if(resource.getFluid() == tankTypes[0]){
 				return tanks[0].fill(resource, doFill);
@@ -436,17 +437,17 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 	
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 3){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -455,11 +456,11 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		nbt.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		for(int i = 0; i < pellets.length; i++) {
 			
-			short s = nbt.getShort("pellet" + i);
+			final short s = nbt.getShort("pellet" + i);
 			
 			if(s >= 0 && s < IGenRTG.values().length) {
 				pellets[i] = IGenRTG.values()[s];
@@ -475,7 +476,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
 		for(int i = 0; i < pellets.length; i++) {
 			
@@ -492,7 +493,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		return super.writeToNBT(nbt);
 	}
 	
-	private static HashBiMap<Item, IGenRTG> rtgPellets = HashBiMap.create();
+	private static final HashBiMap<Item, IGenRTG> rtgPellets = HashBiMap.create();
 	
 	public static enum IGenRTG {
 		RADIUM(ModItems.pellet_rtg_radium, 9, 3),
@@ -506,13 +507,13 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		public int offset;
 		public int heat;
 		
-		private IGenRTG(Item item, int offset, int heat) {
+		private IGenRTG(final Item item, final int offset, final int heat) {
 			rtgPellets.put(item, this);
 			this.offset = offset;
 			this.heat = heat;
 		}
 		
-		public static IGenRTG getPellet(Item item) {
+		public static IGenRTG getPellet(final Item item) {
 			return rtgPellets.get(item);
 		}
 	}
@@ -535,7 +536,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

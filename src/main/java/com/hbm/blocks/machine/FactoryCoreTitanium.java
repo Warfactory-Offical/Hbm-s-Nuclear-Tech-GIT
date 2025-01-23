@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class FactoryCoreTitanium extends BlockContainer {
 
-	public FactoryCoreTitanium(Material materialIn, String s) {
+	public FactoryCoreTitanium(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -22,12 +22,12 @@ public class FactoryCoreTitanium extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityCoreTitanium();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

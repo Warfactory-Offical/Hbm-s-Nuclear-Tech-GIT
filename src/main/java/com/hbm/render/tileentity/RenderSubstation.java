@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderSubstation extends TileEntitySpecialRenderer<TileEntitySubstation> {
 
 	@Override
-	public void render(TileEntitySubstation sub, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntitySubstation sub, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 			switch(sub.getBlockMetadata() - BlockDummyable.offset) {

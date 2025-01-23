@@ -12,20 +12,20 @@ public class NodeElement {
 	public float offsetX;
 	public float offsetY;
 	
-	public NodeElement(Node parent, int idx){
+	public NodeElement(final Node parent, final int idx){
 		this.parent = parent;
 		this.index = idx;
 		resetOffset();
 	}
 
-	public NodeElement(String name, Node parent, int idx){
+	public NodeElement(final String name, final Node parent, final int idx){
 		this.name = name;
 		this.parent = parent;
 		this.index = idx;
 		resetOffset();
 	}
 
-	public void render(float mX, float mY){
+	public void render(final float mX, final float mY){
 	}
 	
 	public void resetOffset(){
@@ -33,11 +33,11 @@ public class NodeElement {
 		offsetY = parent.posY+index*8;
 	}
 	
-	public boolean onClick(float x, float y){
+	public boolean onClick(final float x, final float y){
 		return false;
 	}
 	
-	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
 		tag.setFloat("oX", offsetX);
 		tag.setFloat("oY", offsetY);
 		tag.setInteger("idx", index);
@@ -45,7 +45,7 @@ public class NodeElement {
 		return tag;
 	}
 	
-	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		offsetX = tag.getFloat("oX");
 		offsetY = tag.getFloat("oY");
 		index = tag.getInteger("idx");

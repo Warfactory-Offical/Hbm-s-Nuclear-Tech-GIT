@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockNTMDirt extends BlockDirt {
 
-	public BlockNTMDirt(String s) {
+	public BlockNTMDirt(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -27,24 +28,24 @@ public class BlockNTMDirt extends BlockDirt {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		items.add(new ItemStack(this, 1, 0));
+	public void getSubBlocks(final CreativeTabs itemIn, final NonNullList<ItemStack> items) {
+		items.add(ItemStackUtil.itemStackFrom(this, 1, 0));
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getLocalizedName() {
-		return ("" + I18n.format(Blocks.DIRT.getTranslationKey()) + ".name").trim();
+		return (I18n.format(Blocks.DIRT.getTranslationKey()) + ".name").trim();
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(Blocks.DIRT);
 	}
 }

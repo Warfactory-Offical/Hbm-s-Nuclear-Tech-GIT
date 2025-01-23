@@ -19,7 +19,7 @@ public class FluidCanisterRender extends TileEntityItemStackRenderer {
 	public TransformType type;
 	
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		IBakedModel model = null;
 		if(FluidUtil.getFluidContained(stack) != null && EnumCanister.contains(FluidUtil.getFluidContained(stack).getFluid()))
 			model = EnumCanister.getEnumFromFluid(FluidUtil.getFluidContained(stack).getFluid()).getRenderModel();

@@ -24,7 +24,7 @@ public class ParticleCoolingTower extends Particle {
 	private float maxScale = 1.0F;
 	private float lift = 0.3F;
 	
-	public ParticleCoolingTower(World worldIn, double posXIn, double posYIn, double posZIn, float scale){
+	public ParticleCoolingTower(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale){
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.baseScale = scale;
@@ -32,19 +32,19 @@ public class ParticleCoolingTower extends Particle {
 		this.canCollide = false;
 	}
 	
-	public void setBaseScale(float f) {
+	public void setBaseScale(final float f) {
 		this.baseScale = f;
 	}
 	
-	public void setMaxScale(float f) {
+	public void setMaxScale(final float f) {
 		this.maxScale = f;
 	}
 	
-	public void setLift(float f) {
+	public void setLift(final float f) {
 		this.lift = f;
 	}
 	
-	public void setLife(int i) {
+	public void setLife(final int i) {
 		this.particleMaxAge = i;
 	}
 	
@@ -54,7 +54,7 @@ public class ParticleCoolingTower extends Particle {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		float ageScale = (float) this.particleAge / (float) this.particleMaxAge;
+		final float ageScale = (float) this.particleAge / (float) this.particleMaxAge;
 		
 		this.particleAlpha = 0.25F - ageScale * 0.25F;
 		this.particleScale = this.baseScale + (float)Math.pow((this.maxScale * ageScale), 2);
@@ -88,7 +88,7 @@ public class ParticleCoolingTower extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
 		com.hbm.render.RenderHelper.resetParticleInterpPos(entityIn, partialTicks);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 
@@ -98,25 +98,25 @@ public class ParticleCoolingTower extends Particle {
 		GlStateManager.depthMask(false);
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 		RenderHelper.disableStandardItemLighting();
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = tes.getBuffer();
 
-		int i = this.getBrightnessForRender(partialTicks);
-        int j = i >> 16 & 65535;
-        int k = i & 65535;
+		final int i = this.getBrightnessForRender(partialTicks);
+        final int j = i >> 16 & 65535;
+        final int k = i & 65535;
 		
 		GlStateManager.glNormal3f(0, 1, 0);
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 
-		float scale = this.particleScale;
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+		final float scale = this.particleScale;
+		final float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
+		final float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
+		final float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 
-		buf.pos((double) (pX - rotationX * scale - rotationXY * scale), (double) (pY - rotationZ * scale), (double) (pZ - rotationYZ * scale - rotationXZ * scale)).tex(1, 1).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-		buf.pos((double) (pX - rotationX * scale + rotationXY * scale), (double) (pY + rotationZ * scale), (double) (pZ - rotationYZ * scale + rotationXZ * scale)).tex(1, 0).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-		buf.pos((double) (pX + rotationX * scale + rotationXY * scale), (double) (pY + rotationZ * scale), (double) (pZ + rotationYZ * scale + rotationXZ * scale)).tex(0, 0).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-		buf.pos((double) (pX + rotationX * scale - rotationXY * scale), (double) (pY - rotationZ * scale), (double) (pZ + rotationYZ * scale - rotationXZ * scale)).tex(0, 1).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+		buf.pos(pX - rotationX * scale - rotationXY * scale, pY - rotationZ * scale, pZ - rotationYZ * scale - rotationXZ * scale).tex(1, 1).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+		buf.pos(pX - rotationX * scale + rotationXY * scale, pY + rotationZ * scale, pZ - rotationYZ * scale + rotationXZ * scale).tex(1, 0).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+		buf.pos(pX + rotationX * scale + rotationXY * scale, pY + rotationZ * scale, pZ + rotationYZ * scale + rotationXZ * scale).tex(0, 0).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+		buf.pos(pX + rotationX * scale - rotationXY * scale, pY - rotationZ * scale, pZ + rotationYZ * scale - rotationXZ * scale).tex(0, 1).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
 		tes.draw();
 
 		GlStateManager.enableLighting();

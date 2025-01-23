@@ -6,7 +6,7 @@ import net.minecraftforge.common.capabilities.Capability;
 public class TileEntityDummyPort extends TileEntityDummy {
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(target != null && world.getTileEntity(target) != null){
 			return world.getTileEntity(target).hasCapability(capability, facing);
 		}
@@ -14,7 +14,7 @@ public class TileEntityDummyPort extends TileEntityDummy {
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(target != null && world.getTileEntity(target) != null){
 			return world.getTileEntity(target).getCapability(capability, facing);
 		}

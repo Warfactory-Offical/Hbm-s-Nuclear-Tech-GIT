@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Map;
 import java.util.List;
@@ -31,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBedrockOre extends Item {
 
-	public ItemBedrockOre(String s) {
+	public ItemBedrockOre(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setHasSubtypes(true);
@@ -41,36 +42,36 @@ public class ItemBedrockOre extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab()){
-			for(Integer oreMeta : BedrockOreRegistry.oreIndexes.keySet()) {
-				items.add(new ItemStack(this, 1, oreMeta));
+			for(final Integer oreMeta : BedrockOreRegistry.oreIndexes.keySet()) {
+				items.add(ItemStackUtil.itemStackFrom(this, 1, oreMeta));
 			}
 		}
 	}
 
-	public static ItemStack getOut(int oreMeta, int amount){
-		ItemStack out = BedrockOreRegistry.getResource(BedrockOreRegistry.oreIndexes.get(oreMeta)).copy();
+	public static ItemStack getOut(final int oreMeta, final int amount){
+		final ItemStack out = BedrockOreRegistry.getResource(BedrockOreRegistry.oreIndexes.get(oreMeta)).copy();
 		out.setCount(amount);
 		return out;
 	}
 
-	public static String getOreTag(ItemStack stack){
+	public static String getOreTag(final ItemStack stack){
 		return BedrockOreRegistry.oreIndexes.get(stack.getMetadata());
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
+	public String getItemStackDisplayName(final ItemStack stack) {
 		return I18n.format(this.getTranslationKey() + ".name", BedrockOreRegistry.getOreName(getOreTag(stack)));
 	}
 
-	public static int getColor(ItemStack stack){
+	public static int getColor(final ItemStack stack){
 		return BedrockOreRegistry.getOreColor(getOreTag(stack));
 	}
 
-	public static int getOutType(int oreMeta){
-		String oreResult = BedrockOreRegistry.oreResults.get(BedrockOreRegistry.oreIndexes.get(oreMeta));
+	public static int getOutType(final int oreMeta){
+		final String oreResult = BedrockOreRegistry.oreResults.get(BedrockOreRegistry.oreIndexes.get(oreMeta));
 		if(oreResult.startsWith("gem")) return 0;
 		if(oreResult.startsWith("dust")) return 1;
 		if(oreResult.startsWith("ingot")) return 2;
@@ -79,12 +80,12 @@ public class ItemBedrockOre extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
 		if(stack.getItem() == ModItems.ore_bedrock){
-			String oreName = BedrockOreRegistry.oreIndexes.get(stack.getMetadata());
-			int tier = BedrockOreRegistry.getOreTier(oreName);
+			final String oreName = BedrockOreRegistry.oreIndexes.get(stack.getMetadata());
+			final int tier = BedrockOreRegistry.getOreTier(oreName);
 			list.add("§6"+I18nUtil.resolveKey("desc.tier", tier));
-			FluidStack req = BedrockOreRegistry.getFluidRequirement(tier);
+			final FluidStack req = BedrockOreRegistry.getFluidRequirement(tier);
 			list.add("§e"+I18nUtil.resolveKey("desc.requires", req.amount, req.getFluid().getLocalizedName(req)));
 		}
 		super.addInformation(stack, world, list, flagIn);
@@ -92,11 +93,11 @@ public class ItemBedrockOre extends Item {
 
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(player.capabilities.isCreativeMode){
-			TileEntity te = worldIn.getTileEntity(pos);
+			final TileEntity te = worldIn.getTileEntity(pos);
 			if(te instanceof TileEntityBedrockOre){
-				ItemStack bedrockOreItem = player.getHeldItem(hand);
+				final ItemStack bedrockOreItem = player.getHeldItem(hand);
 				if(bedrockOreItem != null && bedrockOreItem.getItem() == ModItems.ore_bedrock){
 					((TileEntityBedrockOre)te).setOre(getOreTag(bedrockOreItem));
 				}

@@ -21,7 +21,7 @@ public class ParticleBurstPacket implements IMessage {
 		
 	}
 
-	public ParticleBurstPacket(int x, int y, int z, int block, int meta)
+	public ParticleBurstPacket(final int x, final int y, final int z, final int block, final int meta)
 	{
 		this.x = x;
 		this.y = y;
@@ -31,7 +31,7 @@ public class ParticleBurstPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -40,7 +40,7 @@ public class ParticleBurstPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -52,12 +52,12 @@ public class ParticleBurstPacket implements IMessage {
 		
 		@SuppressWarnings("deprecation")
 		@Override
-		public IMessage onMessage(ParticleBurstPacket m, MessageContext ctx) {
+		public IMessage onMessage(final ParticleBurstPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				try {
 					//If minecraft uses this depreciated method to render block effects I will, too.
 					Minecraft.getMinecraft().effectRenderer.addBlockDestroyEffects(new BlockPos(m.x, m.y, m.z), Block.getBlockById(m.block).getStateFromMeta(m.meta));
-				} catch(Exception x) { }
+				} catch(final Exception x) { }
 			});
 			
 			

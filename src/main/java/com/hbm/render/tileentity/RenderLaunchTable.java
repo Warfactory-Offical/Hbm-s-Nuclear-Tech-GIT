@@ -19,12 +19,12 @@ import net.minecraft.util.ResourceLocation;
 public class RenderLaunchTable extends TileEntitySpecialRenderer<TileEntityLaunchTable> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityLaunchTable te) {
+	public boolean isGlobalRenderer(final TileEntityLaunchTable te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityLaunchTable launcher, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityLaunchTable launcher, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		
 		GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
@@ -59,13 +59,13 @@ public class RenderLaunchTable extends TileEntitySpecialRenderer<TileEntityLaunc
 		GL11.glPushMatrix();
 		
 		if(launcher.load != null) {
-			MissileMultipart mp = MissileMultipart.loadFromStruct(launcher.load);
+			final MissileMultipart mp = MissileMultipart.loadFromStruct(launcher.load);
 			
 			if(mp != null && mp.fuselage != null)
 				launcher.height = (int) mp.getHeight();
 		}
 		
-		int height = (int) (launcher.height * 0.75);
+		final int height = (int) (launcher.height * 0.75);
 		ResourceLocation base = ResourceManager.launch_table_large_scaffold_base_tex;
 		ResourceLocation connector = ResourceManager.launch_table_large_scaffold_connector_tex;
 		IModelCustom baseM = ResourceManager.launch_table_large_scaffold_base;
@@ -92,7 +92,7 @@ public class RenderLaunchTable extends TileEntitySpecialRenderer<TileEntityLaunc
 				emptyM.renderAll();
 			} else {
 				
-				if(launcher.load != null && launcher.load.fuselage != null && ((ItemMissile)launcher.load.fuselage).top == launcher.padSize) {
+				if(launcher.load != null && launcher.load.fuselage != null && launcher.load.fuselage.top == launcher.padSize) {
 					bindTexture(connector);
 					connectorM.renderAll();
 				} else {

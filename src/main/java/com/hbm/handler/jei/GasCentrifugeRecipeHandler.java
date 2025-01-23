@@ -26,7 +26,7 @@ public class GasCentrifugeRecipeHandler implements IRecipeCategory<GasCentRecipe
 	protected final IDrawableStatic progressStatic;
 	protected final IDrawableAnimated progressAnimated;
 	
-	public GasCentrifugeRecipeHandler(IGuiHelper help) {
+	public GasCentrifugeRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 163, 55);
 		
 		powerStatic = help.createDrawable(gui_rl, 176, 0, 16, 34);
@@ -57,14 +57,14 @@ public class GasCentrifugeRecipeHandler implements IRecipeCategory<GasCentRecipe
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		powerAnimated.draw(minecraft, 2, 2);
 		progressAnimated.draw(minecraft, 89, 3);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, GasCentRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final GasCentRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 37, 19);
 		

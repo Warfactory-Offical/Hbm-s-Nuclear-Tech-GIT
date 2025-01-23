@@ -16,7 +16,7 @@ import net.minecraft.util.EnumHand;
 public class ItemRenderWeaponObj extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		GL11.glPopMatrix();
 		GlStateManager.disableCull();
 		if(item.getItem() == ModItems.gun_hk69)
@@ -59,7 +59,7 @@ public class ItemRenderWeaponObj extends TEISRBase {
 					GL11.glRotated(25, 0, 0, 1);
 					GL11.glRotated(185, 0, 1, 0);
 					GL11.glScaled(0.25, 0.25, 0.25);
-					double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+					final double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 					GL11.glTranslated(recoil[0], recoil[1], recoil[2]);
 				}
 			} else {
@@ -106,7 +106,7 @@ public class ItemRenderWeaponObj extends TEISRBase {
 					GL11.glRotated(-25, 0, 0, 1);
 					GL11.glRotated(-5, 0, 1, 0);
 					GL11.glScaled(0.25, 0.25, 0.25);
-					double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+					final double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 					GL11.glTranslated(recoil[0], recoil[1], recoil[2]);
 				}
 			}

@@ -10,11 +10,11 @@ import net.minecraft.world.World;
 
 public class TestDungeonRoom7 extends CellularDungeonRoom {
 
-	public TestDungeonRoom7(CellularDungeon parent) {
+	public TestDungeonRoom7(final CellularDungeon parent) {
 		super(parent);
 	}
 
-	public void generateMain(World world, int x, int y, int z) {
+	public void generateMain(final World world, final int x, final int y, final int z) {
 		
 		super.generateMain(world, x, y, z);
 

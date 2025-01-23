@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.hbm.entity.projectile.EntityBulletBase;
 import com.hbm.explosion.ExplosionLarge;
+import com.hbm.explosion.ExplosionMining;
 import com.hbm.explosion.ExplosionNT;
 import com.hbm.explosion.ExplosionNT.ExAttrib;
 import com.hbm.handler.BulletConfigSyncingUtil;
@@ -35,7 +36,7 @@ public class Gun4GaugeFactory {
 	
 	private static GunConfiguration getShotgunConfig() {
 		
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 15;
 		config.roundsPerCycle = 1;
@@ -55,7 +56,7 @@ public class Gun4GaugeFactory {
 	
 	public static GunConfiguration getKS23Config() {
 		
-		GunConfiguration config = getShotgunConfig();
+		final GunConfiguration config = getShotgunConfig();
 		
 		config.durability = 3000;
 		config.reloadSound = GunConfiguration.RSOUND_SHOTGUN;
@@ -85,7 +86,7 @@ public class Gun4GaugeFactory {
 	
 	public static BulletConfiguration get4GaugeConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_4gauge;
 		bullet.dmgMin = 3;
@@ -98,7 +99,7 @@ public class Gun4GaugeFactory {
 	
 	public static BulletConfiguration get4GaugeSlugConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_4gauge_slug;
 		bullet.dmgMin = 15;
@@ -111,7 +112,7 @@ public class Gun4GaugeFactory {
 
 	public static BulletConfiguration get4GaugeExplosiveConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_4gauge_explosive;
 		bullet.velocity *= 2;
@@ -126,7 +127,7 @@ public class Gun4GaugeFactory {
 	
 	public static GunConfiguration getSauerConfig() {
 
-		GunConfiguration config = getShotgunConfig();
+		final GunConfiguration config = getShotgunConfig();
 
 		config.rateOfFire = 20;
 		config.ammoCap = 0;
@@ -184,7 +185,7 @@ public class Gun4GaugeFactory {
 	
 	public static BulletConfiguration get4GaugeSleekConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardAirstrikeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardAirstrikeConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_sleek;
 
@@ -193,7 +194,7 @@ public class Gun4GaugeFactory {
 	
 	public static BulletConfiguration get4GaugeFlechetteConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_flechette;
 		bullet.dmgMin = 5;
@@ -210,7 +211,7 @@ public class Gun4GaugeFactory {
 
 	public static BulletConfiguration get4GaugeFlechettePhosphorusConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_flechette;
 		bullet.dmgMin = 5;
@@ -225,7 +226,7 @@ public class Gun4GaugeFactory {
 		bullet.ammo = ModItems.ammo_4gauge_flechette_phosphorus;
 		bullet.incendiary = 5;
 
-		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
+		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
 		eff.getCurativeItems().clear();
 		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
@@ -233,9 +234,9 @@ public class Gun4GaugeFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
 
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaburst");
 				data.setString("mode", "flame");
 				data.setInteger("count", 15);
@@ -250,7 +251,7 @@ public class Gun4GaugeFactory {
 	
 	public static BulletConfiguration get4GaugeMiningConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_semtex;
 		bullet.velocity *= 2;
@@ -264,12 +265,12 @@ public class Gun4GaugeFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
 
 				if(bullet.world.isRemote)
 					return;
 				
-				ExplosionNT explosion = new ExplosionNT(bullet.world, null, bullet.posX, bullet.posY, bullet.posZ, 4);
+				final ExplosionNT explosion = new ExplosionMining(bullet.world, null, bullet.posX, bullet.posY, bullet.posZ, 4);
 				explosion.atttributes.add(ExAttrib.ALLDROP);
 				explosion.atttributes.add(ExAttrib.NOHURT);
 				explosion.explode();
@@ -283,7 +284,7 @@ public class Gun4GaugeFactory {
 
 	public static BulletConfiguration get4GaugeBalefireConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_balefire;
 		bullet.velocity *= 2;
@@ -297,12 +298,12 @@ public class Gun4GaugeFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
 
 				if(bullet.world.isRemote)
 					return;
 				
-				ExplosionNT explosion = new ExplosionNT(bullet.world, null, bullet.posX, bullet.posY, bullet.posZ, 6);
+				final ExplosionNT explosion = new ExplosionNT(bullet.world, null, bullet.posX, bullet.posY, bullet.posZ, 6);
 				explosion.atttributes.add(ExAttrib.BALEFIRE);
 				explosion.explode();
 
@@ -315,7 +316,7 @@ public class Gun4GaugeFactory {
 
 	public static BulletConfiguration getGrenadeKampfConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_kampf;
 		bullet.spread = 0.0F;
@@ -331,7 +332,7 @@ public class Gun4GaugeFactory {
 	
 	public static BulletConfiguration getGrenadeCanisterConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_canister;
 		bullet.spread = 0.0F;
@@ -345,7 +346,7 @@ public class Gun4GaugeFactory {
 		bullet.bUpdate = new IBulletUpdateBehavior() {
 
 			@Override
-			public void behaveUpdate(EntityBulletBase bullet) {
+			public void behaveUpdate(final EntityBulletBase bullet) {
 
 				if(!bullet.world.isRemote) {
 
@@ -354,7 +355,7 @@ public class Gun4GaugeFactory {
 
 						for(int i = 0; i < 50; i++) {
 
-							EntityBulletBase bolt = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.M44_AP);
+							final EntityBulletBase bolt = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.M44_AP);
 							bolt.setPosition(bullet.posX, bullet.posY, bullet.posZ);
 							bolt.shoot(bullet.motionX, bullet.motionY, bullet.motionZ, 0.25F, 0.1F);
 							bullet.world.spawnEntity(bolt);
@@ -369,7 +370,7 @@ public class Gun4GaugeFactory {
 	
 	public static BulletConfiguration get4GaugeClawConfig() {
 
-		BulletConfiguration bullet = get4GaugeConfig();
+		final BulletConfiguration bullet = get4GaugeConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_claw;
 		bullet.dmgMin = 6;
@@ -381,14 +382,13 @@ public class Gun4GaugeFactory {
 		bullet.bHurt = new IBulletHurtBehavior() {
 
 			@Override
-			public void behaveEntityHurt(EntityBulletBase bullet, Entity hit) {
+			public void behaveEntityHurt(final EntityBulletBase bullet, final Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityLivingBase) {
-					EntityLivingBase living = (EntityLivingBase) hit;
-					float f = living.getHealth();
+				if(hit instanceof EntityLivingBase living) {
+                    float f = living.getHealth();
 					f = Math.max(0, f - 2);
 					living.setHealth(f);
 
@@ -403,7 +403,7 @@ public class Gun4GaugeFactory {
 
 	public static BulletConfiguration get4GaugeVampireConfig() {
 
-		BulletConfiguration bullet = get4GaugeConfig();
+		final BulletConfiguration bullet = get4GaugeConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_vampire;
 		bullet.dmgMin = 6;
@@ -416,15 +416,14 @@ public class Gun4GaugeFactory {
 		bullet.bHurt = new IBulletHurtBehavior() {
 
 			@Override
-			public void behaveEntityHurt(EntityBulletBase bullet, Entity hit) {
+			public void behaveEntityHurt(final EntityBulletBase bullet, final Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) hit;
+				if(hit instanceof EntityPlayer player) {
 
-					//TODO does bewitchment have something like this?
+                    //TODO does bewitchment have something like this?
 					/*IExtendedEntityProperties prop = player.getExtendedProperties("WitcheryExtendedPlayer");
 
 					if(prop != null) {
@@ -439,7 +438,7 @@ public class Gun4GaugeFactory {
 
 	public static BulletConfiguration get4GaugeVoidConfig() {
 
-		BulletConfiguration bullet = get4GaugeConfig();
+		final BulletConfiguration bullet = get4GaugeConfig();
 
 		bullet.ammo = ModItems.ammo_4gauge_void;
 		bullet.dmgMin = 6;
@@ -451,15 +450,14 @@ public class Gun4GaugeFactory {
 		bullet.bHurt = new IBulletHurtBehavior() {
 
 			@Override
-			public void behaveEntityHurt(EntityBulletBase bullet, Entity hit) {
+			public void behaveEntityHurt(final EntityBulletBase bullet, final Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) hit;
+				if(hit instanceof EntityPlayer player) {
 
-					player.inventory.dropAllItems();
+                    player.inventory.dropAllItems();
 				}
 			}
 		};

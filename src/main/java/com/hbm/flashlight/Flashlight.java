@@ -40,7 +40,7 @@ public class Flashlight {
 	static boolean frameBufferCreated = false;
 	
 	
-	public Flashlight(Vec3d position, Vec3d direction, float angle) {
+	public Flashlight(final Vec3d position, final Vec3d direction, float angle) {
 		this.position = position;
 		this.direction = direction;
 		angle = MathHelper.clamp(angle, 0F, 90F);
@@ -83,10 +83,10 @@ public class Flashlight {
 			
 			frameBufferCreated = true;
 		}
-		Entity ent = Minecraft.getMinecraft().getRenderViewEntity();
+		final Entity ent = Minecraft.getMinecraft().getRenderViewEntity();
 		Minecraft.getMinecraft().setRenderViewEntity(dummy);
-		double yaw = (float) MathHelper.atan2(direction.x, direction.z);
-		float pitch = (float) Math.asin(direction.y);
+		final double yaw = (float) MathHelper.atan2(direction.x, direction.z);
+		final float pitch = (float) Math.asin(direction.y);
 		
 		dummy.setPositionAndRotationDirect(position.x, position.y, position.z, (float) -Math.toDegrees(yaw), (float) Math.toDegrees(pitch), 0, false);
 		dummy.lastTickPosX = position.x;
@@ -99,11 +99,11 @@ public class Flashlight {
 		dummy.prevRotationPitch = dummy.rotationPitch;
 		
 		
-		int i2 = Minecraft.getMinecraft().gameSettings.limitFramerate;
+		final int i2 = Minecraft.getMinecraft().gameSettings.limitFramerate;
 		int j = Math.min(Minecraft.getDebugFPS(), i2);
         j = Math.max(j, 60);
-        long k = System.nanoTime() - System.nanoTime();
-        long l = Math.max((long)(1000000000 / j / 4) - k, 0L);
+        final long k = System.nanoTime() - System.nanoTime();
+        final long l = Math.max((long)(1000000000 / j / 4) - k, 0L);
 		
         ModEventHandlerClient.renderingDepthOnly = true;
         
@@ -131,19 +131,19 @@ public class Flashlight {
 	
 	public static void setUniforms(){
 		//Mat4 is from the glm library, found at https://github.com/java-graphics/glm
-		Mat4 modelMatrix = new Mat4(1.0F);
-		Mat3 rotMatrix = new Mat3(1.0F);
+		final Mat4 modelMatrix = new Mat4(1.0F);
+		final Mat3 rotMatrix = new Mat3(1.0F);
 		GL20.glUniform1i(GL20.glGetUniformLocation(HbmShaderManager.flashlightWorld, "lightCount"), Math.min(100, Math.min(ALL_RENDER_FLASHLIGHTS.size(), 20)));
 		for(int i = 0; i < ALL_RENDER_FLASHLIGHTS.size(); i++){
 			if(i >= 20)
 				break;
 			modelMatrix.identity();
 			rotMatrix.identity();
-			Flashlight f = ALL_RENDER_FLASHLIGHTS.get(i);
+			final Flashlight f = ALL_RENDER_FLASHLIGHTS.get(i);
 			//Transform the flashlight position to view space
 			
-			Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-			float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+			final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+			final float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
 			if(Minecraft.getMinecraft().isGamePaused()){
 			}
 			if (Minecraft.getMinecraft().gameSettings.viewBobbing)
@@ -155,26 +155,26 @@ public class Flashlight {
 			
             
             
-            Entity e = f.dummy;
-			double d0 = e.lastTickPosX + (e.posX - e.lastTickPosX) * (double) partialTicks;
-			double d1 = e.lastTickPosY + (e.posY - e.lastTickPosY) * (double) partialTicks;
-			double d2 = e.lastTickPosZ + (e.posZ - e.lastTickPosZ) * (double) partialTicks;
-			double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-			double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-			double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+            final Entity e = f.dummy;
+			final double d0 = e.lastTickPosX + (e.posX - e.lastTickPosX) * (double) partialTicks;
+			final double d1 = e.lastTickPosY + (e.posY - e.lastTickPosY) * (double) partialTicks;
+			final double d2 = e.lastTickPosZ + (e.posZ - e.lastTickPosZ) * (double) partialTicks;
+			final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+			final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+			final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
 			
             modelMatrix.translate((float)(d0 - d3), (float)(d1 - d4 - entity.getEyeHeight()), (float)(d2 - d5));
             
 			rotMatrix.rotate((float) Math.toRadians(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks), 1.0F, 0.0F, 0.0F);
 			rotMatrix.rotate((float) Math.toRadians(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks + 180.0F), 0.0F, 1.0F, 0.0F);
 			
-            Vec4 newPos = modelMatrix.mul(new Vec4(0.0F, 0.0F, 0.0F, 1.0F));
+            final Vec4 newPos = modelMatrix.mul(new Vec4(0.0F, 0.0F, 0.0F, 1.0F));
             
-            Vec3d[] save = new Vec3d[]{f.position, f.direction};
+            final Vec3d[] save = new Vec3d[]{f.position, f.direction};
             
             
             
-            Vec3 newPos2 = rotMatrix.mul(new Vec3((float)f.direction.x, (float)f.direction.y, (float)f.direction.z));
+            final Vec3 newPos2 = rotMatrix.mul(new Vec3((float)f.direction.x, (float)f.direction.y, (float)f.direction.z));
             
             f.position = new Vec3d(newPos.x, newPos.y, newPos.z);
             
@@ -192,15 +192,14 @@ public class Flashlight {
 		}
 	}
 	
-	private static void applyBobbing(float partialTicks, Mat4 matrix, Mat3 rotMatrix)
+	private static void applyBobbing(final float partialTicks, final Mat4 matrix, final Mat3 rotMatrix)
     {
-		if (Minecraft.getMinecraft().getRenderViewEntity() instanceof EntityPlayer)
+		if (Minecraft.getMinecraft().getRenderViewEntity() instanceof EntityPlayer entityplayer)
         {
-            EntityPlayer entityplayer = (EntityPlayer)Minecraft.getMinecraft().getRenderViewEntity();
-            float f = entityplayer.distanceWalkedModified - entityplayer.prevDistanceWalkedModified;
-            float f1 = -(entityplayer.distanceWalkedModified + f * partialTicks);
-            float f2 = entityplayer.prevCameraYaw + (entityplayer.cameraYaw - entityplayer.prevCameraYaw) * partialTicks;
-            float f3 = entityplayer.prevCameraPitch + (entityplayer.cameraPitch - entityplayer.prevCameraPitch) * partialTicks;
+            final float f = entityplayer.distanceWalkedModified - entityplayer.prevDistanceWalkedModified;
+            final float f1 = -(entityplayer.distanceWalkedModified + f * partialTicks);
+            final float f2 = entityplayer.prevCameraYaw + (entityplayer.cameraYaw - entityplayer.prevCameraYaw) * partialTicks;
+            final float f3 = entityplayer.prevCameraPitch + (entityplayer.cameraPitch - entityplayer.prevCameraPitch) * partialTicks;
             matrix.translate(MathHelper.sin(f1 * (float)Math.PI) * f2 * 0.5F, -Math.abs(MathHelper.cos(f1 * (float)Math.PI) * f2), 0.0F);
             matrix.rotate((float) Math.toRadians(MathHelper.sin(f1 * (float)Math.PI) * f2 * 3.0F), 0.0F, 0.0F, 1.0F);
             matrix.rotate((float) Math.toRadians(Math.abs(MathHelper.cos(f1 * (float)Math.PI - 0.2F) * f2) * 5.0F), 1.0F, 0.0F, 0.0F);

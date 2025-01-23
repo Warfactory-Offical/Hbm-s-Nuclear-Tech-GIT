@@ -20,7 +20,7 @@ public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 	private EntityLivingBase targetEntity;
 	private final double searchRange;
 
-	public EntityAINearestAttackableTargetNT(EntityCreature owner, Class targetClass, int targetChance, boolean shouldCheckSight, boolean nearbyOnly, final Predicate<Entity> selector, double range) {
+	public EntityAINearestAttackableTargetNT(final EntityCreature owner, final Class targetClass, final int targetChance, final boolean shouldCheckSight, final boolean nearbyOnly, final Predicate<Entity> selector, final double range) {
 		super(owner, shouldCheckSight, nearbyOnly);
 		this.targetClass = targetClass;
 		this.targetChance = targetChance;
@@ -29,7 +29,7 @@ public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 		setMutexBits(1);
 
 		this.targetEntitySelector = entity -> {
-			return selector != null && !selector.apply(entity) ? false : !(entity instanceof EntityLivingBase) ? false : EntityAINearestAttackableTargetNT.this.isSuitableTarget((EntityLivingBase) entity, false);
+			return (selector == null || selector.apply(entity)) && entity instanceof EntityLivingBase && EntityAINearestAttackableTargetNT.this.isSuitableTarget((EntityLivingBase) entity, false);
 		};
 	}
 
@@ -44,8 +44,8 @@ public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 		if((this.targetChance > 0) && (this.taskOwner.getRNG().nextInt(this.targetChance) != 0)) {
 			return false;
 		}
-		double range = getTargetDistance();
-		List targets = this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.taskOwner.getEntityBoundingBox().grow(range, range, range), this.targetEntitySelector);
+		final double range = getTargetDistance();
+		final List targets = this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.taskOwner.getEntityBoundingBox().grow(range, range, range), this.targetEntitySelector);
 		Collections.sort(targets, this.theNearestAttackableTargetSorter);
 
 		if(targets.isEmpty()) {

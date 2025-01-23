@@ -23,7 +23,7 @@ public class Test {
 
     public void out(final long maxTimeNS) {
       final double percent = ((double) timeNS) / ((double) maxTimeNS) * 100.0;
-      System.out.println(String.format("%-29s %15d ns %#6.2f%%", new Object[]{this.description, this.timeNS, percent}));
+      System.out.printf("%-29s %15d ns %#6.2f%%%n", this.description, this.timeNS, percent);
     }
   }
   protected final static int SIZE = 16;
@@ -32,7 +32,7 @@ public class Test {
   /**
    * @param args the command line arguments
    */
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     long ns = System.nanoTime(), largest; // warmup
     int i, pos;
     float value;
@@ -47,7 +47,7 @@ public class Test {
       throw new RuntimeException("Non-direct buffer is direct!");
     }
     final FloatBuffer bufferD = ByteBuffer.allocateDirect(SIZE * 4).asFloatBuffer();
-    if (bufferD.isDirect() == false) {
+    if (!bufferD.isDirect()) {
       throw new RuntimeException("Direct buffer is non-direct!");
     }
     final float[] helper = new float[SIZE];
@@ -213,26 +213,26 @@ public class Test {
 
 
     largest = 0;
-    for (Testresult result : arrayResults) {
+    for (final Testresult result : arrayResults) {
       largest = Math.max(largest, result.timeNS);
     }
-    for (Testresult result : bufferResults) {
+    for (final Testresult result : bufferResults) {
       largest = Math.max(largest, result.timeNS);
     }
-    for (Testresult result : bufferDResults) {
+    for (final Testresult result : bufferDResults) {
       largest = Math.max(largest, result.timeNS);
     }
 
     System.out.println("-- Array tests -----------------------------------------");
-    for (Testresult result : arrayResults) {
+    for (final Testresult result : arrayResults) {
       result.out(largest);
     }
     System.out.println("-- Buffer tests ----------------------------------------");
-    for (Testresult result : bufferResults) {
+    for (final Testresult result : bufferResults) {
       result.out(largest);
     }
     System.out.println("-- Direct buffer tests ---------------------------------");
-    for (Testresult result : bufferDResults) {
+    for (final Testresult result : bufferDResults) {
       result.out(largest);
     }
   }

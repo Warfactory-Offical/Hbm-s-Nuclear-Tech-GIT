@@ -1,11 +1,8 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -20,9 +17,11 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemDiscord extends Item {
 
-	public ItemDiscord(String s) {
+	public ItemDiscord(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -30,8 +29,8 @@ public class ItemDiscord extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		RayTraceResult pos = Library.rayTrace(player, 100, 1);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final RayTraceResult pos = Library.rayTrace(player, 100, 1);
 
 		if(pos.typeOfHit == Type.BLOCK) {
 
@@ -40,7 +39,7 @@ public class ItemDiscord extends Item {
 	            if(player.isRiding())
 	            	player.dismountRidingEntity();
 
-	            ForgeDirection dir = ForgeDirection.getOrientation(pos.sideHit.ordinal());
+	            final ForgeDirection dir = ForgeDirection.getOrientation(pos.sideHit.ordinal());
 
 	            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
@@ -58,7 +57,7 @@ public class ItemDiscord extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add(TextFormatting.YELLOW + "" + TextFormatting.ITALIC + "I've seen the Rod of Discord and honestly");
 		list.add(TextFormatting.YELLOW + "" + TextFormatting.ITALIC + "it's not as amazing as people say.");
 		list.add("");

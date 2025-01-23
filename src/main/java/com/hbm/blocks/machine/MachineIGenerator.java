@@ -21,12 +21,12 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 public class MachineIGenerator extends BlockDummyable {
 
-	public MachineIGenerator(Material materialIn, String s) {
+	public MachineIGenerator(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(meta >= 12)
 			return new TileEntityMachineIGenerator();
 		
@@ -37,22 +37,22 @@ public class MachineIGenerator extends BlockDummyable {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 			
 			if(pos == null)
 				return false;
 			
-			TileEntityMachineIGenerator gen = (TileEntityMachineIGenerator)world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			final TileEntityMachineIGenerator gen = (TileEntityMachineIGenerator)world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
 			if(gen != null)
 				FMLNetworkHandler.openGui(player, MainRegistry.instance, ModBlocks.guiID_machine_industrial_generator, world, pos[0], pos[1], pos[2]);
@@ -74,7 +74,7 @@ public class MachineIGenerator extends BlockDummyable {
 	}
 	
 	@Override
-	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected boolean checkRequirement(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir))
 			return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int [] {5,0,2,2,8,-2}, x, y, z, dir))
@@ -83,21 +83,18 @@ public class MachineIGenerator extends BlockDummyable {
 			return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int [] {3,-2,1,1,-1,3}, x, y, z, dir))
 			return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int [] {4,-2,1,1,1,0}, x, y, z, dir))
-			return false;
-		
-		return true;
-	}
+        return MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{4, -2, 1, 1, 1, 0}, x, y, z, dir);
+    }
 	
 	@Override
-	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int [] {5,0,2,2,8,-2}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int [] {4,0,2,2,-4,8}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int [] {3,-2,1,1,-1,3}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int [] {4,-2,1,1,1,0}, this, dir);
 		
-		int[] rot = MultiblockHandlerXR.rotate(new int [] {1,0,2,2,8,8}, dir.toEnumFacing());
+		final int[] rot = MultiblockHandlerXR.rotate(new int [] {1,0,2,2,8,8}, dir.toEnumFacing());
 		
 		for(int iy = 0; iy <= 1; iy++) {
 			for(int ix = -rot[4]; ix <= rot[5]; ix++) {

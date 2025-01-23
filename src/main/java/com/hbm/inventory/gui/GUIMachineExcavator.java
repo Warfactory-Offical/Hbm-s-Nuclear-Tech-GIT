@@ -21,10 +21,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineExcavator extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_mining_drill.png");
-	private TileEntityMachineExcavator drill;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_mining_drill.png");
+	private final TileEntityMachineExcavator drill;
 
-	public GUIMachineExcavator(InventoryPlayer inventory, TileEntityMachineExcavator tile) {
+	public GUIMachineExcavator(final InventoryPlayer inventory, final TileEntityMachineExcavator tile) {
 		super(new ContainerMachineExcavator(inventory, tile));
 		
 		this.drill = tile;
@@ -34,13 +34,13 @@ public class GUIMachineExcavator extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
-		String[] text1 = I18nUtil.resolveKeyArray("desc.excavator1");
-		String[] text2 = I18nUtil.resolveKeyArray("desc.excavator2");
-		String[] text3 = I18nUtil.resolveKeyArray("desc.excavator3");
-		String[] text4 = I18nUtil.resolveKeyArray("desc.excavator4");
-		String[] text5 = I18nUtil.resolveKeyArray("desc.excavator5");
+		final String[] text1 = I18nUtil.resolveKeyArray("desc.excavator1");
+		final String[] text2 = I18nUtil.resolveKeyArray("desc.excavator2");
+		final String[] text3 = I18nUtil.resolveKeyArray("desc.excavator3");
+		final String[] text4 = I18nUtil.resolveKeyArray("desc.excavator4");
+		final String[] text5 = I18nUtil.resolveKeyArray("desc.excavator5");
 		
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 7, guiTop + 16, 18, 18, mouseX, mouseY, text1);
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 31, guiTop + 16, 18, 18, mouseX, mouseY, text2);
@@ -48,17 +48,17 @@ public class GUIMachineExcavator extends GuiInfoContainer {
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 16, 18, 18, mouseX, mouseY, text4);
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 103, guiTop + 16, 18, 18, mouseX, mouseY, text5);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 220, guiTop + 17, 16, 52, drill.getPower(), drill.maxPower);
+		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 220, guiTop + 17, 16, 52, drill.getPower(), TileEntityMachineExcavator.maxPower);
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 202, guiTop + 17, 16, 52, drill.tank, drill.fluidType);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	public boolean isInBox(int mouseX, int mouseY, int x1, int x2, int y1, int y2){
+	public boolean isInBox(final int mouseX, final int mouseY, final int x1, final int x2, final int y1, final int y2){
 		return guiLeft + x1 <= mouseX && guiLeft + x2 > mouseX && guiTop + y1 < mouseY && guiTop + y2 >= mouseY;
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int mouseButton) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int mouseButton) throws IOException {
 		super.mouseClicked(x, y, mouseButton);
 
 		String toggle = null;
@@ -72,26 +72,26 @@ public class GUIMachineExcavator extends GuiInfoContainer {
 		if(toggle != null) {
 			// "hbm:block.leverLarge"
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean(toggle, true);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, drill.getPos()));
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8 + 33, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
+	protected void drawGuiContainerBackgroundLayer(final float interp, final int x, final int y) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, 242, 96);
 		drawTexturedModalRect(guiLeft + 33, guiTop + 104, 33, 104, 176, 100);
 		
-		int i = (int) (drill.getPower() * 52 / drill.getMaxPower());
+		final int i = (int) (drill.getPower() * 52 / drill.getMaxPower());
 		drawTexturedModalRect(guiLeft + 220, guiTop + 70 - i, 229, 156 - i, 16, i);
 		
 		if(drill.getPower() > drill.getPowerConsumption()) {

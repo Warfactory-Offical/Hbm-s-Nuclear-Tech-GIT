@@ -1,15 +1,12 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
 import com.hbm.forgefluid.HbmFluidHandlerGasCanister;
-import com.hbm.forgefluid.HbmFluidHandlerItemStack;
 import com.hbm.forgefluid.SpecialContainerFillLists.EnumGasCanister;
 import com.hbm.interfaces.IHasCustomModel;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -26,13 +23,15 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class ItemGasCanister extends Item implements IHasCustomModel {
 
 	public static final ModelResourceLocation fluidCanisterModel = new ModelResourceLocation(RefStrings.MODID + ":gas_empty", "inventory");
 	public int cap;
 	
 	
-	public ItemGasCanister(String s, int cap){
+	public ItemGasCanister(final String s, final int cap){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -45,37 +44,32 @@ public class ItemGasCanister extends Item implements IHasCustomModel {
 	
 	
 	@Override
-	public int getItemStackLimit(ItemStack stack){
+	public int getItemStackLimit(final ItemStack stack){
 		return isFullOrEmpty(stack) ? 64 : 1;
 	}
 	
-	public static boolean isFullOrEmpty(ItemStack stack){
+	public static boolean isFullOrEmpty(final ItemStack stack){
 		if(stack.hasTagCompound() && stack.getItem() == ModItems.gas_canister){
-			FluidStack f = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(HbmFluidHandlerGasCanister.FLUID_NBT_KEY));
+			final FluidStack f = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(HbmFluidHandlerGasCanister.FLUID_NBT_KEY));
 			if(f == null)
 				return true;
 			return f.amount == 4000 || f.amount == 0;
 			
-		} else if(stack.getItem() == ModItems.gas_canister){
-			return true;
-		}
-		return false;
-	}
+		} else return stack.getItem() == ModItems.gas_canister;
+    }
 	
-	public static boolean isEmptyCanister(ItemStack out) {
-		if(out.getItem() == ModItems.gas_canister && FluidUtil.getFluidContained(out) == null)
-			return true;
-		return false;
-	}
+	public static boolean isEmptyCanister(final ItemStack out) {
+        return out.getItem() == ModItems.gas_canister && FluidUtil.getFluidContained(out) == null;
+    }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
-		FluidStack f = FluidUtil.getFluidContained(stack);
+	public String getItemStackDisplayName(final ItemStack stack) {
+		final FluidStack f = FluidUtil.getFluidContained(stack);
 		if(f == null || f.getFluid() == null) {
 			return I18n.format("item.gas_empty.name");
 		} else {
-			EnumGasCanister canister = EnumGasCanister.getEnumFromFluid(f.getFluid());
+			final EnumGasCanister canister = EnumGasCanister.getEnumFromFluid(f.getFluid());
 			if(canister == null)
 				return I18n.format("item.gas_null.name");
 			return I18n.format(canister.getTranslateKey());
@@ -83,16 +77,16 @@ public class ItemGasCanister extends Item implements IHasCustomModel {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		FluidStack f = FluidUtil.getFluidContained(stack);
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+		final FluidStack f = FluidUtil.getFluidContained(stack);
 		tooltip.add((f == null ? "0" : f.amount) + "/" + cap + " mb");
 	}
 	
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
-			for(Fluid f : EnumGasCanister.getFluids()){
-				ItemStack stack = new ItemStack(this, 1, 0);
+			for(final Fluid f : EnumGasCanister.getFluids()){
+				final ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 				stack.setTagCompound(new NBTTagCompound());
 				if(f != null)
 					stack.getTagCompound().setTag(HbmFluidHandlerGasCanister.FLUID_NBT_KEY, new FluidStack(f, cap).writeToNBT(new NBTTagCompound()));
@@ -102,7 +96,7 @@ public class ItemGasCanister extends Item implements IHasCustomModel {
 	}
 	
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+	public ICapabilityProvider initCapabilities(final ItemStack stack, final NBTTagCompound nbt) {
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		return new HbmFluidHandlerGasCanister(stack, cap);
@@ -113,18 +107,17 @@ public class ItemGasCanister extends Item implements IHasCustomModel {
 		return fluidCanisterModel;
 	}
 	
-	public static boolean isFullCanister(ItemStack stack, Fluid fluid){
+	public static boolean isFullCanister(final ItemStack stack, final Fluid fluid){
 		if(stack != null){
-			if(stack.getItem() instanceof ItemGasCanister && FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == fluid && FluidUtil.getFluidContained(stack).amount == ((ItemGasCanister)stack.getItem()).cap)
-				return true;
+            return stack.getItem() instanceof ItemGasCanister && FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == fluid && FluidUtil.getFluidContained(stack).amount == ((ItemGasCanister) stack.getItem()).cap;
 		}
 		return false;
 	}
 	
-	public static ItemStack getFullCanister(Fluid f){
-		ItemStack stack = new ItemStack(ModItems.gas_canister, 1, 0);
+	public static ItemStack getFullCanister(final Fluid f){
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.gas_canister, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
-		if(f != null && EnumGasCanister.contains(f))
+		if(EnumGasCanister.contains(f))
 			stack.getTagCompound().setTag(HbmFluidHandlerGasCanister.FLUID_NBT_KEY, new FluidStack(f, 4000).writeToNBT(new NBTTagCompound()));
 		return stack;
 	}

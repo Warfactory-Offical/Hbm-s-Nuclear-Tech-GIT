@@ -7,7 +7,7 @@ import mezz.jei.api.IGuiHelper;
 
 public class SILEXRadioRecipeHandler extends SILEXRecipeHandler {
 
-	public SILEXRadioRecipeHandler(IGuiHelper help){
+	public SILEXRadioRecipeHandler(final IGuiHelper help){
 		super(help);
 	}
 

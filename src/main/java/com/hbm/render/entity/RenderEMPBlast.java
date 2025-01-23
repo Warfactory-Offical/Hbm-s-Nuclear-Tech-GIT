@@ -18,17 +18,17 @@ public class RenderEMPBlast extends Render<EntityEMPBlast> {
 	public static final IRenderFactory<EntityEMPBlast> FACTORY = (RenderManager man) -> {return new RenderEMPBlast(man);};
 	
 	private static final ResourceLocation ringModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/Ring.obj");
-	private IModelCustom ringModel;
-    private ResourceLocation ringTexture;
+	private final IModelCustom ringModel;
+    private final ResourceLocation ringTexture;
 	
-	protected RenderEMPBlast(RenderManager renderManager) {
+	protected RenderEMPBlast(final RenderManager renderManager) {
 		super(renderManager);
 		ringModel = AdvancedModelLoader.loadModel(ringModelRL);
     	ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/explosion/EMPBlast.png");
 	}
 	
 	@Override
-	public void doRender(EntityEMPBlast entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityEMPBlast entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GL11.glTranslated(x, y, z);
@@ -43,7 +43,7 @@ public class RenderEMPBlast extends Render<EntityEMPBlast> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityEMPBlast entity) {
+	protected ResourceLocation getEntityTexture(final EntityEMPBlast entity) {
 		return ringTexture;
 	}
 

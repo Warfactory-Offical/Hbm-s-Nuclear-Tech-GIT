@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 
@@ -49,12 +50,12 @@ public abstract class WeaponAbility {
 		
 		float rad;
 		
-		public RadiationAbility(float rad) {
+		public RadiationAbility(final float rad) {
 			this.rad = rad;
 		}
 
 		@Override
-		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
+		public void onHit(final World world, final EntityPlayer player, final Entity victim, final IItemAbility tool) {
 			if(victim instanceof EntityLivingBase)
 				ContaminationUtil.contaminate((EntityLivingBase)victim, HazardType.RADIATION, ContaminationType.CREATIVE, rad);
 		}
@@ -75,18 +76,16 @@ public abstract class WeaponAbility {
 		
 		float amount;
 		
-		public VampireAbility(float amount) {
+		public VampireAbility(final float amount) {
 			this.amount = amount;
 		}
 
 		@Override
-		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
+		public void onHit(final World world, final EntityPlayer player, final Entity victim, final IItemAbility tool) {
 			
-			if(victim instanceof EntityLivingBase) {
-				
-				EntityLivingBase living = (EntityLivingBase) victim;
-				
-				living.setHealth(living.getHealth() - amount);
+			if(victim instanceof EntityLivingBase living) {
+
+                living.setHealth(living.getHealth() - amount);
 				player.heal(amount);
 			}
 		}
@@ -107,18 +106,16 @@ public abstract class WeaponAbility {
 		
 		int duration;
 		
-		public StunAbility(int duration) {
+		public StunAbility(final int duration) {
 			this.duration = duration;
 		}
 
 		@Override
-		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
+		public void onHit(final World world, final EntityPlayer player, final Entity victim, final IItemAbility tool) {
 			
-			if(victim instanceof EntityLivingBase) {
-				
-				EntityLivingBase living = (EntityLivingBase) victim;
+			if(victim instanceof EntityLivingBase living) {
 
-				living.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration * 20, 4));
+                living.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration * 20, 4));
 				living.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, duration * 20, 4));
 			}
 		}
@@ -139,18 +136,16 @@ public abstract class WeaponAbility {
 
 		int duration;
 
-		public PhosphorusAbility(int duration) {
+		public PhosphorusAbility(final int duration) {
 			this.duration = duration;
 		}
 
 		@Override
-		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
+		public void onHit(final World world, final EntityPlayer player, final Entity victim, final IItemAbility tool) {
 
-			if(victim instanceof EntityLivingBase) {
+			if(victim instanceof EntityLivingBase living) {
 
-				EntityLivingBase living = (EntityLivingBase) victim;
-
-				living.addPotionEffect(new PotionEffect(HbmPotion.phosphorus, duration * 20, 4));
+                living.addPotionEffect(new PotionEffect(HbmPotion.phosphorus, duration * 20, 4));
 			}
 		}
 
@@ -169,20 +164,18 @@ public abstract class WeaponAbility {
 
 		int divider;
 
-		public ChainsawAbility(int divider) {
+		public ChainsawAbility(final int divider) {
 			this.divider = divider;
 		}
 
 		@Override
-		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
+		public void onHit(final World world, final EntityPlayer player, final Entity victim, final IItemAbility tool) {
 
-			if(victim instanceof EntityLivingBase) {
+			if(victim instanceof EntityLivingBase living) {
 
-				EntityLivingBase living = (EntityLivingBase) victim;
+                if(living.getHealth() <= 0.0F) {
 
-				if(living.getHealth() <= 0.0F) {
-
-					WeightedRandomObject[] ammo = new WeightedRandomObject[] {
+					final WeightedRandomObject[] ammo = new WeightedRandomObject[] {
 							new WeightedRandomObject(ModItems.ammo_12gauge, 10),
 							new WeightedRandomObject(ModItems.ammo_12gauge_shrapnel, 5),
 							new WeightedRandomObject(ModItems.ammo_12gauge_du, 3),
@@ -210,16 +203,16 @@ public abstract class WeaponAbility {
 							new WeightedRandomObject(ModItems.syringe_metal_stimpak, 25),
 					};
 
-					int count = Math.min((int)Math.ceil(living.getMaxHealth() / divider), 250); //safeguard to prevent funnies from bosses with obscene health
+					final int count = Math.min((int)Math.ceil(living.getMaxHealth() / divider), 250); //safeguard to prevent funnies from bosses with obscene health
 
 					for(int i = 0; i < count; i++) {
 
-						living.dropItem(((WeightedRandomObject)WeightedRandom.getRandomItem(living.getRNG(), Arrays.asList(ammo))).asItem(), 1);
+						living.dropItem(WeightedRandom.getRandomItem(living.getRNG(), Arrays.asList(ammo)).asItem(), 1);
 						world.spawnEntity(new EntityXPOrb(world, living.posX, living.posY, living.posZ, 1));
 					}
 
 					if(player instanceof EntityPlayerMP) {
-						NBTTagCompound data = new NBTTagCompound();
+						final NBTTagCompound data = new NBTTagCompound();
 						data.setString("type", "vanillaburst");
 						data.setInteger("count", count * 4);
 						data.setDouble("motion", 0.1D);
@@ -247,29 +240,27 @@ public abstract class WeaponAbility {
 	public static class BeheaderAbility extends WeaponAbility {
 
 		@Override
-		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
+		public void onHit(final World world, final EntityPlayer player, final Entity victim, final IItemAbility tool) {
 
-			if(victim instanceof EntityLivingBase && ((EntityLivingBase) victim).getHealth() <= 0.0F) {
+			if(victim instanceof EntityLivingBase living && ((EntityLivingBase) victim).getHealth() <= 0.0F) {
 
-				EntityLivingBase living = (EntityLivingBase) victim;
-
-				if(living instanceof EntitySkeleton) {
-					living.entityDropItem(new ItemStack(Items.SKULL, 1, 0), 0.0F);
+                if(living instanceof EntitySkeleton) {
+					living.entityDropItem(ItemStackUtil.itemStackFrom(Items.SKULL, 1, 0), 0.0F);
 				} else if(living instanceof EntityWitherSkeleton){
 					living.entityDropItem(ItemCell.getFullCell(ModForgeFluids.amat), 0.0F);
 				} else if(living instanceof EntityZombie) {
-					living.entityDropItem(new ItemStack(Items.SKULL, 1, 2), 0.0F);
+					living.entityDropItem(ItemStackUtil.itemStackFrom(Items.SKULL, 1, 2), 0.0F);
 				} else if(living instanceof EntityCreeper) {
-					living.entityDropItem(new ItemStack(Items.SKULL, 1, 4), 0.0F);
+					living.entityDropItem(ItemStackUtil.itemStackFrom(Items.SKULL, 1, 4), 0.0F);
 				} else if(living instanceof EntityPlayer) {
 
-					ItemStack head = new ItemStack(Items.SKULL, 1, 3);
+					final ItemStack head = ItemStackUtil.itemStackFrom(Items.SKULL, 1, 3);
 					head.setTagCompound(new NBTTagCompound());
-					head.getTagCompound().setString("SkullOwner", ((EntityPlayer) living).getDisplayName().getUnformattedText());
+					head.getTagCompound().setString("SkullOwner", living.getDisplayName().getUnformattedText());
 					living.entityDropItem(head, 0.0F);
 				} else {
-					living.entityDropItem(new ItemStack(Items.ROTTEN_FLESH, 3, 0), 0.0F);
-					living.entityDropItem(new ItemStack(Items.BONE, 2, 0), 0.0F);
+					living.entityDropItem(ItemStackUtil.itemStackFrom(Items.ROTTEN_FLESH, 3, 0), 0.0F);
+					living.entityDropItem(ItemStackUtil.itemStackFrom(Items.BONE, 2, 0), 0.0F);
 				}
 			}
 		}
@@ -289,12 +280,12 @@ public abstract class WeaponAbility {
 		
 		int duration;
 		
-		public FireAbility(int duration) {
+		public FireAbility(final int duration) {
 			this.duration = duration;
 		}
 
 		@Override
-		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
+		public void onHit(final World world, final EntityPlayer player, final Entity victim, final IItemAbility tool) {
 			
 			if(victim instanceof EntityLivingBase) {
 				victim.setFire(duration);

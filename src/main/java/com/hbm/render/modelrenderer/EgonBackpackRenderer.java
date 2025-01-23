@@ -13,12 +13,12 @@ public class EgonBackpackRenderer extends ModelRenderer {
 
 	public static boolean showBackpack = false;
 	
-	public EgonBackpackRenderer(ModelBase model) {
+	public EgonBackpackRenderer(final ModelBase model) {
 		super(model);
 	}
 	
 	@Override
-	public void render(float scale) {
+	public void render(final float scale) {
 		if(!showBackpack)
 			return;
 		GL11.glPushMatrix();
@@ -27,9 +27,9 @@ public class EgonBackpackRenderer extends ModelRenderer {
 		GL11.glScaled(0.0625, 0.0625, 0.0625);
 		GL11.glRotated(180, 0, 0, 1);
 		GL11.glRotated(90, 0, 1, 0);
-		int tex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+		final int tex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.egon_backpack_tex);
-		int prevShadeModel = GL11.glGetInteger(GL11.GL_SHADE_MODEL);
+		final int prevShadeModel = GL11.glGetInteger(GL11.GL_SHADE_MODEL);
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		ResourceManager.egon_backpack.renderAll();
 		GlStateManager.shadeModel(prevShadeModel);

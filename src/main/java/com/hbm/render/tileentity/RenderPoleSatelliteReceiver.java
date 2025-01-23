@@ -13,14 +13,14 @@ public class RenderPoleSatelliteReceiver extends TileEntitySpecialRenderer<TileE
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":" + "textures/models/deco/PoleSatelliteReceiver.png");
 	
-	private ModelSatelliteReceiver model;
+	private final ModelSatelliteReceiver model;
 	
 	public RenderPoleSatelliteReceiver() {
 		this.model = new ModelSatelliteReceiver();
 	}
 	
 	@Override
-	public void render(TileEntityDecoPoleSatelliteReceiver te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityDecoPoleSatelliteReceiver te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		GL11.glRotatef(180, 0F, 0F, 1F);

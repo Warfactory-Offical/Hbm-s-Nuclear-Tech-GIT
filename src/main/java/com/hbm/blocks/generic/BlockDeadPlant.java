@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class BlockDeadPlant extends BlockBush
 {
-    public BlockDeadPlant(Material materialIn, String s) {
+    public BlockDeadPlant(final Material materialIn, final String s) {
         super(materialIn);
         this.setTranslationKey(s);
         this.setRegistryName(s);
@@ -30,7 +30,7 @@ public class BlockDeadPlant extends BlockBush
     }
 
     @Override
-    public boolean canPlaceBlockAt(World world, BlockPos pos) {
+    public boolean canPlaceBlockAt(final World world, final BlockPos pos) {
         return this.canBlockStay(world, pos, world.getBlockState(pos));
     }
 
@@ -42,19 +42,19 @@ public class BlockDeadPlant extends BlockBush
 //
 //    }
 
-    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        Block block = world.getBlockState(pos.down()).getBlock();
+    public boolean canBlockStay(final World world, final BlockPos pos, final IBlockState state) {
+        final Block block = world.getBlockState(pos.down()).getBlock();
         return block == Blocks.GRASS || block == Blocks.DIRT || block == ModBlocks.waste_earth || block == ModBlocks.waste_dirt || block == ModBlocks.dirt_dead || block == ModBlocks.dirt_oily;
     }
 
 
     @Override
-    public Block setSoundType(SoundType sound){
+    public Block setSoundType(final SoundType sound){
         return super.setSoundType(sound);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
+    public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
         return new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.4000000059604645D, 0.8999999761581421D);
     }
 
@@ -68,11 +68,11 @@ public class BlockDeadPlant extends BlockBush
         return 1;
     }
 
-    public int damageDropped(int meta) {
+    public int damageDropped(final int meta) {
         return meta;
     }
 
-    public Item getItemDropped(int meta, Random rand, int fortune) {
+    public Item getItemDropped(final int meta, final Random rand, final int fortune) {
         return Items.AIR;
     }
 

@@ -12,11 +12,11 @@ public class RenderSSmokeFactory implements IRenderFactory<EntitySSmokeFX> {
 
 	Item renderItem;
 	
-	public RenderSSmokeFactory(Item item) {
+	public RenderSSmokeFactory(final Item item) {
 		renderItem = item;
 	}
 	@Override
-	public Render<? super EntitySSmokeFX> createRenderFor(RenderManager manager) {
+	public Render<? super EntitySSmokeFX> createRenderFor(final RenderManager manager) {
 		return new SSmokeRenderer(manager, renderItem);
 	}
 

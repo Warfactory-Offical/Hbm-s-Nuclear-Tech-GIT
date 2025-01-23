@@ -22,12 +22,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class RenderOrbus extends TileEntitySpecialRenderer<TileEntityMachineOrbus> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineOrbus te){
+	public boolean isGlobalRenderer(final TileEntityMachineOrbus te){
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachineOrbus orbus, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+	public void render(final TileEntityMachineOrbus orbus, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		
@@ -42,20 +42,20 @@ public class RenderOrbus extends TileEntitySpecialRenderer<TileEntityMachineOrbu
 			GL11.glTranslated(0F, 0F, 1F); break;
 		}
 		
-		double scale = (double)orbus.tank.getFluidAmount() / (double)orbus.tank.getCapacity();
+		final double scale = (double)orbus.tank.getFluidAmount() / (double)orbus.tank.getCapacity();
 		
 		if(orbus.tank.getFluidAmount() > 0) {
-			Fluid type = orbus.tank.getFluid().getFluid();
+			final Fluid type = orbus.tank.getFluid().getFluid();
 			GlStateManager.disableLighting();
 			FFUtils.setColorFromFluid(type);
-			TextureAtlasSprite sprite = FFUtils.getTextureFromFluid(type);
-			float u = sprite.getMinU();
-			float v = sprite.getMinV();
-			float mU = sprite.getMaxU();
-			float mV = sprite.getMaxV();
+			final TextureAtlasSprite sprite = FFUtils.getTextureFromFluid(type);
+			final float u = sprite.getMinU();
+			final float v = sprite.getMinV();
+			final float mU = sprite.getMaxU();
+			final float mV = sprite.getMaxV();
 			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			
-			float lby = OpenGlHelper.lastBrightnessY;
+			final float lby = OpenGlHelper.lastBrightnessY;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (int)(15*type.getLuminosity()*scale)+15, lby);
 			
 			GL11.glMatrixMode(GL11.GL_TEXTURE);

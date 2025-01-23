@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BlockHatch extends BlockContainer {
 
-	public BlockHatch(Material materialIn, String s) {
+	public BlockHatch(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -22,13 +22,13 @@ public class BlockHatch extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityHatch();
 	}
 	
-	public void setControllerPos(World world, BlockPos pos, BlockPos controller) {
+	public void setControllerPos(final World world, final BlockPos pos, final BlockPos controller) {
 		
-		TileEntity te = world.getTileEntity(pos);
+		final TileEntity te = world.getTileEntity(pos);
 		
 		if(te != null && te instanceof TileEntityHatch) {
 			((TileEntityHatch)te).setControllerPos(controller);
@@ -37,7 +37,7 @@ public class BlockHatch extends BlockContainer {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

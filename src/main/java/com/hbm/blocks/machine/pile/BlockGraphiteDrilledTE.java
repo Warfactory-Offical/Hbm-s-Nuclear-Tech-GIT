@@ -7,22 +7,22 @@ import net.minecraft.world.World;
 
 public abstract class BlockGraphiteDrilledTE extends BlockGraphiteDrilledBase implements ITileEntityProvider {
 
-	public BlockGraphiteDrilledTE(String s) {
+	public BlockGraphiteDrilledTE(final String s) {
 		super(s);
 	}
 	
 	@Override
-	public boolean hasTileEntity(IBlockState state){
+	public boolean hasTileEntity(final IBlockState state){
 		return true;
 	}
 	
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state){
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state){
 		super.onBlockAdded(worldIn, pos, state);
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state){
 		super.breakBlock(worldIn, pos, state);
 		worldIn.removeTileEntity(pos);
 	}

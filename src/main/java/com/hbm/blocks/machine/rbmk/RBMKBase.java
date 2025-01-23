@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.rbmk;
+import com.hbm.util.ItemStackUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -41,7 +42,7 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 	public ResourceLocation coverTexture;
 	public ResourceLocation columnTexture;
 	
-	public RBMKBase(String s, String columnTexture){
+	public RBMKBase(final String s, final String columnTexture){
 		super(Material.IRON, s);
 		coverTexture = new ResourceLocation(RefStrings.MODID, "textures/blocks/rbmk/" + s + ".png");
 		this.columnTexture = new ResourceLocation(RefStrings.MODID, "textures/blocks/rbmk/" + columnTexture +".png");
@@ -59,29 +60,27 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(final ItemStack stack, @Nullable final World player, final List<String> tooltip, final ITooltipFlag advanced) {
         this.addStandardInfo(tooltip);
     }
 	
-	public boolean openInv(World world, int x, int y, int z, EntityPlayer player, int gui, EnumHand hand) {
+	public boolean openInv(final World world, final int x, final int y, final int z, final EntityPlayer player, final int gui, final EnumHand hand) {
 		
 		if(world.isRemote) {
 			return true;
 		}
 		
-		int[] pos = this.findCore(world, x, y, z);
+		final int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos == null)
 			return false;
 		
-		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityRBMKBase))
+		if(!(te instanceof TileEntityRBMKBase rbmk))
 			return false;
-		
-		TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-		
-		if(player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() instanceof ItemRBMKLid) {
+
+        if(player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() instanceof ItemRBMKLid) {
 			
 			if(!rbmk.hasLid())
 				return false;
@@ -96,19 +95,17 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos bpos){
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos bpos){
 		float height = 0.0F;
 		
-		int[] pos = this.findCore(source, bpos.getX(), bpos.getY(), bpos.getZ());
+		final int[] pos = this.findCore(source, bpos.getX(), bpos.getY(), bpos.getZ());
 		
 		if(pos != null) {
-			TileEntity te = source.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			final TileEntity te = source.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
-			if(te instanceof TileEntityRBMKBase) {
-				
-				TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-				
-				if(rbmk.hasLid()) {
+			if(te instanceof TileEntityRBMKBase rbmk) {
+
+                if(rbmk.hasLid()) {
 					height += 0.25F;
 				}
 			}
@@ -128,29 +125,29 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 	public static final ForgeDirection DIR_GLASS_LID = ForgeDirection.SOUTH;
 	
 	@Override
-	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o){
+	protected void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o){
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(world), this, dir);
 		this.makeExtra(world, x, y + RBMKDials.getColumnHeight(world), z);
 	}
 	
 	@Override
-	protected ForgeDirection getDirModified(ForgeDirection dir) {
+	protected ForgeDirection getDirModified(final ForgeDirection dir) {
 		return DIR_NO_LID;
 	}
 	
-	public int[] getDimensions(World world) {
+	public int[] getDimensions(final World world) {
 		return new int[] {RBMKDials.getColumnHeight(world), 0, 0, 0, 0, 0};
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state){
 		if(!world.isRemote && dropLids) {
-			int i = state.getValue(META);
+			final int i = state.getValue(META);
 			if(i == DIR_NORMAL_LID.ordinal() + offset) {
-				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, new ItemStack(ModItems.rbmk_lid)));
+				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid)));
 			}
 			if(i == DIR_GLASS_LID.ordinal() + offset) {
-				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, new ItemStack(ModItems.rbmk_lid_glass)));
+				world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5 + RBMKDials.getColumnHeight(world), pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid_glass)));
 			}
 		}
 		
@@ -158,32 +155,31 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, IToo
 	}
 	
 	@Override
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool){
+	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool){
 		if(tool != ToolType.SCREWDRIVER)
 			return false;
 		
-		int[] pos = this.findCore(world, x, y, z);
+		final int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos != null) {
-			TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
-			if(te instanceof TileEntityRBMKBase) {
-				
-				TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-				int i = rbmk.getBlockMetadata();
+			if(te instanceof TileEntityRBMKBase rbmk) {
+
+                final int i = rbmk.getBlockMetadata();
 				
 				if(rbmk.hasLid() && rbmk.isLidRemovable()) {
 					
 					if(!world.isRemote) {
 						if(i == DIR_NORMAL_LID.ordinal() + offset) {
-							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, new ItemStack(ModItems.rbmk_lid)));
+							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid)));
 						}
 						if(i == DIR_GLASS_LID.ordinal() + offset) {
-							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, new ItemStack(ModItems.rbmk_lid_glass)));
+							world.spawnEntity(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, ItemStackUtil.itemStackFrom(ModItems.rbmk_lid_glass)));
 						}
 						
 						world.setBlockState(new BlockPos(pos[0], pos[1], pos[2]), this.getDefaultState().withProperty(META, DIR_NO_LID.ordinal() + BlockDummyable.offset), 3);
-						NBTTagCompound nbt = rbmk.writeToNBT(new NBTTagCompound());
+						final NBTTagCompound nbt = rbmk.writeToNBT(new NBTTagCompound());
 						world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2])).readFromNBT(nbt);
 					}
 					

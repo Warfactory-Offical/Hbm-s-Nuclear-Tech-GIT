@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 public class TomPronter {
 
 	
-	public static void prontTom(int type) {
+	public static void prontTom(final int type) {
 		GL11.glPushMatrix();
 
 		GlStateManager.disableCull();
@@ -21,7 +21,7 @@ public class TomPronter {
 		GL11.glRotatef(180F, 1F, 0F, 0F);
 		GL11.glScalef(2F, 4F, 2F);
 		
-		TextureManager tex = Minecraft.getMinecraft().getTextureManager();
+		final TextureManager tex = Minecraft.getMinecraft().getTextureManager();
 		
 		tex.bindTexture(ResourceManager.tom_main_tex);
 		ResourceManager.tom_main.renderAll();
@@ -32,11 +32,11 @@ public class TomPronter {
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GlStateManager.disableAlpha();
 
-        float rot = -System.currentTimeMillis() / 10 % 360;
+        final float rot = -System.currentTimeMillis() / 10 % 360;
 		//GL11.glScalef(1.2F, 2F, 1.2F);
 		GL11.glScalef(0.8F, 5F, 0.8F);
 		
-		Random rand = new Random(0);
+		final Random rand = new Random(0);
 
 		if(type == 0)
 			tex.bindTexture(ResourceManager.tom_flame_tex);
@@ -45,7 +45,7 @@ public class TomPronter {
 		
         for(int i = 0; i < 20/*10*/; i++) {
 			
-			int r = rand.nextInt(90);
+			final int r = rand.nextInt(90);
 			
 			GL11.glRotatef(rot + r, 0, 1, 0);
 			

@@ -17,9 +17,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIMachineLargeTurbine extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/generators/gui_turbine_large.png");
-	private TileEntityMachineLargeTurbine turbine;
+	private final TileEntityMachineLargeTurbine turbine;
 
-	public GUIMachineLargeTurbine(InventoryPlayer invPlayer, TileEntityMachineLargeTurbine tedf) {
+	public GUIMachineLargeTurbine(final InventoryPlayer invPlayer, final TileEntityMachineLargeTurbine tedf) {
 		super(new ContainerMachineLargeTurbine(invPlayer, tedf));
 		turbine = tedf;
 
@@ -28,7 +28,7 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 62, guiTop + 69 - 52, 16, 52, turbine.tanks[0], turbine.types[0]);
@@ -36,7 +36,7 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 
 		if(turbine.types[1] == null) {
 
-			String[] text2 = I18nUtil.resolveKeyArray("desc.errorfluid");
+			final String[] text2 = I18nUtil.resolveKeyArray("desc.errorfluid");
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 
@@ -45,15 +45,15 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.turbine.hasCustomInventoryName() ? this.turbine.getInventoryName() : I18n.format(this.turbine.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.turbine.hasCustomInventoryName() ? this.turbine.getInventoryName() : I18n.format(this.turbine.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -72,7 +72,7 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft + 99, guiTop + 18, 183, 42, 14, 14);
 		}
 
-		int i = (int)turbine.getPowerScaled(34);
+		final int i = (int)turbine.getPowerScaled(34);
 		drawTexturedModalRect(guiLeft + 123, guiTop + 69 - i, 176, 34 - i, 7, i);
 
 		if(turbine.types[1] == null) {

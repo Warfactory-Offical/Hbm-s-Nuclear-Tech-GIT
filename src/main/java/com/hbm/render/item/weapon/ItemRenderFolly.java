@@ -22,7 +22,7 @@ public class ItemRenderFolly extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(folly_rl);
 		switch (type) {
 		case FIRST_PERSON_LEFT_HAND:

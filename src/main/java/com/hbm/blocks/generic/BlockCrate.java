@@ -1,4 +1,6 @@
 package com.hbm.blocks.generic;
+import com.hbm.items.meta.materials.MaterialMineral;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class BlockCrate extends BlockFalling {
 	private static List<ItemStack> metalList;
 	private static List<ItemStack> redList;
 	
-	public BlockCrate(Material material, String s) {
+	public BlockCrate(final Material material, final String s) {
 		super(material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -44,17 +46,17 @@ public class BlockCrate extends BlockFalling {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(player.getHeldItemMainhand().getItem().equals(ModItems.crowbar))
     	{
     		dropItems(world, pos.getX(), pos.getY(), pos.getZ());
@@ -120,22 +122,22 @@ public class BlockCrate extends BlockFalling {
     	BlockCrate.addToListWithWeight(weaponList, ModItems.gun_bolt_action, 7);
     	
     	//Lead Crate
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_uranium, 10);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_u238, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_plutonium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_pu240, 6);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_neptunium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_uranium_fuel, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_plutonium_fuel, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot_mox_fuel, 6);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_uranium, 10);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_u238, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_plutonium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_pu240, 6);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_neptunium, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_uranium_fuel, 8);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_plutonium_fuel, 7);
-    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget_mox_fuel, 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.URANIUM), 10);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.U238), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.PU240), 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL), 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.URANIUM), 10);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.U238), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.PU240), 6);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL), 8);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL), 7);
+    	BlockCrate.addToListWithWeight(leadList, ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL), 6);
     	BlockCrate.addToListWithWeight(leadList, ItemCell.getFullCell(ModForgeFluids.deuterium), 8);
     	BlockCrate.addToListWithWeight(leadList, ItemCell.getFullCell(ModForgeFluids.tritium), 8);
     	BlockCrate.addToListWithWeight(leadList, ItemCell.getFullCell(ModForgeFluids.uf6), 8);
@@ -190,12 +192,12 @@ public class BlockCrate extends BlockFalling {
     	BlockCrate.addToListWithWeight(redList, Item.getItemFromBlock(ModBlocks.broadcaster_pc), 1);
     }
     
-    public void dropItems(World world, int x, int y, int z) {
-    	Random rand = new Random();
+    public void dropItems(final World world, final int x, final int y, final int z) {
+    	final Random rand = new Random();
     	
     	//setDrops();
 
-    	List<ItemStack> list = new ArrayList<ItemStack>();
+    	final List<ItemStack> list = new ArrayList<ItemStack>();
     	
     	int i = rand.nextInt(3) + 3;
     	
@@ -228,14 +230,14 @@ public class BlockCrate extends BlockFalling {
     		}
     	}
     	
-    	for(ItemStack stack : list) {
-            float f = rand.nextFloat() * 0.8F + 0.1F;
-            float f1 = rand.nextFloat() * 0.8F + 0.1F;
-            float f2 = rand.nextFloat() * 0.8F + 0.1F;
+    	for(final ItemStack stack : list) {
+            final float f = rand.nextFloat() * 0.8F + 0.1F;
+            final float f1 = rand.nextFloat() * 0.8F + 0.1F;
+            final float f2 = rand.nextFloat() * 0.8F + 0.1F;
         	
-            EntityItem entityitem = new EntityItem(world, x + f, y + f1, z + f2, stack.copy());
+            final EntityItem entityitem = new EntityItem(world, x + f, y + f1, z + f2, stack.copy());
 
-            float f3 = 0.05F;
+            final float f3 = 0.05F;
             entityitem.motionX = (float)rand.nextGaussian() * f3;
             entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
             entityitem.motionZ = (float)rand.nextGaussian() * f3;
@@ -244,11 +246,11 @@ public class BlockCrate extends BlockFalling {
     	}
     }
     
-    public static void addToListWithWeight(List<ItemStack> list, Item item, int weight) {
+    public static void addToListWithWeight(final List<ItemStack> list, final Item item, final int weight) {
     	for(int i = 0; i < weight; i++)
-    		list.add(new ItemStack(item));
+    		list.add(ItemStackUtil.itemStackFrom(item));
     }
-    public static void addToListWithWeight(List<ItemStack> list, ItemStack item, int weight) {
+    public static void addToListWithWeight(final List<ItemStack> list, final ItemStack item, final int weight) {
     	for(int i = 0; i < weight; i++)
     		list.add(item);
     }

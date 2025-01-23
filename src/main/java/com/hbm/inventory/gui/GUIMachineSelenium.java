@@ -14,10 +14,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineSelenium extends GuiInfoContainer {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_selenium.png");
-	private TileEntityMachineSeleniumEngine diFurnace;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_selenium.png");
+	private final TileEntityMachineSeleniumEngine diFurnace;
 
-	public GUIMachineSelenium(InventoryPlayer invPlayer, TileEntityMachineSeleniumEngine tedf) {
+	public GUIMachineSelenium(final InventoryPlayer invPlayer, final TileEntityMachineSeleniumEngine tedf) {
 		super(new ContainerMachineSelenium(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -26,13 +26,13 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 18, 16, 52, diFurnace.tank, diFurnace.tankType);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 108, 160, 16, diFurnace.power, diFurnace.powerCap);
 		
-		String[] text1 = new String[] { "Fuel consumption rate:",
+		final String[] text1 = new String[] { "Fuel consumption rate:",
 				"  1 mB/t",
 				"  20 mB/s",
 				"(Consumption rate per piston)" };
@@ -40,14 +40,14 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 		
 		if(diFurnace.pistonCount < 3) {
 			
-			String[] text2 = new String[] { "Error: At least three pistons are",
+			final String[] text2 = new String[] { "Error: At least three pistons are",
 					"required to operate this radial engine!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 		
 		if(!diFurnace.hasAcceptableFuel()) {
 			
-			String[] text2 = new String[] { "Error: The currently set fuel type",
+			final String[] text2 = new String[] { "Error: The currently set fuel type",
 					"is not supported by this engine!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 48, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
@@ -55,15 +55,15 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -72,7 +72,7 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 		if(diFurnace.power > 0) {
 			int i = (int)diFurnace.getPowerScaled(160);
 			
-			i = (int) Math.min(i, 160);
+			i = Math.min(i, 160);
 			
 			drawTexturedModalRect(guiLeft + 8, guiTop + 108, 0, 222, i, 16);
 		}
@@ -84,7 +84,7 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 		
 		if(diFurnace.pistonCount > 0)
 		{
-			int k = diFurnace.pistonCount;
+			final int k = diFurnace.pistonCount;
 			drawTexturedModalRect(guiLeft + 26, guiTop + 81, 176, 52 + 16 * k - 16, 16, 16);
 		}
 		

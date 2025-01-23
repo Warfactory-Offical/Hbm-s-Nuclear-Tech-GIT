@@ -14,32 +14,32 @@ import net.minecraft.world.World;
 
 public class WireCoatedRadResistant extends WireCoated implements IRadResistantBlock {
 
-	public WireCoatedRadResistant(Material materialIn, String s) {
+	public WireCoatedRadResistant(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		super.onBlockAdded(worldIn, pos, state);
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public boolean isRadResistant(World worldIn, BlockPos blockPos){
+	public boolean isRadResistant(final World worldIn, final BlockPos blockPos){
 		return true;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add("§2[Radiation Shielding]§r");
-		float hardness = this.getExplosionResistance(null);
+		final float hardness = this.getExplosionResistance(null);
 		if(hardness > 50){
 			tooltip.add("§6Blast Resistance: "+hardness+"§r");
 		}

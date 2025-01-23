@@ -42,7 +42,7 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 	public void update() {
 		if (isAI) {
 
-			Object[] iter = world.loadedEntityList.toArray();
+			final Object[] iter = world.loadedEntityList.toArray();
 			double radius = 1000;
 			// Drillgon200: 3 works better, ammo doesn't get wasted on mobs
 			// outside the turret range
@@ -54,9 +54,9 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 				radius *= 250;
 			Entity target = null;
 			for (int i = 0; i < iter.length; i++) {
-				Entity e = (Entity) iter[i];
+				final Entity e = (Entity) iter[i];
 				if (e.isEntityAlive() && isInSight(e)) {
-					double distance = e.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+					final double distance = e.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 					if (distance < radius) {
 						radius = distance;
 						target = e;
@@ -69,15 +69,15 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 				Vec3d turret = new Vec3d(target.posX - (pos.getX() + 0.5), target.posY + target.getEyeHeight() - (pos.getY() + 1), target.posZ - (pos.getZ() + 0.5));
 				if (this instanceof TileEntityTurretCIWS || this instanceof TileEntityTurretSpitfire || this instanceof TileEntityTurretCheapo && target.getEntityBoundingBox() != null) {
 					try{
-						Vec3d targetPos = target.getEntityBoundingBox().getCenter();
+						final Vec3d targetPos = target.getEntityBoundingBox().getCenter();
 						turret = new Vec3d(targetPos.x - (pos.getX() + 0.5), targetPos.y - (pos.getY() + 1.5), targetPos.z - (pos.getZ() + 0.5));
-					} catch(Throwable t){}
+					} catch(final Throwable t){}
 				}
 
 				oldRotationPitch = rotationPitch;
 				oldRotationYaw = rotationYaw;
 				//rotationPitch = -Math.asin(turret.y / turret.length()) * 180 / Math.PI;
-				double sqrt = MathHelper.sqrt(turret.x * turret.x + turret.z * turret.z);
+				final double sqrt = MathHelper.sqrt(turret.x * turret.x + turret.z * turret.z);
 				rotationPitch = -Math.atan2(turret.y, sqrt) * 180 / Math.PI;
 				rotationYaw = -Math.atan2(turret.x, turret.z) * 180 / Math.PI;
 
@@ -116,13 +116,13 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 
 	}
 
-	private boolean isInSight(Entity e) {
+	private boolean isInSight(final Entity e) {
 		if (!(e instanceof EntityLivingBase) && !(e instanceof EntityMissileBaseAdvanced) && !(e instanceof EntityBomber) && !(e instanceof EntityMIRV) && !(e instanceof EntityMissileCustom))
 			return false;
 
 		if (this instanceof TileEntityTurretCIWS && !(e instanceof EntityMissileBaseAdvanced || e instanceof EntityMissileCustom || e instanceof EntityBomber || e instanceof EntityMIRV))
 			return false;
-		if (e instanceof EntityPlayer && players.contains((((EntityPlayer) e).getDisplayName().getUnformattedText())))
+		if (e instanceof EntityPlayer && players.contains((e.getDisplayName().getUnformattedText())))
 			return false;
 
 		if (this instanceof TileEntityTurretTau)
@@ -130,17 +130,17 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 		if(e instanceof EntityBomber && !((EntityBomber)e).isBomberAlive())
 			return false;
 
-		Vec3d turret;
+		final Vec3d turret;
 		if (this instanceof TileEntityTurretSpitfire || this instanceof TileEntityTurretCIWS || this instanceof TileEntityTurretCheapo)
 			turret = new Vec3d(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
 		else
 			turret = new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 
-		Vec3d entity = new Vec3d(e.posX, e.posY + e.getEyeHeight(), e.posZ);
+		final Vec3d entity = new Vec3d(e.posX, e.posY + e.getEyeHeight(), e.posZ);
 		Vec3d side = new Vec3d(entity.x - turret.x, entity.y - turret.y, entity.z - turret.z);
 		side = side.normalize();
 
-		Vec3d check = new Vec3d(turret.x + side.x, turret.y + side.y, turret.z + side.z);
+		final Vec3d check = new Vec3d(turret.x + side.x, turret.y + side.y, turret.z + side.z);
 		return !Library.isObstructed(world, check.x, check.y, check.z, entity.x, entity.y, entity.z);
 	}
 
@@ -155,13 +155,13 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		rotationYaw = nbt.getDouble("yaw");
 		rotationPitch = nbt.getDouble("pitch");
 		isAI = nbt.getBoolean("AI");
 		ammo = nbt.getInteger("ammo");
 
-		int playercount = nbt.getInteger("playercount");
+		final int playercount = nbt.getInteger("playercount");
 
 		for (int i = 0; i < playercount; i++) {
 			if (nbt.hasKey("player_" + i))
@@ -171,7 +171,7 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setDouble("yaw", rotationYaw);
 		nbt.setDouble("pitch", rotationPitch);
 		nbt.setBoolean("AI", isAI);
@@ -200,7 +200,7 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 			mark = true;
 		}
 		if (playerListChanged) {
-			for (EntityPlayer player : this.world.playerEntities) {
+			for (final EntityPlayer player : this.world.playerEntities) {
 				if (player instanceof EntityPlayerMP)
 					((EntityPlayerMP) player).connection.sendPacket(new SPacketUpdateTileEntity(pos, 0, writeToNBT(new NBTTagCompound())));
 			}
@@ -218,7 +218,7 @@ public class TileEntityTurretBase extends TileEntity implements ITickable {
 	// Drillgon200: Maybe this actually works well if you don't have a gui that
 	// constantly updates
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
+	public void handleUpdateTag(final NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 

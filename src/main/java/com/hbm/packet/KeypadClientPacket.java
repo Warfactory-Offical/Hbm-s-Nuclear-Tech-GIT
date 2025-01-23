@@ -21,7 +21,7 @@ public class KeypadClientPacket implements IMessage {
 	public KeypadClientPacket() {
 	}
 	
-	public KeypadClientPacket(BlockPos pos, byte[] data) {
+	public KeypadClientPacket(final BlockPos pos, final byte[] data) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
@@ -29,7 +29,7 @@ public class KeypadClientPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -38,7 +38,7 @@ public class KeypadClientPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -49,17 +49,15 @@ public class KeypadClientPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(KeypadClientPacket m, MessageContext ctx) {
-			TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+		public IMessage onMessage(final KeypadClientPacket m, final MessageContext ctx) {
+			final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 			if(te instanceof IKeypadHandler){
-				KeypadClient pad = ((IKeypadHandler) te).getKeypad().client();
+				final KeypadClient pad = ((IKeypadHandler) te).getKeypad().client();
 				for(int i = 0; i < 12; i ++){
 					pad.buttons[i].cooldown = m.data[i];
 				}
-				pad.isSettingCode = m.data[12] == 1 ? true : false;
-				for(int i = 0; i < 6; i ++){
-					pad.code[i] = m.data[13 + i];
-				}
+				pad.isSettingCode = m.data[12] == 1;
+                System.arraycopy(m.data, 13, pad.code, 0, 6);
 				pad.successColorTicks = m.data[19];
 				pad.failColorTicks = m.data[20];
 			}

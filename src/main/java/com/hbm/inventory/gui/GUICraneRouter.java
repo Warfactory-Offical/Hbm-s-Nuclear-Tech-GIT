@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GUICraneRouter extends GuiInfoContainer {
-    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_router.png");
-    private TileEntityCraneRouter router;
+    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_router.png");
+    private final TileEntityCraneRouter router;
 
-    public GUICraneRouter(InventoryPlayer invPlayer, TileEntityCraneRouter tedf) {
+    public GUICraneRouter(final InventoryPlayer invPlayer, final TileEntityCraneRouter tedf) {
         super(new ContainerCraneRouter(invPlayer, tedf));
         router = tedf;
 
@@ -34,17 +34,17 @@ public class GUICraneRouter extends GuiInfoContainer {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 3; k++) {
-                int buttonX = guiLeft + 7 + j * 222;
-                int buttonY = guiTop + 16 + k * 26;
+                final int buttonX = guiLeft + 7 + j * 222;
+                final int buttonY = guiTop + 16 + k * 26;
 
                 if (buttonX <= mouseX && mouseX < buttonX + 18 && buttonY < mouseY && mouseY <= buttonY + 18) {
                     mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                    NBTTagCompound data = new NBTTagCompound();
+                    final NBTTagCompound data = new NBTTagCompound();
                     data.setInteger("toggle", j * 3 + k);
                     PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, router.getPos()));
                 }
@@ -53,17 +53,17 @@ public class GUICraneRouter extends GuiInfoContainer {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 3; k++) {
-                int buttonX = guiLeft + 7 + j * 222;
-                int buttonY = guiTop + 15 + k * 26;
+                final int buttonX = guiLeft + 7 + j * 222;
+                final int buttonY = guiTop + 15 + k * 26;
 
                 if (buttonX <= mouseX && mouseX < buttonX + 18 && buttonY < mouseY && mouseY <= buttonY + 18) {
                     String[] text = new String[2];
-                    int index = j * 3 + k;
+                    final int index = j * 3 + k;
 
                     switch (router.modes[index]) {
                         case 0:
@@ -90,9 +90,9 @@ public class GUICraneRouter extends GuiInfoContainer {
 
         if (mc.player.inventory.getItemStack().isEmpty()) {
             for (int i = 0; i < 30; ++i) {
-                Slot slot = this.inventorySlots.getSlot(i);
-                ModulePatternMatcher matcher = router.patterns[i / 5];
-                int index = i % 5;
+                final Slot slot = this.inventorySlots.getSlot(i);
+                final ModulePatternMatcher matcher = router.patterns[i / 5];
+                final int index = i % 5;
 
                 if (isMouseOverSlot(slot, mouseX, mouseY) && matcher.modes[index] != null) {
                     String label = TextFormatting.YELLOW + "";
@@ -117,14 +117,14 @@ public class GUICraneRouter extends GuiInfoContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int i, int j) {
-        String name = this.router.hasCustomInventoryName() ? this.router.getInventoryName() : I18n.format(this.router.getInventoryName());
+    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+        final String name = this.router.hasCustomInventoryName() ? this.router.getInventoryName() : I18n.format(this.router.getInventoryName());
         this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 5, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8 + 39, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY) {
         super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -133,15 +133,15 @@ public class GUICraneRouter extends GuiInfoContainer {
 
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 3; k++) {
-                int index = j * 3 + k;
-                int mode = router.modes[index];
+                final int index = j * 3 + k;
+                final int mode = router.modes[index];
                 drawTexturedModalRect(guiLeft + 7 + j * 222, guiTop + 16 + k * 26, 238, 93 + mode * 18, 18, 18);
             }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
             for (int i = 0; i < this.inventorySlots.inventorySlots.size(); i++) {
-                Slot s = this.inventorySlots.getSlot(i);
+                final Slot s = this.inventorySlots.getSlot(i);
                 this.fontRenderer.drawStringWithShadow(i + "", guiLeft + s.xPos + 2, guiTop + s.yPos, 0xffffff);
                 this.fontRenderer.drawStringWithShadow(s.getSlotIndex() + "", guiLeft + s.xPos + 2, guiTop + s.yPos + 8, 0xff8080);
             }

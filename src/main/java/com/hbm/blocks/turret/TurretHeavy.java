@@ -14,17 +14,17 @@ import net.minecraft.world.World;
 
 public class TurretHeavy extends TurretBase {
 
-	public TurretHeavy(Material materialIn, String s) {
+	public TurretHeavy(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityTurretHeavy();
 	}
 
 	@Override
-	public boolean executeHoldAction(World world, int i, double yaw, double pitch, BlockPos pos) {
+	public boolean executeHoldAction(final World world, final int i, final double yaw, double pitch, final BlockPos pos) {
 		boolean flag = false;
 		
 		if(pitch < -60)
@@ -32,23 +32,23 @@ public class TurretHeavy extends TurretBase {
 		if(pitch > 30)
 			pitch = 30;
 		
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
 		
 		if(i != 0 && i % 20 == 0) {
-			Vec3d vector = new Vec3d(
+			final Vec3d vector = new Vec3d(
 					-Math.sin(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI),
 					-Math.sin(pitch / 180.0F * (float) Math.PI),
 					Math.cos(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI));
 			
 			vector.normalize();
 			
-			TileEntityTurretHeavy te = (TileEntityTurretHeavy)world.getTileEntity(pos);
+			final TileEntityTurretHeavy te = (TileEntityTurretHeavy)world.getTileEntity(pos);
 			te.recoil = 0.5D;
 
 			if(!world.isRemote) {
-				EntityBullet bullet = new EntityBullet(world);
+				final EntityBullet bullet = new EntityBullet(world);
 				bullet.posX = x + vector.x * 1 + 0.5;
 				bullet.posY = y + vector.y * 1 + 1;
 				bullet.posZ = z + vector.z * 1 + 0.5;
@@ -61,7 +61,7 @@ public class TurretHeavy extends TurretBase {
 				
 				world.spawnEntity(bullet);
 				
-				EntityGasFlameFX fx = new EntityGasFlameFX(world);
+				final EntityGasFlameFX fx = new EntityGasFlameFX(world);
 				fx.posX = x + vector.x * 2.2 + 0.5;
 				fx.posY = y + vector.y * 2.2 + 1;
 				fx.posZ = z + vector.z * 2.2 + 0.5;
@@ -77,6 +77,6 @@ public class TurretHeavy extends TurretBase {
 	}
 
 	@Override
-	public void executeReleaseAction(World world, int i, double yaw, double pitch, BlockPos pos) {}
+	public void executeReleaseAction(final World world, final int i, final double yaw, final double pitch, final BlockPos pos) {}
 
 }

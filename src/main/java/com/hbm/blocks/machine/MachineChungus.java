@@ -28,12 +28,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class MachineChungus extends BlockDummyable implements ILookOverlay {
 
-	public MachineChungus(Material mat, String s) {
+	public MachineChungus(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= 12)
 			return new TileEntityChungus();
@@ -45,26 +45,26 @@ public class MachineChungus extends BlockDummyable implements ILookOverlay {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		if(!player.isSneaking()) {
-			int x = pos1.getX();
-			int y = pos1.getY();
-			int z = pos1.getZ();
-			int[] pos = this.findCore(world, x, y, z);
+			final int x = pos1.getX();
+			final int y = pos1.getY();
+			final int z = pos1.getZ();
+			final int[] pos = this.findCore(world, x, y, z);
 
 			if(pos == null)
 				return true;
 
-			TileEntityChungus entity = (TileEntityChungus) world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			final TileEntityChungus entity = (TileEntityChungus) world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			if(entity != null) {
 				
-				ForgeDirection dir = ForgeDirection.getOrientation(entity.getBlockMetadata() - offset);
-				ForgeDirection turn = dir.getRotation(ForgeDirection.DOWN);
+				final ForgeDirection dir = ForgeDirection.getOrientation(entity.getBlockMetadata() - offset);
+				final ForgeDirection turn = dir.getRotation(ForgeDirection.DOWN);
 
-				int iX = entity.getPos().getX() + dir.offsetX + turn.offsetX * 2;
-				int iX2 = entity.getPos().getX() + dir.offsetX * 2 + turn.offsetX * 2;
-				int iZ = entity.getPos().getZ() + dir.offsetZ + turn.offsetZ * 2;
-				int iZ2 = entity.getPos().getZ() + dir.offsetZ * 2 + turn.offsetZ * 2;
+				final int iX = entity.getPos().getX() + dir.offsetX + turn.offsetX * 2;
+				final int iX2 = entity.getPos().getX() + dir.offsetX * 2 + turn.offsetX * 2;
+				final int iZ = entity.getPos().getZ() + dir.offsetZ + turn.offsetZ * 2;
+				final int iZ2 = entity.getPos().getZ() + dir.offsetZ * 2 + turn.offsetZ * 2;
 				
 				if((x == iX || x == iX2) && (z == iZ || z == iZ2) && y < entity.getPos().getY() + 2) {
 					world.playSound(null, x + 0.5, y + 0.5, z + 0.5, HBMSoundHandler.chungus_lever, SoundCategory.BLOCKS, 1.5F, 1.0F);
@@ -113,7 +113,7 @@ public class MachineChungus extends BlockDummyable implements ILookOverlay {
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, -4, 0, 3, 1, 1}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {3, 0, 6, -1, 1, 1}, this, dir);
@@ -122,38 +122,34 @@ public class MachineChungus extends BlockDummyable implements ILookOverlay {
 
 		this.makeExtra(world, x + dir.offsetX, y + 2, z + dir.offsetZ);
 		this.makeExtra(world, x + dir.offsetX * (o - 10), y, z + dir.offsetZ * (o - 10));
-		ForgeDirection side = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection side = dir.getRotation(ForgeDirection.UP);
 		this.makeExtra(world, x + dir.offsetX * o + side.offsetX * 2 , y, z + dir.offsetZ * o + side.offsetZ * 2);
 		this.makeExtra(world, x + dir.offsetX * o - side.offsetX * 2 , y, z + dir.offsetZ * o - side.offsetZ * 2);
 	}
 
 	@Override
-	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected boolean checkRequirement(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir)) return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {3, 0, 6, -1, 1, 1}, x, y, z, dir)) return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {2, 0, 10, -7, 1, 1}, x, y, z, dir)) return false;
-		if(!world.getBlockState(new BlockPos(x + dir.offsetX, y + 2, z + dir.offsetZ)).getBlock().canPlaceBlockAt(world, new BlockPos(x + dir.offsetX, y + 2, z + dir.offsetZ))) return false;
-		
-		return true;
-	}
+        return world.getBlockState(new BlockPos(x + dir.offsetX, y + 2, z + dir.offsetZ)).getBlock().canPlaceBlockAt(world, new BlockPos(x + dir.offsetX, y + 2, z + dir.offsetZ));
+    }
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+		final int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
 		
-		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityChungus))
+		if(!(te instanceof TileEntityChungus chungus))
 			return;
-		
-		TileEntityChungus chungus = (TileEntityChungus) te;
-		
-		List<String> text = new ArrayList();
-		text.add(Library.getShortNumber(chungus.power) + "/" + Library.getShortNumber(chungus.maxPower) + " HE");
+
+        final List<String> text = new ArrayList();
+		text.add(Library.getShortNumber(chungus.power) + "/" + Library.getShortNumber(TileEntityChungus.maxPower) + " HE");
 		text.add("§a-> §r" + Library.getShortNumber(20 * chungus.powerProduction) + "HE/s");
 		if(chungus.types[0] != null)
 			text.add("§a-> §r" + chungus.types[0].getLocalizedName(new FluidStack(chungus.types[0], 1)) + ": " + chungus.tanks[0].getFluidAmount() + "/" + chungus.tanks[0].getCapacity() + "mB");

@@ -52,18 +52,16 @@ public class BlockGasRadonTomb extends BlockGasBase {
 	 * Leave this place and never come back.
 	 */
 
-	public BlockGasRadonTomb(String s) {
+	public BlockGasRadonTomb(final String s) {
 		super(0.1F, 0.3F, 0.1F, s);
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
-		if(entity instanceof EntityLivingBase) {
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
+		if(entity instanceof EntityLivingBase entityLiving) {
 
 
-			EntityLivingBase entityLiving = (EntityLivingBase) entity;
-
-			if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
+            if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
 				ArmorUtil.damageGasMaskFilter(entityLiving, 4);
 				ContaminationUtil.contaminate(entityLiving, HazardType.RADIATION, ContaminationType.CREATIVE, 5F);
 			} else {
@@ -75,7 +73,7 @@ public class BlockGasRadonTomb extends BlockGasBase {
 	}
 	
 	@Override
-	public ForgeDirection getFirstDirection(World world, int x, int y, int z) {
+	public ForgeDirection getFirstDirection(final World world, final int x, final int y, final int z) {
 		
 		if(world.rand.nextInt(3) == 0)
 			return ForgeDirection.UP;
@@ -84,18 +82,18 @@ public class BlockGasRadonTomb extends BlockGasBase {
 	}
 
 	@Override
-	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
+	public ForgeDirection getSecondDirection(final World world, final int x, final int y, final int z) {
 		return this.randomHorizontal(world);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 		
 		if(!world.isRemote) {
 	
 			if(rand.nextInt(10) == 0) {
-				IBlockState state2 = world.getBlockState(pos.down());
-				Block b = state2.getBlock();
+				final IBlockState state2 = world.getBlockState(pos.down());
+				final Block b = state2.getBlock();
 				
 				if(b == Blocks.GRASS) {
 					if(rand.nextInt(5) == 0)

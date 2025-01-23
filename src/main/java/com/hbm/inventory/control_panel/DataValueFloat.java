@@ -7,11 +7,11 @@ public class DataValueFloat extends DataValue {
 
 	public float num;
 	
-	public DataValueFloat(float f) {
+	public DataValueFloat(final float f) {
 		num = f;
 	}
 
-	public DataValueFloat(boolean b) {
+	public DataValueFloat(final boolean b) {
 		num = (b)? 1.0F : 0.0F;
 	}
 
@@ -37,9 +37,9 @@ public class DataValueFloat extends DataValue {
 	
 	
 	@Override
-	public <E extends Enum<E>> E getEnum(Class<E> clazz){
-		int i = (int)num;
-		E[] enums = clazz.getEnumConstants();
+	public <E extends Enum<E>> E getEnum(final Class<E> clazz){
+		final int i = (int)num;
+		final E[] enums = clazz.getEnumConstants();
 		if(i >= 0 && i < enums.length){
 			return enums[i];
 		}
@@ -52,8 +52,8 @@ public class DataValueFloat extends DataValue {
 	}
 
 	@Override
-	public void readFromNBT(NBTBase nbt){
-		NBTTagFloat f = (NBTTagFloat)nbt;
+	public void readFromNBT(final NBTBase nbt){
+		final NBTTagFloat f = (NBTTagFloat)nbt;
 		num = f.getFloat();
 	}
 

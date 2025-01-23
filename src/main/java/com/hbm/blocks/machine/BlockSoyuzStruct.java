@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class BlockSoyuzStruct extends BlockContainer {
 
-	public BlockSoyuzStruct(Material mat, String s) {
+	public BlockSoyuzStruct(final Material mat, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,17 +21,17 @@ public class BlockSoyuzStruct extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		return new TileEntitySoyuzStruct();
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

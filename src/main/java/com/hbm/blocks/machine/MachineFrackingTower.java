@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
@@ -31,12 +32,12 @@ import java.util.Random;
 
 public class MachineFrackingTower extends BlockDummyable {
 
-    public MachineFrackingTower(Material materialIn, String s) {
+    public MachineFrackingTower(final Material materialIn, final String s) {
         super(materialIn, s);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 
         if(meta >= 12) return new TileEntityMachineFrackingTower();
         if(meta >= 6) return new TileEntityProxyCombo(false, true, true);
@@ -58,13 +59,13 @@ public class MachineFrackingTower extends BlockDummyable {
 
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
         return Item.getItemFromBlock(ModBlocks.machine_fracking_tower);
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.machine_fracking_tower);
+    public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
+        return ItemStackUtil.itemStackFrom(ModBlocks.machine_fracking_tower);
     }
 
 //    @Override
@@ -73,43 +74,43 @@ public class MachineFrackingTower extends BlockDummyable {
 //    }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(final IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isBlockNormalCube(IBlockState state) {
+    public boolean isBlockNormalCube(final IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state) {
+    public boolean isNormalCube(final IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
         return false;
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
         if(world.isRemote)
         {
             return true;
         } else if(!player.isSneaking())
         {
-            int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+            final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
             if (pos == null)
                 return false;
 
-            TileEntityMachineFrackingTower frackingTower = (TileEntityMachineFrackingTower)world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+            final TileEntityMachineFrackingTower frackingTower = (TileEntityMachineFrackingTower)world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
             if (frackingTower != null)
                 player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_fracking_tower, world, pos[0], pos[1], pos[2]);
@@ -128,7 +129,7 @@ public class MachineFrackingTower extends BlockDummyable {
 
 
     @Override
-    protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+    protected boolean checkRequirement(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 
         if(!MultiblockHandlerXR.checkSpace(world, x, y + 2, z, new int[] {1, 0, 3, 3, 3, 3}, x, y, z, dir)) return false;
 
@@ -146,7 +147,7 @@ public class MachineFrackingTower extends BlockDummyable {
     }
 
     @Override
-    public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+    public void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
         MultiblockHandlerXR.fillSpace(world, x, y, z, getDimensions(), this, dir);
         MultiblockHandlerXR.fillSpace(world, x, y + 2, z, new int[] {1, 0, 3, 3, 3, 3}, this, dir);
 

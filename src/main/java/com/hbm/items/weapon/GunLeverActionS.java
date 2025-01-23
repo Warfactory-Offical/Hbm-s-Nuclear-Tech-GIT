@@ -43,7 +43,7 @@ public class GunLeverActionS extends Item {
 	public int dmgMin = 8;
 	public int dmgMax = 16;
 	
-	public GunLeverActionS(String s) {
+	public GunLeverActionS(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -53,17 +53,16 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer))
+	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
+		if(!(entityLiving instanceof EntityPlayer player))
 			return;
-		EntityPlayer player = (EntityPlayer) entityLiving;
-		int j = this.getMaxItemUseDuration(stack) - timeLeft;
+        int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
-		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.ammo_20gauge));
+		final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.ammo_20gauge));
 		MinecraftForge.EVENT_BUS.post(event);
 		j = event.getCharge();
 
-		boolean flag = player.capabilities.isCreativeMode
+		final boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 		if (flag || Library.hasInventoryItem(player.inventory, ModItems.ammo_20gauge)) {
@@ -101,8 +100,8 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
-		int j = getAnim(stack);
+	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected) {
+		final int j = getAnim(stack);
     	
     	if(j > 0) {
     		if(j < 30)
@@ -116,19 +115,19 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getMaxItemUseDuration(final ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
+	public EnumAction getItemUseAction(final ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack stack = playerIn.getHeldItem(handIn);
-		ArrowNockEvent event = new ArrowNockEvent(playerIn, stack, handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.ammo_12gauge));
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+		final ItemStack stack = playerIn.getHeldItem(handIn);
+		final ArrowNockEvent event = new ArrowNockEvent(playerIn, stack, handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.ammo_12gauge));
 		MinecraftForge.EVENT_BUS.post(event);
 
 		if(getAnim(stack) == 0)
@@ -137,21 +136,21 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public int getItemEnchantability(ItemStack stack) {
+	public int getItemEnchantability(final ItemStack stack) {
 		return 1;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
+	public String getItemStackDisplayName(final ItemStack stack) {
 		if(MainRegistry.polaroidID == 11)
-			return ("" + I18n.format(this.getTranslationKey() + "_2.name")).trim();
+			return (I18n.format(this.getTranslationKey() + "_2.name")).trim();
 		else
-			return ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
+			return (I18n.format(this.getTranslationKey() + ".name")).trim();
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(MainRegistry.polaroidID == 11)
 			list.add("Vee guilt-tripped me into this.");
 		else
@@ -164,8 +163,8 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
-		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
+		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 3.5, 0));
 		}
@@ -173,11 +172,11 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
 		return false;
 	}
 	
-	private static int getAnim(ItemStack stack) {
+	private static int getAnim(final ItemStack stack) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -187,7 +186,7 @@ public class GunLeverActionS extends Item {
 		
 	}
 	
-	private static void setAnim(ItemStack stack, int i) {
+	private static void setAnim(final ItemStack stack, final int i) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -196,7 +195,7 @@ public class GunLeverActionS extends Item {
 		
 	}
 	
-	public static float getRotationFromAnim(ItemStack stack) {
+	public static float getRotationFromAnim(final ItemStack stack) {
 		float rad = 0.0174533F;
 		rad *= 7.5F;
 		int i = getAnim(stack);
@@ -211,7 +210,7 @@ public class GunLeverActionS extends Item {
 			return (rad * 10) - (rad * (i - 10));
 	}
 	
-	public static float getOffsetFromAnim(ItemStack stack) {
+	public static float getOffsetFromAnim(final ItemStack stack) {
 		float i = getAnim(stack);
 		
 		if(i < 10)

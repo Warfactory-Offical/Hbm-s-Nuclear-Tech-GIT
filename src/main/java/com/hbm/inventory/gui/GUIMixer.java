@@ -17,10 +17,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMixer extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_mixer.png");
-	private TileEntityMachineMixer mixer;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_mixer.png");
+	private final TileEntityMachineMixer mixer;
 
-	public GUIMixer(InventoryPlayer player, TileEntityMachineMixer mixer) {
+	public GUIMixer(final InventoryPlayer player, final TileEntityMachineMixer mixer) {
 		super(new ContainerMixer(player, mixer));
 		this.mixer = mixer;
 		
@@ -29,7 +29,7 @@ public class GUIMixer extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 23, guiTop + 22, 16, 52, mixer.getPower(), mixer.getMaxPower());
@@ -41,25 +41,25 @@ public class GUIMixer extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = I18n.format(mixer.getName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = I18n.format(mixer.getName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
+	protected void drawGuiContainerBackgroundLayer(final float interp, final int x, final int y) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		int i = (int) (mixer.getPower() * 53 / mixer.getMaxPower());
+		final int i = (int) (mixer.getPower() * 53 / mixer.getMaxPower());
 		drawTexturedModalRect(guiLeft + 23, guiTop + 75 - i, 176, 52 - i, 16, i);
 		
 		if(mixer.processTime > 0 && mixer.progress > 0) {
-			int j = mixer.progress * 53 / mixer.processTime;
+			final int j = mixer.progress * 53 / mixer.processTime;
 			drawTexturedModalRect(guiLeft + 62, guiTop + 36, 192, 0, j, 44);
 		}
 		

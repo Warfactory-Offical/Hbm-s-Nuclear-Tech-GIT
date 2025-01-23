@@ -9,28 +9,28 @@ public class TimedGenerator {
 
 	private static final HashMap<Integer, ArrayList<ITimedJob>> operations = new HashMap<>();
 
-	public static void automaton(World world, int amount) {
+	public static void automaton(final World world, final int amount) {
 
-		ArrayList<ITimedJob> list = operations.get(world.provider.getDimension());
+		final ArrayList<ITimedJob> list = operations.get(world.provider.getDimension());
 
 		if(list == null)
 			return;
 
-		long start = System.currentTimeMillis();
+		final long start = System.currentTimeMillis();
 
 		while(start + 10 > System.currentTimeMillis()) {
 
 			if(list.isEmpty())
 				return;
 
-			ITimedJob entry = list.get(0);
+			final ITimedJob entry = list.get(0);
 			list.remove(0);
 
 			entry.work();
 		}
 	}
 
-	public static void addOp(World world, ITimedJob job) {
+	public static void addOp(final World world, final ITimedJob job) {
 
 		ArrayList<ITimedJob> list = operations.get(world.provider.getDimension());
 

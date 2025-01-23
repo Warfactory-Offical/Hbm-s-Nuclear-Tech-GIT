@@ -9,21 +9,21 @@ import net.minecraft.world.World;
 
 public class OilBubble {
 
-	public static void spawnOil(World world, int x, int y, int z, int radius) {
-		int r = radius;
-		int r2 = r * r;
-		int r22 = r2 / 2;
+	public static void spawnOil(final World world, final int x, final int y, final int z, final int radius) {
+		final int r = radius;
+		final int r2 = r * r;
+		final int r22 = r2 / 2;
 
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		for(int xx = -r; xx < r; xx++) {
-			int X = xx + x;
-			int XX = xx * xx;
+			final int X = xx + x;
+			final int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				int Y = yy + y;
-				int YY = XX + yy * yy * 3;
+				final int Y = yy + y;
+				final int YY = XX + yy * yy * 3;
 				for(int zz = -r; zz < r; zz++) {
-					int Z = zz + z;
-					int ZZ = YY + zz * zz;
+					final int Z = zz + z;
+					final int ZZ = YY + zz * zz;
 					if(ZZ < r22) {
 						pos.setPos(X, Y, Z);
 						if(world.getBlockState(pos).getBlock() == Blocks.STONE)

@@ -1,12 +1,11 @@
 package com.hbm.items.tool;
 
-import com.hbm.lib.HBMSoundHandler;
 import com.hbm.blocks.BlockDummyable;
+import com.hbm.lib.HBMSoundHandler;
 import com.hbm.tileentity.machine.TileEntityDummy;
 import com.hbm.tileentity.machine.TileEntityLockableBase;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -20,20 +19,20 @@ public class ItemLock extends ItemKeyPin {
 
 	public double lockMod = 0.1D;
 	
-	public ItemLock(double mod, String s) {
+	public ItemLock(final double mod, final String s) {
 		super(s);
 		lockMod = mod;
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final ItemStack stack = player.getHeldItem(hand);
 		if(!world.isRemote && getPins(stack) != 0) {
 			TileEntity thing;
-			Block b = world.getBlockState(pos).getBlock();
+			final Block b = world.getBlockState(pos).getBlock();
 			
 			if(b instanceof BlockDummyable){
-				int[] cpos = ((BlockDummyable)b).findCore(world, pos.getX(), pos.getY(), pos.getZ());
+				final int[] cpos = ((BlockDummyable)b).findCore(world, pos.getX(), pos.getY(), pos.getZ());
 				if(cpos == null)
 					return EnumActionResult.FAIL;
 				thing = world.getTileEntity(new BlockPos(cpos[0], cpos[1], cpos[2]));
@@ -46,15 +45,14 @@ public class ItemLock extends ItemKeyPin {
 			}
 
 
-			if(thing != null && thing instanceof TileEntityLockableBase) {
-				TileEntityLockableBase lockTe = (TileEntityLockableBase) thing;
+			if(thing != null && thing instanceof TileEntityLockableBase lockTe) {
 
-				if(lockTe != null && lockTe instanceof TileEntityLockableBase) {
+                if(lockTe != null && lockTe instanceof TileEntityLockableBase) {
 					if(!lockTe.isLocked() && lockTe.canLock(player, hand, facing)) {
 						lockTe.setPins(getPins(stack));
 						lockTe.lock();
 						lockTe.setMod(this.lockMod);
-						world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockHang, SoundCategory.PLAYERS, 1.0F, 1.0F);
+						world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockHang, SoundCategory.PLAYERS, 1.0F, 1.0F);
 						stack.shrink(1);
 						return EnumActionResult.SUCCESS;
 					}

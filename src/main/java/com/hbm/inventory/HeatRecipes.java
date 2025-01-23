@@ -55,117 +55,117 @@ public class HeatRecipes {
 	}
 
 	public static void setFluidsForRBMKLoader(){
-		HashSet<Fluid> fluids = new HashSet<Fluid>();
-		for(Map.Entry<Fluid, Fluid> entry : hotFluids.entrySet()) {
+		final HashSet<Fluid> fluids = new HashSet<Fluid>();
+		for(final Map.Entry<Fluid, Fluid> entry : hotFluids.entrySet()) {
 			fluids.add(entry.getKey());
 			fluids.add(entry.getValue());
 		}
 		((BlockBaseVisualFluidConnectable)ModBlocks.rbmk_loader).addFluids(fluids.toArray(new Fluid[0]));
 	}
 
-	public static Fluid getBoilFluid(Fluid f){
+	public static Fluid getBoilFluid(final Fluid f){
 		if(f != null)
 			return hotFluids.get(f);
 		return null;
 	}
 
-	public static int getRequiredHeat(Fluid f){
-		Integer heat = requiredTU.get(f);
+	public static int getRequiredHeat(final Fluid f){
+		final Integer heat = requiredTU.get(f);
 		if(heat != null)
 			return heat;
 		return -1;
 	}
 
-	public static int getInputAmountHot(Fluid f){
-		Integer heat = inputAmountHot.get(f);
+	public static int getInputAmountHot(final Fluid f){
+		final Integer heat = inputAmountHot.get(f);
 		if(heat != null)
 			return heat;
 		return -1;
 	}
 
-	public static int getOutputAmountHot(Fluid f){
-		Integer heat = outputAmountHot.get(f);
+	public static int getOutputAmountHot(final Fluid f){
+		final Integer heat = outputAmountHot.get(f);
 		if(heat != null)
 			return heat;
 		return -1;
 	}
 
-	public static Fluid getCoolFluid(Fluid f){
+	public static Fluid getCoolFluid(final Fluid f){
 		if(f != null)
 			return coolFluids.get(f);
 		return null;
 	}
 
-	public static int getResultingHeat(Fluid f){
-		Integer heat = resultingTU.get(f);
+	public static int getResultingHeat(final Fluid f){
+		final Integer heat = resultingTU.get(f);
 		if(heat != null)
 			return heat;
 		return -1;
 	}
 
-	public static int getInputAmountCold(Fluid f){
-		Integer heat = inputAmountCold.get(f);
+	public static int getInputAmountCold(final Fluid f){
+		final Integer heat = inputAmountCold.get(f);
 		if(heat != null)
 			return heat;
 		return -1;
 	}
 
-	public static int getOutputAmountCold(Fluid f){
-		Integer heat = outputAmountCold.get(f);
+	public static int getOutputAmountCold(final Fluid f){
+		final Integer heat = outputAmountCold.get(f);
 		if(heat != null)
 			return heat;
 		return -1;
 	}
 
-	public static void addBoilAndCoolRecipe(FluidStack cold, FluidStack hot, int heat){
+	public static void addBoilAndCoolRecipe(final FluidStack cold, final FluidStack hot, final int heat){
 		addBoilRecipe(cold, hot, heat);
 		addCoolRecipe(hot, cold, heat);
 	}
 
-	public static void addBoilRecipe(FluidStack cold, FluidStack hot, int heat){
+	public static void addBoilRecipe(final FluidStack cold, final FluidStack hot, final int heat){
 		hotFluids.put(cold.getFluid(), hot.getFluid());
 		requiredTU.put(cold.getFluid(), heat);
 		inputAmountHot.put(cold.getFluid(), cold.amount);
 		outputAmountHot.put(cold.getFluid(), hot.amount);
 	}
 
-	public static void addCoolRecipe(FluidStack hot, FluidStack cold, int heat){
+	public static void addCoolRecipe(final FluidStack hot, final FluidStack cold, final int heat){
 		coolFluids.put(hot.getFluid(), cold.getFluid());
 		resultingTU.put(hot.getFluid(), heat);
 		inputAmountCold.put(hot.getFluid(), hot.amount);
 		outputAmountCold.put(hot.getFluid(), cold.amount);
 	}
 
-	public static boolean hasBoilRecipe(Fluid cold){
+	public static boolean hasBoilRecipe(final Fluid cold){
 		return hotFluids.containsKey(cold);
 	}
 
-	public static boolean hasCoolRecipe(Fluid hot){
+	public static boolean hasCoolRecipe(final Fluid hot){
 		return coolFluids.containsKey(hot);
 	}
 
-	public static void addBoilRecipe(String cold, int coldAmount, String hot, int hotAmount, int heat){
+	public static void addBoilRecipe(final String cold, final int coldAmount, final String hot, final int hotAmount, final int heat){
 		if(FluidRegistry.isFluidRegistered(hot) && FluidRegistry.isFluidRegistered(cold)){
 			addBoilRecipe(new FluidStack(FluidRegistry.getFluid(cold), coldAmount), new FluidStack(FluidRegistry.getFluid(hot), hotAmount), heat);
 		}
 	}
 
-	public static void addCoolRecipe(String hot, int hotAmount, String cold, int coldAmount, int heat){
+	public static void addCoolRecipe(final String hot, final int hotAmount, final String cold, final int coldAmount, final int heat){
 		if(FluidRegistry.isFluidRegistered(hot) && FluidRegistry.isFluidRegistered(cold)){
 			addCoolRecipe(new FluidStack(FluidRegistry.getFluid(hot), hotAmount), new FluidStack(FluidRegistry.getFluid(cold), coldAmount), heat);
 		}
 	}
 
-	public static void addBoilAndCoolRecipe(String cold, int coldAmount, String hot, int hotAmount, int heat){
+	public static void addBoilAndCoolRecipe(final String cold, final int coldAmount, final String hot, final int hotAmount, final int heat){
 		if(FluidRegistry.isFluidRegistered(hot) && FluidRegistry.isFluidRegistered(cold)){
 			addBoilRecipe(new FluidStack(FluidRegistry.getFluid(cold), coldAmount), new FluidStack(FluidRegistry.getFluid(hot), hotAmount), heat);
 			addCoolRecipe(new FluidStack(FluidRegistry.getFluid(hot), hotAmount), new FluidStack(FluidRegistry.getFluid(cold), coldAmount), heat);
 		}
 	}
 
-	public static void removeBoilRecipe(String cold){
+	public static void removeBoilRecipe(final String cold){
 		if(FluidRegistry.isFluidRegistered(cold)){
-			Fluid f = FluidRegistry.getFluid(cold);
+			final Fluid f = FluidRegistry.getFluid(cold);
 			hotFluids.remove(f);
 			requiredTU.remove(f);
 			inputAmountHot.remove(f);
@@ -173,9 +173,9 @@ public class HeatRecipes {
 		}
 	}
 
-	public static void removeCoolRecipe(String hot){
+	public static void removeCoolRecipe(final String hot){
 		if(FluidRegistry.isFluidRegistered(hot)){
-			Fluid f = FluidRegistry.getFluid(hot);
+			final Fluid f = FluidRegistry.getFluid(hot);
 			coolFluids.remove(f);
 			resultingTU.remove(f);
 			inputAmountCold.remove(f);
@@ -184,7 +184,7 @@ public class HeatRecipes {
 	}
 
 	// return: FluidType, amount produced, amount required, heat required (°C * 100)
-	public static Object[] getBoilerOutput(Fluid type) {
+	public static Object[] getBoilerOutput(final Fluid type) {
 		if(hasBoilRecipe(type)){
 			return new Object[] { getBoilFluid(type), getOutputAmountHot(type), getInputAmountHot(type), (getBoilFluid(type).getTemperature()-273) * 100 };
 		}

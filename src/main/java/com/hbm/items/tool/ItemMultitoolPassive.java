@@ -1,8 +1,5 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityLaserBeam;
 import com.hbm.entity.projectile.EntityMinerBeam;
@@ -12,7 +9,7 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.render.amlfrom1710.Vec3;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,20 +22,19 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.List;
+import java.util.Random;
 
 public class ItemMultitoolPassive extends Item {
 
 	Random rand = new Random();
 
-	public ItemMultitoolPassive(String s) {
+	public ItemMultitoolPassive(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxDamage(5000);
@@ -47,35 +43,35 @@ public class ItemMultitoolPassive extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		if(player.isSneaking()) {
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 2.0F, 1.0F);
 
 			if(this == ModItems.multitool_ext) {
-				return ActionResult.newResult(EnumActionResult.SUCCESS, new ItemStack(ModItems.multitool_miner, 1, stack.getItemDamage()));
+				return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStackUtil.itemStackFrom(ModItems.multitool_miner, 1, stack.getItemDamage()));
 			} else if(this == ModItems.multitool_miner) {
-				ItemStack item = new ItemStack(ModItems.multitool_hit, 1, stack.getItemDamage());
+				final ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_hit, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.LOOTING, 3);
 				item.addEnchantment(Enchantments.KNOCKBACK, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_hit) {
-				return ActionResult.newResult(EnumActionResult.SUCCESS, new ItemStack(ModItems.multitool_beam, 1, stack.getItemDamage()));
+				return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStackUtil.itemStackFrom(ModItems.multitool_beam, 1, stack.getItemDamage()));
 			} else if(this == ModItems.multitool_beam) {
-				return ActionResult.newResult(EnumActionResult.SUCCESS, new ItemStack(ModItems.multitool_sky, 1, stack.getItemDamage()));
+				return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStackUtil.itemStackFrom(ModItems.multitool_sky, 1, stack.getItemDamage()));
 			} else if(this == ModItems.multitool_sky) {
-				ItemStack item = new ItemStack(ModItems.multitool_mega, 1, stack.getItemDamage());
+				final ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_mega, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.KNOCKBACK, 5);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_mega) {
-				ItemStack item = new ItemStack(ModItems.multitool_joule, 1, stack.getItemDamage());
+				final ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_joule, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.KNOCKBACK, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_joule) {
-				ItemStack item = new ItemStack(ModItems.multitool_decon, 1, stack.getItemDamage());
+				final ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_decon, 1, stack.getItemDamage());
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 			} else if(this == ModItems.multitool_decon) {
-				ItemStack item = new ItemStack(ModItems.multitool_dig, 1, stack.getItemDamage());
+				final ItemStack item = ItemStackUtil.itemStackFrom(ModItems.multitool_dig, 1, stack.getItemDamage());
 				item.addEnchantment(Enchantments.LOOTING, 3);
 				item.addEnchantment(Enchantments.FORTUNE, 3);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, item);
@@ -86,7 +82,7 @@ public class ItemMultitoolPassive extends Item {
 				return ActionResult.newResult(EnumActionResult.PASS, stack);
 			} else if(this == ModItems.multitool_miner) {
 
-				EntityMinerBeam plasma = new EntityMinerBeam(world, player, 0.75F);
+				final EntityMinerBeam plasma = new EntityMinerBeam(world, player, 0.75F);
 
 				world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.immolatorIgnite, SoundCategory.PLAYERS, 1.0F, 1F);
 				// world.playSoundAtEntity(player, "hbm:weapon.immolatorShoot",
@@ -100,7 +96,7 @@ public class ItemMultitoolPassive extends Item {
 				return ActionResult.newResult(EnumActionResult.PASS, stack);
 			} else if(this == ModItems.multitool_beam) {
 
-				EntityLaserBeam plasma = new EntityLaserBeam(world, player, 1F);
+				final EntityLaserBeam plasma = new EntityLaserBeam(world, player, 1F);
 
 				world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.immolatorIgnite, SoundCategory.PLAYERS, 1.0F, 1F);
 				// world.playSoundAtEntity(player, "hbm:weapon.immolatorShoot",
@@ -112,10 +108,10 @@ public class ItemMultitoolPassive extends Item {
 				return ActionResult.newResult(EnumActionResult.PASS, stack);
 			} else if(this == ModItems.multitool_sky) {
 				for(int i = 0; i < 15; i++) {
-					int a = (int) player.posX - 15 + rand.nextInt(31);
-					int b = (int) player.posZ - 15 + rand.nextInt(31);
+					final int a = (int) player.posX - 15 + rand.nextInt(31);
+					final int b = (int) player.posZ - 15 + rand.nextInt(31);
 					// if(!world.isRemote) {
-					EntityLightningBolt blitz = new EntityLightningBolt(world, a, world.getHeight(a, b), b, false);
+					final EntityLightningBolt blitz = new EntityLightningBolt(world, a, world.getHeight(a, b), b, false);
 					world.spawnEntity(blitz);
 					// }
 				}
@@ -133,12 +129,12 @@ public class ItemMultitoolPassive extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(this == ModItems.multitool_ext) {
-			IBlockState b = world.getBlockState(pos);
-			ItemStack s = FurnaceRecipes.instance().getSmeltingResult(new ItemStack(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
+			final IBlockState b = world.getBlockState(pos);
+			final ItemStack s = FurnaceRecipes.instance().getSmeltingResult(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
 			if(!s.isEmpty()) {
-				ItemStack t = s.copy();
+				final ItemStack t = s.copy();
 				if(!world.isRemote)
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 
@@ -157,13 +153,13 @@ public class ItemMultitoolPassive extends Item {
 
 		} else if(this == ModItems.multitool_joule) {
 
-			int l = 25;
-			float part = -1F / 16F;
+			final int l = 25;
+			final float part = -1F / 16F;
 
-			Vec3d v = player.getLookVec();
-			Vec3 vec0 = Vec3.createVectorHelper(v.x, v.y, v.z);
+			final Vec3d v = player.getLookVec();
+			final Vec3 vec0 = Vec3.createVectorHelper(v.x, v.y, v.z);
 			vec0.rotateAroundY(.25F);
-			List<int[]> list = Library.getBlockPosInPath(pos, l, vec0);
+			final List<int[]> list = Library.getBlockPosInPath(pos, l, vec0);
 			vec0.rotateAroundY(part);
 			list.addAll(Library.getBlockPosInPath(pos, l, vec0));
 			vec0.rotateAroundY(part);
@@ -184,19 +180,19 @@ public class ItemMultitoolPassive extends Item {
 			if(!world.isRemote)
 				for(int j = 0; j < list.size(); j++) {
 
-					int x1 = list.get(j)[0];
-					int y1 = list.get(j)[1];
-					int z1 = list.get(j)[2];
-					int w1 = list.get(j)[3];
+					final int x1 = list.get(j)[0];
+					final int y1 = list.get(j)[1];
+					final int z1 = list.get(j)[2];
+					final int w1 = list.get(j)[3];
 					
-					BlockPos pos2 = new BlockPos(x1, y1, z1);
+					final BlockPos pos2 = new BlockPos(x1, y1, z1);
 
-					IBlockState b = world.getBlockState(pos2);
-					float k = b.getBlockHardness(world, pos2);
+					final IBlockState b = world.getBlockState(pos2);
+					final float k = b.getBlockHardness(world, pos2);
 
 					if(k < 6000 && k > 0 && b.getBlock() != Blocks.AIR) {
 
-						EntityRubble rubble = new EntityRubble(world);
+						final EntityRubble rubble = new EntityRubble(world);
 						rubble.posX = x1 + 0.5F;
 						rubble.posY = y1;
 						rubble.posZ = z1 + 0.5F;
@@ -224,8 +220,8 @@ public class ItemMultitoolPassive extends Item {
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
-		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
+		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND) {
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 4, 0));
 			if(this == ModItems.multitool_ext) {
@@ -250,7 +246,7 @@ public class ItemMultitoolPassive extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(this == ModItems.multitool_ext) {
 			list.add("Right click instantly destroys smeltable blocks");
 			list.add("Mined blocks will be smelted and put in the player's inventory");

@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CraneGrabber extends BlockCraneBase {
-    public CraneGrabber(Material materialIn, String s) {
+    public CraneGrabber(final Material materialIn, final String s) {
         super(materialIn);
         this.setTranslationKey(s);
         this.setRegistryName(s);
@@ -20,16 +20,16 @@ public class CraneGrabber extends BlockCraneBase {
     }
 
     @Override
-    public TileEntityCraneBase createNewTileEntity(World world, int meta) {
+    public TileEntityCraneBase createNewTileEntity(final World world, final int meta) {
         return new TileEntityCraneGrabber();
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity tileentity = world.getTileEntity(pos);
+    public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        final TileEntity tileentity = world.getTileEntity(pos);
 
         if(tileentity instanceof TileEntityCraneGrabber) {
-            InventoryHelper.dropInventoryItems(world, pos, (TileEntityCraneGrabber) tileentity);
+            InventoryHelper.dropInventoryItems(world, pos, tileentity);
         }
         super.breakBlock(world, pos, state);
     }

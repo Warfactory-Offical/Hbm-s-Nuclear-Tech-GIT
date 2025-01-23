@@ -52,7 +52,7 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
 	public TileEntityReactorControl() {
 		inventory = new ItemStackHandler(1){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -67,11 +67,11 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -81,7 +81,7 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		redstoned = compound.getBoolean("red");
 		auto = compound.getBoolean("auto");
 		lastRods = compound.getInteger("lastRods");
@@ -93,7 +93,7 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setBoolean("red", redstoned);
 		compound.setBoolean("auto", auto);
 		compound.setInteger("lastRods", lastRods);
@@ -109,11 +109,11 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
 		{
         	if(inventory.getStackInSlot(0).getItem() == ModItems.reactor_sensor && inventory.getStackInSlot(0).getTagCompound() != null)
         	{
-        		int xCoord = inventory.getStackInSlot(0).getTagCompound().getInteger("x");
-        		int yCoord = inventory.getStackInSlot(0).getTagCompound().getInteger("y");
-        		int zCoord = inventory.getStackInSlot(0).getTagCompound().getInteger("z");
-        		BlockPos possibleReactor = new BlockPos(xCoord, yCoord, zCoord);
-        		Block b = world.getBlockState(possibleReactor).getBlock();
+        		final int xCoord = inventory.getStackInSlot(0).getTagCompound().getInteger("x");
+        		final int yCoord = inventory.getStackInSlot(0).getTagCompound().getInteger("y");
+        		final int zCoord = inventory.getStackInSlot(0).getTagCompound().getInteger("z");
+        		final BlockPos possibleReactor = new BlockPos(xCoord, yCoord, zCoord);
+        		final Block b = world.getBlockState(possibleReactor).getBlock();
         		if(b == ModBlocks.machine_reactor_small || b == ModBlocks.reactor_computer) {
         			link = possibleReactor;
         		} else if(b == ModBlocks.dummy_block_reactor_small || b == ModBlocks.dummy_port_reactor_small) {
@@ -125,10 +125,9 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
     			link = null;
         	}
         	
-        	if(link != null && world.getTileEntity(link) instanceof TileEntityMachineReactorSmall) {
-        		TileEntityMachineReactorSmall reactor = (TileEntityMachineReactorSmall)world.getTileEntity(link);
-        		
-        		hullHeat = reactor.hullHeat;
+        	if(link != null && world.getTileEntity(link) instanceof TileEntityMachineReactorSmall reactor) {
+
+                hullHeat = reactor.hullHeat;
         		coreHeat = reactor.coreHeat;
         		fuel = reactor.getFuelPercent();
         		water = reactor.tanks[0].getFluidAmount();
@@ -138,7 +137,7 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
         		maxCool = reactor.tanks[1].getCapacity();
         		maxSteam = reactor.tanks[2].getCapacity();
         		rods = reactor.rods;
-        		maxRods = reactor.rodsMax;
+        		maxRods = TileEntityMachineReactorSmall.rodsMax;
         		isOn = !reactor.retracting;
         		isLinked = true;
         		
@@ -164,10 +163,9 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
         		if(auto && (water < 100 || cool < 100 || coreHeat > (50000 * 0.95)) && fuel > 0) {
         			reactor.retracting = true;
         		}
-        	} else if(link != null && world.getTileEntity(link) instanceof TileEntityMachineReactorLarge && ((TileEntityMachineReactorLarge)world.getTileEntity(link)).checkBody()) {
-        		TileEntityMachineReactorLarge reactor = (TileEntityMachineReactorLarge)world.getTileEntity(link);
-        		
-        		hullHeat = reactor.hullHeat;
+        	} else if(link != null && world.getTileEntity(link) instanceof TileEntityMachineReactorLarge reactor && ((TileEntityMachineReactorLarge)world.getTileEntity(link)).checkBody()) {
+
+                hullHeat = reactor.hullHeat;
         		coreHeat = reactor.coreHeat;
         		fuel = reactor.fuel * 100 / Math.max(1, reactor.maxFuel);
         		water = reactor.tanks[0].getFluidAmount();
@@ -245,12 +243,12 @@ public class TileEntityReactorControl extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		return super.getCapability(capability, facing);

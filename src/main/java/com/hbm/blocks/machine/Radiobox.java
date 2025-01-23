@@ -44,7 +44,7 @@ public class Radiobox extends BlockContainer {
 	public static final AxisAlignedBB WEST_BB = new AxisAlignedBB(11*f, 1*f, 4*f, 16*f, 15*f, 12*f);
 	public static final AxisAlignedBB SOUTH_BB = new AxisAlignedBB(4*f, 1*f, 0*f, 12*f, 15*f, 5*f);
 	
-	public Radiobox(Material materialIn, String s) {
+	public Radiobox(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -53,18 +53,18 @@ public class Radiobox extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityRadiobox();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityRadiobox box = (TileEntityRadiobox)world.getTileEntity(pos);
+			final TileEntityRadiobox box = (TileEntityRadiobox)world.getTileEntity(pos);
 			boolean wasInfinite = false;
 			if(box != null)
 				wasInfinite = box.infinite;
@@ -76,7 +76,7 @@ public class Radiobox extends BlockContainer {
 				box.markDirty();
 				return true;
 			}
-			boolean on = world.getBlockState(pos).getValue(STATE);
+			final boolean on = world.getBlockState(pos).getValue(STATE);
 			if(!on) {
 				world.setBlockState(pos, world.getBlockState(pos).withProperty(STATE, true));
 				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.reactorStart, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -95,8 +95,8 @@ public class Radiobox extends BlockContainer {
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntityRadiobox box = (TileEntityRadiobox)world.getTileEntity(pos);
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+		final TileEntityRadiobox box = (TileEntityRadiobox)world.getTileEntity(pos);
 
 		if(box != null && box.infinite) {
 			world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemBattery.getEmptyBattery(ModItems.battery_spark)));
@@ -105,27 +105,27 @@ public class Radiobox extends BlockContainer {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		switch(state.getValue(FACING)){
 		case EAST:
 			return EAST_BB;
@@ -141,23 +141,23 @@ public class Radiobox extends BlockContainer {
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(STATE, false);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING, STATE });
+		return new BlockStateContainer(this, FACING, STATE);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return (((EnumFacing) state.getValue(FACING)).getIndex() << 1) + (state.getValue(STATE) == true ? 1 : 0);
+	public int getMetaFromState(final IBlockState state) {
+		return (state.getValue(FACING).getIndex() << 1) + (state.getValue(STATE) ? 1 : 0);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		boolean state = (meta & 1) == 1 ? true : false;
+		final boolean state = (meta & 1) == 1;
 		meta = meta >> 1;
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
@@ -169,17 +169,17 @@ public class Radiobox extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add("Right click when powered to kill all hostile mobs in 15m radius.");
 		tooltip.add("Right click with Spark-battery to make it selfcharging.");

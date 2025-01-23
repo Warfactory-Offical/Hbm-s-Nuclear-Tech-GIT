@@ -15,7 +15,7 @@ public class TileEntityChlorineSeal extends TileEntity implements ITickable {
 			spread(new BlockPos.MutableBlockPos(pos), 0);
 	}
 	
-	private void spread(MutableBlockPos spread, int index) {
+	private void spread(final MutableBlockPos spread, final int index) {
 		
 		if(index > 50)
 			return;

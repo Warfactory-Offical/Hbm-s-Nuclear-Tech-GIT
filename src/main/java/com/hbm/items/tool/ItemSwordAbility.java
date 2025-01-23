@@ -1,16 +1,11 @@
 package com.hbm.items.tool;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.hbm.handler.WeaponAbility;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -35,6 +30,10 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class ItemSwordAbility extends ItemSword implements IItemAbility {
 
 	private EnumRarity rarity = EnumRarity.COMMON;
@@ -42,9 +41,9 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 	protected float damage;
 	protected double attackSpeed;
 	protected double movement;
-	private List<WeaponAbility> hitAbility = new ArrayList<>();
+	private final List<WeaponAbility> hitAbility = new ArrayList<>();
 
-	public ItemSwordAbility(float damage, double attackSpeed, double movement, ToolMaterial material, String s) {
+	public ItemSwordAbility(final float damage, final double attackSpeed, final double movement, final ToolMaterial material, final String s) {
 		super(material);
 		this.damage = damage;
 		this.movement = movement;
@@ -55,36 +54,36 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 		ModItems.ALL_ITEMS.add(this);
 	}
 
-	public ItemSwordAbility(float damage, double movement, ToolMaterial material, String s) {
+	public ItemSwordAbility(final float damage, final double movement, final ToolMaterial material, final String s) {
 		this(damage, -2.4, movement, material, s);
 	}
 
-	public ItemSwordAbility addHitAbility(WeaponAbility weaponAbility) {
+	public ItemSwordAbility addHitAbility(final WeaponAbility weaponAbility) {
 		this.hitAbility.add(weaponAbility);
 		return this;
 	}
 
 	//<insert obvious Rarity joke here>
-	public ItemSwordAbility setRarity(EnumRarity rarity) {
+	public ItemSwordAbility setRarity(final EnumRarity rarity) {
 		this.rarity = rarity;
 		return this;
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		return this.rarity != EnumRarity.COMMON ? this.rarity : super.getRarity(stack);
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+	public boolean hitEntity(final ItemStack stack, final EntityLivingBase target, final EntityLivingBase attacker) {
 		if(!attacker.world.isRemote && !this.hitAbility.isEmpty() && attacker instanceof EntityPlayer && canOperate(stack)) {
 
 			//hacky hacky hack
 			if(this == ModItems.mese_gavel)
 				attacker.world.playSound(null, target.posX, target.posY, target.posZ, HBMSoundHandler.whack, SoundCategory.HOSTILE, 3.0F, 1.F);
 
-			for(WeaponAbility ability : this.hitAbility) {
+			for(final WeaponAbility ability : this.hitAbility) {
 				ability.onHit(attacker.world, (EntityPlayer) attacker, target, this);
 			}
 		}
@@ -93,41 +92,40 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot slot) {
-		Multimap<String, AttributeModifier> map = HashMultimap.<String, AttributeModifier> create();
+	public Multimap<String, AttributeModifier> getItemAttributeModifiers(final EntityEquipmentSlot slot) {
+		final Multimap<String, AttributeModifier> map = HashMultimap.create();
 		if(slot == EntityEquipmentSlot.MAINHAND) {
 			map.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(UUID.fromString("91AEAA56-376B-4498-935B-2F7F68070635"), "Tool modifier", movement, 1));
-			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.damage, 0));
+			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.damage, 0));
 			map.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", this.attackSpeed, 0));
 		}
 		return map;
 	}
 
 	@Override
-	public void breakExtraBlock(World world, int x, int y, int z, EntityPlayer playerEntity, int refX, int refY, int refZ, EnumHand hand) {
-		BlockPos pos = new BlockPos(x, y, z);
+	public void breakExtraBlock(final World world, final int x, final int y, final int z, final EntityPlayer playerEntity, final int refX, final int refY, final int refZ, final EnumHand hand) {
+		final BlockPos pos = new BlockPos(x, y, z);
 		if(world.isAirBlock(pos))
 			return;
 
-		if(!(playerEntity instanceof EntityPlayerMP))
+		if(!(playerEntity instanceof EntityPlayerMP player))
 			return;
 
-		EntityPlayerMP player = (EntityPlayerMP) playerEntity;
-		ItemStack stack = player.getHeldItem(hand);
+        final ItemStack stack = player.getHeldItem(hand);
 
-		IBlockState block = world.getBlockState(pos);
+		final IBlockState block = world.getBlockState(pos);
 
 		if(!canHarvestBlock(block, stack))
 			return;
 
-		IBlockState refBlock = world.getBlockState(new BlockPos(refX, refY, refZ));
-		float refStrength = ForgeHooks.blockStrength(refBlock, player, world, new BlockPos(refX, refY, refZ));
-		float strength = ForgeHooks.blockStrength(block, player, world, pos);
+		final IBlockState refBlock = world.getBlockState(new BlockPos(refX, refY, refZ));
+		final float refStrength = ForgeHooks.blockStrength(refBlock, player, world, new BlockPos(refX, refY, refZ));
+		final float strength = ForgeHooks.blockStrength(block, player, world, pos);
 
 		if(!ForgeHooks.canHarvestBlock(block.getBlock(), player, world, pos) || refStrength / strength > 10f)
 			return;
 
-		int event = ForgeHooks.onBlockBreakEvent(world, player.interactionManager.getGameType(), player, pos);
+		final int event = ForgeHooks.onBlockBreakEvent(world, player.interactionManager.getGameType(), player, pos);
 		if(event < 0)
 			return;
 
@@ -161,7 +159,7 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 			if(block.getBlock().removedByPlayer(block, world, pos, player, true)) {
 				block.getBlock().onPlayerDestroy(world, pos, block);
 			}
-			ItemStack itemstack = player.getHeldItem(hand);
+			final ItemStack itemstack = player.getHeldItem(hand);
 			if(itemstack != null) {
 				itemstack.onBlockDestroyed(world, block, new BlockPos(x, y, z), player);
 
@@ -176,18 +174,18 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(!this.hitAbility.isEmpty()) {
 
 			list.add(I18nUtil.resolveKey("tool.ability.weaponlist"));
 
-			for(WeaponAbility ability : this.hitAbility) {
+			for(final WeaponAbility ability : this.hitAbility) {
 				list.add("  " + TextFormatting.RED + ability.getFullName());
 			}
 		}
 	}
 
-	protected boolean canOperate(ItemStack stack) {
+	protected boolean canOperate(final ItemStack stack) {
 		return true;
 	}
 }

@@ -22,29 +22,29 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class RenderOverhead {
 
-	public static void renderTag(EntityLivingBase living, double x, double y, double z, RenderLivingBase renderer, String name, boolean depthTest) {
+	public static void renderTag(final EntityLivingBase living, final double x, final double y, final double z, final RenderLivingBase renderer, final String name, final boolean depthTest) {
 
-		EntityPlayer thePlayer = Minecraft.getMinecraft().player;
+		final EntityPlayer thePlayer = Minecraft.getMinecraft().player;
 
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
 
 		if(shouldRenderTag(living)) {
-			float f = 1.6F;
-			double distSq = living.getDistanceSq(thePlayer);
-			float range = living.isSneaking() ? RenderLivingBase.NAME_TAG_RANGE_SNEAK : RenderLivingBase.NAME_TAG_RANGE;
+			final float f = 1.6F;
+			final double distSq = living.getDistanceSq(thePlayer);
+			final float range = living.isSneaking() ? RenderLivingBase.NAME_TAG_RANGE_SNEAK : RenderLivingBase.NAME_TAG_RANGE;
 
 			if(distSq < (double) (range * range)) {
-				String s = name;
+				final String s = name;
 				drawTagAware(living, x, y, z, name, depthTest);
 			}
 		}
 	}
 
-	protected static boolean shouldRenderTag(EntityLivingBase p_110813_1_) {
+	protected static boolean shouldRenderTag(final EntityLivingBase p_110813_1_) {
 		return Minecraft.isGuiEnabled() && p_110813_1_ != Minecraft.getMinecraft().player && !p_110813_1_.isInvisibleToPlayer(Minecraft.getMinecraft().player) && !p_110813_1_.isBeingRidden();
 	}
 
-	protected static void drawTagAware(EntityLivingBase entity, double x, double y, double z, String string, boolean depthTest) {
+	protected static void drawTagAware(final EntityLivingBase entity, final double x, final double y, final double z, final String string, final boolean depthTest) {
 		if(entity.isPlayerSleeping()) {
 			drawTag(entity, string, x, y - 1.5D, z, 64, depthTest);
 		} else {
@@ -52,14 +52,14 @@ public class RenderOverhead {
 		}
 	}
 
-	protected static void drawTag(Entity entity, String name, double x, double y, double z, int dist, boolean depthTest) {
+	protected static void drawTag(final Entity entity, final String name, final double x, final double y, final double z, final int dist, final boolean depthTest) {
 
-		double distsq = entity.getDistanceSq(Minecraft.getMinecraft().player);
+		final double distsq = entity.getDistanceSq(Minecraft.getMinecraft().player);
 
 		if(distsq <= (double) (dist * dist)) {
-			FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
-			float f = 1.6F;
-			float scale = 0.016666668F * f;
+			final FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
+			final float f = 1.6F;
+			final float scale = 0.016666668F * f;
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.0F, (float) y + entity.height + 0.75F, (float) z);
 			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -74,8 +74,8 @@ public class RenderOverhead {
 			GlStateManager.enableBlend();
 			//src alpha, one minus src alpha
 			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder buf = tessellator.getBuffer();
+			final Tessellator tessellator = Tessellator.getInstance();
+			final BufferBuilder buf = tessellator.getBuffer();
 			byte heightOffset = 0;
 
 			if(name.equals("deadmau5")) {
@@ -84,12 +84,12 @@ public class RenderOverhead {
 
 			GlStateManager.disableTexture2D();
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-			int center = fontrenderer.getStringWidth(name) / 2;
+			final int center = fontrenderer.getStringWidth(name) / 2;
 			GlStateManager.color(0.0F, 0.0F, 0.0F, 0.25F);
-			buf.pos((double) (-center - 1), (double) (-1 + heightOffset), 0.0D).endVertex();
-			buf.pos((double) (-center - 1), (double) (8 + heightOffset), 0.0D).endVertex();
-			buf.pos((double) (center + 1), (double) (8 + heightOffset), 0.0D).endVertex();
-			buf.pos((double) (center + 1), (double) (-1 + heightOffset), 0.0D).endVertex();
+			buf.pos(-center - 1, -1 + heightOffset, 0.0D).endVertex();
+			buf.pos(-center - 1, 8 + heightOffset, 0.0D).endVertex();
+			buf.pos(center + 1, 8 + heightOffset, 0.0D).endVertex();
+			buf.pos(center + 1, -1 + heightOffset, 0.0D).endVertex();
 			tessellator.draw();
 			GlStateManager.enableTexture2D();
 			fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, heightOffset, 553648127);
@@ -103,12 +103,12 @@ public class RenderOverhead {
 		}
 	}
 
-	public static void renderThermalSight(float partialTicks) {
+	public static void renderThermalSight(final float partialTicks) {
 
-		EntityPlayer player = Minecraft.getMinecraft().player;
-		double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
-		double y =  player.prevPosY + (player.posY - player.prevPosY) * partialTicks;
-		double z =  player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
+		final EntityPlayer player = Minecraft.getMinecraft().player;
+		final double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
+		final double y =  player.prevPosY + (player.posY - player.prevPosY) * partialTicks;
+		final double z =  player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
 
 		GL11.glPushMatrix();
 		GlStateManager.disableColorMaterial();
@@ -119,13 +119,13 @@ public class RenderOverhead {
 		GlStateManager.disableDepth();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
-		net.minecraft.client.renderer.Tessellator tess = net.minecraft.client.renderer.Tessellator.getInstance();
-		BufferBuilder buf = tess.getBuffer();
+		final net.minecraft.client.renderer.Tessellator tess = net.minecraft.client.renderer.Tessellator.getInstance();
+		final BufferBuilder buf = tess.getBuffer();
 		buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
-		for(Object o : player.world.loadedEntityList) {
+		for(final Object o : player.world.loadedEntityList) {
 
-			Entity ent = (Entity) o;
+			final Entity ent = (Entity) o;
 
 			if(ent == player)
 				continue;
@@ -152,7 +152,7 @@ public class RenderOverhead {
 				continue;
 			}
 
-			AxisAlignedBB bb = ent.getEntityBoundingBox();
+			final AxisAlignedBB bb = ent.getEntityBoundingBox();
 			buf.pos(bb.minX - x, bb.maxY - y, bb.minZ - z).color(r, g, b, 1).endVertex();
 			buf.pos(bb.minX - x, bb.minY - y, bb.minZ - z).color(r, g, b, 1).endVertex();
 			buf.pos(bb.minX - x, bb.maxY - y, bb.minZ - z).color(r, g, b, 1).endVertex();

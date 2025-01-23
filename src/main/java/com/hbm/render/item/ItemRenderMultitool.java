@@ -33,7 +33,7 @@ public class ItemRenderMultitool extends TEISRBase {
 	}
     
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:

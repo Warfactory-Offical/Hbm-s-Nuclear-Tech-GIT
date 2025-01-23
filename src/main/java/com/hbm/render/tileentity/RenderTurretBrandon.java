@@ -11,8 +11,8 @@ import net.minecraft.util.math.Vec3d;
 public class RenderTurretBrandon extends RenderTurretBase<TileEntityTurretBrandon> {
 
 	@Override
-	public void render(TileEntityTurretBrandon turret, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
-		Vec3d pos = turret.getHorizontalOffset();
+	public void render(final TileEntityTurretBrandon turret, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
+		final Vec3d pos = turret.getHorizontalOffset();
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + pos.x, y, z + pos.z);
@@ -24,7 +24,7 @@ public class RenderTurretBrandon extends RenderTurretBase<TileEntityTurretBrando
 
 		bindTexture(ResourceManager.turret_base_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");
-		double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
+		final double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
 		
 		GL11.glTranslated(0, 1.5, 0);
 		GL11.glRotated(pitch, 0, 0, 1);

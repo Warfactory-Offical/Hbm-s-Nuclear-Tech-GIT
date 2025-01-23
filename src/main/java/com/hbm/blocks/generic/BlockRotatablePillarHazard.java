@@ -10,12 +10,12 @@ public class BlockRotatablePillarHazard extends BlockRotatablePillar implements 
 
 	ItemHazardModule module;
 	
-	public BlockRotatablePillarHazard(Material materialIn, String s) {
+	public BlockRotatablePillarHazard(final Material materialIn, final String s) {
 		super(materialIn, s);
 		this.module = new ItemHazardModule();
 	}
 
-	public BlockRotatablePillarHazard(Material mat, SoundType type, String s) {
+	public BlockRotatablePillarHazard(final Material mat, final SoundType type, final String s) {
 		this(mat, s);
 		this.setSoundType(type);
 	}

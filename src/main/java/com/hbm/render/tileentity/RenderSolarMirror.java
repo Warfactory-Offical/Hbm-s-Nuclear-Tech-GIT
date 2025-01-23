@@ -16,34 +16,34 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 public class RenderSolarMirror extends TileEntitySpecialRenderer<TileEntitySolarMirror> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntitySolarMirror te) {
+	public boolean isGlobalRenderer(final TileEntitySolarMirror te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntitySolarMirror te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntitySolarMirror te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
         GlStateManager.disableCull();
         
-        TileEntitySolarMirror mirror = (TileEntitySolarMirror)te;
+        final TileEntitySolarMirror mirror = te;
 
         bindTexture(ResourceManager.solar_mirror_tex);
         ResourceManager.solar_mirror.renderPart("Base");
 
         GL11.glTranslated(0, 1, 0);
 
-    	int dx = mirror.tX - mirror.getPos().getX();
-    	int dy = mirror.tY - mirror.getPos().getY();
-    	int dz = mirror.tZ - mirror.getPos().getZ();
+    	final int dx = mirror.tX - mirror.getPos().getX();
+    	final int dy = mirror.tY - mirror.getPos().getY();
+    	final int dz = mirror.tZ - mirror.getPos().getZ();
 
-    	double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    	final double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
         if(mirror.tY >= mirror.getPos().getY()) {
 
-        	double pitch = Math.toDegrees(-Math.asin((dy + 0.5) / dist)) + 90;
-        	double yaw = Math.toDegrees(-Math.atan2(dz, dx)) + 180;
+        	final double pitch = Math.toDegrees(-Math.asin((dy + 0.5) / dist)) + 90;
+        	final double yaw = Math.toDegrees(-Math.atan2(dz, dx)) + 180;
 
         	GL11.glRotated(yaw, 0, 1, 0);
         	GL11.glRotated(pitch, 0, 0, 1);
@@ -53,11 +53,11 @@ public class RenderSolarMirror extends TileEntitySpecialRenderer<TileEntitySolar
         ResourceManager.solar_mirror.renderPart("Mirror");
 
         if(mirror.isOn) {
-			float min = 0.008F;
-	        float max = 0.008F;
+			final float min = 0.008F;
+	        final float max = 0.008F;
 
-	        Tessellator tess = Tessellator.getInstance();
-	        BufferBuilder buf = tess.getBuffer();
+	        final Tessellator tess = Tessellator.getInstance();
+	        final BufferBuilder buf = tess.getBuffer();
 	        GlStateManager.disableTexture2D();
 	        GlStateManager.disableLighting();
 	        GlStateManager.enableBlend();

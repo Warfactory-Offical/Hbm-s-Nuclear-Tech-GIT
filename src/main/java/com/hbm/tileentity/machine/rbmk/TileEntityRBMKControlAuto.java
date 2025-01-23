@@ -23,7 +23,7 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 
 	@Override
-	public boolean hasPermission(EntityPlayer player) {
+	public boolean hasPermission(final EntityPlayer player) {
 		return Vec3.createVectorHelper(pos.getX() - player.posX, pos.getY() - player.posY, pos.getZ() - player.posZ).length() < 20;
 	}
 	
@@ -34,8 +34,8 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 			
 			double fauxLevel = 0;
 
-			double lowerBound = Math.min(this.heatLower, this.heatUpper);
-			double upperBound = Math.max(this.heatLower, this.heatUpper);
+			final double lowerBound = Math.min(this.heatLower, this.heatUpper);
+			final double upperBound = Math.max(this.heatLower, this.heatUpper);
 			
 			if(this.heat < lowerBound) {
 				fauxLevel = this.levelLower;
@@ -71,7 +71,7 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.levelLower = nbt.getDouble("levelLower");
@@ -86,7 +86,7 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setDouble("levelLower", levelLower);
@@ -101,10 +101,10 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 
 	@Override
-	public void receiveControl(NBTTagCompound data) {
+	public void receiveControl(final NBTTagCompound data) {
 		
 		if(data.hasKey("function")) {
-			int c = Math.abs(data.getInteger("function")) % RBMKColor.values().length;
+			final int c = Math.abs(data.getInteger("function")) % RBMKColor.values().length;
 			this.function = RBMKFunction.values()[c];
 			
 		} else {

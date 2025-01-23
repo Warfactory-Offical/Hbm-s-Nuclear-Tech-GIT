@@ -25,7 +25,7 @@ public class SatLaserPacket implements IMessage {
 		
 	}
 
-	public SatLaserPacket(int x, int z, int freq)
+	public SatLaserPacket(final int x, final int z, final int freq)
 	{
 		this.x = x;
 		this.z = z;
@@ -33,14 +33,14 @@ public class SatLaserPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		z = buf.readInt();
 		freq = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(z);
 		buf.writeInt(freq);
@@ -49,17 +49,17 @@ public class SatLaserPacket implements IMessage {
 	public static class Handler implements IMessageHandler<SatLaserPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(SatLaserPacket m, MessageContext ctx) {
+		public IMessage onMessage(final SatLaserPacket m, final MessageContext ctx) {
 			ctx.getServerHandler().player.getServer().addScheduledTask(() -> {
-				EntityPlayer p = ctx.getServerHandler().player;
+				final EntityPlayer p = ctx.getServerHandler().player;
 				if(!ctx.getServerHandler().player.world.isBlockLoaded(new BlockPos(m.x, 0, m.z)))
 					return;
 				if(p.getHeldItemMainhand().getItem() instanceof ItemSatInterface) {
 					
-					int freq = ItemSatInterface.getFreq(p.getHeldItemMainhand());
+					final int freq = ItemSatInterface.getFreq(p.getHeldItemMainhand());
 					
 					if(freq == m.freq) {
-					    Satellite sat = SatelliteSavedData.getData(p.world).getSatFromFreq(m.freq);
+					    final Satellite sat = SatelliteSavedData.getData(p.world).getSatFromFreq(m.freq);
 					    
 					    if(sat != null)
 					    	sat.onClick(p.world, m.x, m.z);

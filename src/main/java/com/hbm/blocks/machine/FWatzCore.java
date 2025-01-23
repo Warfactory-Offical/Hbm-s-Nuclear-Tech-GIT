@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class FWatzCore extends BlockContainer {
 
-	public FWatzCore(Material materialIn, String s) {
+	public FWatzCore(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,12 +21,12 @@ public class FWatzCore extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityFWatzCore();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

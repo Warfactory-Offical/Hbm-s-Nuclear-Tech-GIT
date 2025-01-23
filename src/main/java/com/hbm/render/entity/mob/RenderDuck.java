@@ -15,12 +15,12 @@ public class RenderDuck extends RenderChicken {
 	
 	public static final ResourceLocation ducc = new ResourceLocation(RefStrings.MODID, "textures/entity/duck.png");
 	
-	public RenderDuck(RenderManager p_i47211_1_) {
+	public RenderDuck(final RenderManager p_i47211_1_) {
 		super(p_i47211_1_);
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityChicken entity) {
+	protected ResourceLocation getEntityTexture(final EntityChicken entity) {
 		return ducc;
 	}
 

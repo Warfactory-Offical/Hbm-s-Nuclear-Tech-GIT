@@ -15,12 +15,12 @@ import net.minecraft.world.World;
 
 public class RBMKOutgasser extends RBMKBase {
 
-	public RBMKOutgasser(String s, String c){
+	public RBMKOutgasser(final String s, final String c){
 		super(s, c);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		if(meta >= offset)
 			return new TileEntityRBMKOutgasser();
 		
@@ -31,12 +31,12 @@ public class RBMKOutgasser extends RBMKBase {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		return openInv(worldIn, pos.getX(), pos.getY(), pos.getZ(), playerIn, ModBlocks.guiID_rbmk_outgasser, hand);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	

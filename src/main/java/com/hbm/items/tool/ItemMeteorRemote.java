@@ -1,12 +1,9 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
-import com.hbm.util.I18nUtil;
 import com.hbm.entity.projectile.EntityMeteor;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-
+import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,9 +15,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemMeteorRemote extends Item {
 
-	public ItemMeteorRemote(String s) {
+	public ItemMeteorRemote(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.canRepair = false;
@@ -30,18 +29,18 @@ public class ItemMeteorRemote extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("item.meteor_remote.desc"));
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		stack.damageItem(1, player);
 
 		if(!world.isRemote)
 		{
-			EntityMeteor meteor = new EntityMeteor(world);
+			final EntityMeteor meteor = new EntityMeteor(world);
 			meteor.posX = player.posX + world.rand.nextInt(201) - 100;
 			meteor.posY = 384;
 			meteor.posZ = player.posZ + world.rand.nextInt(201) - 100;

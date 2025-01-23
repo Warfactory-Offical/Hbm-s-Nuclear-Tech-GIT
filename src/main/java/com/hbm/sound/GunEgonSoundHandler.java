@@ -20,13 +20,13 @@ public class GunEgonSoundHandler {
 	public EntityPlayer player;
 	public SoundLoopGunEgonFire loop;
 	
-	public GunEgonSoundHandler(EntityPlayer player) {
+	public GunEgonSoundHandler(final EntityPlayer player) {
 		this.player = player;
 		loop = new SoundLoopGunEgonFire(HBMSoundHandler.gluonLoop, SoundCategory.PLAYERS, player);
 	}
 	
 	public void update(){
-		boolean firing = player.getHeldItemMainhand().getItem() == ModItems.gun_egon && (player == Minecraft.getMinecraft().player ? ItemGunEgon.m1 && Library.countInventoryItem(player.inventory, ItemGunEgon.getBeltType(player, player.getHeldItemMainhand(), true)) >= 2 : ItemGunEgon.getIsFiring(player.getHeldItemMainhand()));
+		final boolean firing = player.getHeldItemMainhand().getItem() == ModItems.gun_egon && (player == Minecraft.getMinecraft().player ? ItemGunEgon.m1 && Library.countInventoryItem(player.inventory, ItemGunEgon.getBeltType(player, player.getHeldItemMainhand(), true)) >= 2 : ItemGunEgon.getIsFiring(player.getHeldItemMainhand()));
 		if(ticks < 0 && firing)
 			ticks = 0;
 		if(ticks >= 0){
@@ -41,9 +41,9 @@ public class GunEgonSoundHandler {
 			} else if(ticks == 8){
 				Minecraft.getMinecraft().getSoundHandler().playSound(loop);
 			}
-			float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+1);
-			Vec3d look = Library.changeByAngle(player.getLook(1), angles[0], angles[1]);
-			RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, 1);
+			final float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+1);
+			final Vec3d look = Library.changeByAngle(player.getLook(1), angles[0], angles[1]);
+			final RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, 1);
 			if(r != null && r.typeOfHit == Type.ENTITY && r.entityHit instanceof EntityLivingBase && player.world.getTotalWorldTime() % 2 == 0){
 				Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getRecordSoundRecord(HBMSoundHandler.gluonHit, (float)player.posX, (float)player.posY, (float)player.posZ));
 			}

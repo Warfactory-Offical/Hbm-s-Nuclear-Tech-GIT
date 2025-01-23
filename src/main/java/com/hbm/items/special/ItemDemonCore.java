@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -13,23 +14,23 @@ import net.minecraft.world.World;
 
 public class ItemDemonCore extends ItemHazard {
 
-	public ItemDemonCore(String s){
+	public ItemDemonCore(final String s){
 		super(s);
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(EntityItem entityItem){
+	public boolean onEntityItemUpdate(final EntityItem entityItem){
 		if(entityItem != null && !entityItem.world.isRemote && entityItem.onGround) {
-			entityItem.setItem(new ItemStack(ModItems.demon_core_closed));
-			entityItem.world.spawnEntity(new EntityItem(entityItem.world, entityItem.posX, entityItem.posY, entityItem.posZ, new ItemStack(ModItems.screwdriver)));
+			entityItem.setItem(ItemStackUtil.itemStackFrom(ModItems.demon_core_closed));
+			entityItem.world.spawnEntity(new EntityItem(entityItem.world, entityItem.posX, entityItem.posY, entityItem.posZ, ItemStackUtil.itemStackFrom(ModItems.screwdriver)));
 			return true;
 		}
 		return false;
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
-		super.addInformation(stack, world, list, flagIn);
+	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn){
+		//super.addInformation(stack, world, list, flagIn);
 		list.add(TextFormatting.RED + "[" + I18nUtil.resolveKey("trait.drop") + "]");
 	}
 

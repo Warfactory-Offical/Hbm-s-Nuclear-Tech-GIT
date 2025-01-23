@@ -40,12 +40,12 @@ public class TileEntityPileFuel extends TileEntityPileBase implements IPileNeutr
 	
 	private void react() {
 		
-		int reaction = (int) (this.neutrons * (1D - ((double)this.heat / (double)maxHeat) * 0.5D)); //max heat reduces reaction by 50% due to thermal expansion
+		final int reaction = (int) (this.neutrons * (1D - ((double)this.heat / (double)maxHeat) * 0.5D)); //max heat reduces reaction by 50% due to thermal expansion
 		
 		this.lastNeutrons = this.neutrons;
-		this.neutrons = 0;;
-		
-		this.progress += reaction;
+		this.neutrons = 0;
+
+        this.progress += reaction;
 		
 		if(reaction <= 0)
 			return;
@@ -57,18 +57,18 @@ public class TileEntityPileFuel extends TileEntityPileBase implements IPileNeutr
 	}
 
 	@Override
-	public void receiveNeutrons(int n) {
+	public void receiveNeutrons(final int n) {
 		this.neutrons += n;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.heat = nbt.getInteger("heat");
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setInteger("heat", this.heat);
 		return nbt;

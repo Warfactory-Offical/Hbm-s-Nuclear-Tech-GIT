@@ -23,14 +23,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class HbmModelObject implements IModelCustom {
-    private static Pattern vertexPattern = Pattern.compile("(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
-    private static Pattern vertexNormalPattern = Pattern.compile("(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
-    private static Pattern textureCoordinatePattern = Pattern.compile("(vt( (\\-){0,1}\\d+\\.\\d+){2,3} *\\n)|(vt( (\\-){0,1}\\d+(\\.\\d+)?){2,3} *$)");
-    private static Pattern face_V_VT_VN_Pattern = Pattern.compile("(f( \\d+/\\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+/\\d+){3,4} *$)");
-    private static Pattern face_V_VT_Pattern = Pattern.compile("(f( \\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+){3,4} *$)");
-    private static Pattern face_V_VN_Pattern = Pattern.compile("(f( \\d+//\\d+){3,4} *\\n)|(f( \\d+//\\d+){3,4} *$)");
-    private static Pattern face_V_Pattern = Pattern.compile("(f( \\d+){3,4} *\\n)|(f( \\d+){3,4} *$)");
-    private static Pattern groupObjectPattern = Pattern.compile("([go]( [\\w\\d\\.]+) *\\n)|([go]( [\\w\\d\\.]+) *$)");
+    private static final Pattern vertexPattern = Pattern.compile("(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
+    private static final Pattern vertexNormalPattern = Pattern.compile("(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
+    private static final Pattern textureCoordinatePattern = Pattern.compile("(vt( (\\-){0,1}\\d+\\.\\d+){2,3} *\\n)|(vt( (\\-){0,1}\\d+(\\.\\d+)?){2,3} *$)");
+    private static final Pattern face_V_VT_VN_Pattern = Pattern.compile("(f( \\d+/\\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+/\\d+){3,4} *$)");
+    private static final Pattern face_V_VT_Pattern = Pattern.compile("(f( \\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+){3,4} *$)");
+    private static final Pattern face_V_VN_Pattern = Pattern.compile("(f( \\d+//\\d+){3,4} *\\n)|(f( \\d+//\\d+){3,4} *$)");
+    private static final Pattern face_V_Pattern = Pattern.compile("(f( \\d+){3,4} *\\n)|(f( \\d+){3,4} *$)");
+    private static final Pattern groupObjectPattern = Pattern.compile("([go]( [\\w\\d\\.]+) *\\n)|([go]( [\\w\\d\\.]+) *$)");
 
     private static Matcher vertexMatcher, vertexNormalMatcher, textureCoordinateMatcher;
     private static Matcher face_V_VT_VN_Matcher, face_V_VT_Matcher, face_V_VN_Matcher, face_V_Matcher;
@@ -41,30 +41,30 @@ public class HbmModelObject implements IModelCustom {
     public ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<TextureCoordinate>();
     public ArrayList<HbmGroupObject> groupObjects = new ArrayList<HbmGroupObject>();
     private HbmGroupObject currentGroupObject;
-    private String fileName;
+    private final String fileName;
 
-    public HbmModelObject(ResourceLocation resource) throws ModelFormatException
+    public HbmModelObject(final ResourceLocation resource) throws ModelFormatException
     {
         this.fileName = resource.toString();
 
         try
         {
-            IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resource);
+            final IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resource);
             loadObjModel(res.getInputStream());
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             throw new ModelFormatException("IO Exception reading model format", e);
         }
     }
 
-    public HbmModelObject(String filename, InputStream inputStream) throws ModelFormatException
+    public HbmModelObject(final String filename, final InputStream inputStream) throws ModelFormatException
     {
         this.fileName = filename;
         loadObjModel(inputStream);
     }
 
-    private void loadObjModel(InputStream inputStream) throws ModelFormatException
+    private void loadObjModel(final InputStream inputStream) throws ModelFormatException
     {
         BufferedReader reader = null;
 
@@ -86,7 +86,7 @@ public class HbmModelObject implements IModelCustom {
                 }
                 else if (currentLine.startsWith("v "))
                 {
-                    Vertex vertex = parseVertex(currentLine, lineCount);
+                    final Vertex vertex = parseVertex(currentLine, lineCount);
                     if (vertex != null)
                     {
                         vertices.add(vertex);
@@ -94,7 +94,7 @@ public class HbmModelObject implements IModelCustom {
                 }
                 else if (currentLine.startsWith("vn "))
                 {
-                    Vertex vertex = parseVertexNormal(currentLine, lineCount);
+                    final Vertex vertex = parseVertexNormal(currentLine, lineCount);
                     if (vertex != null)
                     {
                         vertexNormals.add(vertex);
@@ -102,7 +102,7 @@ public class HbmModelObject implements IModelCustom {
                 }
                 else if (currentLine.startsWith("vt "))
                 {
-                    TextureCoordinate textureCoordinate = parseTextureCoordinate(currentLine, lineCount);
+                    final TextureCoordinate textureCoordinate = parseTextureCoordinate(currentLine, lineCount);
                     if (textureCoordinate != null)
                     {
                         textureCoordinates.add(textureCoordinate);
@@ -116,7 +116,7 @@ public class HbmModelObject implements IModelCustom {
                         currentGroupObject = new HbmGroupObject("Default");
                     }
 
-                    HbmFace face = parseFace(currentLine, lineCount);
+                    final HbmFace face = parseFace(currentLine, lineCount);
 
                     if (face != null)
                     {
@@ -125,7 +125,7 @@ public class HbmModelObject implements IModelCustom {
                 }
                 else if (currentLine.startsWith("g ") | currentLine.startsWith("o "))
                 {
-                	HbmGroupObject group = parseGroupObject(currentLine, lineCount);
+                	final HbmGroupObject group = parseGroupObject(currentLine, lineCount);
 
                     if (group != null)
                     {
@@ -141,7 +141,7 @@ public class HbmModelObject implements IModelCustom {
 
             groupObjects.add(currentGroupObject);
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             throw new ModelFormatException("IO Exception reading model format", e);
         }
@@ -151,7 +151,7 @@ public class HbmModelObject implements IModelCustom {
             {
                 reader.close();
             }
-            catch (IOException e)
+            catch (final IOException e)
             {
                 // hush
             }
@@ -160,7 +160,7 @@ public class HbmModelObject implements IModelCustom {
             {
                 inputStream.close();
             }
-            catch (IOException e)
+            catch (final IOException e)
             {
                 // hush
             }
@@ -171,7 +171,7 @@ public class HbmModelObject implements IModelCustom {
     @SideOnly(Side.CLIENT)
     public void renderAll()
     {
-        Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.instance;
 
         if (currentGroupObject != null)
         {
@@ -187,9 +187,9 @@ public class HbmModelObject implements IModelCustom {
     }
 
     @SideOnly(Side.CLIENT)
-    public void tessellateAll(Tessellator tessellator)
+    public void tessellateAll(final Tessellator tessellator)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (final HbmGroupObject groupObject : groupObjects)
         {
             groupObject.render(tessellator);
         }
@@ -197,11 +197,11 @@ public class HbmModelObject implements IModelCustom {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderOnly(String... groupNames)
+    public void renderOnly(final String... groupNames)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (final HbmGroupObject groupObject : groupObjects)
         {
-            for (String groupName : groupNames)
+            for (final String groupName : groupNames)
             {
                 if (groupName.equalsIgnoreCase(groupObject.name))
                 {
@@ -212,10 +212,10 @@ public class HbmModelObject implements IModelCustom {
     }
 
     @SideOnly(Side.CLIENT)
-    public void tessellateOnly(Tessellator tessellator, String... groupNames) {
-        for (HbmGroupObject groupObject : groupObjects)
+    public void tessellateOnly(final Tessellator tessellator, final String... groupNames) {
+        for (final HbmGroupObject groupObject : groupObjects)
         {
-            for (String groupName : groupNames)
+            for (final String groupName : groupNames)
             {
                 if (groupName.equalsIgnoreCase(groupObject.name))
                 {
@@ -227,9 +227,9 @@ public class HbmModelObject implements IModelCustom {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderPart(String partName)
+    public void renderPart(final String partName)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (final HbmGroupObject groupObject : groupObjects)
         {
             if (partName.equalsIgnoreCase(groupObject.name))
             {
@@ -239,8 +239,8 @@ public class HbmModelObject implements IModelCustom {
     }
 
     @SideOnly(Side.CLIENT)
-    public void tessellatePart(Tessellator tessellator, String partName) {
-        for (HbmGroupObject groupObject : groupObjects)
+    public void tessellatePart(final Tessellator tessellator, final String partName) {
+        for (final HbmGroupObject groupObject : groupObjects)
         {
             if (partName.equalsIgnoreCase(groupObject.name))
             {
@@ -251,16 +251,16 @@ public class HbmModelObject implements IModelCustom {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderAllExcept(String... excludedGroupNames)
+    public void renderAllExcept(final String... excludedGroupNames)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (final HbmGroupObject groupObject : groupObjects)
         {
             boolean skipPart=false;
-            for (String excludedGroupName : excludedGroupNames)
+            for (final String excludedGroupName : excludedGroupNames)
             {
-                if (excludedGroupName.equalsIgnoreCase(groupObject.name))
-                {
-                    skipPart=true;
+                if (excludedGroupName.equalsIgnoreCase(groupObject.name)) {
+                    skipPart = true;
+                    break;
                 }
             }
             if(!skipPart)
@@ -271,17 +271,17 @@ public class HbmModelObject implements IModelCustom {
     }
 
     @SideOnly(Side.CLIENT)
-    public void tessellateAllExcept(Tessellator tessellator, String... excludedGroupNames)
+    public void tessellateAllExcept(final Tessellator tessellator, final String... excludedGroupNames)
     {
         boolean exclude;
-        for (HbmGroupObject groupObject : groupObjects)
+        for (final HbmGroupObject groupObject : groupObjects)
         {
             exclude=false;
-            for (String excludedGroupName : excludedGroupNames)
+            for (final String excludedGroupName : excludedGroupNames)
             {
-                if (excludedGroupName.equalsIgnoreCase(groupObject.name))
-                {
-                    exclude=true;
+                if (excludedGroupName.equalsIgnoreCase(groupObject.name)) {
+                    exclude = true;
+                    break;
                 }
             }
             if(!exclude)
@@ -291,14 +291,14 @@ public class HbmModelObject implements IModelCustom {
         }
     }
 
-    private Vertex parseVertex(String line, int lineCount) throws ModelFormatException
+    private Vertex parseVertex(String line, final int lineCount) throws ModelFormatException
     {
-        Vertex vertex = null;
+        final Vertex vertex = null;
 
         if (isValidVertexLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
-            String[] tokens = line.split(" ");
+            final String[] tokens = line.split(" ");
 
             try
             {
@@ -311,7 +311,7 @@ public class HbmModelObject implements IModelCustom {
                     return new Vertex(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
                 }
             }
-            catch (NumberFormatException e)
+            catch (final NumberFormatException e)
             {
                 throw new ModelFormatException(String.format("Number formatting error at line %d",lineCount), e);
             }
@@ -324,21 +324,21 @@ public class HbmModelObject implements IModelCustom {
         return vertex;
     }
 
-    private Vertex parseVertexNormal(String line, int lineCount) throws ModelFormatException
+    private Vertex parseVertexNormal(String line, final int lineCount) throws ModelFormatException
     {
-        Vertex vertexNormal = null;
+        final Vertex vertexNormal = null;
 
         if (isValidVertexNormalLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
-            String[] tokens = line.split(" ");
+            final String[] tokens = line.split(" ");
 
             try
             {
                 if (tokens.length == 3)
                     return new Vertex(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
             }
-            catch (NumberFormatException e)
+            catch (final NumberFormatException e)
             {
                 throw new ModelFormatException(String.format("Number formatting error at line %d",lineCount), e);
             }
@@ -351,14 +351,14 @@ public class HbmModelObject implements IModelCustom {
         return vertexNormal;
     }
 
-    private TextureCoordinate parseTextureCoordinate(String line, int lineCount) throws ModelFormatException
+    private TextureCoordinate parseTextureCoordinate(String line, final int lineCount) throws ModelFormatException
     {
-        TextureCoordinate textureCoordinate = null;
+        final TextureCoordinate textureCoordinate = null;
 
         if (isValidTextureCoordinateLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
-            String[] tokens = line.split(" ");
+            final String[] tokens = line.split(" ");
 
             try
             {
@@ -367,7 +367,7 @@ public class HbmModelObject implements IModelCustom {
                 else if (tokens.length == 3)
                     return new TextureCoordinate(Float.parseFloat(tokens[0]), 1 - Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
             }
-            catch (NumberFormatException e)
+            catch (final NumberFormatException e)
             {
                 throw new ModelFormatException(String.format("Number formatting error at line %d",lineCount), e);
             }
@@ -380,7 +380,7 @@ public class HbmModelObject implements IModelCustom {
         return textureCoordinate;
     }
 
-    private HbmFace parseFace(String line, int lineCount) throws ModelFormatException
+    private HbmFace parseFace(final String line, final int lineCount) throws ModelFormatException
     {
     	HbmFace face = null;
 
@@ -388,8 +388,8 @@ public class HbmModelObject implements IModelCustom {
         {
             face = new HbmFace();
 
-            String trimmedLine = line.substring(line.indexOf(" ") + 1);
-            String[] tokens = trimmedLine.split(" ");
+            final String trimmedLine = line.substring(line.indexOf(" ") + 1);
+            final String[] tokens = trimmedLine.split(" ");
             String[] subTokens = null;
 
             if (tokens.length == 3)
@@ -490,13 +490,13 @@ public class HbmModelObject implements IModelCustom {
         return face;
     }
 
-    private HbmGroupObject parseGroupObject(String line, int lineCount) throws ModelFormatException
+    private HbmGroupObject parseGroupObject(final String line, final int lineCount) throws ModelFormatException
     {
     	HbmGroupObject group = null;
 
         if (isValidGroupObjectLine(line))
         {
-            String trimmedLine = line.substring(line.indexOf(" ") + 1);
+            final String trimmedLine = line.substring(line.indexOf(" ") + 1);
 
             if (trimmedLine.length() > 0)
             {
@@ -516,7 +516,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid vertex, false otherwise
      */
-    private static boolean isValidVertexLine(String line)
+    private static boolean isValidVertexLine(final String line)
     {
         if (vertexMatcher != null)
         {
@@ -532,7 +532,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid vertex normal, false otherwise
      */
-    private static boolean isValidVertexNormalLine(String line)
+    private static boolean isValidVertexNormalLine(final String line)
     {
         if (vertexNormalMatcher != null)
         {
@@ -548,7 +548,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid texture coordinate, false otherwise
      */
-    private static boolean isValidTextureCoordinateLine(String line)
+    private static boolean isValidTextureCoordinateLine(final String line)
     {
         if (textureCoordinateMatcher != null)
         {
@@ -564,7 +564,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid face that matches the format "f v1/vt1/vn1 ..." (with a minimum of 3 points in the face, and a maximum of 4), false otherwise
      */
-    private static boolean isValidFace_V_VT_VN_Line(String line)
+    private static boolean isValidFace_V_VT_VN_Line(final String line)
     {
         if (face_V_VT_VN_Matcher != null)
         {
@@ -580,7 +580,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid face that matches the format "f v1/vt1 ..." (with a minimum of 3 points in the face, and a maximum of 4), false otherwise
      */
-    private static boolean isValidFace_V_VT_Line(String line)
+    private static boolean isValidFace_V_VT_Line(final String line)
     {
         if (face_V_VT_Matcher != null)
         {
@@ -596,7 +596,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid face that matches the format "f v1//vn1 ..." (with a minimum of 3 points in the face, and a maximum of 4), false otherwise
      */
-    private static boolean isValidFace_V_VN_Line(String line)
+    private static boolean isValidFace_V_VN_Line(final String line)
     {
         if (face_V_VN_Matcher != null)
         {
@@ -612,7 +612,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid face that matches the format "f v1 ..." (with a minimum of 3 points in the face, and a maximum of 4), false otherwise
      */
-    private static boolean isValidFace_V_Line(String line)
+    private static boolean isValidFace_V_Line(final String line)
     {
         if (face_V_Matcher != null)
         {
@@ -628,7 +628,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid face that matches any of the valid face formats, false otherwise
      */
-    private static boolean isValidFaceLine(String line)
+    private static boolean isValidFaceLine(final String line)
     {
         return isValidFace_V_VT_VN_Line(line) || isValidFace_V_VT_Line(line) || isValidFace_V_VN_Line(line) || isValidFace_V_Line(line);
     }
@@ -638,7 +638,7 @@ public class HbmModelObject implements IModelCustom {
      * @param line the line being validated
      * @return true if the line is a valid group (or object), false otherwise
      */
-    private static boolean isValidGroupObjectLine(String line)
+    private static boolean isValidGroupObjectLine(final String line)
     {
         if (groupObjectMatcher != null)
         {

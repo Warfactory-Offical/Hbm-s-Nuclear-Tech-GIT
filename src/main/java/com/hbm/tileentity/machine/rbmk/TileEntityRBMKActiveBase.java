@@ -6,7 +6,7 @@ public abstract class TileEntityRBMKActiveBase extends TileEntityRBMKBase {
 	
 	public abstract String getName();
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this) {
 			return false;
 		} else {

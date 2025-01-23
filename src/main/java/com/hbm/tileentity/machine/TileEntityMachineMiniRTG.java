@@ -35,7 +35,7 @@ public class TileEntityMachineMiniRTG extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

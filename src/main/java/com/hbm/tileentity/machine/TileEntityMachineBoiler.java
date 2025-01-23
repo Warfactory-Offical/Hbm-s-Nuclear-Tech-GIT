@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachineBoiler;
@@ -55,7 +56,7 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 		return "container.machineBoiler";
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -64,30 +65,29 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
+		final int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
 		return false;
 	}
 	
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(i == 4)
-			if(TileEntityFurnace.getItemBurnTime(stack) > 0)
-				return true;
+            return TileEntityFurnace.getItemBurnTime(stack) > 0;
 		return false;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		heat = nbt.getInteger("heat");
 		burnTime = nbt.getInteger("burnTime");
 		if (nbt.hasKey("tanks"))
@@ -96,14 +96,14 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("heat", heat);
 		nbt.setInteger("burnTime", burnTime);
 		nbt.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		return super.writeToNBT(nbt);
 	}
 
-	public int getHeatScaled(int i) {
+	public int getHeatScaled(final int i) {
 		return (heat * i) / maxHeat;
 	}
 
@@ -121,7 +121,7 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 			if (age == 9 || age == 19)
 				fillFluidInit(tanks[1]);
 
-			Object[] outs;
+			final Object[] outs;
 			if (tanks[0].getFluid() != null) {
 				outs = HeatRecipes.getBoilerOutput(tanks[0].getFluid().getFluid());
 			} else {
@@ -151,14 +151,14 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 
 			if (burnTime == 0 && TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(4)) > 0) {
 				burnTime = (int) (TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(4)) * 0.25);
-				Item containerItem = inventory.getStackInSlot(4).getItem().getContainerItem();
+				final Item containerItem = inventory.getStackInSlot(4).getItem().getContainerItem();
 				inventory.getStackInSlot(4).shrink(1);
 				
 
 				if (inventory.getStackInSlot(4).isEmpty()) {
 
 					if (containerItem != null)
-						inventory.setStackInSlot(4, new ItemStack(containerItem));
+						inventory.setStackInSlot(4, ItemStackUtil.itemStackFrom(containerItem));
 					else
 						inventory.setStackInSlot(4, ItemStack.EMPTY);
 				}
@@ -195,7 +195,7 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 	
 	
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		boolean update = needsUpdate;
 		
 		update = FFUtils.fillFluid(this, tank, world, pos.west(), 8000) || update;
@@ -209,24 +209,20 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 		needsUpdate = update;
 	}
 
-	protected boolean inputValidForTank(int tank, int slot) {
-		if(inventory.getStackInSlot(slot).hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) && isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))) {
-			return true;
-		}
-		return false;
-	}
+	protected boolean inputValidForTank(final int tank, final int slot) {
+        return inventory.getStackInSlot(slot).hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) && isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
+    }
 	
-	private boolean isValidFluid(FluidStack stack) {
+	private boolean isValidFluid(final FluidStack stack) {
 		if(stack == null)
 			return false;
 		return HeatRecipes.hasBoilRecipe(stack.getFluid());
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 2) {
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 		}
@@ -238,7 +234,7 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if (isValidFluid(resource)) {
 			return tanks[0].fill(resource, doFill);
 		}
@@ -246,7 +242,7 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if (resource == null || !resource.isFluidEqual(tanks[1].getFluid())) {
 			return null;
 		}
@@ -254,17 +250,17 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {
@@ -274,7 +270,7 @@ public class TileEntityMachineBoiler extends TileEntityMachineBase implements IT
 	
 	private int detectHeat;
 	private int detectBurnTime;
-	private FluidTank[] detectTanks = new FluidTank[]{null, null};
+	private final FluidTank[] detectTanks = new FluidTank[]{null, null};
 	
 	private void detectAndSendChanges() {
 		boolean mark = false;

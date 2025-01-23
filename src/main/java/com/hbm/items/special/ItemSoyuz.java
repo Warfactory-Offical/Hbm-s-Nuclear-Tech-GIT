@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ItemSoyuz extends Item {
 
-	public ItemSoyuz(String s) {
+	public ItemSoyuz(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -21,7 +21,7 @@ public class ItemSoyuz extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		if(stack.getItem() == ModItems.missile_soyuz0)
 			return EnumRarity.UNCOMMON;
 		if(stack.getItem() == ModItems.missile_soyuz1)
@@ -32,7 +32,7 @@ public class ItemSoyuz extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add("Skin:");
 		if(stack.getItem() == ModItems.missile_soyuz0)
 			tooltip.add(TextFormatting.GOLD + "Original");

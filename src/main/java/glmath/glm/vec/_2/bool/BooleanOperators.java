@@ -15,11 +15,11 @@ abstract class BooleanOperators {
 
     public boolean x, y;
 
-    public boolean equals(Vec2bool b) {
+    public boolean equals(final Vec2bool b) {
         return x == b.x & y == b.y;
     }
 
-    public boolean notEquals(Vec2bool b) {
+    public boolean notEquals(final Vec2bool b) {
         return x != b.x | y != b.y;
     }
 }

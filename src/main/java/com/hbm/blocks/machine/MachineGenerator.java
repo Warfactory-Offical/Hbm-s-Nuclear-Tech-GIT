@@ -14,7 +14,7 @@ public class MachineGenerator extends Block {
 
 	
 	
-	public MachineGenerator(Material m, String s) {
+	public MachineGenerator(final Material m, final String s) {
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -24,7 +24,7 @@ public class MachineGenerator extends Block {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return ModItems.circuit_targeting_tier3;
 	}
 	

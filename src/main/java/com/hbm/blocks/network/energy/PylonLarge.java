@@ -18,12 +18,12 @@ import net.minecraft.world.World;
 
 public class PylonLarge extends BlockDummyable implements ITooltipProvider {
 
-	public PylonLarge(Material materialIn, String s) {
+	public PylonLarge(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		if(meta >= 12)
 			return new TileEntityPylonLarge();
 		return null;
@@ -40,16 +40,16 @@ public class PylonLarge extends BlockDummyable implements ITooltipProvider {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity te = world.getTileEntity(pos);
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        final TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntityPylonBase) {
             ((TileEntityPylonBase)te).disconnectAll();
         }
         super.breakBlock(world, pos, state);
     }
 
-    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-        this.addStandardInfo((List)list);
-        super.addInformation(stack, worldIn, (List)list, flagIn);
+    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+        this.addStandardInfo(list);
+        super.addInformation(stack, worldIn, list, flagIn);
     }
 }

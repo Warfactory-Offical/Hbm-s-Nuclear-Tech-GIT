@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 public class RenderCheapoTurret extends TileEntitySpecialRenderer<TileEntityTurretCheapo> {
 
 	@Override
-	public void render(TileEntityTurretCheapo te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityTurretCheapo te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -40,7 +40,7 @@ public class RenderCheapoTurret extends TileEntitySpecialRenderer<TileEntityTurr
         renderTileEntityAt2(te, x, y, z, partialTicks, yaw, pitch);
 	}
 	
-	public void renderTileEntityAt2(TileEntity tileEntity, double x, double y, double z, float f, double yaw, double pitch)
+	public void renderTileEntityAt2(final TileEntity tileEntity, final double x, final double y, final double z, final float f, final double yaw, final double pitch)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
@@ -58,7 +58,7 @@ public class RenderCheapoTurret extends TileEntitySpecialRenderer<TileEntityTurr
         renderTileEntityAt3(tileEntity, x, y, z, f, yaw, pitch);
     }
     
-	public void renderTileEntityAt3(TileEntity tileEntity, double x, double y, double z, float f, double yaw, double pitch)
+	public void renderTileEntityAt3(final TileEntity tileEntity, final double x, final double y, final double z, final float f, final double yaw, final double pitch)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y + 1.25D, z + 0.5D);
@@ -77,7 +77,7 @@ public class RenderCheapoTurret extends TileEntitySpecialRenderer<TileEntityTurr
         renderTileEntityAt4(tileEntity, x, y, z, f, yaw, pitch);
     }
 	
-	public void renderTileEntityAt4(TileEntity tileEntity, double x, double y, double z, float f, double yaw, double pitch)
+	public void renderTileEntityAt4(final TileEntity tileEntity, final double x, final double y, final double z, final float f, final double yaw, final double pitch)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y + 1.25D, z + 0.5D);

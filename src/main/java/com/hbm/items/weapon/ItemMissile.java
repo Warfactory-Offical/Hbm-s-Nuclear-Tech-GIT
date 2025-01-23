@@ -25,7 +25,7 @@ public class ItemMissile extends Item {
 	private String author;
 	private String witty;
 	
-	public ItemMissile(String s) {
+	public ItemMissile(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxStackSize(1);
@@ -116,12 +116,12 @@ public class ItemMissile extends Item {
 		
 		String name;
 		
-		Rarity(String name) {
+		Rarity(final String name) {
 			this.name = name;
 		}
 	}
 	
-	public ItemMissile makeChip(float inaccuracy) {
+	public ItemMissile makeChip(final float inaccuracy) {
 		
 		this.type = PartType.CHIP;
 		this.top = PartSize.ANY;
@@ -133,7 +133,7 @@ public class ItemMissile extends Item {
 		return this;
 	}
 	
-	public ItemMissile makeWarhead(WarheadType type, float punch, float weight, PartSize size) {
+	public ItemMissile makeWarhead(final WarheadType type, final float punch, final float weight, final PartSize size) {
 
 		this.type = PartType.WARHEAD;
 		this.top = PartSize.NONE;
@@ -146,7 +146,7 @@ public class ItemMissile extends Item {
 		return this;
 	}
 	
-	public ItemMissile makeFuselage(FuelType type, float fuel, PartSize top, PartSize bottom) {
+	public ItemMissile makeFuselage(final FuelType type, final float fuel, final PartSize top, final PartSize bottom) {
 
 		this.type = PartType.FUSELAGE;
 		this.top = top;
@@ -159,7 +159,7 @@ public class ItemMissile extends Item {
 		return this;
 	}
 	
-	public ItemMissile makeStability(float inaccuracy, PartSize size) {
+	public ItemMissile makeStability(final float inaccuracy, final PartSize size) {
 
 		this.type = PartType.FINS;
 		this.top = size;
@@ -172,7 +172,7 @@ public class ItemMissile extends Item {
 		return this;
 	}
 	
-	public ItemMissile makeThruster(FuelType type, float consumption, float lift, PartSize size) {
+	public ItemMissile makeThruster(final FuelType type, final float consumption, final float lift, final PartSize size) {
 
 		this.type = PartType.THRUSTER;
 		this.top = size;
@@ -186,7 +186,7 @@ public class ItemMissile extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(title != null)
 			list.add(TextFormatting.DARK_PURPLE + "\"" + title + "\"");
 		
@@ -198,14 +198,14 @@ public class ItemMissile extends Item {
 			case WARHEAD:
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.size") + " " + TextFormatting.GRAY + getSize(bottom));
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.type") + " " + TextFormatting.GRAY + getWarhead((WarheadType)attributes[0]));
-				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.strength") + " " + TextFormatting.RED + (Float)attributes[1]);
-				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.weight") + " " + TextFormatting.GRAY + (Float)attributes[2] + "t");
+				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.strength") + " " + TextFormatting.RED + attributes[1]);
+				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.weight") + " " + TextFormatting.GRAY + attributes[2] + "t");
 				break;
 			case FUSELAGE:
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.topsize") + " " + TextFormatting.GRAY + getSize(top));
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.botsize") + " " + TextFormatting.GRAY + getSize(bottom));
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.fueltype") + " " + TextFormatting.GRAY + getFuel((FuelType)attributes[0]));
-				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.fuelamnt") + " " + TextFormatting.GRAY + (Float)attributes[1] + "l");
+				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.fuelamnt") + " " + TextFormatting.GRAY + attributes[1] + "l");
 				break;
 			case FINS:
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.size") + " " + TextFormatting.GRAY + getSize(top));
@@ -214,11 +214,11 @@ public class ItemMissile extends Item {
 			case THRUSTER:
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.size") + " " + TextFormatting.GRAY + getSize(top));
 				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.fuelamnt") + " " + TextFormatting.GRAY + getFuel((FuelType)attributes[0]));
-				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.fuelcon") + " " + TextFormatting.GRAY + (Float)attributes[1] + "l/tick");
-				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.payload") + " " + TextFormatting.GRAY + (Float)attributes[2] + "t");
+				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.fuelcon") + " " + TextFormatting.GRAY + attributes[1] + "l/tick");
+				list.add(TextFormatting.BOLD + I18nUtil.resolveKey("desc.payload") + " " + TextFormatting.GRAY + attributes[2] + "t");
 				break;
 			}
-		} catch(Exception ex) {
+		} catch(final Exception ex) {
 			list.add("### I AM ERROR ###");
 		}
 		
@@ -233,7 +233,7 @@ public class ItemMissile extends Item {
 			list.add(TextFormatting.GOLD + "   " + TextFormatting.ITALIC + "\"" + witty + "\"");
 	}
 	
-	public String getSize(PartSize size) {
+	public String getSize(final PartSize size) {
 		
 		switch(size) {
 		case ANY:
@@ -249,7 +249,7 @@ public class ItemMissile extends Item {
 		}
 	}
 	
-	public String getWarhead(WarheadType type) {
+	public String getWarhead(final WarheadType type) {
 		
 		switch(type) {
 		case HE:
@@ -283,7 +283,7 @@ public class ItemMissile extends Item {
 		}
 	}
 	
-	public String getFuel(FuelType type) {
+	public String getFuel(final FuelType type) {
 		
 		switch(type) {
 		case KEROSENE:
@@ -302,9 +302,9 @@ public class ItemMissile extends Item {
 	}
 	
 	//am i retarded?
-	public ItemMissile copy(String s) {
+	public ItemMissile copy(final String s) {
 		
-		ItemMissile part = new ItemMissile(s);
+		final ItemMissile part = new ItemMissile(s);
 		part.type = this.type;
 		part.top = this.top;
 		part.bottom = this.bottom;
@@ -315,27 +315,27 @@ public class ItemMissile extends Item {
 		return part;
 	}
 	
-	public ItemMissile setAuthor(String author) {
+	public ItemMissile setAuthor(final String author) {
 		this.author = author;
 		return this;
 	}
 	
-	public ItemMissile setTitle(String title) {
+	public ItemMissile setTitle(final String title) {
 		this.title = title;
 		return this;
 	}
 	
-	public ItemMissile setWittyText(String witty) {
+	public ItemMissile setWittyText(final String witty) {
 		this.witty = witty;
 		return this;
 	}
 	
-	public ItemMissile setHealth(float health) {
+	public ItemMissile setHealth(final float health) {
 		this.health = health;
 		return this;
 	}
 	
-	public ItemMissile setRarity(Rarity rarity) {
+	public ItemMissile setRarity(final Rarity rarity) {
 		this.rarity = rarity;
 		
 		if(this.type == PartType.FUSELAGE) {

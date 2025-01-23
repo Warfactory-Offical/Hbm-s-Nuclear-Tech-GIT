@@ -49,7 +49,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 		steamType = ModForgeFluids.steam;
 	}
 
-	public void getDiagData(NBTTagCompound nbt) {
+	public void getDiagData(final NBTTagCompound nbt) {
 		this.writeToNBT(nbt);
 		nbt.removeTag("jumpheight");
 		nbt.setInteger("water", feed.getFluidAmount());
@@ -75,18 +75,18 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 
 			if(feed.getFluidAmount() < 10000*20 || steam.getFluidAmount() > 0)
 				PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, feed, steam), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50));
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setString("steamType2", steamType.getName());
 			networkPack(data, 50);
 			
-			double heatCap = this.getHeatFromSteam(steamType);
-			double heatProvided = this.heat - heatCap;
+			final double heatCap = this.getHeatFromSteam(steamType);
+			final double heatProvided = this.heat - heatCap;
 			
 			if(heatProvided > 0 && feed.getFluidAmount() > 0) {
 				int waterUsed = (int)Math.floor(heatProvided / gameruleBoilerHeatConsumption);
 				waterUsed = Math.min(waterUsed, feed.getFluidAmount());
 				waterUsed = makeLossless(waterUsed, steamType);
-				int steamProduced = (int)Math.round((waterUsed * 100F) / getFactorFromSteam(steamType));
+				final int steamProduced = (int)Math.round((waterUsed * 100F) / getFactorFromSteam(steamType));
 
 				feed.drain(waterUsed, true);
 				steam.fill(new FluidStack(steamType, steamProduced), true); 
@@ -100,13 +100,13 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 		super.update();
 	}
 
-	public int makeLossless(int water, Fluid type){ //rounds down to the lower base 10 so it stays int
+	public int makeLossless(final int water, final Fluid type){ //rounds down to the lower base 10 so it stays int
 		if(type == ModForgeFluids.ultrahotsteam)
 			return ((int)(water * 0.1)) * 10;
 		return water;
 	}
 	
-	public double getHeatFromSteam(Fluid type) {
+	public double getHeatFromSteam(final Fluid type) {
 		if(type == ModForgeFluids.steam){
 			return 100D;
 		} else if(type == ModForgeFluids.hotsteam){
@@ -120,7 +120,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 		}
 	}
 	
-	public double getFactorFromSteam(Fluid type) {
+	public double getFactorFromSteam(final Fluid type) {
 		if(type == ModForgeFluids.steam){
 			return 1D;
 		} else if(type == ModForgeFluids.hotsteam){
@@ -134,7 +134,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 		}
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 
 		fillFluid(this.pos.getX(), this.pos.getY() + RBMKDials.getColumnHeight(world) + 1, this.pos.getZ(), tank);
 		
@@ -158,12 +158,12 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 		}
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank tank) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
 		feed.readFromNBT(nbt.getCompoundTag("feed"));
@@ -175,7 +175,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
 		nbt.setTag("feed", feed.writeToNBT(new NBTTagCompound()));
@@ -185,12 +185,12 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-	public boolean hasPermission(EntityPlayer player) {
+	public boolean hasPermission(final EntityPlayer player) {
 		return Vec3.createVectorHelper(pos.getX() - player.posX, pos.getY() - player.posY, pos.getZ() - player.posZ).length() < 20;
 	}
 
 	@Override
-	public void receiveControl(NBTTagCompound data) {
+	public void receiveControl(final NBTTagCompound data) {
 		
 		if(data.hasKey("compression")) {
 			int newAmount = 0;
@@ -221,7 +221,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt){
+	public void networkUnpack(final NBTTagCompound nbt){
 		if(nbt.hasKey("steamType2")){
 			this.steamType = FluidRegistry.getFluid(nbt.getString("steamType2"));
 			if (this.steamType == null) {
@@ -233,9 +233,9 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 	
 	@Override
-	public void onMelt(int reduce) {
+	public void onMelt(final int reduce) {
 		
-		int count = 1 + world.rand.nextInt(2);
+		final int count = 1 + world.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.BLANK);
@@ -251,7 +251,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 
 	@Override
 	public NBTTagCompound getNBTForConsole() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setInteger("water", this.feed.getFluidAmount());
 		data.setInteger("maxWater", this.feed.getCapacity());
 		data.setInteger("steam", this.steam.getFluidAmount());
@@ -261,7 +261,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 	
 	@Override
-	public void recievePacket(NBTTagCompound[] tags){
+	public void recievePacket(final NBTTagCompound[] tags){
 		if(tags.length == 2){
 			feed.readFromNBT(tags[0]);
 			steam.readFromNBT(tags[1]);
@@ -274,7 +274,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && resource.getFluid() == FluidRegistry.WATER){
 			return feed.fill(resource, doFill);
 		}
@@ -282,7 +282,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		if(resource != null && resource.getFluid() == steamType){
 			return steam.drain(resource, doDrain);
 		}
@@ -290,17 +290,17 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return steam.drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
@@ -309,7 +309,7 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 	// control panel
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		Map<String, DataValue> data = super.getQueryData();
+		final Map<String, DataValue> data = super.getQueryData();
 
 		data.put("feed", new DataValueFloat((float) feed.getFluidAmount()));
 		data.put("steam", new DataValueFloat((float) steam.getFluidAmount()));

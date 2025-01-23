@@ -33,7 +33,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 	protected GuiTextField field;
 	int index;
 	
-	public GUITurretBase(InventoryPlayer invPlayer, TileEntityTurretBaseNT tedf) {
+	public GUITurretBase(final InventoryPlayer invPlayer, final TileEntityTurretBaseNT tedf) {
 		super(new ContainerTurretBase(invPlayer, tedf));
 		turret = tedf;
 		
@@ -54,13 +54,13 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 45, 16, 52, turret.power, turret.getMaxPower());
 
-		String on = "§a" + I18nUtil.resolveKey("turret.on");
-		String off = "§c" + I18nUtil.resolveKey("turret.off");
+		final String on = "§a" + I18nUtil.resolveKey("turret.on");
+		final String off = "§c" + I18nUtil.resolveKey("turret.off");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 8, guiTop + 29, 10, 10, mouseX, mouseY, I18nUtil.resolveKeyArray("turret.players", turret.targetPlayers ? on : off));
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 22, guiTop + 29, 10, 10, mouseX, mouseY, I18nUtil.resolveKeyArray("turret.animals", turret.targetAnimals ? on : off));
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 36, guiTop + 29, 10, 10, mouseX, mouseY, I18nUtil.resolveKeyArray("turret.mobs", turret.targetMobs ? on : off));
@@ -71,7 +71,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	public void drawAmmo(int mouseX, int mouseY){
+	public void drawAmmo(final int mouseX, final int mouseY){
 		if(this.guiLeft + 79 <= mouseX && guiLeft + 79 + 54 > mouseX && guiTop + 61 < mouseY && guiTop + 61 + 54 >= mouseY) {
 			
 			boolean draw = true;
@@ -83,13 +83,13 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 			}
 			
 			if(draw) {
-				List<ItemStack> list = new ArrayList(turret.getAmmoTypesForDisplay());
-				List<Object[]> lines = new ArrayList();
+				final List<ItemStack> list = new ArrayList(turret.getAmmoTypesForDisplay());
+				final List<Object[]> lines = new ArrayList();
 				ItemStack selected = list.get(0);
 				int highLight = 0;
 				if(list.size() > 1) {
-					int cycle = (int) ((System.currentTimeMillis() % (1000 * list.size())) / 1000);
-					selected = ((ItemStack) list.get(cycle)).copy();
+					final int cycle = (int) ((System.currentTimeMillis() % (1000 * list.size())) / 1000);
+					selected = list.get(cycle).copy();
 					highLight = cycle;
 					list.set(cycle, selected);
 				}
@@ -100,8 +100,8 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 					lines.add(list.subList(0, list.size() / 2).toArray());
 					lines.add(list.subList(list.size() / 2, list.size()).toArray());
 				} else {
-					int bound0 = (int) Math.ceil(list.size() / 3D);
-					int bound1 = (int) Math.ceil(list.size() / 3D * 2D);
+					final int bound0 = (int) Math.ceil(list.size() / 3D);
+					final int bound1 = (int) Math.ceil(list.size() / 3D * 2D);
 					lines.add(list.subList(0, bound0).toArray());
 					lines.add(list.subList(bound0, bound1).toArray());
 					lines.add(list.subList(bound1, list.size()).toArray());
@@ -113,10 +113,10 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 		}
 	}
 
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
 		super.mouseClicked(x, y, i);
 		
-		boolean flag = x >= this.field.x && x < this.field.x + this.field.width && y >= this.field.y && y < this.field.y + this.field.height;
+		final boolean flag = x >= this.field.x && x < this.field.x + this.field.width && y >= this.field.y && y < this.field.y + this.field.height;
 		this.field.setFocused(flag);
 
 		if(guiLeft + 115 <= x && guiLeft + 115 + 18 > x && guiTop + 25 < y && guiTop + 25 + 18 >= y) {
@@ -154,7 +154,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 			return;
 		}
 		
-		int count = getCount();
+		final int count = getCount();
 		
 		if(count > 0) {
 			
@@ -183,7 +183,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 			if(this.field.getText().isEmpty())
 				return;
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setString("name", this.field.getText());
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, turret.getPos().getX(), turret.getPos().getY(), turret.getPos().getZ()));
 			
@@ -195,11 +195,10 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 			
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("del", this.index);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, turret.getPos().getX(), turret.getPos().getY(), turret.getPos().getZ()));
-			return;
-		}
+        }
 	}
 
 	public int getTurretFontColor(){
@@ -207,13 +206,13 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.turret.hasCustomInventoryName() ? this.turret.getInventoryName() : I18n.format(this.turret.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.turret.hasCustomInventoryName() ? this.turret.getInventoryName() : I18n.format(this.turret.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, getTurretFontColor());
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, getTurretFontColor());
 		
-		List<String> names = turret.getWhitelist();
+		final List<String> names = turret.getWhitelist();
 		
 		String n = TextFormatting.ITALIC + "None";
 		
@@ -229,12 +228,12 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 		
 		String t = this.field.getText();
 		
-		String cursor = System.currentTimeMillis() % 1000 < 500 ? " " : "||";
+		final String cursor = System.currentTimeMillis() % 1000 < 500 ? " " : "||";
 		
 		if(this.field.isFocused())
-			t = t.substring(0, this.field.getCursorPosition()) + cursor + t.substring(this.field.getCursorPosition(), t.length());
+			t = t.substring(0, this.field.getCursorPosition()) + cursor + t.substring(this.field.getCursorPosition());
 		
-		double scale = 2;
+		final double scale = 2;
 		
 		GL11.glScaled(1D / scale, 1D / scale, 1);
 		this.fontRenderer.drawString(n, (int)(12 * scale), (int)(51 * scale), 0x00ff00);
@@ -243,7 +242,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int mX, int mY) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int mX, final int mY) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(this.getTexture());
@@ -262,7 +261,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft + 43, guiTop + 98, 194, 76, 18, 18);
 		}
 		
-		int i = turret.getPowerScaled(53);
+		final int i = turret.getPowerScaled(53);
 		drawTexturedModalRect(guiLeft + 152, guiTop + 97 - i, 194, 52 - i, 16, i);
 		
 		if(turret.isOn)
@@ -280,7 +279,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 		if(turret.targetMachines)
 			drawTexturedModalRect(guiLeft + 50, guiTop + 30, 176, 30, 10, 10);
 		
-		int tallies = turret.stattrak;
+		final int tallies = turret.stattrak;
 		
 		if(tallies >= 36) {
 			
@@ -288,11 +287,11 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 			
 		} else {
 			
-			int steps = (int)Math.ceil(tallies / 5D);
+			final int steps = (int)Math.ceil(tallies / 5D);
 			
 			for(int s = 0; s < steps; s++) {
 				
-				int m = tallies % 5;
+				final int m = tallies % 5;
 				
 				if(s < steps - 1 || m == 0) {
 					drawTexturedModalRect(guiLeft + 77 + 9 * s, guiTop + 50, 194, 94, 9, 6);
@@ -310,7 +309,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 	
 	private int getCount() {
 		
-		List<String> names = turret.getWhitelist();
+		final List<String> names = turret.getWhitelist();
 		
 		if(names == null)
 			return 0;
@@ -319,7 +318,7 @@ public abstract class GUITurretBase extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException {
+	protected void keyTyped(final char p_73869_1_, final int p_73869_2_) throws IOException {
 		
 		if(this.field.textboxKeyTyped(p_73869_1_, p_73869_2_)) {
 			

@@ -21,9 +21,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIMiningLaser extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_laser_miner.png");
-	private TileEntityMachineMiningLaser laser;
+	private final TileEntityMachineMiningLaser laser;
 
-	public GUIMiningLaser(InventoryPlayer invPlayer, TileEntityMachineMiningLaser laser) {
+	public GUIMiningLaser(final InventoryPlayer invPlayer, final TileEntityMachineMiningLaser laser) {
 		super(new ContainerMiningLaser(invPlayer, laser));
 		this.laser = laser;
 
@@ -32,12 +32,12 @@ public class GUIMiningLaser extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 106 - 88, 16, 88, laser.power, TileEntityMachineMiningLaser.maxPower);
 
-		String[] text = new String[] { "Acceptable upgrades:",
+		final String[] text = new String[] { "Acceptable upgrades:",
 				" -Speed (stacks to level 12)",
 				" -Effectiveness (stacks to level 12)",
 				" -Overdrive (stacks to level 3)",
@@ -54,7 +54,7 @@ public class GUIMiningLaser extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
 
     	if(guiLeft + 61 <= x && guiLeft + 61 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
@@ -65,18 +65,18 @@ public class GUIMiningLaser extends GuiInfoContainer {
     }
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.laser.hasCustomInventoryName() ? this.laser.getInventoryName() : I18n.format(this.laser.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.laser.hasCustomInventoryName() ? this.laser.getInventoryName() : I18n.format(this.laser.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 4, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
-		String width = "" + laser.getWidth();
+		final String width = "" + laser.getWidth();
 		this.fontRenderer.drawString(width, 43 - this.fontRenderer.getStringWidth(width) / 2, 26, 0xffffff);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		RenderHelper.resetColor();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -85,10 +85,10 @@ public class GUIMiningLaser extends GuiInfoContainer {
 		if(laser.isOn)
 			drawTexturedModalRect(guiLeft + 61, guiTop + 17, 200, 0, 18, 18);
 
-		int i = laser.getPowerScaled(88);
+		final int i = laser.getPowerScaled(88);
 		drawTexturedModalRect(guiLeft + 8, guiTop + 106 - i, 176, 88 - i, 16, i);
 
-		int j = laser.getProgressScaled(34);
+		final int j = laser.getProgressScaled(34);
 		drawTexturedModalRect(guiLeft + 66, guiTop + 36, 192, 0, 8, j);
 
 		this.drawInfoPanel(guiLeft + 87, guiTop + 31, 8, 8, 8);

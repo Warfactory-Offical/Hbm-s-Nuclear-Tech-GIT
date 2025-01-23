@@ -24,14 +24,14 @@ public class ContainerBook extends Container {
     public World world;
     public EntityPlayer player;
     
-    public ContainerBook(InventoryPlayer inventory) {
+    public ContainerBook(final InventoryPlayer inventory) {
     	this.world = inventory.player.world;
     	this.player = inventory.player;
     	this.addSlotToContainer(new SlotCrafting(inventory.player, this.craftMatrix, this.craftResult, 0, 124, 35){
     		@Override
-    		public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack){
-    			 NonNullList<ItemStack> nonnulllist = CraftingManager.getRemainingItems(craftMatrix, thePlayer.world);
-    			 for(ItemStack sta : nonnulllist){
+    		public ItemStack onTake(final EntityPlayer thePlayer, final ItemStack stack){
+    			 final NonNullList<ItemStack> nonnulllist = CraftingManager.getRemainingItems(craftMatrix, thePlayer.world);
+    			 for(final ItemStack sta : nonnulllist){
     				 sta.shrink(1);
     			 }
     			 onCraftMatrixChanged(craftMatrix);
@@ -59,12 +59,12 @@ public class ContainerBook extends Container {
 	}
     
     @Override
-    public void onCraftMatrixChanged(IInventory inventoryIn) {
+    public void onCraftMatrixChanged(final IInventory inventoryIn) {
     	this.craftResult.setInventorySlotContents(0, MagicRecipes.getRecipe(this.craftMatrix));
     }
     
     @Override
-    public void onContainerClosed(EntityPlayer player) {
+    public void onContainerClosed(final EntityPlayer player) {
     	super.onContainerClosed(player);
 
         if (!player.world.isRemote) {
@@ -73,13 +73,13 @@ public class ContainerBook extends Container {
     }
     
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_) {
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int p_82846_2_) {
     	ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot)this.inventorySlots.get(p_82846_2_);
+        final Slot slot = this.inventorySlots.get(p_82846_2_);
 
         if (slot != null && slot.getHasStack())
         {
-            ItemStack itemstack1 = slot.getStack();
+            final ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
             if (p_82846_2_ == 0)
@@ -131,12 +131,12 @@ public class ContainerBook extends Container {
     }
     
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return Library.hasInventoryItem(player.inventory, ModItems.book_of_);
 	}
 	
 	@Override
-	public boolean canMergeSlot(ItemStack stack, Slot slot) {
+	public boolean canMergeSlot(final ItemStack stack, final Slot slot) {
 		return slot.inventory != this.craftResult && super.canMergeSlot(stack, slot);
 	}
 

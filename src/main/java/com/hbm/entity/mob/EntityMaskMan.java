@@ -1,4 +1,5 @@
 package com.hbm.entity.mob;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -31,11 +32,11 @@ import net.minecraft.world.World;
 
 public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 
-	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS));
+	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
 	
 	public float prevHealth;
 	
-	public EntityMaskMan(World worldIn) {
+	public EntityMaskMan(final World worldIn) {
 		super(worldIn);
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIMaskmanCasualApproach(this, EntityPlayer.class, 1.0D, false));
@@ -64,9 +65,9 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	}
 	
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean attackEntityFrom(final DamageSource source, float amount) {
 
-		if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect) source).getImmediateSource() instanceof EntityEgg && rand.nextInt(10) == 0) {
+		if(source instanceof EntityDamageSourceIndirect && source.getImmediateSource() instanceof EntityEgg && rand.nextInt(10) == 0) {
 			this.experienceValue = 0;
 			this.setHealth(0);
 			return true;
@@ -100,11 +101,11 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	}
 	
 	@Override
-	public void onDeath(DamageSource cause) {
+	public void onDeath(final DamageSource cause) {
 		super.onDeath(cause);
-		List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
+		final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
 			
-		for(EntityPlayer player : players) {
+		for(final EntityPlayer player : players) {
 			AdvancementManager.grantAchievement(player, AdvancementManager.bossMaskman);
 		}
 	}
@@ -127,23 +128,23 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	}
 	
 	@Override
-	public void addTrackingPlayer(EntityPlayerMP player) {
+	public void addTrackingPlayer(final EntityPlayerMP player) {
 		super.addTrackingPlayer(player);
 		bossInfo.addPlayer(player);
 	}
 	
 	@Override
-	public void removeTrackingPlayer(EntityPlayerMP player) {
+	public void removeTrackingPlayer(final EntityPlayerMP player) {
 		super.removeTrackingPlayer(player);
 		bossInfo.removePlayer(player);
 	}
 
 	@Override
-	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
+	protected void dropFewItems(final boolean wasRecentlyHit, final int lootingModifier) {
 		if(!world.isRemote){
 
-			ItemStack mask = new ItemStack(ModItems.gas_mask_m65);
-			ArmorUtil.installGasMaskFilter(mask, new ItemStack(ModItems.gas_mask_filter_combo));
+			final ItemStack mask = ItemStackUtil.itemStackFrom(ModItems.gas_mask_m65);
+			ArmorUtil.installGasMaskFilter(mask, ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_combo));
 			
 			this.entityDropItem(mask, 0F);
 			this.dropItem(ModItems.coin_maskman, 1);

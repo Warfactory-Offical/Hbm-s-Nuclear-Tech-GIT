@@ -21,7 +21,7 @@ public class BlockGrate extends Block {
 
 	public static final PropertyInteger HEIGHT = PropertyInteger.create("height", 0, 7);
 	
-	public BlockGrate(Material material, String s) {
+	public BlockGrate(final Material material, final String s) {
 		super(material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -30,7 +30,7 @@ public class BlockGrate extends Block {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound){
+	public Block setSoundType(final SoundType sound){
 		return super.setSoundType(sound);
 	}
 
@@ -40,49 +40,49 @@ public class BlockGrate extends Block {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullBlock(IBlockState state){
+	public boolean isFullBlock(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state){
+	public boolean isBlockNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos){
 		return false;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
-		int height = state.getValue(HEIGHT);
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
+		final int height = state.getValue(HEIGHT);
 		return new AxisAlignedBB(0, height*0.125, 0, 1, height*0.125 + 0.125, 1);
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
-		int height = state.getValue(HEIGHT);
+	public boolean isSideSolid(final IBlockState state, final IBlockAccess world, final BlockPos pos, final EnumFacing side){
+		final int height = state.getValue(HEIGHT);
 		return (height == 0 && side == EnumFacing.DOWN) || (height == 7 && side == EnumFacing.UP);
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand){
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand){
 		if(facing == EnumFacing.UP){
 			return this.getDefaultState().withProperty(HEIGHT, 0);
 		} else if(facing == EnumFacing.DOWN){
@@ -98,12 +98,12 @@ public class BlockGrate extends Block {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(final IBlockState state){
 		return state.getValue(HEIGHT);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(final int meta){
 		return this.getDefaultState().withProperty(HEIGHT, meta & 7);
 	}
 }

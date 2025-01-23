@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 
 public class ItemRag extends Item {
 
-	public ItemRag(String s) {
+	public ItemRag(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		ModItems.ALL_ITEMS.add(this);
@@ -26,16 +27,16 @@ public class ItemRag extends Item {
 	}
 
 	@Override
-	public boolean onEntityItemUpdate(EntityItem entityItem) {
+	public boolean onEntityItemUpdate(final EntityItem entityItem) {
 		
 		if(entityItem != null && !entityItem.world.isRemote) {
 			
 			if(entityItem.isInWater() || entityItem.world.getBlockState(new BlockPos((int)Math.floor(entityItem.posX), (int)Math.floor(entityItem.posY), (int)Math.floor(entityItem.posZ))).getMaterial() == Material.WATER) {
-				ItemStack stack = entityItem.getItem();
+				final ItemStack stack = entityItem.getItem();
 				if(stack.getItem() == ModItems.rag)
-					entityItem.setItem(new ItemStack(ModItems.rag_damp, stack.getCount()));
+					entityItem.setItem(ItemStackUtil.itemStackFrom(ModItems.rag_damp, stack.getCount()));
 				else 
-					entityItem.setItem(new ItemStack(ModItems.mask_damp, stack.getCount()));
+					entityItem.setItem(ItemStackUtil.itemStackFrom(ModItems.mask_damp, stack.getCount()));
 				return true;
 			}
 		}
@@ -44,21 +45,21 @@ public class ItemRag extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
 		
-		ItemStack stack = player.getHeldItem(hand);
+		final ItemStack stack = player.getHeldItem(hand);
 		if((System.currentTimeMillis() % 120000) < 60000){
 			if(stack.getItem() == ModItems.rag)
-				player.dropItem(new ItemStack(ModItems.rag_piss, 1, 0), false);
+				player.dropItem(ItemStackUtil.itemStackFrom(ModItems.rag_piss, 1, 0), false);
 			else
-				player.dropItem(new ItemStack(ModItems.mask_piss, 1, 0), false);
+				player.dropItem(ItemStackUtil.itemStackFrom(ModItems.mask_piss, 1, 0), false);
 			stack.shrink(1);
 		}
-		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add("Drop into water to make damp cloth.");
 		list.add("Right-click to urinate on the cloth.");
 	}

@@ -50,21 +50,21 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		tank.readFromNBT(compound);
 		mode = compound.getShort("mode");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		tank.writeToNBT(compound);
 		compound.setShort("mode", mode);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
 		return slots;
 	}
 	
@@ -88,7 +88,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 			}
 			
 			PacketDispatcher.wrapper.sendToAllTracking(new FluidTankPacket(pos.getX(), pos.getY(), pos.getZ(), new FluidTank[] {tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setShort("mode", mode);
 			this.networkPack(data, 50);
 			
@@ -97,12 +97,12 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		mode = nbt.getShort("mode");
 	}
 	
 	@Override
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 		mode = (short) ((mode + 1) % modes);
 		if (!world.isRemote) {
 			broadcastControlEvt();
@@ -152,7 +152,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if (this.canFill(resource.getFluid())) {		
 			return tank.fill(resource, doFill);
 		}
@@ -160,7 +160,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
 			return null;
 		}
@@ -171,24 +171,21 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		if (this.canDrain(null)) {
 			return tank.drain(maxDrain, doDrain);
 		}
 		return null;
 	}
 	
-	public boolean canFill(Fluid fluid) {
+	public boolean canFill(final Fluid fluid) {
 		if (!this.world.isRemote) {
-			if(mode == 2 || mode == 3 || (tank.getFluid() != null && tank.getFluid().getFluid() != fluid))
-				return false;
-			else
-				return true;
+            return mode != 2 && mode != 3 && (tank.getFluid() == null || tank.getFluid().getFluid() == fluid);
 		}
 		return false;
 	}
 
-	public boolean canDrain(Fluid fluid) {
+	public boolean canDrain(final Fluid fluid) {
 		if (!this.world.isRemote) {
 			return tank.getFluid() != null;
 		}
@@ -196,16 +193,15 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 1) {
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {
@@ -214,7 +210,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		} else {
@@ -226,7 +222,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		Map<String, DataValue> data = new HashMap<>();
+		final Map<String, DataValue> data = new HashMap<>();
 
 		if (tank.getFluid() != null) {
 			data.put("t0_fluidType", new DataValueString(tank.getFluid().getLocalizedName()));
@@ -238,7 +234,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void receiveEvent(BlockPos from, ControlEvent e) {
+	public void receiveEvent(final BlockPos from, final ControlEvent e) {
 		if (e.name.equals("tank_set_mode")) {
 			mode = (short) (e.vars.get("mode").getNumber() % modes);
 			broadcastControlEvt();

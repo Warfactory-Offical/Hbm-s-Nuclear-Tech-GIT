@@ -1,18 +1,17 @@
 package com.hbm.items.gear;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ModSword extends ItemSword {
 
-	public ModSword(ToolMaterial t, String s){
+	public ModSword(final ToolMaterial t, final String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,7 +20,7 @@ public class ModSword extends ItemSword {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.saw)
 			tooltip.add("Prepare for your examination!");
 		if(this == ModItems.bat)

@@ -9,17 +9,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ParticleManager {
 
-	private static Random rand = new Random();
+	private static final Random rand = new Random();
 	
-	public static void spawnParticles(double x, double y, double z, int count) {
+	public static void spawnParticles(final double x, final double y, final double z, final int count) {
 		for (int i = 0; i < count; i++) {
-			ParticleDSmokeFX fx = new ParticleDSmokeFX(Minecraft.getMinecraft().world, x, y, z, 0.0, 0.0, 0.0);
+			final ParticleDSmokeFX fx = new ParticleDSmokeFX(Minecraft.getMinecraft().world, x, y, z, 0.0, 0.0, 0.0);
 			// fx.posX = x;
 			// fx.posY = y;
 			// fx.posZ = z;
-			double motionY = rand.nextGaussian() * (1 + (count / 50));
-			double motionX = rand.nextGaussian() * (1 + (count / 150));
-			double motionZ = rand.nextGaussian() * (1 + (count / 150));
+			final double motionY = rand.nextGaussian() * (1 + (count / 50));
+			final double motionX = rand.nextGaussian() * (1 + (count / 150));
+			final double motionZ = rand.nextGaussian() * (1 + (count / 150));
 			fx.setMotion(motionX, motionY, motionZ);
 			Minecraft.getMinecraft().effectRenderer.addEffect(fx);
 		}

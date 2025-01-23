@@ -25,18 +25,18 @@ public class CrackRecipes {
 		// makeRecipe(new Fluid(), new FluidStack[]{ new FluidStack() });
 	}
 
-	public static void makeRecipe(Fluid inputFluid, FluidStack[] outputFluids) {
+	public static void makeRecipe(final Fluid inputFluid, final FluidStack[] outputFluids) {
 		if(inputFluid != null && outputFluids != null)
 			recipeFluids.put(inputFluid, outputFluids);
 	}
 
-	public static FluidStack[] getOutputsFromFluid(Fluid fluid) {
+	public static FluidStack[] getOutputsFromFluid(final Fluid fluid) {
 		if (fluid == null)
 			return null;
 		return recipeFluids.get(fluid);
 	}
 
-	public static boolean hasRecipe(Fluid fluid) {
+	public static boolean hasRecipe(final Fluid fluid) {
 		return recipeFluids.containsKey(fluid);
 	}
 }

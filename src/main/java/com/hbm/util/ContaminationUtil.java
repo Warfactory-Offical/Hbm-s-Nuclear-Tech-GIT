@@ -1,58 +1,50 @@
 package com.hbm.util;
 
-import java.util.List;
-
-import com.hbm.capability.HbmLivingCapability.EntityHbmProps;
+import com.hbm.blocks.items.ItemBlockHazard;
 import com.hbm.capability.HbmLivingCapability;
+import com.hbm.capability.HbmLivingCapability.EntityHbmProps;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.CompatibilityConfig;
-import com.hbm.config.GeneralConfig;
-import com.hbm.entity.mob.EntityNuclearCreeper;
+import com.hbm.config.RadiationConfig;
+import com.hbm.entity.effect.EntityNukeTorex;
+import com.hbm.entity.grenade.EntityGrenadeASchrab;
+import com.hbm.entity.grenade.EntityGrenadeNuclear;
+import com.hbm.entity.logic.EntityNukeExplosionMK5;
+import com.hbm.entity.missile.EntityMIRV;
 import com.hbm.entity.mob.EntityQuackos;
 import com.hbm.entity.projectile.EntityBulletBase;
 import com.hbm.entity.projectile.EntityExplosiveBeam;
 import com.hbm.entity.projectile.EntityMiniMIRV;
 import com.hbm.entity.projectile.EntityMiniNuke;
-import com.hbm.entity.effect.EntityNukeTorex;
-import com.hbm.entity.effect.EntityBlackHole;
-import com.hbm.entity.logic.EntityNukeExplosionMK5;
-import com.hbm.entity.grenade.EntityGrenadeASchrab;
-import com.hbm.entity.grenade.EntityGrenadeNuclear;
-import com.hbm.entity.missile.EntityMIRV;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.handler.HazmatRegistry;
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.interfaces.IItemHazard;
+import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
-import com.hbm.blocks.items.ItemBlockHazard;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
-import com.hbm.render.amlfrom1710.Vec3;
-import com.hbm.util.ArmorRegistry.HazardClass;
-import com.hbm.util.BobMathUtil;
 import com.hbm.potion.HbmPotion;
+import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.saveddata.RadiationSavedData;
-
+import com.hbm.util.ArmorRegistry.HazardClass;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityZombieHorse;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
-import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityZombieHorse;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
@@ -60,6 +52,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ContaminationUtil {
 
@@ -70,7 +64,7 @@ public class ContaminationUtil {
 	 * @param entity
 	 * @return
 	 */
-	public static float calculateRadiationMod(EntityLivingBase entity) {
+	public static float calculateRadiationMod(final EntityLivingBase entity) {
 
 		if(entity.isPotionActive(HbmPotion.mutation))
 			return 0;
@@ -78,16 +72,16 @@ public class ContaminationUtil {
 		if(entity.getEntityData().hasKey("hbmradmultiplier", 99))
 			mult = entity.getEntityData().getFloat("hbmradmultiplier");
 
-		float koeff = 10.0F;
+		final float koeff = 10.0F;
 		return (float) Math.pow(koeff, -(getConfigEntityRadResistance(entity) + HazmatRegistry.getResistance(entity))) * mult;
 	}
 
-	private static void applyRadData(Entity e, float f) {
+	private static void applyRadData(final Entity e, float f) {
 
 		if(e instanceof IRadiationImmune)
 			return;
 		
-		if(!(e instanceof EntityLivingBase))
+		if(!(e instanceof EntityLivingBase entity))
 			return;
 
 		if(e instanceof EntityPlayer && (((EntityPlayer) e).capabilities.isCreativeMode || ((EntityPlayer) e).isSpectator()))
@@ -95,18 +89,16 @@ public class ContaminationUtil {
 		
 		if(e instanceof EntityPlayer && e.ticksExisted < 200)
 			return;
-		
-		EntityLivingBase entity = (EntityLivingBase)e;
 
-		f *= calculateRadiationMod(entity);
+        f *= calculateRadiationMod(entity);
 
 		if(entity.hasCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null)) {
-			HbmLivingCapability.IEntityHbmProps ent = entity.getCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null);
+			final HbmLivingCapability.IEntityHbmProps ent = entity.getCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null);
 			ent.increaseRads(f);
 		}
 	}
 
-	private static void applyRadDirect(Entity entity, float f) {
+	private static void applyRadDirect(final Entity entity, float f) {
 
 		if(entity instanceof IRadiationImmune)
 			return;
@@ -124,28 +116,28 @@ public class ContaminationUtil {
 			return;
 
 		if(entity.hasCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null)) {
-			HbmLivingCapability.IEntityHbmProps ent = entity.getCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null);
+			final HbmLivingCapability.IEntityHbmProps ent = entity.getCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null);
 			ent.increaseRads(f);
 		}
 	}
 
-	public static void printGeigerData(EntityPlayer player) {
+	public static void printGeigerData(final EntityPlayer player) {
 
-		double eRad = ((long)(HbmLivingProps.getRadiation(player) * 1000)) / 1000D;
+		final double eRad = ((long)(HbmLivingProps.getRadiation(player) * 1000)) / 1000D;
 
-		RadiationSavedData data = RadiationSavedData.getData(player.world);
-		double rads = ((long)(data.getRadNumFromCoord(player.getPosition()) * 1000D)) / 1000D;
-		double env = ((long)(getPlayerRads(player) * 1000D)) / 1000D;
+		final RadiationSavedData data = RadiationSavedData.getData(player.world);
+		final double rads = ((long)(data.getRadNumFromCoord(player.getPosition()) * 1000D)) / 1000D;
+		final double env = ((long)(getPlayerRads(player) * 1000D)) / 1000D;
 
 
-		double res = Library.roundFloat((1D-ContaminationUtil.calculateRadiationMod(player))*100D, 6);
-		double resKoeff = ((long)(HazmatRegistry.getResistance(player) * 100D)) / 100D;
+		final double res = Library.roundFloat((1D-ContaminationUtil.calculateRadiationMod(player))*100D, 6);
+		final double resKoeff = ((long)(HazmatRegistry.getResistance(player) * 100D)) / 100D;
 
-		double rec = ((long)(env* (100-res)/100D * 1000D))/ 1000D;
+		final double rec = ((long)(env* (100-res)/100D * 1000D))/ 1000D;
 
-		String chunkPrefix = getPreffixFromRad(rads);
-		String envPrefix = getPreffixFromRad(env);
-		String recPrefix = getPreffixFromRad(rec);
+		final String chunkPrefix = getPreffixFromRad(rads);
+		final String envPrefix = getPreffixFromRad(env);
+		final String recPrefix = getPreffixFromRad(rec);
 		String radPrefix = "";
 		String resPrefix = "" + TextFormatting.WHITE;
 
@@ -175,7 +167,7 @@ public class ContaminationUtil {
 		player.sendMessage(new TextComponentTranslation("geiger.playerRes").appendSibling(new TextComponentString(" " + resPrefix + String.format("%.6f", res) + "% (" + resKoeff + ")")).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 	}
 
-	public static void printDosimeterData(EntityPlayer player) {
+	public static void printDosimeterData(final EntityPlayer player) {
 
 		double rads = ContaminationUtil.getActualPlayerRads(player);
 		boolean limit = false;
@@ -185,13 +177,13 @@ public class ContaminationUtil {
 			limit = true;
 		}
 		rads = ((int)(1000D * rads))/ 1000D;
-		String radsPrefix = getPreffixFromRad(rads);
+		final String radsPrefix = getPreffixFromRad(rads);
 		
 		player.sendMessage(new TextComponentString("===== ☢ ").appendSibling(new TextComponentTranslation("dosimeter.title")).appendSibling(new TextComponentString(" ☢ =====")).setStyle(new Style().setColor(TextFormatting.GOLD)));
 		player.sendMessage(new TextComponentTranslation("geiger.recievedRad").appendSibling(new TextComponentString(" " + radsPrefix + (limit ? ">" : "") + rads + " RAD/s")).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 	}
 
-	public static String getTextColorFromPercent(double percent){
+	public static String getTextColorFromPercent(final double percent){
 		if(percent < 0.5)
 			return ""+TextFormatting.GREEN;
 		else if(percent < 0.6)
@@ -206,7 +198,7 @@ public class ContaminationUtil {
 			return ""+TextFormatting.DARK_GRAY;
 	}
 
-	public static String getTextColorLung(double percent){
+	public static String getTextColorLung(final double percent){
 		if(percent > 0.9)
 			return ""+TextFormatting.GREEN;
 		else if(percent > 0.75)
@@ -221,22 +213,22 @@ public class ContaminationUtil {
 			return ""+TextFormatting.DARK_GRAY;
 	}
 
-	public static void printDiagnosticData(EntityPlayer player) {
+	public static void printDiagnosticData(final EntityPlayer player) {
 
-		double digamma = ((int)(HbmLivingProps.getDigamma(player) * 1000)) / 1000D;
-		double halflife = ((int)((1D - Math.pow(0.5, digamma)) * 10000)) / 100D;
+		final double digamma = ((int)(HbmLivingProps.getDigamma(player) * 1000)) / 1000D;
+		final double halflife = ((int)((1D - Math.pow(0.5, digamma)) * 10000)) / 100D;
 		
 		player.sendMessage(new TextComponentString("===== Ϝ ").appendSibling(new TextComponentTranslation("digamma.title")).appendSibling(new TextComponentString(" Ϝ =====")).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
 		player.sendMessage(new TextComponentTranslation("digamma.playerDigamma").appendSibling(new TextComponentString(TextFormatting.RED + " " + digamma + " DRX")).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
 		player.sendMessage(new TextComponentTranslation("digamma.playerHealth").appendSibling(new TextComponentString(getTextColorFromPercent(halflife/100D) + String.format(" %6.2f", halflife) + "%")).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
 	}
 
-	public static void printLungDiagnosticData(EntityPlayer player) {
+	public static void printLungDiagnosticData(final EntityPlayer player) {
 
-		float playerAsbestos = 100F-((int)(10000F * HbmLivingProps.getAsbestos(player) / EntityHbmProps.maxAsbestos))/100F;
-		float playerBlacklung = 100F-((int)(10000F * HbmLivingProps.getBlackLung(player) / EntityHbmProps.maxBlacklung))/100F;
-		float playerTotal = (playerAsbestos * playerBlacklung/100F);
-		int contagion = HbmLivingProps.getContagion(player);
+		final float playerAsbestos = 100F-((int)(10000F * HbmLivingProps.getAsbestos(player) / EntityHbmProps.maxAsbestos))/100F;
+		final float playerBlacklung = 100F-((int)(10000F * HbmLivingProps.getBlackLung(player) / EntityHbmProps.maxBlacklung))/100F;
+		final float playerTotal = (playerAsbestos * playerBlacklung/100F);
+		final int contagion = HbmLivingProps.getContagion(player);
 
 		player.sendMessage(new TextComponentString("===== L ").appendSibling(new TextComponentTranslation("lung_scanner.title")).appendSibling(new TextComponentString(" L =====")).setStyle(new Style().setColor(TextFormatting.WHITE)));
 		player.sendMessage(new TextComponentTranslation("lung_scanner.player_asbestos_health").setStyle(new Style().setColor(TextFormatting.WHITE)).appendSibling(new TextComponentString(String.format(getTextColorLung(playerAsbestos/100D)+" %6.2f", playerAsbestos)+" %")));
@@ -248,11 +240,11 @@ public class ContaminationUtil {
 		}
 	}
 
-	public static double getStackRads(ItemStack stack) {
+	public static double getStackRads(final ItemStack stack) {
 		if(stack == null)
 			return 0;
 		
-		Item item = stack.getItem();
+		final Item item = stack.getItem();
 
 		double rads = 0;
 		
@@ -265,7 +257,7 @@ public class ContaminationUtil {
 		}
 
 		if(stack.hasTagCompound()){
-			NBTTagCompound stackNBT = stack.getTagCompound();
+			final NBTTagCompound stackNBT = stack.getTagCompound();
 			if(stackNBT.hasKey(NTM_NEUTRON_NBT_KEY)){
 				rads += stackNBT.getFloat(NTM_NEUTRON_NBT_KEY);
 			}
@@ -277,33 +269,33 @@ public class ContaminationUtil {
 			return 0;
 	}
 
-	public static double getActualPlayerRads(EntityLivingBase entity) {
+	public static double getActualPlayerRads(final EntityLivingBase entity) {
 		return getPlayerRads(entity) * (double)(ContaminationUtil.calculateRadiationMod(entity));
 	}
 
-	public static double getPlayerRads(EntityLivingBase entity) {
+	public static double getPlayerRads(final EntityLivingBase entity) {
 		double rads = HbmLivingProps.getRadBuf(entity);
 		if(entity instanceof EntityPlayer)
-			 rads = rads + HbmLivingProps.getNeutron((EntityPlayer)entity)*20;
-		return (double)rads;
+			 rads = rads + HbmLivingProps.getNeutron(entity)*20;
+		return rads;
 	}
 
-	public static double getNoNeutronPlayerRads(EntityLivingBase entity) {
+	public static double getNoNeutronPlayerRads(final EntityLivingBase entity) {
 		return (double)(HbmLivingProps.getRadBuf(entity)) * (double)(ContaminationUtil.calculateRadiationMod(entity));
 	}
 
-	public static float getPlayerNeutronRads(EntityPlayer player){
+	public static float getPlayerNeutronRads(final EntityPlayer player){
 		float radBuffer = 0F;
-		for(ItemStack slotI : player.inventory.mainInventory){
+		for(final ItemStack slotI : player.inventory.mainInventory){
 			radBuffer = radBuffer + getNeutronRads(slotI);
 		}
-		for(ItemStack slotA : player.inventory.armorInventory){
+		for(final ItemStack slotA : player.inventory.armorInventory){
 			radBuffer = radBuffer + getNeutronRads(slotA);
 		}
 		return radBuffer;
 	}
 
-	public static boolean isRadItem(ItemStack stack){
+	public static boolean isRadItem(final ItemStack stack){
 		if(stack == null)
 			return false;
 
@@ -311,17 +303,13 @@ public class ContaminationUtil {
 			return true;
 		}
 
-		if(stack.getItem() instanceof ItemBlockHazard && ((ItemBlockHazard)stack.getItem()).getModule().radiation > 0){
-			return true;
-		}
+        return stack.getItem() instanceof ItemBlockHazard && ((ItemBlockHazard) stack.getItem()).getModule().radiation > 0;
+    }
 
-		return false;
-	}
-
-	public static float getNeutronRads(ItemStack stack){
+	public static float getNeutronRads(final ItemStack stack){
 		if(stack != null && !stack.isEmpty() && !isRadItem(stack)){
 			if(stack.hasTagCompound()){
-				NBTTagCompound nbt = stack.getTagCompound();
+				final NBTTagCompound nbt = stack.getTagCompound();
 				if(nbt.hasKey(NTM_NEUTRON_NBT_KEY)){
 					return nbt.getFloat(NTM_NEUTRON_NBT_KEY) * stack.getCount();
 				}
@@ -330,22 +318,22 @@ public class ContaminationUtil {
 		return 0F;
 	}
 
-	public static void neutronActivateInventory(EntityPlayer player, float rad, float decay){
+	public static void neutronActivateInventory(final EntityPlayer player, final float rad, final float decay){
 		for(int slotI = 0; slotI < player.inventory.getSizeInventory()-1; slotI++){
 			if(slotI != player.inventory.currentItem)
 				neutronActivateItem(player.inventory.getStackInSlot(slotI), rad, decay);
 		}
-		for(ItemStack slotA : player.inventory.armorInventory){
+		for(final ItemStack slotA : player.inventory.armorInventory){
 			neutronActivateItem(slotA, rad, decay);
 		}
 	}
 
-	public static void neutronActivateItem(ItemStack stack, float rad, float decay){
+	public static void neutronActivateItem(final ItemStack stack, final float rad, final float decay){
 		if(stack != null && !stack.isEmpty() && !isRadItem(stack)){
 			if(stack.getCount() > 1)
 				return;
 
-			NBTTagCompound nbt;
+			final NBTTagCompound nbt;
 			if(stack.hasTagCompound()){
 				nbt = stack.getTagCompound();
 			} else{
@@ -359,7 +347,7 @@ public class ContaminationUtil {
 			if(prevActivation + rad == 0)
 				return;
 
-			float newActivation = prevActivation * decay + (rad / stack.getCount());
+			final float newActivation = prevActivation * decay + (rad / stack.getCount());
 			if(prevActivation * decay + rad < 0.0001F || (rad <= 0 && newActivation < 0.001F )){
 				nbt.removeTag(NTM_NEUTRON_NBT_KEY);
 			} else {
@@ -373,15 +361,13 @@ public class ContaminationUtil {
 		}
 	}
 
-	public static boolean isContaminated(ItemStack stack){
+	public static boolean isContaminated(final ItemStack stack){
 		if(!stack.hasTagCompound())
 			return false;
-		if(stack.getTagCompound().hasKey(NTM_NEUTRON_NBT_KEY))
-			return true;
-		return false;
-	}
+        return stack.getTagCompound().hasKey(NTM_NEUTRON_NBT_KEY);
+    }
 	
-	public static String getPreffixFromRad(double rads) {
+	public static String getPreffixFromRad(final double rads) {
 
 		String chunkPrefix = "";
 		
@@ -401,7 +387,7 @@ public class ContaminationUtil {
 		return chunkPrefix;
 	}
 	
-	public static float getRads(Entity e) {
+	public static float getRads(final Entity e) {
 		if(e instanceof IRadiationImmune)
 			return 0.0F;
 		if(e instanceof EntityLivingBase)
@@ -409,12 +395,12 @@ public class ContaminationUtil {
 		return 0.0F;
 	}
 
-	public static float getConfigEntityRadResistance(Entity e){
+	public static float getConfigEntityRadResistance(final Entity e){
 		float totalResistanceValue = 0.0F;
 		if(!(e instanceof EntityPlayer)){
-			ResourceLocation entity_path = EntityList.getKey(e);
-			Object resistanceMod = CompatibilityConfig.mobModRadresistance.get(entity_path.getNamespace());
-			Object resistanceMob = CompatibilityConfig.mobRadresistance.get(entity_path.toString());
+			final ResourceLocation entity_path = EntityList.getKey(e);
+			final Object resistanceMod = CompatibilityConfig.mobModRadresistance.get(entity_path.getNamespace());
+			final Object resistanceMob = CompatibilityConfig.mobRadresistance.get(entity_path.toString());
 			if(resistanceMod != null){
 				totalResistanceValue = totalResistanceValue + (float)resistanceMod;
 			}
@@ -425,9 +411,9 @@ public class ContaminationUtil {
 		return totalResistanceValue;
 	}
 
-	public static boolean checkConfigEntityImmunity(Entity e){
+	public static boolean checkConfigEntityImmunity(final Entity e){
 		if(!(e instanceof EntityPlayer)){
-			ResourceLocation entity_path = EntityList.getKey(e);
+			final ResourceLocation entity_path = EntityList.getKey(e);
 			if(entity_path != null){
 				if(CompatibilityConfig.mobModRadimmune.contains(entity_path.getNamespace())){
 					return true;
@@ -439,7 +425,7 @@ public class ContaminationUtil {
 		return false;
 	}
 	
-	public static boolean isRadImmune(Entity e) {
+	public static boolean isRadImmune(final Entity e) {
 		if(e instanceof EntityLivingBase && ((EntityLivingBase)e).isPotionActive(HbmPotion.mutation))
 			return true;
 		
@@ -456,16 +442,16 @@ public class ContaminationUtil {
 	
 	/// ASBESTOS ///
 
-	public static void applyAsbestos(Entity e, int i, int dmg) {
+	public static void applyAsbestos(final Entity e, final int i, final int dmg) {
 		applyAsbestos(e, i, dmg, 1);
 	}
 
-	public static void applyAsbestos(Entity e, int i, int dmg, int chance) {
+	public static void applyAsbestos(final Entity e, final int i, final int dmg, final int chance) {
 
-		if(!GeneralConfig.enableAsbestos)
+		if(RadiationConfig.disableAsbestos)
 			return;
 
-		if(!(e instanceof EntityLivingBase))
+		if(!(e instanceof EntityLivingBase entity))
 			return;
 		
 		if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
@@ -473,10 +459,8 @@ public class ContaminationUtil {
 		
 		if(e instanceof EntityPlayer && e.ticksExisted < 200)
 			return;
-		
-		EntityLivingBase entity = (EntityLivingBase)e;
-		
-		if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_FINE)){
+
+        if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_FINE)){
 			if(chance > 1){
 				if(entity.world.rand.nextInt(chance) == 0){
 					ArmorUtil.damageGasMaskFilter(entity, 1);
@@ -491,17 +475,17 @@ public class ContaminationUtil {
 		}
 	}
 
-	public static void applyCoal(Entity e, int i, int dmg) {
+	public static void applyCoal(final Entity e, final int i, final int dmg) {
 		applyCoal(e, i, dmg, 1);
 	}
 
 	/// COAL ///
-	public static void applyCoal(Entity e, int i, int dmg, int chance) {
+	public static void applyCoal(final Entity e, final int i, final int dmg, final int chance) {
 
-		if(!GeneralConfig.enableCoal)
+		if(RadiationConfig.disableCoal)
 			return;
 
-		if(!(e instanceof EntityLivingBase))
+		if(!(e instanceof EntityLivingBase entity))
 			return;
 		
 		if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
@@ -509,10 +493,8 @@ public class ContaminationUtil {
 		
 		if(e instanceof EntityPlayer && e.ticksExisted < 200)
 			return;
-		
-		EntityLivingBase entity = (EntityLivingBase)e;
-		
-		if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_COARSE)){
+
+        if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_COARSE)){
 			if(chance > 1){
 				if(entity.world.rand.nextInt(chance) == 0){
 					ArmorUtil.damageGasMaskFilter(entity, 1);
@@ -528,9 +510,9 @@ public class ContaminationUtil {
 	}
 		
 	/// DIGAMMA ///
-	public static void applyDigammaData(Entity e, float f) {
+	public static void applyDigammaData(final Entity e, final float f) {
 
-		if(!(e instanceof EntityLivingBase))
+		if(!(e instanceof EntityLivingBase entity))
 			return;
 
 		if(e instanceof EntityQuackos || e instanceof EntityOcelot)
@@ -541,19 +523,17 @@ public class ContaminationUtil {
 		
 		if(e instanceof EntityPlayer && e.ticksExisted < 200)
 			return;
-		
-		EntityLivingBase entity = (EntityLivingBase)e;
-		
-		if(entity.isPotionActive(HbmPotion.stability))
+
+        if(entity.isPotionActive(HbmPotion.stability))
 			return;
 		
 		if(!(entity instanceof EntityPlayer && ArmorUtil.checkForDigamma((EntityPlayer) entity)))
 			HbmLivingProps.incrementDigamma(entity, f);
 	}
 		
-	public static void applyDigammaDirect(Entity e, float f) {
+	public static void applyDigammaDirect(final Entity e, final float f) {
 
-		if(!(e instanceof EntityLivingBase))
+		if(!(e instanceof EntityLivingBase entity))
 			return;
 
 		if(e instanceof IRadiationImmune)
@@ -561,55 +541,53 @@ public class ContaminationUtil {
 		
 		if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
 			return;
-		
-		EntityLivingBase entity = (EntityLivingBase)e;
-		HbmLivingProps.incrementDigamma(entity, f);
+
+        HbmLivingProps.incrementDigamma(entity, f);
 	}
 		
-	public static float getDigamma(Entity e) {
+	public static float getDigamma(final Entity e) {
 
-		if(!(e instanceof EntityLivingBase))
+		if(!(e instanceof EntityLivingBase entity))
 			return 0.0F;
-		
-		EntityLivingBase entity = (EntityLivingBase)e;
-		return HbmLivingProps.getDigamma(entity);
+
+        return HbmLivingProps.getDigamma(entity);
 	}
 
-	public static void radiate(World world, double x, double y, double z, double range, float rad3d) {
+	public static void radiate(final World world, final double x, final double y, final double z, final double range, final float rad3d) {
 		radiate(world, x, y, z, range, rad3d, 0, 0, 0, 0);
 	}
 
-	public static void radiate(World world, double x, double y, double z, double range, float rad3d, float dig3d, float fire3d) {
+	public static void radiate(final World world, final double x, final double y, final double z, final double range, final float rad3d, final float dig3d, final float fire3d) {
 		radiate(world, x, y, z, range, rad3d, dig3d, fire3d, 0, 0);
 	}
 
-	public static void radiate(World world, double x, double y, double z, double range, float rad3d, float dig3d, float fire3d, float blast3d) {
+	public static void radiate(final World world, final double x, final double y, final double z, final double range, final float rad3d, final float dig3d, final float fire3d, final float blast3d) {
 		radiate(world, x, y, z, range, rad3d, dig3d, fire3d, blast3d, range);
 	}
 
-	public static void radiate(World world, double x, double y, double z, double range, float rad3d, float dig3d, float fire3d, float blast3d, double blastRange) {
-		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x-range, y-range, z-range, x+range, y+range, z+range));
+	public static void radiate(final World world, final double x, final double y, final double z, final double range, final float rad3d, final float dig3d, final float fire3d, final float blast3d, final double blastRange) {
+		final List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x-range, y-range, z-range, x+range, y+range, z+range));
 		
-		for(Entity e : entities) {
+		for(final Entity e : entities) {
 			if(isExplosionExempt(e)) continue;
 
 			Vec3 vec = Vec3.createVectorHelper(e.posX - x, (e.posY + e.getEyeHeight()) - y, e.posZ - z);
-			double len = vec.length();
+			final double len = vec.length();
 
 			if(len > range) continue;
 			vec = vec.normalize();
-			double dmgLen = Math.max(len, range * 0.05D);
+			final double dmgLen = Math.max(len, range * 0.05D);
 			
 			float res = 0;
 			
 			for(int i = 1; i < len; i++) {
 
-				int ix = (int)Math.floor(x + vec.xCoord * i);
-				int iy = (int)Math.floor(y + vec.yCoord * i);
-				int iz = (int)Math.floor(z + vec.zCoord * i);
+				final int ix = (int)Math.floor(x + vec.xCoord * i);
+				final int iy = (int)Math.floor(y + vec.yCoord * i);
+				final int iz = (int)Math.floor(z + vec.zCoord * i);
 				res += world.getBlockState(new BlockPos(ix, iy, iz)).getBlock().getExplosionResistance(null);
 			}
-			boolean isLiving = e instanceof EntityLivingBase;
+			final boolean isLiving = e instanceof EntityLivingBase;
 			
 			if(res < 1)
 				res = 1;
@@ -630,15 +608,14 @@ public class ContaminationUtil {
 				float fireDmg = fire3d;
 				fireDmg /= (float)(dmgLen * dmgLen * res * res);
 				if(fireDmg > 0.025){
-					if(fireDmg > 0.1 && e instanceof EntityPlayer) {
-						EntityPlayer p = (EntityPlayer) e;
-						
-						if(p.getHeldItemMainhand().getItem() == ModItems.marshmallow && p.getRNG().nextInt((int)len) == 0) {
-							p.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(ModItems.marshmallow_roasted));
+					if(fireDmg > 0.1 && e instanceof EntityPlayer p) {
+
+                        if(p.getHeldItemMainhand().getItem() == ModItems.marshmallow && p.getRNG().nextInt((int)len) == 0) {
+							p.setHeldItem(EnumHand.MAIN_HAND, ItemStackUtil.itemStackFrom(ModItems.marshmallow_roasted));
 						}
 
 						if(p.getHeldItemOffhand().getItem() == ModItems.marshmallow && p.getRNG().nextInt((int)len) == 0) {
-							p.setHeldItem(EnumHand.OFF_HAND, new ItemStack(ModItems.marshmallow_roasted));
+							p.setHeldItem(EnumHand.OFF_HAND, ItemStackUtil.itemStackFrom(ModItems.marshmallow_roasted));
 						}
 					}
 					e.attackEntityFrom(DamageSource.IN_FIRE, fireDmg);
@@ -662,7 +639,7 @@ public class ContaminationUtil {
 		}
 	}
 
-	private static boolean isExplosionExempt(Entity e) {
+	private static boolean isExplosionExempt(final Entity e) {
 
 		if (e instanceof EntityOcelot ||
 				e instanceof EntityNukeTorex ||
@@ -679,12 +656,8 @@ public class ContaminationUtil {
 			return true;
 		}
 
-		if(e instanceof EntityPlayer && (((EntityPlayer)e).isCreative() || ((EntityPlayer)e).isSpectator())) {
-			return true;
-		}
-
-		return false;
-	}
+        return e instanceof EntityPlayer && (((EntityPlayer) e).isCreative() || ((EntityPlayer) e).isSpectator());
+    }
 
 	
 	public static enum HazardType {
@@ -712,18 +685,16 @@ public class ContaminationUtil {
 	 * This system is nice but the cont types are a bit confusing. Cont types should have much better names and multiple cont types should be applicable.
 	 */
 	@SuppressWarnings("incomplete-switch") //just shut up
-	public static boolean contaminate(EntityLivingBase entity, HazardType hazard, ContaminationType cont, float amount) {
+	public static boolean contaminate(final EntityLivingBase entity, final HazardType hazard, final ContaminationType cont, final float amount) {
 		
 		if(hazard == HazardType.RADIATION) {
-			float radEnv = HbmLivingProps.getRadEnv(entity);
+			final float radEnv = HbmLivingProps.getRadEnv(entity);
 			HbmLivingProps.setRadEnv(entity, radEnv + amount);
 		}
 		
-		if(entity instanceof EntityPlayer) {
-			
-			EntityPlayer player = (EntityPlayer)entity;
-			
-			switch(cont) {
+		if(entity instanceof EntityPlayer player) {
+
+            switch(cont) {
 			case GOGGLES:			if(ArmorUtil.checkForGoggles(player))	return false; break;
 			case FARADAY:			if(ArmorUtil.checkForFaraday(player))	return false; break;
 			case HAZMAT:			if(ArmorUtil.checkForHazmat(player))	return false; break;

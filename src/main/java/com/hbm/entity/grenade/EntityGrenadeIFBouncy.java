@@ -10,17 +10,17 @@ import net.minecraft.world.World;
 
 public class EntityGrenadeIFBouncy extends EntityGrenadeBouncyBase {
 
-    public EntityGrenadeIFBouncy(World p_i1773_1_)
+    public EntityGrenadeIFBouncy(final World p_i1773_1_)
     {
         super(p_i1773_1_);
     }
 
-    public EntityGrenadeIFBouncy(World p_i1774_1_, EntityLivingBase p_i1774_2_, EnumHand hand)
+    public EntityGrenadeIFBouncy(final World p_i1774_1_, final EntityLivingBase p_i1774_2_, final EnumHand hand)
     {
         super(p_i1774_1_, p_i1774_2_, hand);
     }
 
-    public EntityGrenadeIFBouncy(World p_i1775_1_, double p_i1775_2_, double p_i1775_4_, double p_i1775_6_)
+    public EntityGrenadeIFBouncy(final World p_i1775_1_, final double p_i1775_2_, final double p_i1775_4_, final double p_i1775_6_)
     {
         super(p_i1775_1_, p_i1775_2_, p_i1775_4_, p_i1775_6_);
     }

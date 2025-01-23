@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderNuclearCreeperFactory implements IRenderFactory<EntityNuclearCreeper> {
 
 	@Override
-	public Render<? super EntityNuclearCreeper> createRenderFor(RenderManager manager) {
+	public Render<? super EntityNuclearCreeper> createRenderFor(final RenderManager manager) {
 		return new RenderNuclearCreeper(manager);
 	}
 

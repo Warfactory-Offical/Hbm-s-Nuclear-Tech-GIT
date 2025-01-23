@@ -23,9 +23,9 @@ public class TSmokeRenderer extends Render<EntityTSmokeFX> {
 	public static final IRenderFactory<EntityTSmokeFX> FACTORY = (RenderManager man) -> {return new TSmokeRenderer(man);};
 	
 	private Item field_94151_a;
-	private Map<Item, TextureAtlasSprite> textures = new HashMap<Item, TextureAtlasSprite>();
+	private final Map<Item, TextureAtlasSprite> textures = new HashMap<Item, TextureAtlasSprite>();
 
-	protected TSmokeRenderer(RenderManager renderManager) {
+	protected TSmokeRenderer(final RenderManager renderManager) {
 		super(renderManager);
 		this.field_94151_a = ModItems.nuclear_waste;
 		textures.put(ModItems.d_smoke1, RenderHelper.getItemTexture(ModItems.d_smoke1));
@@ -41,7 +41,7 @@ public class TSmokeRenderer extends Render<EntityTSmokeFX> {
 	}
 
 	@Override
-	public void doRender(EntityTSmokeFX fx, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityTSmokeFX fx, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 
 		if (fx.particleAge <= fx.maxAge && fx.particleAge >= fx.maxAge / 8 * 7) {
 			field_94151_a = ModItems.d_smoke8;
@@ -67,7 +67,7 @@ public class TSmokeRenderer extends Render<EntityTSmokeFX> {
 			field_94151_a = ModItems.d_smoke3;
 		}
 
-		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
+		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8) {
 			field_94151_a = ModItems.d_smoke2;
 		}
 
@@ -75,7 +75,7 @@ public class TSmokeRenderer extends Render<EntityTSmokeFX> {
 			field_94151_a = ModItems.d_smoke1;
 		}
 
-		TextureAtlasSprite iicon = textures.get(this.field_94151_a);
+		final TextureAtlasSprite iicon = textures.get(this.field_94151_a);
 
 		if (iicon != null) {
 			GL11.glPushMatrix();
@@ -93,14 +93,14 @@ public class TSmokeRenderer extends Render<EntityTSmokeFX> {
 		}
 	}
 
-	private void func_77026_a(TextureAtlasSprite p_77026_2_) {
-		float f = p_77026_2_.getMinU();
-		float f1 = p_77026_2_.getMaxU();
-		float f2 = p_77026_2_.getMinV();
-		float f3 = p_77026_2_.getMaxV();
-		float f4 = 1.0F;
-		float f5 = 0.5F;
-		float f6 = 0.25F;
+	private void func_77026_a(final TextureAtlasSprite p_77026_2_) {
+		final float f = p_77026_2_.getMinU();
+		final float f1 = p_77026_2_.getMaxU();
+		final float f2 = p_77026_2_.getMinV();
+		final float f3 = p_77026_2_.getMaxV();
+		final float f4 = 1.0F;
+		final float f5 = 0.5F;
+		final float f6 = 0.25F;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		RenderHelper.startDrawingTexturedQuads();
@@ -113,7 +113,7 @@ public class TSmokeRenderer extends Render<EntityTSmokeFX> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTSmokeFX entity) {
+	protected ResourceLocation getEntityTexture(final EntityTSmokeFX entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

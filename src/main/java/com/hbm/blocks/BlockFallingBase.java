@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BlockFallingBase extends BlockFalling {
 	
-	public BlockFallingBase(Material m, String s, SoundType type){
+	public BlockFallingBase(final Material m, final String s, final SoundType type){
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -24,7 +24,7 @@ public class BlockFallingBase extends BlockFalling {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		if(this == ModBlocks.gravel_diamond){
 			tooltip.add("There is some kind of joke here,");
 			tooltip.add("but I can't quite tell what it is.");

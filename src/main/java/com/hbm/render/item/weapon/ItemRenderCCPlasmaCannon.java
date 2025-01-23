@@ -17,7 +17,7 @@ import net.minecraft.util.EnumHand;
 public class ItemRenderCCPlasmaCannon extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.cc_plasma_cannon_tex);
@@ -26,7 +26,7 @@ public class ItemRenderCCPlasmaCannon extends TEISRBase {
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+			final double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 			//Scaled up by 10 from the regular scale amount so the item bobbing affects the gun less.
 			GL11.glScaled(0.5, 0.4, 0.5);
 			if(type == TransformType.FIRST_PERSON_RIGHT_HAND){
@@ -66,7 +66,7 @@ public class ItemRenderCCPlasmaCannon extends TEISRBase {
 			break;
 		}
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		boolean prevBlend = GL11.glGetBoolean(GL11.GL_BLEND);
+		final boolean prevBlend = GL11.glGetBoolean(GL11.GL_BLEND);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 		ResourceManager.cc_plasma_cannon.renderAll();

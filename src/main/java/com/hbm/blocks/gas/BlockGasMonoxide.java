@@ -17,35 +17,33 @@ import net.minecraft.world.World;
 
 public class BlockGasMonoxide extends BlockGasBase {
 
-	public BlockGasMonoxide(String s) {
+	public BlockGasMonoxide(final String s) {
 		super(0.1F, 0.1F, 0.1F, s);
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
-		if(!(entity instanceof EntityLivingBase))
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
+		if(!(entity instanceof EntityLivingBase entityLiving))
 			return;
-		
-		EntityLivingBase entityLiving = (EntityLivingBase) entity;
-		
-		if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_MONOXIDE))
+
+        if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_MONOXIDE))
 			ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 		else
 			entityLiving.attackEntityFrom(ModDamageSource.monoxide, 1);
 	}
 	
 	@Override
-	public ForgeDirection getFirstDirection(World world, int x, int y, int z) {
+	public ForgeDirection getFirstDirection(final World world, final int x, final int y, final int z) {
 		return ForgeDirection.DOWN;
 	}
 
 	@Override
-	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
+	public ForgeDirection getSecondDirection(final World world, final int x, final int y, final int z) {
 		return this.randomHorizontal(world);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 
 		if(!world.isRemote && rand.nextInt(100) == 0) {
 			world.setBlockToAir(pos);

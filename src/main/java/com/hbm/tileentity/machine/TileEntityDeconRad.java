@@ -22,29 +22,29 @@ public class TileEntityDeconRad extends TileEntity implements ITickable {
 
 	public TileEntityDeconRad() {
 		super();
-		this.radRemove = 0.5F;
+		radRemove = 0.5F;
 	}
 
-	public TileEntityDeconRad(float rad) {
+	public TileEntityDeconRad(final float rad) {
 		super();
-		this.radRemove = rad;
+		radRemove = rad;
 	}
 
 	@Override
 	public void update() {
 		if(!this.world.isRemote) {
-			List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5));
+			final List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5));
 
 			if(!entities.isEmpty()) {
-				for(Entity e : entities) {
+				for(final Entity e : entities) {
 					if(e instanceof EntityLivingBase){
 						if(((EntityLivingBase)e).isPotionActive(HbmPotion.radiation)){
 							((EntityLivingBase)e).removePotionEffect(HbmPotion.radiation);
 						}
 					}
 					if(e.hasCapability(EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null)){
-						if(this.radRemove > 0.0F){
-							e.getCapability(EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null).decreaseRads(this.radRemove);
+						if(radRemove > 0.0F){
+							e.getCapability(EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null).decreaseRads(radRemove);
 						}
 					}
 					if(e instanceof EntityPlayer){

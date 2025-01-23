@@ -14,16 +14,16 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class EntityAI_MLPF extends EntityAIBase {
 
-	private Class targetClass;
+	private final Class targetClass;
     private EntityLivingBase target;
-	private EntityLiving mover;
+	private final EntityLiving mover;
     private final Sorter theNearestAttackableTargetSorter;
-	private int range;
-	private int distance;
+	private final int range;
+	private final int distance;
 	private static final int vertical = 10;
-    private double speed;
+    private final double speed;
 
-	public EntityAI_MLPF(EntityLiving entity, Class targetClass, int range, double speed, int distance)
+	public EntityAI_MLPF(final EntityLiving entity, final Class targetClass, final int range, final double speed, final int distance)
 	{
 		this.mover = entity;
 		this.targetClass = targetClass;
@@ -59,7 +59,7 @@ public class EntityAI_MLPF extends EntityAIBase {
 
 
     	//line length is capped so the pathfinder can manage it
-    	int range = distance;
+    	final int range = distance;
     	
     	if(vec.length() < 16)
     		mover.setAttackTarget(target);
@@ -70,9 +70,9 @@ public class EntityAI_MLPF extends EntityAIBase {
     	vec.zCoord *= range;
 
     	//target positions are set (with randomized Y-offset)
-    	double x = mover.posX + vec.xCoord;
-    	double y = mover.posY + vec.yCoord - 5 + mover.getRNG().nextInt(11);
-    	double z = mover.posZ + vec.zCoord;
+    	final double x = mover.posX + vec.xCoord;
+    	final double y = mover.posY + vec.yCoord - 5 + mover.getRNG().nextInt(11);
+    	final double z = mover.posZ + vec.zCoord;
 
     	//System.out.println("Routing to " + x + "/" + y + "/" + z);
 
@@ -99,7 +99,7 @@ public class EntityAI_MLPF extends EntityAIBase {
 	//scans the area and determines a new target entity
 	private void calculateTarget() {
 
-		List list = mover.world.getEntitiesWithinAABB(targetClass, new AxisAlignedBB(
+		final List list = mover.world.getEntitiesWithinAABB(targetClass, new AxisAlignedBB(
 				mover.posX - range,
 				mover.posY - vertical,
 				mover.posZ - range,
@@ -118,17 +118,17 @@ public class EntityAI_MLPF extends EntityAIBase {
 	public static class Sorter implements Comparator {
 		private final Entity theEntity;
 
-		public Sorter(Entity p_i1662_1_) {
+		public Sorter(final Entity p_i1662_1_) {
 			this.theEntity = p_i1662_1_;
 		}
 
-		public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-			double d0 = this.theEntity.getDistanceSq(p_compare_1_);
-			double d1 = this.theEntity.getDistanceSq(p_compare_2_);
+		public int compare(final Entity p_compare_1_, final Entity p_compare_2_) {
+			final double d0 = this.theEntity.getDistanceSq(p_compare_1_);
+			final double d1 = this.theEntity.getDistanceSq(p_compare_2_);
 			return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
 		}
 
-		public int compare(Object p_compare_1_, Object p_compare_2_) {
+		public int compare(final Object p_compare_1_, final Object p_compare_2_) {
 			return this.compare((Entity) p_compare_1_, (Entity) p_compare_2_);
 		}
 	}

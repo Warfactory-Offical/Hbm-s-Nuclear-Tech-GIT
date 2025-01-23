@@ -21,17 +21,17 @@ public class RenderBeam3 extends Render<EntityMinerBeam> {
 	public static final IRenderFactory<EntityMinerBeam> FACTORY = (RenderManager man) -> {return new RenderBeam3(man);};
 	public static final ResourceLocation beam_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/PlasmaBeam.png");
 	
-	protected RenderBeam3(RenderManager renderManager) {
+	protected RenderBeam3(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMinerBeam rocket, double x, double y, double z, float entityYaw, float partialTicks) {
-		float radius = 0.12F;
+	public void doRender(final EntityMinerBeam rocket, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+		final float radius = 0.12F;
 		//float radius = 0.06F;
-		int distance = 4;
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buf = tessellator.getBuffer();
+		final int distance = 4;
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder buf = tessellator.getBuffer();
 
 		GL11.glPushMatrix();
 		GlStateManager.disableTexture2D();
@@ -43,9 +43,9 @@ public class RenderBeam3 extends Render<EntityMinerBeam> {
 		GL11.glRotatef(rocket.rotationYaw, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-rocket.rotationPitch, 1.0F, 0.0F, 0.0F);
 
-		boolean red = true;
-		boolean green = false;
-		boolean blue = true;
+		final boolean red = true;
+		final boolean green = false;
+		final boolean blue = true;
 
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		for (float o = 0; o <= radius; o += radius / 8) {
@@ -54,23 +54,23 @@ public class RenderBeam3 extends Render<EntityMinerBeam> {
 				color = 0;
 			buf.pos(0 + o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 + o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			
 			buf.pos(0 - o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 + o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			
 			buf.pos(0 - o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 - o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			
 			buf.pos(0 + o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 - o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 		}
 		tessellator.draw();
 		GlStateManager.disableBlend();
@@ -79,7 +79,7 @@ public class RenderBeam3 extends Render<EntityMinerBeam> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMinerBeam entity) {
+	protected ResourceLocation getEntityTexture(final EntityMinerBeam entity) {
 		return beam_rl;
 	}
 

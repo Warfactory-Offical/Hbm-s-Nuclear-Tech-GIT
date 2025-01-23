@@ -14,11 +14,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ItemGunDart extends ItemGunBase {
 
-	public ItemGunDart(GunConfiguration config, String s) {
+	public ItemGunDart(final GunConfiguration config, final String s) {
 		super(config, s);
 	}
 	
-	public static void writePlayer(ItemStack stack, EntityPlayer player) {
+	public static void writePlayer(final ItemStack stack, final EntityPlayer player) {
 
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
@@ -26,7 +26,7 @@ public class ItemGunDart extends ItemGunBase {
 		stack.getTagCompound().setString("player", player.getDisplayName().getUnformattedText());
 	}
 
-	public static EntityPlayer readPlayer(ItemStack stack) {
+	public static EntityPlayer readPlayer(final ItemStack stack) {
 
 		if(!stack.hasTagCompound())
 			return null;
@@ -35,20 +35,20 @@ public class ItemGunDart extends ItemGunBase {
 	}
 	
 	@Override
-	public void startAction(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void startAction(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 		if(main) {
 			super.startAction(stack, world, player, main, hand);
 		} else {
 
-			EntityPlayer target = readPlayer(stack);
+			final EntityPlayer target = readPlayer(stack);
 
 			if(target != null) {
 
-				int dim = target.world.provider.getDimension();
-				int x = (int)target.posX;
-				int y = (int)target.posY;
-				int z = (int)target.posZ;
-				int dist = (int) target.getDistance(player);
+				final int dim = target.world.provider.getDimension();
+				final int x = (int)target.posX;
+				final int y = (int)target.posY;
+				final int z = (int)target.posZ;
+				final int dist = (int) target.getDistance(player);
 
 				player.sendMessage(new TextComponentString(target.getDisplayName().getUnformattedText()).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 				player.sendMessage(new TextComponentString("Dim: " + dim + " X:" + x + " Y:" + y + " Z:" + z + " (" + dist + " blocks away)").setStyle(new Style().setColor(TextFormatting.YELLOW)));

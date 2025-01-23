@@ -21,7 +21,7 @@ public class TEPylonDestructorPacket implements IMessage {
 		
 	}
 
-	public TEPylonDestructorPacket(int x, int y, int z)
+	public TEPylonDestructorPacket(final int x, final int y, final int z)
 	{
 		this.x = x;
 		this.y = y;
@@ -29,14 +29,14 @@ public class TEPylonDestructorPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -45,14 +45,13 @@ public class TEPylonDestructorPacket implements IMessage {
 	public static class Handler implements IMessageHandler<TEPylonDestructorPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(TEPylonDestructorPacket m, MessageContext ctx) {
+		public IMessage onMessage(final TEPylonDestructorPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityPylonBase) {
-						
-					TileEntityPylonBase pyl = (TileEntityPylonBase) te;
-					pyl.disconnectAll();
+				if (te != null && te instanceof TileEntityPylonBase pyl) {
+
+                    pyl.disconnectAll();
 				}
 			});
 			

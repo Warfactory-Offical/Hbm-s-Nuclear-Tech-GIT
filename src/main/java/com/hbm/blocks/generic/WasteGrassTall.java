@@ -27,7 +27,7 @@ public class WasteGrassTall extends BlockBush {
 	
 	public static final PropertyInteger META = PropertyInteger.create("meta", 0, 15);
 	
-	public WasteGrassTall(Material materialIn, String s) {
+	public WasteGrassTall(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -36,57 +36,57 @@ public class WasteGrassTall extends BlockBush {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 	
-	public boolean canBlockStay(World world, BlockPos pos, IBlockState state){
+	public boolean canBlockStay(final World world, final BlockPos pos, final IBlockState state){
 		if (pos.getY() >= 0 && pos.getY() < 256){
-            Block block = world.getBlockState(pos.down()).getBlock();
+            final Block block = world.getBlockState(pos.down()).getBlock();
             return block == ModBlocks.waste_earth || block == ModBlocks.waste_mycelium || block == ModBlocks.waste_dirt;
         }
         return false;
 	}
 	
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+	public boolean canPlaceBlockAt(final World world, final BlockPos pos) {
 		return this.canBlockStay(world, pos, world.getBlockState(pos));
 	}
 	
 	@Override
-	public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean canPlaceTorchOnTop(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+	public boolean canPlaceBlockOnSide(final World world, final BlockPos pos, final EnumFacing side) {
 		return this.canBlockStay(world, pos, world.getBlockState(pos));
 	}
 
 	@Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune){
+    public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
         return Items.AIR;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
+    public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
         return new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
     }
 
 	@Override
-    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public MapColor getMapColor(final IBlockState state, final IBlockAccess worldIn, final BlockPos pos)
     {
     	return MapColor.GRASS;
     }
 
     @Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{META});
+		return new BlockStateContainer(this, META);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(META);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(META, meta);
 	}
 }

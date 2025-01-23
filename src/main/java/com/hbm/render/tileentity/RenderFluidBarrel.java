@@ -13,14 +13,14 @@ import net.minecraftforge.fluids.FluidStack;
 public class RenderFluidBarrel extends TileEntitySpecialRenderer<TileEntityBarrel> {
 
 	@Override
-	public void render(TileEntityBarrel barrel, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityBarrel barrel, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 		GlStateManager.disableLighting();
 
 		if(barrel.tank.getFluid() != null) {
-			FluidStack type = barrel.tank.getFluid();
-			FluidTypeHandler.FluidProperties p = FluidTypeHandler.getProperties(type);
+			final FluidStack type = barrel.tank.getFluid();
+			final FluidTypeHandler.FluidProperties p = FluidTypeHandler.getProperties(type);
 
 			for(int j = 0; j < 4; j++) {
 

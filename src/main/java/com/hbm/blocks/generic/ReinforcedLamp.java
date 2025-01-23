@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 
 	private final boolean isOn;
 	
-	public ReinforcedLamp(Material materialIn, boolean b, String s) {
+	public ReinforcedLamp(final Material materialIn, final boolean b, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,7 +35,7 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 	}
 	
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if (!worldIn.isRemote)
         {
             if (this.isOn && !(worldIn.isBlockPowered(pos)))
@@ -50,7 +51,7 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if (!worldIn.isRemote)
         {
             if (this.isOn && !(worldIn.isBlockPowered(pos)))
@@ -65,7 +66,7 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 	}
 	
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World worldIn, final BlockPos pos, final IBlockState state, final Random rand) {
 		if (!worldIn.isRemote && this.isOn && !(worldIn.isBlockPowered(pos)))
         {
 			worldIn.setBlockState(pos, ModBlocks.reinforced_lamp_off.getDefaultState(), 2);
@@ -73,18 +74,18 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.reinforced_lamp_off);
 	}
 	
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModBlocks.reinforced_lamp_off);
+	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
+		return ItemStackUtil.itemStackFrom(ModBlocks.reinforced_lamp_off);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		float hardness = this.getExplosionResistance(null);
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+		final float hardness = this.getExplosionResistance(null);
 		tooltip.add("§2[Radiation Shielding]§r");
 		if(hardness > 50){
 			tooltip.add("§6Blast Resistance: "+hardness+"§r");
@@ -92,13 +93,13 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean isRadResistant(World worldIn, BlockPos blockPos){
+	public boolean isRadResistant(final World worldIn, final BlockPos blockPos){
 		return true;
 	}
 }

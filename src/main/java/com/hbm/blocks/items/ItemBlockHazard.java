@@ -21,7 +21,7 @@ public class ItemBlockHazard extends ItemBlock {
 	private int burntime = 0;
 	public ItemHazardModule module;
 
-	public ItemBlockHazard(Block block) {
+	public ItemBlockHazard(final Block block) {
 		super(block);
 		
 		if(block instanceof IItemHazard) {
@@ -38,25 +38,25 @@ public class ItemBlockHazard extends ItemBlock {
 	}
 
 	@Override
-	public int getItemBurnTime(ItemStack itemStack) {
+	public int getItemBurnTime(final ItemStack itemStack) {
 		return burntime;
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected){
+	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected){
 		if(entity instanceof EntityLivingBase && this.module != null)
 			this.module.applyEffects((EntityLivingBase) entity, stack.getCount(), itemSlot, isSelected, ((EntityLivingBase)entity).getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
 		if(this.module != null)
 			this.module.addInformation(stack, tooltip, flagIn);
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(EntityItem item){
+	public boolean onEntityItemUpdate(final EntityItem item){
 		super.onEntityItemUpdate(item);
 		
 		if(this.module != null)

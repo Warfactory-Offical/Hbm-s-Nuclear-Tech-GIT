@@ -23,7 +23,7 @@ public class CableSwitch extends BlockContainer {
 
 	public static final PropertyBool STATE = PropertyBool.create("state");
 	
-	public CableSwitch(Material materialIn, String s) {
+	public CableSwitch(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,18 +32,18 @@ public class CableSwitch extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityCableSwitch();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			boolean isOn = state.getValue(STATE);
+			final boolean isOn = state.getValue(STATE);
 			if(!isOn) {
 				world.setBlockState(pos, state.withProperty(STATE, true), 2);
 				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.reactorStart, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -60,21 +60,21 @@ public class CableSwitch extends BlockContainer {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { STATE });
+		return new BlockStateContainer(this, STATE);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(STATE).booleanValue() == true ? 1 : 0;
+	public int getMetaFromState(final IBlockState state) {
+		return state.getValue(STATE).booleanValue() ? 1 : 0;
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(STATE, meta == 1 ? true : false);
+	public IBlockState getStateFromMeta(final int meta) {
+		return this.getDefaultState().withProperty(STATE, meta == 1);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

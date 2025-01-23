@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 
 public class BlockNoDrop extends Block {
 
-	public BlockNoDrop(Material materialIn, String s) {
+	public BlockNoDrop(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,7 +21,7 @@ public class BlockNoDrop extends Block {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	

@@ -19,14 +19,14 @@ public interface ILookOverlay {
 	public void printHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z);
 
 	@SideOnly(Side.CLIENT)
-	public static void printGeneric(RenderGameOverlayEvent.Pre event, String title, int titleCol, int bgCol, List<String> text) {
+	public static void printGeneric(final RenderGameOverlayEvent.Pre event, final String title, final int titleCol, final int bgCol, final List<String> text) {
 
-		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution resolution = event.getResolution();
+		final Minecraft mc = Minecraft.getMinecraft();
+		final ScaledResolution resolution = event.getResolution();
 
 		GL11.glPushMatrix();
 
-		int pX = resolution.getScaledWidth() / 2 + 8;
+		final int pX = resolution.getScaledWidth() / 2 + 8;
 		int pZ = resolution.getScaledHeight() / 2;
 
 		mc.fontRenderer.drawString(title, pX + 1, pZ - 9, bgCol);
@@ -37,7 +37,7 @@ public interface ILookOverlay {
 	
 				int color = 0xFFFFFF;
 				if(line.startsWith("&[")) {
-					int end = line.lastIndexOf("&]");
+					final int end = line.lastIndexOf("&]");
 					color = Integer.parseInt(line.substring(2, end));
 					line = line.substring(end + 2);
 				}
@@ -45,7 +45,7 @@ public interface ILookOverlay {
 				mc.fontRenderer.drawStringWithShadow(line, pX, pZ, color);
 				pZ += 10;
 			}
-		} catch(Exception ex) {
+		} catch(final Exception ex) {
 			mc.fontRenderer.drawStringWithShadow(ex.getClass().getSimpleName(), pX, pZ + 10, 0xff0000);
 		}
 

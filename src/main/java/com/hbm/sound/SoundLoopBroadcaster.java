@@ -17,7 +17,7 @@ public class SoundLoopBroadcaster extends SoundLoopMachine {
 	public static List<SoundLoopBroadcaster> list = new ArrayList<SoundLoopBroadcaster>();
 	public float intendedVolume = 25.0F;
 
-	public SoundLoopBroadcaster(SoundEvent path, TileEntity te) {
+	public SoundLoopBroadcaster(final SoundEvent path, final TileEntity te) {
 		super(path, te);
 		list.add(this);
 		this.attenuationType = ISound.AttenuationType.NONE;
@@ -27,7 +27,7 @@ public class SoundLoopBroadcaster extends SoundLoopMachine {
 	public void update() {
 		super.update();
 		
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		final EntityPlayerSP player = Minecraft.getMinecraft().player;
 		float f = 0;
 		
 		if(player != null) {
@@ -47,7 +47,7 @@ public class SoundLoopBroadcaster extends SoundLoopMachine {
 		return te;
 	}
 	
-	public float func(float f, float v) {
+	public float func(final float f, final float v) {
 		return (f / v) * -2 + 2;
 	}
 

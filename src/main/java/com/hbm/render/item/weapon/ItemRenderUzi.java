@@ -33,7 +33,7 @@ public class ItemRenderUzi extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		GlStateManager.enableCull();
 		if(item.getItem() == ModItems.gun_uzi/* || item.getItem() == ModItems.gun_lever_action_sonata*/)
 			Minecraft.getMinecraft().renderEngine.bindTexture(uzi_rl);

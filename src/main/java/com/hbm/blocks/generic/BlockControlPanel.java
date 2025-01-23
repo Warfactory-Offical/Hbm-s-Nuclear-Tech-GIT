@@ -52,7 +52,7 @@ public class BlockControlPanel extends BlockContainer implements ICustomSelectio
 	public static final PropertyBool DOWN = PropertyBool.create("down");
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockControlPanel(Material materialIn, String s) {
+	public BlockControlPanel(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -61,24 +61,24 @@ public class BlockControlPanel extends BlockContainer implements ICustomSelectio
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		TileEntityControlPanel te = new TileEntityControlPanel();
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+		final TileEntityControlPanel te = new TileEntityControlPanel();
 		te.panel = new ControlPanel(te, 0.25F, (float) Math.toRadians(20), 0, 0, 0.25F, 0);
 		return te;
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(!worldIn.isRemote){
 			if(playerIn.getHeldItem(hand).getItem() == ModItems.screwdriver || playerIn.getHeldItem(hand).getItem() == ModItems.screwdriver_desh)
 				playerIn.openGui(MainRegistry.instance, ModBlocks.guiID_control_panel, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		} else {
-			TileEntityControlPanel control = (TileEntityControlPanel)worldIn.getTileEntity(pos);
-			Control ctrl = control.panel.getSelectedControl(playerIn.getPositionEyes(1), playerIn.getLook(1));
+			final TileEntityControlPanel control = (TileEntityControlPanel)worldIn.getTileEntity(pos);
+			final Control ctrl = control.panel.getSelectedControl(playerIn.getPositionEyes(1), playerIn.getLook(1));
 			if(ctrl != null){
-				ControlEvent evt = ControlEvent.newEvent("ctrl_press");
+				final ControlEvent evt = ControlEvent.newEvent("ctrl_press");
 				evt.setVar("isSneaking", new DataValueFloat(playerIn.isSneaking()));
-				NBTTagCompound dat = evt.writeToNBT(new NBTTagCompound());
+				final NBTTagCompound dat = evt.writeToNBT(new NBTTagCompound());
 				dat.setInteger("click_control", ctrl.panel.controls.indexOf(ctrl));
 				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(dat, pos));
 				return true;
@@ -89,10 +89,10 @@ public class BlockControlPanel extends BlockContainer implements ICustomSelectio
 
 	@Nonnull
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		TileEntity te = source.getTileEntity(pos);
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
+		final TileEntity te = source.getTileEntity(pos);
 		if (te instanceof TileEntityControlPanel) {
-			AxisAlignedBB ret = ((TileEntityControlPanel) te).getBoundingBox(state.getValue(UP), state.getValue(DOWN), state.getValue(FACING));
+			final AxisAlignedBB ret = ((TileEntityControlPanel) te).getBoundingBox(state.getValue(UP), state.getValue(DOWN), state.getValue(FACING));
 			if (ret != null) {
 				return ret;
 			}
@@ -101,12 +101,12 @@ public class BlockControlPanel extends BlockContainer implements ICustomSelectio
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face){
+	public BlockFaceShape getBlockFaceShape(final IBlockAccess worldIn, final IBlockState state, final BlockPos pos, final EnumFacing face){
 		return BlockFaceShape.UNDEFINED;
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand){
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand){
 		return this.getDefaultState()
 				.withProperty(FACING, placer.getHorizontalFacing().getOpposite())
 				.withProperty(UP, facing.getIndex() == 1)
@@ -114,49 +114,49 @@ public class BlockControlPanel extends BlockContainer implements ICustomSelectio
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean renderBox(World world, EntityPlayer player, IBlockState state, BlockPos pos, double x, double y, double z, float partialTicks){
-		TileEntityControlPanel control = (TileEntityControlPanel)world.getTileEntity(pos);
-		Control ctrl = control.panel.getSelectedControl(player.getPositionEyes(partialTicks), player.getLook(partialTicks));
+	public boolean renderBox(final World world, final EntityPlayer player, final IBlockState state, final BlockPos pos, final double x, final double y, final double z, final float partialTicks){
+		final TileEntityControlPanel control = (TileEntityControlPanel)world.getTileEntity(pos);
+		final Control ctrl = control.panel.getSelectedControl(player.getPositionEyes(partialTicks), player.getLook(partialTicks));
 		//if(control.panel.controls.size() > 0)
 		//	ctrl = control.panel.controls.get(0);
 		if(ctrl != null){
@@ -180,15 +180,15 @@ public class BlockControlPanel extends BlockContainer implements ICustomSelectio
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		int up = state.getValue(UP) ? 1 : 0;
-		int down = state.getValue(DOWN) ? 1 : 0;
-		int facing = state.getValue(FACING).getIndex();
+	public int getMetaFromState(final IBlockState state) {
+		final int up = state.getValue(UP) ? 1 : 0;
+		final int down = state.getValue(DOWN) ? 1 : 0;
+		final int facing = state.getValue(FACING).getIndex();
 		return (up << 3) | (down << 2) | (facing - 2);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState()
 				.withProperty(UP, ((meta >> 3) & 1) > 0)
 				.withProperty(DOWN, ((meta >> 2) & 1) > 0)
@@ -196,14 +196,14 @@ public class BlockControlPanel extends BlockContainer implements ICustomSelectio
 	}
 	
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 	
 }

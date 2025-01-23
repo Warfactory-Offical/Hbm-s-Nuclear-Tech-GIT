@@ -70,7 +70,7 @@ public class WorldConfig {
 	public static int meteorShowerChance = 20 * 60 * 5;
 	public static int meteorShowerDuration = 6000;
 
-	public static int convertToInt(Object e){
+	public static int convertToInt(final Object e){
 		if(e == null)
 			return 0;
 		return (int)e;

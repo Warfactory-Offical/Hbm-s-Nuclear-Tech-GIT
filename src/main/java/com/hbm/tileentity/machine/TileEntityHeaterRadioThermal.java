@@ -43,7 +43,7 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
             this.heatGen = RTGUtil.updateRTGs(inventory, new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}) * 10;
             this.heatEnergy += heatGen;
             if(heatEnergy > maxHeatEnergy) this.heatEnergy = maxHeatEnergy;
-            NBTTagCompound data = new NBTTagCompound();
+            final NBTTagCompound data = new NBTTagCompound();
             data.setInteger("hg", this.heatGen);
             data.setInteger("h", this.heatEnergy);
             networkPack(data, 25);
@@ -56,29 +56,28 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
     }
 
     @Override
-    public void networkUnpack(NBTTagCompound nbt) {
+    public void networkUnpack(final NBTTagCompound nbt) {
         this.heatGen = nbt.getInteger("hg");
         this.heatEnergy = nbt.getInteger("h");
     }
     
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.heatEnergy = nbt.getInteger("heatEnergy");
     }
     
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setInteger("heatEnergy", heatEnergy);
         return nbt;
     }
     
     protected void tryPullHeat() {
-        TileEntity con = world.getTileEntity(pos.add(0, -1, 0));
+        final TileEntity con = world.getTileEntity(pos.add(0, -1, 0));
         
-        if(con instanceof IHeatSource) {
-            IHeatSource source = (IHeatSource) con;
+        if(con instanceof IHeatSource source) {
             this.heatEnergy += source.getHeatStored() * 0.85;
             source.useUpHeat(source.getHeatStored());
         }
@@ -90,7 +89,7 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
     }
 
     @Override
-    public void useUpHeat(int heat) {
+    public void useUpHeat(final int heat) {
         this.heatEnergy = Math.max(0, this.heatEnergy - heat);
     }
     
@@ -113,13 +112,13 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
     }
 
     @Override
-    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new ContainerRadioThermal(player.inventory, this);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new GUIRadioThermal(player.inventory, this);
     }
 
@@ -131,12 +130,12 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
         return heatEnergy > 0;
     }
 
-    public int getHeatGenScaled(int i){
+    public int getHeatGenScaled(final int i){
         if(heatGen == 0) return 0;
         return (int) (Math.log(heatGen) * i / Math.log(90000));
     }
 
-    public int getHeatScaled(int i){
+    public int getHeatScaled(final int i){
         return (heatEnergy * i) / maxHeatEnergy;
     }
 }

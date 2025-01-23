@@ -16,16 +16,16 @@ public class Vec2l extends FuncRelational {
         y = 0;
     }
 
-    public Vec2l(int x, int y) {
+    public Vec2l(final int x, final int y) {
         this((long) x, y);
     }
 
-    public Vec2l(long x, long y) {
+    public Vec2l(final long x, final long y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vec2l set(long x, long y) {
+    public Vec2l set(final long x, final long y) {
         this.x = x;
         this.y = y;
         return this;

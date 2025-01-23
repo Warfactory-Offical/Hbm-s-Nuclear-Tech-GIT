@@ -29,30 +29,30 @@ public class RBMKDebrisRadiating extends RBMKDebrisBurning {
 
 	public static PropertyInteger META = BlockDummyable.META;
 	
-	public RBMKDebrisRadiating(String s){
+	public RBMKDebrisRadiating(final String s){
 		super(s);
 	}
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 
 		return 20 + world.rand.nextInt(20);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 		
 		if(!world.isRemote) {
 
-			ForgeDirection dir = ForgeDirection.getOrientation(world.rand.nextInt(6));
+			final ForgeDirection dir = ForgeDirection.getOrientation(world.rand.nextInt(6));
 
 			//Boron sand helps stop the fission reaction; 0.66% chance every 20-40 ticks for one side
-			int chance = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock() == ModBlocks.sand_boron ? 25 : 1000;
+			final int chance = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock() == ModBlocks.sand_boron ? 25 : 1000;
 			
 			ContaminationUtil.radiate(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 32, 100F * chance, 0, 40F * chance);
 			
 			if(rand.nextInt(5) == 0) {
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "rbmkflame");
 				data.setInteger("maxAge", 300);
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.getX() + rand.nextDouble(), pos.getY() + 1.75, pos.getZ() + rand.nextDouble()), new TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 1.75, pos.getZ() + 0.5, 75));
@@ -63,7 +63,7 @@ public class RBMKDebrisRadiating extends RBMKDebrisBurning {
 
 			if(rand.nextInt(chance) == 0) {
 				
-				int meta = state.getValue(META);
+				final int meta = state.getValue(META);
 				
 				if(meta < 15) {
 					world.setBlockState(pos, state.withProperty(META, meta+1), 2);
@@ -80,16 +80,16 @@ public class RBMKDebrisRadiating extends RBMKDebrisBurning {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{META});
+		return new BlockStateContainer(this, META);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(META);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(META, meta);
 	}
 }

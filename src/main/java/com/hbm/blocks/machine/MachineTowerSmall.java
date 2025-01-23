@@ -21,12 +21,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class MachineTowerSmall extends BlockDummyable implements ILookOverlay {
 
-	public MachineTowerSmall(Material mat, String s) {
+	public MachineTowerSmall(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
+	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
 		
 		if(meta >= 12)
 			return new TileEntityTowerSmall();
@@ -48,33 +48,31 @@ public class MachineTowerSmall extends BlockDummyable implements ILookOverlay {
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 		
 		for(int i = 2; i <= 6; i++) {
-			ForgeDirection dr2 = ForgeDirection.getOrientation(i);
+			final ForgeDirection dr2 = ForgeDirection.getOrientation(i);
 			this.makeExtra(world, x + dr2.offsetX * 2, y, z + dr2.offsetZ * 2);
 		}
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+		final int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
 		
-		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityTowerSmall))
+		if(!(te instanceof TileEntityTowerSmall chungus))
 			return;
-		
-		TileEntityTowerSmall chungus = (TileEntityTowerSmall) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 
 		text.add("§a-> §r" + ModForgeFluids.spentsteam.getLocalizedName(new FluidStack(ModForgeFluids.spentsteam, 1)) + ": " + chungus.tanks[0].getFluidAmount() + "/" + chungus.tanks[0].getCapacity() + "mB");
 		text.add("§c<- §r" + FluidRegistry.WATER.getLocalizedName(new FluidStack(FluidRegistry.WATER, 1)) + ": " + chungus.tanks[1].getFluidAmount() + "/" + chungus.tanks[1].getCapacity() + "mB");

@@ -14,14 +14,14 @@ public class Vec4bool extends FuncRelational {
     public Vec4bool() {
     }
 
-    public Vec4bool(boolean x, boolean y, boolean z, boolean w) {
+    public Vec4bool(final boolean x, final boolean y, final boolean z, final boolean w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
     
-    public Vec4bool set(boolean x, boolean y, boolean z, boolean w) {
+    public Vec4bool set(final boolean x, final boolean y, final boolean z, final boolean w) {
         this.x = x;
         this.y = y;
         this.z = z;

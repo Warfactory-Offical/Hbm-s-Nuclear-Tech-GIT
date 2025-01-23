@@ -14,34 +14,34 @@ public class JsonConfig {
 
 	public static final Gson gson = new Gson();
 	
-	private static File getFile(String filename){
+	private static File getFile(final String filename){
 		return new File(MainRegistry.proxy.getDataDir().getPath() + "/config/hbm" + File.separatorChar + filename);
 	}
 
-	public static JsonWriter startWriting(String filename){
+	public static JsonWriter startWriting(final String filename){
 		try{
-			JsonWriter writer = new JsonWriter(new FileWriter(getFile(filename)));
+			final JsonWriter writer = new JsonWriter(new FileWriter(getFile(filename)));
 			writer.setIndent("  ");
 			writer.beginObject();
 			return writer;
-		} catch(Exception ex) { }
+		} catch(final Exception ex) { }
 		return null;
 	}
 
-	public static void stopWriting(JsonWriter writer){
+	public static void stopWriting(final JsonWriter writer){
 		try{
 			writer.endObject();
 			writer.close();
-		} catch(Exception ex) {	}
+		} catch(final Exception ex) {	}
 	}
 
-	public static JsonObject startReading(String filename){
+	public static JsonObject startReading(final String filename){
 		try{
-			File file = getFile(filename);
+			final File file = getFile(filename);
 			if(file.exists())
 				return gson.fromJson(new FileReader(file), JsonObject.class);
 			return null;
-		} catch(Exception ex) { }
+		} catch(final Exception ex) { }
 		return null;
 	}
 }

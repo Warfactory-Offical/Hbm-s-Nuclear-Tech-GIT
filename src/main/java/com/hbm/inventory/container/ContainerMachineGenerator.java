@@ -16,16 +16,16 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineGenerator extends Container {
 
-	private TileEntityMachineGenerator diFurnace;
+	private final TileEntityMachineGenerator diFurnace;
 	
 	private int heat;
 	EntityPlayerMP player;
 	
-	public ContainerMachineGenerator(EntityPlayer player, TileEntityMachineGenerator tedf) {
+	public ContainerMachineGenerator(final EntityPlayer player, final TileEntityMachineGenerator tedf) {
 		if(player instanceof EntityPlayerMP)
 			this.player = (EntityPlayerMP) player;
 		diFurnace = tedf;
-		InventoryPlayer invPlayer = player.inventory;
+		final InventoryPlayer invPlayer = player.inventory;
 		
 		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 0, 116, 36));
 		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 1, 134, 36));
@@ -57,7 +57,7 @@ public class ContainerMachineGenerator extends Container {
 	}
 	
 	@Override
-	public void addListener(IContainerListener crafting) {
+	public void addListener(final IContainerListener crafting) {
 		super.addListener(crafting);
 		PacketDispatcher.sendTo(new AuxGaugePacket(diFurnace.getPos(), diFurnace.heat, 0), player);
 	}
@@ -65,14 +65,14 @@ public class ContainerMachineGenerator extends Container {
 
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 11) {
@@ -100,7 +100,7 @@ public class ContainerMachineGenerator extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 	
@@ -117,7 +117,7 @@ public class ContainerMachineGenerator extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(int i, int j) {
+	public void updateProgressBar(final int i, final int j) {
 		if(i == 1)
 		{
 			diFurnace.heat = j;

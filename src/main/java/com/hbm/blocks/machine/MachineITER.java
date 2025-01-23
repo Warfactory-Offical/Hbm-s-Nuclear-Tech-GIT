@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -31,12 +32,12 @@ public class MachineITER extends BlockDummyable {
 
 	public static boolean drop = true;
 	
-	public MachineITER(String s) {
+	public MachineITER(final String s) {
 		super(Material.IRON, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(meta >= 12)
 			return new TileEntityITER();
 		if(meta >= 6)
@@ -51,18 +52,18 @@ public class MachineITER extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
 			if(pos == null)
 				return false;
 
-			TileEntityITER entity = (TileEntityITER) world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			final TileEntityITER entity = (TileEntityITER) world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			if(entity != null)
 			{
 				FMLNetworkHandler.openGui(player, MainRegistry.instance, ModBlocks.guiID_iter, world, pos[0], pos[1], pos[2]);
@@ -76,18 +77,17 @@ public class MachineITER extends BlockDummyable {
 	public static final int height = 2;
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
-		if(!(player instanceof EntityPlayer))
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase player, final ItemStack itemStack) {
+		if(!(player instanceof EntityPlayer pl))
 			return;
-		EnumHand hand = player.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
+		final EnumHand hand = player.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
 
-		int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		EntityPlayer pl = (EntityPlayer) player;
+		final int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-		int o = getOffset();
+        final int o = getOffset();
 
 		ForgeDirection dir = ForgeDirection.NORTH;
 
@@ -115,14 +115,14 @@ public class MachineITER extends BlockDummyable {
 		if(!checkRequirement(world, x, y, z, dir, o)) {
 
 			if(!pl.capabilities.isCreativeMode) {
-				ItemStack stack = pl.getHeldItem(hand);
-				Item item = Item.getItemFromBlock(this);
+				final ItemStack stack = pl.getHeldItem(hand);
+				final Item item = Item.getItemFromBlock(this);
 
 				if(stack == null || stack.isEmpty()) {
-					pl.setHeldItem(hand, new ItemStack(this));
+					pl.setHeldItem(hand, ItemStackUtil.itemStackFrom(this));
 				} else {
 					if(stack.getItem() != item || stack.getCount() == stack.getMaxStackSize()) {
-						pl.inventory.addItemStackToInventory(new ItemStack(this));
+						pl.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(this));
 					} else {
 						pl.getHeldItem(hand).grow(1);
 					}
@@ -145,41 +145,41 @@ public class MachineITER extends BlockDummyable {
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		int i = state.getValue(META);
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+		final int i = state.getValue(META);
 		if(i >= 12 && drop) {
 
             for(int l = 0; l < 4; l++)
-            	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_conductor, 64)));
+            	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_conductor, 64)));
 
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_conductor, 36)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_center, 64)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.fusion_motor, 4)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.reinforced_glass, 8)));
-        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModBlocks.struct_iter_core, 1)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_conductor, 36)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_center, 64)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.fusion_motor, 4)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.reinforced_glass, 8)));
+        	world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.struct_iter_core, 1)));
     	}
 
 		super.breakBlock(world, pos, state);
 	}
 	
 	@Override
-	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected boolean checkRequirement(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 
-		int[][][] layout = TileEntityITERStruct.collisionMask;
+		final int[][][] layout = TileEntityITERStruct.collisionMask;
 
 		for(int iy = 0; iy < 5; iy++) {
 
-			int l = iy > 2 ? 4 - iy : iy;
-			int[][] layer = layout[l];
+			final int l = iy > 2 ? 4 - iy : iy;
+			final int[][] layer = layout[l];
 
 			for(int ix = 0; ix < layer.length; ix++) {
 
 				for(int iz = 0; iz < layer.length; iz++) {
 
-					int ex = ix - layer.length / 2;
-					int ez = iz - layer.length / 2;
+					final int ex = ix - layer.length / 2;
+					final int ez = iz - layer.length / 2;
 
 					if(ex == 0 && y == 2 && ez == 0)
 						continue;
@@ -195,23 +195,23 @@ public class MachineITER extends BlockDummyable {
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 
-		int[][][] layout = TileEntityITERStruct.collisionMask;
+		final int[][][] layout = TileEntityITERStruct.collisionMask;
 
 		for(int iy = 0; iy < 5; iy++) {
 
-			int l = iy > 2 ? 4 - iy : iy;
-			int[][] layer = layout[l];
+			final int l = iy > 2 ? 4 - iy : iy;
+			final int[][] layer = layout[l];
 
 			for(int ix = 0; ix < layer.length; ix++) {
 
 				for(int iz = 0; iz < layer[0].length; iz++) {
 
-					int ex = ix - layer.length / 2;
-					int ez = iz - layer.length / 2;
+					final int ex = ix - layer.length / 2;
+					final int ez = iz - layer.length / 2;
 
 					int meta = 0;
 
@@ -239,7 +239,7 @@ public class MachineITER extends BlockDummyable {
 		this.makeExtra(world, x, y, z);
 		this.makeExtra(world, x, y + 4, z);
 
-		Vec3 vec = Vec3.createVectorHelper(5.75, 0, 0);
+		final Vec3 vec = Vec3.createVectorHelper(5.75, 0, 0);
 
 		for(int i = 0; i < 16; i++) {
 			vec.rotateAroundY((float) (Math.PI / 8));
@@ -254,7 +254,7 @@ public class MachineITER extends BlockDummyable {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 

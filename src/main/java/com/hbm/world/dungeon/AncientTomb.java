@@ -20,23 +20,23 @@ import net.minecraft.util.EnumFacing;
 public class AncientTomb {
 
 	
-	public void build(World world, Random rand, int x, int y, int z) {
+	public void build(final World world, final Random rand, final int x, int y, final int z) {
 
-		List<IBlockState> concrete = Arrays.asList(ModBlocks.brick_concrete.getDefaultState(),
+		final List<IBlockState> concrete = Arrays.asList(ModBlocks.brick_concrete.getDefaultState(),
 				ModBlocks.brick_concrete_broken.getDefaultState(),
 				ModBlocks.brick_concrete_cracked.getDefaultState());
 		
 		y = 20;
 		
 		/// PYRAMID Y LOCATION ///
-		int yOff = Math.max(world.getHeight(x, z), 35) - 5;
+		final int yOff = Math.max(world.getHeight(x, z), 35) - 5;
 		
-		int pySize = 15;
+		final int pySize = 15;
 		
 		/// PRINT PYRAMID ///
 		for(int iy = pySize; iy > 0; iy--) {
 			
-			int range = (pySize - iy);
+			final int range = (pySize - iy);
 			
 			for(int ix = -range; ix <= range; ix++) {
 				for(int iz = -range; iz <= range; iz++) {
@@ -73,20 +73,20 @@ public class AncientTomb {
 		DungeonToolbox.generateBox(world, x - 5, yOff + 2, z + 5, 1, 7, 1, ModBlocks.concrete_pillar.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));
 		
 		/// PRINT SPIKES ///
-		int spikeCount = 36 + rand.nextInt(15);
+		final int spikeCount = 36 + rand.nextInt(15);
 		
-		Vec3 vec = Vec3.createVectorHelper(20, 0, 0);
-		float rot = (float)Math.toRadians(360F / spikeCount);
+		final Vec3 vec = Vec3.createVectorHelper(20, 0, 0);
+		final float rot = (float)Math.toRadians(360F / spikeCount);
 		
 		for(int i = 0; i < spikeCount; i++) {
 			
 			vec.rotateAroundY(rot);
 			
-			double variance = 1D + rand.nextDouble() * 0.4D;
+			final double variance = 1D + rand.nextDouble() * 0.4D;
 
-			int ix = (int) (x + vec.xCoord * variance);
-			int iz = (int) (z + vec.zCoord * variance);
-			int iy = world.getHeight(ix, iz) - 3;
+			final int ix = (int) (x + vec.xCoord * variance);
+			final int iz = (int) (z + vec.zCoord * variance);
+			final int iy = world.getHeight(ix, iz) - 3;
 			
 			for(int j = iy; j < iy + 7; j++) {
 				world.setBlockState(new BlockPos(ix, j, iz), ModBlocks.deco_steel.getDefaultState());
@@ -94,15 +94,15 @@ public class AncientTomb {
 		}
 		
 		/// GENERATE TUNNEL ///
-		Vec3 sVec = Vec3.createVectorHelper(10, 0, 0);
-		float sRot = (float) Math.toRadians(360F / 32F);
+		final Vec3 sVec = Vec3.createVectorHelper(10, 0, 0);
+		final float sRot = (float) Math.toRadians(360F / 32F);
 
 		for(int i = y - 1; i < yOff + 2; i++) {
 
-			int ix = (int) Math.floor(sVec.xCoord);
-			int iz = (int) Math.floor(sVec.zCoord);
+			final int ix = (int) Math.floor(sVec.xCoord);
+			final int iz = (int) Math.floor(sVec.zCoord);
 			
-			int h = i < yOff ? 3 : 2;
+			final int h = i < yOff ? 3 : 2;
 			
 			if(i > 40)
 				DungeonToolbox.generateBox(world, x + ix - 1, i, z + iz - 1, 3, h, 3, Blocks.AIR.getDefaultState());
@@ -116,11 +116,11 @@ public class AncientTomb {
 						//if(dy >= yOff + 2)
 						//	continue;
 
-						Block b = world.getBlockState(new BlockPos(dx, dy, dz)).getBlock();
+						final Block b = world.getBlockState(new BlockPos(dx, dy, dz)).getBlock();
 
 						if(b != Blocks.AIR && b != ModBlocks.gas_radon_tomb && b != ModBlocks.concrete && b != ModBlocks.concrete_smooth && b != ModBlocks.brick_concrete && b != ModBlocks.brick_concrete_cracked && b != ModBlocks.brick_concrete_broken) {
 
-							IBlockState meta = DungeonToolbox.getRandom(concrete, rand);
+							final IBlockState meta = DungeonToolbox.getRandom(concrete, rand);
 							world.setBlockState(new BlockPos(dx, dy, dz), meta, 3);
 						}
 					}
@@ -134,13 +134,13 @@ public class AncientTomb {
 			for(int dy = y - 1; dy < y + 4; dy++) {
 				for(int dz = z - 2; dz < z + 3; dz++) {
 					
-					Block b = world.getBlockState(new BlockPos(dx, dy, dz)).getBlock();
+					final Block b = world.getBlockState(new BlockPos(dx, dy, dz)).getBlock();
 					
 					if(b != Blocks.AIR && b != ModBlocks.gas_radon_tomb && b != ModBlocks.concrete &&
 							b != ModBlocks.concrete_smooth && b != ModBlocks.brick_concrete &&
 							b != ModBlocks.brick_concrete_cracked && b != ModBlocks.brick_concrete_broken) {
 						
-						IBlockState meta = DungeonToolbox.getRandom(concrete, rand);
+						final IBlockState meta = DungeonToolbox.getRandom(concrete, rand);
 						world.setBlockState(new BlockPos(dx, dy, dz), meta, 3);
 					}
 				}
@@ -148,13 +148,13 @@ public class AncientTomb {
 		}
 		
 		/// PRINT TOMB CHAMBER ///
-		int size = 5;
-		int cladding = size - 1;
-		int core = size -2;
+		final int size = 5;
+		final int cladding = size - 1;
+		final int core = size -2;
 
-		int dimOuter = size * 2 + 1;
-		int dimInner = cladding * 2 + 1;
-		int dimCore = core * 2 + 1;
+		final int dimOuter = size * 2 + 1;
+		final int dimInner = cladding * 2 + 1;
+		final int dimCore = core * 2 + 1;
 
 		DungeonToolbox.generateBox(world, x - size, y - size, z - size, 1, dimOuter, dimOuter, concrete);
 		DungeonToolbox.generateBox(world, x - size, y - size, z - size, dimOuter, 1, dimOuter, concrete);

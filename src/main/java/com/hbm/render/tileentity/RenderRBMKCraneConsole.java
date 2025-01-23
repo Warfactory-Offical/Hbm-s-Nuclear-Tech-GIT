@@ -14,12 +14,12 @@ import net.minecraft.tileentity.TileEntity;
 public class RenderRBMKCraneConsole extends TileEntitySpecialRenderer<TileEntityRBMKCraneConsole> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityRBMKCraneConsole te){
+	public boolean isGlobalRenderer(final TileEntityRBMKCraneConsole te){
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityRBMKCraneConsole console, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityRBMKCraneConsole console, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 
 		GL11.glPushMatrix();
 		
@@ -51,7 +51,7 @@ public class RenderRBMKCraneConsole extends TileEntitySpecialRenderer<TileEntity
 		
 		GL11.glPushMatrix();
 			GL11.glTranslated(0, 1.25, 0.75);
-			double heat = console.loadedHeat;
+			final double heat = console.loadedHeat;
 			GL11.glRotated(Math.sin(System.currentTimeMillis() * 0.01 % 360) * 180 / Math.PI * 0.05 + 135 - 270 * heat, 1, 0, 0);
 			GL11.glTranslated(0, -1.25, -0.75);
 			ResourceManager.rbmk_crane_console.renderPart("Meter1");
@@ -59,7 +59,7 @@ public class RenderRBMKCraneConsole extends TileEntitySpecialRenderer<TileEntity
 		
 		GL11.glPushMatrix();
 			GL11.glTranslated(0, 1.25, 0.25);
-			double enrichment = console.loadedEnrichment;
+			final double enrichment = console.loadedEnrichment;
 			GL11.glRotated(Math.sin(System.currentTimeMillis() * 0.01 % 360) * 180 / Math.PI * 0.05 + 135 - 270 * enrichment, 1, 0, 0);
 			GL11.glTranslated(0, -1.25, -0.25);
 			ResourceManager.rbmk_crane_console.renderPart("Meter2");
@@ -92,10 +92,10 @@ public class RenderRBMKCraneConsole extends TileEntitySpecialRenderer<TileEntity
 			GL11.glTranslated(x + 0.5, y - 1, z + 0.5);
 			bindTexture(ResourceManager.rbmk_crane_tex);
 
-			int height = console.height - 6;
-			double cranePosX = (console.centerX - console.getPos().getX());
-			double cranePosY = (console.centerY - console.getPos().getY()) + 1;
-			double cranePosZ = (console.centerZ - console.getPos().getZ());
+			final int height = console.height - 6;
+			final double cranePosX = (console.centerX - console.getPos().getX());
+			final double cranePosY = (console.centerY - console.getPos().getY()) + 1;
+			final double cranePosZ = (console.centerZ - console.getPos().getZ());
 			
 			GL11.glTranslated(cranePosX, cranePosY, cranePosZ);
 			switch(console.getBlockMetadata() - BlockDummyable.offset) {
@@ -105,8 +105,8 @@ public class RenderRBMKCraneConsole extends TileEntitySpecialRenderer<TileEntity
 			case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
 			}
 
-			double posX = (console.lastPosFront + (console.posFront - console.lastPosFront) * partialTicks);
-			double posZ = (console.lastPosLeft + (console.posLeft - console.lastPosLeft) * partialTicks);
+			final double posX = (console.lastPosFront + (console.posFront - console.lastPosFront) * partialTicks);
+			final double posZ = (console.lastPosLeft + (console.posLeft - console.lastPosLeft) * partialTicks);
 			GL11.glTranslated(0, 0, posZ);
 			
 			GL11.glPushMatrix();

@@ -16,20 +16,20 @@ public class Vec2s extends FuncRelational {
         y = 0;
     }
 
-    public Vec2s(int x, int y) {
+    public Vec2s(final int x, final int y) {
         this((short) x, (short) y);
     }
 
-    public Vec2s(short x, short y) {
+    public Vec2s(final short x, final short y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vec2s set(int x, int y) {
+    public Vec2s set(final int x, final int y) {
         return set((short) x, (short) y);
     }
 
-    public Vec2s set(short x, short y) {
+    public Vec2s set(final short x, final short y) {
         this.x = x;
         this.y = y;
         return this;

@@ -41,7 +41,7 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void update() {
-		int timer = MachineConfig.delayPerOperationDerrick;
+		final int timer = MachineConfig.delayPerOperationDerrick;
 
 		age++;
 		age2++;
@@ -51,8 +51,8 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 			age2 -= 20;
 		if(!world.isRemote) {
 			this.updateConnections();
-			int tank0Amount = tanks[0].getFluidAmount();
-			int tank1Amount = tanks[1].getFluidAmount();
+			final int tank0Amount = tanks[0].getFluidAmount();
+			final int tank1Amount = tanks[1].getFluidAmount();
 			if(age2 == 9 || age2 == 19) {
 				fillFluidInit(tanks[0]);
 				fillFluidInit(tanks[1]);
@@ -88,7 +88,7 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 							break;
 						}
 
-						Block b = world.getBlockState(new BlockPos(pos.getX(), i, pos.getZ())).getBlock();
+						final Block b = world.getBlockState(new BlockPos(pos.getX(), i, pos.getZ())).getBlock();
 						if(b == ModBlocks.oil_pipe)
 							continue;
 
@@ -103,8 +103,8 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 						} else if(this.tanks[0].getFluidAmount() < this.tanks[0].getCapacity() && this.tanks[1].getFluidAmount() < this.tanks[1].getCapacity()) {
 							if(succ(pos.getX(), i, pos.getZ()) == 1) {
 
-								int oilCollected = MachineConfig.oilPerDepositBlockMinDerrick + ((MachineConfig.oilPerDepositBlockMaxExtraDerrick > 0) ? world.rand.nextInt(MachineConfig.oilPerDepositBlockMaxExtraDerrick) : 0);
-								int gasCollected = MachineConfig.gasPerDepositBlockMinDerrick + ((MachineConfig.gasPerDepositBlockMaxExtraDerrick > 0) ? world.rand.nextInt(MachineConfig.gasPerDepositBlockMaxExtraDerrick) : 0);
+								final int oilCollected = MachineConfig.oilPerDepositBlockMinDerrick + ((MachineConfig.oilPerDepositBlockMaxExtraDerrick > 0) ? world.rand.nextInt(MachineConfig.oilPerDepositBlockMaxExtraDerrick) : 0);
+								final int gasCollected = MachineConfig.gasPerDepositBlockMinDerrick + ((MachineConfig.gasPerDepositBlockMaxExtraDerrick > 0) ? world.rand.nextInt(MachineConfig.gasPerDepositBlockMaxExtraDerrick) : 0);
 
 								this.tanks[0].fill(new FluidStack(tankTypes[0], oilCollected), true);
 								this.tanks[1].fill(new FluidStack(tankTypes[1], gasCollected), true);
@@ -147,7 +147,7 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 			}
 
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] { tanks[0], tanks[1] }), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
 			if(tank0Amount != tanks[0].getFluidAmount() || tank1Amount != tanks[1].getFluidAmount()){
 				markDirty();
 			}
@@ -161,7 +161,7 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 		this.trySubscribe(world, pos.add(0, 0, -2), Library.NEG_Z);
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		needsUpdate = FFUtils.fillFluid(this, tank, world, pos.add(-2, 0, 0), 2000) || needsUpdate;
 		needsUpdate = FFUtils.fillFluid(this, tank, world, pos.add(2, 0, 0), 2000) || needsUpdate;
 		needsUpdate = FFUtils.fillFluid(this, tank, world, pos.add(0, 0, -2), 2000) || needsUpdate;
@@ -170,18 +170,18 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource == null) {
 			return null;
 		} else if(resource.getFluid() == tankTypes[0]) {
-			int prevAmount = tanks[0].getFluidAmount();
-			FluidStack drained = tanks[0].drain(resource.amount, doDrain);
+			final int prevAmount = tanks[0].getFluidAmount();
+			final FluidStack drained = tanks[0].drain(resource.amount, doDrain);
 			if(tanks[0].getFluidAmount() != prevAmount)
 				needsUpdate = true;
 			return drained;
 		} else if(resource.getFluid() == tankTypes[1]) {
-			int prevAmount = tanks[1].getFluidAmount();
-			FluidStack drained = tanks[1].drain(resource.amount, doDrain);
+			final int prevAmount = tanks[1].getFluidAmount();
+			final FluidStack drained = tanks[1].drain(resource.amount, doDrain);
 			if(tanks[1].getFluidAmount() != prevAmount)
 				needsUpdate = true;
 			return drained;
@@ -191,16 +191,16 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		if(tanks[0].getFluidAmount() > 0) {
-			int prevAmount = tanks[0].getFluidAmount();
-			FluidStack drained = tanks[0].drain(maxDrain, doDrain);
+			final int prevAmount = tanks[0].getFluidAmount();
+			final FluidStack drained = tanks[0].drain(maxDrain, doDrain);
 			if(tanks[0].getFluidAmount() != prevAmount)
 				needsUpdate = true;
 			return drained;
 		} else if(tanks[1].getFluidAmount() > 0) {
-			int prevAmount = tanks[1].getFluidAmount();
-			FluidStack drained = tanks[1].drain(maxDrain, doDrain);
+			final int prevAmount = tanks[1].getFluidAmount();
+			final FluidStack drained = tanks[1].drain(maxDrain, doDrain);
 			if(tanks[1].getFluidAmount() != prevAmount)
 				needsUpdate = true;
 			return drained;

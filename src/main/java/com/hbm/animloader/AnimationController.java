@@ -7,7 +7,7 @@ public class AnimationController {
 
 	protected AnimationWrapper activeAnim = AnimationWrapper.EMPTY;
 
-	public void setAnim(AnimationWrapper w) {
+	public void setAnim(final AnimationWrapper w) {
 		activeAnim = w;
 	}
 

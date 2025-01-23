@@ -8,12 +8,12 @@ public class DataValueString extends DataValue {
 	public String str;
 	private float floatVal;
 	
-	public DataValueString(String s){
+	public DataValueString(final String s){
 		this.str = s;
 		float num = 0;
 		try {
 			num = Float.parseFloat(str);
-		} catch(Exception x){
+		} catch(final Exception x){
 		}
 		floatVal = num;
 	}
@@ -25,10 +25,8 @@ public class DataValueString extends DataValue {
 
 	@Override
 	public boolean getBoolean(){
-		if(str.equals("true"))
-			return true;
-		return false;
-	}
+        return str.equals("true");
+    }
 
 	@Override
 	public String toString(){
@@ -36,9 +34,9 @@ public class DataValueString extends DataValue {
 	}
 
 	@Override
-	public <E extends Enum<E>> E getEnum(Class<E> clazz){
-		E[] enms = clazz.getEnumConstants();
-		for(E enm : enms){
+	public <E extends Enum<E>> E getEnum(final Class<E> clazz){
+		final E[] enms = clazz.getEnumConstants();
+		for(final E enm : enms){
 			if(enm.name().equalsIgnoreCase(str))
 				return enm;
 		}
@@ -56,12 +54,12 @@ public class DataValueString extends DataValue {
 	}
 
 	@Override
-	public void readFromNBT(NBTBase nbt){
+	public void readFromNBT(final NBTBase nbt){
 		str = ((NBTTagString)nbt).getString();
 		float num = 0;
 		try {
 			num = Float.parseFloat(str);
-		} catch(Exception x){
+		} catch(final Exception x){
 		}
 		floatVal = num;
 	}

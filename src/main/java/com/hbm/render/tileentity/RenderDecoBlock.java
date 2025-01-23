@@ -22,9 +22,9 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer<TileEntityDecoBlo
 	private static final ResourceLocation texture2 = new ResourceLocation(RefStrings.MODID + ":" + "textures/models/deco/SteelCorner.png");
 	private static final ResourceLocation texture3 = new ResourceLocation(RefStrings.MODID + ":" + "textures/models/deco/SteelRoof.png");
 
-	private ModelSteelWall model1;
-	private ModelSteelCorner model2;
-	private ModelSteelRoof model3;
+	private final ModelSteelWall model1;
+	private final ModelSteelCorner model2;
+	private final ModelSteelRoof model3;
 
 	public RenderDecoBlock() {
 		this.model1 = new ModelSteelWall();
@@ -33,17 +33,17 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer<TileEntityDecoBlo
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityDecoBlock te) {
+	public boolean isGlobalRenderer(final TileEntityDecoBlock te) {
 		return te.getWorld().getBlockState(te.getPos()).getBlock() == ModBlocks.boxcar || te.getWorld().getBlockState(te.getPos()).getBlock() == ModBlocks.boat;
 	}
 
 	@Override
-	public void render(TileEntityDecoBlock te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityDecoBlock te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		GL11.glRotatef(180, 0F, 0F, 1F);
 
-		Block block = te.getWorld().getBlockState(te.getPos()).getBlock();
+		final Block block = te.getWorld().getBlockState(te.getPos()).getBlock();
 
 		GlStateManager.enableLighting();
 		if(block == ModBlocks.steel_wall) {

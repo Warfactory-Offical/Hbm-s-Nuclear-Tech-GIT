@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class NodeFunction extends Node {
 
-    public NodeFunction(float x, float y) {
+    public NodeFunction(final float x, final float y) {
         super(x, y);
 
         this.inputs.add(new NodeConnection("Enable", this, inputs.size(), true, DataType.NUMBER, new DataValueFloat(0)));
@@ -27,18 +27,18 @@ public class NodeFunction extends Node {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys) {
         tag.setString("nodeType", "function");
         return super.writeToNBT(tag, sys);
     }
 
     @Override
-    public DataValue evaluate(int idx) {
+    public DataValue evaluate(final int idx) {
         if (cacheValid)
             return evalCache[0];
         cacheValid = true;
 
-        DataValue enable = inputs.get(0).evaluate();
+        final DataValue enable = inputs.get(0).evaluate();
         if (enable == null)
             return null;
 

@@ -13,7 +13,7 @@ public class RBMKDebris extends Block implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public RBMKDebris(String s) {
+	public RBMKDebris(final String s) {
 		super(Material.IRON);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,22 +28,22 @@ public class RBMKDebris extends Block implements IItemHazard {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state){
+	public boolean isBlockNormalCube(final IBlockState state){
 		return false;
 	}
 }

@@ -17,147 +17,147 @@ abstract class ArithmeticOperators {
 
     public long x, y, z, w;
 
-    public Vec4l add_(long b) {
+    public Vec4l add_(final long b) {
         return Glm.add(new Vec4l(), (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l add_(long bX, long bY, long bZ, long bW) {
+    public Vec4l add_(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.add(new Vec4l(), (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l add_(Vec4l b) {
+    public Vec4l add_(final Vec4l b) {
         return Glm.add(new Vec4l(), (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l add(long b) {
+    public Vec4l add(final long b) {
         return Glm.add((Vec4l) this, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l add(long bX, long bY, long bZ, long bW) {
+    public Vec4l add(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.add((Vec4l) this, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l add(Vec4l b) {
+    public Vec4l add(final Vec4l b) {
         return Glm.add((Vec4l) this, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l add(long b, Vec4l res) {
+    public Vec4l add(final long b, final Vec4l res) {
         return Glm.add(res, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l add(long bX, long bY, long bZ, long bW, Vec4l res) {
+    public Vec4l add(final long bX, final long bY, final long bZ, final long bW, final Vec4l res) {
         return Glm.add(res, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l add(Vec4l b, Vec4l res) {
+    public Vec4l add(final Vec4l b, final Vec4l res) {
         return Glm.add(res, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l sub_(long b) {
+    public Vec4l sub_(final long b) {
         return Glm.sub(new Vec4l(), (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l sub_(long bX, long bY, long bZ, long bW) {
+    public Vec4l sub_(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.sub(new Vec4l(), (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l sub_(Vec4l b) {
+    public Vec4l sub_(final Vec4l b) {
         return Glm.sub(new Vec4l(), (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l sub(long b) {
+    public Vec4l sub(final long b) {
         return Glm.sub((Vec4l) this, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l sub(long bX, long bY, long bZ, long bW) {
+    public Vec4l sub(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.sub((Vec4l) this, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l sub(Vec4l b) {
+    public Vec4l sub(final Vec4l b) {
         return Glm.sub((Vec4l) this, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l sub(long b, Vec4l res) {
+    public Vec4l sub(final long b, final Vec4l res) {
         return Glm.sub(res, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l sub(long bX, long bY, long bZ, long bW, Vec4l res) {
+    public Vec4l sub(final long bX, final long bY, final long bZ, final long bW, final Vec4l res) {
         return Glm.sub(res, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l sub(Vec4l b, Vec4l res) {
+    public Vec4l sub(final Vec4l b, final Vec4l res) {
         return Glm.sub(res, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l mul_(long b) {
+    public Vec4l mul_(final long b) {
         return Glm.mul(new Vec4l(), (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l mul_(long bX, long bY, long bZ, long bW) {
+    public Vec4l mul_(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.mul(new Vec4l(), (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l mul_(Vec4l b) {
+    public Vec4l mul_(final Vec4l b) {
         return Glm.mul(new Vec4l(), (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l mul(long b) {
+    public Vec4l mul(final long b) {
         return Glm.mul((Vec4l) this, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l mul(long bX, long bY, long bZ, long bW) {
+    public Vec4l mul(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.mul((Vec4l) this, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l mul(Vec4l b) {
+    public Vec4l mul(final Vec4l b) {
         return Glm.mul((Vec4l) this, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l mul(long b, Vec4l res) {
+    public Vec4l mul(final long b, final Vec4l res) {
         return Glm.mul(res, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l mul(long bX, long bY, long bZ, long bW, Vec4l res) {
+    public Vec4l mul(final long bX, final long bY, final long bZ, final long bW, final Vec4l res) {
         return Glm.mul(res, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l mul(Vec4l b, Vec4l res) {
+    public Vec4l mul(final Vec4l b, final Vec4l res) {
         return Glm.mul(res, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l div_(long b) {
+    public Vec4l div_(final long b) {
         return Glm.div(new Vec4l(), (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l div_(long bX, long bY, long bZ, long bW) {
+    public Vec4l div_(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.div(new Vec4l(), (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l div_(Vec4l b) {
+    public Vec4l div_(final Vec4l b) {
         return Glm.div(new Vec4l(), (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l div(long b) {
+    public Vec4l div(final long b) {
         return Glm.div((Vec4l) this, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l div(long bX, long bY, long bZ, long bW) {
+    public Vec4l div(final long bX, final long bY, final long bZ, final long bW) {
         return Glm.div((Vec4l) this, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l div(Vec4l b) {
+    public Vec4l div(final Vec4l b) {
         return Glm.div((Vec4l) this, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
-    public Vec4l div(long b, Vec4l res) {
+    public Vec4l div(final long b, final Vec4l res) {
         return Glm.div(res, (Vec4l) this, b, b, b, b);
     }
 
-    public Vec4l div(long bX, long bY, long bZ, long bW, Vec4l res) {
+    public Vec4l div(final long bX, final long bY, final long bZ, final long bW, final Vec4l res) {
         return Glm.div(res, (Vec4l) this, bX, bY, bZ, bW);
     }
 
-    public Vec4l div(Vec4l b, Vec4l res) {
+    public Vec4l div(final Vec4l b, final Vec4l res) {
         return Glm.div(res, (Vec4l) this, b.x, b.y, b.z, b.w);
     }
 
@@ -169,7 +169,7 @@ abstract class ArithmeticOperators {
         return Glm.incr((Vec4l) this);
     }
 
-    public Vec4l incr(Vec4l res) {
+    public Vec4l incr(final Vec4l res) {
         return Glm.incr(res, (Vec4l) this);
     }
 
@@ -181,7 +181,7 @@ abstract class ArithmeticOperators {
         return Glm.decr((Vec4l) this);
     }
 
-    public Vec4l decr(Vec4l res) {
+    public Vec4l decr(final Vec4l res) {
         return Glm.decr(res, (Vec4l) this);
     }
 }

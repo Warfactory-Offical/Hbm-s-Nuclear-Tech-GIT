@@ -19,12 +19,12 @@ public class HbmGroupObject {
         this("");
     }
 
-    public HbmGroupObject(String name)
+    public HbmGroupObject(final String name)
     {
         this(name, -1);
     }
 
-    public HbmGroupObject(String name, int glDrawingMode)
+    public HbmGroupObject(final String name, final int glDrawingMode)
     {
         this.name = name;
         this.glDrawingMode = glDrawingMode;
@@ -35,7 +35,7 @@ public class HbmGroupObject {
     {
         if (faces.size() > 0)
         {
-            Tessellator tessellator = Tessellator.instance;
+            final Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawing(glDrawingMode);
             render(tessellator);
             tessellator.draw();
@@ -43,11 +43,11 @@ public class HbmGroupObject {
     }
 
     @SideOnly(Side.CLIENT)
-    public void render(Tessellator tessellator)
+    public void render(final Tessellator tessellator)
     {
         if (faces.size() > 0)
         {
-            for (HbmFace face : faces)
+            for (final HbmFace face : faces)
             {
                 face.addFaceForRender(tessellator);
             }

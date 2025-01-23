@@ -54,7 +54,7 @@ public class TileEntityTurretHowardDamaged extends TileEntityTurretHoward {
 	}
 	
 	@Override
-	public boolean entityAcceptableTarget(Entity e) { //will fire at any living entity
+	public boolean entityAcceptableTarget(final Entity e) { //will fire at any living entity
 		
 		if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
 			return false;
@@ -75,16 +75,16 @@ public class TileEntityTurretHowardDamaged extends TileEntityTurretHoward {
 				if(world.rand.nextInt(100) + 1 <= WeaponConfig.ciwsHitrate * 0.5)
 					EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.shrapnel, 2F + world.rand.nextInt(2));
 					
-				Vec3 pos = new Vec3(this.getTurretPos());
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				final Vec3 pos = new Vec3(this.getTurretPos());
+				final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
-				Vec3 hOff = Vec3.createVectorHelper(0, 0.25, 0);
+				final Vec3 hOff = Vec3.createVectorHelper(0, 0.25, 0);
 				hOff.rotateAroundZ((float) -this.rotationPitch);
 				hOff.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 					
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaExt");
 				data.setString("mode", "largeexplode");
 				data.setFloat("size", 1.5F);

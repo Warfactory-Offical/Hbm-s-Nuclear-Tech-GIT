@@ -17,7 +17,7 @@ public class RenderBalls extends Render<EntityBallsOTronSegment> {
 
 	public static final IRenderFactory<EntityBallsOTronSegment> FACTORY = man -> new RenderBalls(man);
 	
-	protected RenderBalls(RenderManager renderManager) {
+	protected RenderBalls(final RenderManager renderManager) {
 		super(renderManager);
 		this.shadowOpaque = 0;
 	}
@@ -25,7 +25,7 @@ public class RenderBalls extends Render<EntityBallsOTronSegment> {
 	public static final IModelCustom capsule = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/mobs/capsule.obj"));
 	
 	@Override
-	public void doRender(EntityBallsOTronSegment entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBallsOTronSegment entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -38,7 +38,7 @@ public class RenderBalls extends Render<EntityBallsOTronSegment> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBallsOTronSegment entity) {
+	protected ResourceLocation getEntityTexture(final EntityBallsOTronSegment entity) {
 		return ResourceManager.turbofan_blades_tex;
 	}
 

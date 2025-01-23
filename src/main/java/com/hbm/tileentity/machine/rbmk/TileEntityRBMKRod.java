@@ -62,7 +62,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 
 	@SuppressWarnings("incomplete-switch") //shut the fuck up
 	@Override
-	public void receiveFlux(NType type, double flux) {
+	public void receiveFlux(final NType type, final double flux) {
 		
 		switch(type) {
 		case FAST: this.fluxFast += flux; break;
@@ -75,18 +75,17 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 
 		if(!world.isRemote) {
 			
-			if(inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
-				ItemRBMKRod rod = ((ItemRBMKRod)inventory.getStackInSlot(0).getItem());
-				this.fuelR = rod.fuelR;
+			if(inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod rod) {
+                this.fuelR = rod.fuelR;
 				this.fuelG = rod.fuelG;
 				this.fuelB = rod.fuelB;
 				this.cherenkovR = rod.cherenkovR;
 				this.cherenkovG = rod.cherenkovG;
 				this.cherenkovB = rod.cherenkovB;
 				
-				double fluxIn = fluxFromType(rod.nType);
+				final double fluxIn = fluxFromType(rod.nType);
 				fluxOut = rod.burn(world, inventory.getStackInSlot(0), fluxIn);
-				NType rType = rod.rType;
+				final NType rType = rod.rType;
 				
 				rod.updateHeat(world, inventory.getStackInSlot(0), 1.0D);
 				this.heat += rod.provideHeat(world, inventory.getStackInSlot(0), heat, 1.0D);
@@ -95,7 +94,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 				if(!this.hasLid()) {
 					RadiationSavedData.incrementRad(world, pos, (float) ((this.fluxFast + this.fluxSlow) * 0.05F), (float) ((this.fluxFast + this.fluxSlow) * 10F));
 				} else{
-					double meltdownPercent = rod.getMeltdownPercent(inventory.getStackInSlot(0));
+					final double meltdownPercent = ItemRBMKRod.getMeltdownPercent(inventory.getStackInSlot(0));
 					if(meltdownPercent > 0){
 						RadiationSavedData.incrementRad(world, pos, (float) ((this.fluxFast + this.fluxSlow) * 0.05F * meltdownPercent * 0.01D), (float) ((this.fluxFast + this.fluxSlow) * meltdownPercent * 0.1D));
 					}
@@ -129,7 +128,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		if(itemStack.getItem() instanceof ItemRBMKRod)
 			return !(ItemRBMKRod.getMeltdownPercent(itemStack) > 0);
 		return true;
@@ -143,7 +142,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	 * @return
 	 */
 	
-	private double fluxFromType(NType type) {
+	private double fluxFromType(final NType type) {
 		
 		switch(type) {
 		case SLOW: return this.fluxFast * 0.5D + this.fluxSlow;
@@ -163,11 +162,11 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	
 	protected static NType stream;
 	
-	protected void spreadFlux(NType type, double fluxOut) {
+	protected void spreadFlux(final NType type, final double fluxOut) {
 		
-		int range = RBMKDials.getFluxRange(world);
+		final int range = RBMKDials.getFluxRange(world);
 		
-		for(ForgeDirection dir : fluxDirs) {
+		for(final ForgeDirection dir : fluxDirs) {
 			
 			stream = type;
 			double flux = fluxOut;
@@ -182,14 +181,13 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 		}
 	}
 	
-	protected double runInteraction(int x, int y, int z, double flux) {
+	protected double runInteraction(final int x, final int y, final int z, double flux) {
 		
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(te instanceof TileEntityRBMKBase) {
-			TileEntityRBMKBase base = (TileEntityRBMKBase) te;
-			
-			if(!base.hasLid())
+		if(te instanceof TileEntityRBMKBase base) {
+
+            if(!base.hasLid())
 				RadiationSavedData.incrementRad(world, pos, (float) (flux * 0.05F), Float.MAX_VALUE);
 			
 			if(base.isModerated()) {
@@ -198,25 +196,22 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 		}
 
 		//burn baby burn
-		if(te instanceof TileEntityRBMKRod) {
-			TileEntityRBMKRod rod = (TileEntityRBMKRod)te;
-			
-			if(rod.inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
+		if(te instanceof TileEntityRBMKRod rod) {
+
+            if(rod.inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
 				rod.receiveFlux(stream, flux);
 				return 0;
 			}
 		}
-		if(te instanceof IRBMKFluxReceiver) {
-			IRBMKFluxReceiver rod = (IRBMKFluxReceiver)te;
-			rod.receiveFlux(stream, flux);
+		if(te instanceof IRBMKFluxReceiver rod) {
+            rod.receiveFlux(stream, flux);
 			return 0;
 		}
 		
 		//set neutrons to slow
-		if(te instanceof TileEntityRBMKControl) {
-			TileEntityRBMKControl control = (TileEntityRBMKControl)te;
-			
-			if(control.getMult() == 0.0D)
+		if(te instanceof TileEntityRBMKControl control) {
+
+            if(control.getMult() == 0.0D)
 				return 0;
 			
 			flux *= control.getMult();
@@ -245,7 +240,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 			return flux;
 		}
 		
-		int limit = RBMKDials.getColumnHeight(world);
+		final int limit = RBMKDials.getColumnHeight(world);
 		int hits = 0;
 		for(int h = 0; h <= limit; h++) {
 			
@@ -260,7 +255,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.fluxFast = nbt.getDouble("fluxFast");
@@ -275,7 +270,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setDouble("fluxFast", this.fluxFast);
@@ -290,14 +285,12 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 		return nbt;
 	}
 	
-	public void getDiagData(NBTTagCompound nbt) {
+	public void getDiagData(final NBTTagCompound nbt) {
 		this.writeToNBT(nbt);
 		
-		if(inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
-			
-			ItemRBMKRod rod = ((ItemRBMKRod)inventory.getStackInSlot(0).getItem());
+		if(inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod rod) {
 
-			nbt.setString("f_yield", ItemRBMKRod.getYield(inventory.getStackInSlot(0)) + " / " + rod.yield + " (" + (ItemRBMKRod.getEnrichment(inventory.getStackInSlot(0)) * 100) + "%)");
+            nbt.setString("f_yield", ItemRBMKRod.getYield(inventory.getStackInSlot(0)) + " / " + rod.yield + " (" + (ItemRBMKRod.getEnrichment(inventory.getStackInSlot(0)) * 100) + "%)");
 			nbt.setString("f_xenon", ItemRBMKRod.getPoison(inventory.getStackInSlot(0)) + "%");
 			nbt.setString("f_heat", ItemRBMKRod.getCoreHeat(inventory.getStackInSlot(0)) + " / " + ItemRBMKRod.getHullHeat(inventory.getStackInSlot(0))  + " / " + rod.meltingPoint);
 		}
@@ -314,13 +307,13 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	
 	@Override
 	public void onMelt(int reduce) {
-		int h = RBMKDials.getColumnHeight(world);
+		final int h = RBMKDials.getColumnHeight(world);
 		reduce = MathHelper.clamp(reduce, 1, h);
 		
 		if(world.rand.nextInt(3) == 0)
 			reduce++;
 		
-		boolean corium = inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod;
+		final boolean corium = inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod;
 		
 		if(corium && inventory.getStackInSlot(0).getItem() == ModItems.rbmk_fuel_drx) 
 			RBMKBase.digamma = true;
@@ -336,11 +329,11 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 				} else {
 					world.setBlockState(new BlockPos(pos.getX(), pos.getY() + i, pos.getZ()), Blocks.AIR.getDefaultState());
 				}
-				IBlockState state = world.getBlockState(pos.up(i));
+				final IBlockState state = world.getBlockState(pos.up(i));
 				world.notifyBlockUpdate(pos.up(i), state, state, 3);
 			}
 			
-			int count = 1 + world.rand.nextInt(RBMKDials.getColumnHeight(world));
+			final int count = 1 + world.rand.nextInt(RBMKDials.getColumnHeight(world));
 			
 			for(int i = 0; i < count; i++) {
 				spawnDebris(DebrisType.FUEL);
@@ -355,9 +348,9 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 			spawnDebris(DebrisType.LID);
 
 		if(MobConfig.enableElementals) {
-			List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(100, 100, 100));
+			final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(100, 100, 100));
 
-			for(EntityPlayer player : players) {
+			for(final EntityPlayer player : players) {
 				player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", true);
 			}
 		}
@@ -370,12 +363,11 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 
 	@Override
 	public NBTTagCompound getNBTForConsole() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		
-		if(inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
-			
-			ItemRBMKRod rod = ((ItemRBMKRod)inventory.getStackInSlot(0).getItem());
-			data.setString("rod_name", rod.getTranslationKey());
+		if(inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod rod) {
+
+            data.setString("rod_name", rod.getTranslationKey());
 			data.setDouble("enrichment", ItemRBMKRod.getEnrichment(inventory.getStackInSlot(0)));
 			data.setDouble("xenon", ItemRBMKRod.getPoison(inventory.getStackInSlot(0)));
 			data.setDouble("c_heat", ItemRBMKRod.getHullHeat(inventory.getStackInSlot(0)));
@@ -388,12 +380,12 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	}
 
 	@Override
-	public boolean canLoad(ItemStack toLoad) {
+	public boolean canLoad(final ItemStack toLoad) {
 		return toLoad != null && inventory.getStackInSlot(0).isEmpty();
 	}
 
 	@Override
-	public void load(ItemStack toLoad) {
+	public void load(final ItemStack toLoad) {
 		inventory.setStackInSlot(0, toLoad.copy());
 		this.markDirty();
 	}
@@ -418,11 +410,10 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		Map<String, DataValue> data = super.getQueryData();
+		final Map<String, DataValue> data = super.getQueryData();
 
-		if (inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
-			ItemRBMKRod rod = ((ItemRBMKRod)inventory.getStackInSlot(0).getItem());
-			data.put("rod_name", new DataValueString(rod.getTranslationKey()));
+		if (inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod rod) {
+            data.put("rod_name", new DataValueString(rod.getTranslationKey()));
 			data.put("enrichment", new DataValueFloat((float) ItemRBMKRod.getEnrichment(inventory.getStackInSlot(0))));
 			data.put("xenon", new DataValueFloat((float) ItemRBMKRod.getPoison(inventory.getStackInSlot(0))));
 			data.put("c_heat", new DataValueFloat((float) ItemRBMKRod.getHullHeat(inventory.getStackInSlot(0))));

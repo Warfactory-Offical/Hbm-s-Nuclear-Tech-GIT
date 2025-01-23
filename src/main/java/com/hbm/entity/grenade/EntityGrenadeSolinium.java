@@ -16,19 +16,19 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class EntityGrenadeSolinium extends EntityGrenadeBouncyBase {
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
 
-    public EntityGrenadeSolinium(World p_i1773_1_)
+    public EntityGrenadeSolinium(final World p_i1773_1_)
     {
         super(p_i1773_1_);
     }
 
-    public EntityGrenadeSolinium(World p_i1774_1_, EntityLivingBase p_i1774_2_, EnumHand hand)
+    public EntityGrenadeSolinium(final World p_i1774_1_, final EntityLivingBase p_i1774_2_, final EnumHand hand)
     {
         super(p_i1774_1_, p_i1774_2_, hand);
     }
 
-    public EntityGrenadeSolinium(World p_i1775_1_, double p_i1775_2_, double p_i1775_4_, double p_i1775_6_)
+    public EntityGrenadeSolinium(final World p_i1775_1_, final double p_i1775_2_, final double p_i1775_4_, final double p_i1775_6_)
     {
         super(p_i1775_1_, p_i1775_2_, p_i1775_4_, p_i1775_6_);
     }
@@ -42,11 +42,11 @@ public class EntityGrenadeSolinium extends EntityGrenadeBouncyBase {
 
             world.playSound(null, posX, posY, posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, world.rand.nextFloat() * 0.1F + 0.9F);
 
-            EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
+            final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
             entity.posX = posX;
             entity.posY = posY;
             entity.posZ = posZ;
-            entity.destructionRange = (int)BombConfig.soliniumRadius/10;
+            entity.destructionRange = BombConfig.soliniumRadius /10;
             entity.speed = BombConfig.blastSpeed;
             entity.coefficient = 1.0F;
             entity.waste = false;
@@ -54,7 +54,7 @@ public class EntityGrenadeSolinium extends EntityGrenadeBouncyBase {
 
             world.spawnEntity(entity);
 
-            EntityCloudSolinium cloud = new EntityCloudSolinium(world, (int)BombConfig.soliniumRadius/10);
+            final EntityCloudSolinium cloud = new EntityCloudSolinium(world, BombConfig.soliniumRadius /10);
             cloud.posX = posX;
             cloud.posY = posY;
             cloud.posZ = posZ;

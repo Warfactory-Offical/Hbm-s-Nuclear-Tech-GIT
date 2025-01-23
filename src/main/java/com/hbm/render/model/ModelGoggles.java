@@ -66,22 +66,17 @@ public class ModelGoggles extends ModelBiped {
 	 * Shape7.render(f5); }
 	 */
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity) {
 
-		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if (player.isSneaking()) {
-				this.isSneak = true;
-			} else {
-				this.isSneak = false;
-			}
+		if (entity instanceof EntityPlayer player) {
+            this.isSneak = player.isSneaking();
 		}
 
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
@@ -96,7 +91,7 @@ public class ModelGoggles extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+	public void render(final Entity par1Entity, final float par2, final float par3, final float par4, final float par5, final float par6, final float par7) {
 		setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 		GL11.glPushMatrix();
 		GL11.glScalef(1.001F, 1.001F, 1.001F);
@@ -104,7 +99,7 @@ public class ModelGoggles extends ModelBiped {
 		GL11.glPopMatrix();
 	}
 
-	protected void convertToChild(ModelRenderer parParent, ModelRenderer parChild) {
+	protected void convertToChild(final ModelRenderer parParent, final ModelRenderer parChild) {
 		// move child rotation point to be relative to parent
 		parChild.rotationPointX -= parParent.rotationPointX;
 		parChild.rotationPointY -= parParent.rotationPointY;

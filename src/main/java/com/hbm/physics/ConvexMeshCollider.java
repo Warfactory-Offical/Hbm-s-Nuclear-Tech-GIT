@@ -24,14 +24,14 @@ public class ConvexMeshCollider extends Collider {
 	private ConvexMeshCollider(){
 	}
 	
-	public ConvexMeshCollider(Triangle[] triangles){
-		int[] indc = new int[triangles.length*3];
-		float[] verts = new float[triangles.length*9];
+	public ConvexMeshCollider(final Triangle[] triangles){
+		final int[] indc = new int[triangles.length*3];
+		final float[] verts = new float[triangles.length*9];
 		for(int i = 0; i < triangles.length; i ++){
-			indc[i*3+0] = i*9+0;
+			indc[i * 3] = i * 9;
 			indc[i*3+1] = i*9+3;
 			indc[i*3+2] = i*9+6;
-			verts[i*9+0] = (float) triangles[i].p1.pos.x;
+			verts[i * 9] = (float) triangles[i].p1.pos.x;
 			verts[i*9+1] = (float) triangles[i].p1.pos.y;
 			verts[i*9+2] = (float) triangles[i].p1.pos.z;
 			verts[i*9+3] = (float) triangles[i].p2.pos.x;
@@ -44,7 +44,7 @@ public class ConvexMeshCollider extends Collider {
 		fromData(indc, verts);
 	}
 	
-	public ConvexMeshCollider(Triangle[] triangles, float density){
+	public ConvexMeshCollider(final Triangle[] triangles, final float density){
 		this(triangles);
 		//Calculate inertia, mass, etc
 		this.localCentroid = computeCenterOfMass();
@@ -52,15 +52,15 @@ public class ConvexMeshCollider extends Collider {
 		this.localInertiaTensor = computeInertia(localCentroid, mass);
 	}
 
-	public ConvexMeshCollider(int[] indices, float[] vertices, float density) {
+	public ConvexMeshCollider(final int[] indices, final float[] vertices, final float density) {
 		fromData(indices, vertices, density);
 	}
 	
-	public ConvexMeshCollider(int[] indices, float[] vertices) {
+	public ConvexMeshCollider(final int[] indices, final float[] vertices) {
 		fromData(indices, vertices);
 	}
 	
-	public void fromData(int[] indices, float[] vertices, float density){
+	public void fromData(final int[] indices, final float[] vertices, final float density){
 		fromData(indices, vertices);
 		
 		//Calculate inertia, mass, etc
@@ -69,22 +69,22 @@ public class ConvexMeshCollider extends Collider {
 		this.localInertiaTensor = computeInertia(localCentroid, mass);
 	}
 	
-	public void fromData(int[] indices, float[] vertices){
+	public void fromData(final int[] indices, final float[] vertices){
 		this.indices = indices;
 		this.vertices = vertices;
 		triangles = new Triangle[indices.length/3];
 		for(int i = 0; i < indices.length; i += 3){
-			Vec3d p1 = new Vec3d(vertices[indices[i+0]*3+0], vertices[indices[i+0]*3+1], vertices[indices[i+0]*3+2]);
-			Vec3d p2 = new Vec3d(vertices[indices[i+1]*3+0], vertices[indices[i+1]*3+1], vertices[indices[i+1]*3+2]);
-			Vec3d p3 = new Vec3d(vertices[indices[i+2]*3+0], vertices[indices[i+2]*3+1], vertices[indices[i+2]*3+2]);
+			final Vec3d p1 = new Vec3d(vertices[indices[i] * 3], vertices[indices[i]*3+1], vertices[indices[i]*3+2]);
+			final Vec3d p2 = new Vec3d(vertices[indices[i + 1] * 3], vertices[indices[i+1]*3+1], vertices[indices[i+1]*3+2]);
+			final Vec3d p3 = new Vec3d(vertices[indices[i + 2] * 3], vertices[indices[i+2]*3+1], vertices[indices[i+2]*3+2]);
 			triangles[i/3] = new Triangle(p1, p2, p3);
 		}
-		double maxX = support(RigidBody.cardinals[0]).xCoord;
-		double maxY = support(RigidBody.cardinals[1]).yCoord;
-		double maxZ = support(RigidBody.cardinals[2]).zCoord;
-		double minX = support(RigidBody.cardinals[3]).xCoord;
-		double minY = support(RigidBody.cardinals[4]).yCoord;
-		double minZ = support(RigidBody.cardinals[5]).zCoord;
+		final double maxX = support(RigidBody.cardinals[0]).xCoord;
+		final double maxY = support(RigidBody.cardinals[1]).yCoord;
+		final double maxZ = support(RigidBody.cardinals[2]).zCoord;
+		final double minX = support(RigidBody.cardinals[3]).xCoord;
+		final double minY = support(RigidBody.cardinals[4]).yCoord;
+		final double minZ = support(RigidBody.cardinals[5]).zCoord;
 		this.localBox = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 	
@@ -93,18 +93,18 @@ public class ConvexMeshCollider extends Collider {
 	
 	private float computeVolume(){
 		float vol = 0;
-		for(Triangle t : triangles){
+		for(final Triangle t : triangles){
 			vol += new Matrix3f((float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z, (float)t.p2.pos.x, (float)t.p2.pos.y, (float)t.p2.pos.z, (float)t.p3.pos.x, (float)t.p3.pos.y, (float)t.p3.pos.z).determinant();
 		}
 		return vol/6F;
 	}
 	
 	private Vec3 computeCenterOfMass(){
-		Vec3 center = new Vec3(0, 0, 0);
+		final Vec3 center = new Vec3(0, 0, 0);
 		float volume = 0;
-		for(Triangle t : triangles){
-			Matrix3f mat = new Matrix3f((float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z, (float)t.p2.pos.x, (float)t.p2.pos.y, (float)t.p2.pos.z, (float)t.p3.pos.x, (float)t.p3.pos.y, (float)t.p3.pos.z);
-			float vol = mat.determinant();
+		for(final Triangle t : triangles){
+			final Matrix3f mat = new Matrix3f((float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z, (float)t.p2.pos.x, (float)t.p2.pos.y, (float)t.p2.pos.z, (float)t.p3.pos.x, (float)t.p3.pos.y, (float)t.p3.pos.z);
+			final float vol = mat.determinant();
 			center.xCoord += vol*(mat.m00+mat.m10+mat.m20);
 			center.yCoord += vol*(mat.m01+mat.m11+mat.m21);
 			center.zCoord += vol*(mat.m02+mat.m12+mat.m22);
@@ -116,20 +116,20 @@ public class ConvexMeshCollider extends Collider {
 		return center;
 	}
 	
-	private Matrix3f computeInertia(Vec3 com, float mass){
+	private Matrix3f computeInertia(final Vec3 com, final float mass){
 		float volume = 0;
 		Vec3 diag = new Vec3(0, 0, 0);
 		Vec3 offd = new Vec3(0, 0, 0);
-		for(Triangle t : triangles){
-			Matrix3f mat = new Matrix3f((float)(t.p1.pos.x-com.xCoord), (float)(t.p1.pos.y-com.yCoord), (float)(t.p1.pos.z-com.zCoord), 
+		for(final Triangle t : triangles){
+			final Matrix3f mat = new Matrix3f((float)(t.p1.pos.x-com.xCoord), (float)(t.p1.pos.y-com.yCoord), (float)(t.p1.pos.z-com.zCoord),
 					(float)(t.p2.pos.x-com.xCoord), (float)(t.p2.pos.y-com.yCoord), (float)(t.p2.pos.z-com.zCoord), 
 							(float)(t.p3.pos.x-com.xCoord), (float)(t.p3.pos.y-com.yCoord), (float)(t.p3.pos.z-com.zCoord));
-			float d = mat.determinant();
+			final float d = mat.determinant();
 			volume += d;
 			
 			for(int j = 0; j < 3; j ++){
-				int j1 = (j+1)%3;
-				int j2 = (j+2)%3;
+				final int j1 = (j+1)%3;
+				final int j2 = (j+2)%3;
 				setVal(diag, j, val(diag, j) + 
 						(mat.getElement(0, j)*mat.getElement(1, j) + mat.getElement(1, j)*mat.getElement(2, j) + mat.getElement(2, j)*mat.getElement(0, j) +
 						mat.getElement(0, j)*mat.getElement(0, j) + mat.getElement(1, j)*mat.getElement(1, j) + mat.getElement(2, j)*mat.getElement(2, j))*d);
@@ -155,18 +155,18 @@ public class ConvexMeshCollider extends Collider {
 				(float)-offd.yCoord, (float)-offd.xCoord, (float)(diag.xCoord+diag.yCoord));
 	}
 	
-	private static void setVal(Vec3 vec, int idx, double val){
+	private static void setVal(final Vec3 vec, final int idx, final double val){
 		switch(idx){
 		case 0:
 			vec.xCoord = val; return;
 		case 1:
 			vec.yCoord = val; return;
 		case 2:
-			vec.zCoord = val; return;
-		}
+			vec.zCoord = val;
+        }
 	}
 	
-	private static double val(Vec3 vec, int idx){
+	private static double val(final Vec3 vec, final int idx){
 		switch(idx){
 		case 0:
 			return vec.xCoord;
@@ -179,11 +179,11 @@ public class ConvexMeshCollider extends Collider {
 	}
 
 	@Override
-	public Vec3 support(Vec3 dir) {
+	public Vec3 support(final Vec3 dir) {
 		double dot = -Float.MAX_VALUE;
 		int index = 0;
 		for(int i = 0; i < vertices.length; i += 3){
-			double newDot = dir.xCoord*vertices[i] + dir.yCoord*vertices[i+1] + dir.zCoord*vertices[i+2];
+			final double newDot = dir.xCoord*vertices[i] + dir.yCoord*vertices[i+1] + dir.zCoord*vertices[i+2];
 			if(newDot > dot){
 				dot = newDot;
 				index = i;
@@ -194,7 +194,7 @@ public class ConvexMeshCollider extends Collider {
 
 	@Override
 	public Collider copy() {
-		ConvexMeshCollider c = new ConvexMeshCollider();
+		final ConvexMeshCollider c = new ConvexMeshCollider();
 		c.vertices = vertices;
 		c.indices = indices;
 		c.triangles = triangles;
@@ -207,10 +207,10 @@ public class ConvexMeshCollider extends Collider {
 
 	@Override
 	public void debugRender() {
-		BufferBuilder buf = Tessellator.getInstance().getBuffer();
+		final BufferBuilder buf = Tessellator.getInstance().getBuffer();
 		GlStateManager.disableTexture2D();
 		buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-		for(Triangle t : triangles){
+		for(final Triangle t : triangles){
 			buf.pos(t.p1.pos.x, t.p1.pos.y, t.p1.pos.z).color(1F, 0, 0, 1F).endVertex();
 			buf.pos(t.p2.pos.x, t.p2.pos.y, t.p2.pos.z).color(1F, 0, 0, 1F).endVertex();
 			buf.pos(t.p2.pos.x, t.p2.pos.y, t.p2.pos.z).color(1F, 0, 0, 1F).endVertex();

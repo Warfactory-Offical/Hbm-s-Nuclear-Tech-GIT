@@ -16,7 +16,7 @@ public class ItemFusionShield extends Item {
 	public long maxDamage;
 	public int maxTemp;
 
-	public ItemFusionShield(long maxDamage, int maxTemp, String s) {
+	public ItemFusionShield(final long maxDamage, final int maxTemp, final String s) {
 		this.maxDamage = maxDamage;
 		this.maxTemp = maxTemp;
 		this.setTranslationKey(s);
@@ -25,7 +25,7 @@ public class ItemFusionShield extends Item {
 		ModItems.ALL_ITEMS.add(this);
 	}
 
-	public static long getShieldDamage(ItemStack stack) {
+	public static long getShieldDamage(final ItemStack stack) {
 
 		if(!stack.hasTagCompound()) {
 			return 0;
@@ -34,7 +34,7 @@ public class ItemFusionShield extends Item {
 		return stack.getTagCompound().getLong("damage");
 	}
 	
-	public static void setShieldDamage(ItemStack stack, long damage) {
+	public static void setShieldDamage(final ItemStack stack, final long damage) {
 
 		if(!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
@@ -44,22 +44,22 @@ public class ItemFusionShield extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		long damage = getShieldDamage(stack);
-		int percent = (int) ((maxDamage - damage) * 100 / maxDamage);
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+		final long damage = getShieldDamage(stack);
+		final int percent = (int) ((maxDamage - damage) * 100 / maxDamage);
 
 		tooltip.add("Durability: " + (maxDamage - damage) + "/" + maxDamage + " (" + percent + "%)");
 
-		tooltip.add("Maximum Plasma Heat: " + TextFormatting.RED + "" + maxTemp + "°C");
+		tooltip.add("Maximum Plasma Heat: " + TextFormatting.RED + maxTemp + "°C");
 	}
 	
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public double getDurabilityForDisplay(final ItemStack stack) {
 		return (double)getShieldDamage(stack) / (double)maxDamage;
 	}
 	
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean showDurabilityBar(final ItemStack stack) {
 		return getDurabilityForDisplay(stack) != 0;
 	}
 }

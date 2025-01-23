@@ -27,9 +27,9 @@ public class TileEntityPylon extends TileEntityPylonBase {
 	
 	@Override
 	public List<BlockPos> getConnectionPoints() {
-		List<BlockPos> positions = new ArrayList(connected);
+		final List<BlockPos> positions = new ArrayList(connected);
 		
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			positions.add(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
 		}
 		return positions;

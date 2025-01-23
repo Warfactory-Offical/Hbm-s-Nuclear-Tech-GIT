@@ -15,12 +15,12 @@ public class RenderBobmazon extends Render<EntityBobmazon> {
 
 	public static final IRenderFactory<EntityBobmazon> FACTORY = (RenderManager man) -> {return new RenderBobmazon(man);};
 	
-	protected RenderBobmazon(RenderManager renderManager) {
+	protected RenderBobmazon(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityBobmazon entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBobmazon entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         //GL11.glRotated(180, 0, 0, 1);
@@ -36,7 +36,7 @@ public class RenderBobmazon extends Render<EntityBobmazon> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBobmazon entity) {
+	protected ResourceLocation getEntityTexture(final EntityBobmazon entity) {
 		return ResourceManager.bobmazon_tex;
 	}
 

@@ -73,13 +73,13 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 		}
 
 		if(!world.isRemote) {
-			int[][] ranges = doorType.getDoorOpenRanges();
-			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+			final int[][] ranges = doorType.getDoorOpenRanges();
+			final ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 			if(state == DoorState.OPENING) {
 				for(int i = 0; i < ranges.length; i++) {
-					int[] range = ranges[i];
-					BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
-					float time = doorType.getDoorRangeOpenTime(openTicks, i);
+					final int[] range = ranges[i];
+					final BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
+					final float time = doorType.getDoorRangeOpenTime(openTicks, i);
 					for(int j = 0; j < Math.abs(range[3]); j++) {
 						if((float)j / (Math.abs(range[3] - 1)) > time)
 							break;
@@ -99,7 +99,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 							Rotation r = dir.getBlockRotation();
 							if(dir.toEnumFacing().getAxis() == EnumFacing.Axis.X)
 								r = r.add(Rotation.CLOCKWISE_180);
-							BlockPos finalPos = startPos.add(add).rotate(r).add(pos);
+							final BlockPos finalPos = startPos.add(add).rotate(r).add(pos);
 							if(finalPos.equals(this.pos)) {
 								this.shouldUseBB = true;
 							} else {
@@ -110,9 +110,9 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 				}
 			} else if(state == DoorState.CLOSING){
 				for(int i = 0; i < ranges.length; i++) {
-					int[] range = ranges[i];
-					BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
-					float time = doorType.getDoorRangeOpenTime(openTicks, i);
+					final int[] range = ranges[i];
+					final BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
+					final float time = doorType.getDoorRangeOpenTime(openTicks, i);
 					for(int j = Math.abs(range[3])-1; j >= 0; j--) {
 						if((float)j / (Math.abs(range[3] - 1)) < time)
 							break;
@@ -132,7 +132,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 							Rotation r = dir.getBlockRotation();
 							if(dir.toEnumFacing().getAxis() == EnumFacing.Axis.X)
 								r = r.add(Rotation.CLOCKWISE_180);
-							BlockPos finalPos = startPos.add(add).rotate(r).add(pos);
+							final BlockPos finalPos = startPos.add(add).rotate(r).add(pos);
 							if(finalPos.equals(this.pos)) {
 								this.shouldUseBB = false;
 							} else {
@@ -187,7 +187,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 		doorType = ((BlockDoorGeneric)this.getBlockType()).type;
 	}
 
-	public boolean tryToggle(EntityPlayer player){
+	public boolean tryToggle(final EntityPlayer player){
 		if(state == DoorState.CLOSED) {
 			if(!world.isRemote) {
 				open();
@@ -204,7 +204,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 		return false;
 	}
 	
-	public boolean tryOpen(int passcode){
+	public boolean tryOpen(final int passcode){
 		if(this.isLocked() && passcode != this.lock)
 			return false;
 		if(state == DoorState.CLOSED) {
@@ -217,7 +217,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 		return false;
 	}
 
-	public boolean tryToggle(int passcode){
+	public boolean tryToggle(final int passcode){
 		if(state == DoorState.CLOSED) {
 			return tryOpen(passcode);
 		} else if(state == DoorState.OPEN) {
@@ -226,7 +226,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 		return false;
 	}
 
-	public boolean tryClose(int passcode){
+	public boolean tryClose(final int passcode){
 		if(toggledByPanel)
 			return false;
 		if(this.isLocked() && passcode != lock)
@@ -273,7 +273,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(DoorState newState){
+	public void handleNewState(final DoorState newState){
 		if(this.state != newState) {
 			if(this.state == DoorState.CLOSED && newState == DoorState.OPENING){
 				if(audio == null){
@@ -314,11 +314,8 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 
 	//Ah yes piggy backing on this packet
 	@Override
-	public void setTextureState(byte tex){
-		if(tex > 0)
-			shouldUseBB = true;
-		else
-			shouldUseBB = false;
+	public void setTextureState(final byte tex){
+        shouldUseBB = tex > 0;
 	}
 
 	@Override
@@ -332,13 +329,13 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag){
+	public void readFromNBT(final NBTTagCompound tag){
 		this.state = DoorState.values()[tag.getByte("state")];
 		this.openTicks = tag.getInteger("openTicks");
 		this.animStartTime = tag.getInteger("animStartTime");
 		this.redstonePower = tag.getInteger("redstoned");
 		this.shouldUseBB = tag.getBoolean("shouldUseBB");
-		NBTTagCompound activatedBlocks = tag.getCompoundTag("activatedBlocks");
+		final NBTTagCompound activatedBlocks = tag.getCompoundTag("activatedBlocks");
 		this.activatedBlocks.clear();
 		for(int i = 0; i < activatedBlocks.getKeySet().size()/3; i ++){
 			this.activatedBlocks.add(new BlockPos(activatedBlocks.getInteger("x"+i), activatedBlocks.getInteger("y"+i), activatedBlocks.getInteger("z"+i)));
@@ -347,15 +344,15 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag){
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag){
 		tag.setByte("state", (byte) state.ordinal());
 		tag.setInteger("openTicks", openTicks);
 		tag.setLong("animStartTime", animStartTime);
 		tag.setInteger("redstoned", redstonePower);
 		tag.setBoolean("shouldUseBB", shouldUseBB);
-		NBTTagCompound activatedBlocks = new NBTTagCompound();
+		final NBTTagCompound activatedBlocks = new NBTTagCompound();
 		int i = 0;
-		for(BlockPos p : this.activatedBlocks){
+		for(final BlockPos p : this.activatedBlocks){
 			activatedBlocks.setInteger("x"+i, p.getX());
 			activatedBlocks.setInteger("y"+i, p.getY());
 			activatedBlocks.setInteger("z"+i, p.getZ());
@@ -370,7 +367,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	}
 	
 	@Override
-	public void receiveEvent(BlockPos from, ControlEvent e){
+	public void receiveEvent(final BlockPos from, final ControlEvent e){
 		if (e.name.equals("door_toggle")) {
 			if (!isLocked() || (isLocked() && e.vars.get("passcode").getNumber() == lock)) {
 				toggledByPanel = !toggledByPanel;
@@ -418,11 +415,11 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 		return getWorld();
 	}
 
-	public void updateRedstonePower(BlockPos pos){
+	public void updateRedstonePower(final BlockPos pos){
 		//Drillgon200: Best I could come up with without having to use dummy tile entities
 		//boolean powered = world.isBlockPowered(pos);
-		boolean powered = world.isBlockPowered(pos);
-		boolean contained = activatedBlocks.contains(pos);
+		final boolean powered = world.isBlockPowered(pos);
+		final boolean contained = activatedBlocks.contains(pos);
 		if(!contained && powered){
 			activatedBlocks.add(pos);
 			if(redstonePower == -1){

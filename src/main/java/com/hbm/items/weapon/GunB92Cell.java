@@ -1,4 +1,5 @@
 package com.hbm.items.weapon;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import net.minecraft.world.World;
 
 public class GunB92Cell extends Item {
 
-	public GunB92Cell(String s) {
+	public GunB92Cell(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -22,13 +23,12 @@ public class GunB92Cell extends Item {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
-		if(entity instanceof EntityPlayer && getPower(stack) < 25) {
-			EntityPlayer player = (EntityPlayer) entity;
-			
-			for(int j = 0; j < player.inventory.mainInventory.size(); j++) {
+	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected) {
+		if(entity instanceof EntityPlayer player && getPower(stack) < 25) {
+
+            for(int j = 0; j < player.inventory.mainInventory.size(); j++) {
 				if(player.inventory.mainInventory.get(j).getItem() == ModItems.gun_b92) {
-					int p = getPower(player.inventory.mainInventory.get(j));
+					final int p = getPower(player.inventory.mainInventory.get(j));
 					if(p > 1) {
 						setPower(player.inventory.mainInventory.get(j), p - 1);
 						setPower(stack, getPower(stack) + 1);
@@ -42,7 +42,7 @@ public class GunB92Cell extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add("Draws energy from the B92, allowing you to");
 		list.add("reload it an additional 25 times.");
 		list.add("The cell will permanently hold it's charge,");
@@ -52,7 +52,7 @@ public class GunB92Cell extends Item {
 		list.add("Charges: " + getPower(stack) + " / 25");
 	}
 	
-	private static int getPower(ItemStack stack) {
+	private static int getPower(final ItemStack stack) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -62,7 +62,7 @@ public class GunB92Cell extends Item {
 
 	}
 
-	private static void setPower(ItemStack stack, int i) {
+	private static void setPower(final ItemStack stack, final int i) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -72,7 +72,7 @@ public class GunB92Cell extends Item {
 	}
 	
 	public static ItemStack getFullCell() {
-		ItemStack stack = new ItemStack(ModItems.gun_b92_ammo, 1, 0);
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.gun_b92_ammo, 1, 0);
 		setPower(stack, 25);
 		return stack.copy();
 	}

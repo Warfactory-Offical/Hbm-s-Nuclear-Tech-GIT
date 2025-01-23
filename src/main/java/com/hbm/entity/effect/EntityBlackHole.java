@@ -34,13 +34,13 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 
 	public static final DataParameter<Float> SIZE = EntityDataManager.createKey(EntityBlackHole.class, DataSerializers.FLOAT);
 	
-	public EntityBlackHole(World worldIn) {
+	public EntityBlackHole(final World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
 	}
 	
-	public EntityBlackHole(World w, float size){
+	public EntityBlackHole(final World w, final float size){
 		this(w);
 		this.getDataManager().set(SIZE, size);
 	}
@@ -56,37 +56,37 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 			this.setDead();
 			return;
 		}
-		float size = this.dataManager.get(SIZE);
+		final float size = this.dataManager.get(SIZE);
 		
 		if(!world.isRemote) {
 			for(int k = 0; k < size * 2; k++) {
-				double phi = rand.nextDouble() * (Math.PI * 2);
-				double costheta = rand.nextDouble() * 2 - 1;
-				double theta = Math.acos(costheta);
-				double x = Math.sin( theta) * Math.cos( phi );
-				double y = Math.sin( theta) * Math.sin( phi );
-				double z = Math.cos( theta );
+				final double phi = rand.nextDouble() * (Math.PI * 2);
+				final double costheta = rand.nextDouble() * 2 - 1;
+				final double theta = Math.acos(costheta);
+				final double x = Math.sin( theta) * Math.cos( phi );
+				final double y = Math.sin( theta) * Math.sin( phi );
+				final double z = Math.cos( theta );
 				
-				Vec3 vec = Vec3.createVectorHelper(x, y, z);
-				int length = (int)Math.ceil(size * 15);
+				final Vec3 vec = Vec3.createVectorHelper(x, y, z);
+				final int length = (int)Math.ceil(size * 15);
 				
 				for(int i = 0; i < length; i ++) {
-					int x0 = (int)(this.posX + (vec.xCoord * i));
-					int y0 = (int)(this.posY + (vec.yCoord * i));
-					int z0 = (int)(this.posZ + (vec.zCoord * i));
+					final int x0 = (int)(this.posX + (vec.xCoord * i));
+					final int y0 = (int)(this.posY + (vec.yCoord * i));
+					final int z0 = (int)(this.posZ + (vec.zCoord * i));
 					
-					BlockPos des = new BlockPos(x0, y0, z0);
+					final BlockPos des = new BlockPos(x0, y0, z0);
 					
 					if(world.getBlockState(des).getMaterial().isLiquid()) {
 						world.setBlockState(des, Blocks.AIR.getDefaultState());
 					}
 					
 					if(world.getBlockState(des).getBlock() != Blocks.AIR) {
-						EntityRubble rubble = new EntityRubble(world);
+						final EntityRubble rubble = new EntityRubble(world);
 						rubble.posX = x0 + 0.5F;
 						rubble.posY = y0;
 						rubble.posZ = z0 + 0.5F;
-						IBlockState st = world.getBlockState(new BlockPos(x0, y0, z0));
+						final IBlockState st = world.getBlockState(new BlockPos(x0, y0, z0));
 						rubble.setMetaBasedOnBlock(st.getBlock(), st.getBlock().getMetaFromState(st));
 						
 						world.spawnEntity(rubble);
@@ -98,27 +98,27 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 			}
 		}
 		
-		double range = size * 15;
+		final double range = size * 15;
 		
-		List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
+		final List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
 				posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range));
 		
-		for(Entity e : entities) {
+		for(final Entity e : entities) {
 			
 			if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
 				continue;
 			
 			if(e instanceof EntityFallingBlock && !world.isRemote && e.ticksExisted > 1) {
 				
-				double x = e.posX;
-				double y = e.posY;
-				double z = e.posZ;
-				Block b = ((EntityFallingBlock)e).getBlock().getBlock();
-				int meta = b.getMetaFromState(((EntityFallingBlock)e).getBlock());
+				final double x = e.posX;
+				final double y = e.posY;
+				final double z = e.posZ;
+				final Block b = ((EntityFallingBlock)e).getBlock().getBlock();
+				final int meta = b.getMetaFromState(((EntityFallingBlock)e).getBlock());
 				
 				e.setDead();
 				
-				EntityRubble rubble = new EntityRubble(world);
+				final EntityRubble rubble = new EntityRubble(world);
 				rubble.setMetaBasedOnBlock(b, meta);
 				rubble.setPositionAndRotation(x, y, z, 0, 0);
 				rubble.motionX = e.motionX;
@@ -129,7 +129,7 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 			
 			Vec3 vec = Vec3.createVectorHelper(posX - e.posX, posY - e.posY, posZ - e.posZ);
 			
-			double dist = vec.length();
+			final double dist = vec.length();
 			
 			if(dist > range)
 				continue;
@@ -139,7 +139,7 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 			if(!(e instanceof EntityItem))
 				vec.rotateAroundY((float)Math.toRadians(15));
 			
-			double speed = 0.1D;
+			final double speed = 0.1D;
 			e.motionX += vec.xCoord * speed;
 			e.motionY += vec.yCoord * speed * 2;
 			e.motionZ += vec.zCoord * speed;
@@ -153,9 +153,8 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 				if(!(e instanceof EntityLivingBase))
 					e.setDead();
 				
-				if(!world.isRemote && e instanceof EntityItem) {
-					EntityItem item = (EntityItem) e;
-					ItemStack stack = item.getItem();
+				if(!world.isRemote && e instanceof EntityItem item) {
+                    final ItemStack stack = item.getItem();
 					
 					if(stack.getItem() == ModItems.pellet_antimatter || stack.getItem() == ModItems.flame_pony) {
 						this.setDead();
@@ -179,18 +178,18 @@ public class EntityBlackHole extends Entity implements IConstantRenderer {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 		this.getDataManager().set(SIZE, compound.getFloat("size"));
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 		compound.setFloat("size", this.getDataManager().get(SIZE));
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 25000;
     }

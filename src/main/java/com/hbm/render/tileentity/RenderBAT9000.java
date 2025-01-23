@@ -24,12 +24,12 @@ import net.minecraftforge.fluids.Fluid;
 public class RenderBAT9000 extends TileEntitySpecialRenderer<TileEntityMachineBAT9000> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineBAT9000 te){
+	public boolean isGlobalRenderer(final TileEntityMachineBAT9000 te){
 		return true;
 	}
 
 	@Override
-	public void render(TileEntityMachineBAT9000 bat, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+	public void render(final TileEntityMachineBAT9000 bat, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
@@ -50,11 +50,11 @@ public class RenderBAT9000 extends TileEntitySpecialRenderer<TileEntityMachineBA
 
 			RenderHelper.disableStandardItemLighting();
 			GL11.glPushMatrix();
-			FluidProperties props = FluidTypeHandler.getProperties(type);
-			int poison = props.poison;
-			int flammability = props.flammability;
-			int reactivity = props.reactivity;
-			EnumSymbol symbol = props.symbol;
+			final FluidProperties props = FluidTypeHandler.getProperties(type);
+			final int poison = props.poison;
+			final int flammability = props.flammability;
+			final int reactivity = props.reactivity;
+			final EnumSymbol symbol = props.symbol;
 
 			GL11.glRotatef(45, 0, 1, 0);
 
@@ -74,23 +74,23 @@ public class RenderBAT9000 extends TileEntitySpecialRenderer<TileEntityMachineBA
 			GlStateManager.disableLighting();
 			FFUtils.setColorFromFluid(type);
 			
-			float scale = (float)bat.tank.getFluidAmount()/bat.tank.getCapacity();
+			final float scale = (float)bat.tank.getFluidAmount()/bat.tank.getCapacity();
 			
-			float lby = OpenGlHelper.lastBrightnessY;
-			float lbx = OpenGlHelper.lastBrightnessX;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (int)(15*type.getLuminosity())+15, lby);
+			final float lby = OpenGlHelper.lastBrightnessY;
+			final float lbx = OpenGlHelper.lastBrightnessX;
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (15*type.getLuminosity()) +15, lby);
 			
-			TextureAtlasSprite sprite = FFUtils.getTextureFromFluid(type);
-			float u = sprite.getMinU();
-			float v = sprite.getMinV();
-			float mU = sprite.getMaxU();
-			float mV = sprite.getInterpolatedV(scale*16);
+			final TextureAtlasSprite sprite = FFUtils.getTextureFromFluid(type);
+			final float u = sprite.getMinU();
+			final float v = sprite.getMinV();
+			final float mU = sprite.getMaxU();
+			final float mV = sprite.getInterpolatedV(scale*16);
 			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-			Tessellator tess = Tessellator.getInstance();
-			BufferBuilder buf = tess.getBuffer();
+			final Tessellator tess = Tessellator.getInstance();
+			final BufferBuilder buf = tess.getBuffer();
 
-			double height = bat.tank.getFluidAmount() * 1.5D / bat.tank.getCapacity();
-			double off = 2.2;
+			final double height = bat.tank.getFluidAmount() * 1.5D / bat.tank.getCapacity();
+			final double off = 2.2;
 
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 

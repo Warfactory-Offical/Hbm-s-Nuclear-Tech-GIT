@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachineChemplant> {
 
 	@Override
-	public void render(TileEntityMachineChemplant te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineChemplant te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -48,13 +48,13 @@ public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachine
         renderExtras(te, x, y, z, partialTicks);
 	}
 	
-	public void renderExtras(TileEntity tileEntity, double x, double y, double z, float f) {
+	public void renderExtras(final TileEntity tileEntity, final double x, final double y, final double z, final float f) {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
         GlStateManager.enableLighting();
         GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glRotatef(180, 0F, 1F, 0F);
-		TileEntityMachineChemplant chem = (TileEntityMachineChemplant)tileEntity;
+		final TileEntityMachineChemplant chem = (TileEntityMachineChemplant)tileEntity;
 		switch(chem.getBlockMetadata())
 		{
 		case 2:
@@ -72,7 +72,7 @@ public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachine
 		
 		bindTexture(ResourceManager.chemplant_spinner_tex);
 
-        int rotation = (int) (System.currentTimeMillis() % (360 * 5)) / 5;
+        final int rotation = (int) (System.currentTimeMillis() % (360 * 5)) / 5;
 
         GL11.glPushMatrix();
 		GL11.glTranslated(-0.625, 0, 0.625);
@@ -96,7 +96,7 @@ public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachine
 		ResourceManager.chemplant_spinner.renderAll();
         GL11.glPopMatrix();
 
-        double push = Math.sin((System.currentTimeMillis() % 2000) / 1000D * Math.PI) * 0.25 - 0.25;
+        final double push = Math.sin((System.currentTimeMillis() % 2000) / 1000D * Math.PI) * 0.25 - 0.25;
 
         bindTexture(ResourceManager.chemplant_piston_tex);
         
@@ -114,14 +114,14 @@ public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachine
 
         GlStateManager.disableLighting();
         if(chem.tanks[0].getFluid() != null) {
-        	ResourceLocation test;
+        	final ResourceLocation test;
         	if(chem.tanks[0].getFluid().getFluid() == FluidRegistry.LAVA || chem.tanks[0].getFluid().getFluid() == FluidRegistry.WATER){
         		test = new ResourceLocation(RefStrings.MODID, "textures/blocks/forgefluid/" + chem.tanks[0].getFluid().getFluid().getUnlocalizedName().substring(11) + "_chemplant.png");
         	} else {
-        	String s = chem.tanks[0].getFluid().getFluid().getStill().toString();
-        	String textureBase = "textures/";
-        	String[] test1 = s.split(":");
-        	String location = test1[0] + ":" + textureBase + test1[1] + ".png";
+        	final String s = chem.tanks[0].getFluid().getFluid().getStill().toString();
+        	final String textureBase = "textures/";
+        	final String[] test1 = s.split(":");
+        	final String location = test1[0] + ":" + textureBase + test1[1] + ".png";
         	test = new ResourceLocation(location);
         	}
         	bindTexture(test);
@@ -136,7 +136,7 @@ public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachine
 			//GL11.glColor3ub((byte)((color & 0xFF0000) >> 16), (byte)((color & 0x00FF00) >> 8), (byte)((color & 0x0000FF) >> 0));
 			GL11.glTranslated(-0.625, 0, 0.625);
 	        
-			int count = chem.tanks[0].getFluidAmount() * 16 / 24000;
+			final int count = chem.tanks[0].getFluidAmount() * 16 / 24000;
 	        for(int i = 0; i < count; i++) {
 	        	
 	        	if(i < count - 1)
@@ -149,14 +149,14 @@ public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachine
         }
 
         if(chem.tanks[1].getFluid() != null) {
-           	ResourceLocation test;
+           	final ResourceLocation test;
         	if(chem.tanks[1].getFluid().getFluid() == FluidRegistry.LAVA || chem.tanks[1].getFluid().getFluid() == FluidRegistry.WATER){
         		test = new ResourceLocation(RefStrings.MODID, "textures/blocks/forgefluid/" + chem.tanks[1].getFluid().getFluid().getUnlocalizedName().substring(11) + "_chemplant.png");
         	} else {
-        	String s = chem.tanks[1].getFluid().getFluid().getStill().toString();
-        	String textureBase = "textures/";
-        	String[] test1 = s.split(":");
-        	String location = test1[0] + ":" + textureBase + test1[1] + ".png";
+        	final String s = chem.tanks[1].getFluid().getFluid().getStill().toString();
+        	final String textureBase = "textures/";
+        	final String[] test1 = s.split(":");
+        	final String location = test1[0] + ":" + textureBase + test1[1] + ".png";
         	test = new ResourceLocation(location);
         	}
         	bindTexture(test);
@@ -172,7 +172,7 @@ public class RenderChemplant extends TileEntitySpecialRenderer<TileEntityMachine
 			//GL11.glColor3ub((byte)((color & 0xFF0000) >> 16), (byte)((color & 0x00FF00) >> 8), (byte)((color & 0x0000FF) >> 0));
 			GL11.glTranslated(0.625, 0, 0.625);
 
-			int count = chem.tanks[1].getFluidAmount() * 16 / 24000;
+			final int count = chem.tanks[1].getFluidAmount() * 16 / 24000;
 	        for(int i = 0; i < count; i++) {
 	        	
 	        	if(i < count - 1)

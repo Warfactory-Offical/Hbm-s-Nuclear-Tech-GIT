@@ -11,9 +11,9 @@ public class SatelliteRelay extends Satellite {
 		this.satIface = Interfaces.NONE;
 	}
 
-	public void onOrbit(World world, double x, double y, double z) {
+	public void onOrbit(final World world, final double x, final double y, final double z) {
 
-		for(EntityPlayer p : world.playerEntities)
+		for(final EntityPlayer p : world.playerEntities)
 			AdvancementManager.grantAchievement(p, AdvancementManager.achFOEQ);
 	}
 }

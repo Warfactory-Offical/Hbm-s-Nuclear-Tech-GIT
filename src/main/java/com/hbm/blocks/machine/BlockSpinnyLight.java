@@ -46,7 +46,7 @@ public class BlockSpinnyLight extends BlockContainer {
 		boxes[EnumFacing.WEST.ordinal()] = new AxisAlignedBB(0.6, 0.3, 0.3, 1, 0.7, 0.7);
 	}
 
-	public BlockSpinnyLight(Material materialIn, String s) {
+	public BlockSpinnyLight(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -55,15 +55,15 @@ public class BlockSpinnyLight extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntitySpinnyLight();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(!playerIn.getHeldItem(hand).isEmpty() && !worldIn.isRemote){
-			int[] ores = OreDictionary.getOreIDs(playerIn.getHeldItem(hand));
-			for(int ore : ores){
+			final int[] ores = OreDictionary.getOreIDs(playerIn.getHeldItem(hand));
+			for(final int ore : ores){
 				String name = OreDictionary.getOreName(ore);
 				//Why are these ones named differently
 				if(name.equals("dyeLightBlue"))
@@ -72,15 +72,15 @@ public class BlockSpinnyLight extends BlockContainer {
 					name = "dyeSilver";
 				if(name.length() > 3 && name.startsWith("dye")){
 					try {
-						EnumDyeColor color = EnumDyeColor.valueOf(name.substring(3, name.length()).toUpperCase());
-						TileEntitySpinnyLight ent = (TileEntitySpinnyLight)worldIn.getTileEntity(pos);
+						final EnumDyeColor color = EnumDyeColor.valueOf(name.substring(3).toUpperCase());
+						final TileEntitySpinnyLight ent = (TileEntitySpinnyLight)worldIn.getTileEntity(pos);
 						ent.color = color;
 						ent.markDirty();
 						worldIn.notifyBlockUpdate(pos, state, state, 2 | 4);
 						if(!playerIn.isCreative())
 							playerIn.getHeldItem(hand).shrink(1);
 						return true;
-					} catch(IllegalArgumentException e){}
+					} catch(final IllegalArgumentException e){}
 				}
 			}
 		}
@@ -88,39 +88,39 @@ public class BlockSpinnyLight extends BlockContainer {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add(I18nUtil.resolveKey("desc.spinnylight"));
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		return boxes[state.getValue(FACING).ordinal()];
 	}
 	
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(final IBlockState base_state, final IBlockAccess world, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(final IBlockAccess worldIn, final IBlockState state, final BlockPos pos, final EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 	
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+	public boolean canPlaceBlockOnSide(final World worldIn, final BlockPos pos, final EnumFacing side) {
 		return canPlaceBlock(worldIn, pos, side);
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		for(EnumFacing enumfacing : EnumFacing.values()) {
+	public boolean canPlaceBlockAt(final World worldIn, final BlockPos pos) {
+		for(final EnumFacing enumfacing : EnumFacing.values()) {
 			if(canPlaceBlock(worldIn, pos, enumfacing)) {
 				return true;
 			}
@@ -130,11 +130,11 @@ public class BlockSpinnyLight extends BlockContainer {
 
 	//From BlockButton
 	@SuppressWarnings("deprecation")
-	protected static boolean canPlaceBlock(World worldIn, BlockPos pos, EnumFacing direction) {
-		BlockPos blockpos = pos.offset(direction.getOpposite());
-		IBlockState iblockstate = worldIn.getBlockState(blockpos);
-		boolean flag = iblockstate.getBlockFaceShape(worldIn, blockpos, direction) == BlockFaceShape.SOLID;
-		Block block = iblockstate.getBlock();
+	protected static boolean canPlaceBlock(final World worldIn, final BlockPos pos, final EnumFacing direction) {
+		final BlockPos blockpos = pos.offset(direction.getOpposite());
+		final IBlockState iblockstate = worldIn.getBlockState(blockpos);
+		final boolean flag = iblockstate.getBlockFaceShape(worldIn, blockpos, direction) == BlockFaceShape.SOLID;
+		final Block block = iblockstate.getBlock();
 
 		if(direction == EnumFacing.UP) {
 			return iblockstate.isTopSolid() || !isExceptionBlockForAttaching(block) && flag;
@@ -144,11 +144,11 @@ public class BlockSpinnyLight extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(final World worldIn, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer) {
 		return canPlaceBlock(worldIn, pos, facing) ? this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, Boolean.FALSE) : this.getDefaultState().withProperty(FACING, EnumFacing.DOWN).withProperty(POWERED, Boolean.FALSE);
 	}
 
-	private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
+	private boolean checkForDrop(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if(this.canPlaceBlockAt(worldIn, pos)) {
 			return true;
 		} else {
@@ -159,16 +159,16 @@ public class BlockSpinnyLight extends BlockContainer {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (this.checkForDrop(world, pos, state) && !canPlaceBlock(world, pos, (EnumFacing)state.getValue(FACING)))
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+		if (this.checkForDrop(world, pos, state) && !canPlaceBlock(world, pos, state.getValue(FACING)))
         {
             this.dropBlockAsItem(world, pos, state, 0);
             world.setBlockToAir(pos);
             return;
         }
 		if(world.isBlockPowered(pos)) {
-			if(state.getValue(POWERED) == false){
-				TileEntity te = world.getTileEntity(pos);
+			if(!state.getValue(POWERED)){
+				final TileEntity te = world.getTileEntity(pos);
 				world.setBlockState(pos, state.withProperty(POWERED, true));
 				if(te != null){
 					te.validate();
@@ -176,8 +176,8 @@ public class BlockSpinnyLight extends BlockContainer {
 				}
 			}
 		} else {
-			if(state.getValue(POWERED) == true){
-				TileEntity te = world.getTileEntity(pos);
+			if(state.getValue(POWERED)){
+				final TileEntity te = world.getTileEntity(pos);
 				world.setBlockState(pos, state.withProperty(POWERED, false));
 				if(te != null){
 					te.validate();
@@ -188,7 +188,7 @@ public class BlockSpinnyLight extends BlockContainer {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
@@ -198,32 +198,32 @@ public class BlockSpinnyLight extends BlockContainer {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 	
 	@Override
-	public int getLightValue(IBlockState state) {
+	public int getLightValue(final IBlockState state) {
 		return state.getValue(POWERED) ? 5 : 0;
 	}
 
@@ -233,16 +233,16 @@ public class BlockSpinnyLight extends BlockContainer {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		int powered = state.getValue(POWERED) ? 1 : 0;
-		int facing = state.getValue(FACING).ordinal();
+	public int getMetaFromState(final IBlockState state) {
+		final int powered = state.getValue(POWERED) ? 1 : 0;
+		final int facing = state.getValue(FACING).ordinal();
 		return facing | (powered << 3);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		boolean powered = ((meta >>> 3) & 1) > 0;
-		EnumFacing facing = EnumFacing.VALUES[meta & 7];
+	public IBlockState getStateFromMeta(final int meta) {
+		final boolean powered = ((meta >>> 3) & 1) > 0;
+		final EnumFacing facing = EnumFacing.VALUES[meta & 7];
 		return this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, powered);
 	}
 

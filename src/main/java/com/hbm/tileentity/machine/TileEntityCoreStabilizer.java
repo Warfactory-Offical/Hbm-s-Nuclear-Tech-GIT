@@ -42,7 +42,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 			this.updateStandardConnections(world, pos);
 			
 			watts = MathHelper.clamp(watts, 1, 100);
-			long demand = (long) Math.pow(watts, 6);
+			final long demand = (long) Math.pow(watts, 6);
 			isOn = false;
 
 			beam = 0;
@@ -54,20 +54,19 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 
 			if(lens != null && power >= demand * lens.drainMod) {
 				isOn = true;
-				EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
+				final EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
 				for(int i = 1; i <= range; i++) {
 	
-					int x = pos.getX() + dir.getXOffset() * i;
-					int y = pos.getY() + dir.getYOffset() * i;
-					int z = pos.getZ() + dir.getZOffset() * i;
-					BlockPos pos1 = new BlockPos(x, y, z);
+					final int x = pos.getX() + dir.getXOffset() * i;
+					final int y = pos.getY() + dir.getYOffset() * i;
+					final int z = pos.getZ() + dir.getZOffset() * i;
+					final BlockPos pos1 = new BlockPos(x, y, z);
 					
-					TileEntity te = world.getTileEntity(pos1);
+					final TileEntity te = world.getTileEntity(pos1);
 	
-					if(te instanceof TileEntityCore) {
-						
-						TileEntityCore core = (TileEntityCore)te;
-						core.field += (int)(watts * lens.fieldMod);
+					if(te instanceof TileEntityCore core) {
+
+                        core.field += (int)(watts * lens.fieldMod);
 						this.power -= (long)(demand * lens.drainMod);
 						beam = i;
 						
@@ -95,7 +94,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		power = data.getLong("power");
 		watts = data.getInteger("watts");
 		isOn = data.getBoolean("isOn");
@@ -106,16 +105,16 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 		return "container.dfcStabilizer";
 	}
 
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getWattsScaled(int i) {
+	public int getWattsScaled(final int i) {
 		return (watts * i) / 100;
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 
@@ -142,7 +141,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		watts = compound.getInteger("watts");
 		isOn = compound.getBoolean("isOn");
@@ -150,7 +149,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setInteger("watts", watts);
 		compound.setBoolean("isOn", isOn);

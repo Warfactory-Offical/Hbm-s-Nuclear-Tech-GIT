@@ -19,15 +19,15 @@ abstract class matrixTransform extends funcMatrix {
     public static boolean GLM_LEFT_HANDED = false;
     public static boolean GLM_DEPTH_ZERO_TO_ONE = false;
 
-    public static Mat4 lookAt_(Vec3 eye, Vec3 center, Vec3 up) {
+    public static Mat4 lookAt_(final Vec3 eye, final Vec3 center, final Vec3 up) {
         return GLM_LEFT_HANDED ? lookAtLH(eye, center, up, new Mat4()) : lookAtRH(eye, center, up, new Mat4());
     }
 
-    public static Mat4 lookAt(Vec3 eye, Vec3 center, Vec3 up, Mat4 res) {
+    public static Mat4 lookAt(final Vec3 eye, final Vec3 center, final Vec3 up, final Mat4 res) {
         return GLM_LEFT_HANDED ? lookAtLH(eye, center, up, res) : lookAtRH(eye, center, up, res);
     }
 
-    private static Mat4 lookAtLH(Vec3 eye, Vec3 center, Vec3 up, Mat4 res) {
+    private static Mat4 lookAtLH(final Vec3 eye, final Vec3 center, final Vec3 up, final Mat4 res) {
         // f(normalize(center - eye))
         float fX = center.x - eye.x;
         float fY = center.y - eye.y;
@@ -46,9 +46,9 @@ abstract class matrixTransform extends funcMatrix {
         sY *= inverseSqrt;
         sZ *= inverseSqrt;
         // u(cross(f, s))
-        float uX = fY * sZ - fZ * sY;
-        float uY = fZ * sX - fX * sZ;
-        float uZ = fX * sY - fY * sX;
+        final float uX = fY * sZ - fZ * sY;
+        final float uY = fZ * sX - fX * sZ;
+        final float uZ = fX * sY - fY * sX;
         res.m00 = sX;
         res.m01 = uX;
         res.m02 = fX;
@@ -68,7 +68,7 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    private static Mat4 lookAtRH(Vec3 eye, Vec3 center, Vec3 up, Mat4 res) {
+    private static Mat4 lookAtRH(final Vec3 eye, final Vec3 center, final Vec3 up, final Mat4 res) {
         // f(normalize(center - eye))
         float fX = center.x - eye.x;
         float fY = center.y - eye.y;
@@ -86,9 +86,9 @@ abstract class matrixTransform extends funcMatrix {
         sY *= inverseSqrt;
         sZ *= inverseSqrt;
         // u(cross(s, f))
-        float uX = sY * fZ - sZ * fY;
-        float uY = sZ * fX - sX * fZ;
-        float uZ = sX * fY - sY * fX;
+        final float uX = sY * fZ - sZ * fY;
+        final float uY = sZ * fX - sX * fZ;
+        final float uZ = sX * fY - sY * fX;
         res.m00 = sX;
         res.m01 = uX;
         res.m02 = -fX;
@@ -108,10 +108,10 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4 ortho_(float left, float right, float bottom, float top) {
+    public static Mat4 ortho_(final float left, final float right, final float bottom, final float top) {
         return ortho(new Mat4(), left, right, bottom, top);
     }
-    public static Mat4 ortho(Mat4 res, float left, float right, float bottom, float top) {
+    public static Mat4 ortho(final Mat4 res, final float left, final float right, final float bottom, final float top) {
         res.identity();
         res.m00 = 2 / (right - left);
         res.m11 = 2 / (top - bottom);
@@ -121,17 +121,17 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4 ortho_(float left, float right, float bottom, float top, float zNear, float zFar) {
+    public static Mat4 ortho_(final float left, final float right, final float bottom, final float top, final float zNear, final float zFar) {
         return GLM_LEFT_HANDED ? orthoLH(new Mat4(), left, right, bottom, top, zNear, zFar)
                 : orthoRH(new Mat4(), left, right, bottom, top, zNear, zFar);
     }
 
-    public static Mat4 ortho(Mat4 res, float left, float right, float bottom, float top, float zNear, float zFar) {
+    public static Mat4 ortho(final Mat4 res, final float left, final float right, final float bottom, final float top, final float zNear, final float zFar) {
         return GLM_LEFT_HANDED ? orthoLH(res, left, right, bottom, top, zNear, zFar)
                 : orthoRH(res, left, right, bottom, top, zNear, zFar);
     }
 
-    private static Mat4 orthoLH(Mat4 res, float left, float right, float bottom, float top, float zNear, float zFar) {
+    private static Mat4 orthoLH(final Mat4 res, final float left, final float right, final float bottom, final float top, final float zNear, final float zFar) {
         res.m00 = 2.0f / (right - left);
         res.m01 = 0.0f;
         res.m02 = 0.0f;
@@ -151,7 +151,7 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    private static Mat4 orthoRH(Mat4 res, float left, float right, float bottom, float top, float zNear, float zFar) {
+    private static Mat4 orthoRH(final Mat4 res, final float left, final float right, final float bottom, final float top, final float zNear, final float zFar) {
         res.m00 = 2.0f / (right - left);
         res.m01 = 0.0f;
         res.m02 = 0.0f;
@@ -171,18 +171,18 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4 perspective_(float fovy, float aspect, float zNear, float zFar) {
+    public static Mat4 perspective_(final float fovy, final float aspect, final float zNear, final float zFar) {
         return GLM_LEFT_HANDED ? perspectiveLH(fovy, aspect, zNear, zFar, new Mat4())
                 : perspectiveRH(fovy, aspect, zNear, zFar, new Mat4());
     }
 
-    public static Mat4 perspective(float fovy, float aspect, float zNear, float zFar, Mat4 mat) {
+    public static Mat4 perspective(final float fovy, final float aspect, final float zNear, final float zFar, final Mat4 mat) {
         return GLM_LEFT_HANDED ? perspectiveLH(fovy, aspect, zNear, zFar, mat)
                 : perspectiveRH(fovy, aspect, zNear, zFar, mat);
     }
 
-    private static Mat4 perspectiveRH(float fovy, float aspect, float zNear, float zFar, Mat4 res) {
-        float tanHalfFovy = (float) Math.tan(fovy * 0.5f);
+    private static Mat4 perspectiveRH(final float fovy, final float aspect, final float zNear, final float zFar, final Mat4 res) {
+        final float tanHalfFovy = (float) Math.tan(fovy * 0.5f);
         res.m00 = 1.0f / (aspect * tanHalfFovy);
         res.m01 = 0.0f;
         res.m02 = 0.0f;
@@ -202,8 +202,8 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    private static Mat4 perspectiveLH(float fovy, float aspect, float zNear, float zFar, Mat4 res) {
-        float tanHalfFovy = (float) Math.tan(fovy * 0.5f);
+    private static Mat4 perspectiveLH(final float fovy, final float aspect, final float zNear, final float zFar, final Mat4 res) {
+        final float tanHalfFovy = (float) Math.tan(fovy * 0.5f);
         res.m00 = 1.0f / (aspect * tanHalfFovy);
         res.m01 = 0.0f;
         res.m02 = 0.0f;
@@ -223,19 +223,19 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4 perspectiveFov_(float fov, float width, float height, float zNear, float zFar) {
+    public static Mat4 perspectiveFov_(final float fov, final float width, final float height, final float zNear, final float zFar) {
         return GLM_LEFT_HANDED ? perspectiveFovLH(fov, width, height, zNear, zFar, new Mat4())
                 : perspectiveFovRH(fov, width, height, zNear, zFar, new Mat4());
     }
 
-    public static Mat4 perspectiveFov(float fov, float width, float height, float zNear, float zFar, Mat4 mat) {
+    public static Mat4 perspectiveFov(final float fov, final float width, final float height, final float zNear, final float zFar, final Mat4 mat) {
         return GLM_LEFT_HANDED ? perspectiveFovRH(fov, width, height, zNear, zFar, mat)
                 : perspectiveFovLH(fov, width, height, zNear, zFar, mat);
     }
 
-    private static Mat4 perspectiveFovRH(float fov, float width, float height, float zNear, float zFar, Mat4 res) {
-        float h = (float) (Math.cos(0.5f * fov) / Math.sin(0.5f * fov));
-        float w = h * height / width;
+    private static Mat4 perspectiveFovRH(final float fov, final float width, final float height, final float zNear, final float zFar, final Mat4 res) {
+        final float h = (float) (Math.cos(0.5f * fov) / Math.sin(0.5f * fov));
+        final float w = h * height / width;
         res.m00 = w;
         res.m01 = 0.0f;
         res.m02 = 0.0f;
@@ -255,9 +255,9 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    private static Mat4 perspectiveFovLH(float fov, float width, float height, float zNear, float zFar, Mat4 res) {
-        float h = (float) (Math.cos(0.5f * fov) / Math.sin(0.5f * fov));
-        float w = h * height / width;
+    private static Mat4 perspectiveFovLH(final float fov, final float width, final float height, final float zNear, final float zFar, final Mat4 res) {
+        final float h = (float) (Math.cos(0.5f * fov) / Math.sin(0.5f * fov));
+        final float w = h * height / width;
         res.m00 = w;
         res.m01 = 0.0f;
         res.m02 = 0.0f;
@@ -277,15 +277,15 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4d lookAt_(Vec3d eye, Vec3d center, Vec3d up) {
+    public static Mat4d lookAt_(final Vec3d eye, final Vec3d center, final Vec3d up) {
         return GLM_LEFT_HANDED ? lookAtLH(eye, center, up, new Mat4d()) : lookAtRH(eye, center, up, new Mat4d());
     }
 
-    public static Mat4d lookAt(Vec3d eye, Vec3d center, Vec3d up, Mat4d res) {
+    public static Mat4d lookAt(final Vec3d eye, final Vec3d center, final Vec3d up, final Mat4d res) {
         return GLM_LEFT_HANDED ? lookAtLH(eye, center, up, res) : lookAtRH(eye, center, up, res);
     }
 
-    private static Mat4d lookAtLH(Vec3d eye, Vec3d center, Vec3d up, Mat4d res) {
+    private static Mat4d lookAtLH(final Vec3d eye, final Vec3d center, final Vec3d up, final Mat4d res) {
         // f(normalize(center - eye))
         double fX = center.x - eye.x;
         double fY = center.y - eye.y;
@@ -304,9 +304,9 @@ abstract class matrixTransform extends funcMatrix {
         sY *= inverseSqrt;
         sZ *= inverseSqrt;
         // u(cross(f, s))
-        double uX = fY * sZ - fZ * sY;
-        double uY = fZ * sX - fX * sZ;
-        double uZ = fX * sY - fY * sX;
+        final double uX = fY * sZ - fZ * sY;
+        final double uY = fZ * sX - fX * sZ;
+        final double uZ = fX * sY - fY * sX;
         res.m00 = sX;
         res.m01 = uX;
         res.m02 = fX;
@@ -326,7 +326,7 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    private static Mat4d lookAtRH(Vec3d eye, Vec3d center, Vec3d up, Mat4d res) {
+    private static Mat4d lookAtRH(final Vec3d eye, final Vec3d center, final Vec3d up, final Mat4d res) {
         // f(normalize(center - eye))
         double fX = center.x - eye.x;
         double fY = center.y - eye.y;
@@ -344,9 +344,9 @@ abstract class matrixTransform extends funcMatrix {
         sY *= inverseSqrt;
         sZ *= inverseSqrt;
         // u(cross(s, f))
-        double uX = sY * fZ - sZ * fY;
-        double uY = sZ * fX - sX * fZ;
-        double uZ = sX * fY - sY * fX;
+        final double uX = sY * fZ - sZ * fY;
+        final double uY = sZ * fX - sX * fZ;
+        final double uZ = sX * fY - sY * fX;
         res.m00 = sX;
         res.m01 = uX;
         res.m02 = -fX;
@@ -366,11 +366,11 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4d ortho_(double left, double right, double bottom, double top, double zNear, double zFar) {
+    public static Mat4d ortho_(final double left, final double right, final double bottom, final double top, final double zNear, final double zFar) {
         return ortho(new Mat4d(), left, right, bottom, top, zNear, zFar);
     }
 
-    public static Mat4d ortho(Mat4d res, double left, double right, double bottom, double top, double zNear, double zFar) {
+    public static Mat4d ortho(final Mat4d res, final double left, final double right, final double bottom, final double top, final double zNear, final double zFar) {
         res.m00 = 2.0 / (right - left);
         res.m01 = 0.0;
         res.m02 = 0.0;
@@ -390,18 +390,18 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4d perspective_(double fovy, double aspect, double zNear, double zFar) {
+    public static Mat4d perspective_(final double fovy, final double aspect, final double zNear, final double zFar) {
         return GLM_LEFT_HANDED ? perspectiveLH(fovy, aspect, zNear, zFar, new Mat4d())
                 : perspectiveRH(fovy, aspect, zNear, zFar, new Mat4d());
     }
 
-    public static Mat4d perspective(double fovy, double aspect, double zNear, double zFar, Mat4d mat) {
+    public static Mat4d perspective(final double fovy, final double aspect, final double zNear, final double zFar, final Mat4d mat) {
         return GLM_LEFT_HANDED ? perspectiveLH(fovy, aspect, zNear, zFar, mat)
                 : perspectiveRH(fovy, aspect, zNear, zFar, mat);
     }
 
-    private static Mat4d perspectiveRH(double fovy, double aspect, double zNear, double zFar, Mat4d res) {
-        double tanHalfFovy = Math.tan(fovy * 0.5);
+    private static Mat4d perspectiveRH(final double fovy, final double aspect, final double zNear, final double zFar, final Mat4d res) {
+        final double tanHalfFovy = Math.tan(fovy * 0.5);
         res.m00 = 1.0 / (aspect * tanHalfFovy);
         res.m01 = 0.0;
         res.m02 = 0.0;
@@ -421,8 +421,8 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    private static Mat4d perspectiveLH(double fovy, double aspect, double zNear, double zFar, Mat4d res) {
-        double tanHalfFovy = Math.tan(fovy * 0.5);
+    private static Mat4d perspectiveLH(final double fovy, final double aspect, final double zNear, final double zFar, final Mat4d res) {
+        final double tanHalfFovy = Math.tan(fovy * 0.5);
         res.m00 = 1.0 / (aspect * tanHalfFovy);
         res.m01 = 0.0;
         res.m02 = 0.0;
@@ -442,19 +442,19 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public static Mat4d perspectiveFov_(double fov, double width, double height, double zNear, double zFar) {
+    public static Mat4d perspectiveFov_(final double fov, final double width, final double height, final double zNear, final double zFar) {
         return GLM_LEFT_HANDED ? perspectiveFovLH(fov, width, height, zNear, zFar, new Mat4d())
                 : perspectiveFovRH(fov, width, height, zNear, zFar, new Mat4d());
     }
 
-    public static Mat4d perspectiveFov(double fov, double width, double height, double zNear, double zFar, Mat4d mat) {
+    public static Mat4d perspectiveFov(final double fov, final double width, final double height, final double zNear, final double zFar, final Mat4d mat) {
         return GLM_LEFT_HANDED ? perspectiveFovLH(fov, width, height, zNear, zFar, mat)
                 : perspectiveFovRH(fov, width, height, zNear, zFar, mat);
     }
 
-    private static Mat4d perspectiveFovRH(double fov, double width, double height, double zNear, double zFar, Mat4d res) {
-        double h = (Math.cos(0.5 * fov) / Math.sin(0.5 * fov));
-        double w = h * height / width;
+    private static Mat4d perspectiveFovRH(final double fov, final double width, final double height, final double zNear, final double zFar, final Mat4d res) {
+        final double h = (Math.cos(0.5 * fov) / Math.sin(0.5 * fov));
+        final double w = h * height / width;
         res.m00 = w;
         res.m01 = 0.0;
         res.m02 = 0.0;
@@ -474,9 +474,9 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    private static Mat4d perspectiveFovLH(double fov, double width, double height, double zNear, double zFar, Mat4d res) {
-        double h = (Math.cos(0.5 * fov) / Math.sin(0.5 * fov));
-        double w = h * height / width;
+    private static Mat4d perspectiveFovLH(final double fov, final double width, final double height, final double zNear, final double zFar, final Mat4d res) {
+        final double h = (Math.cos(0.5 * fov) / Math.sin(0.5 * fov));
+        final double w = h * height / width;
         res.m00 = w;
         res.m01 = 0.0;
         res.m02 = 0.0;

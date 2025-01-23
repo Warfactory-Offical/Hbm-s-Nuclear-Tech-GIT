@@ -32,7 +32,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 
 		if(!world.isRemote) {
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isPolling", polling);
 			data.setBoolean("hasMapping", customMap);
 			if(channel != null) 
@@ -47,7 +47,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.polling = nbt.getBoolean("isPolling");
 		this.customMap = nbt.getBoolean("hasMapping");
@@ -60,7 +60,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setBoolean("isPolling", polling);
 		nbt.setBoolean("hasMapping", customMap);
 		nbt.setInteger("lastPower", lastState);
@@ -76,7 +76,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.polling = nbt.getBoolean("isPolling");
 		this.customMap = nbt.getBoolean("hasMapping");
 		this.channel = nbt.getString("channel");
@@ -84,19 +84,19 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 			this.mapping[i] = nbt.getString("mapping" + i);
 	}
 
-	public void networkPack(NBTTagCompound nbt, int range) {
+	public void networkPack(final NBTTagCompound nbt, final int range) {
 		if(!world.isRemote)
 			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, pos), new TargetPoint(this.world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), range));
 	}
 	
 
 	@Override
-	public boolean hasPermission(EntityPlayer player) {
+	public boolean hasPermission(final EntityPlayer player) {
 		return Vec3.createVectorHelper(pos.getX() - player.posX, pos.getY() - player.posY, pos.getZ() - player.posZ).length() < 16;
 	}
 
 	@Override
-	public void receiveControl(NBTTagCompound data) {
+	public void receiveControl(final NBTTagCompound data) {
 		if(data.hasKey("isPolling")) 
 			this.polling = data.getBoolean("isPolling");
 		if(data.hasKey("hasMapping")) 

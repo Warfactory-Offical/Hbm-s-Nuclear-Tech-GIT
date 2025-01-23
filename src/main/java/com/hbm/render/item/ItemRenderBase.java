@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 public class ItemRenderBase extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
 		switch(type){
@@ -38,9 +38,9 @@ public class ItemRenderBase extends TEISRBase {
 		GL11.glPopMatrix();
 	}
 	
-	public void renderNonInv(ItemStack stack) { renderNonInv(); }
-	public void renderInventory(ItemStack stack) { renderInventory(); }
-	public void renderCommon(ItemStack stack) { renderCommon(); }
+	public void renderNonInv(final ItemStack stack) { renderNonInv(); }
+	public void renderInventory(final ItemStack stack) { renderInventory(); }
+	public void renderCommon(final ItemStack stack) { renderCommon(); }
 	public void renderNonInv() { }
 	public void renderInventory() { }
 	public void renderCommon() { }

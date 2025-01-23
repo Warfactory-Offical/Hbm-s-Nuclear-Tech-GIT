@@ -11,12 +11,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderBombMulti extends TileEntitySpecialRenderer<TileEntityBombMulti> {
     
     @Override
-    public boolean isGlobalRenderer(TileEntityBombMulti te) {
+    public boolean isGlobalRenderer(final TileEntityBombMulti te) {
     	return true;
     }
     
     @Override
-    public void render(TileEntityBombMulti te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(final TileEntityBombMulti te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
     	GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y + 0.5D, z + 0.5D);
         GlStateManager.enableLighting();

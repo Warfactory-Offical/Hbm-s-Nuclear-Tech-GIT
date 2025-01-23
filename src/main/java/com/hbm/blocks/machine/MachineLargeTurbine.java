@@ -22,12 +22,12 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 public class MachineLargeTurbine extends BlockDummyable {
 
-	public MachineLargeTurbine(Material materialIn, String s) {
+	public MachineLargeTurbine(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(meta >= 12)
 			return new TileEntityMachineLargeTurbine();
 
@@ -48,13 +48,13 @@ public class MachineLargeTurbine extends BlockDummyable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
 			if(pos == null)
 				return false;
@@ -67,13 +67,13 @@ public class MachineLargeTurbine extends BlockDummyable {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase player, final ItemStack itemStack) {
 		super.onBlockPlacedBy(world, pos, state, player, itemStack);
 		
 		if(world.isRemote)
 			return;
 
-		int k = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		final int k = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		ForgeDirection dir = ForgeDirection.NORTH;
 
 		if(k == 0)
@@ -85,15 +85,15 @@ public class MachineLargeTurbine extends BlockDummyable {
 		if(k == 3)
 			dir = ForgeDirection.getOrientation(4);
 
-		ForgeDirection dir2 = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection dir2 = dir.getRotation(ForgeDirection.UP);
 
 		//back connector
 		this.makeExtra(world, pos.getX() + dir.offsetX * -4, pos.getY(), pos.getZ() + dir.offsetZ * -4);
 		//front connector
 		this.makeExtra(world, pos.getX(), pos.getY(), pos.getZ());
 
-		int xc = pos.getX() - dir.offsetX;
-		int zc = pos.getZ() - dir.offsetZ;
+		final int xc = pos.getX() - dir.offsetX;
+		final int zc = pos.getZ() - dir.offsetZ;
 
 		//side connectors
 		this.makeExtra(world, xc + dir2.offsetX, pos.getY(), zc + dir2.offsetZ);

@@ -25,7 +25,7 @@ public class MissileStruct {
 	
 	public MissileStruct() { }
 	
-	public MissileStruct(ItemStack w, ItemStack f, ItemStack s, ItemStack t) {
+	public MissileStruct(final ItemStack w, final ItemStack f, final ItemStack s, final ItemStack t) {
 
 		if(w != null && w.getItem() instanceof ItemMissile)
 			warhead = (ItemMissile) w.getItem();
@@ -37,7 +37,7 @@ public class MissileStruct {
 			thruster = (ItemMissile) t.getItem();
 	}
 	
-	public MissileStruct(Item w, Item f, Item s, Item t) {
+	public MissileStruct(final Item w, final Item f, final Item s, final Item t) {
 
 		if(w instanceof ItemMissile)
 			warhead = (ItemMissile) w;
@@ -49,7 +49,7 @@ public class MissileStruct {
 			thruster = (ItemMissile) t;
 	}
 	
-	public void writeToByteBuffer(ByteBuf buf) {
+	public void writeToByteBuffer(final ByteBuf buf) {
 
 
 		if(warhead != null && warhead.type == PartType.WARHEAD)
@@ -73,14 +73,14 @@ public class MissileStruct {
 			buf.writeInt(0);
 	}
 	
-	public static MissileStruct readFromByteBuffer(ByteBuf buf) {
+	public static MissileStruct readFromByteBuffer(final ByteBuf buf) {
 		
-		MissileStruct multipart = new MissileStruct();
+		final MissileStruct multipart = new MissileStruct();
 
-		int w = buf.readInt();
-		int f = buf.readInt();
-		int s = buf.readInt();
-		int t = buf.readInt();
+		final int w = buf.readInt();
+		final int f = buf.readInt();
+		final int s = buf.readInt();
+		final int t = buf.readInt();
 		
 		if(w != 0)
 			multipart.warhead = (ItemMissile) Item.getItemById(w);
@@ -99,7 +99,7 @@ public class MissileStruct {
 	
 	@SideOnly(Side.CLIENT)
 	public MissileMultipart multipart(){
-		MissileMultipart missile = new MissileMultipart();
+		final MissileMultipart missile = new MissileMultipart();
         missile.warhead = MissilePart.getPart(this.warhead);
         missile.fuselage = MissilePart.getPart(this.fuselage);
         missile.fins = MissilePart.getPart(this.fins);
@@ -108,13 +108,12 @@ public class MissileStruct {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if(obj == this)
 			return true;
-		if(!(obj instanceof MissileStruct))
+		if(!(obj instanceof MissileStruct str))
 			return false;
-		MissileStruct str = (MissileStruct) obj;
-		return this.warhead == str.warhead && this.fuselage == str.fuselage && this.fins == str.fins && this.thruster == str.thruster;
+        return this.warhead == str.warhead && this.fuselage == str.fuselage && this.fins == str.fins && this.thruster == str.thruster;
 	}
 	
 	@Override
@@ -131,7 +130,7 @@ public class MissileStruct {
 	public static final DataSerializer<MissileStruct> SERIALIZER = new DataSerializer<MissileStruct>(){
 
 		@Override
-		public void write(PacketBuffer buf, MissileStruct value) {
+		public void write(final PacketBuffer buf, final MissileStruct value) {
 			if(value == null){
 				buf.writeInt(-1);
 				return;
@@ -143,29 +142,29 @@ public class MissileStruct {
 		}
 
 		@Override
-		public MissileStruct read(PacketBuffer buf) throws IOException {
+		public MissileStruct read(final PacketBuffer buf) throws IOException {
 			int i = buf.readInt();
 			if(i < 0)
 				return null;
-			Item w = Item.getItemById(i);
-			Item f = Item.getItemById(buf.readInt());
-			Item s;
+			final Item w = Item.getItemById(i);
+			final Item f = Item.getItemById(buf.readInt());
+			final Item s;
 			i = buf.readInt();
 			if(i < 0)
 				s = null;
 			else
 				s = Item.getItemById(i);
-			Item t = Item.getItemById(buf.readInt());
+			final Item t = Item.getItemById(buf.readInt());
 			return new MissileStruct(w, f, s, t);
 		}
 
 		@Override
-		public DataParameter<MissileStruct> createKey(int id) {
+		public DataParameter<MissileStruct> createKey(final int id) {
 			return new DataParameter<MissileStruct>(id, this);
 		}
 
 		@Override
-		public MissileStruct copyValue(MissileStruct value) {
+		public MissileStruct copyValue(final MissileStruct value) {
 			return value;
 		}
 		

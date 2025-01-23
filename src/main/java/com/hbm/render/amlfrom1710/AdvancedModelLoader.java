@@ -20,15 +20,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class AdvancedModelLoader {
-    private static Map<String, IModelCustomLoader> instances = Maps.newHashMap();
+    private static final Map<String, IModelCustomLoader> instances = Maps.newHashMap();
 
     /**
      * Register a new model handler
      * @param modelHandler The model handler to register
      */
-    public static void registerModelHandler(IModelCustomLoader modelHandler)
+    public static void registerModelHandler(final IModelCustomLoader modelHandler)
     {
-        for (String suffix : modelHandler.getSuffixes())
+        for (final String suffix : modelHandler.getSuffixes())
         {
             instances.put(suffix, modelHandler);
         }
@@ -42,17 +42,17 @@ public class AdvancedModelLoader {
      * @throws ModelFormatException if the underlying model handler cannot parse the model format
      */
     @SuppressWarnings("deprecation")
-	public static IModelCustom loadModel(ResourceLocation resource) throws IllegalArgumentException, ModelFormatException
+	public static IModelCustom loadModel(final ResourceLocation resource) throws IllegalArgumentException, ModelFormatException
     {
-        String name = resource.getPath();
-        int i = name.lastIndexOf('.');
+        final String name = resource.getPath();
+        final int i = name.lastIndexOf('.');
         if (i == -1)
         {
             FMLLog.severe("The resource name %s is not valid", resource);
             throw new IllegalArgumentException("The resource name is not valid");
         }
-        String suffix = name.substring(i+1);
-        IModelCustomLoader loader = instances.get(suffix);
+        final String suffix = name.substring(i+1);
+        final IModelCustomLoader loader = instances.get(suffix);
         if (loader == null)
         {
             FMLLog.severe("The resource name %s is not supported", resource);

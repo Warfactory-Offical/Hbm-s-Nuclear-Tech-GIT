@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class ItemBook extends Item {
 
-	public ItemBook(String s) {
+	public ItemBook(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -22,12 +22,12 @@ public class ItemBook extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add("Edition 4, gold lined pages");
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
 		if(!world.isRemote)
 			player.openGui(MainRegistry.instance, ModItems.guiID_item_book, world, 0, 0, 0);
 

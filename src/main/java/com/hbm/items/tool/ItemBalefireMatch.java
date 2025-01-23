@@ -2,7 +2,6 @@ package com.hbm.items.tool;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +18,7 @@ import net.minecraft.world.World;
 
 public class ItemBalefireMatch extends Item {
 
-	public ItemBalefireMatch(String s) {
+	public ItemBalefireMatch(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -30,9 +29,9 @@ public class ItemBalefireMatch extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		pos = pos.offset(facing);
-        ItemStack itemstack = player.getHeldItem(hand);
+        final ItemStack itemstack = player.getHeldItem(hand);
 
         if (!player.canPlayerEdit(pos, facing, itemstack))
         {

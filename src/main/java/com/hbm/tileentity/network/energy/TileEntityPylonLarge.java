@@ -14,10 +14,10 @@ public class TileEntityPylonLarge extends TileEntityPylonBase {
 
 	@Override
 	public Vec3[] getMountPos() {
-		double topOff = 0.75D + 0.0625D;
-		double sideOff = 3.375D;
+		final double topOff = 0.75D + 0.0625D;
+		final double sideOff = 3.375D;
 		
-		Vec3 vec = Vec3.createVectorHelper(sideOff, 0, 0);
+		final Vec3 vec = Vec3.createVectorHelper(sideOff, 0, 0);
 
 		switch(getBlockMetadata() - BlockDummyable.offset) {
 		case 2: vec.rotateAroundY((float) Math.PI * 0.0F); break;

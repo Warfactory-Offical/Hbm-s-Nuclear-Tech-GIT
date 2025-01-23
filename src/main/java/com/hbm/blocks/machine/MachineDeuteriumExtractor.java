@@ -24,7 +24,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class MachineDeuteriumExtractor extends BlockContainer implements ILookOverlay {
 
-	public MachineDeuteriumExtractor(Material mat, String s) {
+	public MachineDeuteriumExtractor(final Material mat, final String s) {
         super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,27 +33,25 @@ public class MachineDeuteriumExtractor extends BlockContainer implements ILookOv
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, int meta) {
 		meta = 0;
 		return new TileEntityDeuteriumExtractor();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 		
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityDeuteriumExtractor))
+		if(!(te instanceof TileEntityDeuteriumExtractor extractor))
 			return;
-		
-		TileEntityDeuteriumExtractor extractor = (TileEntityDeuteriumExtractor) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 		text.add(Library.getShortNumber(extractor.power) + "/" + Library.getShortNumber(extractor.getMaxPower()) + " HE");
 		
 		if(extractor.tanks[0] != null)

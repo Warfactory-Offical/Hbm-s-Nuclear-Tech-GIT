@@ -27,7 +27,7 @@ public class ParticleBFGBeam extends Particle {
 	float length;
 	float prevAlpha;
 	
-	public ParticleBFGBeam(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleBFGBeam(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.canCollide = false;
 		this.particleMaxAge = 50;
@@ -42,7 +42,7 @@ public class ParticleBFGBeam extends Particle {
 		this.particleAge++;
 		if(particleAge >= particleMaxAge)
 			this.setExpired();
-		float timeScale = this.particleAge/(float)this.particleMaxAge;
+		final float timeScale = this.particleAge/(float)this.particleMaxAge;
 		
 		this.prevAlpha = particleAlpha;
 		this.particleAlpha = MathHelper.clamp(1-BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0.6, 1), 0.6F, 1F, 0F, 1.1F), 0, 1);
@@ -54,16 +54,16 @@ public class ParticleBFGBeam extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entity, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GL11.glPushMatrix();
 		
-		double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
-		double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
-		double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
+		final double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
+		final double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
+		final double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
 		
-		double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-		double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-		double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+		final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+		final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+		final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
 
 		GL11.glTranslated(d0 - d3, d1 - d4, d2 - d5);
 		
@@ -74,17 +74,17 @@ public class ParticleBFGBeam extends Particle {
         GlStateManager.disableFog();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-        float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
+        final float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
         GlStateManager.color(0.5F, 1F, 0.5F, alpha/2);
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.bfg_beam2);
 		//Drillgon200: makes the beam look smoother by removing hard transition lines
 		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL14.GL_MIRRORED_REPEAT);
 		
-		Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+        final BufferBuilder buf = tes.getBuffer();
         
-        Vec3d look = entity.getPositionEyes(partialTicks).subtract(d0, d1, d2);
+        final Vec3d look = entity.getPositionEyes(partialTicks).subtract(d0, d1, d2);
         Vec3 point1 = Vec3.createVectorHelper(look.x, look.y, look.z).crossProduct(Vec3.createVectorHelper(0, 0, 1)).normalize().mult((float) (0.5*particleScale));
         Vec3 point2 = point1.mult(-1);
         
@@ -95,12 +95,12 @@ public class ParticleBFGBeam extends Particle {
         
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         
-        int len = 5;
+        final int len = 5;
         
         for(int i = 0; i < 2*len; i ++){
-        	int offset = i*50;
+        	final int offset = i*50;
         	//Drillgon200: texFlip makes sure the texture is actually mirrored on each iteration
-        	int texFlip = i % 2 == 1 ? 1 : 0;
+        	final int texFlip = i % 2 == 1 ? 1 : 0;
         	buf.pos(point1.xCoord, point1.yCoord, -offset).tex(0+texFlip+time, 0).endVertex();
             buf.pos(point2.xCoord, point2.yCoord, -offset).tex(0+texFlip+time, 1).endVertex();
             buf.pos(point2.xCoord, point2.yCoord, -50-offset).tex(1+texFlip+time, 1).endVertex();
@@ -123,11 +123,11 @@ public class ParticleBFGBeam extends Particle {
         
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         for(int i = 0; i < len; i ++){
-        	int offset = i*100;
-        	int texFlip = i % 2 == 1 ? 1 : 0;
+        	final int offset = i*100;
+        	final int texFlip = i % 2 == 1 ? 1 : 0;
         	
-        	buf.pos(point1.xCoord, point1.yCoord, 0-offset).tex(0+texFlip+time, 0).endVertex();
-        	buf.pos(point2.xCoord, point2.yCoord, 0-offset).tex(0+texFlip+time, 1).endVertex();
+        	buf.pos(point1.xCoord, point1.yCoord, -offset).tex(0+texFlip+time, 0).endVertex();
+        	buf.pos(point2.xCoord, point2.yCoord, -offset).tex(0+texFlip+time, 1).endVertex();
         	buf.pos(point2.xCoord, point2.yCoord, -100-offset).tex(1+texFlip+time, 1).endVertex();
         	buf.pos(point1.xCoord, point1.yCoord, -100-offset).tex(1+texFlip+time, 0).endVertex();
         }

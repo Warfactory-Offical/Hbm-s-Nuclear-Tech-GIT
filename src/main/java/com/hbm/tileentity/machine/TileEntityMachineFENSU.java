@@ -43,13 +43,13 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 
 	@Override
 	public NBTTagCompound packNBT(){
-		NBTTagCompound nbt = super.packNBT();
+		final NBTTagCompound nbt = super.packNBT();
 		nbt.setByte("color", (byte) this.color.getMetadata());
 		return nbt;
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) { 
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 		this.powerDelta = nbt.getLong("powerDelta");
 		this.redLow = nbt.getShort("redLow");
@@ -59,9 +59,9 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 	}
 
 	@Override
-	public long getPowerRemainingScaled(long i) {
+	public long getPowerRemainingScaled(final long i) {
 		
-		double powerScaled = (double)power / (double)getMaxPower();
+		final double powerScaled = (double)power / (double)getMaxPower();
 		
 		return (long)(i * powerScaled);
 	}
@@ -87,13 +87,13 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.color = EnumDyeColor.byMetadata(compound.getByte("color"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setByte("color", (byte) this.color.getMetadata());
 		return super.writeToNBT(compound);
 	}

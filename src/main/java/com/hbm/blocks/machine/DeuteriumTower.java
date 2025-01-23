@@ -23,12 +23,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class DeuteriumTower extends BlockDummyable implements ILookOverlay {
 
-	public DeuteriumTower(Material mat, String s) {
+	public DeuteriumTower(final Material mat, final String s) {
 		super(Material.IRON, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
+	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
 
 		if(meta >= 12)
 			return new TileEntityDeuteriumTower();
@@ -50,13 +50,13 @@ public class DeuteriumTower extends BlockDummyable implements ILookOverlay {
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 
-		ForgeDirection dr2 = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection dr2 = dir.getRotation(ForgeDirection.UP);
 
 		this.makeExtra(world, x - dir.offsetX - dr2.offsetX, y, z - dir.offsetZ - dr2.offsetZ);
 		this.makeExtra(world, x, y, z - dir.offsetZ - dr2.offsetZ);
@@ -64,20 +64,18 @@ public class DeuteriumTower extends BlockDummyable implements ILookOverlay {
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+		final int[] pos = this.findCore(world, x, y, z);
 
         if (pos == null)
             return;
 
-        TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+        final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityDeuteriumTower))
+		if(!(te instanceof TileEntityDeuteriumTower extractor))
 			return;
-		
-		TileEntityDeuteriumTower extractor = (TileEntityDeuteriumTower) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 		text.add(Library.getShortNumber(extractor.power) + "/" + Library.getShortNumber(extractor.getMaxPower()) + " HE");
 		
 		if(extractor.tanks[0] != null)

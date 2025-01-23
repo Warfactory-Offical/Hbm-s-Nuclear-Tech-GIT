@@ -17,7 +17,7 @@ public class VersatileConfig {
 		return 100;
 	}
 	
-	public static void applyPotionSickness(EntityLivingBase entity, int duration) {
+	public static void applyPotionSickness(final EntityLivingBase entity, int duration) {
 		
 		if(PotionConfig.potionSickness == 0)
 			return;
@@ -28,7 +28,7 @@ public class VersatileConfig {
 		entity.addPotionEffect(new PotionEffect(HbmPotion.potionsickness, duration * 20));
 	}
 
-	public static boolean hasPotionSickness(EntityLivingBase entity) {
+	public static boolean hasPotionSickness(final EntityLivingBase entity) {
 		return entity.isPotionActive(HbmPotion.potionsickness);
 	}
 

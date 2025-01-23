@@ -25,20 +25,20 @@ public class HbmLivingProps {
 
 	public static final UUID digamma_UUID = UUID.fromString("2a3d8aec-5ab9-4218-9b8b-ca812bdf378b");
 
-	public static IEntityHbmProps getData(EntityLivingBase entity){
+	public static IEntityHbmProps getData(final EntityLivingBase entity){
 		return entity.hasCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null) ? entity.getCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null) : HbmLivingCapability.EntityHbmPropsProvider.DUMMY;
 	}
 
 	/// RADIATION ///
-	public static float getRadiation(EntityLivingBase entity){
+	public static float getRadiation(final EntityLivingBase entity){
 		return getData(entity).getRads();
 	}
 
-	public static void setRadiation(EntityLivingBase entity, float rad){
+	public static void setRadiation(final EntityLivingBase entity, final float rad){
 		getData(entity).setRads(rad);
 	}
 
-	public static void incrementRadiation(EntityLivingBase entity, float rad){
+	public static void incrementRadiation(final EntityLivingBase entity, final float rad){
 		float radiation = getRadiation(entity) + rad;
 
 		if(radiation > 25000000)
@@ -51,49 +51,49 @@ public class HbmLivingProps {
 
 	// Neutron Radiation
 
-	public static float getNeutron(EntityLivingBase entity){
+	public static float getNeutron(final EntityLivingBase entity){
 		return getData(entity).getNeutrons();
 	}
 
-	public static void setNeutron(EntityLivingBase entity, float rad){
+	public static void setNeutron(final EntityLivingBase entity, final float rad){
 		getData(entity).setNeutrons(rad);
 	}
 
 
 	/// RAD ENV ///
-	public static float getRadEnv(EntityLivingBase entity){
+	public static float getRadEnv(final EntityLivingBase entity){
 		return getData(entity).getRadsEnv();
 	}
 
-	public static void setRadEnv(EntityLivingBase entity, float rad){
+	public static void setRadEnv(final EntityLivingBase entity, final float rad){
 		getData(entity).setRadsEnv(rad);
 	}
 
 	/// RAD BUF ///
-	public static float getRadBuf(EntityLivingBase entity){
+	public static float getRadBuf(final EntityLivingBase entity){
 		return getData(entity).getRadBuf();
 	}
 
-	public static void setRadBuf(EntityLivingBase entity, float rad){
+	public static void setRadBuf(final EntityLivingBase entity, final float rad){
 		getData(entity).setRadBuf(rad);
 	}
 
 	/// DIGAMA ///
-	public static float getDigamma(EntityLivingBase entity){
+	public static float getDigamma(final EntityLivingBase entity){
 		return getData(entity).getDigamma();
 	}
 
-	public static void setDigamma(EntityLivingBase entity, float digamma){
+	public static void setDigamma(final EntityLivingBase entity, final float digamma){
 
 		getData(entity).setDigamma(digamma);
 
-		float healthMod = (float)Math.pow(0.5, digamma) - 1F;
+		final float healthMod = (float)Math.pow(0.5, digamma) - 1F;
 
-		IAttributeInstance attributeinstance = entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH);
+		final IAttributeInstance attributeinstance = entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH);
 
 		try {
 			attributeinstance.removeModifier(attributeinstance.getModifier(digamma_UUID));
-		} catch(Exception ex) {
+		} catch(final Exception ex) {
 		}
 
 		attributeinstance.applyModifier(new AttributeModifier(digamma_UUID, "digamma", healthMod, 2));
@@ -108,7 +108,7 @@ public class HbmLivingProps {
 			entity.setHealth(0);
 			entity.onDeath(ModDamageSource.digamma);
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "sweat");
 			data.setInteger("count", 50);
 			data.setInteger("block", Block.getIdFromBlock(Blocks.SOUL_SAND));
@@ -118,7 +118,7 @@ public class HbmLivingProps {
 
 		if(entity instanceof EntityPlayer) {
 
-			float di = getData(entity).getDigamma();
+			final float di = getData(entity).getDigamma();
 
 			if(di > 0F)
 				AdvancementManager.grantAchievement(((EntityPlayer)entity), AdvancementManager.digammaSee);
@@ -129,7 +129,7 @@ public class HbmLivingProps {
 		}
 	}
 
-	public static void incrementDigamma(EntityLivingBase entity, float digamma){
+	public static void incrementDigamma(final EntityLivingBase entity, final float digamma){
 		float dRad = getDigamma(entity) + digamma;
 
 		if(dRad > 10)
@@ -141,11 +141,11 @@ public class HbmLivingProps {
 	}
 
 	/// ASBESTOS ///
-	public static int getAsbestos(EntityLivingBase entity){
+	public static int getAsbestos(final EntityLivingBase entity){
 		return getData(entity).getAsbestos();
 	}
 
-	public static void setAsbestos(EntityLivingBase entity, int asbestos){
+	public static void setAsbestos(final EntityLivingBase entity, final int asbestos){
 		getData(entity).setAsbestos(asbestos);
 
 		if(asbestos >= EntityHbmProps.maxAsbestos) {
@@ -154,20 +154,20 @@ public class HbmLivingProps {
 		}
 	}
 
-	public static void incrementAsbestos(EntityLivingBase entity, int asbestos){
+	public static void incrementAsbestos(final EntityLivingBase entity, final int asbestos){
 		setAsbestos(entity, getAsbestos(entity) + asbestos);
 	}
 
-	public static void addCont(EntityLivingBase entity, ContaminationEffect cont){
+	public static void addCont(final EntityLivingBase entity, final ContaminationEffect cont){
 		getData(entity).getContaminationEffectList().add(cont);
 	}
 
 	/// BLACK LUNG DISEASE ///
-	public static int getBlackLung(EntityLivingBase entity){
+	public static int getBlackLung(final EntityLivingBase entity){
 		return getData(entity).getBlacklung();
 	}
 
-	public static void setBlackLung(EntityLivingBase entity, int blacklung){
+	public static void setBlackLung(final EntityLivingBase entity, final int blacklung){
 		getData(entity).setBlacklung(blacklung);
 
 		if(blacklung >= EntityHbmProps.maxBlacklung) {
@@ -176,29 +176,29 @@ public class HbmLivingProps {
 		}
 	}
 
-	public static void incrementBlackLung(EntityLivingBase entity, int blacklung){
+	public static void incrementBlackLung(final EntityLivingBase entity, final int blacklung){
 		setBlackLung(entity, getBlackLung(entity) + blacklung);
 	}
 
 	/// TIME BOMB ///
-	public static int getTimer(EntityLivingBase entity){
+	public static int getTimer(final EntityLivingBase entity){
 		return getData(entity).getBombTimer();
 	}
 
-	public static void setTimer(EntityLivingBase entity, int bombTimer){
+	public static void setTimer(final EntityLivingBase entity, final int bombTimer){
 		getData(entity).setBombTimer(bombTimer);
 	}
 
 	/// CONTAGION ///
-	public static int getContagion(EntityLivingBase entity){
+	public static int getContagion(final EntityLivingBase entity){
 		return getData(entity).getContagion();
 	}
 
-	public static void setContagion(EntityLivingBase entity, int contageon){
+	public static void setContagion(final EntityLivingBase entity, final int contageon){
 		getData(entity).setContagion(contageon);
 	}
 
-	public static List<ContaminationEffect> getCont(EntityLivingBase e){
+	public static List<ContaminationEffect> getCont(final EntityLivingBase e){
 		return getData(e).getContaminationEffectList();
 	}
 
@@ -209,7 +209,7 @@ public class HbmLivingProps {
 		public int time;
 		public boolean ignoreArmor;
 
-		public ContaminationEffect(float rad, int time, boolean ignoreArmor){
+		public ContaminationEffect(final float rad, final int time, final boolean ignoreArmor){
 			this.maxRad = rad;
 			this.maxTime = this.time = time;
 			this.ignoreArmor = ignoreArmor;
@@ -219,8 +219,8 @@ public class HbmLivingProps {
 			return maxRad * ((float)time / (float)maxTime);
 		}
 
-		public void save(NBTTagCompound nbt, int index){
-			NBTTagCompound me = new NBTTagCompound();
+		public void save(final NBTTagCompound nbt, final int index){
+			final NBTTagCompound me = new NBTTagCompound();
 			me.setFloat("maxRad", this.maxRad);
 			me.setInteger("maxTime", this.maxTime);
 			me.setInteger("time", this.time);
@@ -228,14 +228,14 @@ public class HbmLivingProps {
 			nbt.setTag("cont_" + index, me);
 		}
 
-		public static ContaminationEffect load(NBTTagCompound nbt, int index){
-			NBTTagCompound me = (NBTTagCompound)nbt.getTag("cont_" + index);
-			float maxRad = me.getFloat("maxRad");
-			int maxTime = nbt.getInteger("maxTime");
-			int time = nbt.getInteger("time");
-			boolean ignoreArmor = nbt.getBoolean("ignoreArmor");
+		public static ContaminationEffect load(final NBTTagCompound nbt, final int index){
+			final NBTTagCompound me = (NBTTagCompound)nbt.getTag("cont_" + index);
+			final float maxRad = me.getFloat("maxRad");
+			final int maxTime = nbt.getInteger("maxTime");
+			final int time = nbt.getInteger("time");
+			final boolean ignoreArmor = nbt.getBoolean("ignoreArmor");
 
-			ContaminationEffect effect = new ContaminationEffect(maxRad, maxTime, ignoreArmor);
+			final ContaminationEffect effect = new ContaminationEffect(maxRad, maxTime, ignoreArmor);
 			effect.time = time;
 			return effect;
 		}

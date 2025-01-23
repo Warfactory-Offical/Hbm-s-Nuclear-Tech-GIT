@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineRtgFurnace;
 import com.hbm.items.machine.ItemRTGPellet;
@@ -45,11 +46,11 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -62,7 +63,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		dualCookTime = compound.getShort("CookTime");
 		if(compound.hasKey("inventory"))
 			this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
@@ -70,13 +71,13 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setShort("cookTime", (short) dualCookTime);
 		compound.setTag("inventory", this.inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
-	public int getDiFurnaceProgressScaled(int i) {
+	public int getDiFurnaceProgressScaled(final int i) {
 		return (dualCookTime * i) / processingSpeed;
 	}
 	
@@ -85,7 +86,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 		{
 			return false;
 		}
-        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
+        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
 		if(itemStack == null || itemStack.isEmpty())
 		{
 			return false;
@@ -109,7 +110,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	
 	private void processItem() {
 		if(canProcess()) {
-	        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
+	        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
 			
 			if(this.inventory.getStackInSlot(4).isEmpty())
 			{
@@ -122,7 +123,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 			{
 				if(this.inventory.getStackInSlot(i).isEmpty())
 				{
-					this.inventory.setStackInSlot(i, new ItemStack(this.inventory.getStackInSlot(i).getItem()));
+					this.inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(this.inventory.getStackInSlot(i).getItem()));
 				}else{
 					this.inventory.getStackInSlot(i).shrink(1);
 				}
@@ -162,14 +163,9 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 			}else{
 				dualCookTime = 0;
 			}
-			boolean trigger = true;
-			
-			if(hasPower() && canProcess() && this.dualCookTime == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !hasPower() || !canProcess() || this.dualCookTime != 0;
+
+            if(trigger)
             {
                 flag1 = true;
                 MachineRtgFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
@@ -183,38 +179,32 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+		final int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		if(slot < 4){
 			if(!(itemStack.getItem() instanceof ItemRTGPellet)){
 				return true;
 			}
 		}
-		if(slot == 4){
-			return true;
-		}
-		return false;
-	}
+        return slot == 4;
+    }
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(0 < i && i < 4){
 			if(stack.getItem() instanceof ItemRTGPellet)
 				return true;
 		}
-		if(i == 0){
-			return true;
-		}
-		return false;
-	}
+        return i == 0;
+    }
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 

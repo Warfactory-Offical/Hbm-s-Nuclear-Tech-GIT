@@ -1,17 +1,16 @@
 package com.hbm.util;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.hbm.inventory.AnvilRecipes.AnvilOutput;
 import com.hbm.inventory.RecipesCommon.AStack;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.Arrays;
+import java.util.List;
 
 //'t was about time
 public class InventoryUtil {
@@ -25,14 +24,14 @@ public class InventoryUtil {
 	 * @param stack the stack to be added to the inventory
 	 * @return the remainder of the stack that could not have been added, can return null
 	 */
-	public static ItemStack tryAddItemToInventory(ItemStack[] inv, int start, int end, ItemStack stack) {
+	public static ItemStack tryAddItemToInventory(final ItemStack[] inv, final int start, final int end, final ItemStack stack) {
 
-		ItemStack rem = tryAddItemToExistingStack(inv, start, end, stack);
+		final ItemStack rem = tryAddItemToExistingStack(inv, start, end, stack);
 
 		if(rem == null || rem.isEmpty())
 			return ItemStack.EMPTY;
 
-		boolean didAdd = tryAddItemToNewSlot(inv, start, end, rem);
+		final boolean didAdd = tryAddItemToNewSlot(inv, start, end, rem);
 
 		if(didAdd)
 			return ItemStack.EMPTY;
@@ -48,7 +47,7 @@ public class InventoryUtil {
 	 * @param stack
 	 * @return
 	 */
-	public static ItemStack tryAddItemToExistingStack(ItemStack[] inv, int start, int end, ItemStack stack) {
+	public static ItemStack tryAddItemToExistingStack(final ItemStack[] inv, final int start, final int end, final ItemStack stack) {
 
 		if(stack == null || stack.isEmpty())
 			return ItemStack.EMPTY;
@@ -57,7 +56,7 @@ public class InventoryUtil {
 
 			if(doesStackDataMatch(inv[i], stack)) {
 
-				int transfer = Math.min(stack.getCount(), inv[i].getMaxStackSize() - inv[i].getCount());
+				final int transfer = Math.min(stack.getCount(), inv[i].getMaxStackSize() - inv[i].getCount());
 
 				if(transfer > 0) {
 					inv[i].setCount(inv[i].getCount() + transfer);
@@ -80,7 +79,7 @@ public class InventoryUtil {
 	 * @param stack
 	 * @return whether the stack could be added or not
 	 */
-	public static boolean tryAddItemToNewSlot(ItemStack[] inv, int start, int end, ItemStack stack) {
+	public static boolean tryAddItemToNewSlot(final ItemStack[] inv, final int start, final int end, final ItemStack stack) {
 
 		if(stack == null || stack.isEmpty())
 			return true;
@@ -104,14 +103,14 @@ public class InventoryUtil {
 	 * @param stack
 	 * @return
 	 */
-	public static ItemStack tryAddItemToInventory(IItemHandlerModifiable inv, int start, int end, ItemStack stack) {
+	public static ItemStack tryAddItemToInventory(final IItemHandlerModifiable inv, final int start, final int end, final ItemStack stack) {
 
-		ItemStack rem = tryAddItemToExistingStack(inv, start, end, stack);
+		final ItemStack rem = tryAddItemToExistingStack(inv, start, end, stack);
 
 		if(rem.isEmpty())
 			return ItemStack.EMPTY;
 
-		boolean didAdd = tryAddItemToNewSlot(inv, start, end, rem);
+		final boolean didAdd = tryAddItemToNewSlot(inv, start, end, rem);
 
 		if(didAdd)
 			return ItemStack.EMPTY;
@@ -119,7 +118,7 @@ public class InventoryUtil {
 			return rem;
 	}
 
-	public static ItemStack tryAddItemToExistingStack(IItemHandlerModifiable inv, int start, int end, ItemStack stack) {
+	public static ItemStack tryAddItemToExistingStack(final IItemHandlerModifiable inv, final int start, final int end, final ItemStack stack) {
 
 		if(stack == null || stack.isEmpty())
 			return ItemStack.EMPTY;
@@ -128,7 +127,7 @@ public class InventoryUtil {
 
 			if(doesStackDataMatch(inv.getStackInSlot(i), stack)) {
 
-				int transfer = Math.min(stack.getCount(), inv.getStackInSlot(i).getMaxStackSize() - inv.getStackInSlot(i).getCount());
+				final int transfer = Math.min(stack.getCount(), inv.getStackInSlot(i).getMaxStackSize() - inv.getStackInSlot(i).getCount());
 
 				if(transfer > 0) {
 					inv.getStackInSlot(i).setCount(inv.getStackInSlot(i).getCount() + transfer);
@@ -143,7 +142,7 @@ public class InventoryUtil {
 		return stack;
 	}
 
-	public static boolean tryAddItemToNewSlot(IItemHandlerModifiable inv, int start, int end, ItemStack stack) {
+	public static boolean tryAddItemToNewSlot(final IItemHandlerModifiable inv, final int start, final int end, final ItemStack stack) {
 
 		if(stack == null || stack.isEmpty())
 			return true;
@@ -165,7 +164,7 @@ public class InventoryUtil {
 	 * @param stack2
 	 * @return
 	 */
-	public static boolean doesStackDataMatch(ItemStack stack1, ItemStack stack2) {
+	public static boolean doesStackDataMatch(final ItemStack stack1, final ItemStack stack2) {
 
 		if(stack1 == null && stack2 == null)
 			return true;
@@ -201,11 +200,11 @@ public class InventoryUtil {
 	 * @param shouldRemove whether it should just return true or false or if a successful check should also remove all the items
 	 * @return whether the player has the required item stacks or not
 	 */
-	public static boolean doesPlayerHaveAStacks(EntityPlayer player, List<AStack> stacks, boolean shouldRemove) {
+	public static boolean doesPlayerHaveAStacks(final EntityPlayer player, final List<AStack> stacks, final boolean shouldRemove) {
 		
-		NonNullList<ItemStack> original = player.inventory.mainInventory;
-		ItemStack[] inventory = new ItemStack[original.size()];
-		AStack[] input = new AStack[stacks.size()];
+		final NonNullList<ItemStack> original = player.inventory.mainInventory;
+		final ItemStack[] inventory = new ItemStack[original.size()];
+		final AStack[] input = new AStack[stacks.size()];
 		
 		//first we copy the inputs into an array because 1. it's easier to deal with and 2. we can dick around with the stack sized with no repercussions
 		for(int i = 0; i < input.length; i++) {
@@ -220,17 +219,17 @@ public class InventoryUtil {
 		//now we go through every ingredient...
 		for(int i = 0; i < input.length; i++) {
 			
-			AStack stack = input[i];
+			final AStack stack = input[i];
 			
 			//...and compare each ingredient to every stack in the inventory
 			for(int j = 0; j < inventory.length; j++) {
 				
-				ItemStack inv = inventory[j];
+				final ItemStack inv = inventory[j];
 				
 				//we check if it matches but ignore stack size for now
 				if(stack.matchesRecipe(inv, true)) {
 					//and NOW we care about the stack size
-					int size = Math.min(stack.count(), inv.getCount());
+					final int size = Math.min(stack.count(), inv.getCount());
 					stack.setCount(stack.count()-size);
 					inv.setCount(inv.getCount()-size);
 					
@@ -247,7 +246,7 @@ public class InventoryUtil {
 			}
 		}
 		
-		for(AStack stack : input) {
+		for(final AStack stack : input) {
 			if(stack != null) {
 				return false;
 			}
@@ -265,9 +264,9 @@ public class InventoryUtil {
 		return true;
 	}
 	
-	public static void giveChanceStacksToPlayer(EntityPlayer player, List<AnvilOutput> stacks) {
+	public static void giveChanceStacksToPlayer(final EntityPlayer player, final List<AnvilOutput> stacks) {
 		
-		for(AnvilOutput out : stacks) {
+		for(final AnvilOutput out : stacks) {
 			if(out.chance == 1.0F || player.getRNG().nextFloat() < out.chance) {
 				if(!player.inventory.addItemStackToInventory(out.stack.copy())) {
 					player.dropItem(out.stack.copy(), false);
@@ -276,23 +275,23 @@ public class InventoryUtil {
 		}
 	}
 	
-	public static boolean hasOreDictMatches(EntityPlayer player, String dict, int count) {
+	public static boolean hasOreDictMatches(final EntityPlayer player, final String dict, final int count) {
 		return countOreDictMatches(player, dict) >= count;
 	}
 	
-	public static int countOreDictMatches(EntityPlayer player, String dict) {
+	public static int countOreDictMatches(final EntityPlayer player, final String dict) {
 		
 		int count = 0;
 		
 		for(int i = 0; i < player.inventory.mainInventory.size(); i++) {
 			
-			ItemStack stack = player.inventory.mainInventory.get(i);
+			final ItemStack stack = player.inventory.mainInventory.get(i);
 			
 			if(stack != null) {
 				
-				int[] ids = OreDictionary.getOreIDs(stack);
+				final int[] ids = OreDictionary.getOreIDs(stack);
 				
-				for(int id : ids) {
+				for(final int id : ids) {
 					if(OreDictionary.getOreName(id).equals(dict)) {
 						count += stack.getCount();
 						break;
@@ -304,20 +303,20 @@ public class InventoryUtil {
 		return count;
 	}
 	
-	public static void consumeOreDictMatches(EntityPlayer player, String dict, int count) {
+	public static void consumeOreDictMatches(final EntityPlayer player, final String dict, int count) {
 		
 		for(int i = 0; i < player.inventory.mainInventory.size(); i++) {
 			
-			ItemStack stack = player.inventory.mainInventory.get(i);
+			final ItemStack stack = player.inventory.mainInventory.get(i);
 			
 			if(stack != null) {
 				
-				int[] ids = OreDictionary.getOreIDs(stack);
+				final int[] ids = OreDictionary.getOreIDs(stack);
 				
-				for(int id : ids) {
+				for(final int id : ids) {
 					if(OreDictionary.getOreName(id).equals(dict)) {
 						
-						int toConsume = Math.min(count, stack.getCount());
+						final int toConsume = Math.min(count, stack.getCount());
 						player.inventory.decrStackSize(i, toConsume);
 						count -= toConsume;
 						break;
@@ -327,25 +326,25 @@ public class InventoryUtil {
 		}
 	}
 
-	public static boolean doesArrayHaveIngredients(IItemHandler inv, int start, int end, List<AStack> ingredients) {
-		ItemStack[] copy = ItemStackUtil.carefulCopyArrayTruncate(inv, start, end);
-		AStack[] req = new AStack[ingredients.size()];
+	public static boolean doesArrayHaveIngredients(final IItemHandler inv, final int start, final int end, final List<AStack> ingredients) {
+		final ItemStack[] copy = ItemStackUtil.carefulCopyArrayTruncate(inv, start, end);
+		final AStack[] req = new AStack[ingredients.size()];
 		for (int idx = 0; idx < req.length; ++idx) {
 			req[idx] = ingredients.get(idx) == null ? null : ingredients.get(idx).copy();
 		}
 
-		for (AStack ingredient : req) {
+		for (final AStack ingredient : req) {
 			if (ingredient == null) {
 				continue;
 			}
 
-			for (ItemStack input : copy) {
+			for (final ItemStack input : copy) {
 				if (input == null || input.isEmpty()) {
 					continue;
 				}
 
 				if (ingredient.matchesRecipe(input, true)) {
-					int size = Math.min(input.getCount(), ingredient.count());
+					final int size = Math.min(input.getCount(), ingredient.count());
 					ingredient.setCount(ingredient.count() - size);
 					input.setCount(input.getCount() - size);
 
@@ -363,19 +362,19 @@ public class InventoryUtil {
 		return true;
 	}
 
-	public static boolean doesArrayHaveIngredients(IItemHandler inv, int start, int end, AStack... ingredients) {
+	public static boolean doesArrayHaveIngredients(final IItemHandler inv, final int start, final int end, final AStack... ingredients) {
 		return doesArrayHaveIngredients(inv, start, end, Arrays.asList(ingredients));
 	}
 
-	public static boolean doesArrayHaveSpace(IItemHandler inv, int start, int end, ItemStack[] items) {
-		ItemStack[] copy = ItemStackUtil.carefulCopyArrayTruncate(inv, start, end);
+	public static boolean doesArrayHaveSpace(final IItemHandler inv, final int start, final int end, final ItemStack[] items) {
+		final ItemStack[] copy = ItemStackUtil.carefulCopyArrayTruncate(inv, start, end);
 
-		for (ItemStack item : items) {
+		for (final ItemStack item : items) {
 			if (item.isEmpty()) {
 				continue;
 			}
 
-			ItemStack remainder = tryAddItemToInventory(copy, 0, copy.length - 1, item.copy());
+			final ItemStack remainder = tryAddItemToInventory(copy, 0, copy.length - 1, item.copy());
 			if (!remainder.isEmpty()) {
 				return false;
 			}
@@ -384,13 +383,13 @@ public class InventoryUtil {
 		return true;
 	}
 
-	public static boolean tryConsumeAStack(IItemHandlerModifiable inv, int start, int end, AStack stack) {
-		AStack copy = stack.copy();
+	public static boolean tryConsumeAStack(final IItemHandlerModifiable inv, final int start, final int end, final AStack stack) {
+		final AStack copy = stack.copy();
 		for (int i = start; i <= end; ++i) {
-			ItemStack input = inv.getStackInSlot(i);
+			final ItemStack input = inv.getStackInSlot(i);
 
 			if (stack.matchesRecipe(input, true)) {
-				int size = Math.min(copy.count(), input.getCount());
+				final int size = Math.min(copy.count(), input.getCount());
 				inv.extractItem(i, size, false);
 				copy.setCount(copy.count() - size);
 

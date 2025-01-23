@@ -19,12 +19,12 @@ public class RenderQuasar extends RenderBlackHole {
 	
 	protected ResourceLocation quasar = new ResourceLocation(RefStrings.MODID, "textures/entity/bholeD.png");
 	
-	public RenderQuasar(RenderManager renderManager){
+	public RenderQuasar(final RenderManager renderManager){
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityBlackHole entity, double x, double y, double z, float entityYaw, float partialTicks){
+	public void doRender(final EntityBlackHole entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks){
 		if(!ClientProxy.renderingConstant)
 			return;
 		GL11.glPushMatrix();
@@ -32,7 +32,7 @@ public class RenderQuasar extends RenderBlackHole {
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 
-		float size = entity.getDataManager().get(EntityBlackHole.SIZE);
+		final float size = entity.getDataManager().get(EntityBlackHole.SIZE);
 
 		GL11.glScalef(size, size, size);
 
@@ -54,10 +54,10 @@ public class RenderQuasar extends RenderBlackHole {
 	}
 
 	@Override
-	protected void setColorFromIteration(int iteration, float alpha, float[] col) {
-		float r = 1.0F;
-		float g = (float) Math.pow(iteration / 15F, 2);
-		float b = (float) Math.pow(iteration / 15F, 2);
+	protected void setColorFromIteration(final int iteration, final float alpha, final float[] col) {
+		final float r = 1.0F;
+		final float g = (float) Math.pow(iteration / 15F, 2);
+		final float b = (float) Math.pow(iteration / 15F, 2);
 		
 		col[0] = r;
 		col[1] = g;
@@ -71,7 +71,7 @@ public class RenderQuasar extends RenderBlackHole {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBlackHole entity){
+	protected ResourceLocation getEntityTexture(final EntityBlackHole entity){
 		return super.getEntityTexture(entity);
 	}
 }

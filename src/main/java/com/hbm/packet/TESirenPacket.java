@@ -29,7 +29,7 @@ public class TESirenPacket implements IMessage {
 		
 	}
 
-	public TESirenPacket(int x, int y, int z, int id, boolean active)
+	public TESirenPacket(final int x, final int y, final int z, final int id, final boolean active)
 	{
 		this.x = x;
 		this.y = y;
@@ -39,7 +39,7 @@ public class TESirenPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -48,7 +48,7 @@ public class TESirenPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -60,8 +60,8 @@ public class TESirenPacket implements IMessage {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(TESirenPacket m, MessageContext ctx) {
-			TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+		public IMessage onMessage(final TESirenPacket m, final MessageContext ctx) {
+			final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 			if (te != null && te instanceof TileEntityMachineSiren) {
 				
@@ -76,17 +76,17 @@ public class TESirenPacket implements IMessage {
 					if(sound == null) {
 						//Start sound
 						if(m.id > 0) {
-							boolean b = TrackType.getEnum(m.id).getType().name().equals(SoundType.LOOP.name());
-							SoundLoopSiren s = new SoundLoopSiren(TrackType.getEnum(m.id).getSoundLocation(), te, TrackType.getEnum(m.id).getType());
+							final boolean b = TrackType.getEnum(m.id).getType().name().equals(SoundType.LOOP.name());
+							final SoundLoopSiren s = new SoundLoopSiren(TrackType.getEnum(m.id).getSoundLocation(), te, TrackType.getEnum(m.id).getType());
 							s.setRepeat(b);
 							s.intendedVolume = TrackType.getEnum(m.id).getVolume();
 							Minecraft.getMinecraft().getSoundHandler().playSound(s);
 						}
 					} else {
-						SoundEvent loc = TrackType.getEnum(m.id).getSoundLocation();
+						final SoundEvent loc = TrackType.getEnum(m.id).getSoundLocation();
 						
 						if(loc != null) {
-						String path = loc.getSoundName().toString();
+						final String path = loc.getSoundName().toString();
 						
 							if(!sound.getPath().equals(path)) {
 								//Track switched, stop and restart

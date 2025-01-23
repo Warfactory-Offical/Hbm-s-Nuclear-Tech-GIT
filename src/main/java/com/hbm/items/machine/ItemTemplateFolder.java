@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ItemTemplateFolder extends Item {
 
-	public ItemTemplateFolder(String s) {
+	public ItemTemplateFolder(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -24,7 +24,7 @@ public class ItemTemplateFolder extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.templfolder1"));
 		tooltip.add(I18nUtil.resolveKey("desc.templfolder2"));
 		tooltip.add(I18nUtil.resolveKey("desc.templfolder3"));
@@ -32,7 +32,7 @@ public class ItemTemplateFolder extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
 		if(worldIn.isRemote)
 			playerIn.openGui(MainRegistry.instance, ModItems.guiID_item_folder, worldIn, 0, 0, 0);
 		return super.onItemRightClick(worldIn, playerIn, handIn);

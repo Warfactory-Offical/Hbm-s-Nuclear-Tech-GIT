@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class HeatBoiler extends BlockDummyable implements ILookOverlay, ITooltipProvider {
 
-    public HeatBoiler(Material materialIn, String s) {
+    public HeatBoiler(final Material materialIn, final String s) {
         super(materialIn, s);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createNewTileEntity(final World world, final int meta) {
 
         if(meta >= 12) return new TileEntityHeatBoiler();
         if(meta >= 6) return new TileEntityProxyCombo(false, false, true);
@@ -58,32 +59,31 @@ public class HeatBoiler extends BlockDummyable implements ILookOverlay, ITooltip
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
         return Item.getItemFromBlock(ModBlocks.heat_boiler);
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.heat_boiler);
+    public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
+        return ItemStackUtil.itemStackFrom(ModBlocks.heat_boiler);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 
         if(!world.isRemote && !player.isSneaking()) {
 
             if(!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemForgeFluidIdentifier) {
-                int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+                final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
                 if(pos == null)
                     return false;
 
-                TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+                final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-                if(!(te instanceof TileEntityHeatBoiler))
+                if(!(te instanceof TileEntityHeatBoiler boiler))
                     return false;
 
-                TileEntityHeatBoiler boiler = (TileEntityHeatBoiler) te;
-                Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
+                final Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
                 if(!HeatRecipes.hasBoilRecipe(type)){
                     player.sendMessage(new TextComponentString("§cNo recipe found for §e"+type.getLocalizedName(new FluidStack(type, 1))));
                     return false;
@@ -104,13 +104,13 @@ public class HeatBoiler extends BlockDummyable implements ILookOverlay, ITooltip
 
 
     @Override
-    protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+    protected void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
         super.fillSpace(world, x, y, z, dir, o);
 
         x = x + dir.offsetX * o;
         z = z + dir.offsetZ * o;
 
-        ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+        final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
         this.makeExtra(world, x + rot.offsetX, y, z + rot.offsetZ); //these add the side ports
         this.makeExtra(world, x - rot.offsetX, y, z - rot.offsetZ);
@@ -118,26 +118,24 @@ public class HeatBoiler extends BlockDummyable implements ILookOverlay, ITooltip
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
         this.addStandardInfo(list);
         super.addInformation(stack, worldIn, list, flagIn);
     }
 
     @Override
-    public void printHook(Pre event, World world, int x, int y, int z) {
-        int[] pos = this.findCore(world, x, y, z);
+    public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+        final int[] pos = this.findCore(world, x, y, z);
 
         if(pos == null)
             return;
 
-        TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+        final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if(!(te instanceof TileEntityHeatBoiler))
+        if(!(te instanceof TileEntityHeatBoiler boiler))
             return;
 
-        TileEntityHeatBoiler boiler = (TileEntityHeatBoiler) te;
-
-        List<String> text = new ArrayList();
+        final List<String> text = new ArrayList();
 
         for(int i = 0; i < boiler.types.length; i++)
             if(boiler.types[i] != null)

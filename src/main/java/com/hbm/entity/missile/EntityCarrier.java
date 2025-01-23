@@ -30,7 +30,7 @@ public class EntityCarrier extends EntityThrowable {
 	
 	private ItemStack payload;
 
-	public EntityCarrier(World p_i1582_1_) {
+	public EntityCarrier(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
         this.setSize(3.0F, 26.0F);
@@ -52,7 +52,7 @@ public class EntityCarrier extends EntityThrowable {
 		
 		if(!world.isRemote) {
 			for(int i = 0; i < 10; i++) {
-				EntityGasFlameFX fx = new EntityGasFlameFX(world);
+				final EntityGasFlameFX fx = new EntityGasFlameFX(world);
 				fx.posY = posY - 0.25D;
 				fx.posX = posX + rand.nextGaussian() * 0.75D;
 				fx.posZ = posZ + rand.nextGaussian() * 0.75D;
@@ -63,7 +63,7 @@ public class EntityCarrier extends EntityThrowable {
 			
 			if(this.getDataManager().get(HASBOOSTERS))
 				for(int i = 0; i < 2; i++) {
-					EntityGasFlameFX fx1 = new EntityGasFlameFX(world);
+					final EntityGasFlameFX fx1 = new EntityGasFlameFX(world);
 					fx1.posY = posY - 0.25D;
 					fx1.posX = posX + rand.nextGaussian() * 0.15D + 2.5D;
 					fx1.posZ = posZ + rand.nextGaussian() * 0.15D;
@@ -71,7 +71,7 @@ public class EntityCarrier extends EntityThrowable {
 					
 					world.spawnEntity(fx1);
 	
-					EntityGasFlameFX fx2 = new EntityGasFlameFX(world);
+					final EntityGasFlameFX fx2 = new EntityGasFlameFX(world);
 					fx2.posY = posY - 0.25D;
 					fx2.posX = posX + rand.nextGaussian() * 0.15D - 2.5D;
 					fx2.posZ = posZ + rand.nextGaussian() * 0.15D;
@@ -79,7 +79,7 @@ public class EntityCarrier extends EntityThrowable {
 					
 					world.spawnEntity(fx2);
 	
-					EntityGasFlameFX fx3 = new EntityGasFlameFX(world);
+					final EntityGasFlameFX fx3 = new EntityGasFlameFX(world);
 					fx3.posY = posY - 0.25D;
 					fx3.posX = posX + rand.nextGaussian() * 0.15D;
 					fx3.posZ = posZ + rand.nextGaussian() * 0.15D + 2.5D;
@@ -87,7 +87,7 @@ public class EntityCarrier extends EntityThrowable {
 					
 					world.spawnEntity(fx3);
 	
-					EntityGasFlameFX fx4 = new EntityGasFlameFX(world);
+					final EntityGasFlameFX fx4 = new EntityGasFlameFX(world);
 					fx4.posY = posY - 0.25D;
 					fx4.posX = posX + rand.nextGaussian() * 0.15D;
 					fx4.posZ = posZ + rand.nextGaussian() * 0.15D - 2.5D;
@@ -116,18 +116,18 @@ public class EntityCarrier extends EntityThrowable {
 			
 			if(payload.getItem() == ModItems.flame_pony) {
 				ExplosionLarge.spawnTracers(world, posX, posY, posZ, 25);
-				for(EntityPlayer p : world.playerEntities)
+				for(final EntityPlayer p : world.playerEntities)
 					AdvancementManager.grantAchievement(p, AdvancementManager.achSpace);
 			}
 			
 			if(payload.getItem() == ModItems.sat_foeq) {
-				for(EntityPlayer p : world.playerEntities)
+				for(final EntityPlayer p : world.playerEntities)
 					AdvancementManager.grantAchievement(p, AdvancementManager.achFOEQ);
 			}
 			
 			if(payload.getItem() instanceof ItemSatChip) {
 				
-			    int freq = ItemSatChip.getFreq(payload);
+			    final int freq = ItemSatChip.getFreq(payload);
 		    	
 		    	Satellite.orbit(world, Satellite.getIDFromItem(payload.getItem()), freq, posX, posY, posZ);
 			}
@@ -141,7 +141,7 @@ public class EntityCarrier extends EntityThrowable {
         this.getDataManager().register(HASBOOSTERS, true);
 	}
 	
-	public void setPayload(ItemStack stack) {
+	public void setPayload(final ItemStack stack) {
 		this.payload = stack.copy();
 	}
 	
@@ -149,7 +149,7 @@ public class EntityCarrier extends EntityThrowable {
 		this.getDataManager().set(HASBOOSTERS, false);
 		
 		if(!world.isRemote) {
-			EntityBooster boost1 = new EntityBooster(world);
+			final EntityBooster boost1 = new EntityBooster(world);
 			boost1.posX = posX + 1.5D;
 			boost1.posY = posY;
 			boost1.posZ = posZ;
@@ -158,7 +158,7 @@ public class EntityCarrier extends EntityThrowable {
 			boost1.motionZ = rand.nextGaussian() * 0.1D;
 			world.spawnEntity(boost1);
 			
-			EntityBooster boost2 = new EntityBooster(world);
+			final EntityBooster boost2 = new EntityBooster(world);
 			boost2.posX = posX - 1.5D;
 			boost2.posY = posY;
 			boost2.posZ = posZ;
@@ -167,7 +167,7 @@ public class EntityCarrier extends EntityThrowable {
 			boost2.motionZ = rand.nextGaussian() * 0.1D;
 			world.spawnEntity(boost2);
 			
-			EntityBooster boost3 = new EntityBooster(world);
+			final EntityBooster boost3 = new EntityBooster(world);
 			boost3.posX = posX;
 			boost3.posY = posY;
 			boost3.posZ = posZ + 1.5D;
@@ -176,7 +176,7 @@ public class EntityCarrier extends EntityThrowable {
 			boost3.motionX = rand.nextGaussian() * 0.1D;
 			world.spawnEntity(boost3);
 			
-			EntityBooster boost4 = new EntityBooster(world);
+			final EntityBooster boost4 = new EntityBooster(world);
 			boost4.posX = posX;
 			boost4.posY = posY;
 			boost4.posZ = posZ - 1.5D;
@@ -188,11 +188,11 @@ public class EntityCarrier extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult p_70184_1_) {}
+	protected void onImpact(final RayTraceResult p_70184_1_) {}
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 500000;
     }

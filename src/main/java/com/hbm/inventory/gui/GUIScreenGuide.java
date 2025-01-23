@@ -34,12 +34,12 @@ public class GUIScreenGuide extends GuiScreen {
 	protected int guiLeft;
 	protected int guiTop;
 	
-	private BookType type;
+	private final BookType type;
 	
 	int page;
 	int maxPage;
 
-	public GUIScreenGuide(EntityPlayer player) {
+	public GUIScreenGuide(final EntityPlayer player) {
 		
 		type = BookType.getType(player.getHeldItem(EnumHand.MAIN_HAND).getItemDamage());
 		
@@ -58,7 +58,7 @@ public class GUIScreenGuide extends GuiScreen {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		this.drawDefaultBackground();
 		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		GlStateManager.disableLighting();
@@ -66,7 +66,7 @@ public class GUIScreenGuide extends GuiScreen {
 		GlStateManager.enableLighting();
 	}
 
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
 		GlStateManager.color(1, 1, 1, 1);
 		
 		if(page < 0) {
@@ -78,8 +78,8 @@ public class GUIScreenGuide extends GuiScreen {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawModalRectWithCustomSizedTexture(guiLeft, guiTop, 0, 0, xSize, ySize, 512, 512);
 
-		boolean overLeft = i >= guiLeft + 24 && i < guiLeft + 42 && j >= guiTop + 155 && j < guiTop + 165;
-		boolean overRight = i >= guiLeft + 230 && i < guiLeft + 248 && j >= guiTop + 155 && j < guiTop + 165;
+		final boolean overLeft = i >= guiLeft + 24 && i < guiLeft + 42 && j >= guiTop + 155 && j < guiTop + 165;
+		final boolean overRight = i >= guiLeft + 230 && i < guiLeft + 248 && j >= guiTop + 155 && j < guiTop + 165;
 
 		if(this.page > 0) {
 			
@@ -98,10 +98,10 @@ public class GUIScreenGuide extends GuiScreen {
 		}
 	}
 
-	public static void drawImage(int x, int y, int dimX, int dimY) {
+	public static void drawImage(final int x, final int y, final int dimX, final int dimY) {
 		
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buf = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder buf = tessellator.getBuffer();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		GlStateManager.color(1, 1, 1, 1);
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
@@ -112,16 +112,16 @@ public class GUIScreenGuide extends GuiScreen {
 		tessellator.draw();
 	}
 
-	protected void drawGuiContainerForegroundLayer(int x, int y) {
+	protected void drawGuiContainerForegroundLayer(final int x, final int y) {
 		
 		if(this.page < 0) {
 			
-			float scale = this.type.titleScale;
-			String[] coverLines = I18nUtil.resolveKeyArray(this.type.title);
+			final float scale = this.type.titleScale;
+			final String[] coverLines = I18nUtil.resolveKeyArray(this.type.title);
 			
 			for(int i = 0; i < coverLines.length; i++) {
 				
-				String cover = coverLines[i];
+				final String cover = coverLines[i];
 				
 				GL11.glPushMatrix();
 				GL11.glScalef(scale, scale, 1F);
@@ -132,23 +132,23 @@ public class GUIScreenGuide extends GuiScreen {
 			return;
 		}
 		
-		int sideOffset = 130;
+		final int sideOffset = 130;
 		
 		for(int i = 0; i < 2; i++) {
 			
-			int defacto = this.page * 2 + i;
+			final int defacto = this.page * 2 + i;
 			
 			if(defacto < this.type.pages.size()) {
 				
-				GuidePage page = this.type.pages.get(defacto);
+				final GuidePage page = this.type.pages.get(defacto);
 				
-				float scale = page.scale;
-				String text = I18nUtil.resolveKey(page.text);
-				int width = 100;
+				final float scale = page.scale;
+				final String text = I18nUtil.resolveKey(page.text);
+				final int width = 100;
 				
-				int widthScaled = (int) (width * scale);
-				List<String> lines = new ArrayList<>();
-				String[] words = text.split(" ");
+				final int widthScaled = (int) (width * scale);
+				final List<String> lines = new ArrayList<>();
+				final String[] words = text.split(" ");
 				
 				lines.add(words[0]);
 				int indent = this.fontRenderer.getStringWidth(words[0]);
@@ -166,12 +166,12 @@ public class GUIScreenGuide extends GuiScreen {
 					}
 				}
 				
-				float titleScale = getOverrideScale(page.titleScale, page.title + ".scale");
+				final float titleScale = getOverrideScale(page.titleScale, page.title + ".scale");
 				
 				GL11.glPushMatrix();
 				GL11.glScalef(1F/scale, 1F/scale, 1F);
 				
-				float topOffset = page.title == null ? 0 : 6 / titleScale;
+				final float topOffset = page.title == null ? 0 : 6 / titleScale;
 				
 				for(int l = 0; l < lines.size(); l++) {
 					this.fontRenderer.drawString(lines.get(l), (int)((guiLeft + 20 + i * sideOffset) * scale), (int)((guiTop + 30 + topOffset) * scale + (12 * l)), 4210752);
@@ -181,8 +181,8 @@ public class GUIScreenGuide extends GuiScreen {
 				
 				if(page.title != null) {
 					
-					float tScale = titleScale;
-					String titleLoc = I18nUtil.resolveKey(page.title);
+					final float tScale = titleScale;
+					final String titleLoc = I18nUtil.resolveKey(page.title);
 					
 					GL11.glPushMatrix();
 					GL11.glScalef(1F/tScale, 1F/tScale, 1F);
@@ -203,15 +203,15 @@ public class GUIScreenGuide extends GuiScreen {
 					drawImage(guiLeft + 20 + ix + sideOffset * i, guiTop + page.y, page.sizeX, page.sizeY);
 				}
 				
-				String pageLabel = (defacto + 1) + "/" + (this.type.pages.size());
+				final String pageLabel = (defacto + 1) + "/" + (this.type.pages.size());
 				this.fontRenderer.drawString(pageLabel, guiLeft + 44 + i * 185 - i * this.fontRenderer.getStringWidth(pageLabel), guiTop + 156, 4210752);
 			}
 		}
 	}
 	
-	private float getOverrideScale(float def, String tag) {
+	private float getOverrideScale(final float def, final String tag) {
 		
-		String scale = I18nUtil.resolveKey(tag);
+		final String scale = I18nUtil.resolveKey(tag);
 		
 		if(NumberUtils.isCreatable(scale)) {
 			return 1F / NumberUtils.toFloat(scale);
@@ -221,7 +221,7 @@ public class GUIScreenGuide extends GuiScreen {
 	}
 
 	@Override
-	protected void mouseClicked(int i, int j, int k) {
+	protected void mouseClicked(final int i, final int j, final int k) {
 		
 		if(page < 0) {
 			page = 0;
@@ -229,8 +229,8 @@ public class GUIScreenGuide extends GuiScreen {
 			return;
 		}
 		
-		boolean overLeft = i >= guiLeft + 24 && i < guiLeft + 42 && j >= guiTop + 155 && j < guiTop + 165;
-		boolean overRight = i >= guiLeft + 230 && i < guiLeft + 248 && j >= guiTop + 155 && j < guiTop + 165;
+		final boolean overLeft = i >= guiLeft + 24 && i < guiLeft + 42 && j >= guiTop + 155 && j < guiTop + 165;
+		final boolean overRight = i >= guiLeft + 230 && i < guiLeft + 248 && j >= guiTop + 155 && j < guiTop + 165;
 		
 		if(overLeft && page > 0) {
 			page--;
@@ -244,7 +244,7 @@ public class GUIScreenGuide extends GuiScreen {
 	}
 
 	@Override
-	protected void keyTyped(char p_73869_1_, int p_73869_2_) {
+	protected void keyTyped(final char p_73869_1_, final int p_73869_2_) {
 		if(p_73869_2_ == 1 || p_73869_2_ == Minecraft.getMinecraft().gameSettings.keyBindInventory.getKeyCode()) {
 			Minecraft.getMinecraft().player.closeScreen();
 		}

@@ -21,7 +21,7 @@ public class NTMMaterial {
 	public int convIn;
 	public int convOut;
 	
-	public NTMMaterial(int id, DictFrame dict) {
+	public NTMMaterial(final int id, final DictFrame dict) {
 		
 		this.names = dict.mats;
 		this.id = id;
@@ -30,7 +30,7 @@ public class NTMMaterial {
 		this.convIn = 1;
 		this.convOut = 1;
 		
-		for(String name : dict.mats) {
+		for(final String name : dict.mats) {
 			Mats.matByName.put(name, this);
 		}
 		
@@ -42,7 +42,7 @@ public class NTMMaterial {
 		return "hbmmat." + this.names[0].toLowerCase();
 	}
 	
-	public NTMMaterial setConversion(NTMMaterial mat, int in, int out) {
+	public NTMMaterial setConversion(final NTMMaterial mat, final int in, final int out) {
 		this.smeltsInto = mat;
 		this.convIn = in;
 		this.convOut = out;
@@ -50,7 +50,7 @@ public class NTMMaterial {
 	}
 	
 	/** Shapes for autogen */
-	public NTMMaterial setShapes(MaterialShapes... shapes) {
+	public NTMMaterial setShapes(final MaterialShapes... shapes) {
 		this.shapes = shapes;
 		return this;
 	}
@@ -62,12 +62,12 @@ public class NTMMaterial {
 	}
 	
 	/** Defines smelting behavior */
-	public NTMMaterial smeltable(SmeltingBehavior behavior) {
+	public NTMMaterial smeltable(final SmeltingBehavior behavior) {
 		this.smeltable = behavior;
 		return this;
 	}
 	
-	public NTMMaterial setMoltenColor(int color) {
+	public NTMMaterial setMoltenColor(final int color) {
 		this.moltenColor = color;
 		return this;
 	}

@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ import net.minecraft.world.World;
 
 public class ItemBattery extends Item implements IBatteryItem {
 
-	private long maxCharge;
-	private long chargeRate;
-	private long dischargeRate;
+	private final long maxCharge;
+	private final long chargeRate;
+	private final long dischargeRate;
 	
-	public ItemBattery(long dura, long chargeRate, long dischargeRate, String s){
+	public ItemBattery(final long dura, final long chargeRate, final long dischargeRate, final String s){
 		this.maxCharge = dura;
 		this.chargeRate = chargeRate;
 		this.dischargeRate = dischargeRate;
@@ -33,7 +34,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 	
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(stack.getItem() == ModItems.battery_creative)
 			return;
 		long charge = maxCharge;
@@ -49,7 +50,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 		{
 			list.add("§6"+I18nUtil.resolveKey("desc.energystore")+" " + Library.getShortNumber(charge) + "/" + Library.getShortNumber(maxCharge) + "HE§r");
 		} else {
-			String charge1 = Library.getShortNumber((charge * 100) / this.maxCharge);
+			final String charge1 = Library.getShortNumber((charge * 100) / this.maxCharge);
 			list.add("§2"+I18nUtil.resolveKey("desc.energychargecur")+" " + charge1 + "%§r");
 			list.add("(" + Library.getShortNumber(charge) + "/" + Library.getShortNumber(maxCharge) + "HE)");
 		}
@@ -58,7 +59,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack p_77613_1_) {
+	public EnumRarity getRarity(final ItemStack p_77613_1_) {
     	
     	if(this == ModItems.battery_schrabidium)
     	{
@@ -77,7 +78,7 @@ public class ItemBattery extends Item implements IBatteryItem {
     	return EnumRarity.COMMON;
     }
 	
-	public void chargeBattery(ItemStack stack, long i) {
+	public void chargeBattery(final ItemStack stack, final long i) {
 		if(stack.getItem() == ModItems.battery_creative)
 			return;
     	if(stack.getItem() instanceof ItemBattery) {
@@ -90,41 +91,41 @@ public class ItemBattery extends Item implements IBatteryItem {
     	}
     }
     
-    public void setCharge(ItemStack stack, long i) {
+    public void setCharge(final ItemStack stack, final long i) {
     	if(stack.getItem() == ModItems.battery_creative)
 			return;
     	if(stack.getItem() instanceof ItemBattery) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", i);
     		} else {
-    			stack.setTagCompound(new NBTTagCompound());;
-    			stack.getTagCompound().setLong("charge", i);
+    			stack.setTagCompound(new NBTTagCompound());
+                stack.getTagCompound().setLong("charge", i);
     		}
     	}
     }
     
-    public void dischargeBattery(ItemStack stack, long i) {
+    public void dischargeBattery(final ItemStack stack, final long i) {
     	if(stack.getItem() == ModItems.battery_creative)
 			return;
     	if(stack.getItem() instanceof ItemBattery) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", stack.getTagCompound().getLong("charge") - i);
     		} else {
-    			stack.setTagCompound(new NBTTagCompound());;
-    			stack.getTagCompound().setLong("charge", this.maxCharge - i);
+    			stack.setTagCompound(new NBTTagCompound());
+                stack.getTagCompound().setLong("charge", this.maxCharge - i);
     		}
     	}
     }
     
-    public long getCharge(ItemStack stack) {
+    public long getCharge(final ItemStack stack) {
     	if(stack.getItem() == ModItems.battery_creative)
 			return Long.MAX_VALUE;
     	if(stack.getItem() instanceof ItemBattery) {
     		if(stack.hasTagCompound()) {
     			return stack.getTagCompound().getLong("charge");
     		} else {
-    			stack.setTagCompound(new NBTTagCompound());;
-    			stack.getTagCompound().setLong("charge", ((ItemBattery)stack.getItem()).maxCharge);
+    			stack.setTagCompound(new NBTTagCompound());
+                stack.getTagCompound().setLong("charge", ((ItemBattery)stack.getItem()).maxCharge);
     			return stack.getTagCompound().getLong("charge");
     		}
     	}
@@ -144,12 +145,12 @@ public class ItemBattery extends Item implements IBatteryItem {
     	return dischargeRate;
     }
     
-    public static ItemStack getEmptyBattery(Item item) {
+    public static ItemStack getEmptyBattery(final Item item) {
     	
     	if(item instanceof ItemBattery) {
-    		ItemStack stack = new ItemStack(item);
-    		stack.setTagCompound(new NBTTagCompound());;
-    		stack.getTagCompound().setLong("charge", 0);
+    		final ItemStack stack = ItemStackUtil.itemStackFrom(item);
+    		stack.setTagCompound(new NBTTagCompound());
+            stack.getTagCompound().setLong("charge", 0);
     		//stack.setItemDamage(100);
     		return stack.copy();
     	}
@@ -157,27 +158,25 @@ public class ItemBattery extends Item implements IBatteryItem {
     	return null;
     }
     
-    public static ItemStack getFullBattery(Item item) {
+    public static ItemStack getFullBattery(final Item item) {
     	
     	if(item instanceof ItemBattery) {
-    		ItemStack stack = new ItemStack(item);
-    		stack.setTagCompound(new NBTTagCompound());;
-    		stack.getTagCompound().setLong("charge", ((ItemBattery)item).getMaxCharge());
+    		final ItemStack stack = ItemStackUtil.itemStackFrom(item);
+    		stack.setTagCompound(new NBTTagCompound());
+            stack.getTagCompound().setLong("charge", ((ItemBattery)item).getMaxCharge());
     		return stack.copy();
     	}
     	
-    	return new ItemStack(item);
+    	return ItemStackUtil.itemStackFrom(item);
     }
 	
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
-		if(stack.getItem() == ModItems.battery_creative)
-			return false;
-		return true;
-	}
+	public boolean showDurabilityBar(final ItemStack stack) {
+        return stack.getItem() != ModItems.battery_creative;
+    }
 	
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public double getDurabilityForDisplay(final ItemStack stack) {
 		return 1D - (double)getCharge(stack) / (double)getMaxCharge();
 	}
 	

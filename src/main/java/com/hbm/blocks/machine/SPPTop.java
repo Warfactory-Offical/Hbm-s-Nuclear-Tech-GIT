@@ -9,7 +9,7 @@ import net.minecraft.util.EnumBlockRenderType;
 
 public class SPPTop extends Block {
 
-	public SPPTop(Material materialIn, String s) {
+	public SPPTop(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -18,7 +18,7 @@ public class SPPTop extends Block {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

@@ -15,13 +15,13 @@ public class HbmFace {
     public TextureCoordinate[] textureCoordinates;
 
     @SideOnly(Side.CLIENT)
-    public void addFaceForRender(Tessellator tessellator)
+    public void addFaceForRender(final Tessellator tessellator)
     {
         addFaceForRender(tessellator, 0.0005F);
     }
 
     @SideOnly(Side.CLIENT)
-    public void addFaceForRender(Tessellator tessellator, float textureOffset)
+    public void addFaceForRender(final Tessellator tessellator, final float textureOffset)
     {
         if (faceNormal == null)
         {
@@ -75,8 +75,8 @@ public class HbmFace {
 
     public Vertex calculateFaceNormal()
     {
-        Vec3 v1 = Vec3.createVectorHelper(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y, vertices[1].z - vertices[0].z);
-        Vec3 v2 = Vec3.createVectorHelper(vertices[2].x - vertices[0].x, vertices[2].y - vertices[0].y, vertices[2].z - vertices[0].z);
+        final Vec3 v1 = Vec3.createVectorHelper(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y, vertices[1].z - vertices[0].z);
+        final Vec3 v2 = Vec3.createVectorHelper(vertices[2].x - vertices[0].x, vertices[2].y - vertices[0].y, vertices[2].z - vertices[0].z);
         Vec3 normalVector = null;
 
         normalVector = v1.crossProduct(v2).normalize();

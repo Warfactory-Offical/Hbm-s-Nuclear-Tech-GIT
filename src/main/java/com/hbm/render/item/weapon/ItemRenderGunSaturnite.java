@@ -22,7 +22,7 @@ public class ItemRenderGunSaturnite extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(sat_rl);
 		switch (type) {
 		case FIRST_PERSON_LEFT_HAND:

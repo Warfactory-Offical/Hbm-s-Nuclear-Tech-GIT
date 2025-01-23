@@ -22,7 +22,7 @@ public class TileEntityMachineDetector extends TileEntityLoadedBase implements I
 
 			this.updateStandardConnections(world, pos);
 
-			int meta = this.getBlockMetadata();
+			final int meta = this.getBlockMetadata();
 			int state = 0;
 
 			if(this.power > 0) {
@@ -31,14 +31,14 @@ public class TileEntityMachineDetector extends TileEntityLoadedBase implements I
 			}
 
 			if(meta != state) {
-				PowerDetector.updateBlockState(state==1 ? true: false, world, pos);
+				PowerDetector.updateBlockState(state == 1, world, pos);
 				this.markDirty();
 			}
 		}
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 

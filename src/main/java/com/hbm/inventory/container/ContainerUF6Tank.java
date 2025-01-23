@@ -12,9 +12,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerUF6Tank extends Container {
 
-	private TileEntityMachineUF6Tank testNuke;
+	private final TileEntityMachineUF6Tank testNuke;
 	
-	public ContainerUF6Tank(InventoryPlayer invPlayer, TileEntityMachineUF6Tank tedf) {
+	public ContainerUF6Tank(final InventoryPlayer invPlayer, final TileEntityMachineUF6Tank tedf) {
 		testNuke = tedf;
 		
 		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 0, 44, 17));
@@ -37,14 +37,14 @@ public class ContainerUF6Tank extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
@@ -73,7 +73,7 @@ public class ContainerUF6Tank extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return testNuke.isUseableByPlayer(player);
 	}
 }

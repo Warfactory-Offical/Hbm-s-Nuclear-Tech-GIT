@@ -25,13 +25,13 @@ import net.minecraft.world.World;
 
 public class MachineTurbofan extends BlockDummyable {
 
-	public MachineTurbofan(Material materialIn, String s) {
+	public MachineTurbofan(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		if(meta >= 12) return new TileEntityMachineTurbofan();
 		if(meta >= 6) return new TileEntityProxyCombo(false, true, true);
 		return null;
@@ -48,19 +48,19 @@ public class MachineTurbofan extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (world.isRemote) {
 			return true; 
 		} else if(player.getHeldItemMainhand().getItem() == ModItems.linker) {
 			return false;
 		} else if (!player.isSneaking()) {
 
-			int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+			final int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
 
 			if(pos1 == null)
 				return true;
 
-			TileEntityMachineTurbofan entity = (TileEntityMachineTurbofan) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
+			final TileEntityMachineTurbofan entity = (TileEntityMachineTurbofan) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
 			if (entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_turbofan, world, pos1[0], pos1[1], pos1[2]);
 			}
@@ -71,10 +71,10 @@ public class MachineTurbofan extends BlockDummyable {
 	}
 
 	@Override
-	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		this.makeExtra(world, x, y, z);
 		this.makeExtra(world, x - rot.offsetX, y, z - rot.offsetZ);
@@ -83,7 +83,7 @@ public class MachineTurbofan extends BlockDummyable {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add(I18n.format("trait.fuelefficiency"));
 		list.add(" "+I18n.format("trait.fuelefficiency.desc", I18n.format(FuelGrade.AERO.getGrade()), 100));
 		super.addInformation(stack, worldIn, list, flagIn);

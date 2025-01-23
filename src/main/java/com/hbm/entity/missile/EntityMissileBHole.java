@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +12,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileBHole extends EntityMissileBaseAdvanced {
 
-	public EntityMissileBHole(World p_i1582_1_) {
+	public EntityMissileBHole(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 7F);
 	}
 
-	public EntityMissileBHole(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileBHole(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 7F);
 	}
@@ -27,7 +28,7 @@ public class EntityMissileBHole extends EntityMissileBaseAdvanced {
         {
             this.world.createExplosion(this, this.posX, this.posY, this.posZ, 1.5F, true);
 
-        	EntityBlackHole bl = new EntityBlackHole(this.world, 1.5F);
+        	final EntityBlackHole bl = new EntityBlackHole(this.world, 1.5F);
         	bl.posX = this.posX;
         	bl.posY = this.posY;
         	bl.posZ = this.posZ;
@@ -37,20 +38,20 @@ public class EntityMissileBHole extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
-		list.add(new ItemStack(ModItems.wire_aluminium, 4));
-		list.add(new ItemStack(ModItems.plate_titanium, 4));
-		list.add(new ItemStack(ModItems.hull_small_aluminium, 2));
-		list.add(new ItemStack(ModItems.ducttape, 1));
-		list.add(new ItemStack(ModItems.circuit_targeting_tier1, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 4));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.hull_small_aluminium, 2));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.ducttape, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.circuit_targeting_tier1, 1));
 		
 		return list;
 	}
 
 	@Override
 	public ItemStack getDebrisRareDrop() {
-		return new ItemStack(ModItems.grenade_black_hole, 1);
+		return ItemStackUtil.itemStackFrom(ModItems.grenade_black_hole, 1);
 	}
 
 	@Override

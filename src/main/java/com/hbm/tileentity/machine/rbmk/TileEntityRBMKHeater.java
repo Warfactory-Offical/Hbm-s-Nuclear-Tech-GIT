@@ -66,21 +66,21 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 		
 		if(!world.isRemote) {
 			setFluidType();
-            PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] { tanks[0], tanks[1] }), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50));
+            PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50));
 
 			if(HeatRecipes.hasBoilRecipe(tankTypes[0])) {
-				Fluid hotFluid = HeatRecipes.getBoilFluid(tankTypes[0]);
-				double tempRange = this.heat - (hotFluid.getTemperature()-273);
+				final Fluid hotFluid = HeatRecipes.getBoilFluid(tankTypes[0]);
+				final double tempRange = this.heat - (hotFluid.getTemperature()-273);
 				if(tempRange > 0) {
 
-					int heatReq = HeatRecipes.getRequiredHeat(tankTypes[0]);
-					int inputAmount = HeatRecipes.getInputAmountHot(tankTypes[0]);
-					int outputAmount = HeatRecipes.getOutputAmountHot(tankTypes[0]);
+					final int heatReq = HeatRecipes.getRequiredHeat(tankTypes[0]);
+					final int inputAmount = HeatRecipes.getInputAmountHot(tankTypes[0]);
+					final int outputAmount = HeatRecipes.getOutputAmountHot(tankTypes[0]);
 					
-					int inputOps = tanks[0].getFluidAmount() / inputAmount;
-					int outputOps = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / outputAmount;
-					int tempOps = (int) Math.floor((tempRange * TU_PER_DEGREE) / heatReq);
-					int ops = Math.min(inputOps, Math.min(outputOps, tempOps));
+					final int inputOps = tanks[0].getFluidAmount() / inputAmount;
+					final int outputOps = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / outputAmount;
+					final int tempOps = (int) Math.floor((tempRange * TU_PER_DEGREE) / heatReq);
+					final int ops = Math.min(inputOps, Math.min(outputOps, tempOps));
 
 					tanks[0].drain(inputAmount * ops, true);
 					tanks[1].fill(new FluidStack(tankTypes[1], outputAmount * ops), true);
@@ -88,7 +88,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 				}
 			}
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
             data.setTag("tanks", FFUtils.serializeTankArray(tanks));
             data.setString("tankTypes0", tankTypes[0].getName());
 			data.setString("tankTypes1", tankTypes[1].getName());
@@ -103,7 +103,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-    public void networkUnpack(NBTTagCompound nbt) {
+    public void networkUnpack(final NBTTagCompound nbt) {
     	super.networkUnpack(nbt);
         if (nbt.hasKey("tanks")) {
             FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
@@ -113,14 +113,14 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
     }
 
 	public void setFluidType(){
-		ItemStack inFluid = this.inventory.getStackInSlot(0);
+		final ItemStack inFluid = this.inventory.getStackInSlot(0);
         if(inFluid.getItem() == ModItems.forge_fluid_identifier) {
             setFluidTypes(ItemForgeFluidIdentifier.getType(inFluid));
         }
         if(tankTypes[0] == null) setFluidTypes(ModForgeFluids.coolant);
 	}
 
-	public void setFluidTypes(Fluid f){
+	public void setFluidTypes(final Fluid f){
 		if(HeatRecipes.hasBoilRecipe(f) && tankTypes[0] != f) {
             tankTypes[0] = f;
             tankTypes[1] = HeatRecipes.getBoilFluid(f);
@@ -131,7 +131,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
         }
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 
 		fillFluid(this.pos.getX(), this.pos.getY() + rbmkHeight + 1, this.pos.getZ(), tank);
 		
@@ -155,17 +155,17 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 		}
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank tank) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 
-	public void getDiagData(NBTTagCompound nbt) {
+	public void getDiagData(final NBTTagCompound nbt) {
 		this.writeToNBT(nbt);
 		nbt.removeTag("jumpheight");
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
 		tanks[0].readFromNBT(nbt.getCompoundTag("tanks0"));
@@ -175,7 +175,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
 		nbt.setTag("tanks0", tanks[0].writeToNBT(new NBTTagCompound()));
@@ -187,9 +187,8 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-    public void recievePacket(NBTTagCompound[] tags) {
+    public void recievePacket(final NBTTagCompound[] tags) {
         if (tags.length != 2) {
-            return;
         } else {
             tanks[0].readFromNBT(tags[0]);
             tanks[1].readFromNBT(tags[1]);
@@ -197,9 +196,9 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
     }
 	
 	@Override
-	public void onMelt(int reduce) {
+	public void onMelt(final int reduce) {
 		
-		int count = 1 + world.rand.nextInt(2);
+		final int count = 1 + world.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.BLANK);
@@ -215,7 +214,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 
 	@Override
 	public NBTTagCompound getNBTForConsole() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setInteger("inputFluidAmount", this.tanks[0].getFluidAmount());
 		data.setInteger("inputFluidMax", this.tanks[0].getCapacity());
 		data.setInteger("outputFluidAmount", this.tanks[1].getFluidAmount());
@@ -231,7 +230,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && resource.amount > 0 && resource.getFluid() == tankTypes[0] && HeatRecipes.hasBoilRecipe(resource.getFluid())){
 			return tanks[0].fill(resource, doFill);
 		}
@@ -239,7 +238,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		if(resource != null && resource.amount > 0 && resource.getFluid() == tankTypes[1]){
 			return tanks[1].drain(resource, doDrain);
 		}
@@ -247,7 +246,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		if (maxDrain > 0) {
             return tanks[1].drain(maxDrain, doDrain);
         }
@@ -255,12 +254,12 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
@@ -269,7 +268,7 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 	// control panel
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		Map<String, DataValue> data = super.getQueryData();
+		final Map<String, DataValue> data = super.getQueryData();
 
 		data.put("t0_fluidType", new DataValueString(tankTypes[0].getName()));
 		data.put("t0_fluidAmount", new DataValueFloat((float) tanks[0].getFluidAmount()));

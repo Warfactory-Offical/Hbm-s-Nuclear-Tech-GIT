@@ -25,7 +25,7 @@ public class CyclotronRecipeHandler implements IRecipeCategory<CyclotronRecipe> 
 	protected final IDrawableStatic arrowStatic;
 	protected final IDrawableAnimated arrowAnimated;
 	
-	public CyclotronRecipeHandler(IGuiHelper help) {
+	public CyclotronRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 24, 16, 127, 53);
 		arrowStatic = help.createDrawable(gui_rl, 100, 118, 24, 18);
 		arrowAnimated = help.createAnimatedDrawable(arrowStatic, 48, StartDirection.LEFT, false);
@@ -52,13 +52,13 @@ public class CyclotronRecipeHandler implements IRecipeCategory<CyclotronRecipe> 
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		arrowAnimated.draw(minecraft, 25, 18);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, CyclotronRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final CyclotronRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 1, 18);
 		guiItemStacks.init(1, true, 55, 18);

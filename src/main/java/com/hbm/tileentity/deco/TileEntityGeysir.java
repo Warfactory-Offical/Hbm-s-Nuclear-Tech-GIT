@@ -33,8 +33,8 @@ public class TileEntityGeysir extends TileEntity implements ITickable {
 		if (!this.world.isRemote && world.isAirBlock(pos.up())) {
 			timer--;
 			
-			IBlockState state = world.getBlockState(pos);
-			boolean active = state.getValue(BlockGeysir.ACTIVE);
+			final IBlockState state = world.getBlockState(pos);
+			final boolean active = state.getValue(BlockGeysir.ACTIVE);
 			
 			if(timer <= 0) {
 				timer = getDelay();
@@ -53,9 +53,9 @@ public class TileEntityGeysir extends TileEntity implements ITickable {
 
 	private void water() {
 		
-		int particleCount = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(range, range, range)).size();
+		final int particleCount = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(range, range, range)).size();
 		if(particleCount < 25){
-			EntityWaterSplash fx = new EntityWaterSplash(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
+			final EntityWaterSplash fx = new EntityWaterSplash(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
 
 			fx.motionX = world.rand.nextGaussian() * 0.35;
 			fx.motionZ = world.rand.nextGaussian() * 0.35;
@@ -67,10 +67,10 @@ public class TileEntityGeysir extends TileEntity implements ITickable {
 	
 	private void chlorine() {
 		
-		int particleCount = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(range, range, range)).size();
+		final int particleCount = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(range, range, range)).size();
 		if(particleCount < 25){
 			for(int i = 0; i < 3; i++) {
-				EntityOrangeFX fx = new EntityOrangeFX(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
+				final EntityOrangeFX fx = new EntityOrangeFX(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
 		
 				fx.motionX = world.rand.nextGaussian() * 0.45;
 				fx.motionZ = world.rand.nextGaussian() * 0.45;
@@ -83,10 +83,10 @@ public class TileEntityGeysir extends TileEntity implements ITickable {
 	
 	private void vapor() {
 
-		List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY() + 0.5, pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5));
+		final List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY() + 0.5, pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5));
 		
 		if (!entities.isEmpty()) {
-			for (Entity e : entities) {
+			for (final Entity e : entities) {
 
 				if(e instanceof EntityLivingBase)
 				((EntityLivingBase)e).addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 0));
@@ -96,15 +96,15 @@ public class TileEntityGeysir extends TileEntity implements ITickable {
 	
 	private void fire() {
 
-		int range = 32;
+		final int range = 32;
 		if(world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(range, range, range)).isEmpty())
 			return;
 
-		int particleCount = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(range, range, range)).size();
+		final int particleCount = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(range, range, range)).size();
 		
 		if(particleCount < 25){
 			if(world.rand.nextInt(3) == 0) {
-				EntityShrapnel fx = new EntityShrapnel(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
+				final EntityShrapnel fx = new EntityShrapnel(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
 				fx.motionX = world.rand.nextGaussian() * 0.05;
 				fx.motionZ = world.rand.nextGaussian() * 0.05;
 				fx.motionY = 0.5 + world.rand.nextDouble() * timer * 0.01;
@@ -119,10 +119,10 @@ public class TileEntityGeysir extends TileEntity implements ITickable {
 
 	private int getDelay() {
 		
-		IBlockState state = world.getBlockState(pos);
-		Block b = state.getBlock();
-		boolean active = state.getValue(BlockGeysir.ACTIVE);
-		Random rand = world.rand;
+		final IBlockState state = world.getBlockState(pos);
+		final Block b = state.getBlock();
+		final boolean active = state.getValue(BlockGeysir.ACTIVE);
+		final Random rand = world.rand;
 		
 		if(b == ModBlocks.geysir_water) {
 			
@@ -146,7 +146,7 @@ public class TileEntityGeysir extends TileEntity implements ITickable {
 	}
 	
 	private void perform() {
-		Block b = world.getBlockState(pos).getBlock();
+		final Block b = world.getBlockState(pos).getBlock();
 		
 		if(b == ModBlocks.geysir_water) {
 			

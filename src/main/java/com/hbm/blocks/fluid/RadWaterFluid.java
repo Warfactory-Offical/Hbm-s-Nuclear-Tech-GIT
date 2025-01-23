@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class RadWaterFluid extends Fluid {
 
-	public RadWaterFluid(String name){
+	public RadWaterFluid(final String name){
 		super(name, new ResourceLocation("blocks/water_still"), new ResourceLocation("blocks/water_flow"), Color.white);
 	}
 	

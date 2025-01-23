@@ -23,12 +23,12 @@ public class BlockHazardFalling extends BlockFalling implements IItemHazard {
 
 	private boolean beaconable = false;
 
-	public BlockHazardFalling(Material mat) {
+	public BlockHazardFalling(final Material mat) {
 		super(mat);
 		this.module = new ItemHazardModule();
 	}
 
-	public BlockHazardFalling(Material mat, String s, SoundType type) {
+	public BlockHazardFalling(final Material mat, final String s, final SoundType type) {
 		this(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -38,7 +38,7 @@ public class BlockHazardFalling extends BlockFalling implements IItemHazard {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
-	public BlockHazardFalling(SoundType type, String s) {
+	public BlockHazardFalling(final SoundType type, final String s) {
 		this(Material.SAND, s, type);
 	}
 
@@ -48,7 +48,7 @@ public class BlockHazardFalling extends BlockFalling implements IItemHazard {
 	}
 
 	@Override
-	public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon){
+	public boolean isBeaconBase(final IBlockAccess worldObj, final BlockPos pos, final BlockPos beacon){
 		return beaconable;
 	}
 	
@@ -58,14 +58,14 @@ public class BlockHazardFalling extends BlockFalling implements IItemHazard {
 	}
 
 	@Override
-	public IItemHazard addRadiation(float radiation) {
+	public IItemHazard addRadiation(final float radiation) {
 		this.getModule().addRadiation(radiation);
 		this.rad = radiation * 0.1F;
 		return this;
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		if(this.rad > 0) {
 			RadiationSavedData.incrementRad(world, pos, rad*0.01F, rad);
 		}
@@ -73,7 +73,7 @@ public class BlockHazardFalling extends BlockFalling implements IItemHazard {
 	}
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 
 		if(this.rad > 0)
 			return 20;
@@ -82,7 +82,7 @@ public class BlockHazardFalling extends BlockFalling implements IItemHazard {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state){
+	public void onBlockAdded(final World world, final BlockPos pos, final IBlockState state){
 		super.onBlockAdded(world, pos, state);
 		if(this.rad > 0){
 			this.setTickRandomly(true);

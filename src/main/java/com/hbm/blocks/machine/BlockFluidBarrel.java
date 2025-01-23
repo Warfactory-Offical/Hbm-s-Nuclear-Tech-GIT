@@ -29,10 +29,10 @@ import net.minecraft.world.World;
 
 public class BlockFluidBarrel extends BlockContainer {
 
-	private int capacity;
+	private final int capacity;
 	public static boolean keepInventory;
 	
-	public BlockFluidBarrel(Material materialIn, int cap, String s) {
+	public BlockFluidBarrel(final Material materialIn, final int cap, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -42,12 +42,12 @@ public class BlockFluidBarrel extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityBarrel(capacity);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> list, final ITooltipFlag advanced) {
 		if(this == ModBlocks.barrel_plastic) {
 			list.add(TextFormatting.AQUA + I18nUtil.resolveKey("desc.capacity", "12,000"));
 			list.add(TextFormatting.YELLOW + I18nUtil.resolveKey("desc.cannothot"));
@@ -94,12 +94,12 @@ public class BlockFluidBarrel extends BlockContainer {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote) {
 			return true;
 			
@@ -113,29 +113,29 @@ public class BlockFluidBarrel extends BlockContainer {
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if(!keepInventory)
 			InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		return YellowBarrel.BARREL_BB;
 	}
 }

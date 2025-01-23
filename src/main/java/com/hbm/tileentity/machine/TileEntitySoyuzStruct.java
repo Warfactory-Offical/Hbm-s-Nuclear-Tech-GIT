@@ -139,7 +139,7 @@ public class TileEntitySoyuzStruct extends TileEntity implements ITickable {
 
 		/// GENERATE LAUNCHER ///
 
-		ForgeDirection dir = ForgeDirection.EAST;
+		final ForgeDirection dir = ForgeDirection.EAST;
 
 		world.setBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), Blocks.AIR.getDefaultState());
 		world.setBlockState(new BlockPos(pos.getX(), pos.getY() + SoyuzLauncher.height, pos.getZ()), ModBlocks.soyuz_launcher.getDefaultState().withProperty(SoyuzLauncher.META, dir.ordinal() + SoyuzLauncher.offset), 3);

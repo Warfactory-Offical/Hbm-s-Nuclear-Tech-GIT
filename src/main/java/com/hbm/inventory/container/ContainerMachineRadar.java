@@ -8,11 +8,11 @@ import net.minecraft.inventory.Container;
 
 public class ContainerMachineRadar extends Container {
 	
-	public ContainerMachineRadar(InventoryPlayer invPlayer, TileEntityMachineRadar tedf) {
+	public ContainerMachineRadar(final InventoryPlayer invPlayer, final TileEntityMachineRadar tedf) {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return true;
 	}
 }

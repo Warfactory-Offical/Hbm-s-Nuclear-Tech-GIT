@@ -68,7 +68,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 	private double s5;
 	private double s6;
 
-	private double phi;
+	private final double phi;
 
 	public int falloutRainRadius1 = 0;
 	public int falloutRainRadius2 = 0;
@@ -76,7 +76,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 	public boolean falloutRainDoFlood = false;
 	public boolean falloutRainFire = false;
 
-	public EntityFalloutUnderGround(World p_i1582_1_) {
+	public EntityFalloutUnderGround(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(4, 20);
 		this.ignoreFrustumCheck = false;
@@ -86,7 +86,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 		this.currentSample = 0;
 	}
 
-	public EntityFalloutUnderGround(World p_i1582_1_, int maxage) {
+	public EntityFalloutUnderGround(final World p_i1582_1_, final int maxage) {
 		super(p_i1582_1_);
 		this.setSize(4, 20);
 		this.isImmuneToFire = true;
@@ -102,7 +102,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -121,10 +121,10 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -140,7 +140,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -149,7 +149,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 	private void unloadAllChunks() {
 		if(loaderTicket != null){
-			for(ChunkPos chunk : loadedChunks) {
+			for(final ChunkPos chunk : loadedChunks) {
 		        ForgeChunkManager.unforceChunk(loaderTicket, chunk);
 		    }
 		}
@@ -171,9 +171,9 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 				System.out.println("NTM F "+currentSample+" "+Math.round(10000D * 100D*currentSample/(double)this.maxSamples)/10000D+"% "+currentSample+"/"+this.maxSamples);
 				age = 0;
 			}
-			MutableBlockPos pos = new BlockPos.MutableBlockPos();
+			final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 			int rayCounter = 0;
-			long start = System.currentTimeMillis();
+			final long start = System.currentTimeMillis();
 
 			double fy, fr, theta;
 			for(int sample = currentSample; sample < this.maxSamples; sample++){
@@ -191,7 +191,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 			if(this.currentSample >= this.maxSamples-1) {
 				if(falloutRainRadius1 > 0){
-					EntityFalloutRain falloutRain = new EntityFalloutRain(this.world);
+					final EntityFalloutRain falloutRain = new EntityFalloutRain(this.world);
 					falloutRain.doFallout = falloutRainDoFallout;
 					falloutRain.doFlood = falloutRainDoFlood;
 					falloutRain.posX = this.posX;
@@ -209,7 +209,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 	IBlockState b;
 	Block bblock;
-	private void stompRadRay(MutableBlockPos pos, double directionX, double directionY, double directionZ) {
+	private void stompRadRay(final MutableBlockPos pos, final double directionX, final double directionY, final double directionZ) {
 		for(int l = 0; l < radius; l++) {
 			pos.setPos(posX+directionX*l, posY+directionY*l, posZ+directionZ*l);
 
@@ -222,7 +222,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 			bblock = b.getBlock();
 
 			if(bblock instanceof BlockStone || bblock == Blocks.COBBLESTONE) {
-				double ranDist = l * (1D + world.rand.nextDouble()*0.1D);
+				final double ranDist = l * (1D + world.rand.nextDouble()*0.1D);
 				if(ranDist > s1)
 					world.setBlockState(pos, ModBlocks.sellafield_slaked.getStateFromMeta(world.rand.nextInt(4)));
 				else if(ranDist > s2)
@@ -268,7 +268,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 				placeBlockFromDist(l, ModBlocks.waste_earth, pos);
 				return;
 			} else if(bblock instanceof BlockDirt) {
-				BlockDirt.DirtType meta = b.getValue(BlockDirt.VARIANT);
+				final BlockDirt.DirtType meta = b.getValue(BlockDirt.VARIANT);
 				if(meta == BlockDirt.DirtType.DIRT)
 					placeBlockFromDist(l, ModBlocks.waste_dirt, pos);
 				else if(meta == BlockDirt.DirtType.COARSE_DIRT)
@@ -310,7 +310,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 				return;
 
 			} else if(bblock instanceof BlockSand) {
-				BlockSand.EnumType meta = b.getValue(BlockSand.VARIANT);
+				final BlockSand.EnumType meta = b.getValue(BlockSand.VARIANT);
 				if(rand.nextInt(60) == 0) {
 					placeBlockFromDist(l, meta == BlockSand.EnumType.SAND ? ModBlocks.waste_trinitite : ModBlocks.waste_trinitite_red, pos);
 				} else {
@@ -328,7 +328,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 			} else if(bblock == Blocks.COAL_ORE) {
 				if(l < s6){
-					int ra = rand.nextInt(150);
+					final int ra = rand.nextInt(150);
 					if(ra < 7) {
 						world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
 					} else if(ra < 10) {
@@ -339,7 +339,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 			} else if(bblock == Blocks.BROWN_MUSHROOM_BLOCK || bblock == Blocks.RED_MUSHROOM_BLOCK) {
 				if(l < s0){
-					BlockHugeMushroom.EnumType meta = b.getValue(BlockHugeMushroom.VARIANT);
+					final BlockHugeMushroom.EnumType meta = b.getValue(BlockHugeMushroom.VARIANT);
 					if(meta == BlockHugeMushroom.EnumType.STEM) {
 						world.setBlockState(pos, ModBlocks.mush_block_stem.getDefaultState());
 					} else {
@@ -363,7 +363,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 			} else if(bblock == ModBlocks.ore_uranium) {
 				if(l <= s6){
-					if (rand.nextInt((int)(1+VersatileConfig.getSchrabOreChance())) == 0)
+					if (rand.nextInt(1+VersatileConfig.getSchrabOreChance()) == 0)
 						world.setBlockState(pos, ModBlocks.ore_schrabidium.getDefaultState());
 					else
 						world.setBlockState(pos, ModBlocks.ore_uranium_scorched.getDefaultState());
@@ -372,7 +372,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 			} else if(bblock == ModBlocks.ore_nether_uranium) {
 				if(l <= s5){
-					if(rand.nextInt((int)(1+VersatileConfig.getSchrabOreChance())) == 0)
+					if(rand.nextInt(1+VersatileConfig.getSchrabOreChance()) == 0)
 						world.setBlockState(pos, ModBlocks.ore_nether_schrabidium.getDefaultState());
 					else
 						world.setBlockState(pos, ModBlocks.ore_nether_uranium_scorched.getDefaultState());
@@ -381,7 +381,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 			} else if(bblock == ModBlocks.ore_gneiss_uranium) {
 				if(l <= s4){
-					if(rand.nextInt((int)(1+VersatileConfig.getSchrabOreChance()/2)) == 0)
+					if(rand.nextInt(1+VersatileConfig.getSchrabOreChance()/2) == 0)
 						world.setBlockState(pos, ModBlocks.ore_gneiss_schrabidium.getDefaultState());
 					else
 						world.setBlockState(pos, ModBlocks.ore_gneiss_uranium_scorched.getDefaultState());
@@ -398,8 +398,8 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 		}
 	}
 
-	public void placeBlockFromDist(double dist, Block b, BlockPos pos){
-		double ranDist = dist * (1D + world.rand.nextDouble()*0.2);
+	public void placeBlockFromDist(final double dist, final Block b, final BlockPos pos){
+		final double ranDist = dist * (1D + world.rand.nextDouble()*0.2);
 		if(ranDist > s1)
 			world.setBlockState(pos, b.getStateFromMeta(0));
 		else if(ranDist > s2)
@@ -417,7 +417,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(final NBTTagCompound nbt) {
 		setScale(nbt.getInteger("scale"));
 		currentSample = nbt.getInteger("currentSample");
 		falloutRainRadius1 = nbt.getInteger("fR1");
@@ -428,7 +428,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("scale", getScale());
 		nbt.setInteger("currentSample", currentSample);
 		nbt.setInteger("fR1", falloutRainRadius1);
@@ -438,7 +438,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 		nbt.setBoolean("fRfire", falloutRainFire);
 	}
 
-	public void setScale(int i) {
+	public void setScale(final int i) {
 		this.dataManager.set(SCALE, Integer.valueOf(i));
 		s0 = 0.84 * i;
 		s1 = 0.74 * i;
@@ -453,7 +453,7 @@ public class EntityFalloutUnderGround extends Entity implements IChunkLoader {
 
 	public int getScale() {
 
-		int scale = this.dataManager.get(SCALE);
+		final int scale = this.dataManager.get(SCALE);
 
 		return scale == 0 ? 1 : scale;
 	}

@@ -46,7 +46,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	public NukeCustom(Material materialIn, String s) {
+	public NukeCustom(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -55,29 +55,29 @@ public class NukeCustom extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityNukeCustom();
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (world.isRemote) {
 			return true;
 			
 		} else if (!player.isSneaking()) {
 			
-			TileEntityNukeCustom entity = (TileEntityNukeCustom) world.getTileEntity(pos);
+			final TileEntityNukeCustom entity = (TileEntityNukeCustom) world.getTileEntity(pos);
 			
 			if (entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_nuke_custom, world, pos.getX(), pos.getY(), pos.getZ());
@@ -90,13 +90,13 @@ public class NukeCustom extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if (world.isBlockPowered(pos) && !world.isRemote) {
 			this.explode(world, pos);
 		}
 	}
 	
-	public static void explodeCustom(World world, double xCoord, double yCoord, double zCoord, float tnt, float nuke, float hydro, float bale, float dirty, float schrab, float sol, float euph) {
+	public static void explodeCustom(final World world, final double xCoord, final double yCoord, final double zCoord, float tnt, float nuke, float hydro, float bale, float dirty, float schrab, float sol, float euph) {
 		
 		dirty = Math.min(dirty, BombConfig.maxCustomDirtyRadius);
 		
@@ -104,7 +104,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 		if(euph > 0) {
 			
 			euph = Math.min(euph, BombConfig.maxCustomEuphLvl);
-			EntityGrenadeZOMG zomg = new EntityGrenadeZOMG(world, xCoord, yCoord, zCoord);
+			final EntityGrenadeZOMG zomg = new EntityGrenadeZOMG(world, xCoord, yCoord, zCoord);
 			ExplosionChaos.zomg(world, xCoord, yCoord, zCoord, (int)(100 * euph), null, zomg);
 
 		// SOLINIUM ///
@@ -113,7 +113,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 			sol += schrab / 2 + bale / 4 + hydro / 8 + nuke / 16 + tnt / 32;
 			sol = Math.min(sol, BombConfig.maxCustomSolRadius);
 
-			EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
+			final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
 			entity.setPosition(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
     		entity.destructionRange = (int) sol;
     		entity.speed = BombConfig.blastSpeed;
@@ -122,7 +122,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
     		entity.extType = 1;
     		world.spawnEntity(entity);
     	
-    		EntityCloudSolinium cloud = new EntityCloudSolinium(world, (int)sol);
+    		final EntityCloudSolinium cloud = new EntityCloudSolinium(world, (int)sol);
     		cloud.setPosition(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
     		world.spawnEntity(cloud);
 			
@@ -132,7 +132,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 			schrab += bale / 2 + hydro / 4 + nuke / 8 + tnt / 16;
 			schrab = Math.min(schrab, BombConfig.maxCustomSchrabRadius);
 
-			EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
+			final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
 			entity.setPosition(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
     		entity.destructionRange = (int) schrab;
     		entity.speed = BombConfig.blastSpeed;
@@ -140,7 +140,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
     		entity.waste = false;
     		world.spawnEntity(entity);
     	
-    		EntityCloudFleija cloud = new EntityCloudFleija(world, (int)schrab);
+    		final EntityCloudFleija cloud = new EntityCloudFleija(world, (int)schrab);
     		cloud.setPosition(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
     		world.spawnEntity(cloud);
     		
@@ -150,7 +150,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 			bale += hydro / 2 + nuke / 4 + tnt / 8;
 			bale = Math.min(bale, BombConfig.maxCustomBaleRadius);
 
-			EntityBalefire bf = new EntityBalefire(world);
+			final EntityBalefire bf = new EntityBalefire(world);
     		bf.setPosition(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
 			bf.destructionRange = (int) bale;
 			world.spawnEntity(bf);
@@ -197,8 +197,8 @@ public class NukeCustom extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public void explode(World world, BlockPos pos) {
-		TileEntityNukeCustom entity = (TileEntityNukeCustom) world.getTileEntity(pos);
+	public void explode(final World world, final BlockPos pos) {
+		final TileEntityNukeCustom entity = (TileEntityNukeCustom) world.getTileEntity(pos);
 		
 		if(!entity.isFalling()) {
 			
@@ -208,7 +208,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 			
 		} else {
 			
-			EntityFallingNuke bomb = new EntityFallingNuke(world, entity.tnt, entity.nuke, entity.hydro, entity.bale, entity.dirty, entity.schrab, entity.sol, entity.euph);
+			final EntityFallingNuke bomb = new EntityFallingNuke(world, entity.tnt, entity.nuke, entity.hydro, entity.bale, entity.dirty, entity.schrab, entity.sol, entity.euph);
 			bomb.getDataManager().set(EntityFallingNuke.FACING, world.getBlockState(pos).getValue(FACING));
 			bomb.setPositionAndRotation(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
 			entity.clearSlots();
@@ -218,47 +218,47 @@ public class NukeCustom extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing) state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state) {
+		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
 		if(enumfacing.getAxis() == EnumFacing.Axis.Y) {
@@ -269,17 +269,17 @@ public class NukeCustom extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("§d["+ I18nUtil.resolveKey("trait.modularbomb")+"]§r");
 	}
 }

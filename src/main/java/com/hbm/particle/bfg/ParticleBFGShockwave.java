@@ -24,7 +24,7 @@ public class ParticleBFGShockwave extends Particle {
 	float scaleSpeed;
 	float resistance;
 	
-	public ParticleBFGShockwave(World worldIn, double posXIn, double posYIn, double posZIn, float speed, int age, float scaleSpeed, float resistance) {
+	public ParticleBFGShockwave(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float speed, final int age, final float scaleSpeed, final float resistance) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.canCollide = false;
 		this.particleMaxAge = age;
@@ -45,7 +45,7 @@ public class ParticleBFGShockwave extends Particle {
 		this.particleAge++;
 		if(particleAge >= particleMaxAge)
 			this.setExpired();
-		float timeScale = this.particleAge/(float)this.particleMaxAge;
+		final float timeScale = this.particleAge/(float)this.particleMaxAge;
 		
 		//this.prevScale = this.particleScale;
 		//this.particleScale += 0.5;
@@ -71,16 +71,16 @@ public class ParticleBFGShockwave extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entity, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GL11.glPushMatrix();
 		
-		double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
-		double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
-		double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
+		final double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
+		final double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
+		final double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
 		
-		double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-		double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-		double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+		final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+		final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+		final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
 
 		GL11.glTranslated(d0 - d3, d1 - d4, d2 - d5);
 		
@@ -91,10 +91,10 @@ public class ParticleBFGShockwave extends Particle {
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-        float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
+        final float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
         GlStateManager.color(0.5F, 1F, 0.5F, alpha);
 
-        float scale = this.prevScale + (this.particleScale-this.prevScale)*partialTicks;
+        final float scale = this.prevScale + (this.particleScale-this.prevScale)*partialTicks;
         GL11.glTranslated(0, 0, -1.5);
         GL11.glScaled(scale, scale, scale);
         GL11.glTranslated(0, 0, 1.5);

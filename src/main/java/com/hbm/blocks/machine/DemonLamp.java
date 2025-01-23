@@ -21,7 +21,7 @@ public class DemonLamp extends BlockContainer implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public DemonLamp(SoundType st, String s) {
+	public DemonLamp(final SoundType st, final String s) {
 		super(Material.IRON);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,12 +32,12 @@ public class DemonLamp extends BlockContainer implements IItemHazard {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound){
+	public Block setSoundType(final SoundType sound){
 		return super.setSoundType(sound);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+	public TileEntity createNewTileEntity(final World p_149915_1_, final int p_149915_2_) {
 		return new TileEntityDemonLamp();
 	}
 
@@ -47,31 +47,31 @@ public class DemonLamp extends BlockContainer implements IItemHazard {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 }

@@ -25,11 +25,11 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 		super();
 	}
 
-	public void setColor(int color) {
-		RBMKColor new_color = RBMKColor.values()[color];
+	public void setColor(final int color) {
+		final RBMKColor new_color = RBMKColor.values()[color];
 		this.color = new_color;
 	}
-	public boolean isSameColor(int color) {
+	public boolean isSameColor(final int color) {
 		return this.color == RBMKColor.values()[color];
 	}
 
@@ -44,7 +44,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 	}
 
 	@Override
-	public void setTarget(double target) {
+	public void setTarget(final double target) {
 		this.targetLevel = target;
 		this.startingLevel = this.level;
 	}
@@ -63,21 +63,21 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 	}
 
 	@Override
-	public boolean hasPermission(EntityPlayer player) {
+	public boolean hasPermission(final EntityPlayer player) {
 		return Vec3.createVectorHelper(pos.getX() - player.posX, pos.getY() - player.posY, pos.getZ() - player.posZ).length() < 20;
 	}
 
 	@Override
-	public void receiveControl(NBTTagCompound data) {
+	public void receiveControl(final NBTTagCompound data) {
 		
 		if(data.hasKey("level")) {
 			this.setTarget(data.getDouble("level"));
 		}
 		
 		if(data.hasKey("color")) {
-			int c = Math.abs(data.getInteger("color")) % RBMKColor.values().length; //to stop naughty kids from sending packets that crash the server
+			final int c = Math.abs(data.getInteger("color")) % RBMKColor.values().length; //to stop naughty kids from sending packets that crash the server
 			
-			RBMKColor newCol = RBMKColor.values()[c];
+			final RBMKColor newCol = RBMKColor.values()[c];
 			
 			if(newCol == this.color) {
 				this.color = null;
@@ -90,7 +90,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		if(nbt.hasKey("startingLevel"))
@@ -103,7 +103,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setDouble("startingLevel", this.startingLevel);
@@ -129,7 +129,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 
 	@Override
 	public NBTTagCompound getNBTForConsole() {
-		NBTTagCompound data = super.getNBTForConsole();
+		final NBTTagCompound data = super.getNBTForConsole();
 		
 		if(this.color != null)
 			data.setShort("color", (short)this.color.ordinal());
@@ -142,7 +142,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 	// control panel
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		Map<String, DataValue> data = super.getQueryData();
+		final Map<String, DataValue> data = super.getQueryData();
 
 		if (this.color != null) {
 			data.put("color", new DataValueFloat(this.color.ordinal()));
@@ -152,7 +152,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 	}
 
 	@Override
-	public void receiveEvent(BlockPos from, ControlEvent e) {
+	public void receiveEvent(final BlockPos from, final ControlEvent e) {
 		super.receiveEvent(from, e);
 
 		if (e.name.equals("rbmk_ctrl_set_level")) {
@@ -167,7 +167,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 
 	@Override
 	public List<String> getInEvents() {
-		List<String> events = new ArrayList<>(super.getInEvents());
+		final List<String> events = new ArrayList<>(super.getInEvents());
 		events.add("rbmk_ctrl_set_level");
 		events.add("rbmk_ctrl_set_color");
 		return events;

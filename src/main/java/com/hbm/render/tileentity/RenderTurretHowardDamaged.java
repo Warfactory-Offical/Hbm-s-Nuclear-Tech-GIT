@@ -11,8 +11,8 @@ import net.minecraft.util.math.Vec3d;
 public class RenderTurretHowardDamaged extends RenderTurretBase<TileEntityTurretHowardDamaged> {
 
 	@Override
-	public void render(TileEntityTurretHowardDamaged turret, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
-		Vec3d pos = turret.getHorizontalOffset();
+	public void render(final TileEntityTurretHowardDamaged turret, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
+		final Vec3d pos = turret.getHorizontalOffset();
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + pos.x, y, z + pos.z);
@@ -22,8 +22,8 @@ public class RenderTurretHowardDamaged extends RenderTurretBase<TileEntityTurret
 
 		bindTexture(ResourceManager.turret_base_rusted);
 		ResourceManager.turret_chekhov.renderPart("Base");
-		double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
-		double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
+		final double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
+		final double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
 		
 		GL11.glRotated(yaw, 0, 1, 0);
 		bindTexture(ResourceManager.turret_carriage_ciws_rusted);
@@ -35,7 +35,7 @@ public class RenderTurretHowardDamaged extends RenderTurretBase<TileEntityTurret
 		bindTexture(ResourceManager.turret_howard_rusted);
 		ResourceManager.turret_howard_damaged.renderPart("Body");
 		
-		float rot = turret.lastSpin + (turret.spin - turret.lastSpin) * partialTicks;
+		final float rot = turret.lastSpin + (turret.spin - turret.lastSpin) * partialTicks;
 
 		bindTexture(ResourceManager.turret_howard_barrels_rusted);
 		

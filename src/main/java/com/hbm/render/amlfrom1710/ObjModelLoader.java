@@ -19,7 +19,7 @@ public class ObjModelLoader implements IModelCustomLoader
     }
 
     @Override
-    public IModelCustom loadInstance(ResourceLocation resource) throws ModelFormatException
+    public IModelCustom loadInstance(final ResourceLocation resource) throws ModelFormatException
     {
         return new WavefrontObject(resource);
     }

@@ -15,10 +15,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIFurnaceIron extends GuiInfoContainer {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_furnace_iron.png");
-	private TileEntityFurnaceIron furnace;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_furnace_iron.png");
+	private final TileEntityFurnaceIron furnace;
 
-	public GUIFurnaceIron(InventoryPlayer invPlayer, TileEntityFurnaceIron tedf) {
+	public GUIFurnaceIron(final InventoryPlayer invPlayer, final TileEntityFurnaceIron tedf) {
 		super(new ContainerFurnaceIron(invPlayer, tedf));
 		furnace = tedf;
 		
@@ -27,7 +27,7 @@ public class GUIFurnaceIron extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int x, int y, float interp) {
+	public void drawScreen(final int x, final int y, final float interp) {
 		super.drawScreen(x, y, interp);
 
 		this.drawCustomInfoStat(x, y, guiLeft + 52, guiTop + 35, 71, 7, x, y, new String[] { (furnace.progress * 100 / Math.max(furnace.processingTime, 1)) + "%" });
@@ -36,24 +36,24 @@ public class GUIFurnaceIron extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.furnace.hasCustomInventoryName() ? this.furnace.getInventoryName() : I18n.format(this.furnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.furnace.hasCustomInventoryName() ? this.furnace.getInventoryName() : I18n.format(this.furnace.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		int i = furnace.progress * 70 / Math.max(furnace.processingTime, 1);
+		final int i = furnace.progress * 70 / Math.max(furnace.processingTime, 1);
 		drawTexturedModalRect(guiLeft + 53, guiTop + 36, 176, 18, i, 5);
 		
-		int j = furnace.burnTime * 70 / Math.max(furnace.maxBurnTime, 1);
+		final int j = furnace.burnTime * 70 / Math.max(furnace.maxBurnTime, 1);
 		drawTexturedModalRect(guiLeft + 53, guiTop + 45, 176, 23, j, 5);
 		
 		if(furnace.canSmelt())

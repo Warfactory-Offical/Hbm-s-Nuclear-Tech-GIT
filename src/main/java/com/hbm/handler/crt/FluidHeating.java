@@ -21,12 +21,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class FluidHeating {
 	
 	private static class ActionAddBoilRecipe implements IAction{
-		private String inputFluid;
-		private int inputAmount;
-		private String outputFluid;
-		private int outputAmount;
-		private int heatCapacity;
-		public ActionAddBoilRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity){
+		private final String inputFluid;
+		private final int inputAmount;
+		private final String outputFluid;
+		private final int outputAmount;
+		private final int heatCapacity;
+		public ActionAddBoilRecipe(final String inputFluid, final int inputAmount, final String outputFluid, final int outputAmount, final int heatCapacity){
 			this.inputFluid = inputFluid;
 			this.inputAmount = inputAmount;
 			this.outputFluid = outputFluid;
@@ -72,18 +72,18 @@ public class FluidHeating {
 	}
 
 	@ZenMethod
-	public static void addBoilRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity){
+	public static void addBoilRecipe(final String inputFluid, final int inputAmount, final String outputFluid, final int outputAmount, final int heatCapacity){
 		NTMCraftTweaker.postInitActions.add(new ActionAddBoilRecipe(inputFluid, inputAmount, outputFluid, outputAmount, heatCapacity));
 	}
 
 	//
 	private static class ActionAddCoolRecipe implements IAction{
-		private String inputFluid;
-		private int inputAmount;
-		private String outputFluid;
-		private int outputAmount;
-		private int heatCapacity;
-		public ActionAddCoolRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity){
+		private final String inputFluid;
+		private final int inputAmount;
+		private final String outputFluid;
+		private final int outputAmount;
+		private final int heatCapacity;
+		public ActionAddCoolRecipe(final String inputFluid, final int inputAmount, final String outputFluid, final int outputAmount, final int heatCapacity){
 			this.inputFluid = inputFluid;
 			this.inputAmount = inputAmount;
 			this.outputFluid = outputFluid;
@@ -129,17 +129,17 @@ public class FluidHeating {
 	}
 
 	@ZenMethod
-	public static void addCoolRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity){
+	public static void addCoolRecipe(final String inputFluid, final int inputAmount, final String outputFluid, final int outputAmount, final int heatCapacity){
 		NTMCraftTweaker.postInitActions.add(new ActionAddCoolRecipe(inputFluid, inputAmount, outputFluid, outputAmount, heatCapacity));
 	}
 
 	private static class ActionAddBoilAndCoolRecipe implements IAction{
-		private String inputFluid;
-		private int inputAmount;
-		private String outputFluid;
-		private int outputAmount;
-		private int heatCapacity;
-		public ActionAddBoilAndCoolRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity){
+		private final String inputFluid;
+		private final int inputAmount;
+		private final String outputFluid;
+		private final int outputAmount;
+		private final int heatCapacity;
+		public ActionAddBoilAndCoolRecipe(final String inputFluid, final int inputAmount, final String outputFluid, final int outputAmount, final int heatCapacity){
 			this.inputFluid = inputFluid;
 			this.inputAmount = inputAmount;
 			this.outputFluid = outputFluid;
@@ -185,13 +185,13 @@ public class FluidHeating {
 	}
 
 	@ZenMethod
-	public static void addBoilAndCoolRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity){
+	public static void addBoilAndCoolRecipe(final String inputFluid, final int inputAmount, final String outputFluid, final int outputAmount, final int heatCapacity){
 		NTMCraftTweaker.postInitActions.add(new ActionAddBoilAndCoolRecipe(inputFluid, inputAmount, outputFluid, outputAmount, heatCapacity));
 	}
 
 	private static class ActionRemoveBoilRecipe implements IAction{
-		private String inputFluid;
-		public ActionRemoveBoilRecipe(String inputFluid){
+		private final String inputFluid;
+		public ActionRemoveBoilRecipe(final String inputFluid){
 			this.inputFluid = inputFluid;
 		}
 		@Override
@@ -213,13 +213,13 @@ public class FluidHeating {
 	}
 
 	@ZenMethod
-	public static void removeBoilRecipe(String inputFluid){
+	public static void removeBoilRecipe(final String inputFluid){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveBoilRecipe(inputFluid));
 	}
 
 	private static class ActionRemoveCoolRecipe implements IAction{
-		private String inputFluid;
-		public ActionRemoveCoolRecipe(String inputFluid){
+		private final String inputFluid;
+		public ActionRemoveCoolRecipe(final String inputFluid){
 			this.inputFluid = inputFluid;
 		}
 		@Override
@@ -241,7 +241,7 @@ public class FluidHeating {
 	}
 
 	@ZenMethod
-	public static void removeCoolRecipe(String inputFluid){
+	public static void removeCoolRecipe(final String inputFluid){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveCoolRecipe(inputFluid));
 	}
 

@@ -15,7 +15,7 @@ public abstract class DummyOldBase extends BlockContainer implements IDummy, IEn
 
 	public boolean port = false;
 
-	public DummyOldBase(Material mat, String s, boolean port) {
+	public DummyOldBase(final Material mat, final String s, final boolean port) {
 		super(mat);
 		this.port = port;
 		this.setTranslationKey(s);
@@ -25,7 +25,7 @@ public abstract class DummyOldBase extends BlockContainer implements IDummy, IEn
 	}
 
 	@Override 
-	public boolean canConnect(IBlockAccess world, BlockPos pos, ForgeDirection dir){
+	public boolean canConnect(final IBlockAccess world, final BlockPos pos, final ForgeDirection dir){
 		return port; 
 	}
 }

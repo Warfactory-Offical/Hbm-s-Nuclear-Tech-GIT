@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SubElementBaseConfig extends SubElement {
-    public SubElementBaseConfig(GuiControlEdit gui) {
+    public SubElementBaseConfig(final GuiControlEdit gui) {
         super(gui);
     }
 

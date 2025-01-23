@@ -22,7 +22,7 @@ public class TileEntityNukeBoy extends TileEntity {
 	public TileEntityNukeBoy() {
 		inventory = new ItemStackHandler(5) {
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -37,11 +37,11 @@ public class TileEntityNukeBoy extends TileEntity {
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -50,24 +50,21 @@ public class TileEntityNukeBoy extends TileEntity {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 
 	public boolean isReady() {
-		if(inventory.getStackInSlot(0).getItem() == ModItems.boy_shielding && inventory.getStackInSlot(1).getItem() == ModItems.boy_target && inventory.getStackInSlot(2).getItem() == ModItems.boy_bullet && inventory.getStackInSlot(3).getItem() == ModItems.boy_propellant && inventory.getStackInSlot(4).getItem() == ModItems.boy_igniter) {
-			return true;
-		}
-		return false;
-	}
+        return inventory.getStackInSlot(0).getItem() == ModItems.boy_shielding && inventory.getStackInSlot(1).getItem() == ModItems.boy_target && inventory.getStackInSlot(2).getItem() == ModItems.boy_bullet && inventory.getStackInSlot(3).getItem() == ModItems.boy_propellant && inventory.getStackInSlot(4).getItem() == ModItems.boy_igniter;
+    }
 
 	public void clearSlots() {
 		for(int i = 0; i < inventory.getSlots(); i++) {
@@ -87,12 +84,12 @@ public class TileEntityNukeBoy extends TileEntity {
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

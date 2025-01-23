@@ -36,7 +36,7 @@ public class ItemRenderGunAnim2 extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		
 		float lever = 0;
 		
@@ -68,11 +68,11 @@ public class ItemRenderGunAnim2 extends TEISRBase {
 			
 			if(item.getItem() == ModItems.gun_lever_action || item.getItem() == ModItems.gun_lever_action_dark) {
 
-				double[] recoil = HbmAnimations.getRelevantTransformation("LEVER_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				final double[] recoil = HbmAnimations.getRelevantTransformation("LEVER_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glTranslated(recoil[0], recoil[1] * 4, recoil[2]);
 				
 				GL11.glTranslatef(-1.5F, 0, 0);
-				double[] rotation = HbmAnimations.getRelevantTransformation("LEVER_ROTATE", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				final double[] rotation = HbmAnimations.getRelevantTransformation("LEVER_ROTATE", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glRotated(rotation[2], 0.0, 0.0, 1.0);
 				lever = (float) Math.toRadians(rotation[2] * 2);
 				GL11.glTranslatef(1.5F, 0, 0);

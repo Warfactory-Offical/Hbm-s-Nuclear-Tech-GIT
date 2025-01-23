@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 public class GUIHeaterHeatex extends GuiInfoContainer {
     private final static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_heatex.png");
@@ -26,7 +27,7 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     private GuiTextField fieldCycles;
     private GuiTextField fieldDelay;
 
-    public GUIHeaterHeatex(InventoryPlayer invPlayer, TileEntityHeaterHeatex tedf) {
+    public GUIHeaterHeatex(final InventoryPlayer invPlayer, final TileEntityHeaterHeatex tedf) {
         super(new ContainerHeaterHeatex(invPlayer, tedf));
         heater = tedf;
 
@@ -48,7 +49,7 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
         this.fieldDelay.setText(String.valueOf(heater.tickDelay));
     }
 
-    protected void initText(GuiTextField field) {
+    protected void initText(final GuiTextField field) {
         field.setTextColor(0x00ff00);
         field.setDisabledTextColour(0x00ff00);
         field.setEnableBackgroundDrawing(false);
@@ -56,7 +57,7 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     }
 
     @Override
-    public void drawScreen(int x, int y, float f) {
+    public void drawScreen(final int x, final int y, final float f) {
         super.drawScreen(x, y, f);
 
         FFUtils.renderTankInfo(this, x, y, guiLeft + 44, guiTop + 36, 16, 52, heater.tanks[0], heater.tankTypes[0]);
@@ -73,14 +74,14 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int i, int j) {
-        String name = I18n.format(this.heater.getInventoryName());
+    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+        final String name = I18n.format(this.heater.getInventoryName());
         this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
+    protected void drawGuiContainerBackgroundLayer(final float interp, final int x, final int y) {
         super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -94,7 +95,7 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int i) throws IOException {
+    protected void mouseClicked(final int x, final int y, final int i) throws IOException {
         super.mouseClicked(x, y, i);
 
         this.fieldCycles.mouseClicked(x, y, i);
@@ -102,19 +103,19 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     }
 
     @Override
-    protected void keyTyped(char c, int i) throws IOException {
-        BlockPos heaterPos = heater.getPos();
+    protected void keyTyped(final char c, final int i) throws IOException {
+        final BlockPos heaterPos = heater.getPos();
 
         if (this.fieldCycles.textboxKeyTyped(c, i)) {
-            int cyc = Math.max(NumberUtils.toInt(this.fieldCycles.getText()), 1);
-            NBTTagCompound data = new NBTTagCompound();
+            final int cyc = Math.max(NumberUtils.toInt(this.fieldCycles.getText()), 1);
+            final NBTTagCompound data = new NBTTagCompound();
             data.setInteger("toCool", cyc);
             PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, heaterPos.getX(), heaterPos.getY(), heaterPos.getZ()));
             return;
         }
         if (this.fieldDelay.textboxKeyTyped(c, i)) {
-            int delay = Math.max(NumberUtils.toInt(this.fieldDelay.getText()), 1);
-            NBTTagCompound data = new NBTTagCompound();
+            final int delay = Math.max(NumberUtils.toInt(this.fieldDelay.getText()), 1);
+            final NBTTagCompound data = new NBTTagCompound();
             data.setInteger("delay", delay);
             PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, heaterPos.getX(), heaterPos.getY(), heaterPos.getZ()));
             return;

@@ -14,27 +14,27 @@ public class AudioDynamic extends MovingSound {
 
 	public float intendedVolume;
 
-	protected AudioDynamic(SoundEvent loc, SoundCategory cat) {
+	protected AudioDynamic(final SoundEvent loc, final SoundCategory cat) {
 		super(loc, cat);
 		this.repeat = true;
 		this.attenuationType = ISound.AttenuationType.NONE;
 		this.intendedVolume = 10;
 	}
 	
-	public void setPosition(float x, float y, float z) {
+	public void setPosition(final float x, final float y, final float z) {
 		this.xPosF = x;
 		this.yPosF = y;
 		this.zPosF = z;
 	}
 
-	public void setAttenuation(ISound.AttenuationType type){
+	public void setAttenuation(final ISound.AttenuationType type){
 		this.attenuationType = type;
 		volume = intendedVolume;
 	}
 	
 	@Override
 	public void update() {
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		final EntityPlayerSP player = Minecraft.getMinecraft().player;
 		float f = 0;
 		if(player != null) {
 			if(attenuationType == ISound.AttenuationType.LINEAR){
@@ -65,15 +65,15 @@ public class AudioDynamic extends MovingSound {
 		Minecraft.getMinecraft().getSoundHandler().stopSound(this);
 	}
 	
-	public void setVolume(float volume) {
+	public void setVolume(final float volume) {
 		this.intendedVolume = volume;
 	}
 	
-	public void setPitch(float pitch) {
+	public void setPitch(final float pitch) {
 		this.pitch = pitch;
 	}
 	
-	public float func(float f, float v) {
+	public float func(final float f, final float v) {
 		return (f / v) * -2 + 2;
 	}
 }

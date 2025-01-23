@@ -16,7 +16,7 @@ import net.minecraft.util.EnumHand;
 public class ItemRenderWeaponThompson extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		GlStateManager.enableCull();
 		GlStateManager.enableRescaleNormal();
@@ -28,7 +28,7 @@ public class ItemRenderWeaponThompson extends TEISRBase {
 				//GL11.glTranslated(0, -0.8, 0.5);
 				//GL11.glRotated(80, 0, 1, 0);
 				//GL11.glRotated(20, 1, 0, 0);
-				double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				final double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				
 				GL11.glTranslated(0+recoil[1]*0.2F, -0.4-recoil[1]*0.1F, 0.4);
 				GL11.glRotated(180, 0, 1, 0);

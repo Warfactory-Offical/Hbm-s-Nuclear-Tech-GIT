@@ -18,7 +18,7 @@ public class BookRecipeHandler implements IRecipeCategory<BookRecipe> {
 	
 	protected final IDrawable background;
 	
-	public BookRecipeHandler(IGuiHelper help) {
+	public BookRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 28, 15, 132, 55);
 	}
 	
@@ -43,8 +43,8 @@ public class BookRecipeHandler implements IRecipeCategory<BookRecipe> {
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, BookRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final BookRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 1, 1);
 		guiItemStacks.init(1, true, 37, 1);

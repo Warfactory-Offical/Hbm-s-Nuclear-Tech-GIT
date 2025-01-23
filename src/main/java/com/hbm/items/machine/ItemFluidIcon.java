@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFluidIcon extends Item {
 
-	public ItemFluidIcon(String s) {
+	public ItemFluidIcon(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setHasSubtypes(true);
@@ -31,27 +32,27 @@ public class ItemFluidIcon extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab()){
-			for(Fluid f : FluidRegistry.getRegisteredFluids().values()){
+			for(final Fluid f : FluidRegistry.getRegisteredFluids().values()){
 				items.add(getStack(f));
 			}
 		}
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(stack.hasTagCompound())
 			if(stack.getTagCompound().getInteger("fill") > 0)
 				tooltip.add(stack.getTagCompound().getInteger("fill") + "mB");
-		Fluid f = getFluid(stack);
+		final Fluid f = getFluid(stack);
         if(f != null) FFUtils.addFluidInfo(f, tooltip);
 	}
 	
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		String s;
-		Fluid f = getFluid(stack);
+	public String getItemStackDisplayName(final ItemStack stack) {
+		final String s;
+		final Fluid f = getFluid(stack);
         if(f != null)
         	s = (f.getLocalizedName(new FluidStack(f, 1000)).trim());
         else
@@ -65,37 +66,37 @@ public class ItemFluidIcon extends Item {
         return "Unknown";
 	}
 	
-	public static ItemStack getStack(Fluid f){
-		ItemStack stack = new ItemStack(ModItems.fluid_icon, 1, 0);
+	public static ItemStack getStack(final Fluid f){
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_icon, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setString("type", f.getName());
 		return stack;
 	}
 	
-	public static ItemStack getStackWithQuantity(Fluid f, int amount){
-		ItemStack stack = new ItemStack(ModItems.fluid_icon, 1, 0);
+	public static ItemStack getStackWithQuantity(final Fluid f, final int amount){
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_icon, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setString("type", f.getName());
 		stack.getTagCompound().setInteger("fill", amount);
 		return stack;
 	}
 
-	public static ItemStack getStackWithQuantity(FluidStack f){
-		ItemStack stack = new ItemStack(ModItems.fluid_icon, 1, 0);
+	public static ItemStack getStackWithQuantity(final FluidStack f){
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.fluid_icon, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setString("type", f.getFluid().getName());
 		stack.getTagCompound().setInteger("fill", f.amount);
 		return stack;
 	}
 	
-	public static int getQuantity(ItemStack stack){
+	public static int getQuantity(final ItemStack stack){
 		if(stack.hasTagCompound()){
 			return stack.getTagCompound().getInteger("fill");
 		}
 		return 0;
 	}
 	
-	public static Fluid getFluid(ItemStack stack){
+	public static Fluid getFluid(final ItemStack stack){
 		if(stack == null || !stack.hasTagCompound())
 			return null;
 		return FluidRegistry.getFluid(stack.getTagCompound().getString("type"));

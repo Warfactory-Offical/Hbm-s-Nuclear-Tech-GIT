@@ -17,147 +17,147 @@ abstract class ArithmeticOperators {
 
     public long x, y;
 
-    public Vec2l add_(long b) {
+    public Vec2l add_(final long b) {
         return Glm.add(new Vec2l(), (Vec2l) this, b, b);
     }
 
-    public Vec2l add_(long bX, long bY) {
+    public Vec2l add_(final long bX, final long bY) {
         return Glm.add(new Vec2l(), (Vec2l) this, bX, bY);
     }
 
-    public Vec2l add_(Vec2l b) {
+    public Vec2l add_(final Vec2l b) {
         return Glm.add(new Vec2l(), (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l add(long b) {
+    public Vec2l add(final long b) {
         return Glm.add((Vec2l) this, (Vec2l) this, b, b);
     }
 
-    public Vec2l add(long bX, long bY) {
+    public Vec2l add(final long bX, final long bY) {
         return Glm.add((Vec2l) this, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l add(Vec2l b) {
+    public Vec2l add(final Vec2l b) {
         return Glm.add((Vec2l) this, (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l add(long b, Vec2l res) {
+    public Vec2l add(final long b, final Vec2l res) {
         return Glm.add(res, (Vec2l) this, b, b);
     }
 
-    public Vec2l add(long bX, long bY, Vec2l res) {
+    public Vec2l add(final long bX, final long bY, final Vec2l res) {
         return Glm.add(res, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l add(Vec2l b, Vec2l res) {
+    public Vec2l add(final Vec2l b, final Vec2l res) {
         return Glm.add(res, (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l sub_(long b) {
+    public Vec2l sub_(final long b) {
         return Glm.sub(new Vec2l(), (Vec2l) this, b, b);
     }
 
-    public Vec2l sub_(long bX, long bY) {
+    public Vec2l sub_(final long bX, final long bY) {
         return Glm.sub(new Vec2l(), (Vec2l) this, bX, bY);
     }
 
-    public Vec2l sub_(Vec2l b) {
+    public Vec2l sub_(final Vec2l b) {
         return Glm.sub(new Vec2l(), (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l sub(long b) {
+    public Vec2l sub(final long b) {
         return Glm.sub((Vec2l) this, (Vec2l) this, b, b);
     }
 
-    public Vec2l sub(long bX, long bY) {
+    public Vec2l sub(final long bX, final long bY) {
         return Glm.sub((Vec2l) this, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l sub(Vec2l b) {
+    public Vec2l sub(final Vec2l b) {
         return Glm.sub((Vec2l) this, (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l sub(long b, Vec2l res) {
+    public Vec2l sub(final long b, final Vec2l res) {
         return Glm.sub(res, (Vec2l) this, b, b);
     }
 
-    public Vec2l sub(long bX, long bY, Vec2l res) {
+    public Vec2l sub(final long bX, final long bY, final Vec2l res) {
         return Glm.sub(res, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l sub(Vec2l b, Vec2l res) {
+    public Vec2l sub(final Vec2l b, final Vec2l res) {
         return Glm.sub(res, (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l mul_(long b) {
+    public Vec2l mul_(final long b) {
         return Glm.mul(new Vec2l(), (Vec2l) this, b, b);
     }
 
-    public Vec2l mul_(long bX, long bY) {
+    public Vec2l mul_(final long bX, final long bY) {
         return Glm.mul(new Vec2l(), (Vec2l) this, bX, bY);
     }
 
-    public Vec2l mul_(Vec2l b) {
+    public Vec2l mul_(final Vec2l b) {
         return Glm.mul(new Vec2l(), (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l mul(long b) {
+    public Vec2l mul(final long b) {
         return Glm.mul((Vec2l) this, (Vec2l) this, b, b);
     }
 
-    public Vec2l mul(long bX, long bY) {
+    public Vec2l mul(final long bX, final long bY) {
         return Glm.mul((Vec2l) this, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l mul(Vec2l b) {
+    public Vec2l mul(final Vec2l b) {
         return Glm.mul((Vec2l) this, (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l mul(long b, Vec2l res) {
+    public Vec2l mul(final long b, final Vec2l res) {
         return Glm.mul(res, (Vec2l) this, b, b);
     }
 
-    public Vec2l mul(long bX, long bY, Vec2l res) {
+    public Vec2l mul(final long bX, final long bY, final Vec2l res) {
         return Glm.mul(res, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l mul(Vec2l b, Vec2l res) {
+    public Vec2l mul(final Vec2l b, final Vec2l res) {
         return Glm.mul(res, (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l div_(long b) {
+    public Vec2l div_(final long b) {
         return Glm.div(new Vec2l(), (Vec2l) this, b, b);
     }
 
-    public Vec2l div_(long bX, long bY) {
+    public Vec2l div_(final long bX, final long bY) {
         return Glm.div(new Vec2l(), (Vec2l) this, bX, bY);
     }
 
-    public Vec2l div_(Vec2l b) {
+    public Vec2l div_(final Vec2l b) {
         return Glm.div(new Vec2l(), (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l div(long b) {
+    public Vec2l div(final long b) {
         return Glm.div((Vec2l) this, (Vec2l) this, b, b);
     }
 
-    public Vec2l div(long bX, long bY) {
+    public Vec2l div(final long bX, final long bY) {
         return Glm.div((Vec2l) this, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l div(Vec2l b) {
+    public Vec2l div(final Vec2l b) {
         return Glm.div((Vec2l) this, (Vec2l) this, b.x, b.y);
     }
 
-    public Vec2l div(long b, Vec2l res) {
+    public Vec2l div(final long b, final Vec2l res) {
         return Glm.div(res, (Vec2l) this, b, b);
     }
 
-    public Vec2l div(long bX, long bY, Vec2l res) {
+    public Vec2l div(final long bX, final long bY, final Vec2l res) {
         return Glm.div(res, (Vec2l) this, bX, bY);
     }
 
-    public Vec2l div(Vec2l b, Vec2l res) {
+    public Vec2l div(final Vec2l b, final Vec2l res) {
         return Glm.div(res, (Vec2l) this, b.x, b.y);
     }
 
@@ -169,7 +169,7 @@ abstract class ArithmeticOperators {
         return Glm.incr((Vec2l) this);
     }
 
-    public Vec2l incr(Vec2l res) {
+    public Vec2l incr(final Vec2l res) {
         return Glm.incr(res, (Vec2l) this);
     }
 
@@ -181,7 +181,7 @@ abstract class ArithmeticOperators {
         return Glm.decr((Vec2l) this);
     }
 
-    public Vec2l decr(Vec2l res) {
+    public Vec2l decr(final Vec2l res) {
         return Glm.decr(res, (Vec2l) this);
     }
 }

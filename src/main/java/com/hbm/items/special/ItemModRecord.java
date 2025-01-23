@@ -32,7 +32,7 @@ public class ItemModRecord extends ItemRecord {
 	private static final Map<String, ItemModRecord> modRecords = new HashMap<String, ItemModRecord>();
 	public final String recordName;
 	
-	public ItemModRecord(String p_i46742_1_, SoundEvent soundIn, String name) {
+	public ItemModRecord(final String p_i46742_1_, final SoundEvent soundIn, final String name) {
 		super(p_i46742_1_, soundIn);
 		this.setTranslationKey(name);
 		this.setRegistryName(name);
@@ -44,12 +44,12 @@ public class ItemModRecord extends ItemRecord {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (worldIn.getBlockState(pos).getBlock() == Blocks.JUKEBOX && !worldIn.getBlockState(pos).getValue(BlockJukebox.HAS_RECORD).booleanValue()) {
 			if (worldIn.isRemote) {
 				return EnumActionResult.SUCCESS;
 			} else {
-				ItemStack stack = player.getHeldItem(hand);
+				final ItemStack stack = player.getHeldItem(hand);
 				((BlockJukebox)Blocks.JUKEBOX).insertRecord(worldIn, pos, worldIn.getBlockState(pos), stack);
 				worldIn.playEvent(null, 1010, pos, Item.getIdFromItem(this));
 				stack.shrink(1);
@@ -62,7 +62,7 @@ public class ItemModRecord extends ItemRecord {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(this.getRecordNameLocal());
 	}
 	
@@ -73,13 +73,13 @@ public class ItemModRecord extends ItemRecord {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
+	public String getItemStackDisplayName(final ItemStack stack) {
         return (I18n.format(Items.RECORD_11.getTranslationKey() + ".name")).trim();
 	}
 	

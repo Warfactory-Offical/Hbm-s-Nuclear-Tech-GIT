@@ -18,19 +18,19 @@ public class Quat extends funcGeometric {
         this(0.0f, 0.0f, 0.0f);
     }
 
-    public Quat(float x, float y, float z) {
+    public Quat(final float x, final float y, final float z) {
         this(1.0f, x, y, z);
     }
 
-    public Quat(Quat q) {
+    public Quat(final Quat q) {
         this(q.w, q.x, q.y, q.z);
     }
 
-    public Quat(float f, Vec3 v) {
+    public Quat(final float f, final Vec3 v) {
         this(f, v.x, v.y, v.z);
     }
 
-    public Quat(float w, float x, float y, float z) {
+    public Quat(final float w, final float x, final float y, final float z) {
         this.w = w;
         this.x = x;
         this.y = y;
@@ -41,19 +41,19 @@ public class Quat extends funcGeometric {
         return set(0.0f, 0.0f, 0.0f);
     }
 
-    public Quat set(float x, float y, float z) {
+    public Quat set(final float x, final float y, final float z) {
         return set(1.0f, x, y, z);
     }
 
-    public Quat set(Quat q) {
+    public Quat set(final Quat q) {
         return set(q.w, q.x, q.y, q.z);
     }
 
-    public Quat set(float f, Vec3 v) {
+    public Quat set(final float f, final Vec3 v) {
         return set(f, v.x, v.y, v.z);
     }
 
-    public Quat set(float w, float x, float y, float z) {
+    public Quat set(final float w, final float x, final float y, final float z) {
         this.w = w;
         this.x = x;
         this.y = y;
@@ -69,20 +69,20 @@ public class Quat extends funcGeometric {
         return conjugate(this);
     }
 
-    public Quat conjugate(Quat res) {
+    public Quat conjugate(final Quat res) {
         return res.set(w, -x, -y, -z);
     }
 
-    public static Quat cast_(Mat4 m) {
+    public static Quat cast_(final Mat4 m) {
         return cast(m, new Quat());
     }
     
-    public static Quat cast(Mat4 m, Quat res) {
+    public static Quat cast(final Mat4 m, final Quat res) {
 
-        float fourXSquaredMinus1 = m.m00 - m.m11 - m.m22;
-        float fourYSquaredMinus1 = m.m11 - m.m00 - m.m22;
-        float fourZSquaredMinus1 = m.m22 - m.m00 - m.m11;
-        float fourWSquaredMinus1 = m.m00 + m.m11 + m.m22;
+        final float fourXSquaredMinus1 = m.m00 - m.m11 - m.m22;
+        final float fourYSquaredMinus1 = m.m11 - m.m00 - m.m22;
+        final float fourZSquaredMinus1 = m.m22 - m.m00 - m.m11;
+        final float fourWSquaredMinus1 = m.m00 + m.m11 + m.m22;
 
         int biggestIndex = 0;
         float fourBiggestSquaredMinus1 = fourWSquaredMinus1;
@@ -99,8 +99,8 @@ public class Quat extends funcGeometric {
             biggestIndex = 3;
         }
 
-        float biggestVal = (float) (Math.sqrt(fourBiggestSquaredMinus1 + 1) * 0.5f);
-        float mult = 0.25f / biggestVal;
+        final float biggestVal = (float) (Math.sqrt(fourBiggestSquaredMinus1 + 1) * 0.5f);
+        final float mult = 0.25f / biggestVal;
 
         switch (biggestIndex) {
             case 0:
@@ -135,11 +135,19 @@ public class Quat extends funcGeometric {
         return toMat(new Mat4());
     }
 
-    public Mat4 toMat(Mat4 res) {
-        float dx = x + x, dy = y + y, dz = z + z;
-        float q00 = dx * x, q11 = dy * y, q22 = dz * z;
-        float q01 = dx * y, q02 = dx * z, q03 = dx * w;
-        float q12 = dy * z, q13 = dy * w, q23 = dz * w;
+    public Mat4 toMat(final Mat4 res) {
+        final float dx = x + x;
+        float dy = y + y;
+        final float dz = z + z;
+        final float q00 = dx * x;
+        float q11 = dy * y;
+        final float q22 = dz * z;
+        final float q01 = dx * y;
+        float q02 = dx * z;
+        final float q03 = dx * w;
+        final float q12 = dy * z;
+        float q13 = dy * w;
+        final float q23 = dz * w;
         res.m00 = 1.0f - q11 - q22;
         res.m01 = q01 + q23;
         res.m02 = q02 - q13;

@@ -20,15 +20,15 @@ public class Vertex_v2fv2f {
     public Vec2 position;
     public Vec2 texCoord;
 
-    public Vertex_v2fv2f(Vec2 position, Vec2 texCoord) {
+    public Vertex_v2fv2f(final Vec2 position, final Vec2 texCoord) {
         this.position = position;
         this.texCoord = texCoord;
     }
 
-    public void toBb(ByteBuffer bb, int index) {
+    public void toBb(final ByteBuffer bb, final int index) {
         bb
-                .putFloat(index * SIZE + 0 * Float.BYTES, position.x)
-                .putFloat(index * SIZE + 1 * Float.BYTES, position.y)
+                .putFloat(index * SIZE, position.x)
+                .putFloat(index * SIZE + Float.BYTES, position.y)
                 .putFloat(index * SIZE + 2 * Float.BYTES, texCoord.x)
                 .putFloat(index * SIZE + 3 * Float.BYTES, texCoord.y);
     }

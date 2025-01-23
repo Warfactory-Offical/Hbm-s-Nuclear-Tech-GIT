@@ -105,7 +105,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 			//explode either if there's plasma that is too hot or if the reactor is turned on but the magnets have no power
 			if(plasma.getFluidAmount() > 0 && (this.plasmaType.getTemperature() >= this.getShield() || (this.isOn && this.power < powerReq))) {
 				this.disassemble();
-				Vec3 vec = Vec3.createVectorHelper(5.5, 0, 0);
+				final Vec3 vec = Vec3.createVectorHelper(5.5, 0, 0);
 				vec.rotateAroundY(world.rand.nextFloat() * (float) Math.PI * 2F);
 
 				world.newExplosion(null, pos.getX() + 0.5 + vec.xCoord, pos.getY() + 0.5 + world.rand.nextGaussian() * 1.5D, pos.getZ() + 0.5 + vec.zCoord, 2.5F, true, true);
@@ -117,7 +117,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 
 				if(plasma.getFluidAmount() > 0) {
 
-					int chance = FusionRecipes.getByproductChance(plasmaType);
+					final int chance = FusionRecipes.getByproductChance(plasmaType);
 
 					if(chance > 0 && world.rand.nextInt(chance) == 0)
 						produceByproduct();
@@ -135,7 +135,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 					}
 				}
 
-				int prod = FusionRecipes.getSteamProduction(plasmaType);
+				final int prod = FusionRecipes.getSteamProduction(plasmaType);
 				
 				for(int i = 0; i < 20; i++) {
 
@@ -155,10 +155,10 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 			/// END Processing part ///
 
 			/// START Notif packets ///
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] { tanks[0], tanks[1], plasma }), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 120));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1], plasma), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 120));
 			PacketDispatcher.wrapper.sendToAllAround(new FluidTypePacketTest(pos.getX(), pos.getY(), pos.getZ(), new Fluid[]{plasmaType}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			/// END Notif packets ///
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isOn", isOn);
 			data.setLong("power", power);
 			data.setInteger("progress", progress);
@@ -222,7 +222,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 			return;
 		}
 
-		int level = FusionRecipes.getBreedingLevel(plasmaType);
+		final int level = FusionRecipes.getBreedingLevel(plasmaType);
 
 		if(out.heat > level) {
 			this.progress = 0;
@@ -250,7 +250,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 
 	private void produceByproduct() {
 
-		ItemStack by = FusionRecipes.getByproduct(plasmaType);
+		final ItemStack by = FusionRecipes.getByproduct(plasmaType);
 
 		if(by == null)
 			return;
@@ -274,7 +274,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		this.isOn = data.getBoolean("isOn");
 		this.power = data.getLong("power");
 		this.blanket = data.getInteger("blanket");
@@ -282,23 +282,23 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 
 	@Override
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 
 		if(meta == 0) {
 			this.isOn = !this.isOn;
 		}
 	}
 
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public long getProgressScaled(long i) {
+	public long getProgressScaled(final long i) {
 		return (progress * i) / duration;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		tanks[0].readFromNBT(compound.getCompoundTag("water"));
 		tanks[1].readFromNBT(compound.getCompoundTag("steam"));
 		plasma.readFromNBT(compound.getCompoundTag("plasma"));
@@ -309,7 +309,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("water", tanks[0].writeToNBT(new NBTTagCompound()));
 		compound.setTag("steam", tanks[1].writeToNBT(new NBTTagCompound()));
 		compound.setTag("plasma", plasma.writeToNBT(new NBTTagCompound()));
@@ -320,12 +320,12 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 		return super.writeToNBT(compound);
 	}
 
-	public void fillFluidInit(FluidTank type) {
+	public void fillFluidInit(final FluidTank type) {
 		fillFluid(pos.getX(), pos.getY() - 3, pos.getZ(), type);
 		fillFluid(pos.getX(), pos.getY() + 3, pos.getZ(), type);
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank type) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank type) {
 		FFUtils.fillFluid(this, type, world, new BlockPos(x, y, z), 1280000);
 	}
 
@@ -333,20 +333,20 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 		
 		MachineITER.drop = false;
 
-		int[][][] layout = TileEntityITERStruct.layout;
+		final int[][][] layout = TileEntityITERStruct.layout;
 
 		for(int y = 0; y < 5; y++) {
 			for(int x = 0; x < layout[0].length; x++) {
 				for(int z = 0; z < layout[0][0].length; z++) {
 
-					int ly = y > 2 ? 4 - y : y;
+					final int ly = y > 2 ? 4 - y : y;
 
-					int width = 7;
+					final int width = 7;
 
 					if(x == width && y == 0 && z == width)
 						continue;
 
-					int b = layout[ly][x][z];
+					final int b = layout[ly][x][z];
 
 					switch(b) {
 					case 1:
@@ -370,16 +370,16 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 		
 		MachineITER.drop = true;
 		
-		List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class,
+		final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class,
 				new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(50, 10, 50));
 
-		for(EntityPlayer player : players) {
+		for(final EntityPlayer player : players) {
 			AdvancementManager.grantAchievement(player, AdvancementManager.achMeltdown);
 		}
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 
@@ -399,7 +399,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource != null) {
 			if(resource.getFluid() == types[0]) {
 				return tanks[0].fill(resource, doFill);
@@ -411,7 +411,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource != null && resource.getFluid() == ModForgeFluids.ultrahotsteam) {
 			return tanks[1].drain(resource, doDrain);
 		}
@@ -419,17 +419,17 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		return true;
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return new int[] { 2, 4 };
 	}
 
@@ -451,7 +451,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 3) {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -460,7 +460,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -468,7 +468,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		}

@@ -22,7 +22,7 @@ public class ItemRenderCryolator extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(cryo_rl);
 		GlStateManager.enableCull();
 		switch(type){

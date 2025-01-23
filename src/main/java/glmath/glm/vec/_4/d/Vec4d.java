@@ -15,14 +15,14 @@ public class Vec4d extends FuncRelational {
 
     }
 
-    public Vec4d(double x, double y, double z, double w) {
+    public Vec4d(final double x, final double y, final double z, final double w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Vec4d set(double x, double y, double z, double w) {
+    public Vec4d set(final double x, final double y, final double z, final double w) {
         this.x = x;
         this.y = y;
         this.z = z;

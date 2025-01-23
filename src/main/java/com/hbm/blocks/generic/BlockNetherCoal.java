@@ -17,31 +17,31 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockNetherCoal extends BlockOutgas {
 
-	public BlockNetherCoal(boolean randomTick, int rate, boolean onBreak, String s) {
+	public BlockNetherCoal(final boolean randomTick, final int rate, final boolean onBreak, final String s) {
 		super(randomTick, rate, onBreak, s);
 	}
 
 	@Override
-	public void onEntityWalk(World world, BlockPos pos, Entity entity){
+	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity){
 		entity.setFire(3);
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		return ModItems.coal_infernal;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand){
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
 			if(dir == ForgeDirection.DOWN)
 				continue;
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
+			final int x = pos.getX();
+			final int y = pos.getY();
+			final int z = pos.getZ();
 
 			if(worldIn.getBlockState(new BlockPos(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)).getMaterial() == Material.AIR) {
 

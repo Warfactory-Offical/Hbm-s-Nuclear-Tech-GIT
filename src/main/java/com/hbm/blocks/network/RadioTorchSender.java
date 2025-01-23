@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 public class RadioTorchSender extends BlockContainer {
 
-	public RadioTorchSender(String s) {
+	public RadioTorchSender(final String s) {
 		super(Material.IRON);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -36,16 +36,16 @@ public class RadioTorchSender extends BlockContainer {
 	
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityRadioTorchSender();
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking())	{
-			TileEntityRadioTorchSender entity = (TileEntityRadioTorchSender) world.getTileEntity(pos);
+			final TileEntityRadioTorchSender entity = (TileEntityRadioTorchSender) world.getTileEntity(pos);
 			if(entity != null){
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_radio_torch_sender, world, pos.getX(), pos.getY(), pos.getZ());
 			}
@@ -56,12 +56,12 @@ public class RadioTorchSender extends BlockContainer {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public boolean getWeakChanges(IBlockAccess world, BlockPos pos){
+	public boolean getWeakChanges(final IBlockAccess world, final BlockPos pos){
 		return true;
 	}
 }

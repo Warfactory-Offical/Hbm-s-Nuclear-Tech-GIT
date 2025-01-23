@@ -7,11 +7,10 @@ import com.hbm.modules.ItemHazardModule;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+
 
 @Deprecated()
 public class ItemHazard extends ItemCustomLore implements IItemHazard {
@@ -77,6 +76,7 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 	public static final float sa327 = 17.5F; //Solinium
 	public static final float saf = 5.85F; //Schrabidium Fuel
 	public static final float les = 2.52F;
+	public static final float ts = 120.0F;
 	public static final float mes = 5.25F;
 	public static final float hes = 8.8F;
 	public static final float gh336 = 5.0F; //Ghisorium
@@ -120,12 +120,13 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 	public static final float rod_rbmk = rod * 8;
 	public static final float magt = nugget * 0.5F * sa326;
 
-		
+
 		ItemHazardModule module;
+
 		
-		public ItemHazard(String s) {
+		public ItemHazard(final String s) {
 			super(s);
-			this.module = new ItemHazardModule();
+			this.module = new ItemHazardModule(); //Ill depricate it at some point
 		}
 
 		@Override
@@ -134,21 +135,21 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 		}
 		
 		@Override
-		public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected){
-			if(!worldIn.isRemote && entity instanceof EntityLivingBase)
-				this.module.applyEffects((EntityLivingBase) entity, stack.getCount(), itemSlot, isSelected, ((EntityLivingBase)entity).getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+		public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected){
+			//if(!worldIn.isRemote && entity instanceof EntityLivingBase)
+				//this.module.applyEffects((EntityLivingBase) entity, stack.getCount(), itemSlot, isSelected, ((EntityLivingBase)entity).getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 		}
 		
 		@Override
-		public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
-			this.module.addInformation(stack, list, flagIn);
-			super.addInformation(stack, world, list, flagIn);
+		public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn){
+		//	this.module.addInformation(stack, list, flagIn);
+		//	super.addInformation(stack, world, list, flagIn);
 		}
 		
 		@Override
-		public boolean onEntityItemUpdate(EntityItem item){
-			boolean m = this.module.onEntityItemUpdate(item);
-			boolean i = super.onEntityItemUpdate(item);
+		public boolean onEntityItemUpdate(final EntityItem item){
+			final boolean m = this.module.onEntityItemUpdate(item);
+			final boolean i = super.onEntityItemUpdate(item);
 			return m || i;
 		}
 		
@@ -156,20 +157,20 @@ public class ItemHazard extends ItemCustomLore implements IItemHazard {
 		 * DEPRECATED CTORS
 		 */
 		@Deprecated()
-		public ItemHazard(float radiation, String s) {
+		public ItemHazard(final float radiation, final String s) {
 			this(s);
 			this.module.addRadiation(radiation);
 		}
 
 		@Deprecated()
-		public ItemHazard(float radiation, boolean fire, String s) {
+		public ItemHazard(final float radiation, final boolean fire, final String s) {
 			this(s);
 			this.module.addRadiation(radiation);
 			if(fire) this.module.addFire(5);
 		}
 
 		@Deprecated()
-		public ItemHazard(float radiation, boolean fire, boolean blinding, String s) {
+		public ItemHazard(final float radiation, final boolean fire, final boolean blinding, final String s) {
 			this(s);
 			this.module.addRadiation(radiation);
 			if(blinding) this.module.addBlinding();

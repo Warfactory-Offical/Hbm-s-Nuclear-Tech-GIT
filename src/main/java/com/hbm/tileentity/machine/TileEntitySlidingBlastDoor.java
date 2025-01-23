@@ -40,7 +40,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			DoorState oldState = state;
+			final DoorState oldState = state;
 
 			if(state.isStationaryState()) {
 				timer = 0;
@@ -80,11 +80,11 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 				}
 			}
 			PacketDispatcher.wrapper.sendToAllAround(new TEDoorAnimationPacket(pos, (byte) state.ordinal(), texture), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, shouldUseBB == true ? 1 : 0, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, shouldUseBB ? 1 : 0, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
 		}
 	}
 
-	public boolean tryOpen(EntityPlayer player) {
+	public boolean tryOpen(final EntityPlayer player) {
 		if(state == DoorState.CLOSED) {
 			if(!world.isRemote && canAccess(player)) {
 				open();
@@ -94,7 +94,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		return false;
 	}
 
-	public boolean tryToggle(EntityPlayer player){
+	public boolean tryToggle(final EntityPlayer player){
 		if(state == DoorState.CLOSED) {
 			return tryOpen(player);
 		} else if(state == DoorState.OPEN) {
@@ -103,7 +103,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		return false;
 	}
 
-	public boolean tryClose(EntityPlayer player) {
+	public boolean tryClose(final EntityPlayer player) {
 		if(state == DoorState.OPEN) {
 			if(!world.isRemote && canAccess(player)) {
 				close();
@@ -114,14 +114,14 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 
 	@Override
-	public boolean canAccess(EntityPlayer player) {
+	public boolean canAccess(final EntityPlayer player) {
 		if(keypadLocked && player != null)
 			return false;
 		
 		if(!this.isLocked()) {
 			return true;
 		} else {
-			ItemStack stack = player.getHeldItemMainhand();
+			final ItemStack stack = player.getHeldItemMainhand();
 			
 			if(stack.getItem() instanceof ItemKeyPin && ItemKeyPin.getPins(stack) == this.lock) {
 	        	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockOpen, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -137,8 +137,8 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		}
 	}
 
-	private void placeDummy(int offset){
-		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+	private void placeDummy(final int offset){
+		final ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		BlockPos placePos = null;
 		switch(dir){
 		case SOUTH:
@@ -166,8 +166,8 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		((BlockDummyable)getBlockType()).removeExtra(world, placePos.getX(), placePos.getY()+3, placePos.getZ());
 	}
 
-	private void removeDummy(int offset){
-		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+	private void removeDummy(final int offset){
+		final ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		BlockPos placePos = null;
 		switch(dir){
 		case SOUTH:
@@ -208,7 +208,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		state = DoorState.values()[compound.getByte("state")];
 		sysTime = compound.getLong("sysTime");
 		timer = compound.getInteger("timer");
@@ -220,7 +220,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setByte("state", (byte) state.ordinal());
 		compound.setLong("sysTime", sysTime);
 		compound.setInteger("timer", timer);
@@ -250,7 +250,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(DoorState newState) {
+	public void handleNewState(final DoorState newState) {
 		if(this.state != newState){
 			if(this.state == DoorState.CLOSED && newState == DoorState.OPENING){
 				if(audio == null){
@@ -308,12 +308,12 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 	
 	@Override
-	public void setTextureState(byte tex){
+	public void setTextureState(final byte tex){
 		this.texture = tex;
 	}
 	
 	@Override
-	public boolean setTexture(String tex) {
+	public boolean setTexture(final String tex) {
 		if(tex.equals("sliding_blast_door")){
 			this.texture = 0;
 			return true;

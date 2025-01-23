@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class CheaterVirusSeed extends Block {
 
-	public CheaterVirusSeed(Material materialIn, String s) {
+	public CheaterVirusSeed(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -25,14 +25,14 @@ public class CheaterVirusSeed extends Block {
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos1, IBlockState state) {
+	public void breakBlock(final World world, final BlockPos pos1, final IBlockState state) {
 		super.breakBlock(world, pos1, state);
 		if(!GeneralConfig.enableVirus)
 			return;
-		int x = pos1.getX();
-		int y = pos1.getY();
-		int z = pos1.getZ();
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final int x = pos1.getX();
+		final int y = pos1.getY();
+		final int z = pos1.getZ();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
     	if((world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.cheater_virus_seed) && 
     			(world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.cheater_virus_seed) && 
@@ -48,13 +48,13 @@ public class CheaterVirusSeed extends Block {
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos1, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos1, final IBlockState state, final Random rand) {
 		if(!GeneralConfig.enableVirus)
 			return;
-		int x = pos1.getX();
-		int y = pos1.getY();
-		int z = pos1.getZ();
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final int x = pos1.getX();
+		final int y = pos1.getY();
+		final int z = pos1.getZ();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if((world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.cheater_virus_seed) && 
     			(world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.cheater_virus_seed) && 
     			(world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.cheater_virus_seed) && 
@@ -69,11 +69,11 @@ public class CheaterVirusSeed extends Block {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos1, Block blockIn, BlockPos fromPos) {
-		int x = pos1.getX();
-		int y = pos1.getY();
-		int z = pos1.getZ();
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos1, final Block blockIn, final BlockPos fromPos) {
+		final int x = pos1.getX();
+		final int y = pos1.getY();
+		final int z = pos1.getZ();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if((world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.cheater_virus_seed) && 
     			(world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.cheater_virus_seed) && 
     			(world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.cheater_virus || world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.cheater_virus_seed) && 

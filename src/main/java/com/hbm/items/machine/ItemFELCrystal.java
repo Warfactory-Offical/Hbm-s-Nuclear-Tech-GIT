@@ -15,7 +15,7 @@ public class ItemFELCrystal extends Item {
 
 	public EnumWavelengths wavelength = EnumWavelengths.NULL;
 
-	public ItemFELCrystal(EnumWavelengths wavelength, String s) {
+	public ItemFELCrystal(final EnumWavelengths wavelength, final String s) {
 		this.wavelength = wavelength;
 		this.setMaxStackSize(1);
 		this.setTranslationKey(s);
@@ -25,8 +25,8 @@ public class ItemFELCrystal extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-		String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (TextFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (this.getUnlocalizedNameInefficiently(stack) + ".desc");
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+		final String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (TextFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (this.getUnlocalizedNameInefficiently(stack) + ".desc");
 		list.add(I18nUtil.resolveKey(desc));
 		list.add(wavelength.textColor + I18nUtil.resolveKey(wavelength.name) + " - " + wavelength.textColor + I18nUtil.resolveKey(this.wavelength.wavelengthRange));
 	}
@@ -49,7 +49,7 @@ public class ItemFELCrystal extends Item {
 		public int guiColor;
 		public TextFormatting textColor;
 
-		private EnumWavelengths(String name, String wavelength, int color, int guiColor, TextFormatting textColor) {
+		private EnumWavelengths(final String name, final String wavelength, final int color, final int guiColor, final TextFormatting textColor) {
 			this.name = name;
 			this.wavelengthRange = wavelength;
 			this.renderedBeamColor = color;

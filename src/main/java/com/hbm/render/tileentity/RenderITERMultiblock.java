@@ -17,12 +17,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderITERMultiblock extends TileEntitySpecialRenderer<TileEntityITERStruct> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityITERStruct te) {
+	public boolean isGlobalRenderer(final TileEntityITERStruct te) {
 		return true;
 	}
 
 	@Override
-	public void render(TileEntityITERStruct te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityITERStruct te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 
 		GL11.glTranslatef((float)x-1, (float)y-1, (float)z);
@@ -36,27 +36,27 @@ public class RenderITERMultiblock extends TileEntitySpecialRenderer<TileEntityIT
         GlStateManager.enableTexture2D();
         GlStateManager.depthMask(false);
 
-        TextureAtlasSprite magnet = RenderStructureMarker.fusion[0][1];
-        TextureAtlasSprite solenoid = RenderStructureMarker.fusion[4][1];
-        TextureAtlasSprite motor = RenderStructureMarker.fusion[3][0];
-        TextureAtlasSprite glass = IconUtil.getTextureFromBlock(ModBlocks.reinforced_glass);
+        final TextureAtlasSprite magnet = RenderStructureMarker.fusion[0][1];
+        final TextureAtlasSprite solenoid = RenderStructureMarker.fusion[4][1];
+        final TextureAtlasSprite motor = RenderStructureMarker.fusion[3][0];
+        final TextureAtlasSprite glass = IconUtil.getTextureFromBlock(ModBlocks.reinforced_glass);
         
         TextureAtlasSprite active = magnet;
         
         RenderHelper.bindBlockTexture();
         RenderHelper.startDrawingTexturedQuads();
 
-        int[][][] layout = TileEntityITERStruct.layout;
+        final int[][][] layout = TileEntityITERStruct.layout;
 
         for(int iy = -2; iy <= 2; iy ++) {
 
-        	int iny = 2 - Math.abs(iy);
+        	final int iny = 2 - Math.abs(iy);
 
 	        for(int ix = 0; ix < layout[0].length; ix++) {
 
 	            for(int iz = 0; iz < layout[0][0].length; iz++) {
 
-	            	int block = layout[iny][ix][iz];
+	            	final int block = layout[iny][ix][iz];
 
 	            	switch(block) {
 	            	case 0: continue;

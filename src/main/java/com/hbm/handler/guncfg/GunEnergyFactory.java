@@ -10,6 +10,7 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.interfaces.IBulletImpactBehavior;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
@@ -30,7 +31,7 @@ public class GunEnergyFactory {
 
 	public static GunConfiguration getZOMGConfig() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 1;
 		config.roundsPerCycle = 1;
@@ -60,7 +61,7 @@ public class GunEnergyFactory {
 
 	public static GunConfiguration getEMPConfig() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 30;
 		config.roundsPerCycle = 1;
@@ -86,7 +87,7 @@ public class GunEnergyFactory {
 
 	public static BulletConfiguration getOrbusConfig() {
 
-		BulletConfiguration bullet = new BulletConfiguration();
+		final BulletConfiguration bullet = new BulletConfiguration();
 
 		bullet.ammo = ModItems.gun_emp_ammo;
 
@@ -115,7 +116,7 @@ public class GunEnergyFactory {
 
 	public static GunConfiguration getFlamerConfig() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 1;
 		config.roundsPerCycle = 1;
@@ -152,7 +153,7 @@ public class GunEnergyFactory {
 
 	public static GunConfiguration getVortexConfig() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 30;
 		config.roundsPerCycle = 1;
@@ -189,7 +190,7 @@ public class GunEnergyFactory {
 	}
 	
 	public static GunConfiguration getCCPlasmaGunConfig() {
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 2;
 		config.roundsPerCycle = 1;
@@ -234,7 +235,7 @@ public class GunEnergyFactory {
 	}
 	
 	public static GunConfiguration getEgonConfig() {
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 2;
 		config.roundsPerCycle = 1;
@@ -266,7 +267,7 @@ public class GunEnergyFactory {
 
 	public static BulletConfiguration getFlameConfig() {
 
-		BulletConfiguration bullet = new BulletConfiguration();
+		final BulletConfiguration bullet = new BulletConfiguration();
 
 		bullet.ammo = ModItems.ammo_fuel;
 		bullet.ammoCount = 100;
@@ -291,9 +292,9 @@ public class GunEnergyFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
 
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaburst");
 				data.setString("mode", "flame");
 				data.setInteger("count", 15);
@@ -326,7 +327,7 @@ public class GunEnergyFactory {
 
 	public static BulletConfiguration getNapalmConfig() {
 
-		BulletConfiguration bullet = getFlameConfig();
+		final BulletConfiguration bullet = getFlameConfig();
 
 		bullet.ammo = ModItems.ammo_fuel_napalm;
 		bullet.wear = 2;
@@ -339,7 +340,7 @@ public class GunEnergyFactory {
 
 	public static BulletConfiguration getPhosphorusConfig() {
 
-		BulletConfiguration bullet = getFlameConfig();
+		final BulletConfiguration bullet = getFlameConfig();
 
 		bullet.ammo = ModItems.ammo_fuel_phosphorus;
 		bullet.wear = 2;
@@ -358,7 +359,7 @@ public class GunEnergyFactory {
 
 	public static BulletConfiguration getVaporizerConfig() {
 
-		BulletConfiguration bullet = getFlameConfig();
+		final BulletConfiguration bullet = getFlameConfig();
 
 		bullet.ammo = ModItems.ammo_fuel_vaporizer;
 		bullet.wear = 4;
@@ -371,7 +372,7 @@ public class GunEnergyFactory {
 		bullet.vPFX = "flame";
 		bullet.incendiary = 0;
 
-		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
+		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
 		eff.getCurativeItems().clear();
 		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
@@ -381,7 +382,7 @@ public class GunEnergyFactory {
 
 	public static BulletConfiguration getGasConfig() {
 
-		BulletConfiguration bullet = getFlameConfig();
+		final BulletConfiguration bullet = getFlameConfig();
 
 		bullet.ammo = ModItems.ammo_fuel_gas;
 		bullet.wear = 1;
@@ -401,9 +402,10 @@ public class GunEnergyFactory {
 
 	public static BulletConfiguration getZOMGBoltConfig() {
 
-		BulletConfiguration bullet = new BulletConfiguration();
+		final BulletConfiguration bullet = new BulletConfiguration();
 
-		bullet.ammo = ModItems.nugget_euphemium;
+		bullet.ammo = ModItems.nugget;
+		bullet.ammoMeta = ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM).getMetadata();
 		bullet.ammoCount = 1000;
 		bullet.wear = 1;
 		bullet.velocity = 1F;
@@ -416,7 +418,7 @@ public class GunEnergyFactory {
 		bullet.dmgMax = 25000;
 
 		bullet.style = BulletConfiguration.STYLE_BOLT;
-		bullet.trail = bullet.BOLT_ZOMG;
+		bullet.trail = BulletConfiguration.BOLT_ZOMG;
 
 		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(HbmPotion.bang, 10 * 20, 0));
@@ -424,7 +426,7 @@ public class GunEnergyFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
 
 				if(!bullet.world.isRemote) {
 					ExplosionChaos.explodeZOMG(bullet.world, (int) bullet.posX, (int) bullet.posY, (int) bullet.posZ, 5);
@@ -438,7 +440,7 @@ public class GunEnergyFactory {
 	}
 	
 	public static BulletConfiguration getTurretConfig() {
-		BulletConfiguration bullet = getFlameConfig();
+		final BulletConfiguration bullet = getFlameConfig();
 		bullet.spread *= 2F;
 		bullet.gravity = 0.0025D;
 		return bullet;

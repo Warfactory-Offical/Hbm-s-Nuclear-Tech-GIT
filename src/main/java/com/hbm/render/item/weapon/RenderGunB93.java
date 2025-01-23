@@ -23,7 +23,7 @@ public class RenderGunB93 extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		GL11.glPopMatrix();
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
@@ -63,7 +63,7 @@ public class RenderGunB93 extends TEISRBase {
 				}
 				
 				if(item.getItem() == ModItems.gun_b93 && GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) > 0) {
-					float off = GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
+					final float off = GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
 					GL11.glRotatef(GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * -90, 0.0F, 0.0F, 1.0F);
 					//b92Ani.apply();
 					GL11.glTranslatef(off * -0.5F, off * -0.5F, 0.0F);

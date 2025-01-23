@@ -21,15 +21,15 @@ public class RenderLaser extends Render<EntityLaser> {
 
 	public static final IRenderFactory<EntityLaser> FACTORY = man -> new RenderLaser(man);
 	
-	protected RenderLaser(RenderManager renderManager) {
+	protected RenderLaser(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityLaser laser, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityLaser laser, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		
-		EntityPlayer player = laser.world.getPlayerEntityByName(laser.getDataManager().get(EntityLaser.PLAYER_NAME));
+		final EntityPlayer player = laser.world.getPlayerEntityByName(laser.getDataManager().get(EntityLaser.PLAYER_NAME));
 		
 		if(player != null) {
 
@@ -39,10 +39,10 @@ public class RenderLaser extends Render<EntityLaser> {
 			
 			GL11.glTranslated(x, y, z);
 			
-			RayTraceResult pos = Library.rayTrace(player, 100, 1);
+			final RayTraceResult pos = Library.rayTrace(player, 100, 1);
 			
-			Vec3 skeleton = Vec3.createVectorHelper(pos.hitVec.x - player.posX, pos.hitVec.y - player.posY - player.getEyeHeight(), pos.hitVec.z - player.posZ);
-			int init = (int) -(System.currentTimeMillis() % 360);
+			final Vec3 skeleton = Vec3.createVectorHelper(pos.hitVec.x - player.posX, pos.hitVec.y - player.posY - player.getEyeHeight(), pos.hitVec.z - player.posZ);
+			final int init = (int) -(System.currentTimeMillis() % 360);
 			
 			//BeamPronter.prontHelix(skeleton, 0, 0, 0, EnumWaveType.SPIRAL, EnumBeamType.LINE, 0x0000ff, 0x8080ff, 0, (int)(skeleton.length() * 5), 0.2F);
 	        BeamPronter.prontBeam(skeleton, EnumWaveType.SPIRAL, EnumBeamType.SOLID, 0xff5000, 0xff5000, init, (int) skeleton.length() + 1, 0.1F, 4, 0.05F);
@@ -53,10 +53,10 @@ public class RenderLaser extends Render<EntityLaser> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
+	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityLaser entity) {
+	protected ResourceLocation getEntityTexture(final EntityLaser entity) {
 		return null;
 	}
 

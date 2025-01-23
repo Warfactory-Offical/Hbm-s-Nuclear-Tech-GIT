@@ -20,10 +20,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIReactorControl extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_control.png");
-	private TileEntityReactorControl control;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_control.png");
+	private final TileEntityReactorControl control;
 	
-	public GUIReactorControl(InventoryPlayer invPlayer, TileEntityReactorControl tedf) {
+	public GUIReactorControl(final InventoryPlayer invPlayer, final TileEntityReactorControl tedf) {
 		super(new ContainerReactorControl(invPlayer, tedf));
 		control = tedf;
 		
@@ -32,7 +32,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 34, 88, 4, new String[] { "Fuel: " + control.fuel + "%" });
@@ -77,7 +77,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
 		
     	if(guiLeft + 7 <= x && guiLeft + 7 + 18 > x && guiTop + 16 < y && guiTop + 16 + 18 >= y) {
@@ -100,8 +100,8 @@ public class GUIReactorControl extends GuiInfoContainer {
     }
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer( int i, int j) {
-		String name = this.control.hasCustomInventoryName() ? this.control.getInventoryName() : I18n.format(this.control.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.control.hasCustomInventoryName() ? this.control.getInventoryName() : I18n.format(this.control.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -110,7 +110,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -119,7 +119,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		if(control.hullHeat > 0) {
 			int i = (control.hullHeat * 88 / 100000);
 			
-			i = (int) Math.min(i, 160);
+			i = Math.min(i, 160);
 			
 			drawTexturedModalRect(guiLeft + 80, guiTop + 59, 0, 166, i, 4);
 		}
@@ -127,7 +127,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		if(control.coreHeat > 0) {
 			int i = (control.coreHeat * 88 / 50000);
 			
-			i = (int) Math.min(i, 160);
+			i = Math.min(i, 160);
 			
 			drawTexturedModalRect(guiLeft + 80, guiTop + 65, 0, 170, i, 4);
 		}
@@ -135,7 +135,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		if(control.steam > 0) {
 			int i = (control.steam * 88 / control.maxSteam);
 			
-			i = (int) Math.min(i, 160);
+			i = Math.min(i, 160);
 			
 			drawTexturedModalRect(guiLeft + 80, guiTop + 53, 0, 174 + 4 * control.compression, i, 4);
 		}
@@ -143,7 +143,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		if(control.cool > 0) {
 			int i = (control.cool * 88 / control.maxCool);
 			
-			i = (int) Math.min(i, 160);
+			i = Math.min(i, 160);
 			
 			drawTexturedModalRect(guiLeft + 80, guiTop + 47, 0, 194, i, 4);
 		}
@@ -151,7 +151,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		if(control.water > 0) {
 			int i = (control.water * 88 / control.maxWater);
 			
-			i = (int) Math.min(i, 160);
+			i = Math.min(i, 160);
 			
 			drawTexturedModalRect(guiLeft + 80, guiTop + 41, 0, 190, i, 4);
 		}
@@ -159,7 +159,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		if(control.fuel > 0) {
 			int i = (control.fuel * 88 / 100);
 			
-			i = (int) Math.min(i, 160);
+			i = Math.min(i, 160);
 			
 			drawTexturedModalRect(guiLeft + 80, guiTop + 35, 0, 186, i, 4);
 		}
@@ -201,7 +201,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		}
 	}
 	
-    protected void keyTyped(char ch, int i) throws IOException
+    protected void keyTyped(final char ch, final int i) throws IOException
     {
         super.keyTyped(ch, i);
         

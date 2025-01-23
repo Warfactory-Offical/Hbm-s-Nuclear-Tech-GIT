@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSiegeCoin extends Item {
 	
-	public ItemSiegeCoin(String s) {
+	public ItemSiegeCoin(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.hasSubtypes = true;
@@ -28,22 +29,22 @@ public class ItemSiegeCoin extends Item {
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		return EnumRarity.UNCOMMON;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab())
 			for(int i = 0; i < SiegeTier.getLength(); i++) {
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 			}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
 		tooltip.add(TextFormatting.YELLOW + "Tier " + (stack.getItemDamage() + 1));
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

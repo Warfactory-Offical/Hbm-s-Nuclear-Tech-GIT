@@ -10,12 +10,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileDoomsday extends EntityMissileBaseAdvanced {
 
-	public EntityMissileDoomsday(World p_i1582_1_) {
+	public EntityMissileDoomsday(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1.5F, 12F);
 	}
 	
-	public EntityMissileDoomsday(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileDoomsday(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1.5F, 12F);
 	}
@@ -30,12 +30,12 @@ public class EntityMissileDoomsday extends EntityMissileBaseAdvanced {
 		if(motionY <= 0) {
 			if(!world.isRemote) {
 				this.setDead();
-				EntityBombletTheta bomblet1 = new EntityBombletTheta(world);
-				EntityBombletTheta bomblet2 = new EntityBombletTheta(world);
-				EntityBombletTheta bomblet3 = new EntityBombletTheta(world);
-				EntityBombletTheta bomblet4 = new EntityBombletTheta(world);
-				EntityBombletTheta bomblet5 = new EntityBombletTheta(world);
-				EntityBombletTheta bomblet6 = new EntityBombletTheta(world);
+				final EntityBombletTheta bomblet1 = new EntityBombletTheta(world);
+				final EntityBombletTheta bomblet2 = new EntityBombletTheta(world);
+				final EntityBombletTheta bomblet3 = new EntityBombletTheta(world);
+				final EntityBombletTheta bomblet4 = new EntityBombletTheta(world);
+				final EntityBombletTheta bomblet5 = new EntityBombletTheta(world);
+				final EntityBombletTheta bomblet6 = new EntityBombletTheta(world);
 				bomblet1.motionX = this.motionX * (rand.nextFloat() + 0.5F);
 				bomblet1.motionY = this.motionY * (rand.nextFloat() + 0.5F);
 				bomblet1.motionZ = this.motionZ * (rand.nextFloat() + 0.5F);

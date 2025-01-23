@@ -10,12 +10,12 @@ import net.minecraft.util.math.BlockPos;
 
 public class ContainerRadioTorchReceiver extends Container {
 	
-	private TileEntityRadioTorchReceiver diFurnace;
+	private final TileEntityRadioTorchReceiver diFurnace;
 	
 	BlockPos detectTarget = null;
 	EntityPlayerMP player;
 	
-	public ContainerRadioTorchReceiver(EntityPlayer player, TileEntityRadioTorchReceiver tedf) {
+	public ContainerRadioTorchReceiver(final EntityPlayer player, final TileEntityRadioTorchReceiver tedf) {
 		if(player instanceof EntityPlayerMP)
 			this.player = (EntityPlayerMP) player;
 		diFurnace = tedf;
@@ -23,12 +23,12 @@ public class ContainerRadioTorchReceiver extends Container {
 	
 	
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_) {
+	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int p_82846_2_) {
 		return ItemStack.EMPTY;
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return true;
 	}
 }

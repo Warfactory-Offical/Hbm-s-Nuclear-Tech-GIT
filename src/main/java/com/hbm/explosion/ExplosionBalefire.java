@@ -24,7 +24,7 @@ public class ExplosionBalefire {
 	private int leg;
 	private int element;
 	
-	public void saveToNbt(NBTTagCompound nbt, String name) {
+	public void saveToNbt(final NBTTagCompound nbt, final String name) {
 		nbt.setInteger(name + "posX", posX);
 		nbt.setInteger(name + "posY", posY);
 		nbt.setInteger(name + "posZ", posZ);
@@ -39,7 +39,7 @@ public class ExplosionBalefire {
 		nbt.setInteger(name + "element", element);
 	}
 	
-	public void readFromNbt(NBTTagCompound nbt, String name) {
+	public void readFromNbt(final NBTTagCompound nbt, final String name) {
 		posX = nbt.getInteger(name + "posX");
 		posY = nbt.getInteger(name + "posY");
 		posZ = nbt.getInteger(name + "posZ");
@@ -54,7 +54,7 @@ public class ExplosionBalefire {
 		element = nbt.getInteger(name + "element");
 	}
 	
-	public ExplosionBalefire(int x, int y, int z, World world, int rad)
+	public ExplosionBalefire(final int x, final int y, final int z, final World world, final int rad)
 	{
 		this.posX = x;
 		this.posY = y;
@@ -74,7 +74,7 @@ public class ExplosionBalefire {
 		this.shell = (int) Math.floor((Math.sqrt(n) + 1) / 2);
 		if(shell == 0)
 			shell = 1;
-		int shell2 = this.shell * 2;
+		final int shell2 = this.shell * 2;
 		this.leg = (int) Math.floor((this.n - (shell2 - 1) * (shell2 - 1)) / shell2);
 		this.element = (this.n - (shell2 - 1) * (shell2 - 1)) - shell2 * this.leg - this.shell + 1;
 		this.lastposX = this.leg == 0 ? this.shell : this.leg == 1 ? -this.element : this.leg == 2 ? -this.shell : this.element;
@@ -84,23 +84,23 @@ public class ExplosionBalefire {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void breakColumn(int x, int z)
+	private void breakColumn(final int x, final int z)
 	{
-		int dist = (int) (radius - Math.sqrt(x * x + z * z));
+		final int dist = (int) (radius - Math.sqrt(x * x + z * z));
 		
 		if (dist > 0) {
-			int pX = posX + x;
-			int pZ = posZ + z;
+			final int pX = posX + x;
+			final int pZ = posZ + z;
 			
 			int y  = worldObj.getHeight(pX, pZ);
-			int maxdepth = (int) (10 + radius * 0.25);
-			int voidDepth = (int) ((maxdepth * dist / radius) + (Math.sin(dist * 0.15 + 2) * 2));//
+			final int maxdepth = (int) (10 + radius * 0.25);
+			final int voidDepth = (int) ((maxdepth * dist / radius) + (Math.sin(dist * 0.15 + 2) * 2));//
 			
-			int depth = Math.max(y - voidDepth, 0);
+			final int depth = Math.max(y - voidDepth, 0);
 			
 			while(y > depth) {
 
-				Block b = worldObj.getBlockState(new BlockPos(pX, y, pZ)).getBlock();
+				final Block b = worldObj.getBlockState(new BlockPos(pX, y, pZ)).getBlock();
 				
 				if(b == ModBlocks.block_schrabidium_cluster) {
 					
@@ -124,12 +124,12 @@ public class ExplosionBalefire {
 			if(worldObj.rand.nextInt(10) == 0) {
 				worldObj.setBlockState(new BlockPos(pX, depth + 1, pZ), ModBlocks.balefire.getDefaultState());
 				
-				Block b = worldObj.getBlockState(new BlockPos(pX, y, pZ)).getBlock();
+				final Block b = worldObj.getBlockState(new BlockPos(pX, y, pZ)).getBlock();
 				
 				if(b == ModBlocks.block_schrabidium_cluster)
 					worldObj.setBlockState(new BlockPos(pX, y, pZ), ModBlocks.block_euphemium_cluster.getStateFromMeta(b.getMetaFromState(worldObj.getBlockState(new BlockPos(pX, y, pZ)))), 3);
 			}
-			int startDepth = (int)(6 * dist / radius);
+			final int startDepth = 6 * dist / radius;
 			for(int i = 0; i <= startDepth; i++) {
 				if(worldObj.getBlockState(new BlockPos(pX, depth-i, pZ)).getBlock() == Blocks.STONE){
 					switch(startDepth-i){

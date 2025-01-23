@@ -18,7 +18,7 @@ public class FractioningRecipeHandler implements IRecipeCategory<FractioningReci
 	
 	protected final IDrawable background;
 	
-	public FractioningRecipeHandler(IGuiHelper help) {
+	public FractioningRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 43, 34, 133-43, 52-34);
 	}
 	
@@ -43,8 +43,8 @@ public class FractioningRecipeHandler implements IRecipeCategory<FractioningReci
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, FractioningRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final FractioningRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 0, 0);
 		guiItemStacks.init(1, false, 54, 0);

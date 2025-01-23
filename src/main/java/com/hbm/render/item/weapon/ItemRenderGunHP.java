@@ -21,7 +21,7 @@ public class ItemRenderGunHP extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(hp_loc);
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:

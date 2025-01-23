@@ -12,19 +12,19 @@ import net.minecraft.world.World;
 
 public class TurretFriendly extends TurretBaseNT {
 
-	public TurretFriendly(Material materialIn, String s){
+	public TurretFriendly(final Material materialIn, final String s){
 		super(materialIn, s);
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta){
+	public TileEntity createNewTileEntity(final World worldIn, final int meta){
 		if(meta >= 12)
 			return new TileEntityTurretFriendly();
 		return new TileEntityProxyCombo(true, true, false);
 	}
 	
 	@Override
-	public void openGUI(World world, EntityPlayer player, int x, int y, int z){
+	public void openGUI(final World world, final EntityPlayer player, final int x, final int y, final int z){
 		player.openGui(MainRegistry.instance, ModBlocks.guiID_friendly, world, x, y, z);
 	}
 }

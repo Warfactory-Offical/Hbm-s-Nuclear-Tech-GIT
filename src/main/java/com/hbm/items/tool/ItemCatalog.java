@@ -2,7 +2,6 @@ package com.hbm.items.tool;
 
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,7 @@ import net.minecraft.world.World;
 
 public class ItemCatalog extends Item {
 
-	public ItemCatalog(String s) {
+	public ItemCatalog(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -20,7 +19,7 @@ public class ItemCatalog extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
 		if(worldIn.isRemote)
 			playerIn.openGui(MainRegistry.instance, ModItems.guiID_item_bobmazon, worldIn, 0, 0, 0);
 		return super.onItemRightClick(worldIn, playerIn, handIn);

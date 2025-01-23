@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineArcFurnace;
 import com.hbm.items.ModItems;
@@ -45,7 +46,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 		return "container.arcFurnace";
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -55,7 +56,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		this.dualCookTime = compound.getInteger("cookTime");
 		if(compound.hasKey("inventory"))
@@ -64,18 +65,18 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setInteger("cookTime", dualCookTime);
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
-	public int getDiFurnaceProgressScaled(int i) {
+	public int getDiFurnaceProgressScaled(final int i) {
 		return (dualCookTime * i) / processingSpeed;
 	}
 	
-	public long getPowerRemainingScaled(long i) {
+	public long getPowerRemainingScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
@@ -90,10 +91,9 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 	private boolean hasElectrodes() {
 		
 		if(!inventory.getStackInSlot(2).isEmpty() && !inventory.getStackInSlot(3).isEmpty() && !inventory.getStackInSlot(4).isEmpty()) {
-			if((inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode_desh) &&
-					(inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode_desh) &&
-					(inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode_desh))
-				return true;
+            return (inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(2).getItem() == ModItems.arc_electrode_desh) &&
+                    (inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(3).getItem() == ModItems.arc_electrode_desh) &&
+                    (inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode || inventory.getStackInSlot(4).getItem() == ModItems.arc_electrode_desh);
 		}
 		
 		return false;
@@ -108,7 +108,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 		{
 			return false;
 		}
-        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
+        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
         
 		if(itemStack == null || itemStack.isEmpty())
 		{
@@ -133,7 +133,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 	
 	private void processItem() {
 		if(canProcess()) {
-	        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
+	        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
 			
 			if(inventory.getStackInSlot(1).isEmpty())
 			{
@@ -146,7 +146,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 			{
 				if(inventory.getStackInSlot(i).isEmpty())
 				{
-					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem()));
+					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}
@@ -161,7 +161,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 					if(inventory.getStackInSlot(i).getItemDamage() < inventory.getStackInSlot(i).getMaxDamage())
 						inventory.getStackInSlot(i).setItemDamage(inventory.getStackInSlot(i).getItemDamage() + 1);
 					else
-						inventory.setStackInSlot(i, new ItemStack(ModItems.arc_electrode_burnt));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.arc_electrode_burnt));
 				}
 			}
 		}
@@ -176,7 +176,7 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 
 			this.updateStandardConnections(world, pos);
 
-			long prevPower = power;
+			final long prevPower = power;
 			
 			if(hasPower() && canProcess())
 			{
@@ -196,14 +196,9 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 				dualCookTime = 0;
 			}
 			
-			boolean trigger = true;
-			
-			if(hasPower() && canProcess() && this.dualCookTime == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !hasPower() || !canProcess() || this.dualCookTime != 0;
+
+            if(trigger)
             {
                 flag1 = true;
                 MachineArcFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
@@ -223,12 +218,12 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 		
 	}
 
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return new int[] {0, 1, 2, 3, 4, 5};
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 		
 	}
@@ -245,12 +240,12 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
+	public boolean canInsertItem(final int i, final ItemStack itemStack, final int j) {
 		return this.isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		
 		if(slot == 1)
 			return true;
@@ -259,14 +254,13 @@ public class TileEntityMachineArcFurnace extends TileEntityMachineBase implement
 			return itemStack.getItem() == ModItems.arc_electrode_burnt;
 
 		if(slot == 5)
-			if (itemStack.getItem() instanceof IBatteryItem && ((IBatteryItem)itemStack.getItem()).getCharge(itemStack) == 0)
-				return true;
+            return itemStack.getItem() instanceof IBatteryItem && ((IBatteryItem) itemStack.getItem()).getCharge(itemStack) == 0;
 		
 		return false;
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(final int slot, final ItemStack stack) {
 		if(slot == 2 || slot == 3 || slot == 4)
 			return stack.getItem() == ModItems.arc_electrode || stack.getItem() == ModItems.arc_electrode_desh;
 		if(slot == 5)

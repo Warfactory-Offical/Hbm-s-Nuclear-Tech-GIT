@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderFalloutRainFactory implements IRenderFactory<EntityFalloutRain> {
 
 	@Override
-	public Render<? super EntityFalloutRain> createRenderFor(RenderManager manager) {
+	public Render<? super EntityFalloutRain> createRenderFor(final RenderManager manager) {
 		return new RenderFallout(manager);
 	}
 

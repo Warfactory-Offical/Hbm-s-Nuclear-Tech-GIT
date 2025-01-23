@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderUUCreator extends TileEntitySpecialRenderer<TileEntityMachineUUCreator> {
 
 	@Override
-	public void render(TileEntityMachineUUCreator te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineUUCreator te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5F, y, z + 0.5F);
 

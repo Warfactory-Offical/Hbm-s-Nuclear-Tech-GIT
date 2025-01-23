@@ -15,12 +15,12 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 public class RenderMachineForceField extends TileEntitySpecialRenderer<TileEntityForceField> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityForceField te) {
+	public boolean isGlobalRenderer(final TileEntityForceField te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityForceField te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityForceField te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -29,20 +29,20 @@ public class RenderMachineForceField extends TileEntitySpecialRenderer<TileEntit
         bindTexture(ResourceManager.radar_base_tex);
         ResourceManager.radar.renderPart("Base");
         
-        TileEntityForceField ff = (TileEntityForceField)te;
+        final TileEntityForceField ff = te;
 
         GL11.glTranslated(0, 0.5D, 0);
         
         //double rot = (System.currentTimeMillis() / 10D) % 360;
         
-        int segments = (int)(16 + ff.radius * 0.125);
+        final int segments = (int)(16 + ff.radius * 0.125);
         
         bindTexture(ResourceManager.forcefield_top_tex);
 
         if(ff.isOn && ff.health > 0 && ff.power > 0 && ff.cooldown == 0) {
         	generateSphere(segments, segments * 2, ff.radius, ff.color);
             
-            double rot = (System.currentTimeMillis() * 0.5D) % 360;
+            final double rot = (System.currentTimeMillis() * 0.5D) % 360;
     		GL11.glRotated(-rot, 0F, 1F, 0F);
         }
 
@@ -54,28 +54,28 @@ public class RenderMachineForceField extends TileEntitySpecialRenderer<TileEntit
         GL11.glPopMatrix();
 	}
 	
-	private void generateSphere(int l, int s, float rad, int hex) {
+	private void generateSphere(final int l, final int s, final float rad, final int hex) {
 
-		float r = (hex >> 16 & 255)/255F;
-		float g = (hex >> 8 & 255)/255F;
-		float b = (hex & 255)/255F;
+		final float r = (hex >> 16 & 255)/255F;
+		final float g = (hex >> 8 & 255)/255F;
+		final float b = (hex & 255)/255F;
 		
         GL11.glPushMatrix();
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
         
-        float sRot = 360F / s;
-        float lRot = (float)Math.PI / l;
+        final float sRot = 360F / s;
+        final float lRot = (float)Math.PI / l;
         
-        Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buf = tes.getBuffer();
+        final Tessellator tes = Tessellator.getInstance();
+        final BufferBuilder buf = tes.getBuffer();
         
         
         for(int k = 0; k < s; k++) {
         	buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
     		GL11.glRotatef(sRot, 0F, 1F, 0F);
     		
-	        Vec3 vec = Vec3.createVectorHelper(0, rad, 0);
+	        final Vec3 vec = Vec3.createVectorHelper(0, rad, 0);
 	        
 	        for(int i = 0; i < l; i++) {
 

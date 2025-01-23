@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class ItemRenderShim extends TEISRBase {
 	// Drillgon200: I hope I never have to look at this code again.
 
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:

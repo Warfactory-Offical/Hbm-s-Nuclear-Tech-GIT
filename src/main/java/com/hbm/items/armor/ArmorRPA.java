@@ -1,7 +1,6 @@
 package com.hbm.items.armor;
 
 import com.hbm.render.model.ModelArmorRPA;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -11,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ArmorRPA extends ArmorFSBPowered {
 
-    public ArmorRPA(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
+    public ArmorRPA(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
         super(material, layer, slot, texture, maxPower, chargeRate, consumption, drain, s);
     }
 
@@ -20,7 +19,7 @@ public class ArmorRPA extends ArmorFSBPowered {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
+    public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
         if(models == null) {
             models = new ModelArmorRPA[4];
 

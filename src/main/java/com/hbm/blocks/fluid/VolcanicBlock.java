@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class VolcanicBlock extends BlockFluidClassic {
 
-	public VolcanicBlock(Fluid fluid, Material material, String s) {
+	public VolcanicBlock(final Fluid fluid, final Material material, final String s) {
 		super(fluid, material);
 		this.setTickRandomly(true);
 		this.setQuantaPerBlock(4);
@@ -43,20 +43,20 @@ public class VolcanicBlock extends BlockFluidClassic {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighbourPos){
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block neighborBlock, final BlockPos neighbourPos){
 		super.neighborChanged(state, world, pos, neighborBlock, neighbourPos);
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			Block b = getReaction(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ);
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			final Block b = getReaction(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ);
 			
 			if(b != null)
 				world.setBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ), b.getDefaultState());
 		}
 	}
 	
-	public Block getReaction(World world, int x, int y, int z) {
+	public Block getReaction(final World world, final int x, final int y, final int z) {
 		
-		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
-		Block b = state.getBlock();
+		final IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+		final Block b = state.getBlock();
 		if(state.getMaterial() == Material.WATER) {
 			return Blocks.STONE;
 		}
@@ -73,7 +73,7 @@ public class VolcanicBlock extends BlockFluidClassic {
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
 		entity.setInWeb();
 		entity.setFire(3);
 		entity.attackEntityFrom(ModDamageSource.radiation, 2F);
@@ -83,14 +83,14 @@ public class VolcanicBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		super.updateTick(world, pos, state, rand);
 		
 		int lavaCount = 0;
 		int basaltCount = 0;
 		
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock();
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			final Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock();
 			
 			if(b == this)
 				lavaCount++;
@@ -101,10 +101,10 @@ public class VolcanicBlock extends BlockFluidClassic {
 		
 		if(!world.isRemote && ((!this.isSourceBlock(world, pos) && lavaCount < 2) || (rand.nextInt(5) == 0) && lavaCount < 5) && world.getBlockState(pos.down()).getBlock() != this) {
 			
-			int r = rand.nextInt(200);
+			final int r = rand.nextInt(200);
 			
-			Block above = world.getBlockState(pos.up(10)).getBlock();
-			boolean canMakeGem = lavaCount + basaltCount == 6 && lavaCount < 3 && (above == ModBlocks.basalt || above == ModBlocks.volcanic_lava_block);
+			final Block above = world.getBlockState(pos.up(10)).getBlock();
+			final boolean canMakeGem = lavaCount + basaltCount == 6 && lavaCount < 3 && (above == ModBlocks.basalt || above == ModBlocks.volcanic_lava_block);
 			
 			if(r < 2)
 				world.setBlockState(pos, ModBlocks.basalt_sulfur.getDefaultState());
@@ -120,8 +120,8 @@ public class VolcanicBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean canDisplace(IBlockAccess world, BlockPos pos){
-		Block b = world.getBlockState(pos).getBlock();
+	public boolean canDisplace(final IBlockAccess world, final BlockPos pos){
+		final Block b = world.getBlockState(pos).getBlock();
 		
 		if(b.getFlammability(world, pos, null) > 0)
 			return true;
@@ -133,43 +133,43 @@ public class VolcanicBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean displaceIfPossible(World world, BlockPos pos){
+	public boolean displaceIfPossible(final World world, final BlockPos pos){
 		return super.displaceIfPossible(world, pos) || canDisplace(world, pos);
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
+	public void randomDisplayTick(final IBlockState state, final World world, final BlockPos pos, final Random rand){
 		double dx;
 		double dy;
 		double dz;
 
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
 		if(world.getBlockState(pos.up()).getMaterial() == Material.AIR && !world.getBlockState(pos.up()).isOpaqueCube()) {
 			if(rand.nextInt(100) == 0) {
-				dx = (double) ((float) x + rand.nextFloat());
+				dx = (float) x + rand.nextFloat();
 				dy = (double) y + this.getBlockLiquidHeight(world, pos, state, this.material);
-				dz = (double) ((float) z + rand.nextFloat());
+				dz = (float) z + rand.nextFloat();
 				world.spawnParticle(EnumParticleTypes.LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 				world.playSound(null, dx, dy, dz, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F);
 			}
 
 			if(rand.nextInt(200) == 0) {
-				world.playSound(null, (double) x, (double) y, (double) z, SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F);
+				world.playSound(null, x, y, z, SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F);
 			}
 		}
 
 		if(rand.nextInt(10) == 0 && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && !world.getBlockState(pos.down(2)).getMaterial().blocksMovement()) {
-			dx = (double) ((float) x + rand.nextFloat());
+			dx = (float) x + rand.nextFloat();
 			dy = (double) y - 1.05D;
-			dz = (double) ((float) z + rand.nextFloat());
+			dz = (float) z + rand.nextFloat();
 			world.spawnParticle(EnumParticleTypes.DRIP_LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}

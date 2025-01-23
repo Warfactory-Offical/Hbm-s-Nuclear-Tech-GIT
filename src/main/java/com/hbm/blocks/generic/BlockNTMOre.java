@@ -5,11 +5,10 @@ import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.main.MainRegistry;
-import com.hbm.potion.HbmPotion;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.modules.ItemHazardModule;
-import com.hbm.saveddata.RadiationSavedData;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
@@ -18,30 +17,21 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.util.EnumHand;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockNTMOre extends BlockOre implements IItemHazard {
 	
 	ItemHazardModule module;
 	public static int xp;
 
-	public BlockNTMOre(String name, int harvestLvl, int xp) {
+	public BlockNTMOre(final String name, final int harvestLvl, final int xp) {
 		super();
-		this.xp = xp;
+		BlockNTMOre.xp = xp;
 		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -51,11 +41,11 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
-	public BlockNTMOre(String name, int harvestLvl) {
+	public BlockNTMOre(final String name, final int harvestLvl) {
 		this(name, harvestLvl, 2);
 	}
 	
-	public BlockNTMOre(SoundType sound, String name, int harvestLvl){
+	public BlockNTMOre(final SoundType sound, final String name, final int harvestLvl){
 		this(name, harvestLvl);
 		super.setSoundType(sound);
 	}
@@ -66,19 +56,21 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	}
 
 	@Override
-	public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune){
+	public int getExpDrop(final IBlockState state, final IBlockAccess world, final BlockPos pos, final int fortune){
 		if(this.getItemDropped(state, RANDOM, fortune) != Item.getItemFromBlock(this))
 			return xp;
 		return 0;
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		if(this == ModBlocks.ore_asbestos || this == ModBlocks.ore_gneiss_asbestos || this == ModBlocks.basalt_asbestos){
-			return ModItems.ingot_asbestos;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.ore_nether_fire){
-			return rand.nextInt(10) == 0 ? ModItems.ingot_phosphorus : ModItems.powder_fire;
+			// TODO
+			// return rand.nextInt(10) == 0 ? ModItems.ingot_phosphorus : ModItems.powder_fire;
+			return ModItems.powder_fire;
 		}
 		if(this == ModBlocks.ore_sulfur || this == ModBlocks.ore_nether_sulfur || this == ModBlocks.ore_meteor_sulfur || this == ModBlocks.basalt_sulfur){
 			return ModItems.sulfur;
@@ -113,21 +105,21 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 			case 0: return ModItems.coil_advanced_alloy;
 			case 1: return ModItems.plate_advanced_alloy;
 			case 2: return ModItems.powder_desh_mix;
-			case 3: return ModItems.ingot_desh;
+//			case 3: return ModItems.ingot_desh;
 			case 4: return ModItems.battery_advanced;
 			case 5: return ModItems.battery_lithium_cell;
 			case 6: return ModItems.battery_advanced_cell;
-			case 7: return ModItems.nugget_schrabidium;
-			case 8: return ModItems.ingot_plutonium;
-			case 9: return ModItems.ingot_thorium_fuel;
-			case 10: return ModItems.ingot_u233;
+//			case 7: return ModItems.nugget_schrabidium;
+//			case 8: return ModItems.ingot_plutonium;
+//			case 9: return ModItems.ingot_thorium_fuel;
+//			case 10: return ModItems.ingot_u233;
 			case 11: return ModItems.turbine_tungsten;
-			case 12: return ModItems.ingot_dura_steel;
-			case 13: return ModItems.ingot_polymer;
-			case 14: return ModItems.ingot_tungsten;
-			case 15: return ModItems.ingot_combine_steel;
-			case 16: return ModItems.ingot_lanthanium;
-			case 17: return ModItems.ingot_actinium;
+//			case 12: return ModItems.ingot_dura_steel;
+//			case 13: return ModItems.ingot_polymer;
+//			case 14: return ModItems.ingot_tungsten;
+//			case 15: return ModItems.ingot_combine_steel;
+//			case 16: return ModItems.ingot_lanthanium;
+//			case 17: return ModItems.ingot_actinium;
 			case 18: return Item.getItemFromBlock(ModBlocks.block_meteor);
 			case 19: return Item.getItemFromBlock(ModBlocks.fusion_heater);
 			case 20: return Item.getItemFromBlock(ModBlocks.fusion_core);
@@ -145,39 +137,40 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 			case 32: return ModItems.ammo_mirv;
 			case 33: return ModItems.gun_defabricator_ammo;
 			case 34: return ModItems.gun_osipr_ammo2;
+			default: return ModItems.ammo_nuke; // TODO remove
 			}
 		}
 		if(this == ModBlocks.deco_aluminium)
 		{
-			return ModItems.ingot_aluminium;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_beryllium)
 		{
-			return ModItems.ingot_beryllium;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_lead)
 		{
-			return ModItems.ingot_lead;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_red_copper)
 		{
-			return ModItems.ingot_red_copper;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_steel)
 		{
-			return ModItems.ingot_steel;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_titanium)
 		{
-			return ModItems.ingot_titanium;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_tungsten)
 		{
-			return ModItems.ingot_tungsten;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.deco_asbestos)
 		{
-			return ModItems.ingot_asbestos;
+			return ModItems.ingot;
 		}
 		if(this == ModBlocks.ore_cinnebar) {
 			return ModItems.cinnebar;
@@ -192,7 +185,7 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random rand) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random rand) {
 		if(this == ModBlocks.ore_sulfur || this == ModBlocks.ore_nether_sulfur || this == ModBlocks.ore_meteor_sulfur || this == ModBlocks.basalt_sulfur){
 			return 2 + rand.nextInt(3) * fortune;
 		}
@@ -220,13 +213,48 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	}
 	
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(final IBlockState state) {
+		if(this == ModBlocks.ore_asbestos || this == ModBlocks.ore_gneiss_asbestos || this == ModBlocks.basalt_asbestos){
+			return ModItems.ingot.getItemStack(MaterialMineral.ASBESTOS).getMetadata();
+		}
+		if(this == ModBlocks.deco_aluminium)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.ALUMINIUM).getMetadata();
+		}
+		if(this == ModBlocks.deco_beryllium)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM).getMetadata();
+		}
+		if(this == ModBlocks.deco_lead)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.LEAD).getMetadata();
+		}
+		if(this == ModBlocks.deco_red_copper)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER).getMetadata();
+		}
+		if(this == ModBlocks.deco_steel)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.STEEL).getMetadata();
+		}
+		if(this == ModBlocks.deco_titanium)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.TITANIUM).getMetadata();
+		}
+		if(this == ModBlocks.deco_tungsten)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.TUNGSTEN).getMetadata();
+		}
+		if(this == ModBlocks.deco_asbestos)
+		{
+			return ModItems.ingot.getItemStack(MaterialMineral.ASBESTOS).getMetadata();
+		}
 		return 0;
 	}
 	
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if (world.getBlockState(pos.down()).getBlock() == ModBlocks.ore_oil_empty) {
         	world.setBlockState(pos, ModBlocks.ore_oil_empty.getDefaultState());
         	world.setBlockState(pos.down(), ModBlocks.ore_oil.getDefaultState());
@@ -234,7 +262,7 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		if(stack.getItem() == Item.getItemFromBlock(ModBlocks.ore_uranium) || stack.getItem() == Item.getItemFromBlock(ModBlocks.ore_gneiss_uranium) || stack.getItem() == Item.getItemFromBlock(ModBlocks.ore_nether_uranium)){
 			tooltip.add("High-Radiation creates medium amounts of schrabidium inside this block");
 		}
@@ -248,19 +276,19 @@ public class BlockNTMOre extends BlockOre implements IItemHazard {
 	}
 
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity) {
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entity) {
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase)entity, 0.5F, 0, false, EnumHand.MAIN_HAND);
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase)entity, 0.5F, 0, false, EnumHand.MAIN_HAND);
 	}
 
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 }

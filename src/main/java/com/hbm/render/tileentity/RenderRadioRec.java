@@ -13,14 +13,14 @@ import net.minecraft.util.ResourceLocation;
 public class RenderRadioRec extends TileEntitySpecialRenderer<TileEntityRadioRec> {
 
 	private static final ResourceLocation texture8 = new ResourceLocation(RefStrings.MODID + ":" + "textures/models/deco/ModelRadioReceiver.png");
-	private ModelBroadcaster model6;
+	private final ModelBroadcaster model6;
 	
 	public RenderRadioRec() {
 		this.model6 = new ModelBroadcaster();
 	}
 	
 	@Override
-	public void render(TileEntityRadioRec te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityRadioRec te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		GL11.glRotatef(180, 0F, 0F, 1F);

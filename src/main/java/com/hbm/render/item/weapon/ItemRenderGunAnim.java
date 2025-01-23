@@ -29,9 +29,9 @@ public class ItemRenderGunAnim extends TileEntityItemStackRenderer {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		
-		float lever = 0;
+		final float lever = 0;
 		
 		GL11.glPopMatrix();
 		switch(type) {
@@ -64,7 +64,7 @@ public class ItemRenderGunAnim extends TileEntityItemStackRenderer {
 				GL11.glTranslated(0, -1, -0.5);
 				
 				if(item.getItem() == ModItems.gun_b92 && GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) > 0) {
-					float off = GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
+					final float off = GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
 					GL11.glRotatef(GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * -90, 0.0F, 0.0F, 1.0F);
 					//b92Ani.apply();
 					GL11.glTranslatef(off * -0.5F, off * -0.5F, 0.0F);

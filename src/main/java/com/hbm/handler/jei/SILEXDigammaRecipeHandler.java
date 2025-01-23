@@ -7,7 +7,7 @@ import mezz.jei.api.IGuiHelper;
 
 public class SILEXDigammaRecipeHandler extends SILEXRecipeHandler {
 
-	public SILEXDigammaRecipeHandler(IGuiHelper help){
+	public SILEXDigammaRecipeHandler(final IGuiHelper help){
 		super(help);
 	}
 	

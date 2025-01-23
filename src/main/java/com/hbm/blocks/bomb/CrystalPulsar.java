@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class CrystalPulsar extends Block {
 
-	public CrystalPulsar(Material materialIn, String s) {
+	public CrystalPulsar(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,11 +21,11 @@ public class CrystalPulsar extends Block {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos1, Block blockIn, BlockPos fromPos) {
-		int x = pos1.getX();
-		int y = pos1.getY();
-		int z = pos1.getZ();
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos1, final Block blockIn, final BlockPos fromPos) {
+		final int x = pos1.getX();
+		final int y = pos1.getY();
+		final int z = pos1.getZ();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if(world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.crystal_virus || 
     			world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.crystal_virus || 
     			world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.crystal_virus || 

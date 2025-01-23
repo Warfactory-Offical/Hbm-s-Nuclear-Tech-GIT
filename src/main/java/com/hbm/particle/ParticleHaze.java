@@ -26,7 +26,7 @@ public class ParticleHaze extends Particle {
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/particle/haze.png");
 	private int maxAge;
 	
-	public ParticleHaze(World worldIn, double posXIn, double posYIn, double posZIn){
+	public ParticleHaze(final World worldIn, final double posXIn, final double posYIn, final double posZIn){
 		super(worldIn, posXIn, posYIn, posZIn);
 		particleMaxAge = 600 + rand.nextInt(100);
 
@@ -55,9 +55,9 @@ public class ParticleHaze extends Particle {
 			this.motionZ *= 0.699999988079071D;
 		}
 
-		int x = (int)Math.floor(posX) + rand.nextInt(15) - 7;
-		int z = (int)Math.floor(posZ) + rand.nextInt(15) - 7;
-		int y = world.getHeight(x, z);
+		final int x = (int)Math.floor(posX) + rand.nextInt(15) - 7;
+		final int z = (int)Math.floor(posZ) + rand.nextInt(15) - 7;
+		final int y = world.getHeight(x, z);
 		world.spawnParticle(EnumParticleTypes.LAVA, x + rand.nextDouble(), y + 0.1, z + rand.nextDouble(), 0.0, 0.0, 0.0);
 	}
 	
@@ -67,7 +67,7 @@ public class ParticleHaze extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		float alpha = 0;
 
@@ -84,29 +84,29 @@ public class ParticleHaze extends Particle {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		GlStateManager.glNormal3f(0, 1, 0);
 		
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = tes.getBuffer();
 
-		Random rand = new Random(50);
+		final Random rand = new Random(50);
 
 		for(int i = 0; i < 25; i++) {
 
-			double dX = rand.nextGaussian() * 2.5D;
-			double dY = rand.nextGaussian() * 0.15D;
-			double dZ = rand.nextGaussian() * 2.5D;
-			double size = (rand.nextDouble() * 0.25 + 0.75) * particleScale;
+			final double dX = rand.nextGaussian() * 2.5D;
+			final double dY = rand.nextGaussian() * 0.15D;
+			final double dZ = rand.nextGaussian() * 2.5D;
+			final double size = (rand.nextDouble() * 0.25 + 0.75) * particleScale;
 
 			GL11.glTranslatef((float) dX, (float) dY, (float) dZ);
 
-			float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX) + rand.nextGaussian() * 0.5);
-			float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY) + rand.nextGaussian() * 0.5);
-			float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ) + rand.nextGaussian() * 0.5);
+			final float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX) + rand.nextGaussian() * 0.5);
+			final float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY) + rand.nextGaussian() * 0.5);
+			final float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ) + rand.nextGaussian() * 0.5);
 
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-			buf.pos((double) (pX - rotationX * size - rotationXY * size), (double) (pY - rotationZ * size), (double) (pZ - rotationYZ * size - rotationXZ * size)).tex(1, 1).endVertex();
-			buf.pos((double) (pX - rotationX * size + rotationXY * size), (double) (pY + rotationZ * size), (double) (pZ - rotationYZ * size + rotationXZ * size)).tex(1, 0).endVertex();
-			buf.pos((double) (pX + rotationX * size + rotationXY * size), (double) (pY + rotationZ * size), (double) (pZ + rotationYZ * size + rotationXZ * size)).tex(0, 0).endVertex();
-			buf.pos((double) (pX + rotationX * size - rotationXY * size), (double) (pY - rotationZ * size), (double) (pZ + rotationYZ * size - rotationXZ * size)).tex(0, 1).endVertex();
+			buf.pos(pX - rotationX * size - rotationXY * size, pY - rotationZ * size, pZ - rotationYZ * size - rotationXZ * size).tex(1, 1).endVertex();
+			buf.pos(pX - rotationX * size + rotationXY * size, pY + rotationZ * size, pZ - rotationYZ * size + rotationXZ * size).tex(1, 0).endVertex();
+			buf.pos(pX + rotationX * size + rotationXY * size, pY + rotationZ * size, pZ + rotationYZ * size + rotationXZ * size).tex(0, 0).endVertex();
+			buf.pos(pX + rotationX * size - rotationXY * size, pY - rotationZ * size, pZ + rotationYZ * size - rotationXZ * size).tex(0, 1).endVertex();
 			tes.draw();
 
 			GL11.glTranslatef((float) -dX, (float) -dY, (float) -dZ);

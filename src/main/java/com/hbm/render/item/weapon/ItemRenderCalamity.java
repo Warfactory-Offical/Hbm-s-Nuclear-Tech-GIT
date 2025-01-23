@@ -31,7 +31,7 @@ public class ItemRenderCalamity extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
 			GL11.glTranslated(-0.25, 0, 0);

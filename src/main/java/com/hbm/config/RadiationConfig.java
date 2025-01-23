@@ -26,24 +26,36 @@ public class RadiationConfig {
 	public static int geigerY = 2;
 	public static int digammaX = 16;
 	public static int digammaY = 18;
-	
-	public static void loadFromConfig(Configuration config) {
+	public static int hazardRate = 5;
+	public static boolean disableAsbestos = false;
+	public static boolean disableBlinding = false;
+	public static boolean disableCoal = false;
+	public static boolean disableExplosive = false;
+	public static boolean disableHydro = false;
+	public static boolean disableHot = false;
+	public static boolean disableCold = false;
+    public static boolean disableToxic = false;
+
+    public static void loadFromConfig(final Configuration config) {
 		final String CATEGORY_NUKE = "06_explosions";
 		final String CATEGORY_RAD = "07_radiation";
+		final Property hazardPollingRate = config.get(CATEGORY_RAD,  "HazardPollingRate", 5);
+		hazardPollingRate.setComment("Every how many ticks should inventory hazard check be done. WARNING: very low values can cause server performance issues, don't lower it on larger servers!");
+		hazardRate = (hazardPollingRate.getInt()<=0) ? hazardPollingRate.getInt() : 1;
 		// afterrain duration
-		Property radRain = config.get(CATEGORY_NUKE, "6.06_falloutRainDuration", 2000);
+		final Property radRain = config.get(CATEGORY_NUKE, "6.06_falloutRainDuration", 2000);
 		radRain.setComment("Duration of the thunderstorm after fallout in ticks (only large explosions)");
 		rain = radRain.getInt();
 		// afterrain radiation
-		Property rainCont = config.get(CATEGORY_NUKE, "6.07_falloutRainRadiation", 1000);
+		final Property rainCont = config.get(CATEGORY_NUKE, "6.07_falloutRainRadiation", 1000);
 		rainCont.setComment("Radiation in 100th RADs created by fallout rain");
 		cont = rainCont.getInt();
 		// fog threshold
-		Property fogThresh = config.get(CATEGORY_NUKE, "6.08_fogThreshold", 100);
+		final Property fogThresh = config.get(CATEGORY_NUKE, "6.08_fogThreshold", 100);
 		fogThresh.setComment("Radiation in RADs required for fog to spawn");
 		fogRad = fogThresh.getInt();
 		// fog chance
-		Property fogChance = config.get(CATEGORY_NUKE, "6.09_fogChance", 50);
+		final Property fogChance = config.get(CATEGORY_NUKE, "6.09_fogChance", 50);
 		fogChance.setComment("1:n chance of fog spawning every second - default 1/50");
 		fogCh = fogChance.getInt();
 		worldRad = CommonConfig.createConfigInt(config, CATEGORY_NUKE, "6.10_worldRadCount", "How many block operations radiation can perform per tick", 10);
@@ -51,16 +63,16 @@ public class RadiationConfig {
 		worldRadEffects = CommonConfig.createConfigBool(config, CATEGORY_NUKE, "6.12_worldRadEffects", "Whether high radiation levels should perform changes in the world", true);
 		blocksFallCh = CommonConfig.createConfigInt(config, CATEGORY_NUKE, "6.13_blocksFallingChance", "The chance (in percentage form) that a block with low blast resistance will fall down. -1 Disables falling", 100);
 		// railgun
-		Property railDamage = config.get(CATEGORY_NUKE, "6.11_railgunDamage", 1000);
+		final Property railDamage = config.get(CATEGORY_NUKE, "6.11_railgunDamage", 1000);
 		railDamage.setComment("How much damage a railgun death blast does per tick");
 		railgunDamage = railDamage.getInt();
-		Property railBuffer = config.get(CATEGORY_NUKE, "6.12_railgunBuffer", 500000000);
+		final Property railBuffer = config.get(CATEGORY_NUKE, "6.12_railgunBuffer", 500000000);
 		railBuffer.setComment("How much RF the railgun can store");
 		railgunDamage = railBuffer.getInt();
-		Property railUse = config.get(CATEGORY_NUKE, "6.13_railgunConsumption", 250000000);
+		final Property railUse = config.get(CATEGORY_NUKE, "6.13_railgunConsumption", 250000000);
 		railUse.setComment("How much RF the railgun requires per shot");
 		railgunDamage = railUse.getInt();
-		Property fireDurationP = config.get(CATEGORY_NUKE, "6.14_fireDuration", 15 * 20);
+		final Property fireDurationP = config.get(CATEGORY_NUKE, "6.14_fireDuration", 15 * 20);
 		fireDurationP.setComment("How long the fire blast will last in ticks");
 		fireDuration = fireDurationP.getInt();
 		

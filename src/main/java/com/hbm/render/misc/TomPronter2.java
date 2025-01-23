@@ -22,7 +22,7 @@ public class TomPronter2 {
 		GlStateManager.disableLighting();
 		GL11.glScalef(100F, 100F, 100F);
 		
-		TextureManager tex = Minecraft.getMinecraft().getTextureManager();
+		final TextureManager tex = Minecraft.getMinecraft().getTextureManager();
 		
 		tex.bindTexture(ResourceManager.tom_main_tex);
 		ResourceManager.tom_main.renderAll();
@@ -33,16 +33,16 @@ public class TomPronter2 {
         GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
         GlStateManager.disableAlpha();
 
-        float rot = -System.currentTimeMillis() / 10 % 360;
+        final float rot = -System.currentTimeMillis() / 10 % 360;
 		//GL11.glScalef(1.2F, 2F, 1.2F);
 		GL11.glScalef(0.8F, 5F, 0.8F);
 		
-		Random rand = new Random(0);
+		final Random rand = new Random(0);
 		
         for(int i = 0; i < 20/*10*/; i++) {
 			tex.bindTexture(ResourceManager.tom_flame_tex);
 			
-			int r = rand.nextInt(90);
+			final int r = rand.nextInt(90);
 			
 			GL11.glRotatef(rot + r, 0, 1, 0);
 			

@@ -30,123 +30,123 @@ abstract class FuncRelational extends funcCommon {
         return Glm.not((Vec4i) this, (Vec4i) this);
     }
     
-    public Vec4bool lessThan__(Vec4i b) {
+    public Vec4bool lessThan__(final Vec4i b) {
         return Glm.lessThan((Vec4i) this, b, new Vec4bool());
     }
 
-    public Vec4bool lessThan(Vec4i b, Vec4bool res) {
+    public Vec4bool lessThan(final Vec4i b, final Vec4bool res) {
         return Glm.lessThan((Vec4i) this, b, res);
     }
 
-    public Vec4bool lessThanEqual__(Vec4i b) {
+    public Vec4bool lessThanEqual__(final Vec4i b) {
         return Glm.lessThanEqual((Vec4i) this, b, new Vec4bool());
     }
 
-    public Vec4bool lessThanEqual(Vec4i b, Vec4bool res) {
+    public Vec4bool lessThanEqual(final Vec4i b, final Vec4bool res) {
         return Glm.lessThanEqual((Vec4i) this, b, res);
     }
 
-    public Vec4bool greaterThan__(Vec4i b) {
+    public Vec4bool greaterThan__(final Vec4i b) {
         return Glm.greaterThan((Vec4i) this, b, new Vec4bool());
     }
 
-    public Vec4bool greaterThan(Vec4i b, Vec4bool res) {
+    public Vec4bool greaterThan(final Vec4i b, final Vec4bool res) {
         return Glm.greaterThan((Vec4i) this, b, res);
     }
 
-    public Vec4bool greaterThanEqual__(Vec4i b) {
+    public Vec4bool greaterThanEqual__(final Vec4i b) {
         return Glm.greaterThanEqual((Vec4i) this, b, new Vec4bool());
     }
 
-    public Vec4bool greaterThanEqual(Vec4i b, Vec4bool res) {
+    public Vec4bool greaterThanEqual(final Vec4i b, final Vec4bool res) {
         return Glm.greaterThanEqual((Vec4i) this, b, res);
     }
 
-    public Vec4bool equal__(Vec4i b) {
+    public Vec4bool equal__(final Vec4i b) {
         return Glm.equal((Vec4i) this, b, new Vec4bool());
     }
 
-    public Vec4bool equal(Vec4i b, Vec4bool res) {
+    public Vec4bool equal(final Vec4i b, final Vec4bool res) {
         return Glm.equal((Vec4i) this, b, res);
     }
 
-    public Vec4bool notEqual__(Vec4i b) {
+    public Vec4bool notEqual__(final Vec4i b) {
         return Glm.notEqual((Vec4i) this, b, new Vec4bool());
     }
 
-    public Vec4bool notEqual(Vec4i b, Vec4bool res) {
+    public Vec4bool notEqual(final Vec4i b, final Vec4bool res) {
         return Glm.notEqual((Vec4i) this, b, res);
     }
 
-    public Vec4i lessThan(Vec4i b) {
+    public Vec4i lessThan(final Vec4i b) {
         return Glm.lessThan((Vec4i) this, b, (Vec4i) this);
     }
 
-    public Vec4i lessThan_(Vec4i b) {
+    public Vec4i lessThan_(final Vec4i b) {
         return Glm.lessThan((Vec4i) this, b, new Vec4i());
     }
 
-    public Vec4i lessThan(Vec4i b, Vec4i res) {
+    public Vec4i lessThan(final Vec4i b, final Vec4i res) {
         return Glm.lessThan((Vec4i) this, b, res);
     }
 
-    public Vec4i lessThanEqual(Vec4i b) {
+    public Vec4i lessThanEqual(final Vec4i b) {
         return Glm.lessThanEqual((Vec4i) this, b, (Vec4i) this);
     }
 
-    public Vec4i lessThanEqual_(Vec4i b) {
+    public Vec4i lessThanEqual_(final Vec4i b) {
         return Glm.lessThanEqual((Vec4i) this, b, new Vec4i());
     }
 
-    public Vec4i lessThanEqual(Vec4i b, Vec4i res) {
+    public Vec4i lessThanEqual(final Vec4i b, final Vec4i res) {
         return Glm.lessThanEqual((Vec4i) this, b, res);
     }
 
-    public Vec4i greaterThan(Vec4i b) {
+    public Vec4i greaterThan(final Vec4i b) {
         return Glm.greaterThan((Vec4i) this, b, (Vec4i) this);
     }
 
-    public Vec4i greaterThan_(Vec4i b) {
+    public Vec4i greaterThan_(final Vec4i b) {
         return Glm.greaterThan((Vec4i) this, b, new Vec4i());
     }
 
-    public Vec4i greaterThan(Vec4i b, Vec4i res) {
+    public Vec4i greaterThan(final Vec4i b, final Vec4i res) {
         return Glm.greaterThan((Vec4i) this, b, res);
     }
 
-    public Vec4i greaterThanEqual(Vec4i b) {
+    public Vec4i greaterThanEqual(final Vec4i b) {
         return Glm.greaterThanEqual((Vec4i) this, b, (Vec4i) this);
     }
 
-    public Vec4i greaterThanEqual_(Vec4i b) {
+    public Vec4i greaterThanEqual_(final Vec4i b) {
         return Glm.greaterThanEqual((Vec4i) this, b, new Vec4i());
     }
 
-    public Vec4i greaterThanEqual(Vec4i b, Vec4i res) {
+    public Vec4i greaterThanEqual(final Vec4i b, final Vec4i res) {
         return Glm.greaterThanEqual((Vec4i) this, b, res);
     }
 
-    public Vec4i equal(Vec4i b) {
+    public Vec4i equal(final Vec4i b) {
         return Glm.equal((Vec4i) this, b, (Vec4i) this);
     }
 
-    public Vec4i equal_(Vec4i b) {
+    public Vec4i equal_(final Vec4i b) {
         return Glm.equal((Vec4i) this, b, new Vec4i());
     }
 
-    public Vec4i equal(Vec4i b, Vec4i res) {
+    public Vec4i equal(final Vec4i b, final Vec4i res) {
         return Glm.equal((Vec4i) this, b, res);
     }
 
-    public Vec4i notEqual(Vec4i b) {
+    public Vec4i notEqual(final Vec4i b) {
         return Glm.notEqual((Vec4i) this, b, (Vec4i) this);
     }
 
-    public Vec4i notEqual_(Vec4i b) {
+    public Vec4i notEqual_(final Vec4i b) {
         return Glm.notEqual((Vec4i) this, b, new Vec4i());
     }
 
-    public Vec4i notEqual(Vec4i b, Vec4i res) {
+    public Vec4i notEqual(final Vec4i b, final Vec4i res) {
         return Glm.notEqual((Vec4i) this, b, res);
     }
 }

@@ -41,12 +41,12 @@ import net.minecraft.util.math.Vec3d;
 public class RenderObjTester extends TileEntitySpecialRenderer<TileEntityObjTester> {
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityObjTester te) {
+	public boolean isGlobalRenderer(final TileEntityObjTester te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityObjTester te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityObjTester te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y, z + 0.5);
@@ -86,7 +86,7 @@ public class RenderObjTester extends TileEntitySpecialRenderer<TileEntityObjTest
         
         GL11.glPushMatrix();
         GL11.glTranslated(0, 8, 0);
-        Vec3d player = new Vec3d(x + 0.5, y + 8, z + 0.5);
+        final Vec3d player = new Vec3d(x + 0.5, y + 8, z + 0.5);
         GlStateManager.disableCull();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
@@ -142,20 +142,20 @@ public class RenderObjTester extends TileEntitySpecialRenderer<TileEntityObjTest
         
         
         GL11.glTranslated(0, 4, 0);
-        EntityCreeper creep = new EntityCreeper(Minecraft.getMinecraft().world);
+        final EntityCreeper creep = new EntityCreeper(Minecraft.getMinecraft().world);
         creep.setPosition(te.getPos().getX()+0.5F, te.getPos().getY()+7, te.getPos().getZ()+0.5F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ModelRendererUtil.getEntityTexture(creep));
-        List<Pair<Matrix4f, ModelRenderer>> boxes = ModelRendererUtil.getBoxesFromMob(creep);
-        Vec3d nor = new Vec3d(0, 1, 1).normalize();
-        float[] plane = new float[]{(float)nor.x, (float)nor.y, (float)nor.z, -0.5F};
+        final List<Pair<Matrix4f, ModelRenderer>> boxes = ModelRendererUtil.getBoxesFromMob(creep);
+        final Vec3d nor = new Vec3d(0, 1, 1).normalize();
+        final float[] plane = new float[]{(float)nor.x, (float)nor.y, (float)nor.z, -0.5F};
         GlStateManager.disableDepth();
         HbmShaderManager2.distort(0.5F, () -> {
-        	for(Pair<Matrix4f, ModelRenderer> p : boxes){
+        	for(final Pair<Matrix4f, ModelRenderer> p : boxes){
             	GL11.glPushMatrix();
-            	BufferBuilder buf = Tessellator.getInstance().getBuffer();
+            	final BufferBuilder buf = Tessellator.getInstance().getBuffer();
             	buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX);
-            	for(ModelBox b : p.getRight().cubeList){
-            		VertexData[] dat = ModelRendererUtil.cutAndCapModelBox(b, plane, p.getLeft());
+            	for(final ModelBox b : p.getRight().cubeList){
+            		final VertexData[] dat = ModelRendererUtil.cutAndCapModelBox(b, plane, p.getLeft());
             		//dat[0].tessellate(buf);
             		dat[1].tessellate(buf, false);
             		//dat[2].tessellate(buf, true);
@@ -176,8 +176,8 @@ public class RenderObjTester extends TileEntitySpecialRenderer<TileEntityObjTest
         bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/misc/glintBF.png"));
         RenderMiscEffects.renderClassicGlint(te.getWorld(), partialTicks, ResourceManager.fstbmb, "Balefire", 0.0F, 0.8F, 0.15F, 5, 2F);
 
-        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-        float f3 = 0.04F;
+        final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        final float f3 = 0.04F;
         GL11.glTranslatef(0.815F, 0.9275F, 0.5F);
         GL11.glScalef(f3, -f3, f3);
         GL11.glNormal3f(0.0F, 0.0F, -1.0F * f3);
@@ -207,8 +207,8 @@ public class RenderObjTester extends TileEntitySpecialRenderer<TileEntityObjTest
         GL11.glPushMatrix();
         GL11.glTranslated(x+0.5, y+6, z+0.5);
         
-        Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buf = tes.getBuffer();
+        final Tessellator tes = Tessellator.getInstance();
+        final BufferBuilder buf = tes.getBuffer();
         
         GlStateManager.disableCull();
         GlStateManager.disableLighting();
@@ -257,14 +257,14 @@ public class RenderObjTester extends TileEntitySpecialRenderer<TileEntityObjTest
         
         HbmShaderManager.releaseShader2();*/
         
-        int index = (int) ((System.currentTimeMillis()%1000000)/10F%64);
-        float size = 1/8F;
-        float u = (index%8)*size;
-        float v = (index/8)*size;
+        final int index = (int) ((System.currentTimeMillis()%1000000)/10F%64);
+        final float size = 1/8F;
+        final float u = (index%8)*size;
+        final float v = (index/8)*size;
         
         bindTexture(ResourceManager.bfg_smoke);
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
-        int bruh = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+        final int bruh = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GlStateManager.bindTexture(bruh);
         //HbmShaderManager2.bloomBuffers[6].bindFramebufferTexture();
@@ -289,25 +289,25 @@ public class RenderObjTester extends TileEntitySpecialRenderer<TileEntityObjTest
         
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, HbmShaderManager2.AUX_GL_BUFFER);
 		HbmShaderManager2.AUX_GL_BUFFER.rewind();
-		Matrix4f mvMatrix = new Matrix4f();
+		final Matrix4f mvMatrix = new Matrix4f();
 		mvMatrix.load(HbmShaderManager2.AUX_GL_BUFFER);
 		HbmShaderManager2.AUX_GL_BUFFER.rewind();
 		
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, HbmShaderManager2.AUX_GL_BUFFER);
 		HbmShaderManager2.AUX_GL_BUFFER.rewind();
-		Matrix4f pMatrix = new Matrix4f();
+		final Matrix4f pMatrix = new Matrix4f();
 		pMatrix.load(HbmShaderManager2.AUX_GL_BUFFER);
 		HbmShaderManager2.AUX_GL_BUFFER.rewind();
 		
 		Matrix4f.mul(pMatrix, mvMatrix, mvMatrix);
 		
-		Vector4f bruh1 = new Vector4f(0, 0, 0, 1);
+		final Vector4f bruh1 = new Vector4f(0, 0, 0, 1);
 		Matrix4f.transform(mvMatrix, bruh1, bruh1);
-		Vector3f bruh2 = new Vector3f(bruh1.x/bruh1.w, bruh1.y/bruh1.w, bruh1.z/bruh1.w);
+		final Vector3f bruh2 = new Vector3f(bruh1.x/bruh1.w, bruh1.y/bruh1.w, bruh1.z/bruh1.w);
 		//System.out.println(bruh2);
         
 		GL11.glTranslated(-0.5, -4, 0);
-		RayTraceResult r = Library.rayTraceIncludeEntities(te.getWorld(), new Vec3d(te.getPos()).add(0, 2, 0.5), new Vec3d(te.getPos()).add(12, 2, 0.5), null);
+		final RayTraceResult r = Library.rayTraceIncludeEntities(te.getWorld(), new Vec3d(te.getPos()).add(0, 2, 0.5), new Vec3d(te.getPos()).add(12, 2, 0.5), null);
 		if(r != null && r.hitVec != null){
 			BeamPronter.gluonBeam(Vec3.createVectorHelper(0, 0, 0), new Vec3(r.hitVec.subtract(te.getPos().getX(), te.getPos().getY()+2, te.getPos().getZ()+0.5)), 0.8F);
 		} else {

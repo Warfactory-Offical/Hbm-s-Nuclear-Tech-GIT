@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine.pile;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -19,33 +20,33 @@ import net.minecraft.world.World;
 
 public class BlockGraphiteSource extends BlockGraphiteDrilledTE implements IToolable {
 
-	public BlockGraphiteSource(String s){
+	public BlockGraphiteSource(final String s){
 		super(s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int mets) {
+	public TileEntity createNewTileEntity(final World world, final int mets) {
 		return new TileEntityPileSource();
 	}
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune){
 		super.getDrops(drops, world, pos, state, fortune);
-		drops.add(new ItemStack(whoAmIAgain()));
+		drops.add(ItemStackUtil.itemStackFrom(whoAmIAgain()));
 	}
 	
 	@Override
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool){
+	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool){
 		if(tool != ToolType.SCREWDRIVER)
 			return false;
 		
 		if(!world.isRemote) {
 
-			EnumFacing.Axis axis = world.getBlockState(new BlockPos(x, y, z)).getValue(AXIS);
+			final EnumFacing.Axis axis = world.getBlockState(new BlockPos(x, y, z)).getValue(AXIS);
 			
 			if(side.getAxis() == axis) {
 				world.setBlockState(new BlockPos(x, y, z), ModBlocks.block_graphite_drilled.getDefaultState().withProperty(AXIS, axis), 3);
-				ejectItem(world, x, y, z, side, new ItemStack(whoAmIAgain()));
+				ejectItem(world, x, y, z, side, ItemStackUtil.itemStackFrom(whoAmIAgain()));
 			}
 		}
 		

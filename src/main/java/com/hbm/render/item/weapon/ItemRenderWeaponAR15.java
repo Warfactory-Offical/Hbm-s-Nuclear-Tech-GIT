@@ -16,7 +16,7 @@ import net.minecraft.util.EnumHand;
 public class ItemRenderWeaponAR15 extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack stack){
+	public void renderByItem(final ItemStack stack){
 		GL11.glPushMatrix();
 		
 		GlStateManager.enableCull();

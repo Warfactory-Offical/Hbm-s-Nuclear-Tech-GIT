@@ -16,12 +16,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderIGenerator extends TileEntitySpecialRenderer<TileEntityMachineIGenerator> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineIGenerator te) {
+	public boolean isGlobalRenderer(final TileEntityMachineIGenerator te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachineIGenerator te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineIGenerator te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 
@@ -33,7 +33,7 @@ public class RenderIGenerator extends TileEntitySpecialRenderer<TileEntityMachin
 		case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 		
-		TileEntityMachineIGenerator igen = (TileEntityMachineIGenerator)te;
+		final TileEntityMachineIGenerator igen = te;
 
         GlStateManager.enableLighting();
         GlStateManager.disableCull();
@@ -42,11 +42,11 @@ public class RenderIGenerator extends TileEntitySpecialRenderer<TileEntityMachin
         bindTexture(ResourceManager.igen_tex);
         ResourceManager.igen.renderPart("Base");
         
-        float angle = igen.prevRotation + (igen.rotation - igen.prevRotation) * partialTicks;
-        float px = 0.0625F;
-        float sine = (float) Math.sin(Math.toRadians(angle));
-        float cosine = (float) Math.cos(Math.toRadians(angle));
-        float armAng = 22.5F;
+        final float angle = igen.prevRotation + (igen.rotation - igen.prevRotation) * partialTicks;
+        final float px = 0.0625F;
+        final float sine = (float) Math.sin(Math.toRadians(angle));
+        final float cosine = (float) Math.cos(Math.toRadians(angle));
+        final float armAng = 22.5F;
         
         GL11.glPushMatrix();
         GL11.glTranslated(0, 3.5, 0);

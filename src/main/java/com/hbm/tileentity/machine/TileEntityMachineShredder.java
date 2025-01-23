@@ -44,18 +44,18 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
+		final int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack){
+	public boolean isItemValidForSlot(final int i, final ItemStack stack){
 		if (i < 9) {
 			return true;
 		} else if (i == 29 && stack.getItem() instanceof IBatteryItem) {
@@ -66,17 +66,16 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
 		if(slot >= 9 && slot <= 26)
 			return true;
 		if(slot >= 27 && slot <= 29){
-			if(itemStack.getItemDamage() == itemStack.getMaxDamage() && itemStack.getMaxDamage() > 0)
-				return true;
+            return itemStack.getItemDamage() == itemStack.getMaxDamage() && itemStack.getMaxDamage() > 0;
 		}
 		return false;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -86,7 +85,7 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
@@ -94,13 +93,13 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
-	public int getDiFurnaceProgressScaled(int i) {
+	public int getDiFurnaceProgressScaled(final int i) {
 		return (progress * i) / processingSpeed;
 	}
 	
@@ -145,14 +144,9 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 				progress = 0;
 			}
 			
-			boolean trigger = true;
-			
-			if(hasPower() && canProcess() && this.progress == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !hasPower() || !canProcess() || this.progress != 0;
+
+            if(trigger)
             {
                 flag1 = true;
             }
@@ -173,8 +167,8 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 		{
 			if(!inventory.getStackInSlot(inpSlot).isEmpty() && hasSpace(inventory.getStackInSlot(inpSlot)))
 			{
-				ItemStack inp = inventory.getStackInSlot(inpSlot);
-				ItemStack outp = ShredderRecipes.getShredderResult(inp);
+				final ItemStack inp = inventory.getStackInSlot(inpSlot);
+				final ItemStack outp = ShredderRecipes.getShredderResult(inp);
 				boolean flag = false;
 				
 				for (int outSlot = 9; outSlot < 27; outSlot++)
@@ -221,9 +215,9 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 		return false;
 	}
 	
-	public boolean hasSpace(ItemStack stack) {
+	public boolean hasSpace(final ItemStack stack) {
 		
-		ItemStack result = ShredderRecipes.getShredderResult(stack);
+		final ItemStack result = ShredderRecipes.getShredderResult(stack);
 		
 		if (result != null)
 			for (int i = 9; i < 27; i++) {
@@ -241,12 +235,12 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 		
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 

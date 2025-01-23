@@ -63,7 +63,7 @@ public class ItemGrenade extends Item {
 	
 	protected int fuse = 4;
 	
-	public ItemGrenade(int fuse, String s) {
+	public ItemGrenade(final int fuse, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 16;
@@ -73,11 +73,11 @@ public class ItemGrenade extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack stack = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+		final ItemStack stack = playerIn.getHeldItem(handIn);
 		if (!playerIn.capabilities.isCreativeMode) {
-			stack.shrink(1);;
-		}
+			stack.shrink(1);
+        }
 
 		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
@@ -89,12 +89,12 @@ public class ItemGrenade extends Item {
 				worldIn.spawnEntity(new EntityGrenadeStrong(worldIn, playerIn, handIn));
 			}
 			if (this == ModItems.grenade_frag) {
-				EntityGrenadeFrag frag = new EntityGrenadeFrag(worldIn, playerIn, handIn);
+				final EntityGrenadeFrag frag = new EntityGrenadeFrag(worldIn, playerIn, handIn);
 				frag.shooter = playerIn;
 				worldIn.spawnEntity(frag);
 			}
 			if (this == ModItems.grenade_fire) {
-				EntityGrenadeFire fire = new EntityGrenadeFire(worldIn, playerIn, handIn);
+				final EntityGrenadeFire fire = new EntityGrenadeFire(worldIn, playerIn, handIn);
 				fire.shooter = playerIn;
 				worldIn.spawnEntity(fire);
 			}
@@ -217,7 +217,7 @@ public class ItemGrenade extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		if (this == ModItems.grenade_schrabidium || this == ModItems.grenade_aschrab || this == ModItems.grenade_cloud) {
 			return EnumRarity.RARE;
 		}
@@ -244,7 +244,7 @@ public class ItemGrenade extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add("Fuse: " + translateFuse());
 
 		if (this == ModItems.grenade_if_generic) {
@@ -307,17 +307,17 @@ public class ItemGrenade extends Item {
 		}
 		if (this == ModItems.grenade_solinium) {
 			list.add("§3[Solinium Grenade]§r");
-			list.add(" §eRadius: "+(int)BombConfig.soliniumRadius/10+"m§r");
+			list.add(" §eRadius: "+ BombConfig.soliniumRadius /10+"m§r");
 		}
 		if (this == ModItems.grenade_nuclear) {
 			list.add("§2[Nuclear Grenade]§r");
-			list.add(" §eRadius: "+(int)BombConfig.fatmanRadius/2+"m§r");
+			list.add(" §eRadius: "+ BombConfig.fatmanRadius /2+"m§r");
 			list.add("§2[Fallout]§r");
-			list.add(" §aRadius: "+(int)(BombConfig.fatmanRadius/2*(1+BombConfig.falloutRange/100))+"m§r");
+			list.add(" §aRadius: "+ (BombConfig.fatmanRadius/2*(1+BombConfig.falloutRange/100)) +"m§r");
 		}
 	}
 	
-	public static int getFuseTicks(Item grenade) {
+	public static int getFuseTicks(final Item grenade) {
 		return ((ItemGrenade)grenade).fuse * 20;
 	}
 }

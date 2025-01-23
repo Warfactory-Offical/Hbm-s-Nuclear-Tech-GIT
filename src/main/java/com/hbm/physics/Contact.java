@@ -27,7 +27,7 @@ public class Contact {
 	public Jacobian tangentContact;
 	public Jacobian bitangentContact;
 	
-	public Contact(RigidBody bodyA, RigidBody bodyB, Collider a, Collider b, GJKInfo info) {
+	public Contact(RigidBody bodyA, RigidBody bodyB, final Collider a, final Collider b, final GJKInfo info) {
 		this.a = a;
 		this.b = b;
 		if(bodyA == null){
@@ -57,7 +57,7 @@ public class Contact {
 		bitangentContact = new Jacobian(true);
 	}
 	
-	public void init(float dt){
+	public void init(final float dt){
 		rA = globalA.subtract(bodyA == RigidBody.DUMMY ? a.localCentroid : bodyA.globalCentroid);
 		rB = globalB.subtract(bodyB == RigidBody.DUMMY ? b.localCentroid : bodyB.globalCentroid);
 		
@@ -66,7 +66,7 @@ public class Contact {
 		bitangentContact.init(this, bitangent, dt);
 	}
 	
-	public void solve(float dt){
+	public void solve(final float dt){
 		normalContact.solve(this, dt);
 		tangentContact.solve(this, dt);
 		bitangentContact.solve(this, dt);
@@ -85,27 +85,27 @@ public class Contact {
 		double effectiveMass;
 		double totalLambda;
 		
-		public Jacobian(boolean tangent) {
+		public Jacobian(final boolean tangent) {
 			this.tangent = tangent;
 		}
 		
-		public void init(Contact c, Vec3 dir, float dt){
+		public void init(final Contact c, final Vec3 dir, final float dt){
 			j_va = dir.negate();
 			j_wa = c.rA.crossProduct(dir).negate();
 			j_vb = dir;
 			j_wb = c.rB.crossProduct(dir);
 			
 			if(!tangent){
-				float closingVel = (float)c.bodyA.linearVelocity.negate()
+				final float closingVel = (float)c.bodyA.linearVelocity.negate()
 						.subtract(c.bodyA.angularVelocity.crossProduct(c.rA))
 						.add(c.bodyB.linearVelocity)
 						.add(c.bodyB.angularVelocity.crossProduct(c.rB))
 						.dotProduct(c.normal);
-				float restitution = c.bodyA.restitution*c.bodyB.restitution;
+				final float restitution = c.bodyA.restitution*c.bodyB.restitution;
 				
-				float beta = 0.2F;
-				float dslop = 0.0005F;
-				float rslop = 0.5F;
+				final float beta = 0.2F;
+				final float dslop = 0.0005F;
+				final float rslop = 0.5F;
 				bias = -(beta/dt)*Math.max(c.depth-dslop, 0)+Math.max(restitution*closingVel-rslop, 0);
 			}
 			
@@ -119,17 +119,17 @@ public class Contact {
 			totalLambda = 0;
 		}
 		
-		public void solve(Contact c, float dt){
-			double jv = 
+		public void solve(final Contact c, final float dt){
+			final double jv =
 					  j_va.dotProduct(c.bodyA.linearVelocity)
 					+ j_wa.dotProduct(c.bodyA.angularVelocity)
 					+ j_vb.dotProduct(c.bodyB.linearVelocity)
 					+ j_wb.dotProduct(c.bodyB.angularVelocity);
 			double lambda = effectiveMass * (-(jv + bias));
-			double oldTotalLambda = totalLambda;
+			final double oldTotalLambda = totalLambda;
 			if(tangent){
-				float friction = c.bodyA.friction*c.bodyB.friction;
-				double maxFriction = friction*c.normalContact.totalLambda;
+				final float friction = c.bodyA.friction*c.bodyB.friction;
+				final double maxFriction = friction*c.normalContact.totalLambda;
 				totalLambda = MathHelper.clamp(totalLambda + lambda, -maxFriction, maxFriction);
 			} else {
 				totalLambda = Math.max(0, oldTotalLambda + lambda);

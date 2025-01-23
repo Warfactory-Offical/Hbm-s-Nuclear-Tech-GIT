@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 public class DigammaFlame extends BlockFire {
 
-	public DigammaFlame(String s) {
+	public DigammaFlame(final String s) {
 		super();
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,22 +34,22 @@ public class DigammaFlame extends BlockFire {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
-	public boolean canCatchFire(IBlockAccess world, BlockPos pos, EnumFacing face){
+	public boolean canCatchFire(final IBlockAccess world, final BlockPos pos, final EnumFacing face){
 		return false;
 	}
 
 	@Override 
-	protected boolean canDie(World worldIn, BlockPos pos){
+	protected boolean canDie(final World worldIn, final BlockPos pos){
 		return false;
 	}
 
 	@Override
-	public int tickRate(World worldIn){
+	public int tickRate(final World worldIn){
 		return 72000;
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entityIn){
 		if(entityIn instanceof EntityLivingBase) {
 			ContaminationUtil.contaminate((EntityLivingBase) entityIn, HazardType.DIGAMMA, ContaminationType.DIGAMMA, 0.05F);
 		}

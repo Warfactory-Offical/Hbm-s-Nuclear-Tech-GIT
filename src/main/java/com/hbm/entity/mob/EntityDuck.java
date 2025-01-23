@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class EntityDuck extends EntityChicken {
 
-	public EntityDuck(World worldIn) {
+	public EntityDuck(final World worldIn) {
 		super(worldIn);
 	}
 	
@@ -20,7 +20,7 @@ public class EntityDuck extends EntityChicken {
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
 		return HBMSoundHandler.ducc;
 	}
 	
@@ -30,7 +30,7 @@ public class EntityDuck extends EntityChicken {
 	}
 	
 	@Override
-	public EntityChicken createChild(EntityAgeable ageable) {
+	public EntityChicken createChild(final EntityAgeable ageable) {
 		return new EntityDuck(this.world);
 	}
 	

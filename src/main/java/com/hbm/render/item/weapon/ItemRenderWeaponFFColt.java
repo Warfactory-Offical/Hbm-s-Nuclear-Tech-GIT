@@ -16,20 +16,20 @@ public class ItemRenderWeaponFFColt extends TEISRBase {
 	ResourceLocation hammer;
 	ResourceLocation grip;
 	
-	public ItemRenderWeaponFFColt(ResourceLocation main, ResourceLocation hammer, ResourceLocation grip) {
+	public ItemRenderWeaponFFColt(final ResourceLocation main, final ResourceLocation hammer, final ResourceLocation grip) {
 		this.main = main;
 		this.hammer = hammer;
 		this.grip = grip;
 	}
 
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		if(type == null) return;
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
-		double s0 = 1.5D;
-		double s1 = 1.5D;
-		double s2 = 1.5D;
+		final double s0 = 1.5D;
+		final double s1 = 1.5D;
+		final double s2 = 1.5D;
 		switch(type) {
 		
 		case FIRST_PERSON_LEFT_HAND:

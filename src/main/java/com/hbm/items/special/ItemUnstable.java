@@ -26,7 +26,7 @@ public class ItemUnstable extends Item {
 	int radius;
 	int timer;
 
-	public ItemUnstable(int radius, int timer, String s) {
+	public ItemUnstable(final int radius, final int timer, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.radius = radius;
@@ -37,7 +37,7 @@ public class ItemUnstable extends Item {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected) {
 		if(stack.getItemDamage() != 0)
     		return;
 		this.setTimer(stack, this.getTimer(stack) + 1);
@@ -54,10 +54,10 @@ public class ItemUnstable extends Item {
 	}
 
 	@Override
-	public boolean onEntityItemUpdate(EntityItem itemEntity) {
+	public boolean onEntityItemUpdate(final EntityItem itemEntity) {
 		if(itemEntity.getItem().getItemDamage() != 0)
     		return false;
-		World world = itemEntity.world;
+		final World world = itemEntity.world;
 
 		this.setTimer(itemEntity.getItem(), this.getTimer(itemEntity.getItem()) + 1);
 
@@ -75,14 +75,14 @@ public class ItemUnstable extends Item {
 		return false;
 	}
 
-	private void setTimer(ItemStack stack, int time) {
+	private void setTimer(final ItemStack stack, final int time) {
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 
 		stack.getTagCompound().setInteger("timer", time);
 	}
 
-	private int getTimer(ItemStack stack) {
+	private int getTimer(final ItemStack stack) {
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 
@@ -90,13 +90,13 @@ public class ItemUnstable extends Item {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
 		return !oldStack.isItemEqual(newStack);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
+	public String getItemStackDisplayName(final ItemStack stack) {
 		switch(stack.getItemDamage()) {
 		case 1:
 			return "ELEMENTS";
@@ -105,16 +105,16 @@ public class ItemUnstable extends Item {
 		case 3:
 			return "VAULT";
 		default:
-			return ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
+			return (I18n.format(this.getTranslationKey() + ".name")).trim();
 		}
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(stack.getItemDamage() != 0)
     		return;
     	tooltip.add("§4[Unstable]§r");
-		tooltip.add("§cDecay Time: " + (int)timer/20 + "s - Explosion Radius: "+ radius+"m§r");
+		tooltip.add("§cDecay Time: " + timer /20 + "s - Explosion Radius: "+ radius+"m§r");
 		tooltip.add("§cDecay: " + (getTimer(stack) * 100 / timer) + "%§r");
 	}
 

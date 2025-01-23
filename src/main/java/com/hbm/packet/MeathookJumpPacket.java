@@ -15,18 +15,18 @@ public class MeathookJumpPacket implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 	}
 	
 	public static class Handler implements IMessageHandler<MeathookJumpPacket, IMessage> {
 
 		@Override
-		public IMessage onMessage(MeathookJumpPacket message, MessageContext ctx) {
-			EntityPlayer p = ctx.getServerHandler().player;
+		public IMessage onMessage(final MeathookJumpPacket message, final MessageContext ctx) {
+			final EntityPlayer p = ctx.getServerHandler().player;
 			if(p.getHeldItemMainhand().getItem() == ModItems.gun_supershotgun && ItemGunShotty.hasHookedEntity(p.world, p.getHeldItemMainhand())){
 				ItemGunShotty.setHookedEntity(p, p.getHeldItemMainhand(), null);
 			}

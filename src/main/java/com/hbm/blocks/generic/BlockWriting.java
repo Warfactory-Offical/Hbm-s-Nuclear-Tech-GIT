@@ -15,18 +15,18 @@ import net.minecraft.world.World;
 
 public class BlockWriting extends BlockBase {
 
-	public BlockWriting(Material mat, String s) {
+	public BlockWriting(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		if(world.isRemote) {
 			return true;
 			
 		} else if(!player.isSneaking()) {
 			
-			Style red = new Style().setColor(TextFormatting.RED);
+			final Style red = new Style().setColor(TextFormatting.RED);
 			player.sendMessage(new TextComponentString("You should not have come here.").setStyle(red));
 			player.sendMessage(new TextComponentString("This is not a place of honor. No great deed is commemorated here.").setStyle(red));
 			player.sendMessage(new TextComponentString("Nothing of value is here.").setStyle(red));

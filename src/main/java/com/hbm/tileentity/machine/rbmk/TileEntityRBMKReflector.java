@@ -6,9 +6,9 @@ import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
 public class TileEntityRBMKReflector extends TileEntityRBMKBase {
 	
 	@Override
-	public void onMelt(int reduce) {
+	public void onMelt(final int reduce) {
 		
-		int count = 1 + world.rand.nextInt(2);
+		final int count = 1 + world.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.BLANK);

@@ -14,15 +14,13 @@ public class TileEntityProxyBase extends TileEntityLoadedBase {
 
 	public TileEntity getTE() {
 
-		if(this.getBlockType() instanceof BlockDummyable) {
+		if(this.getBlockType() instanceof BlockDummyable dummy) {
 
-			BlockDummyable dummy = (BlockDummyable)this.getBlockType();
-
-			int[] pos = dummy.findCore(world, this.pos.getX(), this.pos.getY(), this.pos.getZ());
+            final int[] pos = dummy.findCore(world, this.pos.getX(), this.pos.getY(), this.pos.getZ());
 
 			if(pos != null) {
 
-				TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+				final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
 				if(te != null)
 					return te;
@@ -33,11 +31,11 @@ public class TileEntityProxyBase extends TileEntityLoadedBase {
 		//Drillgon200: Incidentally, it's also a gateway to some very messy code, the very thing this class is supposed to prevent.
 
 		if(this.getBlockType() instanceof BlockHadronAccess) {
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+			final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
 
 
 			for(int i = 1; i < 3; i++) {
-				TileEntity te = world.getTileEntity(new BlockPos(pos.getX() + dir.offsetX * i, pos.getY() + dir.offsetY * i, pos.getZ() + dir.offsetZ * i));
+				final TileEntity te = world.getTileEntity(new BlockPos(pos.getX() + dir.offsetX * i, pos.getY() + dir.offsetY * i, pos.getZ() + dir.offsetZ * i));
 
 				if(te instanceof TileEntityHadron) {
 					return te;
@@ -46,7 +44,7 @@ public class TileEntityProxyBase extends TileEntityLoadedBase {
 		}
 
 		if (this.getBlockType() instanceof MachineDiFurnaceExtension) {
-			TileEntity te = world.getTileEntity(pos.down());
+			final TileEntity te = world.getTileEntity(pos.down());
 
 			if (te instanceof TileEntityDiFurnace) {
 				return te;

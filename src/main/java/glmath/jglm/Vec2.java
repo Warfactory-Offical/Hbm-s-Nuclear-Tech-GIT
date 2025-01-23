@@ -19,20 +19,20 @@ public class Vec2 extends Vec {
         y = 0;
     }
 
-    public Vec2(float[] floatArray) {
+    public Vec2(final float[] floatArray) {
         vector = floatArray;
         x = vector[0];
         y = vector[1];
     }
 
-    public Vec2(float x, float y) {
+    public Vec2(final float x, final float y) {
 
         this.x = x;
         this.y = y;
         vector = new float[]{x, y};
     }
 
-    public Vec2(float[] floatArray, int i) {
+    public Vec2(final float[] floatArray, final int i) {
 
         vector = new float[]{floatArray[i], floatArray[i + 1]};
         x = vector[0];
@@ -41,27 +41,27 @@ public class Vec2 extends Vec {
 
     public Vec2 normalize() {
 
-        float length = ((float) Math.sqrt(x * x + y * y));
+        final float length = ((float) Math.sqrt(x * x + y * y));
 
         return new Vec2(x / length, y / length);
     }
 
-    public Vec2 times(float scalar) {
+    public Vec2 times(final float scalar) {
 
         return new Vec2(x * scalar, y * scalar);
     }
 
-    public Vec2 plus(Vec2 vec2) {
+    public Vec2 plus(final Vec2 vec2) {
 
         return new Vec2(x + vec2.x, y + vec2.y);
     }
 
-    public Vec2 minus(Vec2 vec2) {
+    public Vec2 minus(final Vec2 vec2) {
 
         return new Vec2(x - vec2.x, y - vec2.y);
     }
     
-    public Vec2 minus(Vec2i vec2) {
+    public Vec2 minus(final Vec2i vec2) {
 
         return new Vec2(x - vec2.x, y - vec2.y);
     }
@@ -80,7 +80,7 @@ public class Vec2 extends Vec {
         System.out.println("(" + x + ", " + y + ")");
     }
 
-    public void print(String title) {
+    public void print(final String title) {
         System.out.println(title + " (" + x + ", " + y + ")");
     }
     

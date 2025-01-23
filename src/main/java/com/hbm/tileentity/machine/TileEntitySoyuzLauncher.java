@@ -98,7 +98,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 				liftOff();
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			data.setByte("mode", mode);
 			data.setBoolean("starting", starting);
@@ -127,11 +127,11 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 				countdown--;
 			}
 			
-			List<EntitySoyuz> entities = world.getEntitiesWithinAABB(EntitySoyuz.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 10, pos.getZ() + 1.5));
+			final List<EntitySoyuz> entities = world.getEntitiesWithinAABB(EntitySoyuz.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 10, pos.getZ() + 1.5));
 			
 			if(!entities.isEmpty()) {
 				
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "smoke");
 				data.setString("mode", "shockRand");
 				data.setInteger("count", 50);
@@ -146,24 +146,22 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 
 	private void updateConnections(){
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 		this.trySubscribe(world, pos.add(0, 0, dir.offsetX * 10), rot.getOpposite());
 		this.trySubscribe(world, pos.add(0, 0, dir.offsetX * -9), rot);
 	}
 	
-	private boolean isValidFluidForTank(int slot, int tank){
-		ItemStack stack = inventory.getStackInSlot(slot);
-		FluidStack f = FluidUtil.getFluidContained(stack);
+	private boolean isValidFluidForTank(final int slot, final int tank){
+		final ItemStack stack = inventory.getStackInSlot(slot);
+		final FluidStack f = FluidUtil.getFluidContained(stack);
 		if(f == null)
 			return false;
-		if((tank == 0 && f.getFluid() == ModForgeFluids.kerosene) || (tank == 1 && f.getFluid() == ModForgeFluids.oxygen))
-			return true;
-		return false;
-	}
+        return (tank == 0 && f.getFluid() == ModForgeFluids.kerosene) || (tank == 1 && f.getFluid() == ModForgeFluids.oxygen);
+    }
 	
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		power = data.getLong("power");
 		mode = data.getByte("mode");
 		starting = data.getBoolean("starting");
@@ -197,10 +195,10 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 		
 		this.starting = false;
 		
-		int req = this.getFuelRequired();
-		int pow = this.getPowerRequired();
+		final int req = this.getFuelRequired();
+		final int pow = this.getPowerRequired();
 		
-		EntitySoyuz soyuz = new EntitySoyuz(world);
+		final EntitySoyuz soyuz = new EntitySoyuz(world);
 		soyuz.setSkin(this.getType());
 		soyuz.mode = this.mode;
 		soyuz.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0, 0);
@@ -222,7 +220,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 		}
 		
 		if(mode == 1) {
-			List<ItemStack> payload = new ArrayList<ItemStack>();
+			final List<ItemStack> payload = new ArrayList<ItemStack>();
 			
 			for(int i = 9; i < 27; i++) {
 				payload.add(inventory.getStackInSlot(i));
@@ -263,8 +261,8 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	public int getDist() {
 		
 		if(designator() == 2) {
-			int x = inventory.getStackInSlot(1).getTagCompound().getInteger("xCoord");
-			int z = inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
+			final int x = inventory.getStackInSlot(1).getTagCompound().getInteger("xCoord");
+			final int z = inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
 			
 			return (int) Vec3.createVectorHelper(pos.getX() - x, 0, pos.getZ() - z).length();
 		}
@@ -286,7 +284,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 		
 		if(!hasRocket())
 			return -1;
-		Item rocket = inventory.getStackInSlot(0).getItem();
+		final Item rocket = inventory.getStackInSlot(0).getItem();
 		if(rocket == ModItems.missile_soyuz0)
 			return 0;
 		if(rocket == ModItems.missile_soyuz1)
@@ -296,7 +294,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 		return 0;
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
@@ -347,7 +345,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		mode = compound.getByte("mode");
 		if(compound.hasKey("inventory"))
@@ -358,7 +356,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setByte("mode", mode);
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -372,7 +370,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource == null)
 			return 0;
 		if(resource.getFluid() == ModForgeFluids.kerosene)
@@ -383,12 +381,12 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 	
@@ -405,7 +403,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 
@@ -420,7 +418,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 2){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -428,7 +426,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -436,7 +434,7 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

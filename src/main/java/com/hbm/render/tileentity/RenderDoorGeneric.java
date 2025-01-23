@@ -33,29 +33,29 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer<TileEntityDoorG
 	private static final float[] rot = new float[3];
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityDoorGeneric te){
+	public boolean isGlobalRenderer(final TileEntityDoorGeneric te){
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityDoorGeneric te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+	public void render(final TileEntityDoorGeneric te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
 		if(buf == null){
 			buf = GLAllocation.createDirectByteBuffer(8*4).asDoubleBuffer();
 		}
-		DoorDecl door = te.doorType;
+		final DoorDecl door = te.doorType;
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(x+0.5, y, z+0.5);
 		
 		switch(te.getBlockMetadata() - BlockDummyable.offset) {
-		case 2: GL11.glRotatef(0+90, 0F, 1F, 0F); break;
+		case 2: GL11.glRotatef(90, 0F, 1F, 0F); break;
 		case 4: GL11.glRotatef(90+90, 0F, 1F, 0F); break;
 		case 3: GL11.glRotatef(180+90, 0F, 1F, 0F); break;
 		case 5: GL11.glRotatef(270+90, 0F, 1F, 0F); break;
 		}
 		door.doOffsetTransform();
 		
-		double[][] clip = door.getClippingPlanes();
+		final double[][] clip = door.getClippingPlanes();
 		for(int i = 0; i < clip.length; i ++){
 			GL11.glEnable(GL11.GL_CLIP_PLANE0+i);
 			buf.put(clip[i]);
@@ -68,31 +68,31 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer<TileEntityDoorG
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 		GlStateManager.enableLighting();
 		
-		AnimatedModel animModel = door.getAnimatedModel();
+		final AnimatedModel animModel = door.getAnimatedModel();
 		if(animModel != null){
-			Animation anim = door.getAnim();
+			final Animation anim = door.getAnim();
 			bindTexture(door.getTextureForPart(""));
-			long time = System.currentTimeMillis();
-	        long startTime = te.state.isMovingState() ? te.animStartTime : time;
-	        boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
-			AnimationWrapper w = new AnimationWrapper(startTime, anim).onEnd(new EndResult(EndType.STAY));
+			final long time = System.currentTimeMillis();
+	        final long startTime = te.state.isMovingState() ? te.animStartTime : time;
+	        final boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
+			final AnimationWrapper w = new AnimationWrapper(startTime, anim).onEnd(new EndResult(EndType.STAY));
 			if(reverse)
 				w.reverse();
 			animModel.controller.setAnim(w);
 			animModel.renderAnimated(System.currentTimeMillis());
 		} else {
-			WavefrontObjDisplayList model = door.getModel();
+			final WavefrontObjDisplayList model = door.getModel();
 			
-			long ms = System.currentTimeMillis()-te.animStartTime;
-			float openTicks = MathHelper.clamp(te.state == IDoor.DoorState.CLOSING || te.state == IDoor.DoorState.CLOSED ? door.timeToOpen()*50-ms : ms, 0, door.timeToOpen()*50)*0.02F;
-			for(Pair<String, Integer> p : model.nameToCallList){
+			final long ms = System.currentTimeMillis()-te.animStartTime;
+			final float openTicks = MathHelper.clamp(te.state == IDoor.DoorState.CLOSING || te.state == IDoor.DoorState.CLOSED ? door.timeToOpen()* 50L -ms : ms, 0, door.timeToOpen()*50)*0.02F;
+			for(final Pair<String, Integer> p : model.nameToCallList){
 				if(!door.doesRender(p.getLeft(), false))
 					continue;
 				GL11.glPushMatrix();
 				bindTexture(door.getTextureForPart(p.getLeft()));
 				doPartTransform(door, p.getLeft(), openTicks, false);
 				GL11.glCallList(p.getRight());
-				for(String name : door.getChildren(p.getLeft())){
+				for(final String name : door.getChildren(p.getLeft())){
 					if(!door.doesRender(name, true))
 						continue;
 					GL11.glPushMatrix();
@@ -114,7 +114,7 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer<TileEntityDoorG
 		GL11.glPopMatrix();
 	}
 	
-	public void doPartTransform(DoorDecl door, String name, float openTicks, boolean child){
+	public void doPartTransform(final DoorDecl door, final String name, final float openTicks, final boolean child){
 		door.getTranslation(name, openTicks, child, tran);
 		door.getOrigin(name, orig);
 		door.getRotation(name, openTicks, rot);

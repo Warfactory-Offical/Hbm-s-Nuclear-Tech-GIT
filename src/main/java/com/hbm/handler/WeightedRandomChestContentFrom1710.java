@@ -1,4 +1,5 @@
 package com.hbm.handler;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -20,15 +21,15 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
     /** The maximum chance of item generating. */
     public int theMaximumChanceToGenerateItem;
 
-    public WeightedRandomChestContentFrom1710(Item item, int meta, int minChance, int maxChance, int weight)
+    public WeightedRandomChestContentFrom1710(final Item item, final int meta, final int minChance, final int maxChance, final int weight)
     {
         super(weight);
-        this.theItemId = new ItemStack(item, 1, meta);
+        this.theItemId = ItemStackUtil.itemStackFrom(item, 1, meta);
         this.theMinimumChanceToGenerateItem = minChance;
         this.theMaximumChanceToGenerateItem = maxChance;
     }
 
-    public WeightedRandomChestContentFrom1710(ItemStack stack, int minChance, int maxChance, int weight)
+    public WeightedRandomChestContentFrom1710(final ItemStack stack, final int minChance, final int maxChance, final int weight)
     {
         super(weight);
         this.theItemId = stack;
@@ -36,9 +37,9 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
         this.theMaximumChanceToGenerateItem = maxChance;
     }
 
-    public static void generateChestContents(Random p_76293_0_, WeightedRandomChestContentFrom1710[] p_76293_1_, ICapabilityProvider p_76293_2_, int p_76293_3_){
+    public static void generateChestContents(final Random p_76293_0_, final WeightedRandomChestContentFrom1710[] p_76293_1_, final ICapabilityProvider p_76293_2_, final int p_76293_3_){
     	if(p_76293_2_ != null && p_76293_2_.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)){
-    		IItemHandler inventory = p_76293_2_.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+    		final IItemHandler inventory = p_76293_2_.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
     		if(inventory instanceof IItemHandlerModifiable){
     			generateChestContents(p_76293_0_, p_76293_1_, (IItemHandlerModifiable)inventory, p_76293_3_);
     		}
@@ -48,14 +49,14 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
     /**
      * Generates the Chest contents.
      */
-    public static void generateChestContents(Random p_76293_0_, WeightedRandomChestContentFrom1710[] p_76293_1_, IItemHandlerModifiable p_76293_2_, int p_76293_3_)
+    public static void generateChestContents(final Random p_76293_0_, final WeightedRandomChestContentFrom1710[] p_76293_1_, final IItemHandlerModifiable p_76293_2_, final int p_76293_3_)
     {
         for (int j = 0; j < p_76293_3_; ++j)
         {
-            WeightedRandomChestContentFrom1710 weightedrandomchestcontent = (WeightedRandomChestContentFrom1710)WeightedRandom.getRandomItem(p_76293_0_, Arrays.asList(p_76293_1_));
-            ItemStack[] stacks = weightedrandomchestcontent.generateChestContent(p_76293_0_, p_76293_2_);
+            final WeightedRandomChestContentFrom1710 weightedrandomchestcontent = WeightedRandom.getRandomItem(p_76293_0_, Arrays.asList(p_76293_1_));
+            final ItemStack[] stacks = weightedrandomchestcontent.generateChestContent(p_76293_0_, p_76293_2_);
 
-            for (ItemStack item : stacks)
+            for (final ItemStack item : stacks)
             {
                 p_76293_2_.setStackInSlot(p_76293_0_.nextInt(p_76293_2_.getSlots()), item);
             }
@@ -75,9 +76,9 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
         }
     }*/
 
-    public static WeightedRandomChestContentFrom1710[] func_92080_a(WeightedRandomChestContentFrom1710[] p_92080_0_, WeightedRandomChestContentFrom1710 ... p_92080_1_)
+    public static WeightedRandomChestContentFrom1710[] func_92080_a(final WeightedRandomChestContentFrom1710[] p_92080_0_, final WeightedRandomChestContentFrom1710 ... p_92080_1_)
     {
-        WeightedRandomChestContentFrom1710[] aweightedrandomchestcontent1 = new WeightedRandomChestContentFrom1710[p_92080_0_.length + p_92080_1_.length];
+        final WeightedRandomChestContentFrom1710[] aweightedrandomchestcontent1 = new WeightedRandomChestContentFrom1710[p_92080_0_.length + p_92080_1_.length];
         int i = 0;
 
         for (int j = 0; j < p_92080_0_.length; ++j)
@@ -85,12 +86,12 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
             aweightedrandomchestcontent1[i++] = p_92080_0_[j];
         }
 
-        WeightedRandomChestContentFrom1710[] aweightedrandomchestcontent2 = p_92080_1_;
-        int k = p_92080_1_.length;
+        final WeightedRandomChestContentFrom1710[] aweightedrandomchestcontent2 = p_92080_1_;
+        final int k = p_92080_1_.length;
 
         for (int l = 0; l < k; ++l)
         {
-            WeightedRandomChestContentFrom1710 weightedrandomchestcontent1 = aweightedrandomchestcontent2[l];
+            final WeightedRandomChestContentFrom1710 weightedrandomchestcontent1 = aweightedrandomchestcontent2[l];
             aweightedrandomchestcontent1[i++] = weightedrandomchestcontent1;
         }
 
@@ -105,7 +106,7 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
      * @param newInventory The inventory being generated (do not populate it, but you can refer to it)
      * @return An array of {@link ItemStack} to put into the chest
      */
-    public ItemStack[] generateChestContent(Random random, IItemHandlerModifiable newInventory)
+    public ItemStack[] generateChestContent(final Random random, final IItemHandlerModifiable newInventory)
     {
         return generateStacks(random, theItemId, theMinimumChanceToGenerateItem, theMaximumChanceToGenerateItem);
     }
@@ -121,11 +122,11 @@ public class WeightedRandomChestContentFrom1710 extends WeightedRandom.Item
      * @param max Maximum number of items
      * @return An array containing the generated item stacks
      */
-    public static ItemStack[] generateStacks(Random rand, ItemStack source, int min, int max)
+    public static ItemStack[] generateStacks(final Random rand, final ItemStack source, final int min, final int max)
     {
-        int count = min + (rand.nextInt(max - min + 1));
+        final int count = min + (rand.nextInt(max - min + 1));
 
-        ItemStack[] ret;
+        final ItemStack[] ret;
         if (source.getItem() == null)
         {
             ret = new ItemStack[0];

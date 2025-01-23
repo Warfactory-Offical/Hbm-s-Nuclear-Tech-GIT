@@ -28,7 +28,7 @@ public class CMBFurnaceRecipeHandler implements IRecipeCategory<CMBFurnaceRecipe
 	protected final IDrawableStatic powerStatic;
 	protected final IDrawableAnimated powerAnimated;
 	
-	public CMBFurnaceRecipeHandler(IGuiHelper help) {
+	public CMBFurnaceRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 145, 55);
 		
 		progressStatic = help.createDrawable(gui_rl, 100, 119, 23, 16);
@@ -62,15 +62,15 @@ public class CMBFurnaceRecipeHandler implements IRecipeCategory<CMBFurnaceRecipe
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 95, 20);
 		mudAnimated.draw(minecraft, 20, 2);
 		powerAnimated.draw(minecraft, 2, 2);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, CMBFurnaceRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final CMBFurnaceRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 64, 1);
 		guiItemStacks.init(1, true, 64, 37);

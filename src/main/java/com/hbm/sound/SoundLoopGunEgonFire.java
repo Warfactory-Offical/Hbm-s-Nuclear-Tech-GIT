@@ -9,7 +9,7 @@ public class SoundLoopGunEgonFire extends MovingSound {
 
 	public EntityPlayer player;
 	
-	public SoundLoopGunEgonFire(SoundEvent soundIn, SoundCategory categoryIn, EntityPlayer p) {
+	public SoundLoopGunEgonFire(final SoundEvent soundIn, final SoundCategory categoryIn, final EntityPlayer p) {
 		super(soundIn, categoryIn);
 		this.repeat = true;
 		this.repeatDelay = 0;
@@ -23,7 +23,7 @@ public class SoundLoopGunEgonFire extends MovingSound {
 		this.zPosF = (float) player.posZ;
 	}
 	
-	public void setDone(boolean b) {
+	public void setDone(final boolean b) {
 		this.donePlaying = b;
 	}
 

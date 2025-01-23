@@ -17,20 +17,20 @@ public class NodeQueryBlock extends Node {
     public String dataName = "";
     public NodeDropdown dataSelector;
 
-    public NodeQueryBlock(float x, float y, Control ctrl) {
+    public NodeQueryBlock(final float x, final float y, final Control ctrl) {
         super(x, y);
         this.ctrl = ctrl;
 
         this.outputs.add(new NodeConnection("Output", this, outputs.size(), false, DataValue.DataType.GENERIC, new DataValueFloat(0)));
 
-        NodeDropdown blockPosSelector = new NodeDropdown(this, otherElements.size(), s -> {
+        final NodeDropdown blockPosSelector = new NodeDropdown(this, otherElements.size(), s -> {
             blockPos = s;
             dataName = "";
             setDataSelector();
             return null;
         }, () -> blockPos);
         this.otherElements.add(blockPosSelector);
-        for (BlockPos pos : ctrl.connectedSet) {
+        for (final BlockPos pos : ctrl.connectedSet) {
             blockPosSelector.list.addItems(pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
         }
 
@@ -46,18 +46,17 @@ public class NodeQueryBlock extends Node {
         recalcSize();
     }
 
-    private BlockPos getPos(String pos) {
-        String[] coords = pos.split(", ");
+    private BlockPos getPos(final String pos) {
+        final String[] coords = pos.split(", ");
         return new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]));
     }
 
     private void setDataSelector() {
         dataSelector.list.itemNames.clear();
         if (blockPos != null && !blockPos.isEmpty()) {
-            TileEntity tile = ctrl.panel.parent.getControlWorld().getTileEntity(getPos(blockPos));
-            if (tile instanceof IControllable) {
-                IControllable te = (IControllable) tile;
-                for (Map.Entry<String, DataValue> var : te.getQueryData().entrySet()) {
+            final TileEntity tile = ctrl.panel.parent.getControlWorld().getTileEntity(getPos(blockPos));
+            if (tile instanceof IControllable te) {
+                for (final Map.Entry<String, DataValue> var : te.getQueryData().entrySet()) {
                     dataSelector.list.addItems(var.getKey());
                 }
             }
@@ -65,7 +64,7 @@ public class NodeQueryBlock extends Node {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys) {
         tag.setString("nodeType", "queryBlock");
         tag.setInteger("controlIdx", sys.parent.panel.controls.indexOf(sys.parent));
         tag.setString("blockPos", blockPos);
@@ -75,19 +74,18 @@ public class NodeQueryBlock extends Node {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag, NodeSystem sys) {
+    public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys) {
         blockPos = tag.getString("blockPos");
         dataName = tag.getString("dataName");
         super.readFromNBT(tag, sys);
     }
 
     @Override
-    public DataValue evaluate(int inx) {
+    public DataValue evaluate(final int inx) {
         if (!dataName.isEmpty()) {
-            TileEntity tile = ctrl.panel.parent.getControlWorld().getTileEntity(getPos(blockPos));
+            final TileEntity tile = ctrl.panel.parent.getControlWorld().getTileEntity(getPos(blockPos));
 
-            if (tile instanceof IControllable) {
-                IControllable te = (IControllable) tile;
+            if (tile instanceof IControllable te) {
                 if (te.getQueryData().containsKey(dataName)) {
                     return te.getQueryData().get(dataName);
                 }
@@ -98,7 +96,7 @@ public class NodeQueryBlock extends Node {
         return new DataValueFloat(0);
     }
 
-    public NodeQueryBlock setData(String blockPos) {
+    public NodeQueryBlock setData(final String blockPos) {
         this.blockPos = blockPos;
         return this;
     }

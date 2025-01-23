@@ -19,8 +19,8 @@ public class TileEntitySubstation extends TileEntityPylonBase {
 	@Override
 	public Vec3[] getMountPos() {
 		
-		double topOff = 5.25D;
-		Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
+		final double topOff = 5.25D;
+		final Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 
 		switch(getBlockMetadata() - BlockDummyable.offset) {
 		case 2: vec.rotateAroundY((float) Math.PI * 0.0F); break;
@@ -49,7 +49,7 @@ public class TileEntitySubstation extends TileEntityPylonBase {
 	
 	@Override
 	public List<BlockPos> getConnectionPoints() {
-		List<BlockPos> connPos = new ArrayList(connected);
+		final List<BlockPos> connPos = new ArrayList(connected);
 		connPos.add(pos.add(2, 0, -1));
 		connPos.add(pos.add(2, 0, 1));
 		connPos.add(pos.add(- 2, 0, -1));
@@ -68,7 +68,7 @@ public class TileEntitySubstation extends TileEntityPylonBase {
 
 	@Override
 	public List<Integer> getProxies() {
-		List<Integer> proxies = new ArrayList();
+		final List<Integer> proxies = new ArrayList();
 		proxies.add(IEnergyConductor.getIdentityFromPos(pos.add(1, 0, 1)));
 		proxies.add(IEnergyConductor.getIdentityFromPos(pos.add(1, 0, -1)));
 		proxies.add(IEnergyConductor.getIdentityFromPos(pos.add(-1, 0, 1)));

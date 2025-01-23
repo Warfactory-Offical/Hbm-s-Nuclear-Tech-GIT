@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -15,37 +16,37 @@ import net.minecraft.item.ItemStack;
 
 public class SAFERecipes {
 
-	private static LinkedHashMap<ComparableStack, ItemStack> recipes = new LinkedHashMap<>();
+	private static final LinkedHashMap<ComparableStack, ItemStack> recipes = new LinkedHashMap<>();
 	
 	public static void registerRecipes() {
-		addRecipe(new ComparableStack(ModItems.tiny_singularity), new ItemStack(ModItems.singularity));
-		addRecipe(new ComparableStack(ModItems.tiny_singularity_counter_resonant), new ItemStack(ModItems.singularity_counter_resonant));
-		addRecipe(new ComparableStack(ModItems.tiny_singularity_super_heated), new ItemStack(ModItems.singularity_super_heated));
-		addRecipe(new ComparableStack(ModItems.tiny_black_hole), new ItemStack(ModItems.black_hole));
-		addRecipe(new ComparableStack(ModItems.tiny_singularity_spark), new ItemStack(ModItems.singularity_spark));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity), ItemStackUtil.itemStackFrom(ModItems.singularity));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity_counter_resonant), ItemStackUtil.itemStackFrom(ModItems.singularity_counter_resonant));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity_super_heated), ItemStackUtil.itemStackFrom(ModItems.singularity_super_heated));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_black_hole), ItemStackUtil.itemStackFrom(ModItems.black_hole));
+		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity_spark), ItemStackUtil.itemStackFrom(ModItems.singularity_spark));
 	}
 
-	public static void addRecipe(ComparableStack input, ItemStack output){
+	public static void addRecipe(final ComparableStack input, final ItemStack output){
 		recipes.put(input, output);
 	}
 
-	public static void removeRecipe(ComparableStack input){
+	public static void removeRecipe(final ComparableStack input){
 		recipes.remove(input);
 	}
 	
 	public static LinkedHashMap<ItemStack, ItemStack> getAllRecipes() {
 		
-		LinkedHashMap<ItemStack, ItemStack> map = new LinkedHashMap<>();
-		for(Map.Entry<ComparableStack, ItemStack> recipe : recipes.entrySet()) {
+		final LinkedHashMap<ItemStack, ItemStack> map = new LinkedHashMap<>();
+		for(final Map.Entry<ComparableStack, ItemStack> recipe : recipes.entrySet()) {
 			map.put(recipe.getKey().toStack(), recipe.getValue());
 		}
 		
 		return map;
 	}
 	
-	public static ItemStack getOutput(ItemStack stack) {
+	public static ItemStack getOutput(final ItemStack stack) {
 		if(stack == null)
 			return null;
-		return recipes.get(new ComparableStack(stack));
+		return recipes.get(ItemStackUtil.comparableStackFrom(stack));
 	}
 }

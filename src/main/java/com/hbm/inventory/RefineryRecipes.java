@@ -1,4 +1,5 @@
 package com.hbm.inventory;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.LinkedHashMap;
 import java.util.HashMap;
@@ -35,24 +36,24 @@ public class RefineryRecipes {
 			new FluidStack(ModForgeFluids.naphtha, 25),
 			new FluidStack(ModForgeFluids.lightoil, 15),
 			new FluidStack(ModForgeFluids.petroleum, 10) }, 
-			new ItemStack(ModItems.sulfur, 1)));
+			ItemStackUtil.itemStackFrom(ModItems.sulfur, 1)));
 		
 		refineryRecipesMap.put(ModForgeFluids.hotcrackoil, new Pair(new FluidStack[]{ 
 			new FluidStack(ModForgeFluids.naphtha, 40), 
 			new FluidStack(ModForgeFluids.lightoil, 30),
 			new FluidStack(ModForgeFluids.aromatics, 15),
 			new FluidStack(ModForgeFluids.unsaturateds, 15)	}, 
-			new ItemStack(ModItems.oil_tar, 1)));
+			ItemStackUtil.itemStackFrom(ModItems.oil_tar, 1)));
 
 		refineryRecipesMap.put(ModForgeFluids.toxic_fluid, new Pair(new FluidStack[]{ 
 			new FluidStack(ModForgeFluids.wastefluid, 50),
 			new FluidStack(ModForgeFluids.wastegas, 40),
 			new FluidStack(ModForgeFluids.corium_fluid, 4), 
 			new FluidStack(ModForgeFluids.watz, 1)}, 
-			new ItemStack(ModItems.nuclear_waste_tiny, 1)));
+			ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 1)));
 	}
 
-	public static Pair<FluidStack[], ItemStack> getRecipe(Fluid f){
+	public static Pair<FluidStack[], ItemStack> getRecipe(final Fluid f){
 		if(f != null)
 			return refineryRecipesMap.get(f);
 		return null;
@@ -65,7 +66,7 @@ public class RefineryRecipes {
 		fractions.put(ModForgeFluids.lightoil, new Quartet<>(ModForgeFluids.diesel, ModForgeFluids.kerosene, light_frac_diesel, light_frac_kero));
 	}
 	
-	public static Quartet<Fluid, Fluid, Integer, Integer> getFractions(Fluid oil) {
+	public static Quartet<Fluid, Fluid, Integer, Integer> getFractions(final Fluid oil) {
 		return fractions.get(oil);
 	}
 }

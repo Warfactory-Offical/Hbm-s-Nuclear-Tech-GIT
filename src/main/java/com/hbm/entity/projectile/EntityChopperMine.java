@@ -26,11 +26,11 @@ public class EntityChopperMine extends Entity implements IProjectile {
 	//private int field_145789_f = -1;
 	//private boolean inGround;
 	
-	public EntityChopperMine(World worldIn) {
+	public EntityChopperMine(final World worldIn) {
 		super(worldIn);
 	}
 	
-	public EntityChopperMine(World p_i1582_1_, double x, double y, double z, double moX, double moY, double moZ, Entity shooter) {
+	public EntityChopperMine(final World p_i1582_1_, final double x, final double y, final double z, final double moX, final double moY, final double moZ, final Entity shooter) {
 		super(p_i1582_1_);
 		this.posX = x;
 		this.posY = y;
@@ -48,7 +48,7 @@ public class EntityChopperMine extends Entity implements IProjectile {
 	}
 	
 	@Override
-	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+	public void shoot(final double x, final double y, final double z, final float velocity, final float inaccuracy) {
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class EntityChopperMine extends Entity implements IProjectile {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 	}
 	
 	@Override
@@ -81,21 +81,21 @@ public class EntityChopperMine extends Entity implements IProjectile {
 		}
 
 		Entity entity = null;
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(Math.abs(this.motionX), Math.abs(this.motionY), Math.abs(this.motionZ)).grow(1.0D, 1.0D, 1.0D));
+		final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(Math.abs(this.motionX), Math.abs(this.motionY), Math.abs(this.motionZ)).grow(1.0D, 1.0D, 1.0D));
 		double d0 = 0.0D;
 		int i;
 		float f1;
 
 		for (i = 0; i < list.size(); ++i) {
-			Entity entity1 = (Entity) list.get(i);
+			final Entity entity1 = list.get(i);
 
 			if (entity1.canBeCollidedWith() && (entity1 != this.shooter)) {
 				f1 = 0.3F;
-				AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
-				RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+				final AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
+				final RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
 				if (movingobjectposition1 != null) {
-					double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
+					final double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
 
 					if (d1 < d0 || d0 == 0.0D) {
 						entity = entity1;

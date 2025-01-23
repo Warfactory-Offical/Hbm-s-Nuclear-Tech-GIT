@@ -14,12 +14,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderBreeder extends TileEntitySpecialRenderer<TileEntityMachineReactor> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineReactor te) {
+	public boolean isGlobalRenderer(final TileEntityMachineReactor te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachineReactor breeder, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineReactor breeder, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -36,8 +36,8 @@ public class RenderBreeder extends TileEntitySpecialRenderer<TileEntityMachineRe
 		}
 
 		if(breeder.heat > 0){
-			int seed = (int)(System.currentTimeMillis() / 125 % 10000);
-			Random rand = new Random(seed);
+			final int seed = (int)(System.currentTimeMillis() / 125 % 10000);
+			final Random rand = new Random(seed);
 			for(int i = 0; i < rand.nextInt(breeder.heat+1); i++) {
 
 				GL11.glPushMatrix();

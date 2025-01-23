@@ -29,11 +29,11 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIIGenerator extends GuiInfoContainer {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/generators/gui_igen.png");
-	private TileEntityMachineIGenerator igen;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/generators/gui_igen.png");
+	private final TileEntityMachineIGenerator igen;
 	boolean caughtMouse = false;
 
-	public GUIIGenerator(InventoryPlayer invPlayer, TileEntityMachineIGenerator tedf) {
+	public GUIIGenerator(final InventoryPlayer invPlayer, final TileEntityMachineIGenerator tedf) {
 		super(new ContainerIGenerator(invPlayer, tedf));
 		igen = tedf;
 		
@@ -42,7 +42,7 @@ public class GUIIGenerator extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int x, int y, float f) {
+	public void drawScreen(final int x, final int y, final float f) {
 		super.drawScreen(x, y, f);
 		
     	if(!caughtMouse && Mouse.isButtonDown(0) && guiLeft + 85 <= x && guiLeft + 85 + 18 > x && guiTop + 71 < y && guiTop + 71 + 18 >= y) {
@@ -50,7 +50,7 @@ public class GUIIGenerator extends GuiInfoContainer {
     	}
     	
     	if(caughtMouse && !Mouse.isButtonDown(0)) {
-    		int dial = (int) Math.round(Math.toDegrees(getAngle(x, y)));
+    		final int dial = (int) Math.round(Math.toDegrees(getAngle(x, y)));
     		igen.setDialByAngle(dial);
     		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(igen.getPos(), dial, 2));
     		caughtMouse = false;
@@ -70,7 +70,7 @@ public class GUIIGenerator extends GuiInfoContainer {
     	super.renderHoveredToolTip(x, y);
 	}
 
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
 		
     	if(guiLeft + 24 <= x && guiLeft + 24 + 14 > x && guiTop + 64 < y && guiTop + 64 + 14 >= y) {
@@ -89,15 +89,15 @@ public class GUIIGenerator extends GuiInfoContainer {
     }
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.igen.hasCustomInventoryName() ? this.igen.getInventoryName() : I18n.format(this.igen.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.igen.hasCustomInventoryName() ? this.igen.getInventoryName() : I18n.format(this.igen.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 14, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float iinterpolation, int x, int y) {
+	protected void drawGuiContainerBackgroundLayer(final float iinterpolation, final int x, final int y) {
 		super.drawDefaultBackground();
 		GlStateManager.color(1, 1, 1, 1);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -137,16 +137,16 @@ public class GUIIGenerator extends GuiInfoContainer {
 		GaugeUtil.renderGauge(Gauge.WIDE_SMALL, guiLeft + 148, guiTop + 84, this.zLevel, (double)igen.tanks[2].getFluidAmount() / (double)igen.tanks[2].getCapacity());
 	}
 	
-	private void drawDial(float x, float y) {
+	private void drawDial(final float x, final float y) {
 		
-		float angle = (float) getAngle(x, y);
-		double pixel = 1D/256D;
+		final float angle = (float) getAngle(x, y);
+		final double pixel = 1D/256D;
 		
-		Vec3 vec = Vec3.createVectorHelper(8, 8, 0);
+		final Vec3 vec = Vec3.createVectorHelper(8, 8, 0);
 		vec.rotateAroundZ(-angle);
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buf = tessellator.getBuffer();
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder buf = tessellator.getBuffer();
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         
         buf.pos(guiLeft + 94 + vec.xCoord, guiTop + 80 + vec.yCoord, this.zLevel).tex(pixel * 218, 0).endVertex();
@@ -160,7 +160,7 @@ public class GUIIGenerator extends GuiInfoContainer {
         tessellator.draw();
 	}
 	
-	private double getAngle(float x, float y) {
+	private double getAngle(final float x, final float y) {
 		
 		if(!caughtMouse)
 			return Math.toRadians(igen.getAngleFromDial());

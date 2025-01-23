@@ -33,7 +33,7 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	int life = 10 * 60 * 20;
 	private Ticket loaderTicket;
 
-	public EntityEMP(World p_i1582_1_) {
+	public EntityEMP(final World p_i1582_1_) {
 		super(p_i1582_1_);
 	}
 	
@@ -60,19 +60,19 @@ public class EntityEMP extends Entity implements IChunkLoader {
 		
 		machines = new ArrayList<BlockPos>();
 		
-		int radius = 100;
+		final int radius = 100;
 		
 		for(int x = -radius; x <= radius; x++) {
 			
-			int x2 = (int) Math.pow(x, 2);
+			final int x2 = (int) Math.pow(x, 2);
 			
 			for(int y = -radius; y <= radius; y++) {
 				
-				int y2 = (int) Math.pow(y, 2);
+				final int y2 = (int) Math.pow(y, 2);
 				
 				for(int z = -radius; z <= radius; z++) {
 					
-					int z2 = (int) Math.pow(z, 2);
+					final int z2 = (int) Math.pow(z, 2);
 					
 					if(Math.sqrt(x2 + y2 + z2) <= radius) {
 						add(new BlockPos((int)posX + x, (int)posY + y, (int)posZ + z));
@@ -84,13 +84,13 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	
 	private void shock() {
 		
-		for(BlockPos pos : machines) {
+		for(final BlockPos pos : machines) {
 			emp(pos);
 		}
 	}
 	
-	private void add(BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
+	private void add(final BlockPos pos) {
+		final TileEntity te = world.getTileEntity(pos);
 		if(te == null)
 			return;
 		if(te instanceof IEnergyUser) {
@@ -100,16 +100,16 @@ public class EntityEMP extends Entity implements IChunkLoader {
 				if(te instanceof IEnergyProvider) {
 					machines.add(pos);
 				}
-			} catch(NoClassDefFoundError e){}
+			} catch(final NoClassDefFoundError e){}
 		}
 		if(te.hasCapability(CapabilityEnergy.ENERGY, null)){
 			machines.add(pos);
 		}
 	}
 	
-	private void emp(BlockPos pos) {
+	private void emp(final BlockPos pos) {
 		
-		TileEntity te = world.getTileEntity(pos);
+		final TileEntity te = world.getTileEntity(pos);
 		if(te == null)
 			return;
 		boolean flag = false;
@@ -130,9 +130,9 @@ public class EntityEMP extends Entity implements IChunkLoader {
 				((IEnergyProvider)te).extractEnergy(EnumFacing.WEST, ((IEnergyProvider)te).getEnergyStored(EnumFacing.WEST), false);
 				flag = true;
 			}
-		} catch(NoClassDefFoundError e){}
+		} catch(final NoClassDefFoundError e){}
 		if(te != null && te.hasCapability(CapabilityEnergy.ENERGY, null)){
-			IEnergyStorage handle = te.getCapability(CapabilityEnergy.ENERGY, null);
+			final IEnergyStorage handle = te.getCapability(CapabilityEnergy.ENERGY, null);
 			handle.extractEnergy(handle.getEnergyStored(), false);
 			flag = true;
 		}
@@ -151,7 +151,7 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -170,10 +170,10 @@ public class EntityEMP extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -189,7 +189,7 @@ public class EntityEMP extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -197,8 +197,8 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) { }
+	protected void readEntityFromNBT(final NBTTagCompound nbt) { }
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) { }
+	protected void writeEntityToNBT(final NBTTagCompound nbt) { }
 }

@@ -26,7 +26,7 @@ public class EntityTaintCrab extends EntityCyberCrab {
 
 	public List<double[]> targets = new ArrayList<double[]>();
 	
-	public EntityTaintCrab(World worldIn) {
+	public EntityTaintCrab(final World worldIn) {
 		super(worldIn);
 		this.setSize(1.25F, 1.25F);
         this.ignoreFrustumCheck = true;
@@ -48,9 +48,9 @@ public class EntityTaintCrab extends EntityCyberCrab {
 	public void onLivingUpdate() {
 		targets = TileEntityTesla.zap(world, posX, posY + 1.25, posZ, 10, this);
 
-		List<EntityLivingBase> targets = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(posX - 5, posY - 5, posZ - 5, posX + 5, posY + 5, posZ + 5));
+		final List<EntityLivingBase> targets = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(posX - 5, posY - 5, posZ - 5, posX + 5, posY + 5, posZ + 5));
 		
-		for(EntityLivingBase e : targets) {
+		for(final EntityLivingBase e : targets) {
 			if(!(e instanceof EntityCyberCrab))
 				e.addPotionEffect(new PotionEffect(HbmPotion.taint, 30));
 		}
@@ -64,16 +64,16 @@ public class EntityTaintCrab extends EntityCyberCrab {
 	}
 	
 	@Override
-	protected void dropRareDrop(int p_70600_1_) {
+	protected void dropRareDrop(final int p_70600_1_) {
 		this.dropItem(ModItems.coil_magnetized_tungsten, 1);
 	}
 	
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-		EntityBulletBase bullet = new EntityBulletBase(world, BulletConfigSyncingUtil.BMG50_STAR, this);
+	public void attackEntityWithRangedAttack(final EntityLivingBase target, final float distanceFactor) {
+		final EntityBulletBase bullet = new EntityBulletBase(world, BulletConfigSyncingUtil.BMG50_STAR, this);
 		//Vec3 motion = Vec3.createVectorHelper(posX - entity.posX, posY - entity.posZ - entity.height / 2, posZ - entity.posZ);
 		//motion = motion.normalize();
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "vanilla");
 		data.setString("mode", "flame");
 		data.setDouble("mX", bullet.motionX * 0.3);

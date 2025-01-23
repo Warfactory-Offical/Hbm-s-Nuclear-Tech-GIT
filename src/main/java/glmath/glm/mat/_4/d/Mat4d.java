@@ -44,7 +44,7 @@ public class Mat4d {
         m33 = 1.0;
     }
 
-    public Mat4d(double s) {
+    public Mat4d(final double s) {
         m00 = s;
         m01 = 0.0;
         m02 = 0.0;
@@ -63,7 +63,7 @@ public class Mat4d {
         m33 = s;
     }
 
-    public Mat4d(Mat4 m) {
+    public Mat4d(final Mat4 m) {
         m00 = m.m00;
         m01 = m.m01;
         m02 = m.m02;
@@ -82,7 +82,7 @@ public class Mat4d {
         m33 = m.m33;
     }
 
-    public Mat4d(Mat4d m) {
+    public Mat4d(final Mat4d m) {
         m00 = m.m00;
         m01 = m.m01;
         m02 = m.m02;
@@ -101,8 +101,8 @@ public class Mat4d {
         m33 = m.m33;
     }
 
-    public Mat4d(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13,
-            double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) {
+    public Mat4d(final double m00, final double m01, final double m02, final double m03, final double m10, final double m11, final double m12, final double m13,
+                 final double m20, final double m21, final double m22, final double m23, final double m30, final double m31, final double m32, final double m33) {
         this.m00 = m00;
         this.m01 = m01;
         this.m02 = m02;
@@ -121,8 +121,8 @@ public class Mat4d {
         this.m33 = m33;
     }
 
-    public Mat4d set(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13,
-            double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) {
+    public Mat4d set(final double m00, final double m01, final double m02, final double m03, final double m10, final double m11, final double m12, final double m13,
+                     final double m20, final double m21, final double m22, final double m23, final double m30, final double m31, final double m32, final double m33) {
         this.m00 = m00;
         this.m01 = m01;
         this.m02 = m02;
@@ -142,7 +142,7 @@ public class Mat4d {
         return this;
     }
 
-    public Mat4d set(Mat4d m) {
+    public Mat4d set(final Mat4d m) {
         m00 = m.m00;
         m01 = m.m01;
         m02 = m.m02;
@@ -162,7 +162,7 @@ public class Mat4d {
         return this;
     }
 
-    public Mat4d set(Mat4 m) {
+    public Mat4d set(final Mat4 m) {
         m00 = m.m00;
         m01 = m.m01;
         m02 = m.m02;
@@ -250,19 +250,19 @@ public class Mat4d {
      *
      * @return this
      */
-    public Mat4d inverse(Mat4d dest) {
-        double a = m00 * m11 - m01 * m10;
-        double b = m00 * m12 - m02 * m10;
-        double c = m00 * m13 - m03 * m10;
-        double d = m01 * m12 - m02 * m11;
-        double e = m01 * m13 - m03 * m11;
-        double f = m02 * m13 - m03 * m12;
-        double g = m20 * m31 - m21 * m30;
-        double h = m20 * m32 - m22 * m30;
-        double i = m20 * m33 - m23 * m30;
-        double j = m21 * m32 - m22 * m31;
-        double k = m21 * m33 - m23 * m31;
-        double l = m22 * m33 - m23 * m32;
+    public Mat4d inverse(final Mat4d dest) {
+        final double a = m00 * m11 - m01 * m10;
+        final double b = m00 * m12 - m02 * m10;
+        final double c = m00 * m13 - m03 * m10;
+        final double d = m01 * m12 - m02 * m11;
+        final double e = m01 * m13 - m03 * m11;
+        final double f = m02 * m13 - m03 * m12;
+        final double g = m20 * m31 - m21 * m30;
+        final double h = m20 * m32 - m22 * m30;
+        final double i = m20 * m33 - m23 * m30;
+        final double j = m21 * m32 - m22 * m31;
+        final double k = m21 * m33 - m23 * m31;
+        final double l = m22 * m33 - m23 * m32;
         double det = a * l - b * k + c * j + d * i - e * h + f * g;
         det = 1.0 / det;
         dest.set((m11 * l - m12 * k + m13 * j) * det,
@@ -309,9 +309,9 @@ public class Mat4d {
      * @param dest will hold the result
      * @return dest
      */
-    public Mat4d invTransp3(Mat4d dest) {
-        double det = det3();
-        double s = 1.0 / det;
+    public Mat4d invTransp3(final Mat4d dest) {
+        final double det = det3();
+        final double s = 1.0 / det;
         /* Invert and transpose in one go */
         dest.set((m11 * m22 - m21 * m12) * s,
                 (m20 * m12 - m10 * m22) * s,
@@ -336,7 +336,7 @@ public class Mat4d {
      * @param v
      * @return this
      */
-    public Vec4d mul(Vec4d v) {
+    public Vec4d mul(final Vec4d v) {
         return mul(v, v);
     }
 
@@ -349,7 +349,7 @@ public class Mat4d {
      * @param res
      * @return dest
      */
-    public Vec4d mul(Vec4d right, Vec4d res) {
+    public Vec4d mul(final Vec4d right, final Vec4d res) {
         res.set(m00 * right.x + m10 * right.y + m20 * right.z + m30 * right.w,
                 m01 * right.x + m11 * right.y + m21 * right.z + m31 * right.w,
                 m02 * right.x + m12 * right.y + m22 * right.z + m32 * right.w,
@@ -357,15 +357,15 @@ public class Mat4d {
         return res;
     }
 
-    public Mat4d mul_(Mat4d right) {
+    public Mat4d mul_(final Mat4d right) {
         return mul(right, new Mat4d());
     }
 
-    public Mat4d mul(Mat4d right) {
+    public Mat4d mul(final Mat4d right) {
         return mul(right, this);
     }
 
-    public Mat4d mul(Mat4d right, Mat4d dest) {
+    public Mat4d mul(final Mat4d right, final Mat4d dest) {
         dest.set(
                 m00 * right.m00 + m10 * right.m01 + m20 * right.m02 + m30 * right.m03,
                 m01 * right.m00 + m11 * right.m01 + m21 * right.m02 + m31 * right.m03,
@@ -387,10 +387,10 @@ public class Mat4d {
     }
 
     // Vec must be normalized
-    public Mat4d rotation(double angle, double x, double y, double z) {
-        double c = Math.cos(angle);
-        double s = Math.sin(angle);
-        double t = 1.0 - c;
+    public Mat4d rotation(final double angle, final double x, final double y, final double z) {
+        final double c = Math.cos(angle);
+        final double s = Math.sin(angle);
+        final double t = 1.0 - c;
         m00 = c + x * x * t;
         m11 = c + y * y * t;
         m22 = c + z * z * t;
@@ -416,11 +416,11 @@ public class Mat4d {
         return this;
     }
 
-    public Mat4d rotate(double angle, Vec3d v) {
+    public Mat4d rotate(final double angle, final Vec3d v) {
         return rotate(angle, v.x, v.y, v.z, this);
     }
 
-    public Mat4d rotate(double angle, double x, double y, double z) {
+    public Mat4d rotate(final double angle, final double x, final double y, final double z) {
         return rotate(angle, x, y, z, this);
     }
 
@@ -434,32 +434,35 @@ public class Mat4d {
      * @param dest
      * @return
      */
-    public Mat4d rotate(double angle, double x, double y, double z, Mat4d dest) {
-        double s = Math.sin(angle);
-        double c = Math.cos(angle);
-        double C = 1.0 - c;
+    public Mat4d rotate(final double angle, final double x, final double y, final double z, final Mat4d dest) {
+        final double s = Math.sin(angle);
+        final double c = Math.cos(angle);
+        final double C = 1.0 - c;
         // rotation matrix elements: m30, m31, m32, m03, m13, m23 = 0, m33 = 1
-        double xx = x * x, xy = x * y, xz = x * z;
-        double yy = y * y, yz = y * z;
-        double zz = z * z;
-        double rm00 = xx * C + c;
-        double rm01 = xy * C + z * s;
-        double rm02 = xz * C - y * s;
-        double rm10 = xy * C - z * s;
-        double rm11 = yy * C + c;
-        double rm12 = yz * C + x * s;
-        double rm20 = xz * C + y * s;
-        double rm21 = yz * C - x * s;
-        double rm22 = zz * C + c;
+        final double xx = x * x;
+        double xy = x * y;
+        final double xz = x * z;
+        final double yy = y * y;
+        final double yz = y * z;
+        final double zz = z * z;
+        final double rm00 = xx * C + c;
+        final double rm01 = xy * C + z * s;
+        final double rm02 = xz * C - y * s;
+        final double rm10 = xy * C - z * s;
+        final double rm11 = yy * C + c;
+        final double rm12 = yz * C + x * s;
+        final double rm20 = xz * C + y * s;
+        final double rm21 = yz * C - x * s;
+        final double rm22 = zz * C + c;
         // add temporaries for dependent values
-        double nm00 = m00 * rm00 + m10 * rm01 + m20 * rm02;
-        double nm01 = m01 * rm00 + m11 * rm01 + m21 * rm02;
-        double nm02 = m02 * rm00 + m12 * rm01 + m22 * rm02;
-        double nm03 = m03 * rm00 + m13 * rm01 + m23 * rm02;
-        double nm10 = m00 * rm10 + m10 * rm11 + m20 * rm12;
-        double nm11 = m01 * rm10 + m11 * rm11 + m21 * rm12;
-        double nm12 = m02 * rm10 + m12 * rm11 + m22 * rm12;
-        double nm13 = m03 * rm10 + m13 * rm11 + m23 * rm12;
+        final double nm00 = m00 * rm00 + m10 * rm01 + m20 * rm02;
+        final double nm01 = m01 * rm00 + m11 * rm01 + m21 * rm02;
+        final double nm02 = m02 * rm00 + m12 * rm01 + m22 * rm02;
+        final double nm03 = m03 * rm00 + m13 * rm01 + m23 * rm02;
+        final double nm10 = m00 * rm10 + m10 * rm11 + m20 * rm12;
+        final double nm11 = m01 * rm10 + m11 * rm11 + m21 * rm12;
+        final double nm12 = m02 * rm10 + m12 * rm11 + m22 * rm12;
+        final double nm13 = m03 * rm10 + m13 * rm11 + m23 * rm12;
         // set non-dependent values directly
         dest.m20 = m00 * rm20 + m10 * rm21 + m20 * rm22;
         dest.m21 = m01 * rm20 + m11 * rm21 + m21 * rm22;
@@ -497,15 +500,15 @@ public class Mat4d {
      * the factor for all components
      * @return this
      */
-    public Mat4d scale(double s) {
+    public Mat4d scale(final double s) {
         return scale(s, s, s);
     }
 
-    public Mat4d scale(Vec3d v) {
+    public Mat4d scale(final Vec3d v) {
         return scale(v.x, v.y, v.z);
     }
 
-    public Mat4d scale(Vec3d v, Mat4d res) {
+    public Mat4d scale(final Vec3d v, final Mat4d res) {
         return scale(v.x, v.y, v.z, res);
     }
 
@@ -526,7 +529,7 @@ public class Mat4d {
      * the factor of the z component
      * @return this
      */
-    public Mat4d scale(double x, double y, double z) {
+    public Mat4d scale(final double x, final double y, final double z) {
         return scale(x, y, z, this);
     }
 
@@ -549,7 +552,7 @@ public class Mat4d {
      * will hold the result
      * @return dest
      */
-    public Mat4d scale(double x, double y, double z, Mat4d dest) {
+    public Mat4d scale(final double x, final double y, final double z, final Mat4d dest) {
         // scale matrix elements:
         // m00 = x, m11 = y, m22 = z
         // m33 = 1
@@ -573,7 +576,7 @@ public class Mat4d {
         return dest;
     }
 
-    public Mat4d translation(double x, double y, double z) {
+    public Mat4d translation(final double x, final double y, final double z) {
         m00 = 1.0;
         m01 = 0.0;
         m02 = 0.0;
@@ -593,19 +596,19 @@ public class Mat4d {
         return this;
     }
 
-    public Mat4d translate(Vec3d v) {
+    public Mat4d translate(final Vec3d v) {
         return translate(this, v.x, v.y, v.z);
     }
 
-    public Mat4d translate(double x, double y, double z) {
+    public Mat4d translate(final double x, final double y, final double z) {
         return translate(this, x, y, z);
     }
 
-    public Mat4d translate(Mat4d res, Vec3d v) {
+    public Mat4d translate(final Mat4d res, final Vec3d v) {
         return translate(res, v.x, v.y, v.z);
     }
 
-    public Mat4d translate(Mat4d res, double x, double y, double z) {
+    public Mat4d translate(final Mat4d res, final double x, final double y, final double z) {
         // translation matrix elements: m00, m11, m22, m33 = 1
         // m30 = x, m31 = y, m32 = z, all others = 0
         res.m30 = res.m00 * x + res.m10 * y + res.m20 * z + res.m30;
@@ -615,31 +618,31 @@ public class Mat4d {
         return this;
     }
 
-    public Mat4d lookAt(Vec3d eye, Vec3d center, Vec3d up) {
+    public Mat4d lookAt(final Vec3d eye, final Vec3d center, final Vec3d up) {
         return Glm.lookAt(eye, center, up, this);
     }
 
-    public static Mat4d lookAt(Vec3d eye, Vec3d center, Vec3d up, Mat4d res) {
+    public static Mat4d lookAt(final Vec3d eye, final Vec3d center, final Vec3d up, final Mat4d res) {
         return Glm.lookAt(eye, center, up, res);
     }
 
-    public Mat4d ortho(double left, double right, double bottom, double top, double zNear, double zFar) {
+    public Mat4d ortho(final double left, final double right, final double bottom, final double top, final double zNear, final double zFar) {
         return Glm.ortho(this, left, right, bottom, top, zNear, zFar);
     }
 
-    public Mat4d perspective(double fovy, double aspect, double zNear, double zFar) {
+    public Mat4d perspective(final double fovy, final double aspect, final double zNear, final double zFar) {
         return Glm.perspective(fovy, aspect, zNear, zFar, this);
     }
 
-    public Mat4d perspectiveFov(double fov, double width, double height, double zNear, double zFar) {
+    public Mat4d perspectiveFov(final double fov, final double width, final double height, final double zNear, final double zFar) {
         return Glm.perspectiveFov(fov, width, height, zNear, zFar, this);
     }
     
-    public boolean equals3(Mat4d other) {
+    public boolean equals3(final Mat4d other) {
         return equals3(other, 2);
     }
 
-    public boolean equals3(Mat4d other, int maxUlps) {
+    public boolean equals3(final Mat4d other, final int maxUlps) {
         if (!Glm.compareDoubleEquals(m00, other.m00, maxUlps)) {
             return false;
         }
@@ -667,11 +670,11 @@ public class Mat4d {
         return Glm.compareDoubleEquals(m22, other.m22, maxUlps);
     }
 
-    public boolean equals(Mat4d other) {
+    public boolean equals(final Mat4d other) {
         return equals(other, 2);
     }
 
-    public boolean equals(Mat4d other, int maxUlps) {
+    public boolean equals(final Mat4d other, final int maxUlps) {
         if (!Glm.compareDoubleEquals(m00, other.m00, maxUlps)) {
             return false;
         }
@@ -724,12 +727,12 @@ public class Mat4d {
         return toDa(new double[16]);
     }
 
-    public double[] toDa(double[] res) {
+    public double[] toDa(final double[] res) {
         return toFa(res, 0);
     }
 
-    public double[] toFa(double[] res, int index) {
-        res[index + 0] = m00;
+    public double[] toFa(final double[] res, final int index) {
+        res[index] = m00;
         res[index + 1] = m01;
         res[index + 2] = m02;
         res[index + 3] = m03;
@@ -752,12 +755,12 @@ public class Mat4d {
         return toDbb(ByteBuffer.allocate(16 * Double.BYTES));
     }
 
-    public ByteBuffer toDbb(ByteBuffer res) {
+    public ByteBuffer toDbb(final ByteBuffer res) {
         return Mat4d.this.toDbb(res, 0);
     }
 
-    public ByteBuffer toDbb(ByteBuffer res, int index) {
-        res.putDouble(index + 0, m00);
+    public ByteBuffer toDbb(final ByteBuffer res, final int index) {
+        res.putDouble(index, m00);
         res.putDouble(index + 1, m01);
         res.putDouble(index + 2, m02);
         res.putDouble(index + 3, m03);
@@ -780,16 +783,16 @@ public class Mat4d {
         print("", true);
     }
 
-    public void print(String title) {
+    public void print(final String title) {
         print(title, true);
     }
 
-    public void print(boolean outStream) {
+    public void print(final boolean outStream) {
         print("", outStream);
     }
 
-    public void print(String title, boolean outStream) {
-        String res = title + "\n"
+    public void print(final String title, final boolean outStream) {
+        final String res = title + "\n"
                 + "| " + m00 + " " + m10 + " " + m20 + " " + m30 + " |\n"
                 + "| " + m01 + " " + m11 + " " + m21 + " " + m31 + " |\n"
                 + "| " + m02 + " " + m12 + " " + m22 + " " + m32 + " |\n"

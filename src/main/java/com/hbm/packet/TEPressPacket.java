@@ -27,7 +27,7 @@ public class TEPressPacket implements IMessage {
 		
 	}
 
-	public TEPressPacket(int x, int y, int z, ItemStack stack, int progress)
+	public TEPressPacket(final int x, final int y, final int z, final ItemStack stack, final int progress)
 	{
 		this.x = x;
 		this.y = y;
@@ -42,7 +42,7 @@ public class TEPressPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -52,7 +52,7 @@ public class TEPressPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -64,22 +64,20 @@ public class TEPressPacket implements IMessage {
 	public static class Handler implements IMessageHandler<TEPressPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(TEPressPacket m, MessageContext ctx) {
+		public IMessage onMessage(final TEPressPacket m, final MessageContext ctx) {
 			
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityMachinePress) {
-						
-					TileEntityMachinePress gen = (TileEntityMachinePress) te;
-					gen.item = m.item;
+				if (te != null && te instanceof TileEntityMachinePress gen) {
+
+                    gen.item = m.item;
 					gen.meta = m.meta;
 					gen.progress = m.progress;
 				}
-				if (te != null && te instanceof TileEntityMachineEPress) {
-						
-					TileEntityMachineEPress gen = (TileEntityMachineEPress) te;
-					gen.item = m.item;
+				if (te != null && te instanceof TileEntityMachineEPress gen) {
+
+                    gen.item = m.item;
 					gen.meta = m.meta;
 					gen.progress = m.progress;
 				}

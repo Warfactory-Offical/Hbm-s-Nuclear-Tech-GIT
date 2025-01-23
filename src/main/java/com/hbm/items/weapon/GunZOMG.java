@@ -1,16 +1,13 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.entity.projectile.EntityRainbow;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,11 +25,14 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 public class GunZOMG extends Item {
 
 	Random rand = new Random();
 	
-	public GunZOMG(String s) {
+	public GunZOMG(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.weaponTab);
@@ -42,18 +42,18 @@ public class GunZOMG extends Item {
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
+	public EnumAction getItemUseAction(final ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getMaxItemUseDuration(final ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand handIn) {
-		ItemStack stack = player.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer player, final EnumHand handIn) {
+		final ItemStack stack = player.getHeldItem(handIn);
 		{
 			player.setActiveHand(handIn);
 		}
@@ -66,11 +66,11 @@ public class GunZOMG extends Item {
 
 		if (!player.isSneaking()) {
 			if (stack.getTagCompound().getBoolean("valid")) {
-				if ((Library.hasInventoryItem(player.inventory, ModItems.nugget_euphemium)
-						|| Library.hasInventoryItem(player.inventory, ModItems.ingot_euphemium))) {
+				if ((Library.hasInventoryItem(player.inventory, ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM))
+						|| Library.hasInventoryItem(player.inventory, ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM)))) {
 				} else {
-					if (!Library.hasInventoryItem(player.inventory, ModItems.nugget_euphemium)
-							&& !Library.hasInventoryItem(player.inventory, ModItems.ingot_euphemium)) {
+					if (!Library.hasInventoryItem(player.inventory, ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM))
+							&& !Library.hasInventoryItem(player.inventory, ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM))) {
 						stack.getTagCompound().setBoolean("valid", false);
 						if (!worldIn.isRemote) {
 							player.sendMessage(new TextComponentTranslation("[ZOMG] Validation lost!"));
@@ -90,7 +90,7 @@ public class GunZOMG extends Item {
 					player.sendMessage(new TextComponentTranslation("[ZOMG] Gun has already been validated."));
 				}
 			} else {
-				if (Library.hasInventoryItem(player.inventory, ModItems.nugget_euphemium) || Library.hasInventoryItem(player.inventory, ModItems.ingot_euphemium)) {
+				if (Library.hasInventoryItem(player.inventory, ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM)) || Library.hasInventoryItem(player.inventory, ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM))) {
 					stack.getTagCompound().setBoolean("valid", true);
 					if (!worldIn.isRemote) {
 						player.sendMessage(new TextComponentTranslation("[ZOMG] Gun has been validated!"));
@@ -125,15 +125,14 @@ public class GunZOMG extends Item {
 	}
 	
 	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase ent, int count) {
-		if(!(ent instanceof EntityPlayer))
+	public void onUsingTick(final ItemStack stack, final EntityLivingBase ent, final int count) {
+		if(!(ent instanceof EntityPlayer player))
 			return;
-		EnumHand hand = ent.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+		final EnumHand hand = ent.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 		if(hand == EnumHand.MAIN_HAND && ent.getHeldItem(EnumHand.OFF_HAND).getItem() == ModItems.gun_zomg){
 			ent.getHeldItem(EnumHand.OFF_HAND).getItem().onUsingTick(ent.getHeldItem(EnumHand.OFF_HAND), ent, count);
 		}
-		EntityPlayer player = (EntityPlayer) ent;
-		World world = player.world;
+        final World world = player.world;
 
 		if (!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
@@ -144,15 +143,15 @@ public class GunZOMG extends Item {
 		
 		if (!player.isSneaking()) {
 			if (stack.getTagCompound().getBoolean("valid")) {
-				if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.nugget_euphemium)
-						|| Library.hasInventoryItem(player.inventory, ModItems.ingot_euphemium)) && count % 1 == 0) {
+				if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM))
+						|| Library.hasInventoryItem(player.inventory, ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM))) && 0 == 0) {
 					if (!stack.getTagCompound().getBoolean("superuser")) {
-						EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
-						EntityBullet entityarrow1 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
-						EntityBullet entityarrow2 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
-						EntityBullet entityarrow3 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
-						EntityBullet entityarrow4 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
-						EntityBullet entityarrow5 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
+						final EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
+						final EntityBullet entityarrow1 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
+						final EntityBullet entityarrow2 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
+						final EntityBullet entityarrow3 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
+						final EntityBullet entityarrow4 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
+						final EntityBullet entityarrow5 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper", hand);
 						entityarrow.setDamage(35 + rand.nextInt(45 - 35));
 						entityarrow1.setDamage(35 + rand.nextInt(45 - 35));
 						entityarrow2.setDamage(35 + rand.nextInt(45 - 35));
@@ -172,11 +171,11 @@ public class GunZOMG extends Item {
 						}
 					} else {
 						
-						EntityRainbow entityarrow = new EntityRainbow(world, player, 1F, hand);
-						EntityRainbow entityarrow1 = new EntityRainbow(world, player, 1F, hand);
-						EntityRainbow entityarrow2 = new EntityRainbow(world, player, 1F, hand);
-						EntityRainbow entityarrow3 = new EntityRainbow(world, player, 1F, hand);
-						EntityRainbow entityarrow4 = new EntityRainbow(world, player, 1F, hand);
+						final EntityRainbow entityarrow = new EntityRainbow(world, player, 1F, hand);
+						final EntityRainbow entityarrow1 = new EntityRainbow(world, player, 1F, hand);
+						final EntityRainbow entityarrow2 = new EntityRainbow(world, player, 1F, hand);
+						final EntityRainbow entityarrow3 = new EntityRainbow(world, player, 1F, hand);
+						final EntityRainbow entityarrow4 = new EntityRainbow(world, player, 1F, hand);
 						entityarrow.setDamage(10000 + rand.nextInt(90000));
 						entityarrow1.setDamage(10000 + rand.nextInt(90000));
 						entityarrow2.setDamage(10000 + rand.nextInt(90000));
@@ -195,7 +194,7 @@ public class GunZOMG extends Item {
 						}
 					}
 				} else {
-					if (!Library.hasInventoryItem(player.inventory, ModItems.nugget_euphemium) && !Library.hasInventoryItem(player.inventory, ModItems.ingot_euphemium)) {
+					if (!Library.hasInventoryItem(player.inventory, ModItems.nugget.getItemStack(MaterialMineral.EUPHEMIUM)) && !Library.hasInventoryItem(player.inventory, ModItems.ingot.getItemStack(MaterialMineral.EUPHEMIUM))) {
 						stack.getTagCompound().setBoolean("valid", false);
 						if (!world.isRemote) {
 							player.sendMessage(new TextComponentTranslation("[ZOMG] Validation lost!"));
@@ -208,7 +207,7 @@ public class GunZOMG extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(stack.getTagCompound() == null)
 		{
 			list.add("Gun not validated.");
@@ -233,8 +232,8 @@ public class GunZOMG extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
-		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
+		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 6, 0));
 		}
@@ -242,7 +241,7 @@ public class GunZOMG extends Item {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
 		return false;
 	}
 }

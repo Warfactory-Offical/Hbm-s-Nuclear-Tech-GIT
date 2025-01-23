@@ -15,12 +15,12 @@ public class RenderGlowingOne extends RenderZombie {
 	
 	public static final ResourceLocation glowingone = new ResourceLocation(RefStrings.MODID, "textures/entity/glowingone.png");
 	
-	public RenderGlowingOne(RenderManager p_i47211_1_) {
+	public RenderGlowingOne(final RenderManager p_i47211_1_) {
 		super(p_i47211_1_);
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityZombie entity) {
+	protected ResourceLocation getEntityTexture(final EntityZombie entity) {
 		return glowingone;
 	}
 

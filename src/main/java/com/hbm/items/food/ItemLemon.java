@@ -1,10 +1,8 @@
 package com.hbm.items.food;
 
-import java.util.List;
-
 import com.hbm.entity.effect.EntityVortex;
 import com.hbm.items.ModItems;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemLemon extends ItemFood {
 
-	public ItemLemon(int amount, float saturation, boolean isWolfFood, String s) {
+	public ItemLemon(final int amount, final float saturation, final boolean isWolfFood, final String s) {
 		super(amount, saturation, isWolfFood);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,7 +26,7 @@ public class ItemLemon extends ItemFood {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(this == ModItems.lemon) {
 			list.add("Eh, good enough.");
 		}
@@ -217,7 +217,7 @@ public class ItemLemon extends ItemFood {
 	
 	
 	@Override
-	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
+	protected void onFoodEaten(final ItemStack stack, final World worldIn, final EntityPlayer player) {
 		if(this == ModItems.med_ipecac || this == ModItems.med_ptsd) {
 			player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 50, 49));
 		}
@@ -254,23 +254,23 @@ public class ItemLemon extends ItemFood {
 				this == ModItems.canned_kerosene || 
 				this == ModItems.canned_recursion || 
 				this == ModItems.canned_bark)
-        	tryAddItem(player, new ItemStack(ModItems.can_key));
+        	tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.can_key));
 		
 		if(this == ModItems.canned_recursion && worldIn.rand.nextInt(10) > 0)
-        	tryAddItem(player, new ItemStack(ModItems.canned_recursion));
+        	tryAddItem(player, ItemStackUtil.itemStackFrom(ModItems.canned_recursion));
 	}
 	
 	@Override
-	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-		ItemStack sta = super.onItemUseFinish(stack, worldIn, entityLiving);
+	public ItemStack onItemUseFinish(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving) {
+		final ItemStack sta = super.onItemUseFinish(stack, worldIn, entityLiving);
         
         if(this == ModItems.loop_stew)
-        	return new ItemStack(Items.BOWL);
+        	return ItemStackUtil.itemStackFrom(Items.BOWL);
         
 
     	
         if (this == ModItems.canned_bhole && !worldIn.isRemote) {
-    		EntityVortex vortex = new EntityVortex(worldIn, 0.5F);
+    		final EntityVortex vortex = new EntityVortex(worldIn, 0.5F);
     		vortex.posX = entityLiving.posX;
     		vortex.posY = entityLiving.posY;
     		vortex.posZ = entityLiving.posZ;
@@ -280,7 +280,7 @@ public class ItemLemon extends ItemFood {
         return sta;
 	}
 
-	public static void tryAddItem(EntityPlayer player, ItemStack stack) {
+	public static void tryAddItem(final EntityPlayer player, final ItemStack stack) {
 		if(!player.inventory.addItemStackToInventory(stack)) {
 			player.dropItem(stack, false);
 		}

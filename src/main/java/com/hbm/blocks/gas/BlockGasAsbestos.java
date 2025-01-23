@@ -17,26 +17,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockGasAsbestos extends BlockGasBase {
 
-	public BlockGasAsbestos(String s) {
+	public BlockGasAsbestos(final String s) {
 		super(0.6F, 0.6F, 0.5F, s);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand){
+	public void randomDisplayTick(final IBlockState stateIn, final World world, final BlockPos pos, final Random rand){
 		super.randomDisplayTick(stateIn, world, pos, rand);
 		if(world.rand.nextInt(5) == 0)
 			world.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 	}
 	
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
 		ContaminationUtil.applyAsbestos(entity, 10, 1);
 	}
 	
 
 	@Override
-	public ForgeDirection getFirstDirection(World world, int x, int y, int z) {
+	public ForgeDirection getFirstDirection(final World world, final int x, final int y, final int z) {
 		
 		if(world.rand.nextInt(5) == 0)
 			return ForgeDirection.DOWN;
@@ -45,12 +45,12 @@ public class BlockGasAsbestos extends BlockGasBase {
 	}
 
 	@Override
-	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
+	public ForgeDirection getSecondDirection(final World world, final int x, final int y, final int z) {
 		return this.randomHorizontal(world);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 
 		if(!world.isRemote && (!GeneralConfig.enableAsbestos || rand.nextInt(10) == 0)) {
 			world.setBlockToAir(pos);

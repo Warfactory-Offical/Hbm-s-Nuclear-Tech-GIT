@@ -49,7 +49,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 		types[4] = ModForgeFluids.spentsteam;
 	}
 	
-	public void setTankType(int idx, Fluid type){
+	public void setTankType(final int idx, final Fluid type){
 		if(types[idx] != type){
 			types[idx] = type;
 			if(type != null){
@@ -79,7 +79,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 
 	public void networkPack(){
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		for(int i=0; i<tanks.length; i++){
 			if(types[i] != null){
 				tanks[i].setFluid(new FluidStack(types[i], tanks[i].getFluidAmount()));
@@ -92,7 +92,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
 		for(int i=0; i<tanks.length; i++){
 			if(tanks[i].getFluid() != null){
@@ -105,7 +105,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	
 	private void setupTanks() {
 		
-		FluidStack[] fluids = CrackRecipes.getOutputsFromFluid(types[0]);
+		final FluidStack[] fluids = CrackRecipes.getOutputsFromFluid(types[0]);
 		
 		if(fluids != null) {
 			setTankType(1, ModForgeFluids.steam);
@@ -128,7 +128,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	
 	private void crack() {
 		
-		FluidStack[] outputFluids = CrackRecipes.getOutputsFromFluid(types[0]);
+		final FluidStack[] outputFluids = CrackRecipes.getOutputsFromFluid(types[0]);
 		
 		if(outputFluids != null) {
 			
@@ -147,7 +147,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 		}
 	}
 	
-	private boolean hasSpace(FluidStack[] outputFluids) {
+	private boolean hasSpace(final FluidStack[] outputFluids) {
 		if(outputFluids.length == 2){
 			return tanks[2].getFluidAmount() + outputFluids[0].amount <= tanks[2].getCapacity() && tanks[3].getFluidAmount() + outputFluids[1].amount <= tanks[3].getCapacity() && tanks[4].getFluidAmount() + 2 <= tanks[4].getCapacity();
 		}else{
@@ -156,7 +156,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
 		for(int i=0; i<tanks.length; i++){
@@ -169,7 +169,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		for(int i=0; i<tanks.length; i++){
 			if(types[i] != null){
@@ -182,13 +182,13 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 		return nbt;
 	}
 
-	public void fillFluidInit(FluidTank tank) {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+	public void fillFluidInit(final FluidTank tank) {
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		fillFluid(pos.getX() + dir.offsetX * 4 + rot.offsetX * 1, pos.getY(), pos.getZ() + dir.offsetZ * 4 + rot.offsetZ * 1, tank);
+		fillFluid(pos.getX() + dir.offsetX * 4 + rot.offsetX, pos.getY(), pos.getZ() + dir.offsetZ * 4 + rot.offsetZ, tank);
 		fillFluid(pos.getX() + dir.offsetX * 4 - rot.offsetX * 2, pos.getY(), pos.getZ() + dir.offsetZ * 4 - rot.offsetZ * 2, tank);
-		fillFluid(pos.getX() - dir.offsetX * 4 + rot.offsetX * 1, pos.getY(), pos.getZ() - dir.offsetZ * 4 + rot.offsetZ * 1, tank);
+		fillFluid(pos.getX() - dir.offsetX * 4 + rot.offsetX, pos.getY(), pos.getZ() - dir.offsetZ * 4 + rot.offsetZ, tank);
 		fillFluid(pos.getX() - dir.offsetX * 4 - rot.offsetX * 2, pos.getY(), pos.getZ() - dir.offsetZ * 4 - rot.offsetZ * 2, tank);
 
 		fillFluid(pos.getX() + dir.offsetX * 2 + rot.offsetX * 3, pos.getY(), pos.getZ() + dir.offsetZ * 2 + rot.offsetZ * 3, tank);
@@ -197,7 +197,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 		fillFluid(pos.getX() - dir.offsetX * 2 - rot.offsetX * 4, pos.getY(), pos.getZ() - dir.offsetZ * 2 - rot.offsetZ * 4, tank);
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank tank) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 
@@ -232,7 +232,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null){
 			if(resource.getFluid() == types[0])
 				return tanks[0].fill(resource, doFill);
@@ -243,7 +243,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		FluidStack drain = null;
 		if(resource.getFluid() == types[2])
 			drain = tanks[2].drain(resource, doDrain);
@@ -255,7 +255,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		FluidStack drain = tanks[2].drain(maxDrain, doDrain);
 		if(drain == null)
 			drain = tanks[3].drain(maxDrain, doDrain);
@@ -265,14 +265,14 @@ public class TileEntityMachineCatalyticCracker extends TileEntity implements INB
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

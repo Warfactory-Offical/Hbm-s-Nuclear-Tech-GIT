@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 
 public class BlockHadronPlating extends Block {
 
-	public BlockHadronPlating(Material materialIn, String s) {
+	public BlockHadronPlating(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -17,7 +17,7 @@ public class BlockHadronPlating extends Block {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 

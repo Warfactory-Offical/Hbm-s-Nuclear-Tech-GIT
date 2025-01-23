@@ -13,7 +13,7 @@ public class RenderSolarBoiler extends TileEntitySpecialRenderer<TileEntitySolar
 
 	
 	@Override
-	public void render(TileEntitySolarBoiler te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntitySolarBoiler te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();

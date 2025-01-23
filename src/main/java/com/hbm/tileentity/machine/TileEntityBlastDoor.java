@@ -130,10 +130,10 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	
 	public void openNeigh() {
 
-		TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
-		TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
-		TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
-		TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
+		final TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
+		final TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
+		final TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
+		final TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
@@ -176,10 +176,10 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	
 	public void closeNeigh() {
 
-		TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
-		TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
-		TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
-		TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
+		final TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
+		final TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
+		final TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
+		final TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
@@ -216,10 +216,10 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	
 	public void lockNeigh() {
 
-		TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
-		TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
-		TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
-		TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
+		final TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
+		final TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
+		final TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
+		final TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
@@ -289,24 +289,23 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 		return false;
 	}
 
-	public boolean placeDummy(BlockPos pos) {
+	public boolean placeDummy(final BlockPos pos) {
 		
 		if(!world.getBlockState(pos).getBlock().isReplaceable(world, pos))
 			return false;
 		
 		world.setBlockState(pos, ModBlocks.dummy_block_blast.getDefaultState());
 		
-		TileEntity te = world.getTileEntity(pos);
+		final TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = this.pos;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = this.pos;
 		}
 		
 		return true;
 	}
 	
-	public void removeDummy(BlockPos pos) {
+	public void removeDummy(final BlockPos pos) {
 		
 		if(world.getBlockState(pos).getBlock() == ModBlocks.dummy_block_blast) {
 			DummyBlockBlast.safeBreak = true;
@@ -316,7 +315,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		state = DoorState.values()[compound.getInteger("state")];
 		sysTime = compound.getLong("sysTime");
 		timer = compound.getInteger("timer");
@@ -325,7 +324,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setInteger("state", state.ordinal());
 		compound.setLong("sysTime", sysTime);
 		compound.setInteger("timer", timer);
@@ -334,7 +333,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	}
 
 	@Override
-	public void receiveEvent(BlockPos from, ControlEvent e){
+	public void receiveEvent(final BlockPos from, final ControlEvent e){
 		if(e.name.equals("door_toggle")){
 			tryToggle();
 		}
@@ -415,7 +414,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(DoorState newState) {
+	public void handleNewState(final DoorState newState) {
 
 	}
 

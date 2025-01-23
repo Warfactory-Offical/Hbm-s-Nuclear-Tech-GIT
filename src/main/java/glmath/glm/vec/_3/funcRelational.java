@@ -30,123 +30,123 @@ abstract class funcRelational extends funcGeometric {
         return Glm.not((Vec3) this, (Vec3) this);
     }
     
-    public Vec3bool lessThan__(Vec3 b) {
+    public Vec3bool lessThan__(final Vec3 b) {
         return Glm.lessThan((Vec3) this, b, new Vec3bool());
     }
 
-    public Vec3bool lessThan(Vec3 b, Vec3bool res) {
+    public Vec3bool lessThan(final Vec3 b, final Vec3bool res) {
         return Glm.lessThan((Vec3) this, b, res);
     }
 
-    public Vec3bool lessThanEqual__(Vec3 b) {
+    public Vec3bool lessThanEqual__(final Vec3 b) {
         return Glm.lessThanEqual((Vec3) this, b, new Vec3bool());
     }
 
-    public Vec3bool lessThanEqual(Vec3 b, Vec3bool res) {
+    public Vec3bool lessThanEqual(final Vec3 b, final Vec3bool res) {
         return Glm.lessThanEqual((Vec3) this, b, res);
     }
 
-    public Vec3bool greaterThan__(Vec3 b) {
+    public Vec3bool greaterThan__(final Vec3 b) {
         return Glm.greaterThan((Vec3) this, b, new Vec3bool());
     }
 
-    public Vec3bool greaterThan(Vec3 b, Vec3bool res) {
+    public Vec3bool greaterThan(final Vec3 b, final Vec3bool res) {
         return Glm.greaterThan((Vec3) this, b, res);
     }
 
-    public Vec3bool greaterThanEqual__(Vec3 b) {
+    public Vec3bool greaterThanEqual__(final Vec3 b) {
         return Glm.greaterThanEqual((Vec3) this, b, new Vec3bool());
     }
 
-    public Vec3bool greaterThanEqual(Vec3 b, Vec3bool res) {
+    public Vec3bool greaterThanEqual(final Vec3 b, final Vec3bool res) {
         return Glm.greaterThanEqual((Vec3) this, b, res);
     }
 
-    public Vec3bool equal__(Vec3 b) {
+    public Vec3bool equal__(final Vec3 b) {
         return Glm.equal((Vec3) this, b, new Vec3bool());
     }
 
-    public Vec3bool equal(Vec3 b, Vec3bool res) {
+    public Vec3bool equal(final Vec3 b, final Vec3bool res) {
         return Glm.equal((Vec3) this, b, res);
     }
 
-    public Vec3bool notEqual__(Vec3 b) {
+    public Vec3bool notEqual__(final Vec3 b) {
         return Glm.notEqual((Vec3) this, b, new Vec3bool());
     }
 
-    public Vec3bool notEqual(Vec3 b, Vec3bool res) {
+    public Vec3bool notEqual(final Vec3 b, final Vec3bool res) {
         return Glm.notEqual((Vec3) this, b, res);
     }
 
-    public Vec3 lessThan(Vec3 b) {
+    public Vec3 lessThan(final Vec3 b) {
         return Glm.lessThan((Vec3) this, b, (Vec3) this);
     }
 
-    public Vec3 lessThan_(Vec3 b) {
+    public Vec3 lessThan_(final Vec3 b) {
         return Glm.lessThan((Vec3) this, b, new Vec3());
     }
 
-    public Vec3 lessThan(Vec3 b, Vec3 res) {
+    public Vec3 lessThan(final Vec3 b, final Vec3 res) {
         return Glm.lessThan((Vec3) this, b, res);
     }
 
-    public Vec3 lessThanEqual(Vec3 b) {
+    public Vec3 lessThanEqual(final Vec3 b) {
         return Glm.lessThanEqual((Vec3) this, b, (Vec3) this);
     }
 
-    public Vec3 lessThanEqual_(Vec3 b) {
+    public Vec3 lessThanEqual_(final Vec3 b) {
         return Glm.lessThanEqual((Vec3) this, b, new Vec3());
     }
 
-    public Vec3 lessThanEqual(Vec3 b, Vec3 res) {
+    public Vec3 lessThanEqual(final Vec3 b, final Vec3 res) {
         return Glm.lessThanEqual((Vec3) this, b, res);
     }
 
-    public Vec3 greaterThan(Vec3 b) {
+    public Vec3 greaterThan(final Vec3 b) {
         return Glm.greaterThan((Vec3) this, b, (Vec3) this);
     }
 
-    public Vec3 greaterThan_(Vec3 b) {
+    public Vec3 greaterThan_(final Vec3 b) {
         return Glm.greaterThan((Vec3) this, b, new Vec3());
     }
 
-    public Vec3 greaterThan(Vec3 b, Vec3 res) {
+    public Vec3 greaterThan(final Vec3 b, final Vec3 res) {
         return Glm.greaterThan((Vec3) this, b, res);
     }
 
-    public Vec3 greaterThanEqual(Vec3 b) {
+    public Vec3 greaterThanEqual(final Vec3 b) {
         return Glm.greaterThanEqual((Vec3) this, b, (Vec3) this);
     }
 
-    public Vec3 greaterThanEqual_(Vec3 b) {
+    public Vec3 greaterThanEqual_(final Vec3 b) {
         return Glm.greaterThanEqual((Vec3) this, b, new Vec3());
     }
 
-    public Vec3 greaterThanEqual(Vec3 b, Vec3 res) {
+    public Vec3 greaterThanEqual(final Vec3 b, final Vec3 res) {
         return Glm.greaterThanEqual((Vec3) this, b, res);
     }
 
-    public Vec3 equal(Vec3 b) {
+    public Vec3 equal(final Vec3 b) {
         return Glm.equal((Vec3) this, b, (Vec3) this);
     }
 
-    public Vec3 equal_(Vec3 b) {
+    public Vec3 equal_(final Vec3 b) {
         return Glm.equal((Vec3) this, b, new Vec3());
     }
 
-    public Vec3 equal(Vec3 b, Vec3 res) {
+    public Vec3 equal(final Vec3 b, final Vec3 res) {
         return Glm.equal((Vec3) this, b, res);
     }
 
-    public Vec3 notEqual(Vec3 b) {
+    public Vec3 notEqual(final Vec3 b) {
         return Glm.notEqual((Vec3) this, b, (Vec3) this);
     }
 
-    public Vec3 notEqual_(Vec3 b) {
+    public Vec3 notEqual_(final Vec3 b) {
         return Glm.notEqual((Vec3) this, b, new Vec3());
     }
 
-    public Vec3 notEqual(Vec3 b, Vec3 res) {
+    public Vec3 notEqual(final Vec3 b, final Vec3 res) {
         return Glm.notEqual((Vec3) this, b, res);
     }
 }

@@ -1,4 +1,5 @@
 package com.hbm.creativetabs;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,49 +14,45 @@ import net.minecraft.util.NonNullList;
 
 public class ControlTab extends CreativeTabs {
 
-	public ControlTab(int index, String label) {
+	public ControlTab(final int index, final String label) {
 		super(index, label);
 	}
 
 	@Override
 	public ItemStack createIcon() {
 		if(ModItems.pellet_rtg != null){
-			return new ItemStack(ModItems.pellet_rtg);
+			return ItemStackUtil.itemStackFrom(ModItems.pellet_rtg);
 		}
-		return new ItemStack(Items.IRON_PICKAXE, 1);
+		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE, 1);
 	}
 	
 	@Override
-	public void displayAllRelevantItems(NonNullList<ItemStack> list) {
+	public void displayAllRelevantItems(final NonNullList<ItemStack> list) {
 		super.displayAllRelevantItems(list);
-		List<ItemStack> batteries = new ArrayList<>();
+		final List<ItemStack> batteries = new ArrayList<>();
 
-		for(Object o : list) {
+		for(final Object o : list) {
 
-			if(o instanceof ItemStack) {
+			if(o instanceof ItemStack stack) {
 
-				ItemStack stack = (ItemStack) o;
-
-				if(stack.getItem() instanceof IBatteryItem) {
+                if(stack.getItem() instanceof IBatteryItem) {
 					batteries.add(stack);
 				}
 			}
 		}
 
-		for(ItemStack stack : batteries) {
+		for(final ItemStack stack : batteries) {
 
-			if(!(stack.getItem() instanceof IBatteryItem)) //shouldn't happen but just to make sure
+			if(!(stack.getItem() instanceof IBatteryItem battery)) //shouldn't happen but just to make sure
 				continue;
 
-			IBatteryItem battery = (IBatteryItem) stack.getItem();
-
-			ItemStack empty = stack.copy();
-			ItemStack full = stack.copy();
+            final ItemStack empty = stack.copy();
+			final ItemStack full = stack.copy();
 
 			battery.setCharge(empty, 0);
 			battery.setCharge(full, battery.getMaxCharge());
 
-			int index = list.indexOf(stack);
+			final int index = list.indexOf(stack);
 
 			list.remove(index);
 			list.add(index, full);

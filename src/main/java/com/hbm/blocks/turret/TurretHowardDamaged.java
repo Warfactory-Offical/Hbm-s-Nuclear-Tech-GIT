@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 
 public class TurretHowardDamaged extends BlockDummyable {
 
-	public TurretHowardDamaged(Material materialIn, String s){
+	public TurretHowardDamaged(final Material materialIn, final String s){
 		super(materialIn, s);
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta){
+	public TileEntity createNewTileEntity(final World worldIn, final int meta){
 		if(meta >= 12)
 			return new TileEntityTurretHowardDamaged();
 		return null;
@@ -35,7 +35,7 @@ public class TurretHowardDamaged extends BlockDummyable {
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
 		return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 	}
 

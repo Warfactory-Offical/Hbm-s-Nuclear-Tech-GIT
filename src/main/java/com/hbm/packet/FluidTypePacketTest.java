@@ -28,7 +28,7 @@ public class FluidTypePacketTest implements IMessage {
 	public FluidTypePacketTest() {
 	}
 	
-	public FluidTypePacketTest(int x, int y, int z, Fluid[] fluids) {
+	public FluidTypePacketTest(final int x, final int y, final int z, final Fluid[] fluids) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -37,16 +37,16 @@ public class FluidTypePacketTest implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
 		length = buf.readInt();
 		fluids = new Fluid[length];
 		for(int i = 0; i < length; i++){
-			byte[] bytes = new byte[buf.readInt()];
+			final byte[] bytes = new byte[buf.readInt()];
 			buf.readBytes(bytes);
-			String name = new String(bytes);
+			final String name = new String(bytes);
 			if(name.equals("HBM_EMPTY")){
 				fluids[i] = null;
 			} else {
@@ -56,14 +56,14 @@ public class FluidTypePacketTest implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
 		buf.writeInt(length);
 		
 		for(int i = 0; i < length ; i++){
-			byte[] bytes = fluids[i] == null ? "HBM_EMPTY".getBytes() : fluids[i].getName().getBytes();
+			final byte[] bytes = fluids[i] == null ? "HBM_EMPTY".getBytes() : fluids[i].getName().getBytes();
 			buf.writeInt(bytes.length);
 			buf.writeBytes(bytes);
 		}
@@ -73,9 +73,9 @@ public class FluidTypePacketTest implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(FluidTypePacketTest m, MessageContext ctx) {
+		public IMessage onMessage(final FluidTypePacketTest m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 				if (te instanceof TileEntityMachineTurbine) {
 					((TileEntityMachineTurbine)te).tankTypes[0] = m.fluids[0];
 					((TileEntityMachineTurbine)te).tankTypes[1] = m.fluids[1];

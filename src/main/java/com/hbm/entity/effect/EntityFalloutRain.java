@@ -81,7 +81,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 	public int falloutBallRadius = 0;
 
-	public EntityFalloutRain(World world) {
+	public EntityFalloutRain(final World world) {
 		super(world);
 		this.setSize(4, 20);
 		this.ignoreFrustumCheck = false;
@@ -96,13 +96,13 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		this.spawnFire = BombConfig.spawnFire;
 	}
 
-	public EntityFalloutRain(World p_i1582_1_, int maxage) {
+	public EntityFalloutRain(final World p_i1582_1_, final int maxage) {
 		super(p_i1582_1_);
 		this.setSize(4, 20);
 		this.isImmuneToFire = true;
 	}
 
-	private static int getInt(Object e){
+	private static int getInt(final Object e){
 		if(e == null)
 			return 0;
 		return (int)e;
@@ -114,12 +114,12 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 	}
 
 	@Override
-	public boolean isInRangeToRender3d(double x, double y, double z) {
+	public boolean isInRangeToRender3d(final double x, final double y, final double z) {
 		return true;
 	}
 
 	@Override
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean isInRangeToRenderDist(final double distance) {
 		return true;
 	}
 
@@ -130,7 +130,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -149,10 +149,10 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -168,7 +168,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -176,21 +176,21 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 	}
 
 	private void gatherChunks() {
-		Set<Long> chunks = new LinkedHashSet<>(); // LinkedHashSet preserves insertion order
-		Set<Long> outerChunks = new LinkedHashSet<>();
-		int outerRange = doFallout ? getScale() : fallingRadius;
+		final Set<Long> chunks = new LinkedHashSet<>(); // LinkedHashSet preserves insertion order
+		final Set<Long> outerChunks = new LinkedHashSet<>();
+		final int outerRange = doFallout ? getScale() : fallingRadius;
 		// Basically defines something like the step size, but as indirect proportion. The actual angle used for rotation will always end up at 360° for angle == adjustedMaxAngle
 		// So yea, I mathematically worked out that 20 is a good value for this, with the minimum possible being 18 in order to reach all chunks
-		int adjustedMaxAngle = 20 * outerRange / 32; // step size = 20 * chunks / 2
+		final int adjustedMaxAngle = 20 * outerRange / 32; // step size = 20 * chunks / 2
 		for (int angle = 0; angle <= adjustedMaxAngle; angle++) {
-			Vec3 vector = Vec3.createVectorHelper(outerRange, 0, 0);
+			final Vec3 vector = Vec3.createVectorHelper(outerRange, 0, 0);
 			vector.rotateAroundY((float) (angle * Math.PI / 180.0 / (adjustedMaxAngle / 360.0))); // Ugh, mutable data classes (also, ugh, radians; it uses degrees in 1.18; took me two hours to debug)
 			outerChunks.add(ChunkPos.asLong((int) (posX + vector.xCoord) >> 4, (int) (posZ + vector.zCoord) >> 4));
 		}
 		for (int distance = 0; distance <= outerRange; distance += 8) for (int angle = 0; angle <= adjustedMaxAngle; angle++) {
-			Vec3 vector = Vec3.createVectorHelper(distance, 0, 0);
+			final Vec3 vector = Vec3.createVectorHelper(distance, 0, 0);
 			vector.rotateAroundY((float) (angle * Math.PI / 180.0 / (adjustedMaxAngle / 360.0)));
-			long chunkCoord = ChunkPos.asLong((int) (posX + vector.xCoord) >> 4, (int) (posZ + vector.zCoord) >> 4);
+			final long chunkCoord = ChunkPos.asLong((int) (posX + vector.xCoord) >> 4, (int) (posZ + vector.zCoord) >> 4);
 			if (!outerChunks.contains(chunkCoord)) chunks.add(chunkCoord);
 		}
 
@@ -202,7 +202,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 	private void unloadAllChunks() {
 		if(loaderTicket != null){
-			for(ChunkPos chunk : loadedChunks) {
+			for(final ChunkPos chunk : loadedChunks) {
 		        ForgeChunkManager.unforceChunk(loaderTicket, chunk);
 		    }
 		}
@@ -210,9 +210,9 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 	public void stompAround(){
 		if (!chunksToProcess.isEmpty()) {
-			long chunkPos = chunksToProcess.remove(chunksToProcess.size() - 1); // Just so it doesn't shift the whole list every time
-			int chunkPosX = (int) (chunkPos & Integer.MAX_VALUE);
-			int chunkPosZ = (int) (chunkPos >> 32 & Integer.MAX_VALUE);
+			final long chunkPos = chunksToProcess.remove(chunksToProcess.size() - 1); // Just so it doesn't shift the whole list every time
+			final int chunkPosX = (int) (chunkPos & Integer.MAX_VALUE);
+			final int chunkPosZ = (int) (chunkPos >> 32 & Integer.MAX_VALUE);
 			for(int x = chunkPosX << 4; x < (chunkPosX << 4) + 16; x++) {
 				for(int z = chunkPosZ << 4; z < (chunkPosZ << 4) + 16; z++) {
 					stomp(new MutableBlockPos(x, 0, z), Math.hypot(x - posX, z - posZ));
@@ -220,12 +220,12 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 			}
 			
 		} else if (!outerChunksToProcess.isEmpty()) {
-			long chunkPos = outerChunksToProcess.remove(outerChunksToProcess.size() - 1);
-			int chunkPosX = (int) (chunkPos & Integer.MAX_VALUE);
-			int chunkPosZ = (int) (chunkPos >> 32 & Integer.MAX_VALUE);
+			final long chunkPos = outerChunksToProcess.remove(outerChunksToProcess.size() - 1);
+			final int chunkPosX = (int) (chunkPos & Integer.MAX_VALUE);
+			final int chunkPosZ = (int) (chunkPos >> 32 & Integer.MAX_VALUE);
 			for(int x = chunkPosX << 4; x < (chunkPosX << 4) + 16; x++) {
 				for(int z = chunkPosZ << 4; z < (chunkPosZ << 4) + 16; z++) {
-					double distance = Math.hypot(x - posX, z - posZ);
+					final double distance = Math.hypot(x - posX, z - posZ);
 					if(distance <= getScale()) {
 						stomp(new MutableBlockPos(x, 0, z), distance);
 					}
@@ -249,7 +249,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 			}
 			if(falloutTickNumber >= BombConfig.fChunkSpeed){
 				if(!this.isDead) {
-					long start = System.currentTimeMillis();
+					final long start = System.currentTimeMillis();
 					while(!this.isDead && System.currentTimeMillis() < start + BombConfig.falloutMS){
 						stompAround();
 					}
@@ -260,7 +260,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 			if(this.isDead) {
 				if(falloutBallRadius > 0){
-					EntityFalloutUnderGround falloutBall = new EntityFalloutUnderGround(this.world);
+					final EntityFalloutUnderGround falloutBall = new EntityFalloutUnderGround(this.world);
 					falloutBall.posX = this.posX;
 					falloutBall.posY = this.posY;
 					falloutBall.posZ = this.posZ;
@@ -284,25 +284,25 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		}
 	}
 
-	private void letFall(World world, MutableBlockPos pos, int lastGapHeight, int contactHeight){
-		int fallChance = RadiationConfig.blocksFallCh;
+	private void letFall(final World world, final MutableBlockPos pos, final int lastGapHeight, final int contactHeight){
+		final int fallChance = RadiationConfig.blocksFallCh;
 		if(fallChance < 1)
 			return;
 		if(fallChance < 100){
-			int chance = world.rand.nextInt(100);
+			final int chance = world.rand.nextInt(100);
 			if(chance < fallChance)
 				return;
 		}
 		
 		int bottomHeight = lastGapHeight;
-		MutableBlockPos gapPos = new MutableBlockPos(pos.getX(), 0, pos.getZ());
+		final MutableBlockPos gapPos = new MutableBlockPos(pos.getX(), 0, pos.getZ());
 		
 		for(int i = lastGapHeight; i <= contactHeight; i++) {
 			pos.setY(i);
-			Block b = world.getBlockState(pos).getBlock();
+			final Block b = world.getBlockState(pos).getBlock();
 			if(!b.isReplaceable(world, pos)){
 
-				float hardness = b.getExplosionResistance(null);
+				final float hardness = b.getExplosionResistance(null);
 				if(hardness >= 0 && hardness < 50 && i != bottomHeight){
 					gapPos.setY(bottomHeight);
 					world.setBlockState(gapPos, world.getBlockState(pos));
@@ -313,7 +313,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		}
 	}
 
-	private int[] doFallout(MutableBlockPos pos, double dist){
+	private int[] doFallout(final MutableBlockPos pos, final double dist){
 		int stoneDepth = 0;
 		int maxStoneDepth = 0;
 
@@ -414,7 +414,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 			}
 
 			else if(bblock instanceof BlockStone || bblock == Blocks.COBBLESTONE) {
-				double ranDist = dist * (1D + world.rand.nextDouble()*0.1D);
+				final double ranDist = dist * (1D + world.rand.nextDouble()*0.1D);
 				if(ranDist > s1 || stoneDepth==maxStoneDepth)
 					world.setBlockState(pos, ModBlocks.sellafield_slaked.getStateFromMeta(world.rand.nextInt(4)));
 				else if(ranDist > s2 || stoneDepth==maxStoneDepth-1)
@@ -442,7 +442,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 				continue;
 
 			} else if(bblock instanceof BlockDirt) {
-				BlockDirt.DirtType meta = b.getValue(BlockDirt.VARIANT);
+				final BlockDirt.DirtType meta = b.getValue(BlockDirt.VARIANT);
 				if(meta == BlockDirt.DirtType.DIRT)
 					placeBlockFromDist(dist, ModBlocks.waste_dirt, pos);
 				else if(meta == BlockDirt.DirtType.COARSE_DIRT)
@@ -492,7 +492,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 				placeBlockFromDist(dist, ModBlocks.waste_terracotta, pos);
 				continue;
 			} else if(bblock instanceof BlockSand) {
-				BlockSand.EnumType meta = b.getValue(BlockSand.VARIANT);
+				final BlockSand.EnumType meta = b.getValue(BlockSand.VARIANT);
 				if(rand.nextInt(60) == 0) {
 					placeBlockFromDist(dist, meta == BlockSand.EnumType.SAND ? ModBlocks.waste_trinitite : ModBlocks.waste_trinitite_red, pos);
 				} else {
@@ -513,7 +513,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 			else if(bblock == Blocks.COAL_ORE) {
 				if(dist < s5){
-					int ra = rand.nextInt(150);
+					final int ra = rand.nextInt(150);
 					if(ra < 7) {
 						world.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
 					} else if(ra < 10) {
@@ -525,7 +525,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 			else if(bblock == Blocks.BROWN_MUSHROOM_BLOCK || bblock == Blocks.RED_MUSHROOM_BLOCK) {
 				if(dist < s0){
-					BlockHugeMushroom.EnumType meta = b.getValue(BlockHugeMushroom.VARIANT);
+					final BlockHugeMushroom.EnumType meta = b.getValue(BlockHugeMushroom.VARIANT);
 					if(meta == BlockHugeMushroom.EnumType.STEM) {
 						world.setBlockState(pos, ModBlocks.mush_block_stem.getDefaultState());
 					} else {
@@ -618,9 +618,9 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		return new int[]{gapFound ? 1 : 0, lastGapHeight, contactHeight};
 	}
 
-	private int[] doNoFallout(MutableBlockPos pos, double dist){
+	private int[] doNoFallout(final MutableBlockPos pos, final double dist){
 		int stoneDepth = 0;
-		int maxStoneDepth = 6;
+		final int maxStoneDepth = 6;
 
 		boolean lastReachedStone = false;
 		boolean reachedStone = false;
@@ -629,9 +629,9 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		boolean gapFound = false;
 		for(int y = 255; y >= 0; y--) {
 			pos.setY(y);
-			IBlockState b = world.getBlockState(pos);
-			Block bblock = b.getBlock();
-			Material bmaterial = b.getMaterial();
+			final IBlockState b = world.getBlockState(pos);
+			final Block bblock = b.getBlock();
+			final Material bmaterial = b.getMaterial();
 			lastReachedStone = reachedStone;
 
 			if(bblock.isCollidable() && contactHeight == 420)
@@ -657,8 +657,8 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		return new int[]{gapFound ? 1 : 0, lastGapHeight, contactHeight};
 	}
 
-	public void placeBlockFromDist(double dist, Block b, BlockPos pos){
-		double ranDist = dist * (1D + world.rand.nextDouble()*0.2);
+	public void placeBlockFromDist(final double dist, final Block b, final BlockPos pos){
+		final double ranDist = dist * (1D + world.rand.nextDouble()*0.2);
 		if(ranDist > s1)
 			world.setBlockState(pos, b.getStateFromMeta(0));
 		else if(ranDist > s2)
@@ -675,7 +675,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 			world.setBlockState(pos, b.getStateFromMeta(6));
 	}
 
-	private void flood(MutableBlockPos pos){
+	private void flood(final MutableBlockPos pos){
 		if(CompatibilityConfig.doFillCraterWithWater && waterLevel > 1){
 			for(int y = waterLevel-1; y > 1; y--) {
 				pos.setY(y);
@@ -686,7 +686,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		}
 	}
 
-	private void drain(MutableBlockPos pos){
+	private void drain(final MutableBlockPos pos){
 		for(int y = 255; y > 1; y--) {
 			pos.setY(y);
 			if(!world.isAirBlock(pos) && (world.getBlockState(pos).getBlock() == Blocks.WATER || world.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER)){
@@ -695,7 +695,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		}
 	}
 
-	private void stomp(MutableBlockPos pos, double dist) {
+	private void stomp(final MutableBlockPos pos, final double dist) {
 		if(dist > s0){
 			if(world.rand.nextFloat() > 0.05F+(5F*(s0/dist)-4F)){
 				return;
@@ -720,7 +720,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 	
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(final NBTTagCompound nbt) {
 		setScale(nbt.getInteger("scale"), nbt.getInteger("dropRadius"));
 		falloutBallRadius = nbt.getInteger("fBall");
 		if(nbt.hasKey("chunks"))
@@ -731,11 +731,11 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		doFlood = nbt.getBoolean("doFlood");
 	}
 
-	private Collection<Long> readChunksFromIntArray(int[] data) {
-		List<Long> coords = new ArrayList<>();
+	private Collection<Long> readChunksFromIntArray(final int[] data) {
+		final List<Long> coords = new ArrayList<>();
 		boolean firstPart = true;
 		int x = 0;
-		for (int coord : data) {
+		for (final int coord : data) {
 			if (firstPart)
 				x = coord;
 			else
@@ -746,7 +746,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("scale", getScale());
 		nbt.setInteger("fBall", falloutBallRadius);
 		nbt.setInteger("dropRadius", fallingRadius);
@@ -757,8 +757,8 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		nbt.setIntArray("outerChunks", writeChunksToIntArray(outerChunksToProcess));
 	}
 
-	private int[] writeChunksToIntArray(List<Long> coords) {
-		int[] data = new int[coords.size() * 2];
+	private int[] writeChunksToIntArray(final List<Long> coords) {
+		final int[] data = new int[coords.size() * 2];
 		for (int i = 0; i < coords.size(); i++) {
 			data[i * 2] = (int) (coords.get(i) & Integer.MAX_VALUE);
 			data[i * 2 + 1] = (int) (coords.get(i) >> 32 & Integer.MAX_VALUE);
@@ -766,7 +766,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 		return data;
 	}
 
-	public void setScale(int i, int craterRadius) {
+	public void setScale(final int i, final int craterRadius) {
 		this.dataManager.set(SCALE, Integer.valueOf(i));
 		this.s0 = 0.8D * i;
 		this.s1 = 0.65D * i;
@@ -781,7 +781,7 @@ public class EntityFalloutRain extends Entity implements IConstantRenderer, IChu
 
 	public int getScale() {
 
-		int scale = this.dataManager.get(SCALE);
+		final int scale = this.dataManager.get(SCALE);
 
 		return scale == 0 ? 1 : scale;
 	}

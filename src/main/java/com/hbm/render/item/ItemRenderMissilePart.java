@@ -11,12 +11,12 @@ public class ItemRenderMissilePart extends TEISRBase {
 
 	MissilePart part;
 	
-	public ItemRenderMissilePart(MissilePart part) { 
+	public ItemRenderMissilePart(final MissilePart part) {
 		this.part = part;
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		if(part == null)
 			return;
 
@@ -34,7 +34,7 @@ public class ItemRenderMissilePart extends TEISRBase {
 		case GROUND:
 		case HEAD:
 		case FIXED:
-			double s = 0.4;
+			final double s = 0.4;
 			GL11.glScaled(s, s, s);
 			
 			/*if(part.type.name().equals(PartType.FINS.name())) {
@@ -54,8 +54,8 @@ public class ItemRenderMissilePart extends TEISRBase {
 			if(height == 0D)
 				height = 4D;
 			
-			double size = 10;
-			double scale = size / height;
+			final double size = 10;
+			final double scale = size / height;
 			
 			GL11.glTranslated(height / 2 * scale, 0, 0);
 			GL11.glTranslated(-4.1, 0.1, 0);

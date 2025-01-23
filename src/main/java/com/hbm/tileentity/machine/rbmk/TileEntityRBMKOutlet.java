@@ -34,19 +34,18 @@ public class TileEntityRBMKOutlet extends TileEntity implements IFluidHandler, I
 		if(!world.isRemote) {
 			
 			for(int i = 2; i < 6; i++) {
-				ForgeDirection dir = ForgeDirection.getOrientation(i);
-				Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY(), pos.getZ() + dir.offsetZ)).getBlock();
+				final ForgeDirection dir = ForgeDirection.getOrientation(i);
+				final Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY(), pos.getZ() + dir.offsetZ)).getBlock();
 				
 				if(b instanceof RBMKBase) {
-					int[] pos = ((RBMKBase)b).findCore(world, this.pos.getX() + dir.offsetX, this.pos.getY(), this.pos.getZ() + dir.offsetZ);
+					final int[] pos = ((RBMKBase)b).findCore(world, this.pos.getX() + dir.offsetX, this.pos.getY(), this.pos.getZ() + dir.offsetZ);
 					
 					if(pos != null) {
-						TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+						final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 						
-						if(te instanceof TileEntityRBMKBase) {
-							TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-							
-							int prov = Math.min(steam.getCapacity() - steam.getFluidAmount(), rbmk.steam);
+						if(te instanceof TileEntityRBMKBase rbmk) {
+
+                            final int prov = Math.min(steam.getCapacity() - steam.getFluidAmount(), rbmk.steam);
 							rbmk.steam -= prov;
 							steam.fill(new FluidStack(steamType, prov), true);
 						}
@@ -59,25 +58,25 @@ public class TileEntityRBMKOutlet extends TileEntity implements IFluidHandler, I
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.steam.readFromNBT(nbt.getCompoundTag("tank"));
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setTag("tank", this.steam.writeToNBT(new NBTTagCompound()));
 		return nbt;
 	}
 
 
-	public void fillFluidInit(FluidTank tank) {
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+	public void fillFluidInit(final FluidTank tank) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 			fillFluid(this.pos.getX() + dir.offsetX, this.pos.getY() + dir.offsetY, this.pos.getZ() + dir.offsetZ, tank);
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank tank) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 
@@ -87,22 +86,22 @@ public class TileEntityRBMKOutlet extends TileEntity implements IFluidHandler, I
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		return steam.drain(resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return steam.drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -110,7 +109,7 @@ public class TileEntityRBMKOutlet extends TileEntity implements IFluidHandler, I
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	

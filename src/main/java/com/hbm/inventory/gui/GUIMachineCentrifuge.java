@@ -14,9 +14,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIMachineCentrifuge extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_centrifuge.png");
-	private TileEntityMachineCentrifuge centrifuge;
+	private final TileEntityMachineCentrifuge centrifuge;
 	
-	public GUIMachineCentrifuge(InventoryPlayer invPlayer, TileEntityMachineCentrifuge tedf) {
+	public GUIMachineCentrifuge(final InventoryPlayer invPlayer, final TileEntityMachineCentrifuge tedf) {
 		super(new ContainerCentrifuge(invPlayer, tedf));
 		centrifuge = tedf;
 		
@@ -25,7 +25,7 @@ public class GUIMachineCentrifuge extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 9, guiTop + 47 - 35, 16, 35, centrifuge.power, TileEntityMachineCentrifuge.maxPower);
@@ -33,7 +33,7 @@ public class GUIMachineCentrifuge extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer( int i, int j) {
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
 		// String name = this.centrifuge.hasCustomInventoryName() ? this.centrifuge.getInventoryName() : I18n.format(this.centrifuge.getInventoryName());
 		
 		// this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
@@ -41,14 +41,14 @@ public class GUIMachineCentrifuge extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
 		if(centrifuge.hasPower()){
-			int i1 = (int)centrifuge.getPowerRemainingScaled(35);
+			final int i1 = (int)centrifuge.getPowerRemainingScaled(35);
 			drawTexturedModalRect(guiLeft + 9, guiTop + 48 - i1, 176, 35 - i1, 16, i1);
 		}
 
@@ -56,7 +56,7 @@ public class GUIMachineCentrifuge extends GuiInfoContainer {
 			int p = centrifuge.getCentrifugeProgressScaled(145);
 
 			for(int i = 0; i < 4; i++) {
-				int h = Math.min(p, 36);
+				final int h = Math.min(p, 36);
 				drawTexturedModalRect(guiLeft + 65 + i * 20, guiTop + 50 - h, 176, 71 - h, 12, h);
 				p -= h;
 				if(p <= 0)

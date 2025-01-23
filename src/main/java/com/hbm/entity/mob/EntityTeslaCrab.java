@@ -14,7 +14,7 @@ public class EntityTeslaCrab extends EntityCyberCrab {
 	
 	public List<double[]> targets = new ArrayList<double[]>();
 
-	public EntityTeslaCrab(World p_i1733_1_) {
+	public EntityTeslaCrab(final World p_i1733_1_) {
 		super(p_i1733_1_);
         this.setSize(0.75F, 1.25F);
         this.ignoreFrustumCheck = true;
@@ -40,7 +40,7 @@ public class EntityTeslaCrab extends EntityCyberCrab {
         return ModItems.wire_advanced_alloy;
     }
 
-    protected void dropRareDrop(int p_70600_1_) {
+    protected void dropRareDrop(final int p_70600_1_) {
     	this.dropItem(ModItems.coil_copper, 1);
     }
 

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderRubbleFactory implements IRenderFactory<EntityRubble> {
 
 	@Override
-	public Render<? super EntityRubble> createRenderFor(RenderManager manager) {
+	public Render<? super EntityRubble> createRenderFor(final RenderManager manager) {
 		return new RenderRubble(manager);
 	}
 

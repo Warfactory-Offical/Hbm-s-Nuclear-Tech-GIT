@@ -18,7 +18,7 @@ public class EntityCloudFleija extends Entity {
 	public int age;
     public float scale = 0;
 	
-	public EntityCloudFleija(World worldIn) {
+	public EntityCloudFleija(final World worldIn) {
 		super(worldIn);
 		this.setSize(1, 4);
 		this.ignoreFrustumCheck = true;
@@ -27,7 +27,7 @@ public class EntityCloudFleija extends Entity {
     	scale = 0;
 	}
 	
-	public EntityCloudFleija(World p_i1582_1_, int maxAge) {
+	public EntityCloudFleija(final World p_i1582_1_, final int maxAge) {
 		super(p_i1582_1_);
 		this.setSize(20, 40);
 		this.isImmuneToFire = true;
@@ -68,19 +68,19 @@ public class EntityCloudFleija extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 		this.age = compound.getShort("age");
 		this.scale = compound.getShort("scale");
 		
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 		compound.setShort("age", (short) age);
 		compound.setShort("scale", (short) scale);
 	}
 	
-	public void setMaxAge(int maxAge) {
+	public void setMaxAge(final int maxAge) {
 		this.dataManager.set(MAXAGE, maxAge);
 	}
 	
@@ -89,7 +89,7 @@ public class EntityCloudFleija extends Entity {
 	}
 	
 	@Override
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean isInRangeToRenderDist(final double distance) {
 		return distance < 25000;
 	}
 

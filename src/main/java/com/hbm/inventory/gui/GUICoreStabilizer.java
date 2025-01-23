@@ -23,13 +23,13 @@ import net.minecraft.util.math.MathHelper;
 
 public class GUICoreStabilizer extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/dfc/gui_stabilizer.png");
-	private TileEntityCoreStabilizer stabilizer;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/dfc/gui_stabilizer.png");
+	private final TileEntityCoreStabilizer stabilizer;
     private GuiTextField field;
 
     protected short saveButtonCoolDown = 0;
 	
-	public GUICoreStabilizer(EntityPlayer invPlayer, TileEntityCoreStabilizer tedf) {
+	public GUICoreStabilizer(final EntityPlayer invPlayer, final TileEntityCoreStabilizer tedf) {
 		super(new ContainerCoreStabilizer(invPlayer, tedf));
 		stabilizer = tedf;
 		
@@ -50,26 +50,26 @@ public class GUICoreStabilizer extends GuiInfoContainer {
         this.field.setText(String.valueOf(stabilizer.watts));
 	}
 	
-	public void syncTextField(int watts){
+	public void syncTextField(final int watts){
 		this.field.setText(String.valueOf(watts));
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 13, guiTop + 20, 16, 52, stabilizer.power, TileEntityCoreStabilizer.maxPower);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
         this.field.mouseClicked(x, y, i);
 
     	if(guiLeft + 115 <= x && guiLeft + 115 + 18 > x && guiTop + 55 < y && guiTop + 55 + 18 >= y) {
     		
     		if(saveButtonCoolDown == 0 && NumberUtils.isCreatable(field.getText())) {
-    			int j = MathHelper.clamp(Integer.parseInt(field.getText()), 1, 100);
+    			final int j = MathHelper.clamp(Integer.parseInt(field.getText()), 1, 100);
     			field.setText(j + "");
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 	    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(stabilizer.getPos(), j, 0));
@@ -79,16 +79,16 @@ public class GUICoreStabilizer extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer( int i, int j) {
-		String name = this.stabilizer.hasCustomInventoryName() ? this.stabilizer.getInventoryName() : I18n.format(this.stabilizer.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.stabilizer.hasCustomInventoryName() ? this.stabilizer.getInventoryName() : I18n.format(this.stabilizer.getInventoryName());
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		
-		String inventory = I18n.format("container.inventory");
+		final String inventory = I18n.format("container.inventory");
 		this.fontRenderer.drawString(inventory, this.xSize - 8 - this.fontRenderer.getStringWidth(inventory), this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -97,10 +97,10 @@ public class GUICoreStabilizer extends GuiInfoContainer {
 		if(field.isFocused())
 			drawTexturedModalRect(guiLeft + 53, guiTop + 58, 192, 0, 32, 14);
 
-		int stabilizerWatts = (int)(stabilizer.watts * 35 / 100);
+		final int stabilizerWatts = stabilizer.watts * 35 / 100;
 		drawTexturedModalRect(guiLeft + 81, guiTop + 52 - stabilizerWatts, 176, 87 - stabilizerWatts, 4, stabilizerWatts);
 		
-		int i = (int) stabilizer.getPowerScaled(52);
+		final int i = (int) stabilizer.getPowerScaled(52);
 		drawTexturedModalRect(guiLeft + 13, guiTop + 73 - i, 176, 52 - i, 16, i);
 
 		if(stabilizer.isOn){
@@ -116,7 +116,7 @@ public class GUICoreStabilizer extends GuiInfoContainer {
         this.field.drawTextBox();
 	}
 	
-    protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException
+    protected void keyTyped(final char p_73869_1_, final int p_73869_2_) throws IOException
     {
         if (this.field.textboxKeyTyped(p_73869_1_, p_73869_2_)) { }
         else {

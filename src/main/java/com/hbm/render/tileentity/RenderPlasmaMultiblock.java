@@ -14,12 +14,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderPlasmaMultiblock extends TileEntitySpecialRenderer<TileEntityPlasmaStruct> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityPlasmaStruct te) {
+	public boolean isGlobalRenderer(final TileEntityPlasmaStruct te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityPlasmaStruct te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityPlasmaStruct te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 
 		GL11.glTranslatef((float)x + 0.5F, (float)y-1, (float)z + 0.5F);

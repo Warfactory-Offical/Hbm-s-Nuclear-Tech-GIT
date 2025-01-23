@@ -42,7 +42,7 @@ public class HbmPotion extends Potion {
 	public static HbmPotion stability;
 	public static HbmPotion potionsickness;
 	
-	public HbmPotion(boolean isBad, int color, String name, int x, int y){
+	public HbmPotion(final boolean isBad, final int color, final String name, final int x, final int y){
 		super(isBad, color);
 		this.setPotionName(name);
 		this.setRegistryName(RefStrings.MODID, name);
@@ -63,9 +63,9 @@ public class HbmPotion extends Potion {
 		potionsickness = registerPotion(false, 0xFF8080, "potion.hbm_potionsickness", 3, 1);
 	}
 
-	public static HbmPotion registerPotion(boolean isBad, int color, String name, int x, int y) {
+	public static HbmPotion registerPotion(final boolean isBad, final int color, final String name, final int x, final int y) {
 		
-		HbmPotion effect = new HbmPotion(isBad, color, name, x, y);
+		final HbmPotion effect = new HbmPotion(isBad, color, name, x, y);
 		ForgeRegistries.POTIONS.register(effect);
 		
 		return effect;
@@ -74,12 +74,12 @@ public class HbmPotion extends Potion {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getStatusIconIndex() {
-		ResourceLocation loc = new ResourceLocation(RefStrings.MODID, "textures/gui/potions.png");
+		final ResourceLocation loc = new ResourceLocation(RefStrings.MODID, "textures/gui/potions.png");
 		Minecraft.getMinecraft().renderEngine.bindTexture(loc);
 		return super.getStatusIconIndex();
 	}
 
-	public void performEffect(EntityLivingBase entity, int level) {
+	public void performEffect(final EntityLivingBase entity, final int level) {
 
 		if(this == taint) {
 			if(!(entity instanceof EntityTaintedCreeper) && entity.world.rand.nextInt(80) == 0)
@@ -87,10 +87,10 @@ public class HbmPotion extends Potion {
 			
 			if(GeneralConfig.enableHardcoreTaint && !entity.world.isRemote && CompatibilityConfig.isWarDim(entity.world)) {
 				
-				int x = (int)(entity.posX - 1);
-				int y = (int)entity.posY;
-				int z = (int)(entity.posZ);
-				BlockPos pos = new BlockPos(x, y, z);
+				final int x = (int)(entity.posX - 1);
+				final int y = (int)entity.posY;
+				final int z = (int)(entity.posZ);
+				final BlockPos pos = new BlockPos(x, y, z);
 				
 				if(entity.world.getBlockState(pos).getBlock()
 						.isReplaceable(entity.world, pos) && 
@@ -101,7 +101,7 @@ public class HbmPotion extends Potion {
 			} 
 		}
 		if(this == radiation) {
-			ContaminationUtil.contaminate(entity, HazardType.RADIATION, ContaminationType.CREATIVE, (float)(level + 1F) * 0.05F);
+			ContaminationUtil.contaminate(entity, HazardType.RADIATION, ContaminationType.CREATIVE, (level + 1F) * 0.05F);
 		}
 		if(this == radaway) {
 			if(entity.hasCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null))
@@ -125,7 +125,7 @@ public class HbmPotion extends Potion {
 		}
 		if(this == telekinesis) {
 			
-			int remaining = entity.getActivePotionEffect(this).getDuration();
+			final int remaining = entity.getActivePotionEffect(this).getDuration();
 			
 			if(remaining > 1) {
 				entity.motionX = entity.motionX+(entity.getRNG().nextFloat()-0.5)*(level+1)*0.5;
@@ -146,7 +146,7 @@ public class HbmPotion extends Potion {
 		}
 	}
 
-	public boolean isReady(int par1, int par2) {
+	public boolean isReady(final int par1, final int par2) {
 
 		if(this == taint || this == potionsickness) {
 
@@ -162,8 +162,8 @@ public class HbmPotion extends Potion {
 		}
 		if(this == lead) {
 
-			int k = 60;
-	        return k > 0 ? par1 % k == 0 : true;
+			final int k = 60;
+	        return k <= 0 || par1 % k == 0;
 		}
 		
 		return false;

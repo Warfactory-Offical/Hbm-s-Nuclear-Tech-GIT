@@ -72,7 +72,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 		return "container.gasFlare";
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -82,7 +82,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		tank.readFromNBT(compound);
 		if (compound.hasKey("tankType")) {
@@ -94,7 +94,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		tank.writeToNBT(compound);
 		if (tankType != null) {
@@ -105,7 +105,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 		return super.writeToNBT(compound);
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
@@ -119,8 +119,8 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 			this.sendPower(world, pos.add(0, 0, 2), Library.POS_Z);
 			this.sendPower(world, pos.add(0, 0, -2), Library.NEG_Z);
 
-			long prevPower = power;
-			int prevAmount = tank.getFluidAmount();
+			final long prevPower = power;
+			final int prevAmount = tank.getFluidAmount();
 			if(needsUpdate) {
 				needsUpdate = false;
 			}
@@ -136,8 +136,8 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 			if(isOn && tank.getFluidAmount() >= 10) {
 				upgradeManager.eval(inventory, 4, 5);
 
-				int burn = Math.min(upgradeManager.getLevel(UpgradeType.SPEED), 6);
-				int yield = Math.min(upgradeManager.getLevel(UpgradeType.EFFECT), 6);
+				final int burn = Math.min(upgradeManager.getLevel(UpgradeType.SPEED), 6);
+				final int yield = Math.min(upgradeManager.getLevel(UpgradeType.EFFECT), 6);
 
 				maxVent += maxVent * burn;
 				maxBurn += maxBurn * burn;
@@ -145,7 +145,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 				cacheEnergy = FluidCombustionRecipes.getFlameEnergy(tankType);
 
 				if (doesBurn && cacheEnergy != 0) {
-					int eject = Math.min(maxBurn, tank.getFluidAmount());
+					final int eject = Math.min(maxBurn, tank.getFluidAmount());
 					tank.drain(eject, true);
 					needsUpdate = true;
 
@@ -170,14 +170,14 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 			
 			power = Library.chargeItemsFromTE(inventory, 0, power, maxPower);
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isOn", isOn);
 			data.setBoolean("doesBurn", doesBurn);
 			data.setString("tankType", tankType.getName());
 			this.networkPack(data, 25);
 
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] {tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			if(prevPower != power || prevAmount != tank.getFluidAmount() || needsUpdate){
 				markDirty();
 			}
@@ -185,14 +185,14 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.isOn = nbt.getBoolean("isOn");
 		this.doesBurn = nbt.getBoolean("doesBurn");
 		this.tankType = FluidRegistry.getFluid(nbt.getString("tankType"));
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return new int[] {0, 1, 2, 3, 4, 5};
 	}
 
@@ -201,11 +201,11 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 			inventory = this.getNewInventory(6, 64);
 		}
 
-		ItemStack slotId = inventory.getStackInSlot(3);
-		Item itemId = slotId.getItem();
+		final ItemStack slotId = inventory.getStackInSlot(3);
+		final Item itemId = slotId.getItem();
 		if (itemId == ModItems.forge_fluid_identifier) {
-			Fluid fluid = ItemForgeFluidIdentifier.getType(slotId);
-			int energy = FluidCombustionRecipes.getFlameEnergy(fluid);
+			final Fluid fluid = ItemForgeFluidIdentifier.getType(slotId);
+			final int energy = FluidCombustionRecipes.getFlameEnergy(fluid);
 
 			if (tankType != fluid) {
 				tankType = fluid;
@@ -216,8 +216,8 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 		}
 	}
 
-	protected boolean inputValidForTank(int slot){
-		ItemStack slotInput = inventory.getStackInSlot(slot);
+	protected boolean inputValidForTank(final int slot){
+		final ItemStack slotInput = inventory.getStackInSlot(slot);
 		if (slotInput != ItemStack.EMPTY && tank != null) {
 			return FFUtils.checkRestrictions(slotInput, this::isValidFluid);
 		}
@@ -225,7 +225,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 		return false;
 	}
 	
-	private boolean isValidFluid(FluidStack stack) {
+	private boolean isValidFluid(final FluidStack stack) {
 		if(stack == null)
 			return false;
 		return stack.getFluid() == tankType;
@@ -249,7 +249,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(this.isValidFluid(resource)) {
 			return tank.fill(resource, doFill);
 		}
@@ -257,26 +257,25 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 1) {
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		} else {
@@ -285,7 +284,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {
@@ -299,7 +298,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 
@@ -309,23 +308,23 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	}
 
 	@Override
-	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		return new ContainerMachineGasFlare(player.inventory, this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		return new GUIMachineGasFlare(player.inventory, this);
 	}
 
 	@Override
-	public boolean hasPermission(EntityPlayer player) {
+	public boolean hasPermission(final EntityPlayer player) {
 		return player.getDistanceSq(pos) <= 256D;
 	}
 
 	@Override
-	public void receiveControl(NBTTagCompound data) {
+	public void receiveControl(final NBTTagCompound data) {
 		if(data.hasKey("valve")) this.isOn = !this.isOn;
 		if(data.hasKey("dial")) this.doesBurn = !this.doesBurn;
 		markDirty();

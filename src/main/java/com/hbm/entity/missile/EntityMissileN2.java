@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileN2 extends EntityMissileBaseAdvanced {
 
-	public EntityMissileN2(World p_i1582_1_) {
+	public EntityMissileN2(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 11F);
 	}
 
-	public EntityMissileN2(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileN2(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 11F);
 	}
@@ -26,28 +27,28 @@ public class EntityMissileN2 extends EntityMissileBaseAdvanced {
 	@Override
 	public void onImpact() {
    	
-    	this.world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, (int)(BombConfig.n2Radius/12) * 5, posX, posY, posZ));
+    	this.world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, (BombConfig.n2Radius/12) * 5, posX, posY, posZ));
     	if(BombConfig.enableNukeClouds) {
-			EntityNukeTorex.statFac(world, this.posX, this.posY, this.posZ, (int)(BombConfig.n2Radius/12) * 5);
+			EntityNukeTorex.statFac(world, this.posX, this.posY, this.posZ, (BombConfig.n2Radius/12) * 5);
 		}
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
-		list.add(new ItemStack(ModItems.plate_titanium, 16));
-		list.add(new ItemStack(ModItems.plate_steel, 20));
-		list.add(new ItemStack(ModItems.plate_aluminium, 12));
-		list.add(new ItemStack(ModItems.thruster_large, 1));
-		list.add(new ItemStack(ModItems.circuit_targeting_tier4, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 16));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 20));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_aluminium, 12));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.thruster_large, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.circuit_targeting_tier4, 1));
 		
 		return list;
 	}
 
 	@Override
 	public ItemStack getDebrisRareDrop() {
-		return new ItemStack(ModItems.warhead_n2);
+		return ItemStackUtil.itemStackFrom(ModItems.warhead_n2);
 	}
 
 	@Override

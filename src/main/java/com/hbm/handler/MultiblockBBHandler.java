@@ -23,33 +23,33 @@ public class MultiblockBBHandler {
 	
 	public static final Map<Block, MultiblockBounds> REGISTRY = new HashMap<>();
 	
-	public static MultiblockBounds load(ResourceLocation loc){
+	public static MultiblockBounds load(final ResourceLocation loc){
 		try {
-			InputStream s = MainRegistry.class.getResourceAsStream("/assets/"+loc.getNamespace()+"/"+loc.getPath());
+			final InputStream s = MainRegistry.class.getResourceAsStream("/assets/"+loc.getNamespace()+"/"+loc.getPath());
 			return parse(ByteBuffer.wrap(IOUtils.toByteArray(s)));
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	private static MultiblockBounds parse(ByteBuffer buf){
+	private static MultiblockBounds parse(final ByteBuffer buf){
 		buf.order(ByteOrder.LITTLE_ENDIAN);
-		int version = buf.getInt();
-		int offsetX = buf.getInt();
-		int offsetY = buf.getInt();
-		int offsetZ = buf.getInt();
-		AxisAlignedBB[] boundingBoxes = new AxisAlignedBB[buf.getInt()];
-		int numBlocks = buf.getInt();
+		final int version = buf.getInt();
+		final int offsetX = buf.getInt();
+		final int offsetY = buf.getInt();
+		final int offsetZ = buf.getInt();
+		final AxisAlignedBB[] boundingBoxes = new AxisAlignedBB[buf.getInt()];
+		final int numBlocks = buf.getInt();
 		
-		Map<BlockPos, AxisAlignedBB[]> blocks = new HashMap<>();
+		final Map<BlockPos, AxisAlignedBB[]> blocks = new HashMap<>();
 		
 		for(int i = 0; i < boundingBoxes.length; i ++){
 			boundingBoxes[i] = new AxisAlignedBB(buf.getFloat(), buf.getFloat(), buf.getFloat(), buf.getFloat(), buf.getFloat(), buf.getFloat());
 		}
 		for(int i = 0; i < numBlocks; i ++){
-			BlockPos pos = new BlockPos(buf.getFloat(), buf.getFloat(), buf.getFloat());
-			AxisAlignedBB[] blockBoxes = new AxisAlignedBB[buf.getInt()];
+			final BlockPos pos = new BlockPos(buf.getFloat(), buf.getFloat(), buf.getFloat());
+			final AxisAlignedBB[] blockBoxes = new AxisAlignedBB[buf.getInt()];
 			for(int j = 0; j < blockBoxes.length; j ++){
 				blockBoxes[j] = new AxisAlignedBB(buf.getFloat(), buf.getFloat(), buf.getFloat(), buf.getFloat(), buf.getFloat(), buf.getFloat());
 			}
@@ -67,7 +67,7 @@ public class MultiblockBBHandler {
 		public AxisAlignedBB[] boxes;
 		public Map<BlockPos, AxisAlignedBB[]> blocks;
 		
-		public MultiblockBounds(AxisAlignedBB[] boxes, Map<BlockPos, AxisAlignedBB[]> blocks) {
+		public MultiblockBounds(final AxisAlignedBB[] boxes, final Map<BlockPos, AxisAlignedBB[]> blocks) {
 			this.boxes = boxes;
 			this.blocks = blocks;
 		}

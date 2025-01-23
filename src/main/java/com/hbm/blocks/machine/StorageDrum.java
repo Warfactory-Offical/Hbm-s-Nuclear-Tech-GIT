@@ -18,59 +18,59 @@ import net.minecraft.world.World;
 
 public class StorageDrum extends BlockMachineBase implements ITooltipProvider {
 
-	public StorageDrum(Material mat, int guiID, String s) {
+	public StorageDrum(final Material mat, final int guiID, final String s) {
 		super(mat, guiID, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		return new TileEntityStorageDrum();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	//Drillgon200: Why are there so many of these methods????
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state){
+	public boolean isBlockNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullBlock(IBlockState state){
+	public boolean isFullBlock(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos){
 		return false;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
-		float f = 0.0625F;
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
+		final float f = 0.0625F;
 		return new AxisAlignedBB(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		this.addStandardInfo(list);
 		super.addInformation(stack, worldIn, list, flagIn);
 	}

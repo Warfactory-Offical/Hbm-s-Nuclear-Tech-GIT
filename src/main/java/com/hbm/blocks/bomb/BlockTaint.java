@@ -32,7 +32,7 @@ public class BlockTaint extends Block {
 
 	public static final PropertyInteger TEXTURE = PropertyInteger.create("taintage", 0, 15);
 	
-	public BlockTaint(Material m, String s) {
+	public BlockTaint(final Material m, final String s) {
 		super(m);
 		this.setTickRandomly(true);
 		this.setTranslationKey(s);
@@ -43,24 +43,24 @@ public class BlockTaint extends Block {
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos1, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos1, final IBlockState state, final Random rand) {
 
-		int meta = state.getValue(TEXTURE);
+		final int meta = state.getValue(TEXTURE);
     	if(!world.isRemote && meta < 15) {
-    		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+    		final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 	    	for(int i = 0; i < 15; i++) {
-	    		int a = rand.nextInt(11) + pos1.getX() - 5;
-	    		int b = rand.nextInt(11) + pos1.getY() - 5;
-	    		int c = rand.nextInt(11) + pos1.getZ() - 5;
+	    		final int a = rand.nextInt(11) + pos1.getX() - 5;
+	    		final int b = rand.nextInt(11) + pos1.getY() - 5;
+	    		final int c = rand.nextInt(11) + pos1.getZ() - 5;
 	    		pos.setPos(a, b, c);
 	            if(world.getBlockState(pos).getBlock().isReplaceable(world, pos) && !world.getBlockState(pos).getMaterial().isLiquid() && BlockTaint.hasPosNeightbour(world, pos))
 	            	world.setBlockState(pos, ModBlocks.taint.getBlockState().getBaseState().withProperty(TEXTURE, meta + 1), 2);
 	    	}
 	            
 		    for(int i = 0; i < 85; i++) {
-		    	int a = rand.nextInt(7) + pos1.getX() - 3;
-		    	int b = rand.nextInt(7) + pos1.getY() - 3;
-		    	int c = rand.nextInt(7) + pos1.getZ() - 3;
+		    	final int a = rand.nextInt(7) + pos1.getX() - 3;
+		    	final int b = rand.nextInt(7) + pos1.getY() - 3;
+		    	final int c = rand.nextInt(7) + pos1.getZ() - 3;
 		    	pos.setPos(a, b, c);
 	           	if(world.getBlockState(pos).getBlock().isReplaceable(world, pos) && !world.getBlockState(pos).getMaterial().isLiquid() && BlockTaint.hasPosNeightbour(world, pos))
 		           	world.setBlockState(pos, ModBlocks.taint.getBlockState().getBaseState().withProperty(TEXTURE, meta + 1), 2);
@@ -68,17 +68,16 @@ public class BlockTaint extends Block {
     	}
 	}
 
-	private static boolean checkAttachment(World world, BlockPos pos){
+	private static boolean checkAttachment(final World world, final BlockPos pos){
 		if(!world.isAirBlock(pos)){
-    		if(world.getBlockState(pos).getBlock() != ModBlocks.taint)
-    			return true;
+            return world.getBlockState(pos).getBlock() != ModBlocks.taint;
     	}
     	return false;
     }
 
 
 	//Drillgon200: Ah yes, spelling.
-	 public static boolean hasPosNeightbour(World world, BlockPos pos) {
+	 public static boolean hasPosNeightbour(final World world, final BlockPos pos) {
 	    	return checkAttachment(world, pos.add(1, 0, 0)) ||
 					checkAttachment(world, pos.add(0, 1, 0)) ||
 					checkAttachment(world, pos.add(0, 0, 1)) ||
@@ -88,12 +87,12 @@ public class BlockTaint extends Block {
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World worldIn, final BlockPos pos) {
 		return new AxisAlignedBB(pos, pos);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -103,18 +102,18 @@ public class BlockTaint extends Block {
 	}
 
 	@Override
-	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos){
+	public boolean isReplaceable(final IBlockAccess worldIn, final BlockPos pos){
 		return false;
 	}
 
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		int meta = world.getBlockState(pos).getBlock().getMetaFromState(state);
-		int level = 15 - meta;
+	public void onEntityCollision(final World world, final BlockPos pos, final IBlockState state, final Entity entity) {
+		final int meta = world.getBlockState(pos).getBlock().getMetaFromState(state);
+		final int level = 15 - meta;
 		
-    	List<ItemStack> list = new ArrayList<ItemStack>();
-    	PotionEffect effect = new PotionEffect(HbmPotion.taint, 15 * 20, level);
+    	final List<ItemStack> list = new ArrayList<ItemStack>();
+    	final PotionEffect effect = new PotionEffect(HbmPotion.taint, 15 * 20, level);
     	effect.setCurativeItems(list);
     	
     	if(entity instanceof EntityLivingBase) {
@@ -124,7 +123,7 @@ public class BlockTaint extends Block {
     	}
     	
     	if(entity instanceof EntityCreeper) {
-    		EntityTaintedCreeper creep = new EntityTaintedCreeper(world);
+    		final EntityTaintedCreeper creep = new EntityTaintedCreeper(world);
     		creep.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
 
     		if(!world.isRemote) {
@@ -135,7 +134,7 @@ public class BlockTaint extends Block {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("DO NOT TOUCH, BREATHE OR STARE AT. RUN!");
 	}
 
@@ -145,23 +144,23 @@ public class BlockTaint extends Block {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(TEXTURE);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(TEXTURE, meta);
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if(!BlockTaint.hasPosNeightbour(world, pos) && !world.isRemote)
 			world.setBlockToAir(pos);
 	}
 	
 	@Override
-	public boolean causesSuffocation(IBlockState state) {
+	public boolean causesSuffocation(final IBlockState state) {
 		return true;
 	}
 }

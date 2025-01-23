@@ -14,9 +14,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIMachineReactor extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_breeder.png");
-	private TileEntityMachineReactor breeder;
+	private final TileEntityMachineReactor breeder;
 
-	public GUIMachineReactor(InventoryPlayer invPlayer, TileEntityMachineReactor tedf) {
+	public GUIMachineReactor(final InventoryPlayer invPlayer, final TileEntityMachineReactor tedf) {
 		super(new ContainerReactor(invPlayer, tedf));
 		breeder = tedf;
 		
@@ -25,10 +25,10 @@ public class GUIMachineReactor extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		String tooltip = BreederRecipes.getHEATString(breeder.heat + " HEAT", breeder.heat);
+		final String tooltip = BreederRecipes.getHEATString(breeder.heat + " HEAT", breeder.heat);
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 47, guiTop + 34, 6, 18, mouseX, mouseY, new String[] { tooltip });
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 55, guiTop + 34, 18, 18, mouseX, mouseY, new String[] { breeder.charge + " operation(s) left" });
@@ -36,15 +36,15 @@ public class GUIMachineReactor extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.breeder.hasCustomInventoryName() ? this.breeder.getInventoryName() : I18n.format(this.breeder.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.breeder.hasCustomInventoryName() ? this.breeder.getInventoryName() : I18n.format(this.breeder.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -67,10 +67,10 @@ public class GUIMachineReactor extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft + 55, guiTop + 35, 176, 0, 18, 16);
 		}
 		
-		int i = dud.getProgressScaled(23);
+		final int i = dud.getProgressScaled(23);
 		drawTexturedModalRect(guiLeft + 80, guiTop + 34, 176, 16, i, 16);
 
-		int j = dud.getHeatScaled(16);
+		final int j = dud.getHeatScaled(16);
 		drawTexturedModalRect(guiLeft + 48, guiTop + 51 - j, 194, 16 - j, 4, j);
 	}
 }

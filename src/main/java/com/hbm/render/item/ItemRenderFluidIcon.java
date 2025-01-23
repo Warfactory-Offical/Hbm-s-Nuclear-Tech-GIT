@@ -21,19 +21,19 @@ public class ItemRenderFluidIcon extends TEISRBase {
 	private static final double PIX = 0.0625;
 
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		RenderHelper.bindBlockTexture();
 
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = Tessellator.getInstance().getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = Tessellator.getInstance().getBuffer();
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, itemModel);
 		GL11.glPopMatrix();
 
-		Fluid f = ItemFluidIcon.getFluid(stack);
+		final Fluid f = ItemFluidIcon.getFluid(stack);
 		TextureAtlasSprite lava = null;
 		if (f != null)
 			lava = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(f.getStill().toString());
@@ -61,11 +61,11 @@ public class ItemRenderFluidIcon extends TEISRBase {
 		super.renderByItem(stack);
 	}
 
-	private void drawRect(BufferBuilder buf, TextureAtlasSprite texture, int x1, int y1, int x2, int y2){
-		float maxU = texture.getInterpolatedU(x2);
-		float minU = texture.getInterpolatedU(x1);
-		float maxV = texture.getInterpolatedV(y2);
-		float minV = texture.getInterpolatedV(y1);
+	private void drawRect(final BufferBuilder buf, final TextureAtlasSprite texture, final int x1, final int y1, final int x2, final int y2){
+		final float maxU = texture.getInterpolatedU(x2);
+		final float minU = texture.getInterpolatedU(x1);
+		final float maxV = texture.getInterpolatedV(y2);
+		final float minV = texture.getInterpolatedV(y1);
 		
 		buf.pos(x1 * PIX, y1 * PIX, 0).tex(minU, minV).endVertex();
 		buf.pos(x2 * PIX, y1 * PIX, 0).tex(maxU, minV).endVertex();

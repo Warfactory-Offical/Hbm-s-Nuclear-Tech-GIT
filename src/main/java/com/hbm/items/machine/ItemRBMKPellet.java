@@ -1,8 +1,6 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.List;
 
 import com.hbm.interfaces.IItemHazard;
@@ -27,7 +25,7 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	public String fullName = "";
 	ItemHazardModule module;
 
-	public ItemRBMKPellet(String fullName, String s) {
+	public ItemRBMKPellet(final String fullName, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.fullName = fullName;
@@ -41,22 +39,22 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab()){
 			for(int i = 0; i < 10; ++i) {
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 			}
 		}
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 
 		tooltip.add(TextFormatting.ITALIC + this.fullName);
 		tooltip.add(TextFormatting.DARK_GRAY + "" + TextFormatting.ITALIC + "Pellet for recycling");
 		
-		int meta = rectify(stack.getItemDamage());
+		final int meta = rectify(stack.getItemDamage());
 		
 		switch(meta % 5) {
 		case 0: tooltip.add(TextFormatting.GOLD + "Brand New"); break;
@@ -73,11 +71,11 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 		this.module.addInformation(stack, tooltip, flagIn);
 	}
 	
-	private boolean hasXenon(int meta) {
+	public static boolean hasXenon(final int meta) {
 		return rectify(meta) >= 5;
 	}
 	
-	private int rectify(int meta) {
+	public static int rectify(final int meta) {
 		return Math.abs(meta) % 10;
 	}
 
@@ -87,7 +85,7 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int i, final boolean b) {
 		
 		if(entity instanceof EntityLivingBase) {
 			updateModule(stack);
@@ -96,16 +94,16 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(EntityItem item) {
+	public boolean onEntityItemUpdate(final EntityItem item) {
 		
 		super.onEntityItemUpdate(item);
 		updateModule(item.getItem());
 		return this.module.onEntityItemUpdate(item);
 	}
 	
-	private void updateModule(ItemStack stack) {
+	private void updateModule(final ItemStack stack) {
 		
-		int index = stack.getItemDamage() % 5;
+		final int index = stack.getItemDamage() % 5;
 		float mod = (index * index) / 5F;
 		
 		if(stack.getItemDamage() >= 5) {

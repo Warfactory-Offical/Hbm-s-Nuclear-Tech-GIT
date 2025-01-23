@@ -1,17 +1,8 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-import java.util.Random;
-
 import com.hbm.items.ModItems;
 import com.hbm.util.I18nUtil;
-import com.hbm.world.FWatz;
-import com.hbm.world.FactoryAdvanced;
-import com.hbm.world.FactoryTitanium;
-import com.hbm.world.ParticleAccelerator;
-import com.hbm.world.NuclearReactor;
-import com.hbm.world.Watz;
-
+import com.hbm.world.*;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -25,9 +16,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 public class ItemWandS extends Item {
 
-	public ItemWandS(String s) {
+	public ItemWandS(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -35,7 +29,7 @@ public class ItemWandS extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.creative"));
 		tooltip.add(I18nUtil.resolveKey("desc.structurewand.1"));
 		tooltip.add(I18nUtil.resolveKey("desc.structurewand.2"));
@@ -67,19 +61,19 @@ public class ItemWandS extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final ItemStack stack = player.getHeldItem(hand);
 		if(stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
 			stack.getTagCompound().setInteger("building", 0);
 		}
 		
-		boolean up = player.rotationPitch <= 0.5F;
+		final boolean up = player.rotationPitch <= 0.5F;
 		
 		if(!world.isRemote)
 		{
-			Random rand = new Random();
+			final Random rand = new Random();
 			
 			switch(stack.getTagCompound().getInteger("building"))
 			{
@@ -114,10 +108,10 @@ public class ItemWandS extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
 		if(player.isSneaking())
 		{
-			ItemStack stack = player.getHeldItem(handIn);
+			final ItemStack stack = player.getHeldItem(handIn);
 			if(stack.getTagCompound() == null)
 			{
 				stack.setTagCompound(new NBTTagCompound());

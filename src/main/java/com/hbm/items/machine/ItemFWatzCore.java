@@ -22,7 +22,7 @@ public class ItemFWatzCore extends ItemDrop {
 	public long powerOutput;
 
 
-	public ItemFWatzCore(String s, long powerOutputL, int amatDrainL, int aschrabDrainL, int coolantDrainL, int coolantRefillL, int typeL) {
+	public ItemFWatzCore(final String s, final long powerOutputL, final int amatDrainL, final int aschrabDrainL, final int coolantDrainL, final int coolantRefillL, final int typeL) {
 		super(s);
 		this.type = typeL;
 		this.powerOutput = powerOutputL;
@@ -33,13 +33,13 @@ public class ItemFWatzCore extends ItemDrop {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		tooltip.add("§3[Singularity-Anti-Fusion-Experiment Core]");
 		tooltip.add(" §aPower: "+Library.getShortNumber(this.powerOutput * 20L)+"HE/s");
 		tooltip.add(" §fAntimatter: "+this.amatDrain*0.02F+"b/s §cAntischrabidium: "+this.aschrabDrain*0.02F+"b/s");
-		float uptime = ((int)((128000F/this.coolantDrain)*5F)/100F);
-		float downtime = ((int)((128000F/this.coolantRefill)*5F)/100F);
+		final float uptime = ((int)((128000F/this.coolantDrain)*5F)/100F);
+		final float downtime = ((int)((128000F/this.coolantRefill)*5F)/100F);
 		tooltip.add(" §bUptime: "+uptime+"s Downtime: "+downtime+"s");
 	}
 }

@@ -30,7 +30,7 @@ public class TEPylonSenderPacket implements IMessage {
 		
 	}
 
-	public TEPylonSenderPacket(int x, int y, int z, int conX, int conY, int conZ, boolean addOrRemove)
+	public TEPylonSenderPacket(final int x, final int y, final int z, final int conX, final int conY, final int conZ, final boolean addOrRemove)
 	{
 		this.x = x;
 		this.y = y;
@@ -42,7 +42,7 @@ public class TEPylonSenderPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -53,7 +53,7 @@ public class TEPylonSenderPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -66,22 +66,21 @@ public class TEPylonSenderPacket implements IMessage {
 	public static class Handler implements IMessageHandler<TEPylonSenderPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(TEPylonSenderPacket m, MessageContext ctx) {
+		public IMessage onMessage(final TEPylonSenderPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				BlockPos pos = new BlockPos(m.x, m.y, m.z);
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 				
 				try {
-					if (te != null && te instanceof TileEntityPylonBase) {
-							
-						TileEntityPylonBase pyl = (TileEntityPylonBase) te;
-						if(m.addOrRemove){
+					if (te != null && te instanceof TileEntityPylonBase pyl) {
+
+                        if(m.addOrRemove){
 							pyl.addConnection(new BlockPos(m.conX, m.conY, m.conZ));
 						}else{
 							pyl.removeConnection(new BlockPos(m.conX, m.conY, m.conZ));
 						}
 					}
-				} catch(Exception x) {}
+				} catch(final Exception x) {}
 			});
 			
 			return null;

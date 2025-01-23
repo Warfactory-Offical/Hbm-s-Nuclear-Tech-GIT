@@ -20,7 +20,7 @@ public class BlockPipe extends Block {
 
 	public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
 	
-	public BlockPipe(Material mat, String s) {
+	public BlockPipe(final Material mat, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -29,7 +29,7 @@ public class BlockPipe extends Block {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound){
+	public Block setSoundType(final SoundType sound){
 		return super.setSoundType(sound);
 	}
 	
@@ -39,37 +39,37 @@ public class BlockPipe extends Block {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state){
+	public boolean isBlockNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullBlock(IBlockState state){
+	public boolean isFullBlock(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand){
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand){
 		return this.getDefaultState().withProperty(AXIS, facing.getAxis());
 	}
 	
@@ -79,12 +79,12 @@ public class BlockPipe extends Block {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(final IBlockState state){
 		return state.getValue(AXIS).ordinal();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(final int meta){
 		return this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.values()[meta&3]);
 	}
 }

@@ -13,10 +13,10 @@ import net.minecraft.util.text.TextFormatting;
 
 public interface ITooltipProvider {
 
-	public default void addStandardInfo(List<String> list) {
+	public default void addStandardInfo(final List<String> list) {
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			for(String s : I18nUtil.resolveKeyArray(((Block)this).getTranslationKey() + ".desc")) list.add(TextFormatting.YELLOW + s);
+			for(final String s : I18nUtil.resolveKeyArray(((Block)this).getTranslationKey() + ".desc")) list.add(TextFormatting.YELLOW + s);
 		} else {
 			list.add(I18nUtil.resolveKey("desc.tooltip.hold", "LSHIFT"));
 		}

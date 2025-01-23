@@ -17,12 +17,12 @@ public class RenderGrenade extends Render<Entity> {
 
 	public static final IRenderFactory<Entity> FACTORY = man -> new RenderGrenade(man);
 	
-	protected RenderGrenade(RenderManager renderManager) {
+	protected RenderGrenade(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(Entity grenade, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final Entity grenade, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y + 0.125F, (float)z);
         GL11.glRotatef(grenade.prevRotationYaw + (grenade.rotationYaw - grenade.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -49,7 +49,7 @@ public class RenderGrenade extends Render<Entity> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(Entity grenade) {
+	protected ResourceLocation getEntityTexture(final Entity grenade) {
 		if(grenade instanceof EntityGrenadeMk2) {
     		return ResourceManager.grenade_mk2;
         }

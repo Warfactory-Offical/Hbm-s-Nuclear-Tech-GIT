@@ -3,7 +3,6 @@ package com.hbm.util;
 import com.hbm.interfaces.IKeypadHandler;
 import com.hbm.packet.KeypadClientPacket;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -25,7 +24,7 @@ public class Keypad {
 	//Decides if the code is currently being set, activated by the reset button on the bottom left.
 	public boolean isSettingCode = true;
 
-	public Keypad(TileEntity te) {
+	public Keypad(final TileEntity te) {
 		this.te = te;
 		for(int i = 0; i < buttons.length; i++) {
 			buttons[i] = new Button();
@@ -38,7 +37,7 @@ public class Keypad {
 
 	public void update() {
 		boolean active = false;
-		for(Button b : buttons) {
+		for(final Button b : buttons) {
 			if(b.cooldown > 0) {
 				b.cooldown--;
 				active = true;
@@ -56,14 +55,12 @@ public class Keypad {
 			active = true;
 		}
 		if(!te.getWorld().isRemote) {
-			byte[] data = new byte[12+1+6+2];
+			final byte[] data = new byte[12+1+6+2];
 			for(int i = 0; i < 12; i++) {
 				data[i] = buttons[i].cooldown;
 			}
 			data[12] = (byte) (isSettingCode ? 1 : 0);
-			for(int i = 0; i < 6; i ++){
-				data[13 + i] = code[i];
-			}
+            System.arraycopy(code, 0, data, 13, 6);
 			data[19] = successColorTicks;
 			data[20] = failColorTicks;
 			PacketDispatcher.wrapper.sendToAllAround(new KeypadClientPacket(te.getPos(), data), new TargetPoint(te.getWorld().provider.getDimension(), te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), 10));
@@ -71,10 +68,10 @@ public class Keypad {
 		isActive = active;
 	}
 
-	public void buttonClicked(int id) {
+	public void buttonClicked(final int id) {
 		if(buttons[id].cooldown == 0) {
 			buttons[id].cooldown = 20;
-			byte num;
+			final byte num;
 			switch(id) {
 			case 9:
 				//Reset key
@@ -147,14 +144,14 @@ public class Keypad {
 		return num;
 	}
 	
-	public NBTTagCompound writeToNbt(NBTTagCompound tag){
+	public NBTTagCompound writeToNbt(final NBTTagCompound tag){
 		tag.setByteArray("code", code);
 		tag.setInteger("currentPassword", storedCode);
 		tag.setBoolean("isSettingCode", isSettingCode);
 		tag.setByte("successColorTicks", successColorTicks);
 		tag.setByte("failColorTicks", failColorTicks);
 		
-		byte[] cooldowns = new byte[12];
+		final byte[] cooldowns = new byte[12];
 		for(int i = 0; i < 12; i ++){
 			cooldowns[i] = buttons[i].cooldown;
 		}
@@ -162,15 +159,15 @@ public class Keypad {
 		return tag;
 	}
 	
-	public void readFromNbt(NBTTagCompound tag){
-		byte[] readCode = tag.getByteArray("code");
+	public void readFromNbt(final NBTTagCompound tag){
+		final byte[] readCode = tag.getByteArray("code");
 		if(readCode.length == 6)
 			code = readCode;
 		storedCode = tag.getInteger("currentPassword");
 		isSettingCode = tag.getBoolean("isSettingCode");
 		successColorTicks = tag.getByte("successColorTicks");
 		failColorTicks = tag.getByte("failColorTicks");
-		byte[] buttonCooldowns = tag.getByteArray("buttonCooldowns");
+		final byte[] buttonCooldowns = tag.getByteArray("buttonCooldowns");
 		if(buttonCooldowns.length == 12){
 			for(int i = 0; i < 12; i ++){
 				buttons[i].cooldown = buttonCooldowns[i];

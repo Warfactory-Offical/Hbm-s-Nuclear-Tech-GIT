@@ -8,9 +8,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUITurretMaxwell extends GUITurretBase {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/weapon/gui_turret_maxwell.png");
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/weapon/gui_turret_maxwell.png");
 
-	public GUITurretMaxwell(InventoryPlayer invPlayer, TileEntityTurretBaseNT tedf) {
+	public GUITurretMaxwell(final InventoryPlayer invPlayer, final TileEntityTurretBaseNT tedf) {
 		super(invPlayer, tedf);
 	}
 	
@@ -19,7 +19,7 @@ public class GUITurretMaxwell extends GUITurretBase {
 	}
 
 	@Override
-	public void drawAmmo(int mouseX, int mouseY){
+	public void drawAmmo(final int mouseX, final int mouseY){
 	}
 
 	@Override

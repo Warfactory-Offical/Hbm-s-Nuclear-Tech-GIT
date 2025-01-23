@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public class ContainerCraneGrabber extends Container {
     protected TileEntityCraneGrabber grabber;
 
-    public ContainerCraneGrabber(InventoryPlayer invPlayer, TileEntityCraneGrabber grabber) {
+    public ContainerCraneGrabber(final InventoryPlayer invPlayer, final TileEntityCraneGrabber grabber) {
         this.grabber = grabber;
 
         //filter
@@ -39,15 +39,15 @@ public class ContainerCraneGrabber extends Container {
     }
 
     @Override
-    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+    public ItemStack slotClick(final int slotId, final int dragType, final ClickType clickTypeIn, final EntityPlayer player) {
         if (slotId < 0 || slotId >= 9) {
             return super.slotClick(slotId, dragType, clickTypeIn, player);
         }
 
-        Slot slot = this.inventorySlots.get(slotId);
+        final Slot slot = this.inventorySlots.get(slotId);
 
         ItemStack ret = ItemStack.EMPTY;
-        ItemStack held = player.inventory.getItemStack();
+        final ItemStack held = player.inventory.getItemStack();
 
         if (slot.getHasStack()) {
             ret = slot.getStack().copy();
@@ -71,7 +71,7 @@ public class ContainerCraneGrabber extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(final EntityPlayer player) {
         return grabber.isUseableByPlayer(player);
     }
 

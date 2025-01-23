@@ -15,13 +15,13 @@ public class RenderCyberCrab extends RenderLiving<EntityCyberCrab> {
 	
 	public static final ResourceLocation crab_rl = new ResourceLocation(RefStrings.MODID + ":textures/entity/Crab.png");
 	
-	public RenderCyberCrab(RenderManager manager) {
+	public RenderCyberCrab(final RenderManager manager) {
 		super(manager, new ModelCrab(), 1.0F);
 		this.shadowOpaque = 0.0F;
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityCyberCrab entity) {
+	protected ResourceLocation getEntityTexture(final EntityCyberCrab entity) {
 		return crab_rl;
 	}
 

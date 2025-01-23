@@ -6,7 +6,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUITurretChekhov extends GUITurretBase {
 
-	public GUITurretChekhov(InventoryPlayer invPlayer, TileEntityTurretBaseNT tedf) {
+	public GUITurretChekhov(final InventoryPlayer invPlayer, final TileEntityTurretBaseNT tedf) {
 		super(invPlayer, tedf);
 	}
 

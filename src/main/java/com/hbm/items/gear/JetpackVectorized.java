@@ -1,7 +1,5 @@
 package com.hbm.items.gear;
 
-import java.util.List;
-
 import com.hbm.capability.HbmCapability;
 import com.hbm.capability.HbmCapability.IHBMData;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
@@ -12,7 +10,6 @@ import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.KeybindPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,33 +23,35 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
+import java.util.List;
+
 public class JetpackVectorized extends JetpackBase {
 
-	public JetpackVectorized(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, Fluid fuel, int maxFuel, String s) {
+	public JetpackVectorized(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final Fluid fuel, final int maxFuel, final String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn, fuel, maxFuel, s);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
 		return "hbm:textures/armor/JetPackGreen.png";
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
 		tooltip.add("High-mobility jetpack.");
 		tooltip.add("Higher fuel consumption.");
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 	
-	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-		IHBMData props = HbmCapability.getData(player);
+	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
+		final IHBMData props = HbmCapability.getData(player);
 
 		if(world.isRemote) {
 
 			if(player == MainRegistry.proxy.me() && props.isJetpackActive()) {
 
-				boolean last = props.getKeyPressed(EnumKeybind.JETPACK);
-				boolean current = MainRegistry.proxy.getIsKeyPressed(EnumKeybind.JETPACK);
+				final boolean last = props.getKeyPressed(EnumKeybind.JETPACK);
+				final boolean current = MainRegistry.proxy.getIsKeyPressed(EnumKeybind.JETPACK);
 
 				if(last != current) {
 					PacketDispatcher.wrapper.sendToServer(new KeybindPacket(EnumKeybind.JETPACK, current));
@@ -64,7 +63,7 @@ public class JetpackVectorized extends JetpackBase {
 
 			if(getFuel(stack) > 0 && props.getKeyPressed(EnumKeybind.JETPACK) && props.isJetpackActive()) {
 
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack");
 				data.setInteger("player", player.getEntityId());
 				data.setInteger("mode", 1);
@@ -76,7 +75,7 @@ public class JetpackVectorized extends JetpackBase {
 			if(player.motionY < 0.4D)
 				player.motionY += 0.1D;
 
-			Vec3d look = player.getLookVec();
+			final Vec3d look = player.getLookVec();
 
 			if(Vec3.createVectorHelper(player.motionX, player.motionY, player.motionZ).length() < 2) {
 				player.motionX += look.x * 0.1;

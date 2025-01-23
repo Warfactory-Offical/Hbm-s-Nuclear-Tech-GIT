@@ -13,14 +13,13 @@ public class UpgradeManager {
 
 	private UpgradeType mutexType = null;
 
-	public void eval(IItemHandler inv, int start, int end) {
+	public void eval(final IItemHandler inv, final int start, final int end) {
 		upgrades.clear();
 
 		for (int i = start; i <= end; i++) {
-			Item item = inv.getStackInSlot(i).getItem();
-			if (item instanceof ItemMachineUpgrade) {
-				ItemMachineUpgrade upgrade = (ItemMachineUpgrade) item;
-				if (!upgrade.type.mutex) {
+			final Item item = inv.getStackInSlot(i).getItem();
+			if (item instanceof ItemMachineUpgrade upgrade) {
+                if (!upgrade.type.mutex) {
 					if(upgrade.type == UpgradeType.SPEED)
 						upgrades.compute(upgrade.type, (type, level) -> level == null ? upgrade.getSpeed() : level + upgrade.getSpeed());
 					else
@@ -34,7 +33,7 @@ public class UpgradeManager {
 		}
 	}
 
-    public int getLevel(UpgradeType type) {
+    public int getLevel(final UpgradeType type) {
         return upgrades.getOrDefault(type, 0);
     }
 }

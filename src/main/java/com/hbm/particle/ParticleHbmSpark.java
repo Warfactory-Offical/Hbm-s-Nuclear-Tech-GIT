@@ -19,7 +19,7 @@ public class ParticleHbmSpark extends Particle {
 	public List<double[]> steps = new ArrayList<>();
 	public int thresh;
 	
-	public ParticleHbmSpark(World worldIn, double posXIn, double posYIn, double posZIn, double mX, double mY, double mZ){
+	public ParticleHbmSpark(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final double mX, final double mY, final double mZ){
 		super(worldIn, posXIn, posYIn, posZIn, mX, mY, mZ);
 		thresh = 4 + rand.nextInt(3);
 		steps.add(new double[] { motionX, motionY, motionZ });
@@ -48,7 +48,7 @@ public class ParticleHbmSpark extends Particle {
 			steps.remove(0);
 
 		this.motionY -= 0.04D * (double) this.particleGravity;
-		double lastY = this.motionY;
+		final double lastY = this.motionY;
 		this.move(this.motionX, this.motionY, this.motionZ);
 
 		if(this.onGround) {
@@ -58,7 +58,7 @@ public class ParticleHbmSpark extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
 		if(steps.size() < 2)
 			return;
 
@@ -68,12 +68,12 @@ public class ParticleHbmSpark extends Particle {
 		GlStateManager.disableLighting();
 		GlStateManager.glLineWidth(3);
 
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+		final float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
+		final float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
+		final float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 		
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = tes.getBuffer();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		GlStateManager.color(1, 1, 1, 1);
 		buf.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
@@ -82,7 +82,7 @@ public class ParticleHbmSpark extends Particle {
 
 		for(int i = 1; i < steps.size(); i++) {
 
-			double[] curr = new double[] { prev[0] + steps.get(i)[0], prev[1] + steps.get(i)[1], prev[2] + steps.get(i)[2] };
+			final double[] curr = new double[] { prev[0] + steps.get(i)[0], prev[1] + steps.get(i)[1], prev[2] + steps.get(i)[2] };
 
 			buf.pos(prev[0], prev[1], prev[2]).endVertex();
 

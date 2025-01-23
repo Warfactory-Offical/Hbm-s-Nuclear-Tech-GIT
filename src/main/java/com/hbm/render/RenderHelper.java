@@ -1,4 +1,5 @@
 package com.hbm.render;
+import com.hbm.util.ItemStackUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -73,10 +74,10 @@ public class RenderHelper {
 	public static Field r_viewFrustum;
 	public static Method r_getRenderChunk;
 	
-	private static FloatBuffer MODELVIEW = GLAllocation.createDirectFloatBuffer(16);
-	private static FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
-	private static IntBuffer VIEWPORT = GLAllocation.createDirectIntBuffer(16);
-	private static FloatBuffer POSITION = GLAllocation.createDirectFloatBuffer(4);
+	private static final FloatBuffer MODELVIEW = GLAllocation.createDirectFloatBuffer(16);
+	private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
+	private static final IntBuffer VIEWPORT = GLAllocation.createDirectIntBuffer(16);
+	private static final FloatBuffer POSITION = GLAllocation.createDirectFloatBuffer(4);
 	
 	public static boolean useFullPost = true;
 	public static boolean flashlightInit = false;
@@ -106,7 +107,7 @@ public class RenderHelper {
 	//Render them here
 	private static boolean flashlightLock = false;
 	//List of future flashlights to render;
-	private static List<Runnable> flashlightQueue = new ArrayList<>();
+	private static final List<Runnable> flashlightQueue = new ArrayList<>();
 	
 	/**
 	 * 
@@ -116,25 +117,25 @@ public class RenderHelper {
 	 * @param lt
 	 * @return left-bottom-right-top
 	 */
-	public static float[] getScreenAreaFromQuad(Vec3d lb, Vec3d rb, Vec3d rt, Vec3d lt){
-		FloatBuffer mmatrix = GLAllocation.createDirectFloatBuffer(16);
+	public static float[] getScreenAreaFromQuad(final Vec3d lb, final Vec3d rb, final Vec3d rt, final Vec3d lt){
+		final FloatBuffer mmatrix = GLAllocation.createDirectFloatBuffer(16);
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, mmatrix);
-		FloatBuffer pmatrix = GLAllocation.createDirectFloatBuffer(16);
+		final FloatBuffer pmatrix = GLAllocation.createDirectFloatBuffer(16);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, pmatrix);
-		IntBuffer vport = GLAllocation.createDirectIntBuffer(16);
+		final IntBuffer vport = GLAllocation.createDirectIntBuffer(16);
 		GL11.glGetInteger(GL11.GL_VIEWPORT, vport);
 		
-		FloatBuffer[] points = new FloatBuffer[4];
-		FloatBuffer buf0 = GLAllocation.createDirectFloatBuffer(3);
+		final FloatBuffer[] points = new FloatBuffer[4];
+		final FloatBuffer buf0 = GLAllocation.createDirectFloatBuffer(3);
 		Project.gluProject((float)lb.x, (float)lb.y, (float)lb.z, mmatrix, pmatrix, vport, buf0);
 		points[0] = buf0;
-		FloatBuffer buf1 = GLAllocation.createDirectFloatBuffer(3);
+		final FloatBuffer buf1 = GLAllocation.createDirectFloatBuffer(3);
 		Project.gluProject((float)rb.x, (float)rb.y, (float)rb.z, mmatrix, pmatrix, vport, buf1);
 		points[1] = buf1;
-		FloatBuffer buf2 = GLAllocation.createDirectFloatBuffer(3);
+		final FloatBuffer buf2 = GLAllocation.createDirectFloatBuffer(3);
 		Project.gluProject((float)rt.x, (float)rt.y, (float)rt.z, mmatrix, pmatrix, vport, buf2);
 		points[2] = buf2;
-		FloatBuffer buf3 = GLAllocation.createDirectFloatBuffer(3);
+		final FloatBuffer buf3 = GLAllocation.createDirectFloatBuffer(3);
 		Project.gluProject((float)lt.x, (float)lt.y, (float)lt.z, mmatrix, pmatrix, vport, buf3);
 		points[3] = buf3;
 		
@@ -143,7 +144,7 @@ public class RenderHelper {
 		float left = buf0.get(0);
 		float right = buf0.get(0);
 		
-		for(FloatBuffer buf : points){
+		for(final FloatBuffer buf : points){
 			if(buf.get(0) > right){
 				right = buf.get(0);
 			}
@@ -174,27 +175,27 @@ public class RenderHelper {
 	}
 	
 	
-	public static TextureAtlasSprite getItemTexture(Item item, int meta){
-		return getItemTexture(new ItemStack(item, 1, meta));
+	public static TextureAtlasSprite getItemTexture(final Item item, final int meta){
+		return getItemTexture(ItemStackUtil.itemStackFrom(item, 1, meta));
 	}
 	
-	public static TextureAtlasSprite getItemTexture(Item item){
+	public static TextureAtlasSprite getItemTexture(final Item item){
 		return getItemTexture(item, 0);
 	}
 	
-	public static TextureAtlasSprite getItemTexture(ItemStack item){
+	public static TextureAtlasSprite getItemTexture(final ItemStack item){
 		return Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(item, null, null).getParticleTexture();
 	}
 	
-	public static void addVertexWithUV(double x, double y, double z, double u, double v){
+	public static void addVertexWithUV(final double x, final double y, final double z, final double u, final double v){
 		addVertexWithUV(x, y, z, u, v, Tessellator.getInstance());
 	}
-	public static void addVertex(double x, double y, double z){
+	public static void addVertex(final double x, final double y, final double z){
 		Tessellator.getInstance().getBuffer().pos(x, y, z).endVertex();
 	}
 	
-	public static void addVertexWithUV(double x, double y, double z, double u, double v, Tessellator tes){
-		BufferBuilder buf = tes.getBuffer();
+	public static void addVertexWithUV(final double x, final double y, final double z, final double u, final double v, final Tessellator tes){
+		final BufferBuilder buf = tes.getBuffer();
 		buf.pos(x, y, z).tex(u, v).endVertex();
 	}
 
@@ -204,27 +205,27 @@ public class RenderHelper {
 	public static void startDrawingQuads(){
 		Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 	}
-	public static void startDrawingTexturedQuads(Tessellator tes){
+	public static void startDrawingTexturedQuads(final Tessellator tes){
 		tes.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 	}
-	public static void startDrawingColoredTriangles(Tessellator tes){
+	public static void startDrawingColoredTriangles(final Tessellator tes){
 		tes.getBuffer().begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 	}
 	public static void draw(){
 		draw(Tessellator.getInstance());
 	}
-	public static void draw(Tessellator tes){
+	public static void draw(final Tessellator tes){
 		tes.draw();
 	}
 	
-	public static void bindTexture(ResourceLocation resource){
+	public static void bindTexture(final ResourceLocation resource){
 		Minecraft.getMinecraft().renderEngine.bindTexture(resource);
 	}
 	public static void bindBlockTexture(){
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 	}
 
-	public static void drawScaledTexture(TextureAtlasSprite icon, int posX, int posY, int sizeX, int sizeY, float zLevel){
+	public static void drawScaledTexture(final TextureAtlasSprite icon, final int posX, final int posY, int sizeX, int sizeY, final float zLevel){
 		if(sizeX < 0)
 			sizeX = 0;
 		if(sizeX > 16)
@@ -233,21 +234,21 @@ public class RenderHelper {
 			sizeY = 0;
 		if(sizeY > 16)
 			sizeY = 16;
-		float up = icon.getInterpolatedV(16);
-		float down = icon.getInterpolatedV(16 - sizeY);
-		float left = icon.getInterpolatedU(0);
-		float right = icon.getInterpolatedU(sizeX);
+		final float up = icon.getInterpolatedV(16);
+		final float down = icon.getInterpolatedV(16 - sizeY);
+		final float left = icon.getInterpolatedU(0);
+		final float right = icon.getInterpolatedU(sizeX);
 		addVertexWithUV(posX, posY + sizeY, zLevel, left, up);
 		addVertexWithUV(posX + sizeX, posY + sizeY, zLevel, right, up);
 		addVertexWithUV(posX + sizeX, posY, zLevel, right, down);
 		addVertexWithUV(posX, posY, zLevel, left, down);
 	}
 
-	public static void drawFullTexture(TextureAtlasSprite icon, double posX, double posY, double sizeX, double sizeY, double zLevel, boolean flipped){
-		float up = icon.getInterpolatedV(0);
-		float down = icon.getInterpolatedV(16);
-		float left = icon.getInterpolatedU(0);
-		float right = icon.getInterpolatedU(16);
+	public static void drawFullTexture(final TextureAtlasSprite icon, final double posX, final double posY, final double sizeX, final double sizeY, final double zLevel, final boolean flipped){
+		final float up = icon.getInterpolatedV(0);
+		final float down = icon.getInterpolatedV(16);
+		final float left = icon.getInterpolatedU(0);
+		final float right = icon.getInterpolatedU(16);
 		if(flipped){
 			addVertexWithUV(posX + sizeX, posY + sizeY, zLevel, right, up);
 			addVertexWithUV(posX, posY + sizeY, zLevel, left, up);
@@ -262,18 +263,18 @@ public class RenderHelper {
 	}
 	
 	//Drillgon200: using GLStateManager for this because it caches color values
-	public static void setColor(int color) {
+	public static void setColor(final int color) {
 
-		float red = (float) (color >> 16 & 255) / 255.0F;
-		float green = (float) (color >> 8 & 255) / 255.0F;
-		float blue = (float) (color & 255) / 255.0F;
+		final float red = (float) (color >> 16 & 255) / 255.0F;
+		final float green = (float) (color >> 8 & 255) / 255.0F;
+		final float blue = (float) (color & 255) / 255.0F;
 		GlStateManager.color(red, green, blue, 1.0F);
 	}
 	
-	public static void unpackColor(int color, float[] col){
-		float red = (float) (color >> 16 & 255) / 255.0F;
-		float green = (float) (color >> 8 & 255) / 255.0F;
-		float blue = (float) (color & 255) / 255.0F;
+	public static void unpackColor(final int color, final float[] col){
+		final float red = (float) (color >> 16 & 255) / 255.0F;
+		final float green = (float) (color >> 8 & 255) / 255.0F;
+		final float blue = (float) (color & 255) / 255.0F;
 		col[0] = red;
 		col[1] = green;
 		col[2] = blue;
@@ -283,27 +284,27 @@ public class RenderHelper {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public static void startDrawingColored(int i) {
+	public static void startDrawingColored(final int i) {
 		Tessellator.getInstance().getBuffer().begin(i, DefaultVertexFormats.POSITION_COLOR);
 	}
 	
-	public static void addVertexColor(double x, double y, double z, int red, int green, int blue, int alpha){
+	public static void addVertexColor(final double x, final double y, final double z, final int red, final int green, final int blue, final int alpha){
 		Tessellator.getInstance().getBuffer().pos(x, y, z).color(red, green, blue, alpha).endVertex();
 	}
 	
-	public static void addVertexColor(double x, double y, double z, float red, float green, float blue, float alpha){
+	public static void addVertexColor(final double x, final double y, final double z, final float red, final float green, final float blue, final float alpha){
 		Tessellator.getInstance().getBuffer().pos(x, y, z).color(red, green, blue, alpha).endVertex();
 	}
 
-	public static void addVertexColor(double x, double y, double z, float red, float green, float blue, float alpha, Tessellator tess){
+	public static void addVertexColor(final double x, final double y, final double z, final float red, final float green, final float blue, final float alpha, final Tessellator tess){
 		tess.getBuffer().pos(x, y, z).color(red, green, blue, alpha).endVertex();
 	}
 
-	public static void renderAll(IBakedModel boxcar) {
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = tes.getBuffer();
+	public static void renderAll(final IBakedModel boxcar) {
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = tes.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
-    	for(BakedQuad quad : boxcar.getQuads(null, null, 0)){
+    	for(final BakedQuad quad : boxcar.getQuads(null, null, 0)){
     		buf.addVertexData(quad.getVertexData());
     	}
     	tes.draw();
@@ -315,26 +316,26 @@ public class RenderHelper {
 	 * @param partialTicks - render partial ticks
 	 * @return A three element double array, containing the render pos x at index 0, y at index 1, and z at index 2
 	 */
-	public static double[] getRenderPosFromMissile(EntityMissileBaseAdvanced missile, float partialTicks){
-		double d0 = missile.prevPosX + (missile.posX - missile.prevPosX) * partialTicks;
-		double d1 = missile.prevPosY + (missile.posY - missile.prevPosY) * partialTicks;
-		double d2 = missile.prevPosZ + (missile.posZ - missile.prevPosZ) * partialTicks;
-		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-		double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
-		double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
-		double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
+	public static double[] getRenderPosFromMissile(final EntityMissileBaseAdvanced missile, final float partialTicks){
+		final double d0 = missile.prevPosX + (missile.posX - missile.prevPosX) * partialTicks;
+		final double d1 = missile.prevPosY + (missile.posY - missile.prevPosY) * partialTicks;
+		final double d2 = missile.prevPosZ + (missile.posZ - missile.prevPosZ) * partialTicks;
+		final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
+		final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
+		final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
 		
 		return new double[]{d0 - d3, d1 - d4, d2 - d5};
 	}
 
-	public static double[] getRenderPosFromMissile(EntityMissileCustom missile, float partialTicks){
-		double d0 = missile.prevPosX + (missile.posX - missile.prevPosX) * partialTicks;
-		double d1 = missile.prevPosY + (missile.posY - missile.prevPosY) * partialTicks;
-		double d2 = missile.prevPosZ + (missile.posZ - missile.prevPosZ) * partialTicks;
-		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-		double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
-		double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
-		double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
+	public static double[] getRenderPosFromMissile(final EntityMissileCustom missile, final float partialTicks){
+		final double d0 = missile.prevPosX + (missile.posX - missile.prevPosX) * partialTicks;
+		final double d1 = missile.prevPosY + (missile.posY - missile.prevPosY) * partialTicks;
+		final double d2 = missile.prevPosZ + (missile.posZ - missile.prevPosZ) * partialTicks;
+		final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
+		final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
+		final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
 		
 		return new double[]{d0 - d3, d1 - d4, d2 - d5};
 	}
@@ -345,7 +346,7 @@ public class RenderHelper {
 	 * @param partialTicks - render partial ticks
 	 * @return A three element double array, containing the render pos x at index 0, y at index 1, and z at index 2
 	 */
-	public static double[] getRenderPosFromMissile(EntityCarrier missile, float partialTicks){
+	public static double[] getRenderPosFromMissile(final EntityCarrier missile, final float partialTicks){
 		if(missile.prevPosX2 == 0){
 			missile.prevPosX2 = missile.posX;
 		}
@@ -355,20 +356,20 @@ public class RenderHelper {
 		if(missile.prevPosZ2 == 0){
 			missile.prevPosZ2 = missile.posZ;
 		}
-		double d0 = missile.prevPosX2 + (missile.posX - missile.prevPosX2) * (double) partialTicks;
-		double d1 = missile.prevPosY2 + (missile.posY - missile.prevPosY2) * (double) partialTicks;
-		double d2 = missile.prevPosZ2 + (missile.posZ - missile.prevPosZ2) * (double) partialTicks;
-		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-		double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-		double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-		double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+		final double d0 = missile.prevPosX2 + (missile.posX - missile.prevPosX2) * (double) partialTicks;
+		final double d1 = missile.prevPosY2 + (missile.posY - missile.prevPosY2) * (double) partialTicks;
+		final double d2 = missile.prevPosZ2 + (missile.posZ - missile.prevPosZ2) * (double) partialTicks;
+		final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+		final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+		final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
 		
 		return new double[]{d0 - d3, d1 - d4, d2 - d5};
 	}
 	
-	public static void drawGuiRect(float x, float y, float u, float v, float width, float height, float uMax, float vMax){
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+	public static void drawGuiRect(final float x, final float y, final float u, final float v, final float width, final float height, final float uMax, final float vMax){
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         bufferbuilder.pos(x, y + height, 0.0D).tex(u, vMax).endVertex();
         bufferbuilder.pos(x + width, y + height, 0.0D).tex(uMax, vMax).endVertex();
@@ -377,9 +378,9 @@ public class RenderHelper {
         tessellator.draw();
 	}
 	
-	public static void drawGuiRectColor(float x, float y, float u, float v, float width, float height, float uMax, float vMax, float r, float g, float b, float a){
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+	public static void drawGuiRectColor(final float x, final float y, final float u, final float v, final float width, final float height, final float uMax, final float vMax, final float r, final float g, final float b, final float a){
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         bufferbuilder.pos(x, y + height, 0.0D).tex(u, vMax).color(r, g, b, a).endVertex();
         bufferbuilder.pos(x + width, y + height, 0.0D).tex(uMax, vMax).color(r, g, b, a).endVertex();
@@ -388,18 +389,18 @@ public class RenderHelper {
         tessellator.draw();
 	}
 	
-	public static void drawGuiRectBatched(float x, float y, float u, float v, float width, float height, float uMax, float vMax){
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+	public static void drawGuiRectBatched(final float x, final float y, final float u, final float v, final float width, final float height, final float uMax, final float vMax){
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.pos(x, y + height, 0.0D).tex(u, vMax).endVertex();
         bufferbuilder.pos(x + width, y + height, 0.0D).tex(uMax, vMax).endVertex();
         bufferbuilder.pos(x + width, y, 0.0D).tex(uMax, v).endVertex();
         bufferbuilder.pos(x, y, 0.0D).tex(u, v).endVertex();
 	}
 	
-	public static void drawGuiRectBatchedColor(float x, float y, float u, float v, float width, float height, float uMax, float vMax, float r, float g, float b, float a){
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+	public static void drawGuiRectBatchedColor(final float x, final float y, final float u, final float v, final float width, final float height, final float uMax, final float vMax, final float r, final float g, final float b, final float a){
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.pos(x, y + height, 0.0D).tex(u, vMax).color(r, g, b, a).endVertex();
         bufferbuilder.pos(x + width, y + height, 0.0D).tex(uMax, vMax).color(r, g, b, a).endVertex();
         bufferbuilder.pos(x + width, y, 0.0D).tex(uMax, v).color(r, g, b, a).endVertex();
@@ -419,7 +420,7 @@ public class RenderHelper {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shadowFbo);
 		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, shadowFboTex, 0);
 		clearFLShadowBuffer();
-		int bruh = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
+		final int bruh = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
 		if(bruh != GL30.GL_FRAMEBUFFER_COMPLETE){
 			System.out.println("aaaaaa");
 		}
@@ -504,7 +505,7 @@ public class RenderHelper {
 			GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, Minecraft.getMinecraft().getFramebuffer().depthBuffer);
 			GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, Minecraft.getMinecraft().getFramebuffer().depthBuffer);
 		
-			IntBuffer buf = GLAllocation.createDirectIntBuffer(4);
+			final IntBuffer buf = GLAllocation.createDirectIntBuffer(4);
 			buf.put(GL30.GL_COLOR_ATTACHMENT0);
 			buf.put(GL30.GL_COLOR_ATTACHMENT1);
 			buf.put(GL30.GL_COLOR_ATTACHMENT2);
@@ -521,7 +522,7 @@ public class RenderHelper {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, deferredDepthTex, 0);
 		}
 		
-		int bruh = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
+		final int bruh = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
 		if(bruh != GL30.GL_FRAMEBUFFER_COMPLETE){
 			System.out.println("aaaaaa");
 		}
@@ -558,8 +559,8 @@ public class RenderHelper {
     	GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER);
     	GL11.glPopMatrix();
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, ClientProxy.AUX_GL_BUFFER2);
-		Matrix4f view = new Matrix4f();
-		Matrix4f proj = new Matrix4f();
+		final Matrix4f view = new Matrix4f();
+		final Matrix4f proj = new Matrix4f();
 		view.load(ClientProxy.AUX_GL_BUFFER);
 		proj.load(ClientProxy.AUX_GL_BUFFER2);
 		ClientProxy.AUX_GL_BUFFER.rewind();
@@ -572,7 +573,7 @@ public class RenderHelper {
 		ClientProxy.AUX_GL_BUFFER.get(inv_ViewProjectionMatrix);
 		ClientProxy.AUX_GL_BUFFER.rewind();
 		
-    	for(Runnable r : flashlightQueue){
+    	for(final Runnable r : flashlightQueue){
 			r.run();
 		}
 		flashlightQueue.clear();
@@ -581,7 +582,7 @@ public class RenderHelper {
 	}
 	
 	@Deprecated
-	public static void renderFlashLight(Vec3d start, Vec3d end, float degrees, float brightness, ResourceLocation cookie, float partialTicks){
+	public static void renderFlashLight(final Vec3d start, final Vec3d end, final float degrees, final float brightness, final ResourceLocation cookie, final float partialTicks){
 		if(flashlightLock)
 			return;
 		if(!renderingFlashlights){
@@ -594,34 +595,34 @@ public class RenderHelper {
 			flashlightInit = true;
 		}
 		clearDeferredBuffer();
-		double radians = Math.toRadians(degrees);
-		Vec3d startToEnd = end.subtract(start);
-		double height = startToEnd.length();
-		double radius = height * Math.tan(radians);
+		final double radians = Math.toRadians(degrees);
+		final Vec3d startToEnd = end.subtract(start);
+		final double height = startToEnd.length();
+		final double radius = height * Math.tan(radians);
 		AxisAlignedBB box = new AxisAlignedBB(start.x, start.y, start.z, end.x, end.y, end.z).grow(radius);
 		box = new AxisAlignedBB(
 				MathHelper.floor(box.minX / 16.0D) * 16, MathHelper.floor(MathHelper.clamp(box.minY, 0, 255) / 16.0D) * 16, MathHelper.floor(box.minZ / 16.0D) * 16, 
 				MathHelper.ceil(box.maxX / 16.0D) * 16, MathHelper.ceil(MathHelper.clamp(box.maxY, 0, 255) / 16.0D) * 16, MathHelper.ceil(box.maxZ / 16.0D) * 16);
 		
-		List<RenderChunk> toRender = new ArrayList<>();
-		List<Entity> entitiesToRender = new ArrayList<>();
-		List<TileEntity> tilesToRender = new ArrayList<>();
-		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
+		final List<RenderChunk> toRender = new ArrayList<>();
+		final List<Entity> entitiesToRender = new ArrayList<>();
+		final List<TileEntity> tilesToRender = new ArrayList<>();
+		final Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
 		for(int i = (int) box.minX; i < box.maxX; i += 16){
 			for(int j = (int) box.minY; j < box.maxY; j += 16){
 				for(int k = (int) box.minZ; k < box.maxZ; k += 16){
 					if(!Minecraft.getMinecraft().world.isBlockLoaded(new BlockPos(i, j, k)))
 						continue;
-					RenderChunk chunk = getRenderChunk(new BlockPos(i, j, k));
-					ClassInheritanceMultiMap<Entity> classinheritancemultimap = Minecraft.getMinecraft().world.getChunk(chunk.getPosition()).getEntityLists()[chunk.getPosition().getY() / 16];
+					final RenderChunk chunk = getRenderChunk(new BlockPos(i, j, k));
+					final ClassInheritanceMultiMap<Entity> classinheritancemultimap = Minecraft.getMinecraft().world.getChunk(chunk.getPosition()).getEntityLists()[chunk.getPosition().getY() / 16];
 					if(Library.isBoxCollidingCone(chunk.boundingBox, start, end, degrees)){
 						toRender.add(chunk);
-						for(TileEntity te : chunk.compiledChunk.getTileEntities()){
+						for(final TileEntity te : chunk.compiledChunk.getTileEntities()){
 							if(Library.isBoxCollidingCone(te.getRenderBoundingBox(), start, end, degrees)){
 								tilesToRender.add(te);
 							}
 						}
-						for(Entity ent : classinheritancemultimap){
+						for(final Entity ent : classinheritancemultimap){
 							if(ent != renderView && Library.isBoxCollidingCone(ent.getRenderBoundingBox().grow(0.5D), start, end, degrees)){
 								entitiesToRender.add(ent);
 							}
@@ -633,23 +634,22 @@ public class RenderHelper {
 		try {
 			if(r_setTileEntities == null)
 				r_setTileEntities = ReflectionHelper.findField(RenderGlobal.class, "setTileEntities", "field_181024_n");
-			@SuppressWarnings("unchecked")
-			Set<TileEntity> globals = (Set<TileEntity>) r_setTileEntities.get(Minecraft.getMinecraft().renderGlobal);
+			@SuppressWarnings("unchecked") final Set<TileEntity> globals = (Set<TileEntity>) r_setTileEntities.get(Minecraft.getMinecraft().renderGlobal);
 			synchronized(globals){
-				for(TileEntity te : globals){
+				for(final TileEntity te : globals){
 					if(Library.isBoxCollidingCone(te.getRenderBoundingBox(), start, end, degrees)){
 						tilesToRender.add(te);
 					}
 				}
 			}
-		} catch(IllegalArgumentException | IllegalAccessException e) {
+		} catch(final IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		
-		double entPosX = renderView.lastTickPosX + (renderView.posX - renderView.lastTickPosX)*partialTicks;
-        double entPosY = renderView.lastTickPosY + (renderView.posY - renderView.lastTickPosY)*partialTicks;
-        double entPosZ = renderView.lastTickPosZ + (renderView.posZ - renderView.lastTickPosZ)*partialTicks;
-        Vec3d playerPos = new Vec3d(entPosX, entPosY, entPosZ);
+		final double entPosX = renderView.lastTickPosX + (renderView.posX - renderView.lastTickPosX)*partialTicks;
+        final double entPosY = renderView.lastTickPosY + (renderView.posY - renderView.lastTickPosY)*partialTicks;
+        final double entPosZ = renderView.lastTickPosZ + (renderView.posZ - renderView.lastTickPosZ)*partialTicks;
+        final Vec3d playerPos = new Vec3d(entPosX, entPosY, entPosZ);
         
         GL11.glPushMatrix();
         GlStateManager.disableTexture2D();
@@ -686,7 +686,7 @@ public class RenderHelper {
         //correctly if I use height directly, and minecraft also multiplies by sqrt2, so I am, too.
         Project.gluPerspective(degrees*2, 1, 0.05F, (float) height*MathHelper.SQRT_2);
         GlStateManager.matrixMode(GL11.GL_MODELVIEW);
-        Vec3d angles = BobMathUtil.getEulerAngles(startToEnd.normalize());
+        final Vec3d angles = BobMathUtil.getEulerAngles(startToEnd.normalize());
        // GL11.glRotated(180, 0, 1, 0);
         GL11.glRotated(-angles.y+270, 1, 0, 0);
         GL11.glRotated(-angles.x+180, 0, 1, 0);
@@ -694,8 +694,8 @@ public class RenderHelper {
         GL11.glTranslated(-(start.x-entPosX), -(start.y-entPosY), -(start.z-entPosZ));
         GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, ClientProxy.AUX_GL_BUFFER);
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER2);
-        float[] projecion = new float[16];
-        float[] view = new float[16];
+        final float[] projecion = new float[16];
+        final float[] view = new float[16];
         ClientProxy.AUX_GL_BUFFER.get(projecion);
         ClientProxy.AUX_GL_BUFFER2.get(view);
         ClientProxy.AUX_GL_BUFFER.rewind();
@@ -705,10 +705,10 @@ public class RenderHelper {
         renderChunks(toRender, entPosX, entPosY, entPosZ);
         disableBlockVBOs();
         OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, 0);
-        for(Entity ent : entitiesToRender){
+        for(final Entity ent : entitiesToRender){
         	Minecraft.getMinecraft().getRenderManager().renderEntityStatic(ent, partialTicks, false);
         }
-        for(TileEntity te : tilesToRender){
+        for(final TileEntity te : tilesToRender){
         	TileEntityRendererDispatcher.instance.render(te, partialTicks, -1);
         }
         
@@ -751,17 +751,17 @@ public class RenderHelper {
 	}
 	
 	@Deprecated
-	private static void volumetricRender(Vec3d start, Vec3d end, Vec3d playerPos, float radius, float degrees){
+	private static void volumetricRender(final Vec3d start, final Vec3d end, final Vec3d playerPos, final float radius, final float degrees){
 		Vec3d vec = end.subtract(start);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		ResourceManager.cone_volume.use();
-		int shader = ResourceManager.cone_volume.getShaderId();
-		float height = (float) vec.length();
+		final int shader = ResourceManager.cone_volume.getShaderId();
+		final float height = (float) vec.length();
 		GL20.glUniform1f(GL20.glGetUniformLocation(shader, "height"), height);
 		vec = vec.normalize();
 		GL20.glUniform1f(GL20.glGetUniformLocation(shader, "cosAngle"), (float) Math.cos(Math.toRadians(degrees)));
-		Vec3d pos = start.subtract(playerPos);
+		final Vec3d pos = start.subtract(playerPos);
 		GL20.glUniform3f(GL20.glGetUniformLocation(shader, "pos"), (float) pos.x, (float) pos.y - Minecraft.getMinecraft().getRenderViewEntity().getEyeHeight(), (float) pos.z);
 		GL20.glUniform3f(GL20.glGetUniformLocation(shader, "direction"), (float) vec.x, (float) vec.y, (float) vec.z);
 		GlStateManager.setActiveTexture(GL13.GL_TEXTURE3);
@@ -796,8 +796,8 @@ public class RenderHelper {
 		GlStateManager.disableBlend();
 	}
 	
-	public static void renderConeMesh(Vec3d start, Vec3d normal, float height, float radius, int sides){
-		float[] vertices = new float[(1+sides)*3];
+	public static void renderConeMesh(final Vec3d start, final Vec3d normal, final float height, final float radius, final int sides){
+		final float[] vertices = new float[(1+sides)*3];
 		vertices[0] = 0;
 		vertices[1] = 0;
 		vertices[2] = 0;
@@ -811,14 +811,14 @@ public class RenderHelper {
 		}
 		
 		GL11.glPushMatrix();
-		Vec3d angles = BobMathUtil.getEulerAngles(normal);
+		final Vec3d angles = BobMathUtil.getEulerAngles(normal);
 		GL11.glTranslated(start.x, start.y, start.z);
 		GL11.glRotated(angles.x+180, 0, 1, 0);
 		GL11.glRotated(angles.y+180, 1, 0, 0);
         
 		
-        Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buf = tes.getBuffer();
+        final Tessellator tes = Tessellator.getInstance();
+        final BufferBuilder buf = tes.getBuffer();
         buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION);
         for(int i = 2; i <= sides; i ++){
         	buf.pos(0, 0, 0).endVertex();
@@ -827,7 +827,7 @@ public class RenderHelper {
         }
         buf.pos(0, 0, 0).endVertex();
         buf.pos(vertices[sides*3], vertices[sides*3+1], vertices[sides*3+2]).endVertex();
-        buf.pos(vertices[1*3], vertices[1*3+1], vertices[1*3+2]).endVertex();
+        buf.pos(vertices[3], vertices[3 +1], vertices[3 +2]).endVertex();
 		
         for(int i = 1; i < sides-1; i ++){
         	buf.pos(vertices[3], vertices[3+1], vertices[3+2]).endVertex();
@@ -850,10 +850,10 @@ public class RenderHelper {
 	}
 	
 	public static void disableBlockVBOs(){
-		for (VertexFormatElement vertexformatelement : DefaultVertexFormats.BLOCK.getElements())
+		for (final VertexFormatElement vertexformatelement : DefaultVertexFormats.BLOCK.getElements())
         {
-            VertexFormatElement.EnumUsage vertexformatelement$enumusage = vertexformatelement.getUsage();
-            int k1 = vertexformatelement.getIndex();
+            final VertexFormatElement.EnumUsage vertexformatelement$enumusage = vertexformatelement.getUsage();
+            final int k1 = vertexformatelement.getIndex();
 
             switch (vertexformatelement$enumusage)
             {
@@ -872,10 +872,10 @@ public class RenderHelper {
         }
 	}	
 	
-	public static void renderChunks(Collection<RenderChunk> toRender, double posX, double posY, double posZ){
-		for(RenderChunk chunk : toRender){
+	public static void renderChunks(final Collection<RenderChunk> toRender, final double posX, final double posY, final double posZ){
+		for(final RenderChunk chunk : toRender){
 			GL11.glPushMatrix();
-			BlockPos chunkPos = chunk.getPosition();
+			final BlockPos chunkPos = chunk.getPosition();
 			GL11.glTranslated(chunkPos.getX() - posX, chunkPos.getY() - posY, chunkPos.getZ() - posZ);
 			chunk.multModelviewMatrix();
 			for(int i = 0; i < 3; i ++){
@@ -884,7 +884,7 @@ public class RenderHelper {
 				if(i == 2){
 					Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
 				}
-				VertexBuffer buf = chunk.getVertexBufferByLayer(i);
+				final VertexBuffer buf = chunk.getVertexBufferByLayer(i);
 	            buf.bindBuffer();
 	            GlStateManager.glVertexPointer(3, 5126, 28, 0);
 	            GlStateManager.glColorPointer(4, 5121, 28, 12);
@@ -902,7 +902,7 @@ public class RenderHelper {
 	}
 	
 	@Deprecated
-	private static void sendFlashlightUniforms(int shader, Vec3d playerPos, Vec3d pos, Vec3d normal, float height, float degrees, ResourceLocation flashlight_tex){
+	private static void sendFlashlightUniforms(final int shader, final Vec3d playerPos, Vec3d pos, Vec3d normal, final float height, final float degrees, final ResourceLocation flashlight_tex){
 		pos = pos.subtract(playerPos);
 		pos = BobMathUtil.viewFromLocal(new Vector4f((float)pos.x, (float)pos.y, (float)pos.z, 1))[0];
 		normal = BobMathUtil.viewFromLocal(new Vector4f((float)normal.x, (float)normal.y, (float)normal.z, 0))[0];
@@ -922,7 +922,7 @@ public class RenderHelper {
 	}
 	
 	@Deprecated
-	private static void sendFlashLightPostUniforms(int shader, Vec3d playerPos, Vec3d pos, float height, float brightness, float[] shadowView, float[] shadowProjection, ResourceLocation flashlight_tex){
+	private static void sendFlashLightPostUniforms(final int shader, final Vec3d playerPos, Vec3d pos, final float height, final float brightness, final float[] shadowView, final float[] shadowProjection, final ResourceLocation flashlight_tex){
 		pos = pos.subtract(playerPos);
 		//pos = BobMathUtil.viewFromLocal(new Vector4f((float)pos.x, (float)pos.y, (float)pos.z, 1))[0];
 		GL20.glUniform1f(GL20.glGetUniformLocation(shader, "height"), height);
@@ -945,8 +945,8 @@ public class RenderHelper {
 		GL20.glUniform1i(GL20.glGetUniformLocation(shader, "shadowTex"), 6);
 		GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
 		
-		Matrix4f view = new Matrix4f();
-		Matrix4f proj = new Matrix4f();
+		final Matrix4f view = new Matrix4f();
+		final Matrix4f proj = new Matrix4f();
 		
 		ClientProxy.AUX_GL_BUFFER.put(shadowView);
 		ClientProxy.AUX_GL_BUFFER2.put(shadowProjection);
@@ -968,16 +968,16 @@ public class RenderHelper {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static RenderChunk getRenderChunk(BlockPos pos){
+	public static RenderChunk getRenderChunk(final BlockPos pos){
     	try {
     		if(r_viewFrustum == null)
     			r_viewFrustum = ReflectionHelper.findField(RenderGlobal.class, "viewFrustum", "field_175008_n");
     		if(r_getRenderChunk == null)
 				r_getRenderChunk = ReflectionHelper.findMethod(ViewFrustum.class, "getRenderChunk", "func_178161_a", BlockPos.class);
-			ViewFrustum v = (ViewFrustum) r_viewFrustum.get(Minecraft.getMinecraft().renderGlobal);
-			RenderChunk r = (RenderChunk) r_getRenderChunk.invoke(v, pos);
+			final ViewFrustum v = (ViewFrustum) r_viewFrustum.get(Minecraft.getMinecraft().renderGlobal);
+			final RenderChunk r = (RenderChunk) r_getRenderChunk.invoke(v, pos);
 			return r;
-		} catch(IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+		} catch(final IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
     	return null;
@@ -987,7 +987,7 @@ public class RenderHelper {
 		renderFullscreenTriangle(false);
 	}
 	
-	public static void renderFullscreenTriangle(boolean alpha){
+	public static void renderFullscreenTriangle(final boolean alpha){
 		GlStateManager.colorMask(true, true, true, alpha);
         GlStateManager.disableDepth();
         GlStateManager.depthMask(false);
@@ -998,8 +998,8 @@ public class RenderHelper {
         GlStateManager.enableColorMaterial();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX);
         bufferbuilder.pos(-1, -1, 0.0D).tex(0, 0).endVertex();
         bufferbuilder.pos(3, -1, 0.0D).tex(2, 0).endVertex();
@@ -1012,17 +1012,17 @@ public class RenderHelper {
         GlStateManager.colorMask(true, true, true, true);
 	}
 	
-	public static void resetParticleInterpPos(Entity entityIn, float partialTicks){
-		double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-        double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-        double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+	public static void resetParticleInterpPos(final Entity entityIn, final float partialTicks){
+		final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+        final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+        final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
         
         Particle.interpPosX = entPosX;
         Particle.interpPosY = entPosY;
         Particle.interpPosZ = entPosZ;
 	}
 	
-	public static float[] project(float x, float y, float z){
+	public static float[] project(final float x, final float y, final float z){
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, MODELVIEW);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, PROJECTION);
 		GL11.glGetInteger(GL11.GL_VIEWPORT, VIEWPORT);
@@ -1031,7 +1031,7 @@ public class RenderHelper {
 		return new float[]{POSITION.get(0), POSITION.get(1), POSITION.get(2)};
 	}
 	
-	public static float[] unproject(float x, float y, float z){
+	public static float[] unproject(final float x, final float y, final float z){
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, MODELVIEW);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, PROJECTION);
 		GL11.glGetInteger(GL11.GL_VIEWPORT, VIEWPORT);
@@ -1040,48 +1040,48 @@ public class RenderHelper {
 		return new float[]{POSITION.get(0), POSITION.get(1), POSITION.get(2)};
 	}
 	
-	public static Vec3d unproject_world(float[] inv_mvp, float x, float y, float z){
-		Matrix4f mat = new Matrix4f();
+	public static Vec3d unproject_world(final float[] inv_mvp, final float x, final float y, final float z){
+		final Matrix4f mat = new Matrix4f();
 		ClientProxy.AUX_GL_BUFFER.put(inv_mvp);
 		ClientProxy.AUX_GL_BUFFER.rewind();
 		mat.load(ClientProxy.AUX_GL_BUFFER);
 		ClientProxy.AUX_GL_BUFFER.rewind();
 		
-		Vector4f ndcPos = new Vector4f();
+		final Vector4f ndcPos = new Vector4f();
 		ndcPos.x = (2F*x)/(Minecraft.getMinecraft().displayWidth) - 1;
 		ndcPos.y = (2F*y)/(Minecraft.getMinecraft().displayHeight) - 1;
-		float near = 0;
-		float far = 1;
+		final float near = 0;
+		final float far = 1;
 		ndcPos.z = (2*z - near - far)/(far-near);
 		ndcPos.w = 1;
 		
 		Matrix4f.transform(mat, ndcPos, ndcPos);
-		float invW = 1F/ndcPos.w;
-		Vector3f worldPos = new Vector3f(ndcPos.x*invW, ndcPos.y*invW, ndcPos.z*invW);
+		final float invW = 1F/ndcPos.w;
+		final Vector3f worldPos = new Vector3f(ndcPos.x*invW, ndcPos.y*invW, ndcPos.z*invW);
 		
-		Entity ent = Minecraft.getMinecraft().getRenderViewEntity();
-		float partialTicks = MainRegistry.proxy.partialTicks();
-		double rPosX = ent.prevPosX + (ent.posX-ent.prevPosX)*partialTicks;
-		double rPosY = ent.prevPosY + (ent.posY-ent.prevPosY)*partialTicks;
-		double rPosZ = ent.prevPosZ + (ent.posZ-ent.prevPosZ)*partialTicks;
+		final Entity ent = Minecraft.getMinecraft().getRenderViewEntity();
+		final float partialTicks = MainRegistry.proxy.partialTicks();
+		final double rPosX = ent.prevPosX + (ent.posX-ent.prevPosX)*partialTicks;
+		final double rPosY = ent.prevPosY + (ent.posY-ent.prevPosY)*partialTicks;
+		final double rPosZ = ent.prevPosZ + (ent.posZ-ent.prevPosZ)*partialTicks;
 		//Vec3d eyePos = ActiveRenderInfo.getCameraPosition();
 		
 		return new Vec3d(worldPos.x + rPosX, worldPos.y + rPosY, worldPos.z + rPosZ);
 	}
 	
-	public static boolean intersects2DBox(float x, float y, float[] box){
+	public static boolean intersects2DBox(final float x, final float y, final float[] box){
 		return x > box[0] && x < box[2] && y > box[1] && y < box[3];
 	}
 	
-	public static boolean boxesOverlap(float[] box1, float[] box2){
+	public static boolean boxesOverlap(final float[] box1, final float[] box2){
 		return box1[0] < box2[2] && box1[2] > box2[0] && box1[1] < box2[3] && box1[3] > box2[1];
 	}
 	
-	public static boolean boxContainsOther(float[] box, float[] other){
+	public static boolean boxContainsOther(final float[] box, final float[] other){
 		return box[0] <= other[0] && box[1] <= other[1] && box[2] >= other[2] && box[3] >= other[3];
 	}
 	
-	public static float[] getBoxCenter(float[] box){
+	public static float[] getBoxCenter(final float[] box){
 		return new float[]{box[0]+(box[2]-box[0])*0.5F, box[1]+(box[3]-box[1])*0.5F};
 	}
 }

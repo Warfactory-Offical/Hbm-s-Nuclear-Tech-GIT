@@ -21,7 +21,7 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 
 	public static final int maxAge = 60;
 	
-	public EntityDeathBlast(World worldIn) {
+	public EntityDeathBlast(final World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 	}
@@ -34,13 +34,13 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 			if(CompatibilityConfig.isWarDim(world)){
 				world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, 40, posX, posY, posZ).mute());
 				
-				int count = 100;
+				final int count = 100;
 				for(int i = 0; i < count; i++) {
 					
-					Vec3 vec = Vec3.createVectorHelper(0.2, 0, 0);
+					final Vec3 vec = Vec3.createVectorHelper(0.2, 0, 0);
 					vec.rotateAroundY((float)(2 * Math.PI * i / (float)count));
 					
-					EntityBulletBase laser = new EntityBulletBase(world, BulletConfigSyncingUtil.MASKMAN_BOLT);
+					final EntityBulletBase laser = new EntityBulletBase(world, BulletConfigSyncingUtil.MASKMAN_BOLT);
 					laser.setPosition(posX, posY + 2, posZ);
 					laser.motionX = vec.xCoord;
 					laser.motionZ = vec.zCoord;
@@ -49,7 +49,7 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 				}
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "muke");
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, posY + 0.5, posZ), new TargetPoint(world.provider.getDimension(), posX, posY, posZ, 250));
 			world.playSound(null, posX, posY, posZ, HBMSoundHandler.mukeExplosion, SoundCategory.HOSTILE, 25.0F, 0.9F);
@@ -71,7 +71,7 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 25000;
     }
@@ -81,11 +81,11 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 	}
 
 }

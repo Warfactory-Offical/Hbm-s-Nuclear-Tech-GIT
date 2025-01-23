@@ -15,17 +15,17 @@ public class RenderQuackos extends RenderChicken implements IConstantRenderer {
 	
 	public static final IRenderFactory<EntityChicken> FACTORY = man -> new RenderQuackos(man);
 	
-	public RenderQuackos(RenderManager p_i47211_1_) {
+	public RenderQuackos(final RenderManager p_i47211_1_) {
 		super(p_i47211_1_);
 	}
 	
 	@Override
-	public void doRender(EntityChicken entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityChicken entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityChicken entity) {
+	protected ResourceLocation getEntityTexture(final EntityChicken entity) {
 		return ducc;
 	}
 

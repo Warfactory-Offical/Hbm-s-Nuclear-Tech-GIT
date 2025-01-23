@@ -16,9 +16,9 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 
 	public static final DataParameter<Boolean> SHIELD = EntityDataManager.createKey(EntityBOTPrimeBody.class, DataSerializers.BOOLEAN);
 	
-	private WormMovementBodyNT movement = new WormMovementBodyNT(this);
+	private final WormMovementBodyNT movement = new WormMovementBodyNT(this);
 
-	public EntityBOTPrimeBody(World world) {
+	public EntityBOTPrimeBody(final World world) {
 		super(world);
 		this.bodySpeed = 0.6D;
 		this.rangeForParts = 70.0D;
@@ -34,7 +34,7 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 	}
 
 	@Override
-	public float getAttackStrength(Entity target) {
+	public float getAttackStrength(final Entity target) {
 		if(target instanceof EntityLivingBase) {
 			return ((EntityLivingBase) target).getHealth() * 0.75F;
 		}
@@ -43,7 +43,7 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 	}
 	
 	@Override
-	public boolean isPotionApplicable(PotionEffect potioneffectIn) {
+	public boolean isPotionApplicable(final PotionEffect potioneffectIn) {
 		return false;
 	}
 	
@@ -76,10 +76,10 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 		}
 
 		if(this.targetedEntity != null) {
-			double dx = targetedEntity.posX - posX;
-			double dy = targetedEntity.posY - posY;
-			double dz = targetedEntity.posZ - posZ;
-	        float f3 = MathHelper.sqrt(dx * dx + dz * dz);
+			final double dx = targetedEntity.posX - posX;
+			final double dy = targetedEntity.posY - posY;
+			final double dz = targetedEntity.posZ - posZ;
+	        final float f3 = MathHelper.sqrt(dx * dx + dz * dz);
 	        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(dx, dz) * 180.0D / Math.PI);
 	        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(dy, f3) * 180.0D / Math.PI);
 		}
@@ -91,23 +91,23 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 		super.onUpdate();
 
 		if(this.targetedEntity != null) {
-			double dx = targetedEntity.posX - posX;
-			double dy = targetedEntity.posY - posY;
-			double dz = targetedEntity.posZ - posZ;
-			float f3 = MathHelper.sqrt(dx * dx + dz * dz);
+			final double dx = targetedEntity.posX - posX;
+			final double dy = targetedEntity.posY - posY;
+			final double dz = targetedEntity.posZ - posZ;
+			final float f3 = MathHelper.sqrt(dx * dx + dz * dz);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(dx, dz) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(dy, f3) * 180.0D / Math.PI);
 		}
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	public void writeEntityToNBT(final NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("partID", this.getPartNumber());
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	public void readEntityFromNBT(final NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		setPartNumber(compound.getInteger("partID"));
 	}

@@ -9,7 +9,7 @@ public class ModelPylon extends ModelBase {
 	int textureX = 64;
 	int textureY = 128;
 
-	public ModelRenderer pylonModel[];
+	public ModelRenderer[] pylonModel;
 
 	public ModelPylon()
 	{
@@ -41,7 +41,7 @@ public class ModelPylon extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5)
 	{
 		for(int i = 0; i < 4; i++)
 		{
@@ -49,7 +49,7 @@ public class ModelPylon extends ModelBase {
 		}
 	}
 
-	public void renderAll(float f5)
+	public void renderAll(final float f5)
 	{
 		for(int i = 0; i < 4; i++)
 		{
@@ -58,7 +58,7 @@ public class ModelPylon extends ModelBase {
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
+	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity)
 	{
 	    super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}

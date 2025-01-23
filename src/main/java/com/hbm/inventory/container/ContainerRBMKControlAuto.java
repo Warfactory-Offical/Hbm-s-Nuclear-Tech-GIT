@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerRBMKControlAuto extends Container {
 
-	private TileEntityRBMKControlAuto rbmk;
+	private final TileEntityRBMKControlAuto rbmk;
 
-	public ContainerRBMKControlAuto(InventoryPlayer invPlayer, TileEntityRBMKControlAuto tedf) {
+	public ContainerRBMKControlAuto(final InventoryPlayer invPlayer, final TileEntityRBMKControlAuto tedf) {
 		rbmk = tedf;
 
 		for(int i = 0; i < 3; i++) {
@@ -27,12 +27,12 @@ public class ContainerRBMKControlAuto extends Container {
 	}
 	
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_) {
+	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int p_82846_2_) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return true;
 	}
 }

@@ -12,12 +12,12 @@ import net.minecraft.item.Item;
 
 public class BlockCap extends BlockRotatablePillar {
 
-	public BlockCap(Material materialIn, String s) {
+	public BlockCap(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		if(this == ModBlocks.block_cap_nuka)
 			return ModItems.cap_nuka;
 		if(this == ModBlocks.block_cap_quantum)
@@ -38,7 +38,7 @@ public class BlockCap extends BlockRotatablePillar {
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random random) {
 		return 128;
 	}
 

@@ -1,4 +1,5 @@
 package com.hbm.render.tileentity;
+import com.hbm.util.ItemStackUtil;
 
 import org.lwjgl.opengl.GL11;
 
@@ -35,7 +36,7 @@ public class RenderPress extends TileEntitySpecialRenderer<TileEntityMachinePres
 	}
 
 	@Override
-	public void render(TileEntityMachinePress te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachinePress te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		pos = new Vec3d(x, y, z);
 		/*if(MainRegistry.useShaders) {
 			if(!ModEventHandlerClient.tester.containsKey(te))
@@ -152,13 +153,13 @@ public class RenderPress extends TileEntitySpecialRenderer<TileEntityMachinePres
 		// GL11.glDisable(GL11.GL_STENCIL_TEST);
 	}
 
-	public void renderTileEntityAt2(TileEntity tileEntity, double x, double y, double z, float f) {
+	public void renderTileEntityAt2(final TileEntity tileEntity, final double x, final double y, final double z, final float f) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(0, 1 - 0.125D, 0);
 		GL11.glScalef(0.95F, 1, 0.95F);
 
-		TileEntityMachinePress press = (TileEntityMachinePress) tileEntity;
-		float f1 = press.progress * (1 - 0.125F) / TileEntityMachinePress.maxProgress;
+		final TileEntityMachinePress press = (TileEntityMachinePress) tileEntity;
+		final float f1 = press.progress * (1 - 0.125F) / TileEntityMachinePress.maxProgress;
 		GL11.glTranslated(0, -f1, 0);
 		this.bindTexture(ResourceManager.press_head_tex);
 
@@ -168,14 +169,14 @@ public class RenderPress extends TileEntitySpecialRenderer<TileEntityMachinePres
 		renderTileEntityAt3(tileEntity, x, y, z, f);
 	}
 
-	public void renderTileEntityAt3(TileEntity tileEntity, double x, double y, double z, float f) {
+	public void renderTileEntityAt3(final TileEntity tileEntity, final double x, final double y, final double z, final float f) {
 		GL11.glTranslated(0, 1, -1);
 		GlStateManager.enableLighting();
 		GL11.glRotatef(180, 0F, 1F, 0F);
 		GL11.glRotatef(-90, 1F, 0F, 0F);
 		
-		TileEntityMachinePress press = (TileEntityMachinePress) tileEntity;
-		ItemStack stack = new ItemStack(Item.getItemById(press.item), 1, press.meta);
+		final TileEntityMachinePress press = (TileEntityMachinePress) tileEntity;
+		final ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(press.item), 1, press.meta);
 
 		if(!(stack.getItem() instanceof ItemBlock) && !stack.isEmpty()) {
 			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, tileEntity.getWorld(), null);

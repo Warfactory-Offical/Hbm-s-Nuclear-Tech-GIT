@@ -15,12 +15,12 @@ public class GroupObject
         this("");
     }
 
-    public GroupObject(String name)
+    public GroupObject(final String name)
     {
         this(name, -1);
     }
 
-    public GroupObject(String name, int glDrawingMode)
+    public GroupObject(final String name, final int glDrawingMode)
     {
         this.name = name;
         this.glDrawingMode = glDrawingMode;
@@ -32,7 +32,7 @@ public class GroupObject
         if (faces.size() > 0)
         {
         	
-            Tessellator tessellator = Tessellator.instance;
+            final Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawing(glDrawingMode);
             render(tessellator);
             tessellator.draw();
@@ -40,11 +40,11 @@ public class GroupObject
     }
 
     @SideOnly(Side.CLIENT)
-    public void render(Tessellator tessellator)
+    public void render(final Tessellator tessellator)
     {
         if (faces.size() > 0)
         {
-            for (Face face : faces)
+            for (final Face face : faces)
             {
                 face.addFaceForRender(tessellator);
             }
@@ -52,12 +52,12 @@ public class GroupObject
     }
 
     @SideOnly(Side.CLIENT)
-    public void renderSplit(float splitHeight, float scale)
+    public void renderSplit(final float splitHeight, final float scale)
     {
         if (faces.size() > 0)
         {
             
-            Tessellator tessellator = Tessellator.instance;
+            final Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawing(glDrawingMode);
             renderSplit(tessellator, splitHeight, scale);
             tessellator.draw();
@@ -65,11 +65,11 @@ public class GroupObject
     }
 
     @SideOnly(Side.CLIENT)
-    public void renderSplit(Tessellator tessellator, float splitHeight, float scale)
+    public void renderSplit(final Tessellator tessellator, final float splitHeight, final float scale)
     {
         if (faces.size() > 0)
         {
-            for (Face face : faces)
+            for (final Face face : faces)
             {
                 face.addFaceForRenderSplit(tessellator, 0F, splitHeight, scale);
             }

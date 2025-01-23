@@ -25,7 +25,7 @@ public class TileEntityTowerSmall extends TileEntityCondenser {
 		if(world.isRemote) {
 			
 			if(this.waterTimer > 0 && this.world.getTotalWorldTime() % 4 == 0) {
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "tower");
 				data.setFloat("lift", 1.5F);
 				data.setFloat("base", 0.5F);
@@ -42,10 +42,10 @@ public class TileEntityTowerSmall extends TileEntityCondenser {
 	}
 
 	@Override
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		
 		for(int i = 2; i <= 6; i++) {
-			ForgeDirection dir = ForgeDirection.getOrientation(i);
+			final ForgeDirection dir = ForgeDirection.getOrientation(i);
 			fillFluid(pos.getX() + dir.offsetX * 3, pos.getY(), pos.getZ() + dir.offsetZ * 3, tank);
 		}
 	}

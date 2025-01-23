@@ -17,147 +17,147 @@ abstract class ArithmeticOperators {
 
     public double x, y;
 
-    public Vec2d add_(double b) {
+    public Vec2d add_(final double b) {
         return Glm.add(new Vec2d(), (Vec2d) this, b, b);
     }
 
-    public Vec2d add_(double bX, double bY) {
+    public Vec2d add_(final double bX, final double bY) {
         return Glm.add(new Vec2d(), (Vec2d) this, bX, bY);
     }
 
-    public Vec2d add_(Vec2d b) {
+    public Vec2d add_(final Vec2d b) {
         return Glm.add(new Vec2d(), (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d add(double b) {
+    public Vec2d add(final double b) {
         return Glm.add((Vec2d) this, (Vec2d) this, b, b);
     }
 
-    public Vec2d add(double bX, double bY) {
+    public Vec2d add(final double bX, final double bY) {
         return Glm.add((Vec2d) this, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d add(Vec2d b) {
+    public Vec2d add(final Vec2d b) {
         return Glm.add((Vec2d) this, (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d add(double b, Vec2d res) {
+    public Vec2d add(final double b, final Vec2d res) {
         return Glm.add(res, (Vec2d) this, b, b);
     }
 
-    public Vec2d add(double bX, double bY, Vec2d res) {
+    public Vec2d add(final double bX, final double bY, final Vec2d res) {
         return Glm.add(res, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d add(Vec2d b, Vec2d res) {
+    public Vec2d add(final Vec2d b, final Vec2d res) {
         return Glm.add(res, (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d sub_(double b) {
+    public Vec2d sub_(final double b) {
         return Glm.sub(new Vec2d(), (Vec2d) this, b, b);
     }
 
-    public Vec2d sub_(double bX, double bY) {
+    public Vec2d sub_(final double bX, final double bY) {
         return Glm.sub(new Vec2d(), (Vec2d) this, bX, bY);
     }
 
-    public Vec2d sub_(Vec2d b) {
+    public Vec2d sub_(final Vec2d b) {
         return Glm.sub(new Vec2d(), (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d sub(double b) {
+    public Vec2d sub(final double b) {
         return Glm.sub((Vec2d) this, (Vec2d) this, b, b);
     }
 
-    public Vec2d sub(double bX, double bY) {
+    public Vec2d sub(final double bX, final double bY) {
         return Glm.sub((Vec2d) this, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d sub(Vec2d b) {
+    public Vec2d sub(final Vec2d b) {
         return Glm.sub((Vec2d) this, (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d sub(double b, Vec2d res) {
+    public Vec2d sub(final double b, final Vec2d res) {
         return Glm.sub(res, (Vec2d) this, b, b);
     }
 
-    public Vec2d sub(double bX, double bY, Vec2d res) {
+    public Vec2d sub(final double bX, final double bY, final Vec2d res) {
         return Glm.sub(res, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d sub(Vec2d b, Vec2d res) {
+    public Vec2d sub(final Vec2d b, final Vec2d res) {
         return Glm.sub(res, (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d mul_(double b) {
+    public Vec2d mul_(final double b) {
         return Glm.mul(new Vec2d(), (Vec2d) this, b, b);
     }
 
-    public Vec2d mul_(double bX, double bY) {
+    public Vec2d mul_(final double bX, final double bY) {
         return Glm.mul(new Vec2d(), (Vec2d) this, bX, bY);
     }
 
-    public Vec2d mul_(Vec2d b) {
+    public Vec2d mul_(final Vec2d b) {
         return Glm.mul(new Vec2d(), (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d mul(double b) {
+    public Vec2d mul(final double b) {
         return Glm.mul((Vec2d) this, (Vec2d) this, b, b);
     }
 
-    public Vec2d mul(double bX, double bY) {
+    public Vec2d mul(final double bX, final double bY) {
         return Glm.mul((Vec2d) this, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d mul(Vec2d b) {
+    public Vec2d mul(final Vec2d b) {
         return Glm.mul((Vec2d) this, (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d mul(double b, Vec2d res) {
+    public Vec2d mul(final double b, final Vec2d res) {
         return Glm.mul(res, (Vec2d) this, b, b);
     }
 
-    public Vec2d mul(double bX, double bY, Vec2d res) {
+    public Vec2d mul(final double bX, final double bY, final Vec2d res) {
         return Glm.mul(res, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d mul(Vec2d b, Vec2d res) {
+    public Vec2d mul(final Vec2d b, final Vec2d res) {
         return Glm.mul(res, (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d div_(double b) {
+    public Vec2d div_(final double b) {
         return Glm.div(new Vec2d(), (Vec2d) this, b, b);
     }
 
-    public Vec2d div_(double bX, double bY) {
+    public Vec2d div_(final double bX, final double bY) {
         return Glm.div(new Vec2d(), (Vec2d) this, bX, bY);
     }
 
-    public Vec2d div_(Vec2d b) {
+    public Vec2d div_(final Vec2d b) {
         return Glm.div(new Vec2d(), (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d div(double b) {
+    public Vec2d div(final double b) {
         return Glm.div((Vec2d) this, (Vec2d) this, b, b);
     }
 
-    public Vec2d div(double bX, double bY) {
+    public Vec2d div(final double bX, final double bY) {
         return Glm.div((Vec2d) this, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d div(Vec2d b) {
+    public Vec2d div(final Vec2d b) {
         return Glm.div((Vec2d) this, (Vec2d) this, b.x, b.y);
     }
 
-    public Vec2d div(double b, Vec2d res) {
+    public Vec2d div(final double b, final Vec2d res) {
         return Glm.div(res, (Vec2d) this, b, b);
     }
 
-    public Vec2d div(double bX, double bY, Vec2d res) {
+    public Vec2d div(final double bX, final double bY, final Vec2d res) {
         return Glm.div(res, (Vec2d) this, bX, bY);
     }
 
-    public Vec2d div(Vec2d b, Vec2d res) {
+    public Vec2d div(final Vec2d b, final Vec2d res) {
         return Glm.div(res, (Vec2d) this, b.x, b.y);
     }
 
@@ -169,7 +169,7 @@ abstract class ArithmeticOperators {
         return Glm.incr((Vec2d) this);
     }
 
-    public Vec2d incr(Vec2d res) {
+    public Vec2d incr(final Vec2d res) {
         return Glm.incr(res, (Vec2d) this);
     }
 
@@ -181,7 +181,7 @@ abstract class ArithmeticOperators {
         return Glm.decr((Vec2d) this);
     }
 
-    public Vec2d decr(Vec2d res) {
+    public Vec2d decr(final Vec2d res) {
         return Glm.decr(res, (Vec2d) this);
     }
 }

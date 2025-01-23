@@ -1,30 +1,26 @@
 package com.hbm.items.tool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.I18nUtil;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemGuideBook extends Item {
 
-	public ItemGuideBook(String s){
+	public ItemGuideBook(final String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxStackSize(1);
@@ -34,7 +30,7 @@ public class ItemGuideBook extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn){
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn){
 		if(worldIn.isRemote)
 			playerIn.openGui(MainRegistry.instance, ModItems.guiID_item_guide, worldIn, 0, 0, 0);
 		
@@ -43,14 +39,14 @@ public class ItemGuideBook extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab())
 			for(int i = 1; i < BookType.values().length; i++)
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
 		tooltip.add(String.join(" ", I18nUtil.resolveKeyArray(BookType.getType(stack.getItemDamage()).title)));
 	}
 	
@@ -65,20 +61,20 @@ public class ItemGuideBook extends Item {
 		public float titleScale;
 		public String title;
 		
-		private BookType(String title, float titleScale, List<GuidePage> pages) {
+		private BookType(final String title, final float titleScale, final List<GuidePage> pages) {
 			this.title = title;
 			this.titleScale = titleScale;
 			this.pages = pages;
 		}
 		
-		public static BookType getType(int i) {
+		public static BookType getType(final int i) {
 			return BookType.values()[Math.abs(i) % BookType.values().length];
 		}
 	}
 	
 	public static List<GuidePage> statFacTest() {
 		
-		List<GuidePage> pages = new ArrayList<>();
+		final List<GuidePage> pages = new ArrayList<>();
 		pages.add(new GuidePage("book.test.page1").addTitle("Title LMAO", 0x800000, 1F).setScale(2F).addImage(new ResourceLocation(RefStrings.MODID + ":textures/gui/book/smileman.png"), 100, 40, 40));
 		pages.add(new GuidePage("book.test.page1").addTitle("LA SEXO", 0x800000, 0.5F).setScale(1.75F).addImage(new ResourceLocation(RefStrings.MODID + ":textures/gui/book/smileman.png"), 100, 40, 40));
 		pages.add(new GuidePage("test test"));
@@ -91,7 +87,7 @@ public class ItemGuideBook extends Item {
 
 	public static List<GuidePage> statFacHadron() {
 		
-		List<GuidePage> pages = new ArrayList();
+		final List<GuidePage> pages = new ArrayList();
 		
 		for(int i = 1; i <= 9; i++) {
 			pages.add(new GuidePage("book.error.page" + i).setScale(2F).addTitle("book.error.title" + i, 0x800000, 1F));
@@ -102,7 +98,7 @@ public class ItemGuideBook extends Item {
 	
 	public static List<GuidePage> statFacRBMK() {
 		
-		List<GuidePage> pages = new ArrayList<>();
+		final List<GuidePage> pages = new ArrayList<>();
 		pages.add(new GuidePage("book.rbmk.page1").setScale(2F).addTitle("book.rbmk.title1", 0x800000, 1F)
 				.addImage(new ResourceLocation(RefStrings.MODID + ":textures/gui/book/rbmk1.png"), 90, 80, 60));
 
@@ -178,8 +174,8 @@ public class ItemGuideBook extends Item {
 
 
 	public static List<GuidePage> statFacMSword() {
-		int widthX = 100;
-		List<GuidePage> pages = new ArrayList<>();
+		final int widthX = 100;
+		final List<GuidePage> pages = new ArrayList<>();
 		pages.add(new GuidePage("book.msword.page0").setScale(2F).addTitle("book.msword.title0", 0x800000, 1F));
 		pages.add(new GuidePage("book.msword.page1").setScale(2F).addTitle("book.msword.title1", 0x800000, 1F)
 				.addImage(new ResourceLocation(RefStrings.MODID + ":textures/gui/book/guide_meteor_sword/01.png"), 95, widthX, (int)(widthX * (64F/164F))));
@@ -246,23 +242,23 @@ public class ItemGuideBook extends Item {
 		
 		public GuidePage() { }
 		
-		public GuidePage(String text) {
+		public GuidePage(final String text) {
 			this.text = text;
 		}
 		
-		public GuidePage setScale(float scale) {
+		public GuidePage setScale(final float scale) {
 			this.scale = scale;
 			return this;
 		}
 		
-		public GuidePage addTitle(String title, int color, float scale) {
+		public GuidePage addTitle(final String title, final int color, final float scale) {
 			this.title = title;
 			this.titleColor = color;
 			this.titleScale = scale;
 			return this;
 		}
 		
-		public GuidePage addImage(ResourceLocation image, int x, int y, int sizeX, int sizeY) {
+		public GuidePage addImage(final ResourceLocation image, final int x, final int y, final int sizeX, final int sizeY) {
 			
 			this.image = image;
 			this.x = x;
@@ -273,7 +269,7 @@ public class ItemGuideBook extends Item {
 		}
 		
 		//if the x-coord is -1 then it will automatically try to center the image horizontally
-		public GuidePage addImage(ResourceLocation image, int y, int sizeX, int sizeY) {
+		public GuidePage addImage(final ResourceLocation image, final int y, final int sizeX, final int sizeY) {
 			return addImage(image, -1, y, sizeX, sizeY);
 		}
 	}

@@ -18,7 +18,7 @@ public class ContainerArmorTable extends Container {
 	public InventoryBasic upgrades = new InventoryBasic("Upgrades", false, 8);
 	public IInventory armor = new InventoryCraftResult();
 
-	public ContainerArmorTable(InventoryPlayer inventory) {
+	public ContainerArmorTable(final InventoryPlayer inventory) {
 		
 		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.helmet_only, 26, 27));	// helmet only
 		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.plate_only, 62, 27));		// chestplate only
@@ -32,16 +32,16 @@ public class ContainerArmorTable extends Container {
 		this.addSlotToContainer(new Slot(armor, 0, 44, 63) {
 
 			@Override
-			public boolean isItemValid(ItemStack stack) {
+			public boolean isItemValid(final ItemStack stack) {
 				return stack.getItem() instanceof ItemArmor;
 			}
 
 			@Override
-			public void putStack(ItemStack stack) {
+			public void putStack(final ItemStack stack) {
 				
 				//when inserting a new armor piece, unload all mods to display
 				if(stack != null && !stack.isEmpty()) {
-					ItemStack[] mods = ArmorModHandler.pryMods(stack);
+					final ItemStack[] mods = ArmorModHandler.pryMods(stack);
 					
 					for(int i = 0; i < 8; i++) {
 						
@@ -55,12 +55,12 @@ public class ContainerArmorTable extends Container {
 			}
 
 			@Override
-			public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+			public ItemStack onTake(final EntityPlayer thePlayer, final ItemStack stack) {
 				//if the armor piece is taken, absorb all armor pieces
 				
 				for(int i = 0; i < 8; i++) {
 					
-					ItemStack mod = upgrades.getStackInSlot(i);
+					final ItemStack mod = upgrades.getStackInSlot(i);
 					
 					//ideally, this should always return true so long as the mod slot is not null due to the insert restriction
 					if(ArmorModHandler.isApplicable(stack, mod)) {
@@ -88,21 +88,21 @@ public class ContainerArmorTable extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return true;
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2) {
+	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2) {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 
 		if(var4 != null && var4.getHasStack()) {
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
 			if(par2 <= 8) {
-				ItemStack copy = var5.copy();
+				final ItemStack copy = var5.copy();
 				if(!this.mergeItemStack(var5, 9, this.inventorySlots.size(), true)) {
 					return ItemStack.EMPTY;
 				} else {
@@ -112,11 +112,10 @@ public class ContainerArmorTable extends Container {
 				if(var5.getItem() instanceof ItemArmor) {
 					if(!this.mergeItemStack(var5, 8, 9, false))
 						return ItemStack.EMPTY;
-				} else if(this.inventorySlots.get(8) != null && var5.getItem() instanceof ItemArmorMod) {
-					ItemArmorMod mod = (ItemArmorMod)var5.getItem();
-					int slot = mod.type;
+				} else if(this.inventorySlots.get(8) != null && var5.getItem() instanceof ItemArmorMod mod) {
+                    final int slot = mod.type;
 					
-					if(((Slot) this.inventorySlots.get(slot)).isItemValid(var5)) {
+					if(this.inventorySlots.get(slot).isItemValid(var5)) {
 						if(!this.mergeItemStack(var5, slot, slot + 1, false))
 							return ItemStack.EMPTY;
 					} else {
@@ -138,12 +137,12 @@ public class ContainerArmorTable extends Container {
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer player) {
+	public void onContainerClosed(final EntityPlayer player) {
 		super.onContainerClosed(player);
 
 		if(!player.world.isRemote) {
 			for(int i = 0; i < this.upgrades.getSizeInventory(); ++i) {
-				ItemStack itemstack = this.upgrades.getStackInSlot(i);
+				final ItemStack itemstack = this.upgrades.getStackInSlot(i);
 
 				if(itemstack != null) {
 					player.dropItem(itemstack, false);
@@ -151,7 +150,7 @@ public class ContainerArmorTable extends Container {
 				}
 			}
 			
-			ItemStack itemstack = this.armor.getStackInSlot(0);
+			final ItemStack itemstack = this.armor.getStackInSlot(0);
 			
 			if(itemstack != null) {
 				player.dropItem(itemstack, false);
@@ -161,17 +160,17 @@ public class ContainerArmorTable extends Container {
 	
 	public class UpgradeSlot extends Slot {
 
-		public UpgradeSlot(IInventory inventory, int index, int x, int y) {
+		public UpgradeSlot(final IInventory inventory, final int index, final int x, final int y) {
 			super(inventory, index, x, y);
 		}
 
 		@Override
-		public boolean isItemValid(ItemStack stack) {
+		public boolean isItemValid(final ItemStack stack) {
 			return armor.getStackInSlot(0) != null && ArmorModHandler.isApplicable(armor.getStackInSlot(0), stack) && ((ItemArmorMod)stack.getItem()).type == this.slotNumber;
 		}
 		
 		@Override
-		public void putStack(ItemStack stack) {
+		public void putStack(final ItemStack stack) {
 			super.putStack(stack);
 			
 			if(stack != null) {
@@ -181,7 +180,7 @@ public class ContainerArmorTable extends Container {
 		}
 
 		@Override
-		public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+		public ItemStack onTake(final EntityPlayer thePlayer, final ItemStack stack) {
 			ArmorModHandler.removeMod(armor.getStackInSlot(0), this.slotNumber);
 			return super.onTake(thePlayer, stack);
 		}

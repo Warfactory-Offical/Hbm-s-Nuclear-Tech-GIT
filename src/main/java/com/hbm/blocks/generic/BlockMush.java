@@ -26,7 +26,7 @@ public class BlockMush extends BlockBush implements IGrowable, IItemHazard {
 	ItemHazardModule module;
 	protected static final AxisAlignedBB MUSHROOM_AABB = new AxisAlignedBB(0.30000001192092896D, 0.0D, 0.30000001192092896D, 0.699999988079071D, 0.4000000059604645D, 0.699999988079071D);
 	
-	public BlockMush(Material materialIn, String s) {
+	public BlockMush(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -43,14 +43,14 @@ public class BlockMush extends BlockBush implements IGrowable, IItemHazard {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		return MUSHROOM_AABB;
 	}
 	
-	public boolean canBlockStay(World world, BlockPos pos, IBlockState state){
+	public boolean canBlockStay(final World world, final BlockPos pos, final IBlockState state){
 		if (pos.getY() >= 0 && pos.getY() < 256)
         {
-            Block block = world.getBlockState(pos.down()).getBlock();
+            final Block block = world.getBlockState(pos.down()).getBlock();
             return block == ModBlocks.waste_earth || block == ModBlocks.waste_mycelium || block == ModBlocks.waste_dirt;
         }
         else
@@ -60,22 +60,22 @@ public class BlockMush extends BlockBush implements IGrowable, IItemHazard {
 	}
 	
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+	public boolean canPlaceBlockAt(final World world, final BlockPos pos) {
 		return this.canBlockStay(world, pos, world.getBlockState(pos));
 	}
 	
 	@Override
-	public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean canPlaceTorchOnTop(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+	public boolean canPlaceBlockOnSide(final World world, final BlockPos pos, final EnumFacing side) {
 		return this.canBlockStay(world, pos, world.getBlockState(pos));
 	}
 	
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World worldIn, final BlockPos pos, final IBlockState state, final Random rand) {
 		this.checkAndDropBlock(worldIn, pos, state);
 		if(GeneralConfig.enableMycelium && (worldIn.getBlockState(pos.down()).getBlock() == ModBlocks.waste_mycelium || worldIn.getBlockState(pos.down()).getBlock() == ModBlocks.waste_earth) && rand.nextInt(5) == 0){
 			worldIn.setBlockState(pos.down(), ModBlocks.waste_mycelium.getDefaultState());
@@ -84,21 +84,21 @@ public class BlockMush extends BlockBush implements IGrowable, IItemHazard {
 	}
 
 	@Override
-	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+	public boolean canGrow(final World worldIn, final BlockPos pos, final IBlockState state, final boolean isClient) {
 		return true;
 	}
 
 	@Override
-	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+	public boolean canUseBonemeal(final World worldIn, final Random rand, final BlockPos pos, final IBlockState state) {
 		return (double)rand.nextFloat() < 0.4D;
 	}
 
 	@Override
-	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+	public void grow(final World worldIn, final Random rand, final BlockPos pos, final IBlockState state) {
 		this.generateBigMushroom(worldIn, pos, state, rand);
 	}
 
-	private boolean generateBigMushroom(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	private boolean generateBigMushroom(final World worldIn, final BlockPos pos, final IBlockState state, final Random rand) {
 		worldIn.setBlockToAir(pos);
         HugeMush worldgenbigmushroom = null;
 

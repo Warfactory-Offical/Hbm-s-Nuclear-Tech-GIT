@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class EntityQuasar extends EntityBlackHole {
 
-	public EntityQuasar(World world) {
+	public EntityQuasar(final World world) {
 		super(world);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
 	}
 
-	public EntityQuasar(World world, float size) {
+	public EntityQuasar(final World world, final float size) {
 		super(world);
 		this.getDataManager().set(SIZE, size);
 	}

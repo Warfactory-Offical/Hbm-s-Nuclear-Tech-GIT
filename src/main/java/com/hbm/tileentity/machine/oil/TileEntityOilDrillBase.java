@@ -43,10 +43,10 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
         this(6);
     }
 
-    public TileEntityOilDrillBase(int slots) {
+    public TileEntityOilDrillBase(final int slots) {
         inventory = new ItemStackHandler(slots){
             @Override
-            protected void onContentsChanged(int slot) {
+            protected void onContentsChanged(final int slot) {
                 markDirty();
                 super.onContentsChanged(slot);
             }
@@ -68,7 +68,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
         return this.customName != null && this.customName.length() > 0;
     }
 
-    public void setCustomName(String name) {
+    public void setCustomName(final String name) {
         this.customName = name;
     }
 
@@ -76,7 +76,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
         return customName;
     }
 
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUseableByPlayer(final EntityPlayer player) {
         if(world.getTileEntity(pos) != this)
         {
             return false;
@@ -87,7 +87,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
 
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(final NBTTagCompound compound) {
         this.power = compound.getLong("powerTime");
         this.age = compound.getInteger("age");
         tankTypes[0] = ModForgeFluids.oil;
@@ -100,7 +100,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
         compound.setLong("powerTime", power);
         compound.setInteger("age", age);
         compound.setTag("tanks", FFUtils.serializeTankArray(tanks));
@@ -108,14 +108,14 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
         return super.writeToNBT(compound);
     }
 
-    public long getPowerScaled(long i) {
+    public long getPowerScaled(final long i) {
         return (power * i) / getMaxPower();
     }
 
     List<int[]> list = new ArrayList<int[]>();
     HashSet<BlockPos> processed = new HashSet<BlockPos>();
 
-    public byte succ(int x, int y, int z) {
+    public byte succ(final int x, final int y, final int z) {
 
         list.clear();
 
@@ -124,11 +124,11 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
 
         if(!list.isEmpty()) {
 
-            int i = world.rand.nextInt(list.size());
-            int a = list.get(i)[0];
-            int b = list.get(i)[1];
-            int c = list.get(i)[2];
-            BlockPos abc = new BlockPos(a, b, c);
+            final int i = world.rand.nextInt(list.size());
+            final int a = list.get(i)[0];
+            final int b = list.get(i)[1];
+            final int c = list.get(i)[2];
+            final BlockPos abc = new BlockPos(a, b, c);
 
 
             if(world.getBlockState(abc).getBlock() == ModBlocks.ore_oil) {
@@ -146,7 +146,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
         return 0;
     }
 
-    public void succInit1(int x, int y, int z) {
+    public void succInit1(final int x, final int y, final int z) {
         succ1(x + 1, y, z);
         succ1(x - 1, y, z);
         succ1(x, y + 1, z);
@@ -155,7 +155,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
         succ1(x, y, z - 1);
     }
 
-    public void succInit2(int x, int y, int z) {
+    public void succInit2(final int x, final int y, final int z) {
         succ2(x + 1, y, z);
         succ2(x - 1, y, z);
         succ2(x, y + 1, z);
@@ -164,16 +164,16 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
         succ2(x, y, z - 1);
     }
 
-    public void succ1(int x, int y, int z) {
-        BlockPos newPos = new BlockPos(x, y, z);
+    public void succ1(final int x, final int y, final int z) {
+        final BlockPos newPos = new BlockPos(x, y, z);
         if(world.getBlockState(newPos).getBlock() == ModBlocks.ore_oil_empty && !processed.contains(newPos)) {
             processed.add(newPos);
             succInit1(x, y, z);
         }
     }
 
-    public void succ2(int x, int y, int z) {
-        BlockPos newPos = new BlockPos(x, y, z);
+    public void succ2(final int x, final int y, final int z) {
+        final BlockPos newPos = new BlockPos(x, y, z);
         if(world.getBlockState(newPos).getBlock() == ModBlocks.ore_oil_empty && processed.contains(newPos)) {
             processed.remove(newPos);
             succInit2(x, y, z);
@@ -184,7 +184,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
 
 
     @Override
-    public void setPower(long i) {
+    public void setPower(final long i) {
         power = i;
 
     }
@@ -205,14 +205,13 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
     }
 
     @Override
-    public int fill(FluidStack resource, boolean doFill) { return 0; }
+    public int fill(final FluidStack resource, final boolean doFill) { return 0; }
 
 
 
     @Override
-    public void recievePacket(NBTTagCompound[] tags) {
+    public void recievePacket(final NBTTagCompound[] tags) {
         if(tags.length != 2) {
-            return;
         } else {
             tanks[0].readFromNBT(tags[0]);
             tanks[1].readFromNBT(tags[1]);
@@ -220,7 +219,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
             return true;
         } else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -231,7 +230,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         } else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){

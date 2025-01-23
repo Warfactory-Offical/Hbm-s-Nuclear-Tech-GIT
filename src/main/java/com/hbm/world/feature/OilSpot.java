@@ -13,25 +13,25 @@ import net.minecraftforge.common.IPlantable;
 
 public class OilSpot {
 
-    public static void generateOilSpot(World world, int x, int z, int width, int count) {
+    public static void generateOilSpot(final World world, final int x, final int z, final int width, final int count) {
 
         for(int i = 0; i < count; i++) {
-            int rX = x + (int)(world.rand.nextGaussian() * width);
-            int rZ = z + (int)(world.rand.nextGaussian() * width);
-            int rY = world.getHeight(rX, rZ);
+            final int rX = x + (int)(world.rand.nextGaussian() * width);
+            final int rZ = z + (int)(world.rand.nextGaussian() * width);
+            final int rY = world.getHeight(rX, rZ);
 
-            BlockPos pos = new BlockPos(rX, rY - 1, rZ);
-            BlockPos plantPos = new BlockPos(rX, rY, rZ);
+            final BlockPos pos = new BlockPos(rX, rY - 1, rZ);
+            final BlockPos plantPos = new BlockPos(rX, rY, rZ);
 
             for(int y = rY; y > rY - 4; y--) {
 
-                Block below = world.getBlockState(pos).getBlock();
-                Block ground = world.getBlockState(plantPos).getBlock();
+                final Block below = world.getBlockState(pos).getBlock();
+                final Block ground = world.getBlockState(plantPos).getBlock();
 
                 if(below.isNormalCube(below.getDefaultState(), world, pos) && !(ground instanceof BlockDeadPlant)) {
                     if(ground instanceof BlockTallGrass) {
                         if(world.rand.nextInt(10) == 0) {
-                            Block block = world.getBlockState(new BlockPos(rX, rY + 1, rZ)).getBlock();
+                            final Block block = world.getBlockState(new BlockPos(rX, rY + 1, rZ)).getBlock();
                             if (block.getMetaFromState(block.getBlockState().getBaseState()) == 2) {
                                 world.setBlockState(plantPos, ModBlocks.plant_dead_fern.getDefaultState());
                             } else {
@@ -57,7 +57,7 @@ public class OilSpot {
 
                 } else if(below == Blocks.SAND || below == ModBlocks.ore_oil_sand) {
 
-                    IBlockState blockState = world.getBlockState(pos);
+                    final IBlockState blockState = world.getBlockState(pos);
                     if(blockState.getBlock() == Blocks.SAND && blockState.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND)
                         world.setBlockState(pos, ModBlocks.sand_dirty_red.getDefaultState());
                     else

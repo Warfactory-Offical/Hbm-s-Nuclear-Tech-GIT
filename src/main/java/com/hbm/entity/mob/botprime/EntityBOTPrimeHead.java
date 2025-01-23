@@ -1,4 +1,5 @@
 package com.hbm.entity.mob.botprime;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -32,10 +33,10 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 	
 	//TODO: clean-room implementation of the movement behavior classes (again)
 
-	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS));
+	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
 	private final WormMovementHeadNT movement = new WormMovementHeadNT(this);
 	
-	public EntityBOTPrimeHead(World world) {
+	public EntityBOTPrimeHead(final World world) {
 		super(world);
 		this.experienceValue = 1000;
 		this.wasNearGround = false;
@@ -60,7 +61,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 	}
 	
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean attackEntityFrom(final DamageSource source, final float amount) {
 		if(super.attackEntityFrom(source, amount)) {
 			this.dmgCooldown = 4;
 			return true;
@@ -70,17 +71,17 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 	}
 	
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+	public IEntityLivingData onInitialSpawn(final DifficultyInstance difficulty, final IEntityLivingData livingdata) {
 		//TODO: check if this is even needed
     	setHeadID(this.getEntityId());
 
-    	int x = MathHelper.floor(this.posX);
-        int y = MathHelper.floor(this.posY);
-        int z = MathHelper.floor(this.posZ);
+    	final int x = MathHelper.floor(this.posX);
+        final int y = MathHelper.floor(this.posY);
+        final int z = MathHelper.floor(this.posZ);
 
         for (int i = 0; i < 74; i++) {
 
-          EntityBOTPrimeBody bodyPart = new EntityBOTPrimeBody(this.world);
+          final EntityBOTPrimeBody bodyPart = new EntityBOTPrimeBody(this.world);
           bodyPart.setPartNumber(i);
           bodyPart.setPosition(x, y, z);
           bodyPart.setHeadID(getEntityId());
@@ -100,13 +101,13 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 	}
 	
 	@Override
-	public void addTrackingPlayer(EntityPlayerMP player) {
+	public void addTrackingPlayer(final EntityPlayerMP player) {
 		super.addTrackingPlayer(player);
 		bossInfo.addPlayer(player);
 	}
 	
 	@Override
-	public void removeTrackingPlayer(EntityPlayerMP player) {
+	public void removeTrackingPlayer(final EntityPlayerMP player) {
 		super.removeTrackingPlayer(player);
 		bossInfo.removePlayer(player);
 	}
@@ -146,10 +147,10 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 
 		if(this.deathTime == 19 && !world.isRemote) {
 
-			List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(200, 200, 200));
-			for(EntityPlayer player : players) {
+			final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(200, 200, 200));
+			for(final EntityPlayer player : players) {
 				AdvancementManager.grantAchievement(player, AdvancementManager.bossWorm);
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.coin_worm));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.coin_worm));
 			}
 		}
 		
@@ -160,21 +161,21 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 	public void onUpdate() {
 		super.onUpdate();
 
-		double dx = motionX;
-		double dy = motionY;
-		double dz = motionZ;
-		float f3 = MathHelper.sqrt(dx * dx + dz * dz);
+		final double dx = motionX;
+		final double dy = motionY;
+		final double dz = motionZ;
+		final float f3 = MathHelper.sqrt(dx * dx + dz * dz);
 		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(dx, dz) * 180.0D / Math.PI);
 		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(dy, f3) * 180.0D / Math.PI);
 	}
 	
 	@Override
-	public float getAttackStrength(Entity target) {
+	public float getAttackStrength(final Entity target) {
 		return 1000;
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	public void writeEntityToNBT(final NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("spawnX", this.spawnPoint.getX());
 		compound.setInteger("spawnY", this.spawnPoint.getY());
@@ -182,7 +183,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	public void readEntityFromNBT(final NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 	    this.spawnPoint = new BlockPos(compound.getInteger("spawnX"), compound.getInteger("spawnY"), compound.getInteger("spawnZ"));
 	}

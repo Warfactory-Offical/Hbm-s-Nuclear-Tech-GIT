@@ -28,7 +28,7 @@ public class ItemRenderRpg extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		GL11.glPopMatrix();
 		if(item.getItem() == ModItems.gun_rpg)
 			Minecraft.getMinecraft().renderEngine.bindTexture(gustav_rl);

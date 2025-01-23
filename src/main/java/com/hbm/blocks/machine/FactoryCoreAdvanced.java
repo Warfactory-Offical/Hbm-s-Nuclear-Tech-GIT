@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class FactoryCoreAdvanced extends BlockContainer {
 
-	public FactoryCoreAdvanced(Material materialIn, String s) {
+	public FactoryCoreAdvanced(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -22,12 +22,12 @@ public class FactoryCoreAdvanced extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityCoreAdvanced();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

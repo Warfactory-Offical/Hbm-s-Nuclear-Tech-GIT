@@ -15,12 +15,12 @@ public class RenderBoxcar extends Render<EntityBoxcar> {
 
 	public static final IRenderFactory<EntityBoxcar> FACTORY = (RenderManager man) -> {return new RenderBoxcar(man);};
 	
-	protected RenderBoxcar(RenderManager renderManager) {
+	protected RenderBoxcar(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityBoxcar entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBoxcar entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GL11.glTranslatef((float) x, (float) y, (float) z);
@@ -39,7 +39,7 @@ public class RenderBoxcar extends Render<EntityBoxcar> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBoxcar entity) {
+	protected ResourceLocation getEntityTexture(final EntityBoxcar entity) {
 		return ResourceManager.boxcar_tex;
 	}
 

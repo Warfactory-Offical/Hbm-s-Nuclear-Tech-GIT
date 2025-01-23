@@ -19,12 +19,12 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 public class MachineOrbus extends BlockDummyable {
 
-	public MachineOrbus(Material mat, String s) {
+	public MachineOrbus(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= 12) return new TileEntityMachineOrbus();
 		if(meta >= 6) return new TileEntityProxyCombo(false, false, true);
@@ -42,12 +42,12 @@ public class MachineOrbus extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 			
 			if(pos == null)
 				return false;
@@ -60,13 +60,13 @@ public class MachineOrbus extends BlockDummyable {
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, int x, final int y, int z, ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 		
-		ForgeDirection d2 = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection d2 = dir.getRotation(ForgeDirection.UP);
 		dir = dir.getOpposite();
 
 		for(int i = 0; i < 5; i += 4) {

@@ -14,12 +14,12 @@ import glmath.glm.vec._4.Vec4;
  */
 abstract class packing extends funcGeometric {
 
-    public static int packSnorm3x10_1x2(Vec4 v) {
-        int[] result = new int[4];
+    public static int packSnorm3x10_1x2(final Vec4 v) {
+        final int[] result = new int[4];
         result[0] = (int) (Math.max(-1, Math.min(1, v.x)) * 511.f);
         result[1] = (int) (Math.max(-1, Math.min(1, v.y)) * 511.f);
         result[2] = (int) (Math.max(-1, Math.min(1, v.z)) * 511.f);
-        result[3] = (int) (Math.max(-1, Math.min(1, v.w)) * 1.f);
+        result[3] = (int) (Math.max(-1, Math.min(1, v.w)));
         result[0] = (result[0] << 22) >>> 22;
         result[1] = (result[1] << 22) >>> 12;
         result[2] = (result[2] << 22) >>> 2;
@@ -27,13 +27,13 @@ abstract class packing extends funcGeometric {
         return result[0] | result[1] | result[2] | result[3];
     }
 
-    public static int packF2x11_1x10(Vec3 v) {
+    public static int packF2x11_1x10(final Vec3 v) {
         return ((floatTo11bit(v.x) & ((1 << 11) - 1)) << 0)
                 | ((floatTo11bit(v.y) & ((1 << 11) - 1)) << 11)
                 | ((floatTo10bit(v.z) & ((1 << 10) - 1)) << 22);
     }
 
-    public static int floatTo11bit(float x) {
+    public static int floatTo11bit(final float x) {
         if (x == 0f) {
             return 0;
         } else if (Float.isNaN(x)) {
@@ -44,7 +44,7 @@ abstract class packing extends funcGeometric {
         return float2packed11(Float.floatToIntBits(x));
     }
 
-    public static int floatTo10bit(float x) {
+    public static int floatTo10bit(final float x) {
         if (x == 0f) {
             return 0;
         } else if (Float.isNaN(x)) {
@@ -60,7 +60,7 @@ abstract class packing extends funcGeometric {
 ////        System.out.println("Integer.toUnsignedString(0x000007c0): " + Integer.toUnsignedString(0x00000x00007c0007c0));
 //    }
 
-    public static int float2packed11(int i) {
+    public static int float2packed11(final int i) {
         // 10 bits    =>                         EE EEEFFFFF
         // 11 bits    =>                        EEE EEFFFFFF
         // Half bits  =>                   SEEEEEFF FFFFFFFF
@@ -76,7 +76,7 @@ abstract class packing extends funcGeometric {
                 | ((i >> 17) & 0x003f); // Mantissa
     }
 
-    public static int float2packed10(int f) {
+    public static int float2packed10(final int f) {
         // 10 bits    =>                         EE EEEFFFFF
         // 11 bits    =>                        EEE EEFFFFFF
         // Half bits  =>                   SEEEEEFF FFFFFFFF
@@ -95,13 +95,13 @@ abstract class packing extends funcGeometric {
                 | ((f >> 18) & 0x001f); // Mantissa
     }
 
-    public static short packHalf1x16(float f) {
+    public static short packHalf1x16(final float f) {
         return toFloat16(f);
     }
 
-    private static short toFloat16(float f) {
+    private static short toFloat16(final float f) {
 
-        int i = Float.floatToRawIntBits(f);
+        final int i = Float.floatToRawIntBits(f);
 
         //
         // Our floating point number, f, is represented by the bit
@@ -112,7 +112,7 @@ abstract class packing extends funcGeometric {
         // Adjust e, accounting for the different exponent bias
         // of float and half (127 versus 15).
         //
-        int s = (i >> 16) & 0x00008000;
+        final int s = (i >> 16) & 0x00008000;
         int e = ((i >> 23) & 0x000000ff) - (127 - 15);
         int m = i & 0x007fffff;
 

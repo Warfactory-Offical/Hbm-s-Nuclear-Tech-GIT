@@ -18,18 +18,18 @@ public class WeaponConfig {
 	public static boolean dropCrys = true;
 	public static boolean dropDead = true;
 	
-	public static void loadFromConfig(Configuration config) {
+	public static void loadFromConfig(final Configuration config) {
 		final String CATEGORY_MISSILE = "07_missile_machines";
-		Property propRadarRange = config.get(CATEGORY_MISSILE, "7.00_radarRange", 1000);
+		final Property propRadarRange = config.get(CATEGORY_MISSILE, "7.00_radarRange", 1000);
 		propRadarRange.setComment("Range of the radar, 50 will result in 100x100 block area covered");
 		radarRange = propRadarRange.getInt();
-		Property propRadarBuffer = config.get(CATEGORY_MISSILE, "7.01_radarBuffer", 30);
+		final Property propRadarBuffer = config.get(CATEGORY_MISSILE, "7.01_radarBuffer", 30);
 		propRadarBuffer.setComment("How high entities have to be above the radar to be detected");
 		radarBuffer = propRadarBuffer.getInt();
-		Property propRadarAltitude = config.get(CATEGORY_MISSILE, "7.02_radarAltitude", 55);
+		final Property propRadarAltitude = config.get(CATEGORY_MISSILE, "7.02_radarAltitude", 55);
 		propRadarAltitude.setComment("Y height required for the radar to work");
 		radarAltitude = propRadarAltitude.getInt();
-		Property propCiwsHitrate = config.get(CATEGORY_MISSILE, "7.03_ciwsAccuracy", 50);
+		final Property propCiwsHitrate = config.get(CATEGORY_MISSILE, "7.03_ciwsAccuracy", 50);
 		propCiwsHitrate.setComment("Additional modifier for CIWS accuracy");
 		ciwsHitrate = propCiwsHitrate.getInt();
 

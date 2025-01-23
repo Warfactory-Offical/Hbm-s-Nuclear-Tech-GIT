@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class RenderFluidTank extends TileEntitySpecialRenderer<TileEntityMachineFluidTank> {
 	
 	@Override
-	public void render(TileEntityMachineFluidTank te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineFluidTank te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -47,7 +47,7 @@ public class RenderFluidTank extends TileEntitySpecialRenderer<TileEntityMachine
         renderTileEntityAt2(te, x, y, z, partialTicks);
 	}
 	
-	public void renderTileEntityAt2(TileEntity tileEntity, double x, double y, double z, float f)
+	public void renderTileEntityAt2(final TileEntity tileEntity, final double x, final double y, final double z, final float f)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
@@ -71,7 +71,7 @@ public class RenderFluidTank extends TileEntitySpecialRenderer<TileEntityMachine
 			if(((TileEntityMachineFluidTank)tileEntity).tank.getFluid() != null){
 				type = ((TileEntityMachineFluidTank)tileEntity).tank.getFluid().getFluid();
 				s = FluidRegistry.getFluidName(type).toUpperCase();
-				if(s.substring(0, 3).equals("HBM")){
+				if(s.startsWith("HBM")){
 					s = s.substring(3);
 				}
 			}
@@ -81,7 +81,7 @@ public class RenderFluidTank extends TileEntitySpecialRenderer<TileEntityMachine
 		
 		try {
 			Minecraft.getMinecraft().getResourceManager().getResource(rotTexture);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			//Drillgon200: Set to my really ugly unknown texture
 			//Alcater: found a way to textract the color from the fluids texture
 			rotTexture = new ResourceLocation(RefStrings.MODID, "textures/models/tank/tank_generic.png");

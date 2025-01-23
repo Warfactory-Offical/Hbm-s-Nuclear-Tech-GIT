@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class BlockGenericStairs extends BlockStairs {
 
-	public BlockGenericStairs(IBlockState modelState, String s) {
+	public BlockGenericStairs(final IBlockState modelState, final String s) {
 		super(modelState);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -24,15 +24,15 @@ public class BlockGenericStairs extends BlockStairs {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		float hardness = this.getExplosionResistance(null);
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+		final float hardness = this.getExplosionResistance(null);
 		if(hardness > 50){
 			tooltip.add("§6" + I18nUtil.resolveKey("trait.blastres", hardness));
 		}
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 

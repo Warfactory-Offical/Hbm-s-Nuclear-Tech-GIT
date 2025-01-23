@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +60,12 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return new int[]{ 0, 1, 2, 3 };
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(i == 0)
 			return isValidFluid(FluidUtil.getFluidContained(stack));
 		if(i == 1)
@@ -76,16 +77,14 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
-		if(slot == 3)
-			return true;
-		return false;
-	}
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+        return slot == 3;
+    }
 	
 	@Override
 	public void update() {
@@ -102,14 +101,9 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 			//Battery Item
 			power = Library.chargeItemsFromTE(inventory, 2, power, maxPower);
 			
-			boolean trigger = true;
-			
-			if(isItemValid() && this.burnTime == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !isItemValid() || this.burnTime != 0;
+
+            if(trigger)
             {
                 MachineCoal.updateBlockState(this.burnTime > 0, this.world, this.pos);
             }
@@ -126,12 +120,12 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 		if(inventory.getStackInSlot(1) != ItemStack.EMPTY && TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(1)) > 0 && burnTime <= 0)
 		{
 			burnTime = TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(1)) / 2;
-			Item containerItem = inventory.getStackInSlot(1).getItem().getContainerItem();
+			final Item containerItem = inventory.getStackInSlot(1).getItem().getContainerItem();
 			inventory.getStackInSlot(1).shrink(1);
 			if(inventory.getStackInSlot(1).isEmpty())
 			{
 				if(containerItem != null)
-					inventory.setStackInSlot(1, new ItemStack(containerItem));
+					inventory.setStackInSlot(1, ItemStackUtil.itemStackFrom(containerItem));
 				else
 					inventory.setStackInSlot(1, ItemStack.EMPTY);
 			}
@@ -157,28 +151,21 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	
 	public boolean isItemValid() {
 
-		if(inventory.getStackInSlot(1) != ItemStack.EMPTY && TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(1)) > 0)
-		{
-			return true;
-		}
-		
-		return false;
-	}
+        return inventory.getStackInSlot(1) != ItemStack.EMPTY && TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(1)) > 0;
+    }
 	
-	protected boolean inputValidForTank(int tank, int slot){
+	protected boolean inputValidForTank(final int tank, final int slot){
 		if(inventory.getStackInSlot(slot) != null && !inventory.getStackInSlot(slot).isEmpty()){
-			if(isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
-				return true;	
-			}
+            return isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
 		}
 		return false;
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -188,7 +175,7 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		if(nbt.hasKey("inventory"))
 			inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
@@ -204,21 +191,20 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setLong("powerTime", power);
 		nbt.setInteger("burnTime", burnTime);
 		
 		tank.writeToNBT(nbt);
-		NBTTagCompound tag = inventory.serializeNBT();
+		final NBTTagCompound tag = inventory.serializeNBT();
 		nbt.setTag("inventory", tag);
 		return super.writeToNBT(nbt);
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 1){
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
@@ -228,17 +214,17 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 		return super.getUpdatePacket();
 	}
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
 		super.onDataPacket(net, pkt);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -251,7 +237,7 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if (isValidFluid(resource)) {
 			return tank.fill(resource, doFill);
 		}
@@ -259,16 +245,16 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 	
-	private boolean isValidFluid(FluidStack stack) {
+	private boolean isValidFluid(final FluidStack stack) {
 		if(stack == null)
 			return false;
 		return stack.getFluid() == FluidRegistry.WATER;
@@ -306,7 +292,7 @@ public class TileEntityMachineCoal extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

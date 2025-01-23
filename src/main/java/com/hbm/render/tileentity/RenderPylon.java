@@ -25,19 +25,19 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 	private static final float cableColorG = 0.16F;
 	private static final float cableColorB = 0.16F;
 
-	private ModelPylon pylon;
+	private final ModelPylon pylon;
 
 	public RenderPylon() {
 		this.pylon = new ModelPylon();
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityPylon te) {
+	public boolean isGlobalRenderer(final TileEntityPylon te) {
 		return true;
 	}
 
 	@Override
-	public void render(TileEntityPylon pyl, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityPylon pyl, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F - ((1F / 16F) * 14F), (float) z + 0.5F);
 			GL11.glRotatef(180, 0F, 0F, 1F);
@@ -45,23 +45,22 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 			this.pylon.renderAll(0.0625F);
 		GL11.glPopMatrix();
 
-		this.renderPowerLines(pyl, x, y, z);
+		renderPowerLines(pyl, x, y, z);
 	}
 
-	public static void renderPowerLines(TileEntityPylonBase pyl, double x, double y, double z) {
+	public static void renderPowerLines(final TileEntityPylonBase pyl, final double x, final double y, final double z) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		for (int i = 0; i < pyl.connected.size(); i++) {
 
-			BlockPos otherPylon = pyl.connected.get(i);
-			TileEntity tile = pyl.getWorld().getTileEntity(otherPylon);
+			final BlockPos otherPylon = pyl.connected.get(i);
+			final TileEntity tile = pyl.getWorld().getTileEntity(otherPylon);
 
-			if(tile instanceof TileEntityPylonBase) {
-				TileEntityPylonBase pylon = (TileEntityPylonBase) tile;
-				Vec3[] m1 = pyl.getMountPos();
-				Vec3[] m2 = pylon.getMountPos();
+			if(tile instanceof TileEntityPylonBase pylon) {
+                final Vec3[] m1 = pyl.getMountPos();
+				final Vec3[] m2 = pylon.getMountPos();
 
-				int lineCount = Math.max(pyl.getConnectionType() == TileEntityPylonBase.ConnectionType.QUAD ? 4 : 1, pylon.getConnectionType() == TileEntityPylonBase.ConnectionType.QUAD ? 4 : 1);
+				final int lineCount = Math.max(pyl.getConnectionType() == TileEntityPylonBase.ConnectionType.QUAD ? 4 : 1, pylon.getConnectionType() == TileEntityPylonBase.ConnectionType.QUAD ? 4 : 1);
 				
 				for(int line = 0; line < lineCount; line++) {
 
@@ -71,10 +70,10 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 						secondIndex += 2;
 						secondIndex %= m2.length;
 					}
-					Vec3 first = m1[line % m1.length];
-					Vec3 second = m2[secondIndex];
+					final Vec3 first = m1[line % m1.length];
+					final Vec3 second = m2[secondIndex];
 
-					Vec3 mid = new Vec3(otherPylon).add(second).subtract(new Vec3(pyl.getPos()).add(first));
+					final Vec3 mid = new Vec3(otherPylon).add(second).subtract(new Vec3(pyl.getPos()).add(first));
 					drawLine(first, first.add(new Vec3(mid.xCoord*0.5, mid.yCoord*0.5, mid.zCoord*0.5)), lineCount == 1 ? 0.03125F : 0.055F, mid.length()*0.045);
 				}
 			}
@@ -82,12 +81,12 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 		GL11.glPopMatrix();
 	}
 
-	public static void drawLine(Vec3 firstPylonMountPos, Vec3 secoundPylonMountPos, float girth, double hang) {
-		float count = 10;
-		Vec3 deltaVector = secoundPylonMountPos.subtract(firstPylonMountPos); // vector from pylon1 mount to pylon2 mount
+	public static void drawLine(final Vec3 firstPylonMountPos, final Vec3 secoundPylonMountPos, final float girth, final double hang) {
+		final float count = 10;
+		final Vec3 deltaVector = secoundPylonMountPos.subtract(firstPylonMountPos); // vector from pylon1 mount to pylon2 mount
 
 		for(float j = 0; j < count; j++) {
-			float k = j + 1;
+			final float k = j + 1;
 			
 			drawLineSegment(
 				firstPylonMountPos.xCoord + (deltaVector.xCoord * j / count),
@@ -99,12 +98,12 @@ public class RenderPylon extends TileEntitySpecialRenderer<TileEntityPylon> {
 		}
 	}
 
-	public static void drawLineSegment(double x, double y, double z, double a, double b, double c, float girth) {
+	public static void drawLineSegment(final double x, final double y, final double z, final double a, final double b, final double c, final float girth) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GlStateManager.disableLighting();
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buf = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder buf = tessellator.getBuffer();
 		buf.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		// tessellator.setColorRGBA_F(0.683F, 0.089F, 0.0F, 1.0F);
 		buf.pos(x, y + girth, z).color(cableColorR, cableColorG, cableColorB, 1.0F).endVertex();

@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ItemRTGPellet extends ItemHazard {
 	private long halflife = 0;
 	private long lifespan = 0;
 	
-	public ItemRTGPellet(int heatIn, float radiation, String s) {
+	public ItemRTGPellet(final int heatIn, final float radiation, final String s) {
 		super(radiation, s);
 		this.heat = (short) heatIn;
 		this.setMaxStackSize(1);
@@ -56,7 +57,7 @@ public class ItemRTGPellet extends ItemHazard {
 			"The Manhattan Project referred to refined natural uranium as tuballoy, enriched uranium as oralloy, and depleted uranium as depletalloy."
 	};
 	
-	public ItemRTGPellet setDecays(Item depleted, long halflife, int halflifes) {
+	public ItemRTGPellet setDecays(final Item depleted, final long halflife, final int halflifes) {
 		this.doesDecay = true;
 		this.decayItem = depleted;
 		this.halflife = halflife;
@@ -84,10 +85,10 @@ public class ItemRTGPellet extends ItemHazard {
 		return this.doesDecay;
 	}
 	
-	public static ItemStack handleDecay(ItemStack stack, ItemRTGPellet instance) {
+	public static ItemStack handleDecay(final ItemStack stack, final ItemRTGPellet instance) {
 		if (instance.getDoesDecay()) {
 			if (instance.getLifespan(stack) <= 0)
-				return new ItemStack(instance.getDecayItem());
+				return ItemStackUtil.itemStackFrom(instance.getDecayItem());
 			else
 				instance.decay(stack);
 		}
@@ -95,7 +96,7 @@ public class ItemRTGPellet extends ItemHazard {
 		return stack;
 	}
 	
-	public void decay(ItemStack stack) {
+	public void decay(final ItemStack stack) {
 		if (stack != null && stack.getItem() instanceof ItemRTGPellet) {
 			if (!((ItemRTGPellet) stack.getItem()).getDoesDecay())
 				return;
@@ -108,7 +109,7 @@ public class ItemRTGPellet extends ItemHazard {
 		}
 	}
 	
-	public long getLifespan(ItemStack stack)
+	public long getLifespan(final ItemStack stack)
 	{	
 		if (stack != null && stack.getItem() instanceof ItemRTGPellet)
 		{
@@ -124,16 +125,16 @@ public class ItemRTGPellet extends ItemHazard {
 		return 0;
 	}
 
-	public static double getDecay(ItemRTGPellet fuel, ItemStack stack) {
-		return (double) Math.pow(0.5, ((double)(fuel.getMaxLifespan()-fuel.getLifespan(stack)) / (double)fuel.getHalfLife()));
+	public static double getDecay(final ItemRTGPellet fuel, final ItemStack stack) {
+		return Math.pow(0.5, ((double)(fuel.getMaxLifespan()-fuel.getLifespan(stack)) / (double)fuel.getHalfLife()));
 	}
 	
-	public static short getScaledPower(ItemRTGPellet fuel, ItemStack stack) {
+	public static short getScaledPower(final ItemRTGPellet fuel, final ItemStack stack) {
 		return (short) Math.ceil(fuel.getHeat() * getDecay(fuel, stack));
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
 		if(!world.isRemote) {
 			player.sendMessage(new TextComponentString(facts[world.rand.nextInt(facts.length)]).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 		}
@@ -141,24 +142,24 @@ public class ItemRTGPellet extends ItemHazard {
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean showDurabilityBar(final ItemStack stack) {
 		return getDoesDecay() && getLifespan(stack) != getMaxLifespan();
 	}
 	
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public double getDurabilityForDisplay(final ItemStack stack) {
 		final ItemRTGPellet instance = (ItemRTGPellet) stack.getItem();
-		return 1D-(double)getDecay(instance, stack);
+		return 1D- getDecay(instance, stack);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
-		super.addInformation(stack, world, list, flagIn);
+	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
+		//super.addInformation(stack, world, list, flagIn);
 		final ItemRTGPellet instance = (ItemRTGPellet) stack.getItem();
 		list.add("§c" + I18nUtil.resolveKey("desc.item.rtgHeat", getScaledPower(instance, stack)) + "§r");
 		if (instance.getDoesDecay()) {
-			list.add("§aFuel left: "+((int)(instance.getDecay(instance, stack) * 100000000D))/1000000D + "%§r");
-			list.add(I18nUtil.resolveKey("desc.item.rtgDecay", new ItemStack(instance.getDecayItem()).getDisplayName()));
+			list.add("§aFuel left: "+((int)(getDecay(instance, stack) * 100000000D))/1000000D + "%§r");
+			list.add(I18nUtil.resolveKey("desc.item.rtgDecay", ItemStackUtil.itemStackFrom(instance.getDecayItem()).getDisplayName()));
 			list.add("");
 			list.add(String.format("%s / %s ticks", instance.getLifespan(stack), instance.getMaxLifespan()));
 			final String[] halfLife = BobMathUtil.ticksToDate(instance.getHalfLife());

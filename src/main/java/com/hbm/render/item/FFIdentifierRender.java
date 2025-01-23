@@ -24,13 +24,13 @@ public class FFIdentifierRender extends TileEntityItemStackRenderer {
 	public IBakedModel itemModel;
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		if(itemStackIn.getItem() != ModItems.forge_fluid_identifier)
 			return;
 		final double HALF_A_PIXEL = 0.03125;
 		final double PIX = 0.0625;
-		Fluid fluid = ItemForgeFluidIdentifier.getType(itemStackIn);
-		TextureAtlasSprite fluidIcon = FFUtils.getTextureFromFluid(fluid);
+		final Fluid fluid = ItemForgeFluidIdentifier.getType(itemStackIn);
+		final TextureAtlasSprite fluidIcon = FFUtils.getTextureFromFluid(fluid);
 		RenderHelper.bindBlockTexture();
 		if(fluidIcon != null){
 			GL11.glPushMatrix();

@@ -20,24 +20,24 @@ public class PipeUpdatePacket implements IMessage {
 	public PipeUpdatePacket() {
 	}
 	
-	public PipeUpdatePacket(BlockPos pos) {
+	public PipeUpdatePacket(final BlockPos pos) {
 		this(pos, 0);
 	}
 	
-	public PipeUpdatePacket(BlockPos pos, int id) {
+	public PipeUpdatePacket(final BlockPos pos, final int id) {
 		this.pos = pos;
 		this.id = id;
 	}
 	
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
 		id = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		
 		buf.writeInt(pos.getX());
 		buf.writeInt(pos.getY());
@@ -49,9 +49,9 @@ public class PipeUpdatePacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PipeUpdatePacket message, MessageContext ctx) {
+		public IMessage onMessage(final PipeUpdatePacket message, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.pos);
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.pos);
 				
 				if(te instanceof TileEntityFFDuctBaseMk2){
 					switch(message.id){

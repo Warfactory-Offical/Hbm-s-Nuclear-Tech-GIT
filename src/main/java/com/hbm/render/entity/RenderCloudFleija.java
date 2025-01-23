@@ -16,14 +16,14 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderCloudFleija extends Render<EntityCloudFleija> {
 
 	private static final ResourceLocation objTesterModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/Sphere.obj");
-	private IModelCustom blastModel;
-    private ResourceLocation blastTexture;
+	private final IModelCustom blastModel;
+    private final ResourceLocation blastTexture;
     public float scale = 0;
     public float ring = 0;
     
     public static final IRenderFactory<EntityCloudFleija> FACTORY = (RenderManager man) -> {return new RenderCloudFleija(man);};
 	
-	protected RenderCloudFleija(RenderManager renderManager) {
+	protected RenderCloudFleija(final RenderManager renderManager) {
 		super(renderManager);
 		blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
     	blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/explosion/BlastFleija.png");
@@ -31,7 +31,7 @@ public class RenderCloudFleija extends Render<EntityCloudFleija> {
 	}
 	
 	@Override
-	public void doRender(EntityCloudFleija cloud, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityCloudFleija cloud, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y, (float)z);
         GlStateManager.disableLighting();
@@ -42,7 +42,7 @@ public class RenderCloudFleija extends Render<EntityCloudFleija> {
         //GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
        // GlStateManager.disableAlpha();
         
-        float s = cloud.age+partialTicks;
+        final float s = cloud.age+partialTicks;
         GL11.glScalef(s, s, s);
         
         
@@ -66,10 +66,10 @@ public class RenderCloudFleija extends Render<EntityCloudFleija> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
+	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityCloudFleija entity) {
+	protected ResourceLocation getEntityTexture(final EntityCloudFleija entity) {
 		return blastTexture;
 	}
 

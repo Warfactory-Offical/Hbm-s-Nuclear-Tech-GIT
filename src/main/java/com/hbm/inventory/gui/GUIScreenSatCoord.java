@@ -35,7 +35,7 @@ public class GUIScreenSatCoord extends GuiScreen {
     private GuiTextField yField;
     private GuiTextField zField;
     
-    public GUIScreenSatCoord(EntityPlayer player) {
+    public GUIScreenSatCoord(final EntityPlayer player) {
     	
     	this.player = player;
     }
@@ -71,7 +71,7 @@ public class GUIScreenSatCoord extends GuiScreen {
         
     }
     
-    protected void mouseClicked(int i, int j, int k) throws IOException
+    protected void mouseClicked(final int i, final int j, final int k) throws IOException
     {
         super.mouseClicked(i, j, k);
     	if(ItemSatInterface.currentSat == null)
@@ -116,7 +116,7 @@ public class GUIScreenSatCoord extends GuiScreen {
     	}
     }
     
-    public void drawScreen(int mouseX, int mouseY, float f) {
+    public void drawScreen(final int mouseX, final int mouseY, final float f) {
         this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
         GlStateManager.enableLighting();
@@ -130,14 +130,14 @@ public class GUIScreenSatCoord extends GuiScreen {
 		return false;
 	}
 	
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
 
         this.xField.drawTextBox();
         if(ItemSatInterface.currentSat != null && ItemSatInterface.currentSat.coordAcs.contains(CoordActions.HAS_Y)) this.yField.drawTextBox();
         this.zField.drawTextBox();
 	}
 
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -166,12 +166,12 @@ public class GUIScreenSatCoord extends GuiScreen {
 	}
 	
 	@Override
-	public void drawBackground(int tint) {
+	public void drawBackground(final int tint) {
 		super.drawDefaultBackground();
 		super.drawBackground(tint);
 	}
 	
-    protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException {
+    protected void keyTyped(final char p_73869_1_, final int p_73869_2_) throws IOException {
     	
 
         if (this.xField.textboxKeyTyped(p_73869_1_, p_73869_2_)) {

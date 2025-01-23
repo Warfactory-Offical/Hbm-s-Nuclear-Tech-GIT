@@ -18,14 +18,14 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
 
     protected ItemStack[] contents = new ItemStack[0];
 
-    public EntityMovingPackage(World p_i1582_1_) {
+    public EntityMovingPackage(final World p_i1582_1_) {
         super(p_i1582_1_);
         this.setSize(0.5F, 0.5F);
     }
 
     @Override
     protected void entityInit() { }
-    public void setItemStacks(ItemStack[] stacks) {
+    public void setItemStacks(final ItemStack[] stacks) {
         this.contents = ItemStackUtil.carefulCopyArray(stacks);
     }
 
@@ -35,11 +35,11 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean attackEntityFrom(final DamageSource source, final float amount) {
         if (!world.isRemote) {
             this.setDead();
 
-            for (ItemStack stack : contents) {
+            for (final ItemStack stack : contents) {
                 world.spawnEntity(new EntityItem(world, posX, posY + 0.125, posZ, stack));
             }
         }
@@ -47,7 +47,7 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
     }
 
     @Override
-    public void enterBlock(IEnterableBlock enterable, BlockPos pos, EnumFacing dir) {
+    public void enterBlock(final IEnterableBlock enterable, final BlockPos pos, final EnumFacing dir) {
 
         if(enterable.canPackageEnter(world, pos.getX(), pos.getY(), pos.getZ(), dir, this)) {
             enterable.onPackageEnter(world, pos.getX(), pos.getY(), pos.getZ(), dir, this);
@@ -60,8 +60,8 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
 
         this.setDead();
 
-        for(ItemStack stack : contents) {
-            EntityItem item = new EntityItem(world, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, stack);
+        for(final ItemStack stack : contents) {
+            final EntityItem item = new EntityItem(world, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, stack);
             item.motionX = this.motionX * 2;
             item.motionY = 0.1;
             item.motionZ = this.motionZ * 2;
@@ -73,12 +73,12 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt) {
-        NBTTagList nbttaglist = new NBTTagList();
+    protected void writeEntityToNBT(final NBTTagCompound nbt) {
+        final NBTTagList nbttaglist = new NBTTagList();
 
         for(int i = 0; i < this.contents.length; ++i) {
             if(this.contents[i] != null) {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("slot", (byte) i);
                 this.contents[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
@@ -90,16 +90,16 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt) {
+    protected void readEntityFromNBT(final NBTTagCompound nbt) {
         this.contents = new ItemStack[nbt.getInteger("count")];
-        NBTTagList nbttaglist = nbt.getTagList("contents", 10);
+        final NBTTagList nbttaglist = nbt.getTagList("contents", 10);
 
         for(int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            int j = nbttagcompound1.getByte("slot") & 255;
+            final NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+            final int j = nbttagcompound1.getByte("slot") & 255;
 
             if(j >= 0 && j < this.contents.length) {
-                this.contents[j] = new ItemStack(nbttagcompound1);
+                this.contents[j] = ItemStackUtil.itemStackFrom(nbttagcompound1);
             }
         }
     }

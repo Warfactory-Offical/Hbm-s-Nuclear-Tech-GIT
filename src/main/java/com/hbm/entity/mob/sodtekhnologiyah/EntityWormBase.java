@@ -45,7 +45,7 @@ public abstract class EntityWormBase extends EntityBurrowing {
 	public static final Predicate<Entity> wormSelector = target -> target instanceof EntityWormBase;
 
 
-	public EntityWormBase(World world) {
+	public EntityWormBase(final World world) {
 		super(world);
 		this.setSize(1.0F, 1.0F);
 		this.surfaceY = 60;
@@ -55,7 +55,7 @@ public abstract class EntityWormBase extends EntityBurrowing {
 		return this.partID;
 	}
 
-	public void setPartID(int par1) {
+	public void setPartID(final int par1) {
 		this.partID = par1;
 	}
 
@@ -63,12 +63,12 @@ public abstract class EntityWormBase extends EntityBurrowing {
 		return this.uniqueWormID;
 	}
 
-	public void setUniqueWormID(int id) {
+	public void setUniqueWormID(final int id) {
 		this.uniqueWormID = id;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean attackEntityFrom(final DamageSource source, final float amount) {
 		System.out.println(source);
 		if(this.isEntityInvulnerable(source) || source == DamageSource.DROWN || source == DamageSource.IN_WALL ||
 				((source.getImmediateSource() instanceof EntityWormBase) && ((EntityWormBase) source.getImmediateSource()).uniqueWormID == this.uniqueWormID)) {
@@ -104,9 +104,9 @@ public abstract class EntityWormBase extends EntityBurrowing {
 		}
 	}
 	
-	protected void attackEntitiesInList(List<Entity> targets) {
+	protected void attackEntitiesInList(final List<Entity> targets) {
 
-		for(Entity var3 : targets) {
+		for(final Entity var3 : targets) {
 			if(((var3 instanceof EntityLivingBase)) && (canAttackClass(((EntityLivingBase)var3).getClass()))
 					&& ((!(var3 instanceof EntityWormBase)) || (((EntityWormBase) var3).getUniqueWormID() != getUniqueWormID()))) {
 				attackEntityAsMob(var3);
@@ -115,23 +115,23 @@ public abstract class EntityWormBase extends EntityBurrowing {
 	}
 	
 	@Override
-	public boolean canAttackClass(Class<? extends EntityLivingBase> cls) {
+	public boolean canAttackClass(final Class<? extends EntityLivingBase> cls) {
 		return true;
 	}
 	
 	@Override
-	public boolean attackEntityAsMob(Entity target) {
-		boolean var2 = target.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength(target));
+	public boolean attackEntityAsMob(final Entity target) {
+		final boolean var2 = target.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength(target));
 
 		if(var2) {
 			this.idleTime = 0;
-			double tx = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
-			double ty = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
-			double tz = (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D;
-			double deltaX = target.posX - tx;
-			double deltaY = target.posZ - ty;
-			double deltaZ = target.posY - tz;
-			double knockback = this.knockbackDivider * (deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ + 0.1D);
+			final double tx = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
+			final double ty = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
+			final double tz = (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D;
+			final double deltaX = target.posX - tx;
+			final double deltaY = target.posZ - ty;
+			final double deltaZ = target.posY - tz;
+			final double knockback = this.knockbackDivider * (deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ + 0.1D);
 			target.addVelocity(deltaX / knockback, deltaY / knockback, deltaZ / knockback);
 		}
 
@@ -156,13 +156,13 @@ public abstract class EntityWormBase extends EntityBurrowing {
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	public void writeEntityToNBT(final NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("wormID", this.getUniqueWormID());
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	public void readEntityFromNBT(final NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		setUniqueWormID(compound.getInteger("wormID"));
 	}

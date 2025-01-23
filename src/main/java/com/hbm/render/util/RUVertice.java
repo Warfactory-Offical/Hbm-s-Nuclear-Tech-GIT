@@ -6,14 +6,14 @@ public class RUVertice {
 	public float y;
 	public float z;
 
-	public RUVertice(float X, float Y, float Z) {
+	public RUVertice(final float X, final float Y, final float Z) {
 		x = X;
 		y = Y;
 		z = Z;
 	}
 
 	public RUVertice normalize() {
-		float l = (float) Math.sqrt(x * x + y * y + z * z);
+		final float l = (float) Math.sqrt(x * x + y * y + z * z);
 		x /= l;
 		y /= l;
 		z /= l;

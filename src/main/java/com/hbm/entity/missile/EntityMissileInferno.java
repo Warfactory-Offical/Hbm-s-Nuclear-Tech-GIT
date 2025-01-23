@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileInferno extends EntityMissileBaseAdvanced {
 
-	public EntityMissileInferno(World p_i1582_1_) {
+	public EntityMissileInferno(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(2F, 18F);
 	}
 
-	public EntityMissileInferno(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileInferno(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(2F, 18F);
 	}
@@ -32,19 +33,19 @@ public class EntityMissileInferno extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
-		list.add(new ItemStack(ModItems.plate_steel, 16));
-		list.add(new ItemStack(ModItems.plate_titanium, 10));
-		list.add(new ItemStack(ModItems.thruster_large, 1));
-		list.add(new ItemStack(ModItems.circuit_targeting_tier3, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 16));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 10));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.thruster_large, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.circuit_targeting_tier3, 1));
 		
 		return list;
 	}
 
 	@Override
 	public ItemStack getDebrisRareDrop() {
-		return new ItemStack(ModItems.warhead_incendiary_large);
+		return ItemStackUtil.itemStackFrom(ModItems.warhead_incendiary_large);
 	}
 
 	@Override

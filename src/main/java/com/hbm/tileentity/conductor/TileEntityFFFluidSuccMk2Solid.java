@@ -16,11 +16,11 @@ public class TileEntityFFFluidSuccMk2Solid extends TileEntityFFFluidDuctMk2 impl
 	public void update() {
 		if(world.isRemote || network == null || network.getType() == null)
 			return;
-		for(EnumFacing e : EnumFacing.VALUES){
-			TileEntity te = world.getTileEntity(pos.offset(e));
+		for(final EnumFacing e : EnumFacing.VALUES){
+			final TileEntity te = world.getTileEntity(pos.offset(e));
 			if(te != null && !(te instanceof IFluidPipeMk2) && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, e.getOpposite())){
-				IFluidHandler toDrain = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, e.getOpposite());
-				int maxNetFill = network.fill(new FluidStack(network.getType(), Integer.MAX_VALUE), false);
+				final IFluidHandler toDrain = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, e.getOpposite());
+				final int maxNetFill = network.fill(new FluidStack(network.getType(), Integer.MAX_VALUE), false);
 				network.fill(toDrain.drain(new FluidStack(network.getType(), maxNetFill), true), true);
 			}
 		}

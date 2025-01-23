@@ -22,14 +22,14 @@ import net.minecraft.world.World;
 
 public class EntityShrapnel extends EntityThrowable {
 	
-	public static final DataParameter<Byte> TRAIL = EntityDataManager.<Byte>createKey(EntityShrapnel.class, DataSerializers.BYTE);
+	public static final DataParameter<Byte> TRAIL = EntityDataManager.createKey(EntityShrapnel.class, DataSerializers.BYTE);
 
-    public EntityShrapnel(World p_i1773_1_)
+    public EntityShrapnel(final World p_i1773_1_)
     {
         super(p_i1773_1_);
     }
 
-    public EntityShrapnel(World p_i1774_1_, EntityLivingBase p_i1774_2_)
+    public EntityShrapnel(final World p_i1774_1_, final EntityLivingBase p_i1774_2_)
     {
         super(p_i1774_1_, p_i1774_2_);
     }
@@ -39,7 +39,7 @@ public class EntityShrapnel extends EntityThrowable {
         this.dataManager.register(TRAIL, Byte.valueOf((byte)0));
     }
 
-    public EntityShrapnel(World p_i1775_1_, double p_i1775_2_, double p_i1775_4_, double p_i1775_6_)
+    public EntityShrapnel(final World p_i1775_1_, final double p_i1775_2_, final double p_i1775_4_, final double p_i1775_6_)
     {
         super(p_i1775_1_, p_i1775_2_, p_i1775_4_, p_i1775_6_);
     }
@@ -52,7 +52,7 @@ public class EntityShrapnel extends EntityThrowable {
     }
 
     @Override
-	protected void onImpact(RayTraceResult mop)
+	protected void onImpact(final RayTraceResult mop)
     {	
     	if(!CompatibilityConfig.isWarDim(world)){
 			this.setDead();
@@ -60,7 +60,7 @@ public class EntityShrapnel extends EntityThrowable {
 		}
         if (mop.entityHit != null)
         {
-            byte b0 = 15;
+            final byte b0 = 15;
 
             mop.entityHit.attackEntityFrom(ModDamageSource.shrapnel, b0);
         }
@@ -86,7 +86,7 @@ public class EntityShrapnel extends EntityThrowable {
 					}
 					
 					if(motionY > 0) {
-						ExplosionNT explosion = new ExplosionNT(world, null, mop.getBlockPos().getX() + 0.5, mop.getBlockPos().getY() + 0.5, mop.getBlockPos().getZ() + 0.5, 7);
+						final ExplosionNT explosion = new ExplosionNT(world, null, mop.getBlockPos().getX() + 0.5, mop.getBlockPos().getY() + 0.5, mop.getBlockPos().getZ() + 0.5, 7);
 						explosion.addAttrib(ExAttrib.NODROP);
 						explosion.addAttrib(ExAttrib.LAVA_V);
 						explosion.addAttrib(ExAttrib.NOSOUND);
@@ -105,11 +105,11 @@ public class EntityShrapnel extends EntityThrowable {
         }
     }
     
-    public void setTrail(boolean b) {
+    public void setTrail(final boolean b) {
         	this.dataManager.set(TRAIL, (byte)(b ? 1 : 0));
     }
     
-    public void setVolcano(boolean b) {
+    public void setVolcano(final boolean b) {
 		this.dataManager.set(TRAIL, (byte) (b ? 2 : 0));
 	}
 }

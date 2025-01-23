@@ -28,7 +28,7 @@ public class TileEntityRadiobox extends TileEntityLoadedBase implements ITickabl
 					power -= 25000;
 					this.markDirty();
 				}
-				int range = 15;
+				final int range = 15;
 				
 				world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(pos.getX() - range, pos.getY() - range, pos.getZ() - range, pos.getX() + range, pos.getY() + range, pos.getZ() + range)).forEach(e -> e.attackEntityFrom(ModDamageSource.enervation, 20.0F));
 			}
@@ -36,21 +36,21 @@ public class TileEntityRadiobox extends TileEntityLoadedBase implements ITickabl
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		infinite = compound.getBoolean("infinite");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setBoolean("infinite", infinite);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

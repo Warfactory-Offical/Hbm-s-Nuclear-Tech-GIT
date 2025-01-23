@@ -15,17 +15,17 @@ public class NodeMath extends Node {
 
 	public Operation op = Operation.ADD;
 	
-	public NodeMath(float x, float y){
+	public NodeMath(final float x, final float y){
 		super(x, y);
 		this.outputs.add(new NodeConnection("Output", this, outputs.size(), false, DataType.NUMBER, new DataValueFloat(0)));
-		NodeDropdown opSelector = new NodeDropdown(this, otherElements.size(), s -> {
-			Operation op = Operation.getByName(s);
+		final NodeDropdown opSelector = new NodeDropdown(this, otherElements.size(), s -> {
+			final Operation op = Operation.getByName(s);
 			if(op != null){
 				setOperation(op);
 			}
 			return null;
 		}, () -> op.name);
-		for(Operation op : Operation.values()){
+		for(final Operation op : Operation.values()){
 			opSelector.list.addItems(op.name);
 		}
 		this.otherElements.add(opSelector);
@@ -34,24 +34,24 @@ public class NodeMath extends Node {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
 		tag.setString("nodeType", "math");
 		tag.setInteger("op", op.ordinal());
 		return super.writeToNBT(tag, sys);
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		op = Operation.values()[tag.getInteger("op")%Operation.values().length];
 		super.readFromNBT(tag, sys);
 	}
 	
 	@Override
-	public DataValue evaluate(int idx){
+	public DataValue evaluate(final int idx){
 		if(cacheValid)
 			return evalCache[0];
 		cacheValid = true;
-		DataValue[] evals = new DataValue[inputs.size()];
+		final DataValue[] evals = new DataValue[inputs.size()];
 		for(int i = 0; i < evals.length; i ++){
 			evals[i] = inputs.get(i).evaluate();
 			if(evals[i] == null)
@@ -94,14 +94,14 @@ public class NodeMath extends Node {
 		return evalCache[0] = null;
 	}
 
-	public NodeMath setData(Operation op) {
+	public NodeMath setData(final Operation op) {
 		setOperation(op);
 		return this;
 	}
 
-	public void setOperation(Operation op){
+	public void setOperation(final Operation op){
 		this.op = op;
-		for(NodeConnection c : inputs){
+		for(final NodeConnection c : inputs){
 			c.removeConnection();
 		}
 		this.inputs.clear();
@@ -173,12 +173,12 @@ public class NodeMath extends Node {
 		CLAMP("Clamp");
 
 		public String name;
-		private Operation(String name){
+		private Operation(final String name){
 			this.name = name;
 		}
 		
-		public static Operation getByName(String name){
-			for(Operation o : values()){
+		public static Operation getByName(final String name){
+			for(final Operation o : values()){
 				if(o.name.equals(name)){
 					return o;
 				}

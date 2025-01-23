@@ -21,9 +21,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIITER extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_fusion_multiblock.png");
-	private TileEntityITER iter;
+	private final TileEntityITER iter;
 
-	public GUIITER(InventoryPlayer invPlayer, TileEntityITER laser) {
+	public GUIITER(final InventoryPlayer invPlayer, final TileEntityITER laser) {
 		super(new ContainerITER(invPlayer, laser));
 		this.iter = laser;
 
@@ -32,7 +32,7 @@ public class GUIITER extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 71, guiTop + 108, 34, 16, iter.power, TileEntityITER.maxPower);
@@ -41,12 +41,12 @@ public class GUIITER extends GuiInfoContainer {
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 54, 16, 52, iter.tanks[1], iter.types[1]); //Steam
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 71, guiTop + 54, 34, 34, iter.plasma); //Plasma
 		
-		String text = "Magnets are " + ((iter.isOn && iter.power >= TileEntityITER.powerReq) ? "ON" : "OFF");
+		final String text = "Magnets are " + ((iter.isOn && iter.power >= TileEntityITER.powerReq) ? "ON" : "OFF");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 76, guiTop + 94, 24, 12, mouseX, mouseY, new String[] { text });
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
 
     	if(guiLeft + 52 <= x && guiLeft + 52 + 18 > x && guiTop + 107 < y && guiTop + 107 + 18 >= y) {
@@ -59,15 +59,15 @@ public class GUIITER extends GuiInfoContainer {
     }
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.iter.hasCustomInventoryName() ? this.iter.getInventoryName() : I18n.format(this.iter.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.iter.hasCustomInventoryName() ? this.iter.getInventoryName() : I18n.format(this.iter.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -82,10 +82,10 @@ public class GUIITER extends GuiInfoContainer {
 		if(iter.plasma.getFluidAmount() > 0 && iter.getShield() >= iter.plasmaType.getTemperature())
 			drawTexturedModalRect(guiLeft + 97, guiTop + 17, 218, 0, 18, 18);
 		
-		int i = (int)iter.getPowerScaled(34);
+		final int i = (int)iter.getPowerScaled(34);
 		drawTexturedModalRect(guiLeft + 71, guiTop + 108, 176, 25, i, 16);
 		
-		int j = (int)iter.getProgressScaled(17);
+		final int j = (int)iter.getProgressScaled(17);
 		drawTexturedModalRect(guiLeft + 44, guiTop + 22, 176, 18, j, 7);
 
 		for(int t = 0; t < 2; t++) {

@@ -62,23 +62,23 @@ public class ExplosionNukeGeneric {
 
 	private final static Random random = new Random();
 	
-	public static void empBlast(World world, int x, int y, int z, int bombStartStrength) {
+	public static void empBlast(final World world, final int x, final int y, final int z, final int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		int r = bombStartStrength;
-		int r2 = r * r;
-		int r22 = r2 / 2;
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final int r = bombStartStrength;
+		final int r2 = r * r;
+		final int r22 = r2 / 2;
 		for (int xx = -r; xx < r; xx++) {
-			int X = xx + x;
-			int XX = xx * xx;
+			final int X = xx + x;
+			final int XX = xx * xx;
 			for (int yy = -r; yy < r; yy++) {
-				int Y = yy + y;
-				int YY = XX + yy * yy;
+				final int Y = yy + y;
+				final int YY = XX + yy * yy;
 				for (int zz = -r; zz < r; zz++) {
-					int Z = zz + z;
-					int ZZ = YY + zz * zz;
+					final int Z = zz + z;
+					final int ZZ = YY + zz * zz;
 					if (ZZ < r22) {
 						pos.setPos(X, Y, Z);
 						emp(world, pos);
@@ -88,44 +88,44 @@ public class ExplosionNukeGeneric {
 		}
 	}
 	
-	public static void succ(World world, int x, int y, int z, int radius) {
-		int i;
-		int j;
-		int k;
+	public static void succ(final World world, final int x, final int y, final int z, final int radius) {
+		final int i;
+		final int j;
+		final int k;
 		double d5;
 		double d6;
 		double d7;
-		double wat = radius;
+		final double wat = radius;
 
 		// bombStartStrength *= 2.0F;
 		i = MathHelper.floor(x - wat - 1.0D);
 		j = MathHelper.floor(x + wat + 1.0D);
 		k = MathHelper.floor(y - wat - 1.0D);
-		int i2 = MathHelper.floor(y + wat + 1.0D);
-		int l = MathHelper.floor(z - wat - 1.0D);
-		int j2 = MathHelper.floor(z + wat + 1.0D);
-		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
+		final int i2 = MathHelper.floor(y + wat + 1.0D);
+		final int l = MathHelper.floor(z - wat - 1.0D);
+		final int j2 = MathHelper.floor(z + wat + 1.0D);
+		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
 
 		for (int i1 = 0; i1 < list.size(); ++i1) {
-			Entity entity = (Entity) list.get(i1);
+			final Entity entity = list.get(i1);
 			
 			if(entity instanceof EntityBlackHole)
 				continue;
 			
-			double d4 = entity.getDistance(x, y, z) / radius;
+			final double d4 = entity.getDistance(x, y, z) / radius;
 
 			if (d4 <= 1.0D) {
 				d5 = entity.posX - x;
 				d6 = entity.posY + entity.getEyeHeight() - y;
 				d7 = entity.posZ - z;
-				double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
+				final double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
 				if (d9 < wat && !(entity instanceof EntityPlayer && ArmorUtil.checkArmor((EntityPlayer) entity, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots))) {
 					d5 /= d9;
 					d6 /= d9;
 					d7 /= d9;
 					
 					if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
-						double d8 = 0.125 + (random.nextDouble() * 0.25);
+						final double d8 = 0.125 + (random.nextDouble() * 0.25);
 						entity.motionX -= d5 * d8;
 						entity.motionY -= d6 * d8;
 						entity.motionZ -= d7 * d8;
@@ -136,13 +136,13 @@ public class ExplosionNukeGeneric {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static int destruction(World world, BlockPos pos) {
-		int rand;
+	public static int destruction(final World world, final BlockPos pos) {
+		final int rand;
 		if (!world.isRemote) {
-			IBlockState b = world.getBlockState(pos);
+			final IBlockState b = world.getBlockState(pos);
 			if (b.getBlock().getExplosionResistance(null)>=200f) {	//500 is the resistance of liquids
 				//blocks to be spared
-				int protection = (int)(b.getBlock().getExplosionResistance(null)/300f);
+				final int protection = (int)(b.getBlock().getExplosionResistance(null)/300f);
 				if (b.getBlock() == ModBlocks.brick_concrete) {
 					rand = random.nextInt(8);
 					if (rand == 0) {
@@ -178,9 +178,9 @@ public class ExplosionNukeGeneric {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static int vaporDest(World world, BlockPos pos) {
+	public static int vaporDest(final World world, final BlockPos pos) {
 		if (!world.isRemote) {
-			IBlockState b = world.getBlockState(pos);
+			final IBlockState b = world.getBlockState(pos);
 			if (b.getBlock().getExplosionResistance(null)<0.5f //most light things
 					|| b.getBlock() == Blocks.WEB || b.getBlock() == ModBlocks.red_cable
 					|| b.getBlock() instanceof BlockLiquid) {
@@ -203,23 +203,23 @@ public class ExplosionNukeGeneric {
 		return 0;
 	}
 
-	public static void waste(World world, int x, int y, int z, int radius) {
+	public static void waste(final World world, final int x, final int y, final int z, final int radius) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		int r = radius;
-		int r2 = r * r;
-		int r22 = r2 / 2;
+		final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final int r = radius;
+		final int r2 = r * r;
+		final int r22 = r2 / 2;
 		for (int xx = -r; xx < r; xx++) {
-			int X = xx + x;
-			int XX = xx * xx;
+			final int X = xx + x;
+			final int XX = xx * xx;
 			for (int yy = -r; yy < r; yy++) {
-				int Y = yy + y;
-				int YY = XX + yy * yy;
+				final int Y = yy + y;
+				final int YY = XX + yy * yy;
 				for (int zz = -r; zz < r; zz++) {
-					int Z = zz + z;
-					int ZZ = YY + zz * zz;
+					final int Z = zz + z;
+					final int ZZ = YY + zz * zz;
 					if (ZZ < r22 + world.rand.nextInt(r22 / 5)) {
 						if (world.getBlockState(pos.setPos(X, Y, Z)).getBlock() != Blocks.AIR)
 							wasteDest(world, pos);
@@ -229,14 +229,13 @@ public class ExplosionNukeGeneric {
 		}
 	}
 
-	public static void wasteDest(World world, BlockPos pos) {
+	public static void wasteDest(final World world, final BlockPos pos) {
 		if (!world.isRemote) {
-			int rand;
-			IBlockState bs = world.getBlockState(pos);
-			Block b = bs.getBlock();
+			final int rand;
+			final IBlockState bs = world.getBlockState(pos);
+			final Block b = bs.getBlock();
 			if(b == Blocks.AIR){
-				return;	
-			}
+            }
 
 			else if (b == Blocks.ACACIA_DOOR || b == Blocks.BIRCH_DOOR || b == Blocks.DARK_OAK_DOOR || b == Blocks.JUNGLE_DOOR || b == Blocks.OAK_DOOR || b == Blocks.SPRUCE_DOOR || b == Blocks.IRON_DOOR) {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
@@ -360,26 +359,26 @@ public class ExplosionNukeGeneric {
 		}
 	}
 
-	public static void wasteNoSchrab(World world, BlockPos pos, int radius) {
+	public static void wasteNoSchrab(final World world, final BlockPos pos, final int radius) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		MutableBlockPos mpos = new BlockPos.MutableBlockPos(pos);
-		int r = radius;
-		int r2 = r * r;
-		int r22 = r2 / 2;
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
+		final MutableBlockPos mpos = new BlockPos.MutableBlockPos(pos);
+		final int r = radius;
+		final int r2 = r * r;
+		final int r22 = r2 / 2;
 		for (int xx = -r; xx < r; xx++) {
-			int X = xx + x;
-			int XX = xx * xx;
+			final int X = xx + x;
+			final int XX = xx * xx;
 			for (int yy = -r; yy < r; yy++) {
-				int Y = yy + y;
-				int YY = XX + yy * yy;
+				final int Y = yy + y;
+				final int YY = XX + yy * yy;
 				for (int zz = -r; zz < r; zz++) {
-					int Z = zz + z;
-					int ZZ = YY + zz * zz;
+					final int Z = zz + z;
+					final int ZZ = YY + zz * zz;
 					if (ZZ < r22 + world.rand.nextInt(r22 / 5)) {
 						mpos.setPos(X, Y, Z);
 						if (world.getBlockState(mpos).getBlock() != Blocks.AIR)
@@ -390,14 +389,13 @@ public class ExplosionNukeGeneric {
 		}
 	}
 
-	public static void wasteDestNoSchrab(World world, BlockPos pos) {
+	public static void wasteDestNoSchrab(final World world, final BlockPos pos) {
 		if (!world.isRemote) {
-			int rand;
-			Block b = world.getBlockState(pos).getBlock();
+			final int rand;
+			final Block b = world.getBlockState(pos).getBlock();
 
 			if(b == Blocks.AIR){
-				return;	
-			}
+            }
 
 			else if (b == Blocks.GLASS || b == Blocks.STAINED_GLASS
 					|| b == Blocks.ACACIA_DOOR || b == Blocks.BIRCH_DOOR || b == Blocks.DARK_OAK_DOOR || b == Blocks.JUNGLE_DOOR || b == Blocks.OAK_DOOR || b == Blocks.SPRUCE_DOOR || b == Blocks.IRON_DOOR
@@ -494,13 +492,13 @@ public class ExplosionNukeGeneric {
 		}
 	}
 
-	public static void emp(World world, BlockPos pos) {
+	public static void emp(final World world, final BlockPos pos) {
 		if (!world.isRemote) {
 			if(!CompatibilityConfig.isWarDim(world)){
 				return;
 			}
-			Block b = world.getBlockState(pos).getBlock();
-			TileEntity te = world.getTileEntity(pos);
+			final Block b = world.getBlockState(pos).getBlock();
+			final TileEntity te = world.getTileEntity(pos);
 			
 			if (te != null && te instanceof IEnergyUser) {
 				
@@ -522,9 +520,9 @@ public class ExplosionNukeGeneric {
 					if(random.nextInt(5) <= 1)
 						world.setBlockState(pos, ModBlocks.block_electrical_scrap.getDefaultState());
 				}
-			} catch(NoClassDefFoundError e){}
+			} catch(final NoClassDefFoundError e){}
 			if(te != null && te.hasCapability(CapabilityEnergy.ENERGY, null)){
-				IEnergyStorage handle = te.getCapability(CapabilityEnergy.ENERGY, null);
+				final IEnergyStorage handle = te.getCapability(CapabilityEnergy.ENERGY, null);
 				handle.extractEnergy(handle.getEnergyStored(), false);
 				if(random.nextInt(5) <= 1)
 					world.setBlockState(pos, ModBlocks.block_electrical_scrap.getDefaultState());
@@ -535,16 +533,16 @@ public class ExplosionNukeGeneric {
 	}
 	
 	public static void loadSoliniumFromFile(){
-		File config = new File(MainRegistry.proxy.getDataDir().getPath() + "/config/hbm/solinium.cfg");
+		final File config = new File(MainRegistry.proxy.getDataDir().getPath() + "/config/hbm/solinium.cfg");
 		if (!config.exists())
 			try {
 				config.getParentFile().mkdirs();
-				FileWriter write = new FileWriter(config);
+				final FileWriter write = new FileWriter(config);
 				write.write("# Format: modid:blockName|modid:blockName\n" + 
 							"# Left blocks are transformed to right, one per line\n");
 				write.close();
 				
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				MainRegistry.logger.log(Level.ERROR, "ERROR: Could not create config file: " + config.getAbsolutePath());
 				e.printStackTrace();
 				return;
@@ -560,41 +558,41 @@ public class ExplosionNukeGeneric {
 					lineCount ++;
 					if(currentLine.startsWith("#") || currentLine.length() == 0)
 						continue;
-					String[] blocks = currentLine.trim().split("|");
+					final String[] blocks = currentLine.trim().split("|");
 					if(blocks.length != 2)
 						continue;
-					String[] modidBlock1 = blocks[0].split(":");
-					String[] modidBlock2 = blocks[1].split(":");
-					Block b1 = Block.REGISTRY.getObject(new ResourceLocation(modidBlock1[0], modidBlock1[1]));
-					Block b2 = Block.REGISTRY.getObject(new ResourceLocation(modidBlock2[0], modidBlock2[1]));
+					final String[] modidBlock1 = blocks[0].split(":");
+					final String[] modidBlock2 = blocks[1].split(":");
+					final Block b1 = Block.REGISTRY.getObject(new ResourceLocation(modidBlock1[0], modidBlock1[1]));
+					final Block b2 = Block.REGISTRY.getObject(new ResourceLocation(modidBlock2[0], modidBlock2[1]));
 					if(b1 == null || b2 == null){
 						MainRegistry.logger.log(Level.ERROR, "Failed to find block for solinium config on line: " + lineCount);
 						continue;
 					}
 					soliniumConfig.put(b1, b2);
 				}
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				MainRegistry.logger.log(Level.ERROR, "Could not find solinium config file! This should never happen.");
 				e.printStackTrace();
-			} catch (IOException e){
+			} catch (final IOException e){
 				MainRegistry.logger.log(Level.ERROR, "Error reading solinium config!");
 				e.printStackTrace();
 			} finally {
 				if(read != null)
 					try {
 						read.close();
-					} catch (IOException e) {}
+					} catch (final IOException e) {}
 			}
 		}
 	}
 	
 	public static Map<Block, Block> soliniumConfig = new HashMap<>();
 	
-	public static void solinium(World world, BlockPos pos) {
+	public static void solinium(final World world, final BlockPos pos) {
 		if (!world.isRemote) {
 			
-			IBlockState b = world.getBlockState(pos);
-			Material m = b.getMaterial();
+			final IBlockState b = world.getBlockState(pos);
+			final Material m = b.getMaterial();
 			
 			if(soliniumConfig.containsKey(b.getBlock())){
 				world.setBlockState(pos, soliniumConfig.get(b.getBlock()).getDefaultState());

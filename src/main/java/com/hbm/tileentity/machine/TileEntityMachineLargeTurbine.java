@@ -69,11 +69,11 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 			}
 
 			fillFluidInit(tanks[1]);
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+			final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 			this.sendPower(world, pos.add(dir.offsetX * -4, 0, dir.offsetZ * -4), dir.getOpposite());
 			
 			if(inventory.getStackInSlot(0).getItem() == ModItems.forge_fluid_identifier && inventory.getStackInSlot(1).isEmpty()){
-				Fluid f = ItemForgeFluidIdentifier.getType(inventory.getStackInSlot(0));
+				final Fluid f = ItemForgeFluidIdentifier.getType(inventory.getStackInSlot(0));
 				if(isValidFluidForTank(0, new FluidStack(f, 1000))){
 					types[0] = f;
 					if(tanks[0].getFluid() != null && tanks[0].getFluid().getFluid() != types[0])
@@ -89,7 +89,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 			
 			boolean operational = false;
 
-			Object[] outs = MachineRecipes.getTurbineOutput(types[0]);
+			final Object[] outs = MachineRecipes.getTurbineOutput(types[0]);
 
 			if(outs == null) {
 				types[1] = null;
@@ -99,16 +99,16 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 				if(tanks[1].getFluid() != null && tanks[1].getFluid().getFluid() != types[1])
 					tanks[1].setFluid(null);
 
-				int processMax = (int) Math.ceil(Math.ceil(tanks[0].getFluidAmount() / 10F) / (Integer)outs[2]);		//the maximum amount of cycles based on the 10% cap
-				int processSteam = tanks[0].getFluidAmount() / (Integer)outs[2];							//the maximum amount of cycles depending on steam
-				int processWater = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / (Integer)outs[1];	//the maximum amount of cycles depending on water
+				final int processMax = (int) Math.ceil(Math.ceil(tanks[0].getFluidAmount() / 10F) / (Integer)outs[2]);		//the maximum amount of cycles based on the 10% cap
+				final int processSteam = tanks[0].getFluidAmount() / (Integer)outs[2];							//the maximum amount of cycles depending on steam
+				final int processWater = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / (Integer)outs[1];	//the maximum amount of cycles depending on water
 
-				int cycles = Math.min(processMax, Math.min(processSteam, processWater));
+				final int cycles = Math.min(processMax, Math.min(processSteam, processWater));
 
 				tanks[0].drain((Integer)outs[2] * cycles, true);
 				tanks[1].fill(new FluidStack(types[1], (Integer)outs[1] * cycles), true);
 
-				power += (Integer)outs[3] * cycles;
+				power += (long) (Integer) outs[3] * cycles;
 
 				if(power > maxPower)
 					power = maxPower;
@@ -118,10 +118,10 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 
 			FFUtils.fillFluidContainer(inventory, tanks[1], 5, 6);
 
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tanks[0], tanks[1]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			PacketDispatcher.wrapper.sendToAllAround(new FluidTypePacketTest(pos.getX(), pos.getY(), pos.getZ(), new Fluid[]{types[0], types[1]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			data.setBoolean("operational", operational);
 			this.networkPack(data, 50);
@@ -141,33 +141,32 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 		}
 	}
 	
-	protected boolean inputValidForTank(int tank, int slot) {
+	protected boolean inputValidForTank(final int tank, final int slot) {
 		if(inventory.getStackInSlot(slot) != ItemStack.EMPTY && tanks[tank] != null) {
-			FluidStack f = FluidUtil.getFluidContained(inventory.getStackInSlot(slot));
-			if(f != null && f.getFluid() == types[tank])
-				return true;
+			final FluidStack f = FluidUtil.getFluidContained(inventory.getStackInSlot(slot));
+            return f != null && f.getFluid() == types[tank];
 		}
 		return false;
 	}
 	
-	private boolean isValidFluidForTank(int tank, FluidStack stack) {
+	private boolean isValidFluidForTank(final int tank, final FluidStack stack) {
 		if(stack == null || tanks[tank] == null)
 			return false;
 		return stack.getFluid() == ModForgeFluids.steam || stack.getFluid() == ModForgeFluids.hotsteam || stack.getFluid() == ModForgeFluids.superhotsteam || stack.getFluid() == ModForgeFluids.ultrahotsteam;
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		this.power = data.getLong("power");
 		this.shouldTurn = data.getBoolean("operational");
 	}
 
-	public long getPowerScaled(int i) {
+	public long getPowerScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if(compound.hasKey("tankType0"))
 			types[0] = FluidRegistry.getFluid(compound.getString("tankType0"));
@@ -183,7 +182,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		compound.setLong("power", power);
 		if(types[0] != null)
@@ -198,7 +197,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 		return "container.machineLargeTurbine";
 	}
 
-	public void fillFluidInit(FluidTank type) {
+	public void fillFluidInit(final FluidTank type) {
 
 		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 		dir = dir.getRotation(ForgeDirection.UP);
@@ -207,7 +206,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 		fillFluid(pos.getX() + dir.offsetX * -2, pos.getY(), pos.getZ() + dir.offsetZ * -2, type);
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank type) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank type) {
 		FFUtils.fillFluid(this, type, world, new BlockPos(x, y, z), 10239000);
 	}
 	
@@ -228,7 +227,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource != null && resource.getFluid() == types[0]){
 			return tanks[0].fill(resource, doFill);
 		}
@@ -236,7 +235,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource != null && resource.getFluid() == types[1]){
 			return tanks[1].drain(resource, doDrain);
 		}
@@ -244,12 +243,12 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 2){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -257,7 +256,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -265,7 +264,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		}
@@ -278,7 +277,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

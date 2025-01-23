@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.tool.ItemKeyPin;
 
@@ -24,7 +25,7 @@ public class TileEntityMachineKeyForge extends TileEntity implements ITickable {
 	public TileEntityMachineKeyForge() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -39,11 +40,11 @@ public class TileEntityMachineKeyForge extends TileEntity implements ITickable {
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -53,14 +54,14 @@ public class TileEntityMachineKeyForge extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
@@ -82,42 +83,42 @@ public class TileEntityMachineKeyForge extends TileEntity implements ITickable {
 			//DEBUG, remove later
 			//Drillgon200: Later is now.
 			/*if(slots[2] != null && slots[2].getItem() == Items.wheat_seeds) {
-				slots[2] = new ItemStack(ModItems.nuke_starter_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.nuke_starter_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == Items.bone) {
-				slots[2] = new ItemStack(ModItems.nuke_advanced_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.nuke_advanced_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == Items.feather) {
-				slots[2] = new ItemStack(ModItems.nuke_commercially_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.nuke_commercially_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == Items.apple) {
-				slots[2] = new ItemStack(ModItems.nuke_electric_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.nuke_electric_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == Items.clay_ball) {
-				slots[2] = new ItemStack(ModItems.t45_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.t45_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == Items.stick) {
-				slots[2] = new ItemStack(ModItems.missile_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.missile_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == Items.string) {
-				slots[2] = new ItemStack(ModItems.grenade_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.grenade_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == Items.reeds) {
-				slots[2] = new ItemStack(ModItems.man_kit);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.man_kit);
 			}
 			if(slots[2] != null && slots[2].getItem() == ModItems.battery_generic) {
-				slots[2] = new ItemStack(ModItems.memory);
+				slots[2] = ItemStackUtil.itemStackFrom(ModItems.memory);
 			}*/
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 	

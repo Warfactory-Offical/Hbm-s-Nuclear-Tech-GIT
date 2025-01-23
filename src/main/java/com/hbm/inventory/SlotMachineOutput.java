@@ -5,12 +5,12 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class SlotMachineOutput extends SlotItemHandler {
-	public SlotMachineOutput(IItemHandler inventory, int i, int j, int k) {
+	public SlotMachineOutput(final IItemHandler inventory, final int i, final int j, final int k) {
 		super(inventory, i, j, k);
 	}
 	
 	@Override
-	public boolean isItemValid(ItemStack p_75214_1_)
+	public boolean isItemValid(final ItemStack p_75214_1_)
     {
         return false;
     }

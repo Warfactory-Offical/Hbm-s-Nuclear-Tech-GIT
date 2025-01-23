@@ -22,11 +22,11 @@ import net.minecraft.world.World;
 
 public class BlockGenericSlab extends BlockSlab {
 
-	public static final PropertyEnum<Variant> VARIANT = PropertyEnum.<Variant>create("variant", Variant.class);
+	public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
 	
-	private boolean isDouble;
+	private final boolean isDouble;
 	
-	public BlockGenericSlab(Material materialIn, boolean isDouble, String s) {
+	public BlockGenericSlab(final Material materialIn, final boolean isDouble, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -36,15 +36,15 @@ public class BlockGenericSlab extends BlockSlab {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		float hardness = this.getExplosionResistance(null);
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+		final float hardness = this.getExplosionResistance(null);
 		if(hardness > 50){
 			tooltip.add("§6" + I18nUtil.resolveKey("trait.blastres", hardness));
 		}
 	}
 
 	@Override
-	public String getTranslationKey(int meta) {
+	public String getTranslationKey(final int meta) {
 		return this.getTranslationKey();
 	}
 
@@ -55,7 +55,7 @@ public class BlockGenericSlab extends BlockSlab {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 
@@ -65,12 +65,12 @@ public class BlockGenericSlab extends BlockSlab {
 	}
 
 	@Override
-	public Comparable<?> getTypeForItem(ItemStack stack) {
+	public Comparable<?> getTypeForItem(final ItemStack stack) {
 		return Variant.DEFAULT;
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		int i = 0;
 
         if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
@@ -82,7 +82,7 @@ public class BlockGenericSlab extends BlockSlab {
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, Variant.DEFAULT);
 
         if (!this.isDouble())
@@ -96,7 +96,7 @@ public class BlockGenericSlab extends BlockSlab {
 	@Override
 	protected BlockStateContainer createBlockState()
     {
-        return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {VARIANT}) : new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
     }
 	
 	public static enum Variant implements IStringSerializable

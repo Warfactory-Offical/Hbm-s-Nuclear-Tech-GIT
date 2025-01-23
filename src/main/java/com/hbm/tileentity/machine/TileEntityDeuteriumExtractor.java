@@ -56,7 +56,7 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 				this.markDirty();
 			}
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			data.setTag("tanks", FFUtils.serializeTankArray(tanks));
 			
@@ -68,7 +68,7 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 		this.updateStandardConnections(world, pos);
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, pos.west(), 100);
 		FFUtils.fillFluid(this, tank, world, pos.east(), 100);
 		FFUtils.fillFluid(this, tank, world, pos.down(), 100);
@@ -78,7 +78,7 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		this.power = data.getLong("power");
 		if(data.hasKey("tanks"))
 			FFUtils.deserializeTankArray(data.getTagList("tanks", 10), tanks);
@@ -93,7 +93,7 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.power = nbt.getLong("power");
 		if(nbt.hasKey("tanks"))
@@ -101,14 +101,14 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setLong("power", power);
 		nbt.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		return super.writeToNBT(nbt);
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 
@@ -123,10 +123,9 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 2) {
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 		}
@@ -138,7 +137,7 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource.getFluid() == FluidRegistry.WATER) {
 			return tanks[0].fill(resource, doFill);
 		}
@@ -146,7 +145,7 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource == null || !resource.isFluidEqual(tanks[1].getFluid())) {
 			return null;
 		}
@@ -154,17 +153,17 @@ public class TileEntityDeuteriumExtractor extends TileEntityLoadedBase implement
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {

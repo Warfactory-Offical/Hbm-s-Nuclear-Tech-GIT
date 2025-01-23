@@ -49,14 +49,14 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
     }
 
     public void tryFillTe(){
-        EnumFacing outputSide = getOutputSide();
-        TileEntity te = world.getTileEntity(pos.offset(outputSide));
+        final EnumFacing outputSide = getOutputSide();
+        final TileEntity te = world.getTileEntity(pos.offset(outputSide));
 
-        int meta = this.getBlockMetadata();
+        final int meta = this.getBlockMetadata();
         if(te != null){
-            ICapabilityProvider capte = te;
+            final ICapabilityProvider capte = te;
             if(capte.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide)) {
-                IItemHandler cap = capte.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide);
+                final IItemHandler cap = capte.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide);
             
                 for(int i = 0; i < inventory.getSlots(); i++) {
                     tryFillContainerCap(cap, i);
@@ -65,12 +65,12 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
         }
     }
 
-    public boolean tryFillTeDirect(ItemStack stack){
+    public boolean tryFillTeDirect(final ItemStack stack){
         return tryInsertItemCap(inventory, stack);
     }
 
     //Unloads output into chests. Capability version.
-    public boolean tryFillContainerCap(IItemHandler chest, int slot) {
+    public boolean tryFillContainerCap(final IItemHandler chest, final int slot) {
         //Check if we have something to output
         if(inventory.getStackInSlot(slot).isEmpty())
             return false;
@@ -79,24 +79,24 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
     }
 
     //Unloads output into chests. Capability version.
-    public boolean tryInsertItemCap(IItemHandler chest, ItemStack stack) {
+    public boolean tryInsertItemCap(final IItemHandler chest, final ItemStack stack) {
         //Check if we have something to output
         if(stack.isEmpty())
             return false;
 
         for(int i = 0; i < chest.getSlots(); i++) {
 
-            ItemStack outputStack = stack.copy();
+            final ItemStack outputStack = stack.copy();
             if(outputStack.isEmpty() || outputStack.getCount() == 0)
                 return true;
 
-            ItemStack chestItem = chest.getStackInSlot(i).copy();
+            final ItemStack chestItem = chest.getStackInSlot(i).copy();
             if(chestItem.isEmpty() || (Library.areItemStacksCompatible(outputStack, chestItem, false) && chestItem.getCount() < chestItem.getMaxStackSize())) {
-                int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
+                final int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
 
                 outputStack.setCount(fillAmount);
 
-                ItemStack rest = chest.insertItem(i, outputStack, true);
+                final ItemStack rest = chest.insertItem(i, outputStack, true);
                 if(rest.getItem() == Item.getItemFromBlock(Blocks.AIR)){
                     stack.shrink(outputStack.getCount());
                     chest.insertItem(i, outputStack, false);
@@ -108,13 +108,13 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
     }
 
     @Override
-    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new ContainerCraneInserter(player.inventory, this);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new GUICraneInserter(player.inventory, this);
     }
 

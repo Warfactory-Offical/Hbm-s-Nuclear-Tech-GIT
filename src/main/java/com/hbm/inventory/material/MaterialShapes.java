@@ -42,25 +42,25 @@ public class MaterialShapes {
 	}
 	*/
 	
-	private int quantity;
+	private final int quantity;
 	public final String[] prefixes;
 	
-	private MaterialShapes(int quantity, String... prefixes) {
+	private MaterialShapes(final int quantity, final String... prefixes) {
 		this.quantity = quantity;
 		this.prefixes = prefixes;
 		
-		for(String prefix : prefixes) {
+		for(final String prefix : prefixes) {
 			Mats.prefixByName.put(prefix, this);
 		}
 		
 		allShapes.add(this);
 	}
 	
-	public int q(int amount) {
+	public int q(final int amount) {
 		return this.quantity * amount;
 	}
 	
-	public int q(int unitsUsed, int itemsProduced) { //eg rails: INOGT.q(6, 16) since the recipe uses 6 ton ingots producing 16 individual rail blocks
+	public int q(final int unitsUsed, final int itemsProduced) { //eg rails: INOGT.q(6, 16) since the recipe uses 6 ton ingots producing 16 individual rail blocks
 		return this.quantity * unitsUsed / itemsProduced;
 	}
 

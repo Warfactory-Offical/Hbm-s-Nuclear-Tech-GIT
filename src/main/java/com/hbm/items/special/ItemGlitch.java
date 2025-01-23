@@ -1,4 +1,5 @@
 package com.hbm.items.special;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ import net.minecraft.world.World;
 
 public class ItemGlitch extends Item {
 
-	public ItemGlitch(String s) {
+	public ItemGlitch(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -39,8 +40,8 @@ public class ItemGlitch extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		stack.damageItem(5, player);
 		
 		if(!world.isRemote)
@@ -61,28 +62,28 @@ public class ItemGlitch extends Item {
 				player.attackEntityFrom(ModDamageSource.blackhole, 1000);
 				break;
 			case 5:
-				player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(ModBlocks.block_meteor_treasure.getDefaultState(), itemRand, 0)));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModBlocks.block_meteor_treasure.getItemDropped(ModBlocks.block_meteor_treasure.getDefaultState(), itemRand, 0)));
 				break;
 			case 6:
 				for(int i = 0; i < 3; i++)
-					player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(ModBlocks.block_meteor_treasure.getDefaultState(), itemRand, 0)));
+					player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModBlocks.block_meteor_treasure.getItemDropped(ModBlocks.block_meteor_treasure.getDefaultState(), itemRand, 0)));
 				break;
 			case 7:
 				for(int i = 0; i < 10; i++)
-					player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(ModBlocks.block_meteor_treasure.getDefaultState(), itemRand, 0)));
+					player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModBlocks.block_meteor_treasure.getItemDropped(ModBlocks.block_meteor_treasure.getDefaultState(), itemRand, 0)));
 				break;
 			case 8:
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.ammo_container, 10));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ammo_container, 10));
 				player.sendMessage(new TextComponentTranslation("chat.glitch.8"));
 				break;
 			case 9:
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.nuke_advanced_kit, 1));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.nuke_advanced_kit, 1));
 				break;
 			case 10:
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.nuke_starter_kit, 1));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.nuke_starter_kit, 1));
 				break;
 			case 11:
-				EntityBoxcar pip = new EntityBoxcar(world);
+				final EntityBoxcar pip = new EntityBoxcar(world);
 				pip.posX = player.posX;
 				pip.posY = player.posY + 50;
 				pip.posZ = player.posZ;
@@ -90,7 +91,7 @@ public class ItemGlitch extends Item {
 				break;
 			case 12:
 				for(int i = 0; i < 10; i++) {
-					EntityBoxcar pippo = new EntityBoxcar(world);
+					final EntityBoxcar pippo = new EntityBoxcar(world);
 					pippo.posX = player.posX + itemRand.nextGaussian() * 25;
 					pippo.posY = player.posY + 50;
 					pippo.posZ = player.posZ + itemRand.nextGaussian() * 25;
@@ -98,9 +99,9 @@ public class ItemGlitch extends Item {
 				}
 				break;
 			case 13:
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.gun_revolver_pip));
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.bottle_rad));
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.geiger_counter));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.gun_revolver_pip));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.bottle_rad));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.geiger_counter));
 				player.sendMessage(new TextComponentTranslation("chat.glitch.13a"));
 				player.sendMessage(new TextComponentTranslation("chat.glitch.13b"));
 				break;
@@ -110,7 +111,7 @@ public class ItemGlitch extends Item {
 				break;
 			case 15:
 				for(int i = 0; i < 36; i++)
-					player.inventory.addItemStackToInventory(new ItemStack(Blocks.DIRT, 64));
+					player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(Blocks.DIRT, 64));
 				break;
 			case 16:
 				player.sendMessage(new TextComponentTranslation("chat.glitch.16"));
@@ -119,8 +120,8 @@ public class ItemGlitch extends Item {
 				player.sendMessage(new TextComponentTranslation("chat.glitch.17"));
 				break;
 			case 18:
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.gun_lever_action));
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.ammo_20gauge, 12));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.gun_lever_action));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.ammo_20gauge, 12));
 				player.sendMessage(new TextComponentTranslation("chat.glitch.18"));
 				break;
 			case 19:
@@ -130,7 +131,7 @@ public class ItemGlitch extends Item {
 				player.sendMessage(new TextComponentTranslation("chat.glitch.20"));
 				break;
 			case 21:
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.missile_nuclear));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.missile_nuclear));
 				player.sendMessage(new TextComponentTranslation("chat.glitch.21"));
 				break;
 			case 22:
@@ -152,14 +153,14 @@ public class ItemGlitch extends Item {
 				player.sendMessage(new TextComponentTranslation("chat.glitch.26"));
 				break;
 			case 27:
-				EntityVortex vortex = new EntityVortex(world, 2.5F);
+				final EntityVortex vortex = new EntityVortex(world, 2.5F);
 				vortex.posX = player.posX;
 				vortex.posY = player.posY - 15;
 				vortex.posZ = player.posZ;
 				world.spawnEntity(vortex);
 				break;
 			case 28:
-				EntityMIRV mirv = new EntityMIRV(world);
+				final EntityMIRV mirv = new EntityMIRV(world);
 				mirv.posX = player.posX;
 				mirv.posY = player.posY + 100;
 				mirv.posZ = player.posZ;
@@ -171,7 +172,7 @@ public class ItemGlitch extends Item {
 				player.sendMessage(new TextComponentTranslation("chat.glitch.29"));
 				break;
 			case 30:
-				player.inventory.addItemStackToInventory(new ItemStack(ModItems.plate_saturnite));
+				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.plate_saturnite));
 				player.sendMessage(new TextComponentTranslation("chat.glitch.30"));
 				break;
 			}
@@ -182,7 +183,7 @@ public class ItemGlitch extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.glitch"));
 		list.add("");
 		if(MainRegistry.polaroidID > 0 && MainRegistry.polaroidID < 19)

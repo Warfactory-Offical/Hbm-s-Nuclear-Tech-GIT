@@ -32,12 +32,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MachineSolarBoiler extends BlockDummyable implements ITooltipProvider, ILookOverlay {
 
-	public MachineSolarBoiler(Material materialIn, String s) {
+	public MachineSolarBoiler(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(meta >= 12)
 			return new TileEntitySolarBoiler();
 		if(meta >= extra)
@@ -56,22 +56,21 @@ public class MachineSolarBoiler extends BlockDummyable implements ITooltipProvid
 	}
 
 	@Override
-    public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 
         if(!world.isRemote && !player.isSneaking()) {
 
             if(!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemForgeFluidIdentifier) {
-                int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+                final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
                 if(pos == null)
                     return false;
 
-                TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+                final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-                if(!(te instanceof TileEntitySolarBoiler))
+                if(!(te instanceof TileEntitySolarBoiler boiler))
                     return false;
 
-                TileEntitySolarBoiler boiler = (TileEntitySolarBoiler) te;
-                Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
+                final Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
                 if(!HeatRecipes.hasBoilRecipe(type)){
                     player.sendMessage(new TextComponentString("§cNo recipe found for §e"+type.getLocalizedName(new FluidStack(type, 1))));
                     return false;
@@ -90,7 +89,7 @@ public class MachineSolarBoiler extends BlockDummyable implements ITooltipProvid
     }
 	
 	@Override
-	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
@@ -100,26 +99,24 @@ public class MachineSolarBoiler extends BlockDummyable implements ITooltipProvid
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
         this.addStandardInfo(tooltip);
         super.addInformation(stack, player, tooltip, advanced);
     }
 
 	@Override
-    public void printHook(Pre event, World world, int x, int y, int z) {
-        int[] pos = this.findCore(world, x, y, z);
+    public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+        final int[] pos = this.findCore(world, x, y, z);
 
         if (pos == null)
             return;
 
-        TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+        final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntitySolarBoiler))
+        if (!(te instanceof TileEntitySolarBoiler heater))
             return;
 
-        TileEntitySolarBoiler heater = (TileEntitySolarBoiler) te;
-
-        List<String> text = new ArrayList<>();
+        final List<String> text = new ArrayList<>();
         text.add(String.format("%,d", heater.heat) + " TU");
         text.add("§a-> §r"+String.format("%,d", heater.heatInput) + " TU/t");
         if(heater.types[0] != null)

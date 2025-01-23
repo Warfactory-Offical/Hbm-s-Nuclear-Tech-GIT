@@ -22,21 +22,21 @@ public class ItemDesignatorPacket implements IMessage {
 	public ItemDesignatorPacket(){
 	}
 
-	public ItemDesignatorPacket(int x, int z)
+	public ItemDesignatorPacket(final int x, final int z)
 	{
 		this.x = x;
 		this.z = z;
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		this.x = buf.readInt();
 		this.z = buf.readInt();
 
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(z);
 	}
@@ -44,9 +44,9 @@ public class ItemDesignatorPacket implements IMessage {
 	public static class Handler implements IMessageHandler<ItemDesignatorPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(ItemDesignatorPacket m, MessageContext ctx) {
+		public IMessage onMessage(final ItemDesignatorPacket m, final MessageContext ctx) {
 			ctx.getServerHandler().player.getServer().addScheduledTask(() -> {
-				EntityPlayer p = ctx.getServerHandler().player;
+				final EntityPlayer p = ctx.getServerHandler().player;
 				
 				ItemStack stack = p.getHeldItem(EnumHand.MAIN_HAND);
 				

@@ -17,7 +17,7 @@ public class ItemSelfcharger extends Item implements IBatteryItem {
 	
 	long charge;
 	
-	public ItemSelfcharger(long charge, String s) {
+	public ItemSelfcharger(final long charge, final String s) {
 		this.charge = charge;
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,24 +26,24 @@ public class ItemSelfcharger extends Item implements IBatteryItem {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
 		if(charge == Long.MAX_VALUE)
 			tooltip.add(TextFormatting.YELLOW + I18nUtil.resolveKey("desc.infinitehe"));
 		else
-			tooltip.add(TextFormatting.YELLOW + "" + Library.getShortNumber(charge*20) + "HE/s");
+			tooltip.add(TextFormatting.YELLOW + Library.getShortNumber(charge*20) + "HE/s");
 	}
 	
 	@Override
-	public void chargeBattery(ItemStack stack, long i) { }
+	public void chargeBattery(final ItemStack stack, final long i) { }
 
 	@Override
-	public void setCharge(ItemStack stack, long i) { }
+	public void setCharge(final ItemStack stack, final long i) { }
 
 	@Override
-	public void dischargeBattery(ItemStack stack, long i) { }
+	public void dischargeBattery(final ItemStack stack, final long i) { }
 
 	@Override
-	public long getCharge(ItemStack stack) {
+	public long getCharge(final ItemStack stack) {
 		return charge;
 	}
 

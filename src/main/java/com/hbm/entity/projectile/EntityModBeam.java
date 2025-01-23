@@ -61,20 +61,20 @@ public class EntityModBeam extends Entity implements IProjectile {
     /** The amount of knockback an arrow applies when it hits a mob. */
     public int mode = 0;
 
-    public EntityModBeam(World p_i1753_1_)
+    public EntityModBeam(final World p_i1753_1_)
     {
         super(p_i1753_1_);
         this.setSize(0.5F, 0.5F);
     }
 
-    public EntityModBeam(World p_i1754_1_, double p_i1754_2_, double p_i1754_4_, double p_i1754_6_)
+    public EntityModBeam(final World p_i1754_1_, final double p_i1754_2_, final double p_i1754_4_, final double p_i1754_6_)
     {
         super(p_i1754_1_);
         this.setSize(0.5F, 0.5F);
         this.setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
     }
 
-    public EntityModBeam(World p_i1755_1_, EntityLivingBase p_i1755_2_, EntityLivingBase p_i1755_3_, float p_i1755_4_, float p_i1755_5_)
+    public EntityModBeam(final World p_i1755_1_, final EntityLivingBase p_i1755_2_, final EntityLivingBase p_i1755_3_, final float p_i1755_4_, final float p_i1755_5_)
     {
         super(p_i1755_1_);
         this.shootingEntity = p_i1755_2_;
@@ -85,24 +85,24 @@ public class EntityModBeam extends Entity implements IProjectile {
         }
 
         this.posY = p_i1755_2_.posY + p_i1755_2_.getEyeHeight() - 0.10000000149011612D;
-        double d0 = p_i1755_3_.posX - p_i1755_2_.posX;
-        double d1 = p_i1755_3_.getEntityBoundingBox().minY + p_i1755_3_.height / 3.0F - this.posY;
-        double d2 = p_i1755_3_.posZ - p_i1755_2_.posZ;
-        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+        final double d0 = p_i1755_3_.posX - p_i1755_2_.posX;
+        final double d1 = p_i1755_3_.getEntityBoundingBox().minY + p_i1755_3_.height / 3.0F - this.posY;
+        final double d2 = p_i1755_3_.posZ - p_i1755_2_.posZ;
+        final double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
         if (d3 >= 1.0E-7D)
         {
-            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-            double d4 = d0 / d3;
-            double d5 = d2 / d3;
+            final float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+            final float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+            final double d4 = d0 / d3;
+            final double d5 = d2 / d3;
             this.setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
-            float f4 = (float)d3 * 0.2F;
+            final float f4 = (float)d3 * 0.2F;
             this.shoot(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
         }
     }
 
-    public EntityModBeam(World p_i1756_1_, EntityLivingBase p_i1756_2_, float p_i1756_3_, EnumHand hand)
+    public EntityModBeam(final World p_i1756_1_, final EntityLivingBase p_i1756_2_, final float p_i1756_3_, final EnumHand hand)
     {
         super(p_i1756_1_);
         this.shootingEntity = p_i1756_2_;
@@ -127,7 +127,7 @@ public class EntityModBeam extends Entity implements IProjectile {
         this.shoot(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
     }
 
-    public EntityModBeam(World world, int x, int y, int z, double mx, double my, double mz, double grav) {
+    public EntityModBeam(final World world, final int x, final int y, final int z, final double mx, final double my, final double mz, final double grav) {
         super(world);
     	this.posX = x + 0.5F;
     	this.posY = y + 0.5F;
@@ -150,9 +150,9 @@ public class EntityModBeam extends Entity implements IProjectile {
      * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
      */
     @Override
-	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_)
+	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, final float p_70186_7_, final float p_70186_8_)
     {
-        float f2 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
+        final float f2 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
         p_70186_1_ /= f2;
         p_70186_3_ /= f2;
         p_70186_5_ /= f2;
@@ -165,7 +165,7 @@ public class EntityModBeam extends Entity implements IProjectile {
         this.motionX = p_70186_1_;
         this.motionY = p_70186_3_;
         this.motionZ = p_70186_5_;
-        float f3 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
+        final float f3 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(p_70186_1_, p_70186_5_) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70186_3_, f3) * 180.0D / Math.PI);
         this.ticksInGround = 0;
@@ -177,7 +177,7 @@ public class EntityModBeam extends Entity implements IProjectile {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+    public void setPositionAndRotationDirect(final double x, final double y, final double z, final float yaw, final float pitch, final int posRotationIncrements, final boolean teleport) {
     	this.setPosition(x, y, z);
     	this.setRotation(yaw, pitch);
     }
@@ -187,7 +187,7 @@ public class EntityModBeam extends Entity implements IProjectile {
      */
     @Override
 	@SideOnly(Side.CLIENT)
-    public void setVelocity(double p_70016_1_, double p_70016_3_, double p_70016_5_)
+    public void setVelocity(final double p_70016_1_, final double p_70016_3_, final double p_70016_5_)
     {
         this.motionX = p_70016_1_;
         this.motionY = p_70016_3_;
@@ -195,7 +195,7 @@ public class EntityModBeam extends Entity implements IProjectile {
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float f = MathHelper.sqrt(p_70016_1_ * p_70016_1_ + p_70016_5_ * p_70016_5_);
+            final float f = MathHelper.sqrt(p_70016_1_ * p_70016_1_ + p_70016_5_ * p_70016_5_);
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(p_70016_1_, p_70016_5_) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70016_3_, f) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
@@ -225,8 +225,8 @@ public class EntityModBeam extends Entity implements IProjectile {
             //this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(this.motionY, (double)f) * 180.0D / Math.PI);
         }
 
-        BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
-        IBlockState blockstate = world.getBlockState(pos);
+        final BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
+        final IBlockState blockstate = world.getBlockState(pos);
 
         if (blockstate.getMaterial() != Material.AIR)
         {
@@ -253,24 +253,24 @@ public class EntityModBeam extends Entity implements IProjectile {
             }
 
             Entity entity = null;
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(this.motionX, this.motionY, this.motionZ).grow(1.0D));
+            final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(this.motionX, this.motionY, this.motionZ).grow(1.0D));
             double d0 = 0.0D;
             int i;
             float f1;
 
             for (i = 0; i < list.size(); ++i)
             {
-                Entity entity1 = (Entity)list.get(i);
+                final Entity entity1 = list.get(i);
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f1 = 0.3F;
-                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
-                    RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+                    final AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
+                    final RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
                     {
-                        double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
+                        final double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
 
                         if (d1 < d0 || d0 == 0.0D)
                         {
@@ -286,10 +286,9 @@ public class EntityModBeam extends Entity implements IProjectile {
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer)
             {
-                EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
-                
+
                 if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
                 {
                     movingobjectposition = null;
@@ -321,7 +320,7 @@ public class EntityModBeam extends Entity implements IProjectile {
                 }
                 else if(movingobjectposition.typeOfHit == Type.BLOCK)
                 {
-                	IBlockState newState = world.getBlockState(movingobjectposition.getBlockPos());
+                	final IBlockState newState = world.getBlockState(movingobjectposition.getBlockPos());
                     this.field_145791_d = movingobjectposition.getBlockPos().getX();
                     this.field_145792_e = movingobjectposition.getBlockPos().getY();
                     this.field_145789_f = movingobjectposition.getBlockPos().getZ();
@@ -358,7 +357,7 @@ public class EntityModBeam extends Entity implements IProjectile {
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-	public void writeEntityToNBT(NBTTagCompound p_70014_1_)
+	public void writeEntityToNBT(final NBTTagCompound p_70014_1_)
     {
         p_70014_1_.setShort("xTile", (short)this.field_145791_d);
         p_70014_1_.setShort("yTile", (short)this.field_145792_e);
@@ -377,7 +376,7 @@ public class EntityModBeam extends Entity implements IProjectile {
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-	public void readEntityFromNBT(NBTTagCompound p_70037_1_)
+	public void readEntityFromNBT(final NBTTagCompound p_70037_1_)
     {
         this.field_145791_d = p_70037_1_.getShort("xTile");
         this.field_145792_e = p_70037_1_.getShort("yTile");
@@ -414,7 +413,7 @@ public class EntityModBeam extends Entity implements IProjectile {
         return false;
     }
 
-    public void setDamage(double p_70239_1_)
+    public void setDamage(final double p_70239_1_)
     {
         this.damage = p_70239_1_;
     }
@@ -436,7 +435,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     /**
      * Whether the arrow has a stream of critical hit particles flying behind it.
      */
-    public void setIsCritical(boolean crit)
+    public void setIsCritical(final boolean crit)
     {
         this.getDataManager().set(CRITICAL, crit);
     }
@@ -459,7 +458,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     		} else if(mode == 2) {
 				this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	
-				EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
+				final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
 				entity.posX = this.posX;
 				entity.posY = this.posY;
 				entity.posZ = this.posZ;
@@ -470,7 +469,7 @@ public class EntityModBeam extends Entity implements IProjectile {
 	
 				this.world.spawnEntity(entity);
 	    		
-	    		EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 10);
+	    		final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 10);
 	    		cloud.posX = this.posX;
 	    		cloud.posY = this.posY;
 	    		cloud.posZ = this.posZ;
@@ -478,7 +477,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     		} else if(mode == 3) {
 				this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	
-				EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
+				final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
 				entity.posX = this.posX;
 				entity.posY = this.posY;
 				entity.posZ = this.posZ;
@@ -489,7 +488,7 @@ public class EntityModBeam extends Entity implements IProjectile {
 	
 				this.world.spawnEntity(entity);
 	    		
-	    		EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 20);
+	    		final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 20);
 	    		cloud.posX = this.posX;
 	    		cloud.posY = this.posY;
 	    		cloud.posZ = this.posZ;
@@ -497,7 +496,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     		} else if(mode == 4) {
 				this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	    		
-	    		EntityVortex vortex = new EntityVortex(this.world, 1F);
+	    		final EntityVortex vortex = new EntityVortex(this.world, 1F);
 	    		vortex.posX = this.posX;
 	    		vortex.posY = this.posY;
 	    		vortex.posZ = this.posZ;
@@ -505,7 +504,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     		} else if(mode == 5) {
 				this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	    		
-	    		EntityVortex vortex = new EntityVortex(this.world, 2.5F);
+	    		final EntityVortex vortex = new EntityVortex(this.world, 2.5F);
 	    		vortex.posX = this.posX;
 	    		vortex.posY = this.posY;
 	    		vortex.posZ = this.posZ;
@@ -513,7 +512,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     		} else if(mode == 6) {
     			this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	    		
-	    		EntityRagingVortex vortex = new EntityRagingVortex(this.world, 2.5F);
+	    		final EntityRagingVortex vortex = new EntityRagingVortex(this.world, 2.5F);
 	    		vortex.posX = this.posX;
 	    		vortex.posY = this.posY;
 	    		vortex.posZ = this.posZ;
@@ -521,7 +520,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     		} else if(mode == 7) {
     			this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	    		
-	    		EntityRagingVortex vortex = new EntityRagingVortex(this.world, 5F);
+	    		final EntityRagingVortex vortex = new EntityRagingVortex(this.world, 5F);
 	    		vortex.posX = this.posX;
 	    		vortex.posY = this.posY;
 	    		vortex.posZ = this.posZ;
@@ -529,7 +528,7 @@ public class EntityModBeam extends Entity implements IProjectile {
     		} else if(mode == 8) {
 				this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	    		
-	    		EntityBlackHole vortex = new EntityBlackHole(this.world, 2F);
+	    		final EntityBlackHole vortex = new EntityBlackHole(this.world, 2F);
 	    		vortex.posX = this.posX;
 	    		vortex.posY = this.posY;
 	    		vortex.posZ = this.posZ;

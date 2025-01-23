@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 public class BlockCanCrate extends Block {
 
-	public BlockCanCrate(Material materialIn, String s) {
+	public BlockCanCrate(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,12 +33,12 @@ public class BlockCanCrate extends Block {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(worldIn.isRemote)
 		{
 			playerIn.sendMessage(new TextComponentTranslation("chat.crate.cansmash"));
@@ -47,8 +47,8 @@ public class BlockCanCrate extends Block {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		List<Item> items = new ArrayList<Item>();
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+		final List<Item> items = new ArrayList<Item>();
     	items.add(ModItems.canned_beef);
     	items.add(ModItems.canned_tuna);
     	items.add(ModItems.canned_mystery);
@@ -90,42 +90,42 @@ public class BlockCanCrate extends Block {
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random random) {
 		return 5 + random.nextInt(4);
 	}
 	
 	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+	public boolean canRenderInLayer(final IBlockState state, final BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	

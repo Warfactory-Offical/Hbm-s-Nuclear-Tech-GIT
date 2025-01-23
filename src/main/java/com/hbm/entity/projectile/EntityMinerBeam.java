@@ -1,4 +1,5 @@
 package com.hbm.entity.projectile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -53,12 +54,12 @@ public class EntityMinerBeam extends Entity implements IProjectile {
     /** The amount of knockback an arrow applies when it hits a mob. */
     private int knockbackStrength;
 	
-	public EntityMinerBeam(World worldIn) {
+	public EntityMinerBeam(final World worldIn) {
 		super(worldIn);
 		this.setSize(0.5F, 0.5F);
 	}
 	
-	public EntityMinerBeam(World p_i1756_1_, EntityLivingBase p_i1756_2_, float p_i1756_3_)
+	public EntityMinerBeam(final World p_i1756_1_, final EntityLivingBase p_i1756_2_, final float p_i1756_3_)
     {
         super(p_i1756_1_);
         this.shootingEntity = p_i1756_2_;
@@ -76,8 +77,8 @@ public class EntityMinerBeam extends Entity implements IProjectile {
     }
 
 	@Override
-	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-		float f2 = MathHelper.sqrt(x * x + y * y + z * z);
+	public void shoot(double x, double y, double z, final float velocity, final float inaccuracy) {
+		final float f2 = MathHelper.sqrt(x * x + y * y + z * z);
         x /= f2;
         y /= f2;
         z /= f2;
@@ -90,7 +91,7 @@ public class EntityMinerBeam extends Entity implements IProjectile {
         this.motionX = x;
         this.motionY = y;
         this.motionZ = z;
-        float f3 = MathHelper.sqrt(x * x + z * z);
+        final float f3 = MathHelper.sqrt(x * x + z * z);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(y, f3) * 180.0D / Math.PI);
         this.ticksInGround = 0;
@@ -98,20 +99,20 @@ public class EntityMinerBeam extends Entity implements IProjectile {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+	public void setPositionAndRotationDirect(final double x, final double y, final double z, final float yaw, final float pitch, final int posRotationIncrements, final boolean teleport) {
 		this.setPosition(x, y, z);
         this.setRotation(yaw, pitch);
 	}
 	
 	@Override
-	public void setVelocity(double x, double y, double z) {
+	public void setVelocity(final double x, final double y, final double z) {
 		this.motionX = x;
         this.motionY = y;
         this.motionZ = z;
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float f = MathHelper.sqrt(x * x + z * z);
+            final float f = MathHelper.sqrt(x * x + z * z);
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(y, f) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
@@ -134,7 +135,7 @@ public class EntityMinerBeam extends Entity implements IProjectile {
             //this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(this.motionY, (double)f) * 180.0D / Math.PI);
         }
 
-        IBlockState blockstate = world.getBlockState(new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f));
+        final IBlockState blockstate = world.getBlockState(new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f));
 
         if (blockstate.getMaterial() != Material.AIR)
         {
@@ -163,24 +164,24 @@ public class EntityMinerBeam extends Entity implements IProjectile {
             }
 
             Entity entity = null;
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
+            final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int i;
             float f1;
 
             for (i = 0; i < list.size(); ++i)
             {
-                Entity entity1 = (Entity)list.get(i);
+                final Entity entity1 = list.get(i);
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f1 = 0.3F;
-                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
-                    RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+                    final AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
+                    final RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
                     {
-                        double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
+                        final double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
 
                         if (d1 < d0 || d0 == 0.0D)
                         {
@@ -196,9 +197,8 @@ public class EntityMinerBeam extends Entity implements IProjectile {
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer)
             {
-                EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
 
                 if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
                 {
@@ -207,14 +207,14 @@ public class EntityMinerBeam extends Entity implements IProjectile {
             }
 
             float f2;
-            float f4;
+            final float f4;
 
             if (movingobjectposition != null && CompatibilityConfig.isWarDim(world))
             {
                 if (movingobjectposition.entityHit != null)
                 {
                     f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                    int k = MathHelper.ceil(f2 * this.damage);
+                    final int k = MathHelper.ceil(f2 * this.damage);
 
                     DamageSource damagesource = null;
 
@@ -234,9 +234,8 @@ public class EntityMinerBeam extends Entity implements IProjectile {
 
                     if (movingobjectposition.entityHit.attackEntityFrom(damagesource, k))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
+                        if (movingobjectposition.entityHit instanceof EntityLivingBase entitylivingbase)
                         {
-                            EntityLivingBase entitylivingbase = (EntityLivingBase)movingobjectposition.entityHit;
 
                             if (this.knockbackStrength > 0)
                             {
@@ -279,8 +278,8 @@ public class EntityMinerBeam extends Entity implements IProjectile {
                 	this.field_145791_d = movingobjectposition.getBlockPos().getX();
 					this.field_145792_e = movingobjectposition.getBlockPos().getY();
 					this.field_145789_f = movingobjectposition.getBlockPos().getZ();
-					BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
-					IBlockState test_blockstate = this.world.getBlockState(pos);
+					final BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
+					final IBlockState test_blockstate = this.world.getBlockState(pos);
 					this.field_145790_g = test_blockstate.getBlock();
 					this.inData = field_145790_g.getMetaFromState(test_blockstate);
                 }
@@ -314,7 +313,7 @@ public class EntityMinerBeam extends Entity implements IProjectile {
 		return false;
 	}
 	
-	public void setDamage(double damage) {
+	public void setDamage(final double damage) {
 		this.damage = damage;
 	}
 	
@@ -333,7 +332,7 @@ public class EntityMinerBeam extends Entity implements IProjectile {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 		this.field_145791_d = compound.getShort("xTile");
         this.field_145792_e = compound.getShort("yTile");
         this.field_145789_f = compound.getShort("zTile");
@@ -359,7 +358,7 @@ public class EntityMinerBeam extends Entity implements IProjectile {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 		compound.setShort("xTile", (short)this.field_145791_d);
 		compound.setShort("yTile", (short)this.field_145792_e);
 		compound.setShort("zTile", (short)this.field_145789_f);
@@ -372,21 +371,21 @@ public class EntityMinerBeam extends Entity implements IProjectile {
 		compound.setDouble("damage", this.damage);
 	}
 	
-	public void dropMinedItem(World world, int x, int y, int z) {
-		BlockPos pos = new BlockPos(x, y, z);
-		IBlockState b = world.getBlockState(pos);
-		ItemStack s = FurnaceRecipes.instance().getSmeltingResult(new ItemStack(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
+	public void dropMinedItem(final World world, final int x, final int y, final int z) {
+		final BlockPos pos = new BlockPos(x, y, z);
+		final IBlockState b = world.getBlockState(pos);
+		final ItemStack s = FurnaceRecipes.instance().getSmeltingResult(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(b.getBlock()), 1, b.getBlock().getMetaFromState(b)));
 		if(!s.isEmpty()) {
-			ItemStack t = s.copy();
+			final ItemStack t = s.copy();
 			if(!world.isRemote)
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			
-            float f = rand.nextFloat() * 0.8F + 0.1F;
-            float f1 = rand.nextFloat() * 0.8F + 0.1F;
-            float f2 = rand.nextFloat() * 0.8F + 0.1F;
-            EntityItem entityitem = new EntityItem(world, x + f, y + f1, z + f2, t);
+            final float f = rand.nextFloat() * 0.8F + 0.1F;
+            final float f1 = rand.nextFloat() * 0.8F + 0.1F;
+            final float f2 = rand.nextFloat() * 0.8F + 0.1F;
+            final EntityItem entityitem = new EntityItem(world, x + f, y + f1, z + f2, t);
 
-            float f3 = 0.05F;
+            final float f3 = 0.05F;
             entityitem.motionX = (float)rand.nextGaussian() * f3;
             entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
             entityitem.motionZ = (float)rand.nextGaussian() * f3;

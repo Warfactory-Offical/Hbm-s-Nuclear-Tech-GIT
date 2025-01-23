@@ -53,12 +53,12 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		super(0);
 		inventory = new ItemStackHandler(7){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				super.onContentsChanged(slot);
 				markDirty();
 			}
 			@Override
-			public void setStackInSlot(int slot, ItemStack stack) {
+			public void setStackInSlot(final int slot, final ItemStack stack) {
 				super.setStackInSlot(slot, stack);
 				if(stack != null && slot >= 5 && slot <= 6 && stack.getItem() instanceof ItemMachineUpgrade)
 					world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, HBMSoundHandler.upgradePlug, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -74,7 +74,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 
 	private void updateConnections() {
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 
 		if(dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH) {
 			this.trySubscribe(world, pos.add(2, 5, 0), ForgeDirection.EAST);
@@ -116,9 +116,9 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 				}
 			}
 
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setShort("progress", progress);
 			data.setLong("power", power);
 			this.networkPack(data, 25);
@@ -137,10 +137,10 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		}
 	}
 
-	protected boolean inputValidForTank(int slot){
+	protected boolean inputValidForTank(final int slot){
 		
 		if(!inventory.getStackInSlot(slot).isEmpty()){
-			FluidStack containerFluid = FluidUtil.getFluidContained(inventory.getStackInSlot(slot));
+			final FluidStack containerFluid = FluidUtil.getFluidContained(inventory.getStackInSlot(slot));
 			if(containerFluid != null){
 				if(CrystallizerRecipes.isAllowedFluid(containerFluid.getFluid())){
 					setTankType(containerFluid.getFluid());
@@ -151,21 +151,21 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		return false;
 	}
 
-	public void setTankType(Fluid f){
+	public void setTankType(final Fluid f){
 		if(f != null && (tank.getFluid() == null || (tank.getFluid() != null && tank.getFluid().getFluid() != f))){
 			tank.setFluid(new FluidStack(f, 0));
 		}
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		this.power = data.getLong("power");
 		this.progress = data.getShort("progress");
 	}
 
 	private void processItem() {
 
-		ItemStack result = CrystallizerRecipes.getOutputItem(inventory.getStackInSlot(0));
+		final ItemStack result = CrystallizerRecipes.getOutputItem(inventory.getStackInSlot(0));
 
 		if(result == null) //never happens but you can't be sure enough
 			return;
@@ -176,7 +176,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 			inventory.getStackInSlot(2).grow(result.getCount());
 
 		//Drillgon200: I think this does the same thing as decrStackSize?
-		float freeChance = this.getFreeChance();
+		final float freeChance = this.getFreeChance();
 
 		if(freeChance == 0 || freeChance < world.rand.nextFloat())
 			inventory.getStackInSlot(0).shrink(1);
@@ -192,7 +192,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		if(power < getPowerRequired())
 			return false;
 
-		ItemStack result = CrystallizerRecipes.getOutputItem(inventory.getStackInSlot(0));
+		final ItemStack result = CrystallizerRecipes.getOutputItem(inventory.getStackInSlot(0));
 
 		//Or output?
 		if(result == null)
@@ -204,7 +204,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		if(inventory.getStackInSlot(2).getCount() >= inventory.getStackInSlot(2).getMaxStackSize())
 			return false;
 
-		FluidStack acidFluid = CrystallizerRecipes.getOutputFluid(inventory.getStackInSlot(0));
+		final FluidStack acidFluid = CrystallizerRecipes.getOutputFluid(inventory.getStackInSlot(0));
 		if(acidFluid == null)
 			return false;
 		if(tank.getFluid() == null)
@@ -213,11 +213,8 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 			return false;
 		acidRequired = acidFluid.amount;
 
-		if(tank.getFluidAmount() < getRequiredAcid())
-			return false;
-
-		return true;
-	}
+        return tank.getFluidAmount() >= getRequiredAcid();
+    }
 
 	public int getRequiredAcid() {
 
@@ -288,7 +285,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 				consumption += 6000;
 		}
 
-		return (int) (demand + Math.min(consumption, 6000));
+		return demand + Math.min(consumption, 6000);
 	}
 
 	public float getCycleCount() {
@@ -309,17 +306,17 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return slot == 0 && CrystallizerRecipes.getOutputItem(itemStack) != null;
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		return slot == 2 || slot == 4;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing face) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing face) {
 		return new int[] { 0, 2, 4 };
 	}
 
@@ -335,29 +332,29 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		tank.readFromNBT(compound.getCompoundTag("tank"));
 		super.readFromNBT(compound);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
 		return super.writeToNBT(compound);
 	}
 
-	public long getPowerScaled(int i) {
+	public long getPowerScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 
-	public int getProgressScaled(int i) {
+	public int getProgressScaled(final int i) {
 		return (progress * i) / this.getDuration();
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 
@@ -377,7 +374,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource != null && CrystallizerRecipes.isAllowedFluid(resource.getFluid())) {
 			return tank.fill(resource, doFill);
 		}
@@ -385,17 +382,17 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -403,12 +400,12 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 1) {
 			tank.readFromNBT(tags[0]);
 		}

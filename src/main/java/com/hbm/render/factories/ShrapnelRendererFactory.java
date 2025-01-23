@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class ShrapnelRendererFactory implements IRenderFactory<EntityShrapnel> {
 
 	@Override
-	public Render<? super EntityShrapnel> createRenderFor(RenderManager manager) {
+	public Render<? super EntityShrapnel> createRenderFor(final RenderManager manager) {
 		return new RenderShrapnel(manager);
 	}
 

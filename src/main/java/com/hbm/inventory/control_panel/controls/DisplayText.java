@@ -25,7 +25,7 @@ public class DisplayText extends Control {
     private float textWidth = 0; //TODO: stop all-too-long text
     private float height = 0;
 
-    public DisplayText(String name, ControlPanel panel) {
+    public DisplayText(final String name, final ControlPanel panel) {
         super(name, panel);
         vars.put("isLit", new DataValueFloat(0));
         vars.put("text", new DataValueString("text"));
@@ -46,15 +46,15 @@ public class DisplayText extends Control {
 
     @Override
     public float[] getBox() {
-        float d = .1F;
+        final float d = .1F;
         return new float[] {posX-d, posY-d, posX + (width*1.5F*scale/500F)+d, posY + (height*scale/500F)+d};
     }
 
     @Override
-    public void applyConfigs(Map<String, DataValue> configs) {
+    public void applyConfigs(final Map<String, DataValue> configs) {
         super.applyConfigs(configs);
 
-        for (Map.Entry<String, DataValue> e : configMap.entrySet()) {
+        for (final Map.Entry<String, DataValue> e : configMap.entrySet()) {
             switch (e.getKey()) {
                 case "scale": {
                     scale = (int) e.getValue().getNumber();
@@ -70,19 +70,19 @@ public class DisplayText extends Control {
 
     @Override
     public void render() {
-        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 
-        String text = getVar("text").toString();
-        boolean isLit = getVar("isLit").getBoolean();
-        EnumDyeColor dyeColor = getVar("color").getEnum(EnumDyeColor.class);
-        int color = dyeColor.getColorValue();
+        final String text = getVar("text").toString();
+        final boolean isLit = getVar("isLit").getBoolean();
+        final EnumDyeColor dyeColor = getVar("color").getEnum(EnumDyeColor.class);
+        final int color = dyeColor.getColorValue();
 
         textWidth = font.getStringWidth(text);
         height = font.FONT_HEIGHT;
-        float s = scale/500F;
+        final float s = scale/500F;
 
-        float lX = OpenGlHelper.lastBrightnessX;
-        float lY = OpenGlHelper.lastBrightnessY;
+        final float lX = OpenGlHelper.lastBrightnessX;
+        final float lY = OpenGlHelper.lastBrightnessY;
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(posX, 0, posY);
@@ -111,10 +111,10 @@ public class DisplayText extends Control {
         GL11.glTranslated(0, 0, -.01F);
 
         GlStateManager.disableTexture2D();
-        Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buf = tes.getBuffer();
+        final Tessellator tes = Tessellator.getInstance();
+        final BufferBuilder buf = tes.getBuffer();
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        float[] box = getBox();
+        final float[] box = getBox();
         float[] rgb = new float[]{0, 0, 0};
         float d = 0;
         buf.pos(box[0]-d, box[1]-d, -.01).tex(0, 0).color(rgb[0], rgb[1], rgb[2], 1).endVertex();
@@ -149,12 +149,12 @@ public class DisplayText extends Control {
     }
 
     @Override
-    public Control newControl(ControlPanel panel) {
+    public Control newControl(final ControlPanel panel) {
         return new DisplayText(name, panel);
     }
 
     @Override
-    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
+    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
 
     }
 

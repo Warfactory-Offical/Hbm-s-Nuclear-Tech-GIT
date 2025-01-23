@@ -22,19 +22,19 @@ public class AnvilCraftPacket implements IMessage {
 
 	public AnvilCraftPacket() { }
 
-	public AnvilCraftPacket(AnvilConstructionRecipe recipe, int mode) {
+	public AnvilCraftPacket(final AnvilConstructionRecipe recipe, final int mode) {
 		this.recipeIndex = AnvilRecipes.getConstruction().indexOf(recipe);
 		this.mode = mode;
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		this.recipeIndex = buf.readInt();
 		this.mode = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(this.recipeIndex);
 		buf.writeInt(this.mode);
 	}
@@ -42,24 +42,23 @@ public class AnvilCraftPacket implements IMessage {
 	public static class Handler implements IMessageHandler<AnvilCraftPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(AnvilCraftPacket m, MessageContext ctx) {
+		public IMessage onMessage(final AnvilCraftPacket m, final MessageContext ctx) {
 
 			ctx.getServerHandler().player.server.addScheduledTask(() -> {
 				if(m.recipeIndex < 0 || m.recipeIndex >= AnvilRecipes.getConstruction().size()) //recipe is out of range -> bad
 					return;
 
-				EntityPlayer p = ctx.getServerHandler().player;
+				final EntityPlayer p = ctx.getServerHandler().player;
 				
-				if(!(p.openContainer instanceof ContainerAnvil)) //player isn't even using an anvil -> bad
+				if(!(p.openContainer instanceof ContainerAnvil anvil)) //player isn't even using an anvil -> bad
 					return;
-				
-				ContainerAnvil anvil = (ContainerAnvil)p.openContainer;
-				AnvilConstructionRecipe recipe = AnvilRecipes.getConstruction().get(m.recipeIndex);
+
+                final AnvilConstructionRecipe recipe = AnvilRecipes.getConstruction().get(m.recipeIndex);
 
 				if(!recipe.isTierValid(anvil.tier)) //player is using the wrong type of anvil -> bad
 					return;
 
-				int count = m.mode == 1 ? 64 : 1;
+				final int count = m.mode == 1 ? 64 : 1;
 				
 				for(int i = 0; i < count; i++) {
 					

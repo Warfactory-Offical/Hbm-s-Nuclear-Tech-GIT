@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +46,7 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 		return "container.satDock";
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player){
+	public boolean isUseableByPlayer(final EntityPlayer player){
 		if(world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -69,19 +70,17 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 			data.markDirty();
 
 			if(data != null && !inventory.getStackInSlot(15).isEmpty()) {
-				int freq = ItemSatChip.getFreq(inventory.getStackInSlot(15));
+				final int freq = ItemSatChip.getFreq(inventory.getStackInSlot(15));
 
-				Satellite sat = data.getSatFromFreq(freq);
+				final Satellite sat = data.getSatFromFreq(freq);
 
-				int delay = 10 * 60 * 1000; //10min
+				final int delay = 10 * 60 * 1000; //10min
 
-				if(sat != null && sat instanceof SatelliteMiner) {
+				if(sat != null && sat instanceof SatelliteMiner miner) {
 
-					SatelliteMiner miner = (SatelliteMiner)sat;
+                    if(miner.lastOp + delay < System.currentTimeMillis()) {
 
-					if(miner.lastOp + delay < System.currentTimeMillis()) {
-
-						EntityMinerRocket rocket = new EntityMinerRocket(world);
+						final EntityMinerRocket rocket = new EntityMinerRocket(world);
 						rocket.posX = pos.getX() + 0.5;
 						rocket.posY = 300;
 						rocket.posZ = pos.getZ() + 0.5;
@@ -90,13 +89,11 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 						data.markDirty();
 					}
 				}
-				if(sat != null && sat instanceof SatelliteHorizons) {
-					
-					SatelliteHorizons gerald = (SatelliteHorizons)sat;
+				if(sat != null && sat instanceof SatelliteHorizons gerald) {
 
-					if(gerald.lastOp + delay < System.currentTimeMillis()) {
+                    if(gerald.lastOp + delay < System.currentTimeMillis()) {
 
-						EntityMinerRocket rocket = new EntityMinerRocket(world, (byte)1);
+						final EntityMinerRocket rocket = new EntityMinerRocket(world, (byte)1);
 						rocket.posX = pos.getX() + 0.5;
 						rocket.posY = 300;
 						rocket.posZ = pos.getZ() + 0.5;
@@ -108,16 +105,14 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 				}
 			}
 
-			List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 0.25 + 0.5, pos.getY() + 0.75, pos.getZ() - 0.25 + 0.5, pos.getX() + 0.25 + 0.5, pos.getY() + 2, pos.getZ() + 0.25 + 0.5));
+			final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 0.25 + 0.5, pos.getY() + 0.75, pos.getZ() - 0.25 + 0.5, pos.getX() + 0.25 + 0.5, pos.getY() + 2, pos.getZ() + 0.25 + 0.5));
 
-			for(Entity e : list) {
+			for(final Entity e : list) {
 
-				if(e instanceof EntityMinerRocket) {
+				if(e instanceof EntityMinerRocket rocket) {
 
-					EntityMinerRocket rocket = (EntityMinerRocket)e;
-
-					if(rocket.getDataManager().get(EntityMinerRocket.TIMER) == 1 && rocket.timer == 50) {
-						byte type = rocket.getRocketType();
+                    if(rocket.getDataManager().get(EntityMinerRocket.TIMER) == 1 && rocket.timer == 50) {
+						final byte type = rocket.getRocketType();
 						if(type == 0){
 							unloadCargo();
 						} else if(type == 1){
@@ -144,58 +139,58 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 		unloadTheCargo(cargoGerald);
 	}
 
-	private void unloadTheCargo(WeightedRandomObject[] cargo){
+	private void unloadTheCargo(final WeightedRandomObject[] cargo){
 
-		int items = rand.nextInt(6) + 10;
+		final int items = rand.nextInt(6) + 10;
 
 		rand = new Random();
 
 		for(int i = 0; i < items; i++) {
-			ItemStack stack = ((WeightedRandomObject)WeightedRandom.getRandomItem(rand, Arrays.asList(cargo))).asStack();
+			final ItemStack stack = WeightedRandom.getRandomItem(rand, Arrays.asList(cargo)).asStack();
 			addToInv(stack);
 		}
 	}
 
-	private WeightedRandomObject[] cargo = new WeightedRandomObject[] { 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_aluminium, 3), 10), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_iron, 3), 10), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_titanium, 2), 8), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_coal, 4), 15), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_uranium, 2), 5), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_plutonium, 1), 5), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_thorium, 2), 7), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_desh_mix, 3), 5), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_diamond, 2), 7), 
-		new WeightedRandomObject(new ItemStack(Items.REDSTONE, 5), 15), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_nitan_mix, 2), 5), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_power, 2), 5),
-		new WeightedRandomObject(new ItemStack(ModItems.powder_copper, 5), 15), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_lead, 3), 10), 
-		new WeightedRandomObject(new ItemStack(ModItems.fluorite, 4), 15), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_lapis, 4), 10), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_combine_steel, 1), 1), 
-		new WeightedRandomObject(new ItemStack(ModItems.crystal_aluminium, 1), 5), 
-		new WeightedRandomObject(new ItemStack(ModItems.crystal_gold, 1), 5), 
-		new WeightedRandomObject(new ItemStack(ModItems.crystal_phosphorus, 1), 10), 
-		new WeightedRandomObject(new ItemStack(ModBlocks.gravel_diamond, 1), 3), 
-		new WeightedRandomObject(new ItemStack(ModItems.crystal_uranium, 1), 3), 
-		new WeightedRandomObject(new ItemStack(ModItems.crystal_plutonium, 1), 3), 
-		new WeightedRandomObject(new ItemStack(ModItems.crystal_trixite, 1), 1), 
-		new WeightedRandomObject(new ItemStack(ModItems.crystal_starmetal, 1), 1)
+	private final WeightedRandomObject[] cargo = new WeightedRandomObject[] {
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_aluminium, 3), 10), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_iron, 3), 10), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_titanium, 2), 8), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_coal, 4), 15), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_uranium, 2), 5), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 1), 5), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_thorium, 2), 7), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_desh_mix, 3), 5), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_diamond, 2), 7), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(Items.REDSTONE, 5), 15), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_nitan_mix, 2), 5), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_power, 2), 5),
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_copper, 5), 15), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_lead, 3), 10), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.fluorite, 4), 15), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_lapis, 4), 10), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_combine_steel, 1), 1), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_aluminium, 1), 5), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_gold, 1), 5), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_phosphorus, 1), 10), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModBlocks.gravel_diamond, 1), 3), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_uranium, 1), 3), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_plutonium, 1), 3), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_trixite, 1), 1), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.crystal_starmetal, 1), 1)
 	};
 
-	private WeightedRandomObject[] cargoGerald = new WeightedRandomObject[] { 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_meteorite, 12), 128),
-		new WeightedRandomObject(new ItemStack(ModItems.powder_plutonium, 4), 64), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_combine_steel, 6), 64), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_tektite, 16), 32), 
-		new WeightedRandomObject(new ItemStack(ModItems.powder_tantalium, 1), 16),
-		new WeightedRandomObject(new ItemStack(ModItems.powder_schrabidium, 1), 8),
-		new WeightedRandomObject(new ItemStack(ModItems.powder_bismuth, 1), 4),
-		new WeightedRandomObject(new ItemStack(ModItems.powder_radspice, 1), 1)
+	private final WeightedRandomObject[] cargoGerald = new WeightedRandomObject[] {
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_meteorite, 12), 128),
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_plutonium, 4), 64), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_combine_steel, 6), 64), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_tektite, 16), 32), 
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_tantalium, 1), 16),
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_schrabidium, 1), 8),
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_bismuth, 1), 4),
+		new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_radspice, 1), 1)
 	};
 
-	private void addToInv(ItemStack stack){
+	private void addToInv(final ItemStack stack){
 
 		for(int i = 0; i < 15; i++) {
 
@@ -210,21 +205,21 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 		for(int i = 0; i < 15; i++) {
 
 			if(inventory.getStackInSlot(i).isEmpty()) {
-				inventory.setStackInSlot(i, new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+				inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(stack.getItem(), 1, stack.getItemDamage()));
 				return;
 			}
 		}
 	}
 
-	private void ejectInto(int x, int y, int z){
-		BlockPos eject = new BlockPos(x, y, z);
-		TileEntity te = world.getTileEntity(eject);
+	private void ejectInto(final int x, final int y, final int z){
+		final BlockPos eject = new BlockPos(x, y, z);
+		final TileEntity te = world.getTileEntity(eject);
 
 		if(te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler chest = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			final IItemHandler chest = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			for(int i = 0; i < 15; i++) {
 				for(int j = 0; j < chest.getSlots(); j++) {
-					ItemStack stack = inventory.getStackInSlot(i);
+					final ItemStack stack = inventory.getStackInSlot(i);
 					if(stack.isEmpty()) break;
 					inventory.setStackInSlot(i, chest.insertItem(j, stack, false));
 				}
@@ -244,12 +239,12 @@ public class TileEntityMachineSatDock extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
 		return access;
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
 		return slot != 15;
 	}
 }

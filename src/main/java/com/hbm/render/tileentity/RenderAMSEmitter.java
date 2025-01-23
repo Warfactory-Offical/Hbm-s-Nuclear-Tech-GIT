@@ -17,12 +17,12 @@ public class RenderAMSEmitter extends TileEntitySpecialRenderer<TileEntityAMSEmi
 	Random rand = new Random();
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityAMSEmitter te) {
+	public boolean isGlobalRenderer(final TileEntityAMSEmitter te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityAMSEmitter te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityAMSEmitter te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
@@ -46,11 +46,11 @@ public class RenderAMSEmitter extends TileEntitySpecialRenderer<TileEntityAMSEmi
         GlStateManager.enableCull();
 	}
 	
-	public void renderTileEntityAt2(TileEntity tileEntity, double x, double y, double z, float f)
+	public void renderTileEntityAt2(final TileEntity tileEntity, final double x, final double y, final double z, final float f)
     {
-		float radius = 0.04F;
-		int distance = 1;
-		int layers = 3;
+		final float radius = 0.04F;
+		final int distance = 1;
+		final int layers = 3;
 
 		GL11.glPushMatrix();
 		GlStateManager.disableTexture2D();
@@ -60,7 +60,7 @@ public class RenderAMSEmitter extends TileEntitySpecialRenderer<TileEntityAMSEmi
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		GL11.glTranslatef((float) x + 0.5F, (float) y - 7, (float) z + 0.5F);
 
-		TileEntityAMSEmitter emitter = (TileEntityAMSEmitter)tileEntity;
+		final TileEntityAMSEmitter emitter = (TileEntityAMSEmitter)tileEntity;
 		
 		if(emitter.getWorld().getTileEntity(emitter.getPos().add(0, -9, 0)) instanceof TileEntityAMSBase && !emitter.locked) {
 			
@@ -75,8 +75,8 @@ public class RenderAMSEmitter extends TileEntitySpecialRenderer<TileEntityAMSEmi
 				
 				for(int i = 7; i > 0; i -= distance) {
 					
-					double posX = rand.nextDouble() - 0.5;
-					double posZ = rand.nextDouble() - 0.5;
+					final double posX = rand.nextDouble() - 0.5;
+					final double posZ = rand.nextDouble() - 0.5;
 					
 					for(int j = 1; j <= layers; j++) {
 		

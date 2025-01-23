@@ -9,17 +9,17 @@ import net.minecraft.world.World;
 
 public class BlockConveyorDouble extends BlockConveyor {
 
-    public BlockConveyorDouble(Material materialIn, String s) {
+    public BlockConveyorDouble(final Material materialIn, final String s) {
         super(materialIn, s);
     }
 
     @Override
-    public Vec3d getClosestSnappingPosition(World world, BlockPos pos, Vec3d itemPos) {
+    public Vec3d getClosestSnappingPosition(final World world, final BlockPos pos, final Vec3d itemPos) {
 
-        EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
+        final EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
 
-        double posX = MathHelper.clamp(itemPos.x, pos.getX(), pos.getX() + 1);
-        double posZ = MathHelper.clamp(itemPos.z, pos.getZ(), pos.getZ() + 1);
+        final double posX = MathHelper.clamp(itemPos.x, pos.getX(), pos.getX() + 1);
+        final double posZ = MathHelper.clamp(itemPos.z, pos.getZ(), pos.getZ() + 1);
 
         double xCenter = pos.getX() + 0.5;
         double zCenter = pos.getZ() + 0.5;

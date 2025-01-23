@@ -68,7 +68,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 		return maxHeatEnergy;
 	}
     @Override
-	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		return new ContainerFirebox(player.inventory, this);
 	}
 
@@ -76,7 +76,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		if(texture == null) texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_firebox.png");
 		return new GUIFirebox(player.inventory, this, texture);
 	}
@@ -87,7 +87,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 	}
 
 	@Override
-	public void readIfPresent(JsonObject obj) {
+	public void readIfPresent(final JsonObject obj) {
 		baseHeat = IConfigurableMachine.grab(obj, "I:baseHeat", baseHeat);
 		timeMult = IConfigurableMachine.grab(obj, "D:burnTimeMult", timeMult);
 		maxHeatEnergy = IConfigurableMachine.grab(obj, "I:heatCap", maxHeatEnergy);
@@ -97,7 +97,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 	}
 
 	@Override
-	public void writeConfig(JsonWriter writer) throws IOException {
+	public void writeConfig(final JsonWriter writer) throws IOException {
 		writer.name("I:baseHeat").value(baseHeat);
 		writer.name("D:burnTimeMult").value(timeMult);
 		writer.name("I:heatCap").value(maxHeatEnergy);

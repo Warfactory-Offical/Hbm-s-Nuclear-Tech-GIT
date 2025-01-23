@@ -144,15 +144,15 @@ public class TileEntityITERStruct extends TileEntity implements ITickable {
 			for(int x = 0; x < layout[0].length; x++) {
 				for(int z = 0; z < layout[0][0].length; z++) {
 
-					int ly = y > 2 ? 4 - y : y;
+					final int ly = y > 2 ? 4 - y : y;
 
-					int width = 7;
+					final int width = 7;
 
 					if(x == width && y == 0 && z == width)
 						continue;
 
-					int b = layout[ly][x][z];
-					Block block = world.getBlockState(new BlockPos(pos.getX() + x - width, pos.getY() + y, pos.getZ() + z - width)).getBlock();
+					final int b = layout[ly][x][z];
+					final Block block = world.getBlockState(new BlockPos(pos.getX() + x - width, pos.getY() + y, pos.getZ() + z - width)).getBlock();
 					switch(b) {
 					case 1: if(block != ModBlocks.fusion_conductor) { return; } break;
 					case 2: if(block != ModBlocks.fusion_center) { return; } break;

@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +12,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileCluster extends EntityMissileBaseAdvanced {
 
-	public EntityMissileCluster(World p_i1582_1_) {
+	public EntityMissileCluster(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 6F);
 	}
 
-	public EntityMissileCluster(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileCluster(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.isCluster = true;
 		this.setSize(1F, 6F);
@@ -34,18 +35,18 @@ public class EntityMissileCluster extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
-		list.add(new ItemStack(ModItems.plate_titanium, 4));
-		list.add(new ItemStack(ModItems.thruster_small, 1));
-		list.add(new ItemStack(ModItems.circuit_targeting_tier1, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.thruster_small, 1));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.circuit_targeting_tier1, 1));
 		
 		return list;
 	}
 
 	@Override
 	public ItemStack getDebrisRareDrop() {
-		return new ItemStack(ModItems.warhead_cluster_small);
+		return ItemStackUtil.itemStackFrom(ModItems.warhead_cluster_small);
 	}
 
 	@Override

@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 
 public class ItemDrop extends Item {
 
-	public ItemDrop(String s) {
+	public ItemDrop(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 
@@ -42,23 +42,23 @@ public class ItemDrop extends Item {
 	}
 
 	@Override
-	public boolean onEntityItemUpdate(EntityItem entityItem) {
+	public boolean onEntityItemUpdate(final EntityItem entityItem) {
 		if(entityItem != null) {
 			if(this == ModItems.beta) {
 				entityItem.setDead();
 				return true;
 			}
 
-			ItemStack stack = entityItem.getItem();
+			final ItemStack stack = entityItem.getItem();
 
 			if(stack.getItem() != null && stack.getItem() == ModItems.detonator_deadman) {
 				if(!entityItem.world.isRemote) {
 
 					if(stack.getTagCompound() != null) {
 
-						int x = stack.getTagCompound().getInteger("x");
-						int y = stack.getTagCompound().getInteger("y");
-						int z = stack.getTagCompound().getInteger("z");
+						final int x = stack.getTagCompound().getInteger("x");
+						final int y = stack.getTagCompound().getInteger("y");
+						final int z = stack.getTagCompound().getInteger("z");
 
 						if(entityItem.world.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof IBomb) {
 							if(!entityItem.world.isRemote) {
@@ -95,7 +95,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.tiny_singularity && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityVortex bl = new EntityVortex(entityItem.world, 0.15F);
+						final EntityVortex bl = new EntityVortex(entityItem.world, 0.15F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -105,7 +105,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.singularity && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityVortex bl = new EntityVortex(entityItem.world, 1.5F);
+						final EntityVortex bl = new EntityVortex(entityItem.world, 1.5F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -115,7 +115,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.tiny_singularity_counter_resonant && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityVortex bl = new EntityVortex(entityItem.world, 0.25F);
+						final EntityVortex bl = new EntityVortex(entityItem.world, 0.25F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -125,7 +125,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.singularity_counter_resonant && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityVortex bl = new EntityVortex(entityItem.world, 2.5F);
+						final EntityVortex bl = new EntityVortex(entityItem.world, 2.5F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -135,7 +135,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.tiny_singularity_super_heated && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityVortex bl = new EntityVortex(entityItem.world, 0.25F);
+						final EntityVortex bl = new EntityVortex(entityItem.world, 0.25F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -145,7 +145,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.singularity_super_heated && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityVortex bl = new EntityVortex(entityItem.world, 2.5F);
+						final EntityVortex bl = new EntityVortex(entityItem.world, 2.5F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -155,7 +155,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.tiny_black_hole && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityBlackHole bl = new EntityBlackHole(entityItem.world, 0.15F);
+						final EntityBlackHole bl = new EntityBlackHole(entityItem.world, 0.15F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -165,7 +165,7 @@ public class ItemDrop extends Item {
 				if(stack.getItem() != null && stack.getItem() == ModItems.black_hole && WeaponConfig.dropSing) {
 					if(!entityItem.world.isRemote) {
 
-						EntityBlackHole bl = new EntityBlackHole(entityItem.world, 1.5F);
+						final EntityBlackHole bl = new EntityBlackHole(entityItem.world, 1.5F);
 						bl.posX = entityItem.posX;
 						bl.posY = entityItem.posY;
 						bl.posZ = entityItem.posZ;
@@ -174,7 +174,7 @@ public class ItemDrop extends Item {
 				}
 				if (stack.getItem() != null && stack.getItem() == ModItems.tiny_singularity_spark && WeaponConfig.dropSing) {
 					if (!entityItem.world.isRemote) {
-					EntityRagingVortex bl = new EntityRagingVortex(entityItem.world, 0.35F);
+					final EntityRagingVortex bl = new EntityRagingVortex(entityItem.world, 0.35F);
 					bl.posX = entityItem.posX ;
 					bl.posY = entityItem.posY ;
 					bl.posZ = entityItem.posZ ;
@@ -183,7 +183,7 @@ public class ItemDrop extends Item {
 				}
 				if (stack.getItem() != null && stack.getItem() == ModItems.singularity_spark && WeaponConfig.dropSing) {
 					if (!entityItem.world.isRemote) {
-					EntityRagingVortex bl = new EntityRagingVortex(entityItem.world, 3.5F);
+					final EntityRagingVortex bl = new EntityRagingVortex(entityItem.world, 3.5F);
 					bl.posX = entityItem.posX ;
 					bl.posY = entityItem.posY ;
 					bl.posZ = entityItem.posZ ;
@@ -212,7 +212,7 @@ public class ItemDrop extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.pellet_antimatter) {
 			tooltip.add("Very heavy antimatter cluster.");
 			tooltip.add("Gets rid of black holes.");
@@ -261,8 +261,8 @@ public class ItemDrop extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final ItemStack stack = player.getHeldItem(hand);
 		if(this != ModItems.detonator_deadman) {
 			return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
 		}

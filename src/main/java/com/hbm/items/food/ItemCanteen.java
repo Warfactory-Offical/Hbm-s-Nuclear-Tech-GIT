@@ -1,11 +1,8 @@
 package com.hbm.items.food;
 
-import java.util.List;
-
 import com.hbm.config.VersatileConfig;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,9 +16,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemCanteen extends Item {
 
-	public ItemCanteen(int cooldown, String s) {
+	public ItemCanteen(final int cooldown, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxDamage(cooldown);
@@ -30,13 +29,13 @@ public class ItemCanteen extends Item {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entityIn, final int itemSlot, final boolean isSelected) {
 		if (stack.getItemDamage() > 0 && entityIn.ticksExisted % 20 == 0)
 			stack.setItemDamage(stack.getItemDamage() - 1);
 	}
 	
 	@Override
-	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+	public ItemStack onItemUseFinish(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving) {
 		stack.setItemDamage(stack.getMaxDamage());
 
 		if (this == ModItems.canteen_13) {
@@ -60,17 +59,17 @@ public class ItemCanteen extends Item {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getMaxItemUseDuration(final ItemStack stack) {
 		return 10;
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
+	public EnumAction getItemUseAction(final ItemStack stack) {
 		return EnumAction.DRINK;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
 		if(VersatileConfig.hasPotionSickness(playerIn))
 			return super.onItemRightClick(worldIn, playerIn, handIn);
 		if(playerIn.getHeldItem(handIn).getItemDamage() == 0 && !VersatileConfig.hasPotionSickness(playerIn))
@@ -79,7 +78,7 @@ public class ItemCanteen extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.canteen_13)
     	{
 			tooltip.add("Cooldown: 1 minute");

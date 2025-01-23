@@ -248,7 +248,7 @@ public class ModelFatman extends ModelBase {
 		setRotation(Shape33, 0F, 0F, 0F);
 	}
 
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, ItemStack item) {
+	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final ItemStack item) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		Shape1.render(f5);
@@ -276,7 +276,7 @@ public class ModelFatman extends ModelBase {
 		Shape17.render(f5);
 		Shape18.render(f5);
 		
-		int ammo = ItemGunBase.getMag(item);
+		final int ammo = ItemGunBase.getMag(item);
 		if(ammo > 0) {
 			Shape19.render(f5);
 			Shape20.render(f5);
@@ -297,14 +297,14 @@ public class ModelFatman extends ModelBase {
 		Shape33.render(f5);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 }

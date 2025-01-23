@@ -14,7 +14,7 @@ public class ContainerFurnaceIron extends Container {
 	
 	protected TileEntityFurnaceIron furnace;
 	
-	public ContainerFurnaceIron(InventoryPlayer invPlayer, TileEntityFurnaceIron furnace) {
+	public ContainerFurnaceIron(final InventoryPlayer invPlayer, final TileEntityFurnaceIron furnace) {
 		this.furnace = furnace;
 
 		//input
@@ -39,12 +39,12 @@ public class ContainerFurnaceIron extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+	public ItemStack transferStackInSlot(final EntityPlayer player, final int index) {
 		ItemStack stack = ItemStack.EMPTY;
-		Slot slot = (Slot) this.inventorySlots.get(index);
+		final Slot slot = this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack originalStack = slot.getStack();
+			final ItemStack originalStack = slot.getStack();
 			stack = originalStack.copy();
 
 			if(index <= 5) {
@@ -69,7 +69,7 @@ public class ContainerFurnaceIron extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return furnace.isUseableByPlayer(player);
 	}
 }

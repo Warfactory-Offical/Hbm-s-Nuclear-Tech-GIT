@@ -11,12 +11,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderPuF6Tank extends TileEntitySpecialRenderer<TileEntityMachinePuF6Tank> {
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachinePuF6Tank te) {
+	public boolean isGlobalRenderer(final TileEntityMachinePuF6Tank te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachinePuF6Tank te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachinePuF6Tank te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();

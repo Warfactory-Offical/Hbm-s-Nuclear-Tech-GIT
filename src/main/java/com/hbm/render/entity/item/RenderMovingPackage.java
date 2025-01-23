@@ -1,4 +1,5 @@
 package com.hbm.render.entity.item;
+import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.item.EntityMovingItem;
@@ -23,21 +24,21 @@ public class RenderMovingPackage extends Render<EntityMovingPackage> {
 
     public static final IRenderFactory<EntityMovingPackage> FACTORY = man -> new RenderMovingPackage(man);
 
-    protected RenderMovingPackage(RenderManager renderManager) {
+    protected RenderMovingPackage(final RenderManager renderManager) {
         super(renderManager);
     }
 
     @Override
-    public void doRender(EntityMovingPackage entity, double x, double y, double z, float f1, float f2) {
+    public void doRender(final EntityMovingPackage entity, final double x, final double y, final double z, final float f1, final float f2) {
 
         GL11.glPushMatrix();
         GL11.glTranslated(x, y + 0.3125, z);
 
         if(this.dummy == null) {
-            this.dummy = new ItemStack(ModBlocks.crate);
+            this.dummy = ItemStackUtil.itemStackFrom(ModBlocks.crate);
         }
 
-        double scale = 1.25;
+        final double scale = 1.25;
         GL11.glScaled(scale, scale, scale);
         IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(dummy, entity.world, null);
         model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.FIXED, false);
@@ -48,7 +49,7 @@ public class RenderMovingPackage extends Render<EntityMovingPackage> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityMovingPackage p_110775_1_) {
+    protected ResourceLocation getEntityTexture(final EntityMovingPackage p_110775_1_) {
         return null;
     }
 }

@@ -74,7 +74,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
@@ -83,7 +83,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 		return "container.battery";
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this){
 			return false;
 		}else{
@@ -91,18 +91,18 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 		}
 	}
 	
-	public long getPowerRemainingScaled(long i) {
+	public long getPowerRemainingScaled(final long i) {
 		return (power * i) / this.getMaxPower();
 	}
 
 	public byte getComparatorPower() {
 		if(power == 0) return 0;
-		double frac = (double) this.power / (double) this.getMaxPower() * 15D;
+		final double frac = (double) this.power / (double) this.getMaxPower() * 15D;
 		return (byte) (MathHelper.clamp((int) frac + 1, 0, 15)); //to combat eventual rounding errors with the FEnSU's stupid maxPower
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", this.power);
 		compound.setShort("redLow", this.redLow);
 		compound.setShort("redHigh", this.redHigh);
@@ -111,7 +111,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.power = compound.getLong("power");
 		this.redLow = compound.getShort("redLow");
 		this.redHigh = compound.getShort("redHigh");
@@ -120,8 +120,8 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 
-	public void writeNBT(NBTTagCompound nbt) {
-		NBTTagCompound data = new NBTTagCompound();
+	public void writeNBT(final NBTTagCompound nbt) {
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setLong("power", this.power);
 		data.setShort("redLow", this.redLow);
 		data.setShort("redHigh", this.redHigh);
@@ -130,8 +130,8 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 
-	public void readNBT(NBTTagCompound nbt) {
-		NBTTagCompound data = nbt.getCompoundTag("NBT_PERSISTENT_KEY");
+	public void readNBT(final NBTTagCompound nbt) {
+		final NBTTagCompound data = nbt.getCompoundTag("NBT_PERSISTENT_KEY");
 		this.power = data.getLong("power");
 		this.redLow = data.getShort("redLow");
 		this.redHigh = data.getShort("redHigh");
@@ -139,54 +139,48 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing p_94128_1_) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing p_94128_1_) {
         return new int[]{ 0, 1, 2, 3};
     }
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(i == 0)
-			if(stack.getItem() instanceof IBatteryItem){
-				IBatteryItem batteryItem = ((IBatteryItem)stack.getItem());
-				if(batteryItem.getCharge(stack) > 0 && batteryItem.getDischargeRate() > 0){
+			if(stack.getItem() instanceof IBatteryItem batteryItem){
+                if(batteryItem.getCharge(stack) > 0 && batteryItem.getDischargeRate() > 0){
 					return true;
 				}
 			}
 		if(i == 2)
-			if(stack.getItem() instanceof IBatteryItem){
-				IBatteryItem batteryItem = ((IBatteryItem)stack.getItem());
-				if(batteryItem.getCharge(stack) < batteryItem.getMaxCharge() && batteryItem.getChargeRate() > 0){
-					return true;
-				}
+			if(stack.getItem() instanceof IBatteryItem batteryItem){
+                return batteryItem.getCharge(stack) < batteryItem.getMaxCharge() && batteryItem.getChargeRate() > 0;
 			}
 		return false;
 	}
 	
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
+	public boolean canInsertItem(final int i, final ItemStack itemStack, final int j) {
 		return this.isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
+	public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
 		return (i == 1 || i == 3);
 	}
 
 	public void tryMoveItems() {
-		ItemStack itemStackDrain = inventory.getStackInSlot(0);
-		if(itemStackDrain.getItem() instanceof IBatteryItem) {
-			IBatteryItem itemDrain = ((IBatteryItem)itemStackDrain.getItem());
-			if(itemDrain.getCharge(itemStackDrain) == 0) {
+		final ItemStack itemStackDrain = inventory.getStackInSlot(0);
+		if(itemStackDrain.getItem() instanceof IBatteryItem itemDrain) {
+            if(itemDrain.getCharge(itemStackDrain) == 0) {
 				if(inventory.getStackInSlot(1) == null || inventory.getStackInSlot(1).isEmpty()){
 					inventory.setStackInSlot(1, itemStackDrain);
 					inventory.setStackInSlot(0, ItemStack.EMPTY);
 				}
 			}
 		}
-		ItemStack itemStackFill = inventory.getStackInSlot(2);
-		if(itemStackFill.getItem() instanceof IBatteryItem) {
-			IBatteryItem itemFill = ((IBatteryItem)itemStackFill.getItem());
-			if(itemFill.getCharge(itemStackFill) == itemFill.getMaxCharge()) {
+		final ItemStack itemStackFill = inventory.getStackInSlot(2);
+		if(itemStackFill.getItem() instanceof IBatteryItem itemFill) {
+            if(itemFill.getCharge(itemStackFill) == itemFill.getMaxCharge()) {
 				if(inventory.getStackInSlot(3) == null || inventory.getStackInSlot(3).isEmpty()){
 					inventory.setStackInSlot(3, itemStackFill);
 					inventory.setStackInSlot(2, ItemStack.EMPTY);
@@ -199,7 +193,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	public void update() {
 		if(!world.isRemote) {
 			if(this.power > getMaxPower()) this.power = getMaxPower();
-			long prevPower = this.power;
+			final long prevPower = this.power;
 
 			if(inventory.getSlots() < 3){
 				inventory = this.getNewInventory(4, 64);
@@ -213,13 +207,13 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 			
 			power = Library.chargeItemsFromTE(inventory, 2, power, getMaxPower());
 			
-			byte comp = this.getComparatorPower();
+			final byte comp = this.getComparatorPower();
 			if(comp != this.lastRedstone)
 				this.markDirty();
 			this.lastRedstone = comp;
 
 			tryMoveItems();
-			long avg = (power >> 1) + (prevPower >> 1); //had issue with getting avg of extreme long values
+			final long avg = (power >> 1) + (prevPower >> 1); //had issue with getting avg of extreme long values
 			
 			this.powerDelta = avg - this.log[0];
 			for(int i = 1; i < this.log.length; i++) {
@@ -232,7 +226,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 	public NBTTagCompound packNBT(){
-		NBTTagCompound nbt = new NBTTagCompound();
+		final NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setLong("power", power);
 		nbt.setLong("powerDelta", powerDelta);
 		nbt.setShort("redLow", redLow);
@@ -243,30 +237,28 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 
 	protected void transmitPowerFairly() {
 		
-		short mode = (short) this.getRelevantMode();
+		final short mode = this.getRelevantMode();
 		
 		//HasSets to we don't have any duplicates
-		Set<IPowerNet> nets = new HashSet();
-		Set<IEnergyConnector> consumers = new HashSet();
+		final Set<IPowerNet> nets = new HashSet();
+		final Set<IEnergyConnector> consumers = new HashSet();
 		
 		//iterate over all sides
-		for(ForgeDirection dir : getSendDirections()) {
+		for(final ForgeDirection dir : getSendDirections()) {
 			
-			TileEntity te = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
+			final TileEntity te = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
 			
 			//if it's a cable, buffer both the network and all subscribers of the net
-			if(te instanceof IEnergyConductor) {
-				IEnergyConductor con = (IEnergyConductor) te;
-				if(con.canConnect(dir.getOpposite()) && con.getPowerNet() != null) {
+			if(te instanceof IEnergyConductor con) {
+                if(con.canConnect(dir.getOpposite()) && con.getPowerNet() != null) {
 					nets.add(con.getPowerNet());
 					con.getPowerNet().unsubscribe(this);
 					consumers.addAll(con.getPowerNet().getSubscribers());
 				}
 				
 			//if it's just a consumer, buffer it as a subscriber
-			} else if(te instanceof IEnergyConnector) {
-				IEnergyConnector con = (IEnergyConnector) te;
-				if(con.canConnect(dir.getOpposite())) {
+			} else if(te instanceof IEnergyConnector con) {
+                if(con.canConnect(dir.getOpposite())) {
 					consumers.add((IEnergyConnector) te);
 				}
 			}
@@ -274,7 +266,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 
 		//send power to buffered consumers, independent of nets
 		if(this.power > 0 && (mode == mode_buffer || mode == mode_output)) {
-			List<IEnergyConnector> con = new ArrayList();
+			final List<IEnergyConnector> con = new ArrayList();
 			con.addAll(consumers);
 			
 			if(PowerNet.trackingInstances == null) {
@@ -287,8 +279,8 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 					PowerNet.trackingInstances.add((PowerNet) x);
 			});
 			
-			long toSend = Math.min(this.power, this.getMaxTransfer());
-			long powerRemaining = this.power - toSend;
+			final long toSend = Math.min(this.power, this.getMaxTransfer());
+			final long powerRemaining = this.power - toSend;
 			this.power = PowerNet.fairTransferWithPrio(this.getPriority(), con, toSend) + powerRemaining;
 		}
 		
@@ -303,7 +295,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) { 
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 		this.powerDelta = nbt.getLong("powerDelta");
 		this.redLow = nbt.getShort("redLow");
@@ -321,7 +313,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 
@@ -343,18 +335,18 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public long transferPower(long powerInput) {
+	public long transferPower(final long powerInput) {
 
-		int mode = this.getRelevantMode();
+		final int mode = this.getRelevantMode();
 		
 		if(mode == mode_output || mode == mode_none) {
 			return powerInput;
 		}
 		this.markDirty();
-		long ownMaxPower = this.getMaxPower();
+		final long ownMaxPower = this.getMaxPower();
 		if(powerInput > ownMaxPower-this.power) {
 			
-			long overshoot = powerInput-(ownMaxPower-this.power);
+			final long overshoot = powerInput-(ownMaxPower-this.power);
 			this.power = ownMaxPower;
 			return overshoot;
 		}
@@ -365,7 +357,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	@Override
 	public long getTransferWeight() {
 
-		int mode = this.getRelevantMode();
+		final int mode = this.getRelevantMode();
 		
 		if(mode == mode_output || mode == mode_none) {
 			return 0;
@@ -375,7 +367,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public boolean canConnect(ForgeDirection dir) {
+	public boolean canConnect(final ForgeDirection dir) {
 		return true;
 	}
 
@@ -398,33 +390,33 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 	}
 
 	@Callback(doc = "getPower(); returns the current power level - long")
-	public Object[] getPower(Context context, Arguments args) {
+	public Object[] getPower(final Context context, final Arguments args) {
 		return new Object[] {power};
 	}
 
 	@Callback(doc = "getMaxPower(); returns the maximum power level - long")
-	public Object[] getMaxPower(Context context, Arguments args) {
+	public Object[] getMaxPower(final Context context, final Arguments args) {
 		return new Object[] {getMaxPower()};
 	}
 
 	@Callback(doc = "getChargePercent(); returns the charge in percent - double")
-	public Object[] getChargePercent(Context context, Arguments args) {
+	public Object[] getChargePercent(final Context context, final Arguments args) {
 		return new Object[] {100D * getPower()/(double)getMaxPower()};
 	}
 
 	@Callback(doc = "getPowerDelta(); returns the in/out power flow - long")
-	public Object[] getPowerDelta(Context context, Arguments args) {
+	public Object[] getPowerDelta(final Context context, final Arguments args) {
 		return new Object[] {powerDelta};
 	}
 
 	@Callback(doc = "getPriority(); returns the priority (1:low, 2:normal, 3:high) - int")
-	public Object[] getPriority(Context context, Arguments args) {
+	public Object[] getPriority(final Context context, final Arguments args) {
 		return new Object[] {1+getPriority().ordinal()};
 	}
 
 	@Callback(doc = "setPriority(int prio); sets the priority (1:low, 2:normal, 3:high)")
-	public Object[] setPriority(Context context, Arguments args) {
-		int prio = args.checkInteger(0);
+	public Object[] setPriority(final Context context, final Arguments args) {
+		final int prio = args.checkInteger(0);
 		if(prio == 1) priority = ConnectionPriority.LOW;
 		if(prio == 2) priority = ConnectionPriority.NORMAL;
 		if(prio == 3) priority = ConnectionPriority.HIGH;

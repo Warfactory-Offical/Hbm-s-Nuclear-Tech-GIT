@@ -6,12 +6,12 @@ import net.minecraft.item.ItemStack;
 
 public class SlotMachineOutputVanilla extends Slot {
 
-	public SlotMachineOutputVanilla(IInventory inventory, int i, int j, int k) {
+	public SlotMachineOutputVanilla(final IInventory inventory, final int i, final int j, final int k) {
 		super(inventory, i, j, k);
 	}
 	
 	@Override
-	public boolean isItemValid(ItemStack p_75214_1_)
+	public boolean isItemValid(final ItemStack p_75214_1_)
     {
         return false;
     }

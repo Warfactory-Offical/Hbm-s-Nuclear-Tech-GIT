@@ -21,49 +21,49 @@ public class Vec4ui extends FuncRelational {
         this(0);
     }
 
-    public Vec4ui(Vec4ui v) {
+    public Vec4ui(final Vec4ui v) {
         this(v.x, v.y, v.z, v.w);
     }
 
-    public Vec4ui(int i) {
+    public Vec4ui(final int i) {
         this(i, i, i, i);
     }
 
-    public Vec4ui(int[] ia) {
+    public Vec4ui(final int[] ia) {
         this(ia, 0);
     }
 
-    public Vec4ui(int[] ia, int i) {
-        this(ia[i + 0], ia[i + 1], ia[i + 2], ia[i + 3]);
+    public Vec4ui(final int[] ia, final int i) {
+        this(ia[i], ia[i + 1], ia[i + 2], ia[i + 3]);
     }
 
-    public Vec4ui(long l) {
+    public Vec4ui(final long l) {
         this((int) l);
     }
 
-    public Vec4ui(long[] la) {
+    public Vec4ui(final long[] la) {
         this(la, 0);
     }
 
-    public Vec4ui(long[] la, int offset) { 
-        this(la[offset + 0], la[offset + 1], la[offset + 2], la[offset + 3]);
+    public Vec4ui(final long[] la, final int offset) {
+        this(la[offset], la[offset + 1], la[offset + 2], la[offset + 3]);
     }
 
-    public Vec4ui(ByteBuffer bb) {
+    public Vec4ui(final ByteBuffer bb) {
         this(bb, 0);
     }
 
-    public Vec4ui(ByteBuffer bb, int offset) {
-        this(bb.getInt(offset + 0 * Integer.BYTES), bb.getInt(offset + 1 * Integer.BYTES),
+    public Vec4ui(final ByteBuffer bb, final int offset) {
+        this(bb.getInt(offset), bb.getInt(offset + Integer.BYTES),
                 bb.getInt(offset + 2 * Integer.BYTES), bb.getInt(offset + 3 * Integer.BYTES));
     }
 
-    public Vec4ui(IntBuffer ib) {
+    public Vec4ui(final IntBuffer ib) {
         this(ib, 0);
     }
 
-    public Vec4ui(IntBuffer ib, int offset) {
-        this(ib.get(offset + 0), ib.get(offset + 1), ib.get(offset + 2), ib.get(offset + 3));
+    public Vec4ui(final IntBuffer ib, final int offset) {
+        this(ib.get(offset), ib.get(offset + 1), ib.get(offset + 2), ib.get(offset + 3));
     }
 
 //    public Vec4ui(int f, Vec3 v) {
@@ -81,18 +81,18 @@ public class Vec4ui extends FuncRelational {
 //    public Vec4ui(Vec2 v, float f0, float f1) {
 //        this(v.x, v.y, f0, f1);
 //    }
-    public Vec4ui(long x, long y, long z, long w) {
+    public Vec4ui(final long x, final long y, final long z, final long w) {
         this((int) x, (int) y, (int) z, (int) w);
     }
 
-    public Vec4ui(UInt x, UInt y, UInt z, UInt w) {
+    public Vec4ui(final UInt x, final UInt y, final UInt z, final UInt w) {
         this.x.value = x.value;
         this.y.value = y.value;
         this.z.value = z.value;
         this.w.value = w.value;
     }
 
-    public Vec4ui(int x, int y, int z, int w) {
+    public Vec4ui(final int x, final int y, final int z, final int w) {
         this.x.value = x;
         this.y.value = y;
         this.z.value = z;
@@ -103,49 +103,49 @@ public class Vec4ui extends FuncRelational {
         return set(0);
     }
 
-    public Vec4ui set(Vec4ui v) {
+    public Vec4ui set(final Vec4ui v) {
         return set(v.x, v.y, v.z, v.w);
     }
 
-    public Vec4ui set(int i) {
+    public Vec4ui set(final int i) {
         return set(i, i, i, i);
     }
 
-    public Vec4ui set(int[] ia) {
+    public Vec4ui set(final int[] ia) {
         return set(ia, 0);
     }
 
-    public Vec4ui set(int[] ia, int i) {
-        return set(ia[i + 0], ia[i + 1], ia[i + 2], ia[i + 3]);
+    public Vec4ui set(final int[] ia, final int i) {
+        return set(ia[i], ia[i + 1], ia[i + 2], ia[i + 3]);
     }
 
-    public Vec4ui set(long l) {
+    public Vec4ui set(final long l) {
         return set(l, l, l, l);
     }
 
-    public Vec4ui set(long[] la) {
+    public Vec4ui set(final long[] la) {
         return set(la, 0);
     }
 
-    public Vec4ui set(long[] la, int i) {
-        return set(la[i + 0], la[i + 1], la[i + 2], la[i + 3]);
+    public Vec4ui set(final long[] la, final int i) {
+        return set(la[i], la[i + 1], la[i + 2], la[i + 3]);
     }
 
-    public Vec4ui set(ByteBuffer bb) {
+    public Vec4ui set(final ByteBuffer bb) {
         return set(bb, 0);
     }
 
-    public Vec4ui set(ByteBuffer bb, int offset) {
-        return set(bb.getInt(offset + 0 * Integer.BYTES), bb.getInt(offset + 1 * Integer.BYTES),
+    public Vec4ui set(final ByteBuffer bb, final int offset) {
+        return set(bb.getInt(offset), bb.getInt(offset + Integer.BYTES),
                 bb.getInt(offset + 2 * Integer.BYTES), bb.getInt(offset + 3 * Integer.BYTES));
     }
 
-    public Vec4ui set(IntBuffer ib) {
+    public Vec4ui set(final IntBuffer ib) {
         return set(ib, 0);
     }
 
-    public Vec4ui set(IntBuffer ib, int offset) {
-        return set(ib.get(offset + 0), ib.get(offset + 1), ib.get(offset + 2), ib.get(offset + 3));
+    public Vec4ui set(final IntBuffer ib, final int offset) {
+        return set(ib.get(offset), ib.get(offset + 1), ib.get(offset + 2), ib.get(offset + 3));
     }
 
 //    public Vec4ui set(int i, Vec3 v) {
@@ -163,11 +163,11 @@ public class Vec4ui extends FuncRelational {
 //    public Vec4ui set(Vec2 v, float f0, float f1) {
 //        return set(v.x, v.y, f0, f1);
 //    }
-    public Vec4ui set(long x, long y, long z, long w) {
+    public Vec4ui set(final long x, final long y, final long z, final long w) {
         return set((int) x, (int) y, (int) z, (int) w);
     }
 
-    public Vec4ui set(int x, int y, int z, int w) {
+    public Vec4ui set(final int x, final int y, final int z, final int w) {
         this.x.value = x;
         this.y.value = y;
         this.z.value = z;
@@ -175,7 +175,7 @@ public class Vec4ui extends FuncRelational {
         return this;
     }
 
-    public Vec4ui set(UInt x, UInt y, UInt z, UInt w) {
+    public Vec4ui set(final UInt x, final UInt y, final UInt z, final UInt w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -194,11 +194,11 @@ public class Vec4ui extends FuncRelational {
         return toIa(new int[4]);
     }
 
-    public int[] toIa(int[] ia) {
-        ia[0] = (int) x.value;
-        ia[1] = (int) y.value;
-        ia[2] = (int) z.value;
-        ia[3] = (int) w.value;
+    public int[] toIa(final int[] ia) {
+        ia[0] = x.value;
+        ia[1] = y.value;
+        ia[2] = z.value;
+        ia[3] = w.value;
         return ia;
     }
 
@@ -206,32 +206,32 @@ public class Vec4ui extends FuncRelational {
         return toDib(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asIntBuffer());
     }
 
-    public IntBuffer toDib(IntBuffer ib) {
+    public IntBuffer toDib(final IntBuffer ib) {
         return toDib(ib, 0);
     }
 
-    public IntBuffer toDib(IntBuffer ib, int index) {
+    public IntBuffer toDib(final IntBuffer ib, final int index) {
         return ib
-                .put(index + 0, (int) x.value)
-                .put(index + 1, (int) y.value)
-                .put(index + 2, (int) z.value)
-                .put(index + 3, (int) w.value);
+                .put(index, x.value)
+                .put(index + 1, y.value)
+                .put(index + 2, z.value)
+                .put(index + 3, w.value);
     }
 
     public ByteBuffer toDbb_() {
         return toDbb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()));
     }
 
-    public ByteBuffer toDbb(ByteBuffer bb) {
+    public ByteBuffer toDbb(final ByteBuffer bb) {
         return toDbb(bb, 0);
     }
 
-    public ByteBuffer toDbb(ByteBuffer bb, int index) {
+    public ByteBuffer toDbb(final ByteBuffer bb, final int index) {
         return bb
-                .putInt(index + 0 * Float.BYTES, (int) x.value)
-                .putInt(index + 1 * Float.BYTES, (int) y.value)
-                .putInt(index + 2 * Float.BYTES, (int) z.value)
-                .putInt(index + 3 * Float.BYTES, (int) w.value);
+                .putInt(index, x.value)
+                .putInt(index + Float.BYTES, y.value)
+                .putInt(index + 2 * Float.BYTES, z.value)
+                .putInt(index + 3 * Float.BYTES, w.value);
     }
 
     @Override
@@ -243,16 +243,16 @@ public class Vec4ui extends FuncRelational {
         print("", true);
     }
 
-    public void print(String title) {
+    public void print(final String title) {
         print(title, true);
     }
 
-    public void print(boolean outStream) {
+    public void print(final boolean outStream) {
         print("", outStream);
     }
 
-    public void print(String title, boolean outStream) {
-        String res = title + "\n(" + x + ", " + y + ", " + z + ", " + w + ")";
+    public void print(final String title, final boolean outStream) {
+        final String res = title + "\n(" + x + ", " + y + ", " + z + ", " + w + ")";
         if (outStream) {
             System.out.print(res);
         } else {

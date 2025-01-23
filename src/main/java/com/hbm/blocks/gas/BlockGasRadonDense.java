@@ -27,18 +27,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockGasRadonDense extends BlockGasBase {
 
-	public BlockGasRadonDense(String s) {
+	public BlockGasRadonDense(final String s) {
 		super(0.1F, 0.5F, 0.1F, s);
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity){
-		if(!(entity instanceof EntityLivingBase))
+	public void onEntityCollision(final World world, final BlockPos pos, final IBlockState state, final Entity entity){
+		if(!(entity instanceof EntityLivingBase entityLiving))
 			return;
-		
-		EntityLivingBase entityLiving = (EntityLivingBase) entity;
-		
-		if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
+
+        if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
 			ArmorUtil.damageGasMaskFilter(entityLiving, 2);
 			ContaminationUtil.contaminate(entityLiving, HazardType.RADIATION, ContaminationType.CREATIVE, 0.5F);
 		} else {
@@ -48,13 +46,13 @@ public class BlockGasRadonDense extends BlockGasBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand){
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
 		worldIn.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 	}
 	
 	@Override
-	public ForgeDirection getFirstDirection(World world, int x, int y, int z) {
+	public ForgeDirection getFirstDirection(final World world, final int x, final int y, final int z) {
 		
 		if(world.rand.nextInt(5) == 0)
 			return ForgeDirection.UP;
@@ -63,12 +61,12 @@ public class BlockGasRadonDense extends BlockGasBase {
 	}
 
 	@Override
-	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
+	public ForgeDirection getSecondDirection(final World world, final int x, final int y, final int z) {
 		return this.randomHorizontal(world);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		if(!world.isRemote) {
 			
 			if(rand.nextInt(10) == 0) {

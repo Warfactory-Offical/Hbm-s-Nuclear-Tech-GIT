@@ -26,8 +26,8 @@ public class ItemRenderMinigun extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
-		float f = ItemGunBase.readNBT(item, "rot");
+	public void renderByItem(final ItemStack item) {
+		final float f = ItemGunBase.readNBT(item, "rot");
 		if(item.getItem() == ModItems.gun_minigun)
 			Minecraft.getMinecraft().renderEngine.bindTexture(minigun_rl);
 		if(item.getItem() == ModItems.gun_avenger)

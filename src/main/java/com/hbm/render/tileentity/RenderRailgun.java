@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderRailgun extends TileEntitySpecialRenderer<TileEntityRailgun> {
 
 	@Override
-	public void render(TileEntityRailgun gun, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityRailgun gun, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -26,26 +26,26 @@ public class RenderRailgun extends TileEntitySpecialRenderer<TileEntityRailgun> 
         float pitch = gun.pitch;
         
         if(System.currentTimeMillis() < gun.startTime + TileEntityRailgun.cooldownDurationMillis) {
-        	float interpolation = (float)(System.currentTimeMillis() - gun.startTime) / (float)TileEntityRailgun.cooldownDurationMillis * 100F;
+        	final float interpolation = (float)(System.currentTimeMillis() - gun.startTime) / (float)TileEntityRailgun.cooldownDurationMillis * 100F;
         	
-        	float yi = (gun.yaw - gun.lastYaw) * interpolation / 100F;
+        	final float yi = (gun.yaw - gun.lastYaw) * interpolation / 100F;
         	yaw = gun.lastYaw + yi;
         	
-        	float pi = (gun.pitch - gun.lastPitch) * interpolation / 100F;
+        	final float pi = (gun.pitch - gun.lastPitch) * interpolation / 100F;
         	pitch = gun.lastPitch + pi;
         }
         
-        int max = 5;
-        int count = max - (int)(((gun.fireTime + TileEntityRailgun.cooldownDurationMillis) - System.currentTimeMillis()) * max / TileEntityRailgun.cooldownDurationMillis);
+        final int max = 5;
+        final int count = max - (int)(((gun.fireTime + TileEntityRailgun.cooldownDurationMillis) - System.currentTimeMillis()) * max / TileEntityRailgun.cooldownDurationMillis);
 		
         if(System.currentTimeMillis() < gun.fireTime + TileEntityRailgun.cooldownDurationMillis) {
-			Vec3 vec = Vec3.createVectorHelper(5.375, 0, 0);
+			final Vec3 vec = Vec3.createVectorHelper(5.375, 0, 0);
 			vec.rotateAroundZ((float) (pitch * Math.PI / 180D));
 			vec.rotateAroundY((float) (yaw * Math.PI / 180D));
 	
-			double fX = vec.xCoord;
-			double fY = 1 + vec.yCoord;
-			double fZ = vec.zCoord;
+			final double fX = vec.xCoord;
+			final double fY = 1 + vec.yCoord;
+			final double fZ = vec.zCoord;
 			GL11.glRotatef(180, 0F, 1F, 0F);
 			for(int i = 0; i < count; i++)
 				RenderSparks.renderSpark((int) System.currentTimeMillis() / 100 + i * 10000, fX, fY, fZ, 0.75F, 5, 6, 0x0088FF, 0xDFDFFF);

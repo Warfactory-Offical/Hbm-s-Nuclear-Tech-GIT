@@ -39,7 +39,7 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+    public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
         return allowed_slots;
     }
 
@@ -49,9 +49,9 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
         if(!world.isRemote) {
             tickCounter++;
 
-            int xCoord = pos.getX();
-            int yCoord = pos.getY();
-            int zCoord = pos.getZ();
+            final int xCoord = pos.getX();
+            final int yCoord = pos.getY();
+            final int zCoord = pos.getZ();
             int delay = 20;
             if (inventory.getStackInSlot(22) != null && inventory.getStackInSlot(22) != ItemStack.EMPTY) {
                 if (inventory.getStackInSlot(22).getItem() == ModItems.upgrade_ejector_1) {
@@ -77,28 +77,26 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
                     }
                 }
 
-                EnumFacing inputSide = getOutputSide(); // note the switcheroo!
-                Block b = world.getBlockState(pos.offset(inputSide)).getBlock();
+                final EnumFacing inputSide = getOutputSide(); // note the switcheroo!
+                final Block b = world.getBlockState(pos.offset(inputSide)).getBlock();
 
-                if (b instanceof IConveyorBelt) {
+                if (b instanceof IConveyorBelt belt) {
 
-                    IConveyorBelt belt = (IConveyorBelt) b;
-
-                    for (int index : allowed_slots) {
-                        ItemStack stack = inventory.getStackInSlot(index);
+                    for (final int index : allowed_slots) {
+                        final ItemStack stack = inventory.getStackInSlot(index);
 
                         if (stack != ItemStack.EMPTY) {
 
-                            int toSend = Math.min(amount, stack.getCount());
-                            ItemStack cStack = stack.copy();
+                            final int toSend = Math.min(amount, stack.getCount());
+                            final ItemStack cStack = stack.copy();
                             stack.shrink(toSend);
                             if (stack.getCount() == 0)
                                 inventory.setStackInSlot(index, ItemStack.EMPTY);
                             cStack.setCount(toSend);
 
-                            EntityMovingItem moving = new EntityMovingItem(world);
-                            Vec3d pos = new Vec3d(xCoord + 0.5 + inputSide.getDirectionVec().getX() * 0.55, yCoord + 0.5 + inputSide.getDirectionVec().getY() * 0.55, zCoord + 0.5 + inputSide.getDirectionVec().getZ() * 0.55);
-                            Vec3d snap = belt.getClosestSnappingPosition(world, new BlockPos(xCoord + inputSide.getDirectionVec().getX(), yCoord + inputSide.getDirectionVec().getY(), zCoord + inputSide.getDirectionVec().getZ()), pos);
+                            final EntityMovingItem moving = new EntityMovingItem(world);
+                            final Vec3d pos = new Vec3d(xCoord + 0.5 + inputSide.getDirectionVec().getX() * 0.55, yCoord + 0.5 + inputSide.getDirectionVec().getY() * 0.55, zCoord + 0.5 + inputSide.getDirectionVec().getZ() * 0.55);
+                            final Vec3d snap = belt.getClosestSnappingPosition(world, new BlockPos(xCoord + inputSide.getDirectionVec().getX(), yCoord + inputSide.getDirectionVec().getY(), zCoord + inputSide.getDirectionVec().getZ()), pos);
                             moving.setPosition(snap.x, snap.y, snap.z);
                             moving.setItemStack(cStack);
                             world.spawnEntity(moving);
@@ -110,28 +108,28 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
         }
     }
 
-    public boolean tryFillTeDirect(ItemStack stack){
+    public boolean tryFillTeDirect(final ItemStack stack){
         return tryInsertItemCap(inventory, stack);
     }
 
-    public boolean tryInsertItemCap(IItemHandler chest, ItemStack stack) {
+    public boolean tryInsertItemCap(final IItemHandler chest, final ItemStack stack) {
         //Check if we have something to output
         if(stack.isEmpty())
             return false;
 
-        for(int i: allowed_slots) {
+        for(final int i: allowed_slots) {
 
-            ItemStack outputStack = stack.copy();
+            final ItemStack outputStack = stack.copy();
             if(outputStack.isEmpty() || outputStack.getCount() == 0)
                 return true;
 
-            ItemStack chestItem = chest.getStackInSlot(i).copy();
+            final ItemStack chestItem = chest.getStackInSlot(i).copy();
             if(chestItem.isEmpty() || (Library.areItemStacksCompatible(outputStack, chestItem, false) && chestItem.getCount() < chestItem.getMaxStackSize())) {
-                int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
+                final int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
 
                 outputStack.setCount(fillAmount);
 
-                ItemStack rest = chest.insertItem(i, outputStack, true);
+                final ItemStack rest = chest.insertItem(i, outputStack, true);
                 if(rest.getItem() == Item.getItemFromBlock(Blocks.AIR)){
                     stack.shrink(outputStack.getCount());
                     chest.insertItem(i, outputStack, false);
@@ -143,24 +141,24 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
     }
 
     @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+    public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
         return true;
     }
 
     @Override
-    public boolean canExtractItem(int i, ItemStack itemStack, int j) {
+    public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
         return true;
     }
 
     @Override
-    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 
         return new ContainerCraneUnboxer(player.inventory, this);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new GUICraneUnboxer(player.inventory, this);
     }
 }

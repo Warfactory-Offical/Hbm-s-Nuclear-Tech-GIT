@@ -5,16 +5,16 @@ import net.minecraft.util.math.MathHelper;
 
 public class WormMovementHeadNT {
 
-	private EntityWormBaseNT user;
+	private final EntityWormBaseNT user;
 
-	public WormMovementHeadNT(EntityWormBaseNT user) {
+	public WormMovementHeadNT(final EntityWormBaseNT user) {
 		this.user = user;
 	}
 
 	protected void updateMovement() {
-		double deltaX = this.user.waypointX - this.user.posX;
-		double deltaY = this.user.waypointY - this.user.posY;
-		double deltaZ = this.user.waypointZ - this.user.posZ;
+		final double deltaX = this.user.waypointX - this.user.posX;
+		final double deltaY = this.user.waypointY - this.user.posY;
+		final double deltaZ = this.user.waypointZ - this.user.posZ;
 		double deltaSq = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
 		//System.out.println(this.user.waypointX + " " + this.user.waypointY + " " + this.user.waypointZ);
 		
@@ -29,7 +29,7 @@ public class WormMovementHeadNT {
 					deltaSq *= 8.0D;
 				}
 				
-				double moverSpeed = this.user.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
+				final double moverSpeed = this.user.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
 				this.user.motionX += deltaX / deltaSq * moverSpeed;
 				this.user.motionY += deltaY / deltaSq * moverSpeed;
 				this.user.motionZ += deltaZ / deltaSq * moverSpeed;

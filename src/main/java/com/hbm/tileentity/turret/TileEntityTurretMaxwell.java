@@ -71,7 +71,7 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 
 	@Override
 	public long getConsumption() {
-		return 50_000 - this.blueLevel * 1_600 + this.redLevel * 10_000 + this.blackLevel * 100_000 + this.pinkLevel * 12_000 + this.greenLevel * 1_600;
+		return 50_000 - this.blueLevel * 1_600L + this.redLevel * 10_000L + this.blackLevel * 100_000L + this.pinkLevel * 12_000L + this.greenLevel * 1_600L;
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 		if(world.isRemote) {
 			
 			if(this.tPos != null) {
-				Vec3d pos = this.getTurretPos();
-				double length = new Vec3d(tPos.x - pos.x, tPos.y - pos.y, tPos.z - pos.z).length();
+				final Vec3d pos = this.getTurretPos();
+				final double length = new Vec3d(tPos.x - pos.x, tPos.y - pos.y, tPos.z - pos.z).length();
 				this.lastDist = length;
 			}
 			
@@ -112,7 +112,7 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 				
 				for(int i = 1; i < 10; i++) {
 					if(!inventory.getStackInSlot(i).isEmpty()) {
-						Item item = inventory.getStackInSlot(i).getItem();
+						final Item item = inventory.getStackInSlot(i).getItem();
 						
 						if(item == ModItems.upgrade_speed_1) redLevel += 1;
 						if(item == ModItems.upgrade_speed_2) redLevel += 2;
@@ -149,7 +149,7 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 	@Override
 	public void updateFiringTick() {
 		
-		long demand = this.getConsumption() * 10;
+		final long demand = this.getConsumption() * 10;
 		
 		if(this.target != null && this.getPower() >= demand) {
 			if(this.target instanceof EntityPlayer && (((EntityPlayer)this.target).capabilities.isCreativeMode || ((EntityPlayer)this.target).isSpectator()))
@@ -160,7 +160,7 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 				this.target.setFire(this.pinkLevel * 3);
 			
 			if(!this.target.isEntityAlive() && this.target instanceof EntityLivingBase) {
-				NBTTagCompound vdat = new NBTTagCompound();
+				final NBTTagCompound vdat = new NBTTagCompound();
 				vdat.setString("type", "giblets");
 				vdat.setInteger("ent", this.target.getEntityId());
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(vdat, this.target.posX, this.target.posY + this.target.height * 0.5, this.target.posZ), new TargetPoint(this.target.dimension, this.target.posX, this.target.posY + this.target.height * 0.5, this.target.posZ, 150));
@@ -170,14 +170,14 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 			
 			this.power -= demand;
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("shot", true);
 			this.networkPack(data, 250);
 		}
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		
 		if(nbt.hasKey("shot"))
 			beam = 5;

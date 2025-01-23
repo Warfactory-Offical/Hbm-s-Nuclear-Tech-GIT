@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class CrystalVirus extends Block {
 
-	public CrystalVirus(Material materialIn, String s) {
+	public CrystalVirus(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -25,12 +25,12 @@ public class CrystalVirus extends Block {
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos1, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos1, final IBlockState state, final Random rand) {
 		if(GeneralConfig.enableVirus) {
-			int x = pos1.getX();
-			int y = pos1.getY();
-			int z = pos1.getZ();
-			MutableBlockPos pos = new BlockPos.MutableBlockPos();
+			final int x = pos1.getX();
+			final int y = pos1.getY();
+			final int z = pos1.getZ();
+			final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 			if(world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() != ModBlocks.crystal_virus && world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() != Blocks.AIR && world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() != ModBlocks.crystal_hardened && world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() != ModBlocks.crystal_pulsar) {
 				world.setBlockState(pos.setPos(x + 1, y, z), ModBlocks.crystal_virus.getDefaultState());
 			}
@@ -59,11 +59,11 @@ public class CrystalVirus extends Block {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos1, Block blockIn, BlockPos fromPos) {
-		int x = pos1.getX();
-		int y = pos1.getY();
-		int z = pos1.getZ();
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos1, final Block blockIn, final BlockPos fromPos) {
+		final int x = pos1.getX();
+		final int y = pos1.getY();
+		final int z = pos1.getZ();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if((world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.crystal_virus || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.crystal_hardened || world.getBlockState(pos.setPos(x + 1, y, z)).getBlock() == ModBlocks.crystal_pulsar) && (world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.crystal_virus || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.crystal_hardened || world.getBlockState(pos.setPos(x - 1, y, z)).getBlock() == ModBlocks.crystal_pulsar)
 				&& (world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.crystal_virus || world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.crystal_hardened || world.getBlockState(pos.setPos(x, y + 1, z)).getBlock() == ModBlocks.crystal_pulsar) && (world.getBlockState(pos.setPos(x, y - 1, z)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x, y - 1, z)).getBlock() == ModBlocks.crystal_virus || world.getBlockState(pos.setPos(x, y - 1, z)).getBlock() == ModBlocks.crystal_hardened || world.getBlockState(pos.setPos(x, y - 1, z)).getBlock() == ModBlocks.crystal_pulsar)
 				&& (world.getBlockState(pos.setPos(x, y, z + 1)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x, y, z + 1)).getBlock() == ModBlocks.crystal_virus || world.getBlockState(pos.setPos(x, y, z + 1)).getBlock() == ModBlocks.crystal_hardened || world.getBlockState(pos.setPos(x, y, z + 1)).getBlock() == ModBlocks.crystal_pulsar) && (world.getBlockState(pos.setPos(x, y, z - 1)).getBlock() == Blocks.AIR || world.getBlockState(pos.setPos(x, y, z - 1)).getBlock() == ModBlocks.crystal_virus || world.getBlockState(pos.setPos(x, y, z - 1)).getBlock() == ModBlocks.crystal_hardened || world.getBlockState(pos.setPos(x, y, z - 1)).getBlock() == ModBlocks.crystal_pulsar) && !world.isRemote) {

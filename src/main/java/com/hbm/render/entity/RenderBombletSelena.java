@@ -16,17 +16,17 @@ public class RenderBombletSelena extends Render<EntityBombletSelena> {
 
 	public static final IRenderFactory<EntityBombletSelena> FACTORY = (RenderManager man) -> {return new RenderBombletSelena(man);};
 	private static final ResourceLocation objTesterModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/bombletSelena.obj");
-	private IModelCustom boyModel;
-    private ResourceLocation boyTexture;
+	private final IModelCustom boyModel;
+    private final ResourceLocation boyTexture;
 	
-	protected RenderBombletSelena(RenderManager renderManager) {
+	protected RenderBombletSelena(final RenderManager renderManager) {
 		super(renderManager);
 		boyModel = AdvancedModelLoader.loadModel(objTesterModelRL);
 		boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/misc/universalDark.png");
 	}
 	
 	@Override
-	public void doRender(EntityBombletSelena entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBombletSelena entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -39,7 +39,7 @@ public class RenderBombletSelena extends Render<EntityBombletSelena> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBombletSelena entity) {
+	protected ResourceLocation getEntityTexture(final EntityBombletSelena entity) {
 		return boyTexture;
 	}
 

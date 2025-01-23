@@ -13,9 +13,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineAssembler extends Container {
 
-	private TileEntityMachineAssembler assembler;
+	private final TileEntityMachineAssembler assembler;
 	
-	public ContainerMachineAssembler(InventoryPlayer invPlayer, TileEntityMachineAssembler te) {
+	public ContainerMachineAssembler(final InventoryPlayer invPlayer, final TileEntityMachineAssembler te) {
 		assembler = te;
 
 		//Battery
@@ -27,10 +27,10 @@ public class ContainerMachineAssembler extends Container {
 		//Schematic
 		this.addSlotToContainer(new SlotItemHandler(te.inventory, 4, 80, 54){
 			@Override
-			public boolean isItemValid(ItemStack stack) {
+			public boolean isItemValid(final ItemStack stack) {
 				return stack != null && stack.getItem() instanceof ItemAssemblyTemplate;
-			};
-		});
+			}
+        });
 		//Output
 		this.addSlotToContainer(new SlotMachineOutput(te.inventory, 5, 134, 90));
 		//Input
@@ -62,14 +62,14 @@ public class ContainerMachineAssembler extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 17) {
@@ -96,7 +96,7 @@ public class ContainerMachineAssembler extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return assembler.isUseableByPlayer(player);
 	}
 	

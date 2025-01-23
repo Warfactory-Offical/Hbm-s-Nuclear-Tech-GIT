@@ -41,7 +41,7 @@ public class ParticleLightningGib extends Particle {
 	int numParticles;
 	float boxScale;
 	
-	public ParticleLightningGib(World worldIn, double posXIn, double posYIn, double posZIn, ModelBox box, float[] matrix, ResourceLocation tex, float cubeMidX, float cubeMidY, float cubeMidZ, float scale, int trailNum) {
+	public ParticleLightningGib(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final ModelBox box, final float[] matrix, final ResourceLocation tex, final float cubeMidX, final float cubeMidY, final float cubeMidZ, final float scale, final int trailNum) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.box = box;
 		this.matrix = matrix;
@@ -82,7 +82,7 @@ public class ParticleLightningGib extends Particle {
 		}
 	}
 	
-	public void motion(Vec3d motion){
+	public void motion(final Vec3d motion){
 		this.motionX = motion.x;
 		this.motionY = motion.y;
 		this.motionZ = motion.z;
@@ -106,14 +106,14 @@ public class ParticleLightningGib extends Particle {
 			GL11.glDeleteLists(dl, 1);
 			return;
 		}
-		Iterator<Particle> itr = subParticles.iterator();
+		final Iterator<Particle> itr = subParticles.iterator();
 		while(itr.hasNext()){
-			Particle p = itr.next();
+			final Particle p = itr.next();
 			p.onUpdate();
 			if(!p.isAlive())
 				itr.remove();
 		}
-		for(ParticleLightningStrip p : trails){
+		for(final ParticleLightningStrip p : trails){
 			p.onUpdate();
 			if(particleAge < 20)
 				p.setNewPoint(new Vec3d(this.posX+(rand.nextFloat()-0.5)*0.5, this.posY+(rand.nextFloat()-0.5)*0.5, this.posZ+(rand.nextFloat()-0.5)*0.5));
@@ -127,29 +127,29 @@ public class ParticleLightningGib extends Particle {
 	
 	@Override
 	public void move(double x, double y, double z) {
-		double d0 = y;
-        double origX = x;
-        double origZ = z;
+		final double d0 = y;
+        final double origX = x;
+        final double origZ = z;
 
         if (this.canCollide)
         {
-            List<AxisAlignedBB> list = this.world.getCollisionBoxes((Entity)null, this.getBoundingBox().expand(x, y, z));
+            final List<AxisAlignedBB> list = this.world.getCollisionBoxes(null, this.getBoundingBox().expand(x, y, z));
 
-            for (AxisAlignedBB axisalignedbb : list)
+            for (final AxisAlignedBB axisalignedbb : list)
             {
                 y = axisalignedbb.calculateYOffset(this.getBoundingBox(), y);
             }
 
             this.setBoundingBox(this.getBoundingBox().offset(0.0D, y, 0.0D));
 
-            for (AxisAlignedBB axisalignedbb1 : list)
+            for (final AxisAlignedBB axisalignedbb1 : list)
             {
                 x = axisalignedbb1.calculateXOffset(this.getBoundingBox(), x);
             }
 
             this.setBoundingBox(this.getBoundingBox().offset(x, 0.0D, 0.0D));
 
-            for (AxisAlignedBB axisalignedbb2 : list)
+            for (final AxisAlignedBB axisalignedbb2 : list)
             {
                 z = axisalignedbb2.calculateZOffset(this.getBoundingBox(), z);
             }
@@ -190,17 +190,17 @@ public class ParticleLightningGib extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		ClientProxy.deferredRenderers.add(() -> {
 			GL11.glPushMatrix();
 			GlStateManager.enableLighting();
 			GlStateManager.enableRescaleNormal();
-			float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-	        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-	        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
-	        float rotateX = (float)(this.prevRotX + (this.rotX - this.prevRotX) * (double)partialTicks);
-	        float rotateY = (float)(this.prevRotY + (this.rotY - this.prevRotY) * (double)partialTicks);
-	        float rotateZ = (float)(this.prevRotZ + (this.rotZ - this.prevRotZ) * (double)partialTicks);
+			final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+	        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+	        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+	        final float rotateX = (float)(this.prevRotX + (this.rotX - this.prevRotX) * (double)partialTicks);
+	        final float rotateY = (float)(this.prevRotY + (this.rotY - this.prevRotY) * (double)partialTicks);
+	        final float rotateZ = (float)(this.prevRotZ + (this.rotZ - this.prevRotZ) * (double)partialTicks);
 	        
 	        GL11.glTranslated(f5, f6, f7);
 	        Minecraft.getMinecraft().getTextureManager().bindTexture(tex);
@@ -227,14 +227,14 @@ public class ParticleLightningGib extends Particle {
 			GlStateManager.enableBlend();
 			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.001F);
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			float a = 1-BobMathUtil.remap01_clamp(particleAge+partialTicks, 65, 67);
+			final float a = 1-BobMathUtil.remap01_clamp(particleAge+partialTicks, 65, 67);
 			GlStateManager.color(1F, 1F, 1F, a);
 			ResourceManager.lightning_gib.use();
-			float age = this.particleAge + partialTicks;
+			final float age = this.particleAge + partialTicks;
 			ResourceManager.lightning_gib.uniform1f("age", age);
-			int i = this.getBrightnessForRender(partialTicks);
-			int j = i >> 16 & 65535;
-	        int k = i & 65535;
+			final int i = this.getBrightnessForRender(partialTicks);
+			final int j = i >> 16 & 65535;
+	        final int k = i & 65535;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k, j);
 			ResourceManager.lightning_gib.uniform1i("bloom", 0);
 			GL11.glCallList(dl);
@@ -261,7 +261,7 @@ public class ParticleLightningGib extends Particle {
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			GlStateManager.depthMask(false);
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-			for(Particle p : subParticles){
+			for(final Particle p : subParticles){
 				p.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 			}
 			GlStateManager.enableAlpha();
@@ -270,7 +270,7 @@ public class ParticleLightningGib extends Particle {
 			
 			GlStateManager.disableRescaleNormal();
 			GL11.glPopMatrix();
-			for(ParticleLightningStrip p : trails){
+			for(final ParticleLightningStrip p : trails){
 				p.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 			}
 		});

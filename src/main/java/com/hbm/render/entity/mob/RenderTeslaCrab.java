@@ -21,23 +21,23 @@ public class RenderTeslaCrab extends RenderLiving<EntityTeslaCrab> {
 		return new RenderTeslaCrab(man);
 	};
 
-	public RenderTeslaCrab(RenderManager rendermanagerIn) {
+	public RenderTeslaCrab(final RenderManager rendermanagerIn) {
 		super(rendermanagerIn, new ModelTeslaCrab(), 1.0F);
 		this.shadowOpaque = 0.0F;
 	}
 
 	@Override
-	public void doRender(EntityTeslaCrab entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityTeslaCrab entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y + 1, z);
 
-		double sx = entity.posX;
-		double sy = entity.posY + 1;
-		double sz = entity.posZ;
+		final double sx = entity.posX;
+		final double sy = entity.posY + 1;
+		final double sz = entity.posZ;
 
-		for(double[] target : ((EntityTeslaCrab) entity).targets) {
+		for(final double[] target : entity.targets) {
 
-			double length = Math.sqrt(Math.pow(target[0] - sx, 2) + Math.pow(target[1] - sy, 2) + Math.pow(target[2] - sz, 2));
+			final double length = Math.sqrt(Math.pow(target[0] - sx, 2) + Math.pow(target[1] - sy, 2) + Math.pow(target[2] - sz, 2));
 
 			BeamPronter.prontBeam(Vec3.createVectorHelper(target[0] - sx, target[1] - sy, target[2] - sz), EnumWaveType.RANDOM, EnumBeamType.SOLID, 0x0051C4, 0x606060, (int) (entity.world.getTotalWorldTime() % 1000 + 1), (int) (length * 5), 0.125F, 2, 0.03125F);
 		}
@@ -47,7 +47,7 @@ public class RenderTeslaCrab extends RenderLiving<EntityTeslaCrab> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTeslaCrab entity) {
+	protected ResourceLocation getEntityTexture(final EntityTeslaCrab entity) {
 		return ResourceManager.teslacrab_tex;
 	}
 

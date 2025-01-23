@@ -1604,7 +1604,7 @@ public class ModBlocks {
 	public static final Block pink_stairs = new BlockGenericStairs(pink_planks.getDefaultState(), "pink_stairs").setSoundType(SoundType.WOOD).setCreativeTab(null);
 	
 	public static void preInit(){
-		for(Block block : ALL_BLOCKS){
+		for(final Block block : ALL_BLOCKS){
 			ForgeRegistries.BLOCKS.register(block);
 		}
 	}

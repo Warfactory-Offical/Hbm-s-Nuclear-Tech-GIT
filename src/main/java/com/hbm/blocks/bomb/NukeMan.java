@@ -40,9 +40,9 @@ public class NukeMan extends BlockContainer implements IBomb {
 
 	public static final PropertyInteger FACING = PropertyInteger.create("facing", 2, 5);
 	
-	private static boolean keepInventory = false;
+	private static final boolean keepInventory = false;
 	
-	public NukeMan(Material materialIn, String s) {
+	public NukeMan(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -52,24 +52,24 @@ public class NukeMan extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityNukeMan();
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.nuke_man);
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 		if (!keepInventory)
         {
-			TileEntity tileentity = world.getTileEntity(pos);
+			final TileEntity tileentity = world.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityNukeMan)
             {
-                InventoryHelper.dropInventoryItems(world, pos, (TileEntityNukeMan)tileentity);
+                InventoryHelper.dropInventoryItems(world, pos, tileentity);
                 
                 world.updateComparatorOutputLevel(pos, this);
             }
@@ -78,13 +78,13 @@ public class NukeMan extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(pos);
+			final TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_nuke_man, world, pos.getX(), pos.getY(), pos.getZ());
@@ -96,8 +96,8 @@ public class NukeMan extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(pos);
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+		final TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(pos);
         if (world.isBlockPowered(pos) && !world.isRemote)
         {
         	
@@ -112,37 +112,37 @@ public class NukeMan extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	
-	public boolean igniteTestBomb(World world, int x, int y, int z)
+	public boolean igniteTestBomb(final World world, final int x, final int y, final int z)
 	{
 		if (!world.isRemote) {
 
@@ -160,8 +160,8 @@ public class NukeMan extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
-		int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase player, final ItemStack stack) {
+		final int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		
 		if(i == 0)
 		{
@@ -182,12 +182,12 @@ public class NukeMan extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(FACING);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		if(meta >= 2 && meta <=5)
 			return this.getDefaultState().withProperty(FACING, meta);
 		return this.getDefaultState().withProperty(FACING, 2);
@@ -195,14 +195,13 @@ public class NukeMan extends BlockContainer implements IBomb {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
-		if(!(world.getTileEntity(pos) instanceof TileEntityNukeMan))
+	public void explode(final World world, final BlockPos pos) {
+		if(!(world.getTileEntity(pos) instanceof TileEntityNukeMan entity))
 			return;
-		TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(pos);
         //if (p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z))
         {
         	if(entity.isReady())
@@ -216,12 +215,12 @@ public class NukeMan extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("§2["+ I18nUtil.resolveKey("trait.nuclearbomb")+"]"+"§r");
 		tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.manRadius)+"§r");
 		if(!BombConfig.disableNuclear){
 			tooltip.add("§2["+ I18nUtil.resolveKey("trait.fallout")+"]"+"§r");
-			tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", (int)BombConfig.manRadius*(1+BombConfig.falloutRange/100))+"§r");
+			tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.manRadius *(1+BombConfig.falloutRange/100))+"§r");
 		}
 	}
 }

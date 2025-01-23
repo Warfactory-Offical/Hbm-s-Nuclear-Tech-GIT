@@ -18,19 +18,19 @@ public class MeathookResetStrafePacket implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 	}
 	
 	public static class Handler implements IMessageHandler<MeathookResetStrafePacket, IMessage> {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(MeathookResetStrafePacket message, MessageContext ctx) {
-			EntityPlayer p = Minecraft.getMinecraft().player;
+		public IMessage onMessage(final MeathookResetStrafePacket message, final MessageContext ctx) {
+			final EntityPlayer p = Minecraft.getMinecraft().player;
 			if(p.getHeldItemMainhand().getItem() == ModItems.gun_supershotgun){
 				ItemGunShotty.motionStrafe = 0;
 			}

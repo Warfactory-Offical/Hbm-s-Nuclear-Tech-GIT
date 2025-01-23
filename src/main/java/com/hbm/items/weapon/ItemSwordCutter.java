@@ -36,18 +36,18 @@ public class ItemSwordCutter extends ItemSwordAbility implements IEquipReceiver 
 	public static final float MAX_DYAW = 120;
 	public static final float MAX_DPITCH = 120;
 	
-	public ItemSwordCutter(float damage, double movement, ToolMaterial material, String s) {
+	public ItemSwordCutter(final float damage, final double movement, final ToolMaterial material, final String s) {
 		super(damage, movement, material, s);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
 		rightClickClient(worldIn, playerIn);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void rightClickClient(World worldIn, EntityPlayer playerIn){
+	public void rightClickClient(final World worldIn, final EntityPlayer playerIn){
 		if(worldIn.isRemote && playerIn == Minecraft.getMinecraft().player && !clicked && canClick){
 			startPos = playerIn.getLookVec();
 			planeNormal = null;
@@ -59,7 +59,7 @@ public class ItemSwordCutter extends ItemSwordAbility implements IEquipReceiver 
 	}
 	
 	@Override
-	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+	public boolean onEntitySwing(final EntityLivingBase entityLiving, final ItemStack stack) {
 		if(entityLiving.world.isRemote){
 			swingClient(entityLiving, stack);
 		}
@@ -67,9 +67,9 @@ public class ItemSwordCutter extends ItemSwordAbility implements IEquipReceiver 
 	}
 	
 	@Override
-	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+	public boolean onLeftClickEntity(final ItemStack stack, final EntityPlayer player, final Entity entity) {
 		if(stack == player.getHeldItemMainhand()){
-			Animation a = HbmAnimations.getRelevantAnim(EnumHand.MAIN_HAND);
+			final Animation a = HbmAnimations.getRelevantAnim(EnumHand.MAIN_HAND);
 			if(a != null && a.animation != null){
 				return true;
 			}
@@ -79,12 +79,12 @@ public class ItemSwordCutter extends ItemSwordAbility implements IEquipReceiver 
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void swingClient(EntityLivingBase entityLiving, ItemStack stack){
+	public void swingClient(final EntityLivingBase entityLiving, final ItemStack stack){
 		if(clicked && planeNormal != null && entityLiving instanceof EntityPlayer){
 			PacketDispatcher.wrapper.sendToServer(new PacketMobSlicer(startPos.add(entityLiving.getPositionEyes(1)), planeNormal, getTexId()));
 			planeNormal = null;
 			clicked = false;
-			NBTTagCompound nbt = new NBTTagCompound();
+			final NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setString("type", "anim");
 			nbt.setInteger("hand", EnumHand.MAIN_HAND.ordinal());
 			nbt.setString("mode", "swing");
@@ -98,10 +98,10 @@ public class ItemSwordCutter extends ItemSwordAbility implements IEquipReceiver 
 	}
 	
 	@Override
-	public void onEquip(EntityPlayer player, EnumHand hand) {
+	public void onEquip(final EntityPlayer player, final EnumHand hand) {
 		if(!(player instanceof EntityPlayerMP))
 			return;
-		NBTTagCompound nbt = new NBTTagCompound();
+		final NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setString("type", "anim");
 		nbt.setInteger("hand", hand.ordinal());
 		nbt.setString("mode", "equip");

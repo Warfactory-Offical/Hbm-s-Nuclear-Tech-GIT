@@ -16,10 +16,10 @@ public class TileEntityRadioTorchReceiver extends TileEntityRadioTorchBase {
 			
 			if(!this.channel.isEmpty()) {
 				
-				RTTYChannel chan = RTTYSystem.listen(world, this.channel);
+				final RTTYChannel chan = RTTYSystem.listen(world, this.channel);
 				
 				if(chan != null && (this.polling || (chan.timeStamp > this.lastUpdate - 1 && chan.timeStamp != -1))) { // if we're either polling or a new message has come in
-					String msg = "" + chan.signal;
+					final String msg = "" + chan.signal;
 					this.lastUpdate = world.getTotalWorldTime();
 					int nextState = 0; //if no remap apply, default to 0
 					
@@ -34,7 +34,7 @@ public class TileEntityRadioTorchReceiver extends TileEntityRadioTorchBase {
 						int sig = 0;
 						try { 
 							sig = Integer.parseInt(msg); 
-						} catch(Exception x) {
+						} catch(final Exception x) {
 						}
 						nextState = MathHelper.clamp(sig, 0, 15);
 					}
@@ -45,8 +45,8 @@ public class TileEntityRadioTorchReceiver extends TileEntityRadioTorchBase {
 					
 					if(this.lastState != nextState) {
 						this.lastState = nextState;
-						EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
-						BlockPos strongPos = new BlockPos(pos.getX() + dir.getXOffset(), pos.getY() + dir.getYOffset(), pos.getZ() + dir.getZOffset());
+						final EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
+						final BlockPos strongPos = new BlockPos(pos.getX() + dir.getXOffset(), pos.getY() + dir.getYOffset(), pos.getZ() + dir.getZOffset());
 						
 						world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
 						world.notifyNeighborsOfStateChange(strongPos, getBlockType(), true);

@@ -28,7 +28,7 @@ public class EntitySpear extends Entity {
 	
 	public int ticksInGround;
 
-	public EntitySpear(World p_i1582_1_) {
+	public EntitySpear(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(2F, 10F);
 		this.isImmuneToFire = true;
@@ -49,19 +49,19 @@ public class EntitySpear extends Entity {
 		this.motionY = -0.2;
 		this.motionZ = 0;
 
-		int x = (int) Math.floor(posX);
-		int y = (int) Math.floor(posY);
-		int z = (int) Math.floor(posZ);
+		final int x = (int) Math.floor(posX);
+		final int y = (int) Math.floor(posY);
+		final int z = (int) Math.floor(posZ);
 		
 		if(world.getBlockState(new BlockPos(x, y - 1, z)).getMaterial() == Material.AIR) {
 			this.setPositionAndRotation(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ, 0, 0);
 
 			if(!world.isRemote) {
-				double ix = posX + rand.nextGaussian() * 25;
-				double iz = posZ + rand.nextGaussian() * 25;
-				double iy = world.getHeight((int)Math.floor(ix), (int)Math.floor(iz)) + 2;
+				final double ix = posX + rand.nextGaussian() * 25;
+				final double iz = posZ + rand.nextGaussian() * 25;
+				final double iy = world.getHeight((int)Math.floor(ix), (int)Math.floor(iz)) + 2;
 				
-				ExAttrib at = Vec3.createVectorHelper(ix - posX, 0, iz - posZ).length() < 20 ? ExAttrib.DIGAMMA_CIRCUIT : ExAttrib.DIGAMMA;
+				final ExAttrib at = Vec3.createVectorHelper(ix - posX, 0, iz - posZ).length() < 20 ? ExAttrib.DIGAMMA_CIRCUIT : ExAttrib.DIGAMMA;
 				
 				new ExplosionNT(world, this, ix, iy, iz, 7.5F)
 				.addAttrib(ExAttrib.NOHURT)
@@ -70,7 +70,7 @@ public class EntitySpear extends Entity {
 				.addAttrib(ExAttrib.NOSOUND)
 				.addAttrib(at).explode();
 				
-				for(EntityPlayer player : world.playerEntities) {
+				for(final EntityPlayer player : world.playerEntities) {
 					ContaminationUtil.contaminate(player, HazardType.DIGAMMA, ContaminationType.DIGAMMA, 0.05F);
 					AdvancementManager.grantAchievement(player, AdvancementManager.digammaKauaiMoho);
 				}
@@ -78,9 +78,9 @@ public class EntitySpear extends Entity {
 			
 			if(world.isRemote) {
 				
-				double dy = world.getHeight((int)Math.floor(posX), (int)Math.floor(posZ)) + 2;
+				final double dy = world.getHeight((int)Math.floor(posX), (int)Math.floor(posZ)) + 2;
 				
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "smoke");
 				data.setString("mode", "radialDigamma");
 				data.setInteger("count", 5);
@@ -100,8 +100,8 @@ public class EntitySpear extends Entity {
 			
 			if(!world.isRemote && ticksInGround > 100) {
 				
-				List<Entity> entities =  new ArrayList<>(world.loadedEntityList);
-				for(Object obj : entities) {
+				final List<Entity> entities =  new ArrayList<>(world.loadedEntityList);
+				for(final Object obj : entities) {
 					
 					if(obj instanceof EntityLivingBase)
 						ContaminationUtil.contaminate((EntityLivingBase) obj, HazardType.DIGAMMA, ContaminationType.DIGAMMA2, 10F);
@@ -110,7 +110,7 @@ public class EntitySpear extends Entity {
 				
 				world.playSound(null, posX, posY, posZ, HBMSoundHandler.dflash, SoundCategory.HOSTILE, 25000.0F, 1.0F);
 				
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "smoke");
 				data.setString("mode", "radialDigamma");
 				data.setInteger("count", 100);
@@ -123,14 +123,14 @@ public class EntitySpear extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) { }
+	protected void readEntityFromNBT(final NBTTagCompound p_70037_1_) { }
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) { }
+	protected void writeEntityToNBT(final NBTTagCompound p_70014_1_) { }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean isInRangeToRenderDist(final double distance) {
 		return distance < 25000;
 	}
 	

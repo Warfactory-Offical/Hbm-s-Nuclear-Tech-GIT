@@ -1,4 +1,5 @@
 package com.hbm.blocks.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class MachineCatalyticCracker extends BlockDummyable implements ILookOverlay {
 
-	public MachineCatalyticCracker(Material materialIn, String s) {
+	public MachineCatalyticCracker(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= 12) return new TileEntityMachineCatalyticCracker();
 		if(meta >= 6) return new TileEntityProxyCombo(false, false, true);
@@ -58,32 +59,31 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 	}
 
 	@Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
         return Item.getItemFromBlock(ModBlocks.machine_catalytic_cracker);
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.machine_catalytic_cracker);
+    public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
+        return ItemStackUtil.itemStackFrom(ModBlocks.machine_catalytic_cracker);
     }
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		
 		if(!world.isRemote && !player.isSneaking()) {
 
 			if(!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemForgeFluidIdentifier) {
-				int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+				final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 				if(pos == null)
 					return false;
 				
-				TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+				final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-				if(!(te instanceof TileEntityMachineCatalyticCracker))
+				if(!(te instanceof TileEntityMachineCatalyticCracker cracker))
 					return false;
 
-				TileEntityMachineCatalyticCracker cracker = (TileEntityMachineCatalyticCracker) te;
-				Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
+                final Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
 				if(!CrackRecipes.hasRecipe(type)){
 					player.sendMessage(new TextComponentString("§cNo recipe found for §e"+type.getLocalizedName(new FluidStack(type, 1))));
 					return false;
@@ -102,7 +102,7 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 	}
 
 	@Override
-	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected boolean checkRequirement(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		return super.checkRequirement(world, x, y, z, dir, o) &&
 				MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{4, -1, 3, -1, 1, 1}, x, y, z, dir) &&
 				MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{13, 0, 0, 3, 2, 1}, x, y, z, dir) &&
@@ -111,7 +111,7 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{4, -1, 3, -1, 1, 1}, this, dir);
@@ -119,7 +119,7 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{14, -13, -1, 2, 1, 0}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{3, -1, 2, 3, -1, 3}, this, dir);
 		
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		this.makeExtra(world, x + dir.offsetX * o + dir.offsetX * 3 + rot.offsetX, y + dir.offsetY * o, z + dir.offsetZ * o + dir.offsetZ * 3 + rot.offsetZ);
 		this.makeExtra(world, x + dir.offsetX * o + dir.offsetX * 3 - rot.offsetX * 2, y + dir.offsetY * o, z + dir.offsetZ * o + dir.offsetZ * 3 - rot.offsetZ * 2);
@@ -133,20 +133,18 @@ public class MachineCatalyticCracker extends BlockDummyable implements ILookOver
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+		final int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
 		
-		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityMachineCatalyticCracker))
+		if(!(te instanceof TileEntityMachineCatalyticCracker cracker))
 			return;
-		
-		TileEntityMachineCatalyticCracker cracker = (TileEntityMachineCatalyticCracker) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 
 		for(int i = 0; i < cracker.types.length; i++)
 			if(cracker.types[i] != null)

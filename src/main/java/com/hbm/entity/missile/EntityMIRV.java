@@ -37,7 +37,7 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 	public static final DataParameter<Integer> HEALTH = EntityDataManager.createKey(EntityMIRV.class, DataSerializers.VARINT);
 	public int health = 25;
 	
-	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
+	public boolean attackEntityFrom(final DamageSource p_70097_1_, final float p_70097_2_) {
 			if(!this.isDead && !this.world.isRemote) {
 				health -= p_70097_2_;
 
@@ -55,7 +55,7 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 		ExplosionLarge.explode(world, posX, posY, posZ, 5, true, false, true);
 		ExplosionLarge.spawnShrapnelShower(world, posX, posY, posZ, motionX, motionY, motionZ, 15, 0.075);
 	}
-	public EntityMIRV(World worldIn) {
+	public EntityMIRV(final World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 	}
@@ -96,12 +96,11 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 	}
 	
 	protected void rotation() {
-        float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        final float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
         for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -122,13 +121,13 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 25000;
     }
 	
 	@Override
-	protected void onImpact(RayTraceResult result) {
+	protected void onImpact(final RayTraceResult result) {
 		
 	}
 
@@ -138,7 +137,7 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 
 	          if(ticket != null) {
@@ -155,9 +154,9 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 	     }
 	   }
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if (!world.isRemote && loaderTicket != null) {
-			for (ChunkPos chunk : loadedChunks) {
+			for (final ChunkPos chunk : loadedChunks) {
 				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
 			}
 
@@ -172,7 +171,7 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 			loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
 			loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-			for (ChunkPos chunk : loadedChunks) {
+			for (final ChunkPos chunk : loadedChunks) {
 				ForgeChunkManager.forceChunk(loaderTicket, chunk);
 			}
 		}

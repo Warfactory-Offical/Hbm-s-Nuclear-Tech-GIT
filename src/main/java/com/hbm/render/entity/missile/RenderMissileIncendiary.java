@@ -16,16 +16,16 @@ public class RenderMissileIncendiary extends Render<EntityMissileIncendiary> {
 
 	public static final IRenderFactory<EntityMissileIncendiary> FACTORY = (RenderManager man) -> {return new RenderMissileIncendiary(man);};
 	
-	protected RenderMissileIncendiary(RenderManager renderManager) {
+	protected RenderMissileIncendiary(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMissileIncendiary missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileIncendiary missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-		double[] pos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+		final double[] pos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
 		x = pos[0];
 		y = pos[1];
 		z = pos[2];
@@ -42,7 +42,7 @@ public class RenderMissileIncendiary extends Render<EntityMissileIncendiary> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileIncendiary entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileIncendiary entity) {
 		return ResourceManager.missileV2_IN_tex;
 	}
 

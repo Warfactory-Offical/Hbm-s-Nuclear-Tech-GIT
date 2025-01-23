@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class EntityVortex extends EntityBlackHole {
 
-	public EntityVortex(World p_i1582_1_) {
+	public EntityVortex(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
 	}
 
-	public EntityVortex(World world, float size) {
+	public EntityVortex(final World world, final float size) {
 		super(world);
 		this.getDataManager().set(SIZE, size);
 	}

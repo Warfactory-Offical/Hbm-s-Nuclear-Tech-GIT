@@ -1,4 +1,5 @@
 package com.hbm.tileentity.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +62,12 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	public TileEntityMachineGenerator() {
 		inventory = new ItemStackHandler(14){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
 			@Override
-			public boolean isItemValid(int i, ItemStack itemStack) {
+			public boolean isItemValid(final int i, final ItemStack itemStack) {
 				if(i >= 0 && i <= 8)
 					if(itemStack.getItem() instanceof ItemFuelRod)
 						return true;
@@ -77,13 +78,12 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 					if(FFUtils.containsFluid(itemStack, ModForgeFluids.coolant))
 						return true;
 				if(i == 11)
-					if(itemStack.getItem() instanceof IBatteryItem)
-						return true;
+                    return itemStack.getItem() instanceof IBatteryItem;
 				return false;
 			}
 			
 			@Override
-			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(final int slot, final ItemStack stack, final boolean simulate) {
 				if(this.isItemValid(slot, stack))
 					return super.insertItem(slot, stack, simulate);
 				return ItemStack.EMPTY;
@@ -122,146 +122,146 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 			{
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_uranium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(1);
 					attemptPower(100);
 				
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_uranium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_uranium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_dual_uranium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(1);
 					attemptPower(100);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_dual_uranium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_dual_uranium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_quad_uranium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(1);
 					attemptPower(100);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_quad_uranium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_quad_uranium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_plutonium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(2);
 					attemptPower(150);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_plutonium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_plutonium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_dual_plutonium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(2);
 					attemptPower(150);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_dual_plutonium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_dual_plutonium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_quad_plutonium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(2);
 					attemptPower(150);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_quad_plutonium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_quad_plutonium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_mox_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(1);
 					attemptPower(50);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_mox_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_mox_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_dual_mox_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(1);
 					attemptPower(50);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_dual_mox_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_dual_mox_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_quad_mox_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(1);
 					attemptPower(50);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_quad_mox_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_quad_mox_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_schrabidium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(10);
 					attemptPower(25000);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_schrabidium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_schrabidium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_dual_schrabidium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(10);
 					attemptPower(25000);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_dual_schrabidium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_dual_schrabidium_fuel_depleted));
 					}
 				}
 				if(inventory.getStackInSlot(i) != ItemStack.EMPTY && inventory.getStackInSlot(i).getItem() == ModItems.rod_quad_schrabidium_fuel)
 				{
-					int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
+					final int j = ItemFuelRod.getLifeTime(inventory.getStackInSlot(i));
 					ItemFuelRod.setLifetime(inventory.getStackInSlot(i), j + 1);
 					attemptHeat(10);
 					attemptPower(25000);
 
 					if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(i)) == ((ItemFuelRod)inventory.getStackInSlot(i).getItem()).getMaxLifeTime())
 					{
-						inventory.setStackInSlot(i, new ItemStack(ModItems.rod_quad_schrabidium_fuel_depleted));
+						inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.rod_quad_schrabidium_fuel_depleted));
 					}
 				}
 			}
@@ -320,14 +320,14 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	
 	
 
-	protected boolean inputValidForTank(int tank, int slot){
+	protected boolean inputValidForTank(final int tank, final int slot){
 		if(inventory.getStackInSlot(slot) != ItemStack.EMPTY && tanks[tank] != null){
 			return FFUtils.checkRestrictions(inventory.getStackInSlot(slot), f -> f.getFluid() == tankTypes[tank]);
 		}
 		return false;
 	}
 	
-	public void attemptPower(int i) {
+	public void attemptPower(final int i) {
 		
 		int j = (int) Math.ceil(i / 100);
 		
@@ -340,10 +340,10 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 		}
 	}
 	
-	public void attemptHeat(int i) {
-		Random rand = new Random();
+	public void attemptHeat(final int i) {
+		final Random rand = new Random();
 		
-		int j = rand.nextInt(i + 1);
+		final int j = rand.nextInt(i + 1);
 		
 		if(this.tanks[1].getFluidAmount() - j >= 0)
 		{
@@ -365,7 +365,7 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		tankTypes[0] = FluidRegistry.WATER;
 		tankTypes[1] = ModForgeFluids.coolant;
 		power = compound.getLong("power");
@@ -380,12 +380,12 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setInteger("heat", heat);
-		NBTTagCompound tag = inventory.serializeNBT();
+		final NBTTagCompound tag = inventory.serializeNBT();
 		compound.setTag("inventory", tag);
-		NBTTagList tankTag = FFUtils.serializeTankArray(this.tanks);
+		final NBTTagList tankTag = FFUtils.serializeTankArray(this.tanks);
 		compound.setTag("tanks", tankTag);
 		return super.writeToNBT(compound);
 	}
@@ -398,11 +398,11 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -411,11 +411,11 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 		}
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getHeatScaled(int i) {
+	public int getHeatScaled(final int i) {
 		return (heat * i) / heatMax;
 	}
 	
@@ -428,10 +428,9 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 2){
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 		}
@@ -439,7 +438,7 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource == null){
 			return 0;
 		} else if (resource.getFluid() == FluidRegistry.WATER){
@@ -452,12 +451,12 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
@@ -467,20 +466,20 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) :
 			capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this) : 
 				super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 	
 	private long detectPower;
 	private int detectHeat;
-	private FluidTank[] detectTanks = new FluidTank[]{null, null};
+	private final FluidTank[] detectTanks = new FluidTank[]{null, null};
 	
 	private void detectAndSendChanges() {
 		
@@ -514,7 +513,7 @@ public class TileEntityMachineGenerator extends TileEntityLoadedBase implements 
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

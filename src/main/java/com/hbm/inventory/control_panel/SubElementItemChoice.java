@@ -17,25 +17,25 @@ public class SubElementItemChoice extends SubElement {
 	public int numPages = 1;
 	public List<GuiButton> buttons = new ArrayList<>();
 	
-	public SubElementItemChoice(GuiControlEdit gui){
+	public SubElementItemChoice(final GuiControlEdit gui){
 		super(gui);
 	}
 	
 	@Override
 	protected void initGui(){
-		int cX = gui.width/2;
-		int cY = gui.height/2;
+		final int cX = gui.width/2;
+		final int cY = gui.height/2;
 		pageLeft = gui.addButton(new GuiButton(gui.currentButtonId(), cX-80, cY+92, 15, 20, "<"));
 		pageRight = gui.addButton(new GuiButton(gui.currentButtonId(), cX+65, cY+92, 15, 20, ">"));
 
-		buttons.add(gui.addButton(new GuiButton(1000, cX-80, (cY-90) + (0%7)*25, 160, 20, "Button")));
-		buttons.add(gui.addButton(new GuiButton(1001, cX-80, (cY-90) + (1%7)*25, 160, 20, "Switch")));
+		buttons.add(gui.addButton(new GuiButton(1000, cX-80, (cY - 90), 160, 20, "Button")));
+		buttons.add(gui.addButton(new GuiButton(1001, cX-80, (cY-90) + 25, 160, 20, "Switch")));
 		buttons.add(gui.addButton(new GuiButton(1002, cX-80, (cY-90) + (2%7)*25, 160, 20, "Display")));
 		buttons.add(gui.addButton(new GuiButton(1003, cX-80, (cY-90) + (3%7)*25, 160, 20, "Indicator")));
 		buttons.add(gui.addButton(new GuiButton(1004, cX-80, (cY-90) + (4%7)*25, 160, 20, "Knob")));
 		buttons.add(gui.addButton(new GuiButton(1005, cX-80, (cY-90) + (5%7)*25, 160, 20, "Dial")));
 		buttons.add(gui.addButton(new GuiButton(1006, cX-80, (cY-90) + (6%7)*25, 160, 20, "Label")));
-		buttons.add(gui.addButton(new GuiButton(1007, cX-80, (cY-90) + (7%7)*25, 160, 20, "Slider")));
+		buttons.add(gui.addButton(new GuiButton(1007, cX-80, (cY - 90), 160, 20, "Slider")));
 
 		numPages = (buttons.size()+6)/7;
 		super.initGui();
@@ -43,8 +43,8 @@ public class SubElementItemChoice extends SubElement {
 	
 	@Override
 	protected void drawScreen(){
-		int cX = gui.width/2;
-		int cY = gui.height/2;
+		final int cX = gui.width/2;
+		final int cY = gui.height/2;
 		String text = currentPage + "/" + numPages;
 		gui.getFontRenderer().drawString(text, cX - gui.getFontRenderer().getStringWidth(text) / 2F, cY+98, 0xFF777777, false);
 		text = "Select Control Type";
@@ -58,11 +58,11 @@ public class SubElementItemChoice extends SubElement {
 	}
 	
 	private void recalculateVisibleButtons(){
-		for(GuiButton b : buttons){
+		for(final GuiButton b : buttons){
 			b.visible = false;
 			b.enabled = false;
 		}
-		int idx = (currentPage-1)*7;
+		final int idx = (currentPage-1)*7;
 		for(int i = idx; i < idx+7; i ++){
 			if(i >= buttons.size())
 				break;
@@ -72,7 +72,7 @@ public class SubElementItemChoice extends SubElement {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(final GuiButton button){
 		if(button == pageLeft){
 			currentPage = Math.max(1, currentPage - 1);
 			recalculateVisibleButtons();
@@ -124,11 +124,11 @@ public class SubElementItemChoice extends SubElement {
 	}
 	
 	@Override
-	protected void enableButtons(boolean enable) {
+	protected void enableButtons(final boolean enable) {
 		if (enable) {
 			recalculateVisibleButtons();
 		} else {
-			for (GuiButton b : buttons) {
+			for (final GuiButton b : buttons) {
 				b.visible = false;
 				b.enabled = false;
 			}

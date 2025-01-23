@@ -17,7 +17,7 @@ public class ItemDoorSkin extends Item {
 
 	public String tex;
 	
-	public ItemDoorSkin(String s, String tex) {
+	public ItemDoorSkin(final String s, final String tex) {
 		this.tex = tex;
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,13 +26,13 @@ public class ItemDoorSkin extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(!worldIn.isRemote){
 
 			if(worldIn.getBlockState(pos).getBlock() instanceof BlockDummyable){
-				int[] pos1 = ((BlockDummyable) worldIn.getBlockState(pos).getBlock()).findCore(worldIn, pos.getX(), pos.getY(), pos.getZ());
+				final int[] pos1 = ((BlockDummyable) worldIn.getBlockState(pos).getBlock()).findCore(worldIn, pos.getX(), pos.getY(), pos.getZ());
 				if(pos1 != null){
-					TileEntity te = worldIn.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
+					final TileEntity te = worldIn.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
 					if(te instanceof IDoor){
 						if(((IDoor) te).setTexture(tex)){
 							return EnumActionResult.SUCCESS;

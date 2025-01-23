@@ -47,7 +47,7 @@ public class GuiControlEdit extends GuiContainer {
 
 	public boolean isEditMode = false; // when editing an existing control
 	
-	public GuiControlEdit(InventoryPlayer i, TileEntityControlPanel te) {
+	public GuiControlEdit(final InventoryPlayer i, final TileEntityControlPanel te) {
 		super(new ContainerControlEdit(i, te));
 		container = (ContainerControlEdit)this.inventorySlots;
 		control = te;
@@ -66,7 +66,7 @@ public class GuiControlEdit extends GuiContainer {
 		panelResize.onClose();
 		itemConfig.onClose();
 		variables.onClose();
-		NBTTagCompound tag = new NBTTagCompound();
+		final NBTTagCompound tag = new NBTTagCompound();
 		control.panel.writeToNBT(tag);
 		tag.setString("full_set", "");
 		PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(tag, control.getPos()));
@@ -75,7 +75,7 @@ public class GuiControlEdit extends GuiContainer {
 	}
 	
 	@Override
-	public void onResize(Minecraft mcIn, int w, int h){
+	public void onResize(final Minecraft mcIn, final int w, final int h){
 		res = new ScaledResolution(Minecraft.getMinecraft());
 		super.onResize(mcIn, w, h);
 	}
@@ -109,7 +109,7 @@ public class GuiControlEdit extends GuiContainer {
 	}
 	
 	@Override
-	public <T extends GuiButton> T addButton(T buttonIn) {
+	public <T extends GuiButton> T addButton(final T buttonIn) {
 		return super.addButton(buttonIn);
 	}
 
@@ -122,16 +122,16 @@ public class GuiControlEdit extends GuiContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		subElementStack.getFirst().drawScreen();
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		int sWidth = res.getScaledWidth();
-        int sHeight = res.getScaledHeight();
+	protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY) {
+		final int sWidth = res.getScaledWidth();
+        final int sHeight = res.getScaledHeight();
         this.mouseX = Mouse.getX() * sWidth / (float)this.mc.displayWidth;
         this.mouseY = sHeight - Mouse.getY() * sHeight / (float)this.mc.displayHeight - 1;
 		super.drawDefaultBackground();
@@ -144,12 +144,12 @@ public class GuiControlEdit extends GuiContainer {
 	}
 	
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
+	protected void actionPerformed(final GuiButton button) throws IOException {
 		if(!subElementStack.getFirst().lock)
 			subElementStack.getFirst().actionPerformed(button);
 	}
 	
-	protected void pushElement(SubElement e){
+	protected void pushElement(final SubElement e){
 		subElementStack.getFirst().enableButtons(false);
 		e.lock = true;
 		e.enableButtons(true);
@@ -157,7 +157,7 @@ public class GuiControlEdit extends GuiContainer {
 	}
 	
 	protected void popElement(){
-		SubElement e = subElementStack.removeFirst();
+		final SubElement e = subElementStack.removeFirst();
 		e.enableButtons(false);
 		subElementStack.getFirst().enableButtons(true);
 	}
@@ -170,21 +170,21 @@ public class GuiControlEdit extends GuiContainer {
 	}
 	
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+	protected void keyTyped(final char typedChar, final int keyCode) throws IOException {
 		if(!this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode))
 			super.keyTyped(typedChar, keyCode);
 		subElementStack.getFirst().keyTyped(typedChar, keyCode);
 	}
 	
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException{
+	protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException{
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		subElementStack.getFirst().lock = false;
 		subElementStack.getFirst().mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
 	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state){
+	protected void mouseReleased(final int mouseX, final int mouseY, final int state){
 		super.mouseReleased(mouseX, mouseY, state);
 		subElementStack.getFirst().mouseReleased(mouseX, mouseY, state);
 	}

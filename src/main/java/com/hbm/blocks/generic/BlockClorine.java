@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockClorine extends Block {
 
-	public BlockClorine(Material materialIn, String s) {
+	public BlockClorine(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -39,45 +39,43 @@ public class BlockClorine extends Block {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World worldIn, final BlockPos pos, final IBlockState state, final Random rand) {
 		worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos) {
 		return NULL_AABB;
 	}
 	
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if(!(entity instanceof EntityLivingBase))
+	public void onEntityCollision(final World world, final BlockPos pos, final IBlockState state, final Entity entity) {
+		if(!(entity instanceof EntityLivingBase entityLiving))
 			return;
-		
-		EntityLivingBase entityLiving = (EntityLivingBase) entity;
-		
-		if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_CHLORINE)) {
+
+        if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.GAS_CHLORINE)) {
 			ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 		} else {
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * 20, 0));
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.POISON, 20 * 20, 2));
-			entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, 1 * 20, 1));
+			entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, 20, 1));
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 30 * 20, 1));
 			entityLiving.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 30 * 20, 2));
 		}
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
@@ -88,12 +86,12 @@ public class BlockClorine extends Block {
 	}
 	
 	@Override
-	public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid) {
+	public boolean canCollideCheck(final IBlockState state, final boolean hitIfLiquid) {
 		return false;
 	}
 	
 	@Override
-	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
+	public boolean isReplaceable(final IBlockAccess worldIn, final BlockPos pos) {
 		return true;
 	}
 	

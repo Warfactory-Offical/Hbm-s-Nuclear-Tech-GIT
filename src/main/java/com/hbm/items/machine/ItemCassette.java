@@ -1,4 +1,5 @@
 package com.hbm.items.machine;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -21,17 +22,17 @@ public class ItemCassette extends Item {
 				100), BEEP_SIREN("Beep Siren", HBMSoundHandler.alarmBeep, SoundType.LOOP, 13882323, 100), CONTAINER_ALARM("Container Alarm", HBMSoundHandler.alarmContainer, SoundType.LOOP, 14727839, 100), SWEEP_SIREN("Sweep Siren", HBMSoundHandler.alarmSweep, SoundType.LOOP, 15592026, 500), STRIDER_SIREN("Missile Silo Siren", HBMSoundHandler.alarmStrider, SoundType.LOOP, 11250586, 500), AIR_RAID("Air Raid Siren", HBMSoundHandler.alarmAirRaid, SoundType.LOOP, 0xDF3795, 500), NOSTROMO_SIREN("Nostromo Self Destruct", HBMSoundHandler.alarmNostromo, SoundType.LOOP, 0x5dd800, 100), EAS_ALARM("EAS Alarm Screech", HBMSoundHandler.alarmEas, SoundType.LOOP, 0xb3a8c1, 50), APC_PASS("APC Pass", HBMSoundHandler.alarmAPCPass, SoundType.PASS, 3422163, 50), RAZORTRAIN("Razortrain Horn", HBMSoundHandler.alarmRazorTrain, SoundType.SOUND, 7819501, 250);
 
 		// Name of the track shown in GUI
-		private String title;
+		private final String title;
 		// Location of the sound
-		private SoundEvent location;
+		private final SoundEvent location;
 		// Sound type, whether the sound should be repeated or not
-		private SoundType type;
+		private final SoundType type;
 		// Color of the cassette
-		private int color;
+		private final int color;
 		// Range where the sound can be heard
-		private int volume;
+		private final int volume;
 
-		private TrackType(String name, SoundEvent loc, SoundType sound, int msa, int intensity) {
+		private TrackType(final String name, final SoundEvent loc, final SoundType sound, final int msa, final int intensity) {
 			title = name;
 			location = loc;
 			type = sound;
@@ -59,19 +60,19 @@ public class ItemCassette extends Item {
 			return volume;
 		}
 
-		public static TrackType getEnum(int i) {
+		public static TrackType getEnum(final int i) {
 			if(i < TrackType.values().length)
 				return TrackType.values()[i];
 			else
 				return TrackType.NULL;
 		}
-	};
+	}
 
-	public enum SoundType {
-		LOOP, PASS, SOUND;
-	};
+    public enum SoundType {
+		LOOP, PASS, SOUND
+    }
 
-	public ItemCassette(String s) {
+    public ItemCassette(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setHasSubtypes(true);
@@ -81,16 +82,16 @@ public class ItemCassette extends Item {
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
 			for(int i = 1; i < TrackType.values().length; ++i) {
-				items.add(new ItemStack(this, 1, i));
+				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
 			}
 		}
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(!(stack.getItem() instanceof ItemCassette))
 			return;
 
@@ -103,7 +104,7 @@ public class ItemCassette extends Item {
 		tooltip.add("   Volume: " + TrackType.getEnum(stack.getItemDamage()).getVolume());
 	}
 
-	public static TrackType getType(ItemStack stack) {
+	public static TrackType getType(final ItemStack stack) {
 		if(stack != null && stack.getItem() instanceof ItemCassette)
 			return TrackType.getEnum(stack.getItemDamage());
 		else

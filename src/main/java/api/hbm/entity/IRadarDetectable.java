@@ -19,7 +19,7 @@ public interface IRadarDetectable {
 
 		public String name;
 
-		private RadarTargetType(String name) {
+		private RadarTargetType(final String name) {
 			this.name = name;
 		}
 	}

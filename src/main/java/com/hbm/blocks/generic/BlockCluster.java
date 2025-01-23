@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
 
@@ -21,7 +22,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 public class BlockCluster extends BlockOre implements IDrillInteraction {
 
-	public BlockCluster(String s) {
+	public BlockCluster(final String s) {
 		super();
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -31,29 +32,29 @@ public class BlockCluster extends BlockOre implements IDrillInteraction {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		return Items.AIR;
 	}
 	
 	@Override
-	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack){
+	public void harvestBlock(final World world, final EntityPlayer player, final BlockPos pos, final IBlockState state, final TileEntity te, final ItemStack stack){
 		if(player instanceof FakePlayer || player == null) {
 			return;
 		}
 
 		if(!world.isRemote && world.getGameRules().getBoolean("doTileDrops") && !world.restoringBlockSnapshots) {
 			
-			Item drop = getDrop();
+			final Item drop = getDrop();
 			
 			if(drop == null)
 				return;
 			
-			float f = 0.7F;
-			double mX = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			double mY = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			double mZ = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+			final float f = 0.7F;
+			final double mX = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+			final double mY = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+			final double mZ = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
 			
-			EntityItem entityitem = new EntityItem(world, (double) pos.getX() + mX, (double) pos.getY() + mY, (double) pos.getZ() + mZ, new ItemStack(drop));
+			final EntityItem entityitem = new EntityItem(world, (double) pos.getX() + mX, (double) pos.getY() + mY, (double) pos.getZ() + mZ, ItemStackUtil.itemStackFrom(drop));
 			entityitem.setPickupDelay(10);
 			world.spawnEntity(entityitem);
 		}
@@ -76,17 +77,17 @@ public class BlockCluster extends BlockOre implements IDrillInteraction {
 	}
 
 	@Override
-	public boolean canBreak(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
+	public boolean canBreak(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
 		return drill.getDrillRating() >= 30;
 	}
 
 	@Override
-	public ItemStack extractResource(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
-		return drill.getDrillRating() >= 30 ? new ItemStack(this.getDrop()) : null;
+	public ItemStack extractResource(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
+		return drill.getDrillRating() >= 30 ? ItemStackUtil.itemStackFrom(this.getDrop()) : null;
 	}
 
 	@Override
-	public float getRelativeHardness(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
+	public float getRelativeHardness(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
 		return state.getBlockHardness(world, new BlockPos(x, y, z));
 	}
 }

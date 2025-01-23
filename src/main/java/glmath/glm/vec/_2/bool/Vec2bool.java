@@ -14,12 +14,12 @@ public class Vec2bool extends FuncRelational {
     public Vec2bool() {
     }
 
-    public Vec2bool(boolean x, boolean y) {
+    public Vec2bool(final boolean x, final boolean y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vec2bool set(boolean x, boolean y) {
+    public Vec2bool set(final boolean x, final boolean y) {
         this.x = x;
         this.y = y;
         return this;

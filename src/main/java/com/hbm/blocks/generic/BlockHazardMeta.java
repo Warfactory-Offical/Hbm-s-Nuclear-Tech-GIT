@@ -12,26 +12,26 @@ public class BlockHazardMeta extends BlockHazard {
 	
 	public static final PropertyInteger META = PropertyInteger.create("meta", 0, 15);
 	
-	public BlockHazardMeta(Material m, String s){
+	public BlockHazardMeta(final Material m, final String s){
 		super(m, s);
 	}
 
-	public BlockHazardMeta(Material mat, SoundType type, String s) {
+	public BlockHazardMeta(final Material mat, final SoundType type, final String s) {
 		super(mat, type, s);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{META});
+		return new BlockStateContainer(this, META);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(META);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(META, meta);
 	}
 }

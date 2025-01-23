@@ -41,19 +41,19 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	public TileEntityFFDuctBaseMk2() {
 	}
 
-	public void setType(Fluid f) {
+	public void setType(final Fluid f) {
 		if(f != type) {
 			type = f;
 			world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
 			world.neighborChanged(pos, getBlockType(), pos);
-			IBlockState state = world.getBlockState(pos);
+			final IBlockState state = world.getBlockState(pos);
 			world.markAndNotifyBlock(pos, world.getChunk(pos), state, state, 2);
 			rebuildNetworks(world, pos);
 			if(world instanceof WorldServer) {
-				PlayerChunkMapEntry entry = ((WorldServer) world).getPlayerChunkMap().getEntry(MathHelper.floor(pos.getX()) >> 4, MathHelper.floor(pos.getZ()) >> 4);
+				final PlayerChunkMapEntry entry = ((WorldServer) world).getPlayerChunkMap().getEntry(MathHelper.floor(pos.getX()) >> 4, MathHelper.floor(pos.getZ()) >> 4);
 
 				if(entry != null) {
-					for(EntityPlayerMP player : entry.getWatchingPlayers()) {
+					for(final EntityPlayerMP player : entry.getWatchingPlayers()) {
 						player.connection.sendPacket(new SPacketUpdateTileEntity(pos, 0, writeToNBT(new NBTTagCompound())));
 					}
 				}
@@ -68,14 +68,14 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		if(type != null)
 			compound.setString("fluidType", type.getName());
 		return super.writeToNBT(compound);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("fluidType"))
 			this.type = FluidRegistry.getFluid(compound.getString("fluidType"));
 		super.readFromNBT(compound);
@@ -92,18 +92,18 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	}
 
 	@Override
-		public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
 			this.readFromNBT(pkt.getNbtCompound());
 		}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
-		Fluid f = this.type;
+	public void handleUpdateTag(final NBTTagCompound tag) {
+		final Fluid f = this.type;
 		this.readFromNBT(tag);
 		if(f == type)
 			return;
-		for(EnumFacing e : EnumFacing.VALUES) {
-			TileEntity te = world.getTileEntity(pos.offset(e));
+		for(final EnumFacing e : EnumFacing.VALUES) {
+			final TileEntity te = world.getTileEntity(pos.offset(e));
 			if(te instanceof TileEntityFFDuctBaseMk2)
 				((TileEntityFFDuctBaseMk2) te).onNeighborChange();
 		}
@@ -136,7 +136,7 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	public void onChunkUnload() {
 		if(network == null)
 			return;
-		for(TileEntity te : tileentityCache) {
+		for(final TileEntity te : tileentityCache) {
 			if(te != null) {
 				if(te instanceof IFluidPipeMk2)
 					continue;
@@ -145,10 +145,10 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 					continue;
 				}
 				boolean flag = true;
-				for(EnumFacing e : EnumFacing.VALUES) {
-					BlockPos pos = te.getPos().offset(e);
+				for(final EnumFacing e : EnumFacing.VALUES) {
+					final BlockPos pos = te.getPos().offset(e);
 					if(world.isBlockLoaded(pos)) {
-						TileEntity ent = world.getTileEntity(pos);
+						final TileEntity ent = world.getTileEntity(pos);
 						if(ent instanceof IFluidPipeMk2 && ((IFluidPipeMk2) ent).getNetwork() == network) {
 							flag = false;
 							break;
@@ -175,41 +175,39 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 
 	// Drillgon200: Has to be static because breakBlock doesn't get called on
 	// client, and the tile entity is gone before a packet can reach it.
-	public static void breakBlock(World world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
+	public static void breakBlock(final World world, final BlockPos pos) {
+		final TileEntity te = world.getTileEntity(pos);
 		if(te instanceof TileEntityFFDuctBaseMk2) {
 			((TileEntityFFDuctBaseMk2) te).isBeingDestroyed = true;
 		}
 		rebuildNetworks(world, pos);
 	}
 
-	public static void rebuildNetworks(World world, BlockPos pos) {
-		TileEntity center = world.getTileEntity(pos);
-		for(EnumFacing e : EnumFacing.VALUES) {
-			TileEntity te = world.getTileEntity(pos.offset(e));
-			if(te instanceof IFluidPipeMk2) {
-				IFluidPipeMk2 pipe = (IFluidPipeMk2) te;
-				if(pipe.getNetwork() != null)
+	public static void rebuildNetworks(final World world, final BlockPos pos) {
+		final TileEntity center = world.getTileEntity(pos);
+		for(final EnumFacing e : EnumFacing.VALUES) {
+			final TileEntity te = world.getTileEntity(pos.offset(e));
+			if(te instanceof IFluidPipeMk2 pipe) {
+                if(pipe.getNetwork() != null)
 					pipe.getNetwork().destroy();
 			}
 		}
 		if(center instanceof IFluidPipeMk2 && ((IFluidPipeMk2) center).getNetwork() != null)
 			((IFluidPipeMk2) center).getNetwork().destroy();
 
-		for(EnumFacing e : EnumFacing.VALUES)
+		for(final EnumFacing e : EnumFacing.VALUES)
 			FFPipeNetworkMk2.buildNetwork(world.getTileEntity(pos.offset(e)));
 		FFPipeNetworkMk2.buildNetwork(center);
 	}
 
 	@Override
 	public void joinOrMakeNetwork() {
-		List<FFPipeNetworkMk2> otherNetworks = new ArrayList<FFPipeNetworkMk2>();
-		for(EnumFacing e : EnumFacing.VALUES) {
-			BlockPos offset = pos.offset(e);
-			TileEntity te = world.getTileEntity(offset);
-			if(te instanceof IFluidPipeMk2) {
-				IFluidPipeMk2 pipe = (IFluidPipeMk2) te;
-				if(pipe.getNetwork() != null && pipe.getNetwork().getType() == this.getType() && !otherNetworks.contains(pipe.getNetwork())) {
+		final List<FFPipeNetworkMk2> otherNetworks = new ArrayList<FFPipeNetworkMk2>();
+		for(final EnumFacing e : EnumFacing.VALUES) {
+			final BlockPos offset = pos.offset(e);
+			final TileEntity te = world.getTileEntity(offset);
+			if(te instanceof IFluidPipeMk2 pipe) {
+                if(pipe.getNetwork() != null && pipe.getNetwork().getType() == this.getType() && !otherNetworks.contains(pipe.getNetwork())) {
 					otherNetworks.add(pipe.getNetwork());
 				}
 			}
@@ -217,8 +215,7 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 		if(otherNetworks.isEmpty()) {
 			network = new FFPipeNetworkMk2(this);
 			network.tryAdd(this);
-			return;
-		} else {
+        } else {
 			FFPipeNetworkMk2 net = otherNetworks.remove(0);
 			while(otherNetworks.size() > 0)
 				net = FFPipeNetworkMk2.mergeNetworks(net, otherNetworks.remove(0));
@@ -229,8 +226,8 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 
 	protected boolean rebuildCache() {
 		boolean changed = false;
-		for(EnumFacing e : EnumFacing.VALUES) {
-			TileEntity te = world.getTileEntity(pos.offset(e));
+		for(final EnumFacing e : EnumFacing.VALUES) {
+			final TileEntity te = world.getTileEntity(pos.offset(e));
 			if(tileentityCache[e.getIndex()] == null) {
 				if(te != null) {
 					if(network != null)
@@ -299,7 +296,7 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	}
 
 	@Override
-	public void setNetwork(FFPipeNetworkMk2 net) {
+	public void setNetwork(final FFPipeNetworkMk2 net) {
 		network = net;
 	}
 
@@ -314,27 +311,27 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		return network != null ? network.fill(resource, doFill) : 0;
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return network != null ? network.drain(resource, doDrain) : null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return network != null ? network.drain(maxDrain, doDrain) : null;
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this) : super.getCapability(capability, facing);
 	}
 }

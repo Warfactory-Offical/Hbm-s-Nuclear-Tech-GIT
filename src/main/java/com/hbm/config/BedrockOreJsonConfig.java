@@ -36,8 +36,8 @@ public class BedrockOreJsonConfig {
 		dimOreRarity.clear();
 	}
 
-	public static boolean isOreAllowed(int dimID, String ore){
-		HashSet<String> ores = dimOres.get(dimID);
+	public static boolean isOreAllowed(final int dimID, final String ore){
+		final HashSet<String> ores = dimOres.get(dimID);
 		boolean isInList = ores.contains(ore);
 		if(!dimWhiteList.get(dimID)) isInList = !isInList;
 		return isInList;
@@ -112,9 +112,9 @@ public class BedrockOreJsonConfig {
 		), false);
 	}
 
-	public static void addEntry(int dimID, int rarity, List<String> ores, Boolean isWhiteList){
-		HashSet<String> set = new HashSet();
-		for(String ore : ores)
+	public static void addEntry(final int dimID, final int rarity, final List<String> ores, final Boolean isWhiteList){
+		final HashSet<String> set = new HashSet();
+		for(final String ore : ores)
 			set.add(ore);
 		dimOres.put(dimID, set);
 		dimOreRarity.put(dimID, rarity);
@@ -123,51 +123,51 @@ public class BedrockOreJsonConfig {
 
 	public static void writeToJson(){
 		try {
-			JsonWriter writer = JsonConfig.startWriting(bedrockOreJsonConfigFile);
+			final JsonWriter writer = JsonConfig.startWriting(bedrockOreJsonConfigFile);
 			writer.name("dimConfig").beginArray();
-			for(Integer dimID : dimOres.keySet()){
+			for(final Integer dimID : dimOres.keySet()){
 				writer.beginObject();
 					writer.name("dimID").value(dimID);
 					writer.name("oreRarity").value(dimOreRarity.get(dimID));
 					writer.name("isWhiteList").value(dimWhiteList.get(dimID));
 					writer.name("bedrockOres").beginArray();
-					for(String line : dimOres.get(dimID))
+					for(final String line : dimOres.get(dimID))
 						writer.value(line);
 					writer.endArray();
 				writer.endObject();
 			}
 			writer.endArray();
 			JsonConfig.stopWriting(writer);
-		} catch(Exception ex) {
+		} catch(final Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	public static boolean loadFromJson() {
 		try {
-			JsonObject reader = JsonConfig.startReading(bedrockOreJsonConfigFile);
+			final JsonObject reader = JsonConfig.startReading(bedrockOreJsonConfigFile);
 
 			if(reader == null || !reader.has("dimConfig")) return false;
 
-			JsonArray entries = reader.getAsJsonArray("dimConfig");
-			for(JsonElement entry : entries){
+			final JsonArray entries = reader.getAsJsonArray("dimConfig");
+			for(final JsonElement entry : entries){
 
 				if(entry == null || !entry.isJsonObject()) continue;
-				JsonObject dimEntry = entry.getAsJsonObject();
+				final JsonObject dimEntry = entry.getAsJsonObject();
 
 				if(!dimEntry.has("dimID")) return false;
-				int dimID = dimEntry.get("dimID").getAsInt();
+				final int dimID = dimEntry.get("dimID").getAsInt();
 
 				if(!dimEntry.has("oreRarity")) return false;
-				int oreRarity = dimEntry.get("oreRarity").getAsInt();
+				final int oreRarity = dimEntry.get("oreRarity").getAsInt();
 
 				if(!dimEntry.has("isWhiteList")) continue;
-				boolean isWhiteList = dimEntry.get("isWhiteList").getAsBoolean();
+				final boolean isWhiteList = dimEntry.get("isWhiteList").getAsBoolean();
 
 				if(!dimEntry.has("bedrockOres") || !dimEntry.get("bedrockOres").isJsonArray()) continue;
-				JsonArray jbedrockOres = dimEntry.get("bedrockOres").getAsJsonArray();
-				List<String> bedrockOres = new ArrayList<String>();
-				for(JsonElement ore : jbedrockOres){
+				final JsonArray jbedrockOres = dimEntry.get("bedrockOres").getAsJsonArray();
+				final List<String> bedrockOres = new ArrayList<String>();
+				for(final JsonElement ore : jbedrockOres){
 					bedrockOres.add(ore.getAsString());
 				}
 
@@ -175,7 +175,7 @@ public class BedrockOreJsonConfig {
 			}
 
 			return true;
-		} catch(Exception ex) {
+		} catch(final Exception ex) {
 			MainRegistry.logger.error("Loading the bedrock ore config resulted in an error");
 			ex.printStackTrace();
 			return false;

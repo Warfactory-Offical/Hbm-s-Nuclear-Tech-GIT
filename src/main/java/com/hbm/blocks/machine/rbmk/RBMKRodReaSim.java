@@ -8,12 +8,12 @@ import net.minecraft.world.World;
 
 public class RBMKRodReaSim extends RBMKRod {
 
-	public RBMKRodReaSim(boolean moderated, String s, String c) {
+	public RBMKRodReaSim(final boolean moderated, final String s, final String c) {
 		super(moderated, s, c);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= offset)
 			return new TileEntityRBMKRodReaSim();
