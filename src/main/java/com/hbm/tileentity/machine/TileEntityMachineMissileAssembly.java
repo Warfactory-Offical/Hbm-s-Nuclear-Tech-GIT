@@ -41,7 +41,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 	public TileEntityMachineMissileAssembly() {
 		inventory = new ItemStackHandler(6){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -56,11 +56,11 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -69,7 +69,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		
@@ -77,7 +77,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
@@ -86,7 +86,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 	public void update() {
 		if(!world.isRemote) {
 			
-			MissileStruct multipart = new MissileStruct(inventory.getStackInSlot(1), inventory.getStackInSlot(2), inventory.getStackInSlot(3), inventory.getStackInSlot(4));
+			final MissileStruct multipart = new MissileStruct(inventory.getStackInSlot(1), inventory.getStackInSlot(2), inventory.getStackInSlot(3), inventory.getStackInSlot(4));
 			if(cooldown == 0 && world.isBlockPowered(pos)){
 				construct();
 				cooldown = xCooldown;
@@ -99,11 +99,9 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 	
 	public int fuselageState() {
 		
-		if(inventory.getStackInSlot(2).getItem() instanceof ItemMissile) {
-			
-			ItemMissile part = (ItemMissile)inventory.getStackInSlot(2).getItem();
-			
-			if(part.type == PartType.FUSELAGE)
+		if(inventory.getStackInSlot(2).getItem() instanceof ItemMissile part) {
+
+            if(part.type == PartType.FUSELAGE)
 				return 1;
 		}
 		
@@ -112,11 +110,9 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 
 	public int chipState() {
 		
-		if(inventory.getStackInSlot(0).getItem() instanceof ItemMissile) {
-			
-			ItemMissile part = (ItemMissile)inventory.getStackInSlot(0).getItem();
-			
-			if(part.type == PartType.CHIP)
+		if(inventory.getStackInSlot(0).getItem() instanceof ItemMissile part) {
+
+            if(part.type == PartType.CHIP)
 				return 1;
 		}
 		
@@ -125,18 +121,15 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 
 	public int warheadState() {
 		
-		if(inventory.getStackInSlot(1).getItem() instanceof ItemMissile &&
-				inventory.getStackInSlot(2).getItem() instanceof ItemMissile &&
-				inventory.getStackInSlot(4).getItem() instanceof ItemMissile) {
+		if(inventory.getStackInSlot(1).getItem() instanceof ItemMissile part &&
+                inventory.getStackInSlot(2).getItem() instanceof ItemMissile fuselage &&
+                inventory.getStackInSlot(4).getItem() instanceof ItemMissile thruster) {
 
-			ItemMissile part = (ItemMissile)inventory.getStackInSlot(1).getItem();
-			ItemMissile fuselage = (ItemMissile)inventory.getStackInSlot(2).getItem();
-			ItemMissile thruster = (ItemMissile)inventory.getStackInSlot(4).getItem();
-			if(!(part.attributes.length > 2 && thruster.attributes.length > 2))
+            if(!(part.attributes.length > 2 && thruster.attributes.length > 2))
 				return 0;
 
-			float weight = (Float)part.attributes[2];
-			float thrust = (Float)thruster.attributes[2];
+			final float weight = (Float)part.attributes[2];
+			final float thrust = (Float)thruster.attributes[2];
 			
 			if(part.type == PartType.WARHEAD && fuselage.type == PartType.FUSELAGE && part.bottom == fuselage.top && weight <= thrust)
 				return 1;
@@ -150,12 +143,9 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 		if(inventory.getStackInSlot(3).isEmpty())
 			return -1;
 		
-		if(inventory.getStackInSlot(3).getItem() instanceof ItemMissile && inventory.getStackInSlot(2).getItem() instanceof ItemMissile) {
+		if(inventory.getStackInSlot(3).getItem() instanceof ItemMissile part && inventory.getStackInSlot(2).getItem() instanceof ItemMissile fuselage) {
 
-			ItemMissile part = (ItemMissile)inventory.getStackInSlot(3).getItem();
-			ItemMissile fuselage = (ItemMissile)inventory.getStackInSlot(2).getItem();
-			
-			if(part.type == PartType.FINS && fuselage.type == PartType.FUSELAGE &&
+            if(part.type == PartType.FINS && fuselage.type == PartType.FUSELAGE &&
 					part.top == fuselage.bottom)
 				return 1;
 		}
@@ -165,13 +155,10 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 
 	public int thrusterState() {
 		
-		if(inventory.getStackInSlot(4).getItem() instanceof ItemMissile && inventory.getStackInSlot(2).getItem() instanceof ItemMissile) {
+		if(inventory.getStackInSlot(4).getItem() instanceof ItemMissile part && inventory.getStackInSlot(2).getItem() instanceof ItemMissile fuselage) {
 
-			ItemMissile part = (ItemMissile)inventory.getStackInSlot(4).getItem();
-			ItemMissile fuselage = (ItemMissile)inventory.getStackInSlot(2).getItem();
-			
-			if(part.type == PartType.THRUSTER && fuselage.type == PartType.FUSELAGE &&
-					part.top == fuselage.bottom && (FuelType)part.attributes[0] == (FuelType)fuselage.attributes[0]) {
+            if(part.type == PartType.THRUSTER && fuselage.type == PartType.FUSELAGE &&
+					part.top == fuselage.bottom && part.attributes[0] == fuselage.attributes[0]) {
 				return 1;
 			}
 		}
@@ -218,10 +205,9 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 		return 65536.0D;
 	}
 
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		if(stack.getItem() instanceof ItemMissile){
-			ItemMissile missilePart = (ItemMissile) stack.getItem();
-			if(slot == 0){
+	public boolean isItemValidForSlot(final int slot, final ItemStack stack) {
+		if(stack.getItem() instanceof ItemMissile missilePart){
+            if(slot == 0){
 				return missilePart.type == PartType.CHIP;
 			}
 			if(slot == 1){
@@ -241,33 +227,33 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 
 	}
 
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return new int[]{0, 1, 2, 3, 4, 5};
 	}
 	
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		return (slot == 5);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && inventory != null){
 			if(facing == null)
 				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new ItemStackHandlerWrapper(inventory, getAccessibleSlotsFromSide(facing)){
 				@Override
-				public ItemStack extractItem(int slot, int amount, boolean simulate) {
+				public ItemStack extractItem(final int slot, final int amount, final boolean simulate) {
 					if(canExtractItem(slot, inventory.getStackInSlot(slot), amount))
 						return super.extractItem(slot, amount, simulate);
 					return ItemStack.EMPTY;
 				}
 				
 				@Override
-				public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+				public ItemStack insertItem(final int slot, final ItemStack stack, final boolean simulate) {
 					if(canInsertItem(slot, stack, stack.getCount()))
 						return super.insertItem(slot, stack, simulate);
 					return stack;
@@ -278,7 +264,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ITic
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && inventory != null) || super.hasCapability(capability, facing);
 	}
 }

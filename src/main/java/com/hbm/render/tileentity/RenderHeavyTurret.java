@@ -12,15 +12,15 @@ import net.minecraft.tileentity.TileEntity;
 public class RenderHeavyTurret extends TileEntitySpecialRenderer<TileEntityTurretHeavy> {
 
 	@Override
-	public void render(TileEntityTurretHeavy te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityTurretHeavy te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
         GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glRotatef(180, 0F, 1F, 0F);
 		
-		double yaw = te.rotationYaw;
-		double pitch = -te.rotationPitch;
+		final double yaw = te.rotationYaw;
+		final double pitch = -te.rotationPitch;
 		
         
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -33,7 +33,7 @@ public class RenderHeavyTurret extends TileEntitySpecialRenderer<TileEntityTurre
         renderTileEntityAt2(te, x, y, z, partialTicks, yaw, pitch);
 	}
 	
-	public void renderTileEntityAt2(TileEntityTurretHeavy tileEntity, double x, double y, double z, float f, double yaw, double pitch)
+	public void renderTileEntityAt2(final TileEntityTurretHeavy tileEntity, final double x, final double y, final double z, final float f, final double yaw, final double pitch)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
@@ -52,7 +52,7 @@ public class RenderHeavyTurret extends TileEntitySpecialRenderer<TileEntityTurre
         renderTileEntityAt3(tileEntity, x, y, z, f, yaw, pitch);
     }
     
-	public void renderTileEntityAt3(TileEntityTurretHeavy tileEntity, double x, double y, double z, float f, double yaw, double pitch)
+	public void renderTileEntityAt3(final TileEntityTurretHeavy tileEntity, final double x, final double y, final double z, final float f, final double yaw, final double pitch)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y + 0.75D, z + 0.5D);

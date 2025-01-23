@@ -7,7 +7,6 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.render.model.ModelArmorWings;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WingsMurk extends ItemArmor {
 
-	public WingsMurk(ArmorMaterial material, String s) {
+	public WingsMurk(final ArmorMaterial material, final String s) {
 		super(material, -1, EntityEquipmentSlot.CHEST);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,7 +33,7 @@ public class WingsMurk extends ItemArmor {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
+	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
 		if(model == null) {
 			model = new ModelArmorWings(this == ModItems.wings_murk ? 0 : 1);
 		}
@@ -43,12 +42,12 @@ public class WingsMurk extends ItemArmor {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type){
+	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type){
 		//Drillgon200: Unused, just so forge doesn't yell in the log
 		return RefStrings.MODID + ":textures/armor/steel_1.png";
 	}
 	
-	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
 		
 		if(player.onGround)
 			return;
@@ -67,10 +66,10 @@ public class WingsMurk extends ItemArmor {
 					
 				if(player.motionY < -0.08) {
 
-					double mo = player.motionY * -0.2;
+					final double mo = player.motionY * -0.2;
 					player.motionY += mo;
 
-					Vec3 vec = new Vec3(player.getLookVec());
+					final Vec3 vec = new Vec3(player.getLookVec());
 					vec.xCoord *= mo;
 					vec.yCoord *= mo;
 					vec.zCoord *= mo;
@@ -82,7 +81,7 @@ public class WingsMurk extends ItemArmor {
 			}
 		}
 
-		IHBMData props = HbmCapability.getData(player);
+		final IHBMData props = HbmCapability.getData(player);
 		
 		if(this == ModItems.wings_murk) {
 
@@ -105,9 +104,9 @@ public class WingsMurk extends ItemArmor {
 			
 			if(props.getEnableBackpack()) {
 				
-				Vec3 orig = new Vec3(player.getLookVec());
-				Vec3 look = Vec3.createVectorHelper(orig.xCoord, 0, orig.zCoord).normalize();
-				double mod = player.isSneaking() ? 0.25D : 1D;
+				final Vec3 orig = new Vec3(player.getLookVec());
+				final Vec3 look = Vec3.createVectorHelper(orig.xCoord, 0, orig.zCoord).normalize();
+				final double mod = player.isSneaking() ? 0.25D : 1D;
 				
 				if(player.moveForward != 0) {
 					player.motionX += look.xCoord * 0.35 * player.moveForward * mod;

@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 
 public class ItemFuel extends Item {
 
-	private int burntime;
+	private final int burntime;
 	
-	public ItemFuel(String s, int burntime){
+	public ItemFuel(final String s, final int burntime){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -24,12 +24,12 @@ public class ItemFuel extends Item {
 	}
 	
 	@Override
-	public int getItemBurnTime(ItemStack itemStack) {
+	public int getItemBurnTime(final ItemStack itemStack) {
 		return burntime;
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(this == ModItems.dust)
 		{
 			if(MainRegistry.polaroidID == 11)

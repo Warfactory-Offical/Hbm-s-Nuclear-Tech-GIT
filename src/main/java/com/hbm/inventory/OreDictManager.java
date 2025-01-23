@@ -448,7 +448,7 @@ public class OreDictManager {
 
 		OreDictionary.registerOre("coalCoke", fromOne(coke, EnumCokeType.COAL));
 
-		for(String name : new String[] {"fuelCoke", "coke"}) {
+		for(final String name : new String[] {"fuelCoke", "coke"}) {
 			OreDictionary.registerOre(name, fromOne(coke, EnumCokeType.COAL));
 		// 	OreDictionary.registerOre(name, fromOne(coke, EnumCokeType.LIGNITE));
 		// 	OreDictionary.registerOre(name, fromOne(coke, EnumCokeType.PETROLEUM));
@@ -520,29 +520,29 @@ public class OreDictManager {
 
 	private static boolean recursionBrake = false;
 
-	private static Map<String, ItemStack> toRegisterItemStacks = new LinkedHashMap<>();
+	private static final Map<String, ItemStack> toRegisterItemStacks = new LinkedHashMap<>();
 
-    public static void queueRegisterOre(String entryName, ItemStack stack) {
+    public static void queueRegisterOre(final String entryName, final ItemStack stack) {
 		toRegisterItemStacks.put(entryName, stack);
     }
 
     @SubscribeEvent
-	public void onRegisterOre(OreRegisterEvent event) {
+	public void onRegisterOre(final OreRegisterEvent event) {
 		if(recursionBrake)
 			return;
 
 		recursionBrake = true;
 
-		HashSet<String> strings = reRegistration.get(event.getName());
+		final HashSet<String> strings = reRegistration.get(event.getName());
 
 		if(strings != null) {
-			for(String name : strings) {
+			for(final String name : strings) {
 				OreDictionary.registerOre(name, event.getOre());
 				MainRegistry.logger.info("OreDict: Re-registration for " + event.getName() + " to " + name);
 			}
 		}
 
-		for (Map.Entry<String, ItemStack> entry : toRegisterItemStacks.entrySet()) OreDictionary.registerOre(entry.getKey(), entry.getValue());
+		for (final Map.Entry<String, ItemStack> entry : toRegisterItemStacks.entrySet()) OreDictionary.registerOre(entry.getKey(), entry.getValue());
 
 		recursionBrake = false;
 	}
@@ -552,7 +552,7 @@ public class OreDictManager {
 		float hazMult = 1.0F;
 		List<HazardEntry> hazards = new ArrayList();
 
-		public DictFrame(String... mats) {
+		public DictFrame(final String... mats) {
 			this.mats = mats;
 		}
 
@@ -585,9 +585,9 @@ public class OreDictManager {
 		public String[] blocks() {		return appendToAll(BLOCK); }
 		public String[] ores() {		return appendToAll(ORE); }
 
-		private String[] appendToAll(String... prefix) {
+		private String[] appendToAll(final String... prefix) {
 
-			String[] names = new String[mats.length * prefix.length];
+			final String[] names = new String[mats.length * prefix.length];
 
 			for(int i = 0; i < mats.length; i++) {
 				for(int j = 0; j < prefix.length; j++) {
@@ -597,37 +597,37 @@ public class OreDictManager {
 			return names;
 		}
 
-		public DictFrame rad(float rad) {		return this.haz(new HazardEntry(HazardRegistry.RADIATION, rad)); }
-		public DictFrame hot(float time) {		return this.haz(new HazardEntry(HazardRegistry.HOT, time)); }
-		public DictFrame blinding(float time) {	return this.haz(new HazardEntry(HazardRegistry.BLINDING, time)); }
-		public DictFrame asbestos(float asb) {	return this.haz(new HazardEntry(HazardRegistry.ASBESTOS, asb)); }
-		public DictFrame hydro(float h) {		return this.haz(new HazardEntry(HazardRegistry.HYDROACTIVE, h)); }
-		public DictFrame digam(float h) {		return this.haz(new HazardEntry(HazardRegistry.DIGAMMA, h)); }
-		public DictFrame toxic(float h) {		return this.haz(new HazardEntry(HazardRegistry.TOXIC, h)); }
-		public DictFrame coal(float h) {		return this.haz(new HazardEntry(HazardRegistry.COAL, h)); }
+		public DictFrame rad(final float rad) {		return this.haz(new HazardEntry(HazardRegistry.RADIATION, rad)); }
+		public DictFrame hot(final float time) {		return this.haz(new HazardEntry(HazardRegistry.HOT, time)); }
+		public DictFrame blinding(final float time) {	return this.haz(new HazardEntry(HazardRegistry.BLINDING, time)); }
+		public DictFrame asbestos(final float asb) {	return this.haz(new HazardEntry(HazardRegistry.ASBESTOS, asb)); }
+		public DictFrame hydro(final float h) {		return this.haz(new HazardEntry(HazardRegistry.HYDROACTIVE, h)); }
+		public DictFrame digam(final float h) {		return this.haz(new HazardEntry(HazardRegistry.DIGAMMA, h)); }
+		public DictFrame toxic(final float h) {		return this.haz(new HazardEntry(HazardRegistry.TOXIC, h)); }
+		public DictFrame coal(final float h) {		return this.haz(new HazardEntry(HazardRegistry.COAL, h)); }
 
-		public DictFrame haz(HazardEntry hazard) {
+		public DictFrame haz(final HazardEntry hazard) {
 			hazards.add(hazard);
 			return this;
 		}
 
 		/** Returns an ItemStack composed of the supplied item with the meta being the enum's ordinal. Purely syntactic candy */
-		public static ItemStack fromOne(Item item, Enum en) {
+		public static ItemStack fromOne(final Item item, final Enum en) {
 			return ItemStackUtil.itemStackFrom(item, 1, en.ordinal());
 		}
-		public static ItemStack fromOne(Block block, Enum en) {
+		public static ItemStack fromOne(final Block block, final Enum en) {
 			return ItemStackUtil.itemStackFrom(block, 1, en.ordinal());
 		}
-		public static ItemStack fromOne(Item item, Enum en, int stacksize) {
+		public static ItemStack fromOne(final Item item, final Enum en, final int stacksize) {
 			return ItemStackUtil.itemStackFrom(item, stacksize, en.ordinal());
 		}
-		public static ItemStack fromOne(Block block, Enum en, int stacksize) {
+		public static ItemStack fromOne(final Block block, final Enum en, final int stacksize) {
 			return ItemStackUtil.itemStackFrom(block, stacksize, en.ordinal());
 		}
 		/** Same as fromOne but with an array of ItemStacks. The array type is Object[] so that the ODM methods work with it. Generates ItemStacks for the entire enum class. */
-		public static Object[] fromAll(Item item, Class<? extends Enum> en) {
-			Enum[] vals = en.getEnumConstants();
-			Object[] stacks = new Object[vals.length];
+		public static Object[] fromAll(final Item item, final Class<? extends Enum> en) {
+			final Enum[] vals = en.getEnumConstants();
+			final Object[] stacks = new Object[vals.length];
 
 			for(int i = 0; i < vals.length; i++) {
 				stacks[i] = ItemStackUtil.itemStackFrom(item, 1, vals[i].ordinal());
@@ -635,58 +635,58 @@ public class OreDictManager {
 			return stacks;
 		}
 
-		public DictFrame any(Object... thing) {
+		public DictFrame any(final Object... thing) {
 			return makeObject(ANY, thing);
 		}
-		public DictFrame nugget(Object... nugget) {
+		public DictFrame nugget(final Object... nugget) {
 			hazMult = HazardRegistry.nugget;
 			return makeObject(NUGGET, nugget).makeObject(TINY, nugget);
 		}
-		public DictFrame ingot(Object... ingot) {
+		public DictFrame ingot(final Object... ingot) {
 			hazMult = HazardRegistry.ingot;
 			return makeObject(INGOT, ingot);
 		}
-		public DictFrame dustSmall(Object... dustSmall) {
+		public DictFrame dustSmall(final Object... dustSmall) {
 			hazMult = HazardRegistry.powder_tiny;
 			return makeObject(DUSTTINY, dustSmall);
 		}
-		public DictFrame dust(Object... dust) {
+		public DictFrame dust(final Object... dust) {
 			hazMult = HazardRegistry.powder;
 			return makeObject(DUST, dust);
 		}
-		public DictFrame gem(Object... gem) {
+		public DictFrame gem(final Object... gem) {
 			hazMult = HazardRegistry.gem;
 			return makeObject(GEM, gem);
 		}
-		public DictFrame crystal(Object... crystal) {
+		public DictFrame crystal(final Object... crystal) {
 			hazMult = HazardRegistry.gem;
 			return makeObject(CRYSTAL, crystal);
 		}
-		public DictFrame plate(Object... plate) {
+		public DictFrame plate(final Object... plate) {
 			hazMult = HazardRegistry.plate;
 			return makeObject(PLATE, plate);
 		}
-		public DictFrame billet(Object... billet) {
+		public DictFrame billet(final Object... billet) {
 			hazMult = HazardRegistry.billet;
 			return makeObject(BILLET, billet);
 		}
 
-		public DictFrame block(Object... block) {
+		public DictFrame block(final Object... block) {
 			hazMult = HazardRegistry.block;
 			return makeObject(BLOCK, block);
 		}
-		public DictFrame ore(Object... ore) {
+		public DictFrame ore(final Object... ore) {
 			hazMult = HazardRegistry.ore;
 			return makeObject(ORE, ore);
 		}
-		public DictFrame oreNether(Object... oreNether) {
+		public DictFrame oreNether(final Object... oreNether) {
 			hazMult = HazardRegistry.ore;
 			return makeObject(ORENETHER, oreNether);
 		}
 
-		public DictFrame makeObject(String tag, Object... objects) {
+		public DictFrame makeObject(final String tag, final Object... objects) {
 
-			for(Object o : objects) {
+			for(final Object o : objects) {
 				if(o instanceof Item)		registerStack(tag, ItemStackUtil.itemStackFrom((Item) o));
 				if(o instanceof Block)		registerStack(tag, ItemStackUtil.itemStackFrom((Block) o));
 				if(o instanceof ItemStack)	registerStack(tag, (ItemStack) o);
@@ -695,28 +695,28 @@ public class OreDictManager {
 			return this;
 		}
 
-		public DictFrame makeItem(String tag, Item... items) {
-			for(Item i : items) registerStack(tag, ItemStackUtil.itemStackFrom(i));
+		public DictFrame makeItem(final String tag, final Item... items) {
+			for(final Item i : items) registerStack(tag, ItemStackUtil.itemStackFrom(i));
 			return this;
 		}
-		public DictFrame makeStack(String tag, ItemStack... stacks) {
-			for(ItemStack s : stacks) registerStack(tag, s);
+		public DictFrame makeStack(final String tag, final ItemStack... stacks) {
+			for(final ItemStack s : stacks) registerStack(tag, s);
 			return this;
 		}
-		public DictFrame makeBlocks(String tag, Block... blocks) {
-			for(Block b : blocks) registerStack(tag, ItemStackUtil.itemStackFrom(b));
+		public DictFrame makeBlocks(final String tag, final Block... blocks) {
+			for(final Block b : blocks) registerStack(tag, ItemStackUtil.itemStackFrom(b));
 			return this;
 		}
 
-		public void registerStack(String tag, ItemStack stack) {
-			for(String mat : mats) {
+		public void registerStack(final String tag, final ItemStack stack) {
+			for(final String mat : mats) {
 
 				OreDictionary.registerOre(tag + mat, stack);
 
 				if(!hazards.isEmpty() && hazMult > 0F) {
-					HazardData data = new HazardData().setMutex(0b1);
+					final HazardData data = new HazardData().setMutex(0b1);
 
-					for(HazardEntry hazard : hazards) {
+					for(final HazardEntry hazard : hazards) {
 						data.addEntry(hazard.clone(this.hazMult));
 					}
 
@@ -738,27 +738,27 @@ public class OreDictManager {
 
 	public static class DictGroup {
 
-		private String groupName;
-		private HashSet<String> names = new HashSet();
+		private final String groupName;
+		private final HashSet<String> names = new HashSet();
 
-		public DictGroup(String groupName) {
+		public DictGroup(final String groupName) {
 			this.groupName = groupName;
 		}
-		public DictGroup(String groupName, String... names) {
+		public DictGroup(final String groupName, final String... names) {
 			this(groupName);
 			this.addNames(names);
 		}
-		public DictGroup(String groupName, DictFrame... frames) {
+		public DictGroup(final String groupName, final DictFrame... frames) {
 			this(groupName);
 			this.addFrames(frames);
 		}
 
-		public DictGroup addNames(String... names) {
-			for(String mat : names) this.names.add(mat);
+		public DictGroup addNames(final String... names) {
+            Collections.addAll(this.names, names);
 			return this;
 		}
-		public DictGroup addFrames(DictFrame... frames) {
-			for(DictFrame frame : frames) this.addNames(frame.mats);
+		public DictGroup addFrames(final DictFrame... frames) {
+			for(final DictFrame frame : frames) this.addNames(frame.mats);
 			return this;
 		}
 
@@ -767,12 +767,12 @@ public class OreDictManager {
 		 * @param prefix The prefix of both the input and result of the reregistration
 		 * @return
 		 */
-		public DictGroup addPrefix(String prefix, boolean inputPrefix) {
+		public DictGroup addPrefix(final String prefix, final boolean inputPrefix) {
 
-			String group = prefix + groupName;
+			final String group = prefix + groupName;
 
-			for(String name : names) {
-				String original = (inputPrefix ? prefix : "") + name;
+			for(final String name : names) {
+				final String original = (inputPrefix ? prefix : "") + name;
 				addReRegistration(original, group);
 			}
 
@@ -784,9 +784,9 @@ public class OreDictManager {
 		 * @param original The full original ore dict key, not bound by any naming conventions
 		 * @return
 		 */
-		public DictGroup addFixed(String prefix, String original) {
+		public DictGroup addFixed(final String prefix, final String original) {
 
-			String group = prefix + groupName;
+			final String group = prefix + groupName;
 			addReRegistration(original, group);
 			return this;
 		}
@@ -805,7 +805,7 @@ public class OreDictManager {
 		public String ore() {			return ORE		+ groupName; }
 	}
 
-	private static void addReRegistration(String original, String additional) {
+	private static void addReRegistration(final String original, final String additional) {
 
 		HashSet<String> strings = reRegistration.get(original);
 

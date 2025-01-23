@@ -16,9 +16,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIMachineCoal extends GuiInfoContainer {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(RefStrings.MODID + ":textures/gui/GUICoal.png");
-	private TileEntityMachineCoal diFurnace;
+	private final TileEntityMachineCoal diFurnace;
 	
-	public GUIMachineCoal(InventoryPlayer invPlayer, TileEntityMachineCoal tedf) {
+	public GUIMachineCoal(final InventoryPlayer invPlayer, final TileEntityMachineCoal tedf) {
 		super(new ContainerMachineCoal(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -27,38 +27,38 @@ public class GUIMachineCoal extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 69 - 52, 16, 52, diFurnace.tank, diFurnace.tankType);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 69 - 52, 16, 52, diFurnace.power, TileEntityMachineCoal.maxPower);
 		
-		String[] text = I18nUtil.resolveKeyArray("desc.guimachinecoal1");
+		final String[] text = I18nUtil.resolveKeyArray("desc.guimachinecoal1");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		
-		String[] text1 = I18nUtil.resolveKeyArray("desc.guimachinecoal2");
+		final String[] text1 = I18nUtil.resolveKeyArray("desc.guimachinecoal2");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		
 		if(diFurnace.tank.getFluidAmount() <= 0) {
 			
-			String[] text2 = I18nUtil.resolveKeyArray("desc.guimachinecoal3");
+			final String[] text2 = I18nUtil.resolveKeyArray("desc.guimachinecoal3");
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 		
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 34, 18, 18, mouseX, mouseY, new String[] { String.valueOf((int)(Math.ceil((double)diFurnace.burnTime / 20D))) + "s"});
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 34, 18, 18, mouseX, mouseY, new String[] {(int) (Math.ceil((double) diFurnace.burnTime / 20D)) + "s"});
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		this.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
@@ -71,7 +71,7 @@ public class GUIMachineCoal extends GuiInfoContainer {
 			dud = (TileEntityMachineCoal) diFurnace.getWorld().getTileEntity(diFurnace.getPos());
 		
 		if(dud.power > 0) {
-			int i = (int)dud.getPowerScaled(52);
+			final int i = (int)dud.getPowerScaled(52);
 			drawTexturedModalRect(guiLeft + 152, guiTop + 69 - i, 176, 52 - i, 16, i);
 		}
 		

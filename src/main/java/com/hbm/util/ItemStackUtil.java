@@ -1,8 +1,4 @@
 package com.hbm.util;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import net.minecraft.block.Block;
@@ -11,16 +7,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemStackUtil {
 
-	public static ItemStack carefulCopy(ItemStack stack) {
+	public static ItemStack carefulCopy(final ItemStack stack) {
 		if(stack == null)
 			return null;
 		else
@@ -35,13 +32,13 @@ public class ItemStackUtil {
 	 * @return copied items
 	 */
 	@Nonnull
-	public static ItemStack[] carefulCopyArrayTruncate(@Nonnull IItemHandler inv, int start, int end) {
+	public static ItemStack[] carefulCopyArrayTruncate(@Nonnull final IItemHandler inv, final int start, final int end) {
 		if (end < start) {
 			throw new IllegalArgumentException("end must be >= start");
 		}
 
-		int length = end - start + 1;
-		ItemStack[] copy = new ItemStack[length];
+		final int length = end - start + 1;
+		final ItemStack[] copy = new ItemStack[length];
 		for (int idx = 0; idx < length; idx++) {
 			copy[idx] = carefulCopy(inv.getStackInSlot(start + idx));
 		}
@@ -49,11 +46,11 @@ public class ItemStackUtil {
 		return copy;
 	}
 
-	public static ItemStack carefulCopyWithSize(ItemStack stack, int size) {
+	public static ItemStack carefulCopyWithSize(final ItemStack stack, final int size) {
 		if(stack == null)
 			return null;
 
-		ItemStack copy = stack.copy();
+		final ItemStack copy = stack.copy();
 		copy.setCount(size);
 		return copy;
 	}
@@ -63,7 +60,7 @@ public class ItemStackUtil {
 	 * @param array
 	 * @return
 	 */
-	public static ItemStack[] carefulCopyArray(ItemStack[] array) {
+	public static ItemStack[] carefulCopyArray(final ItemStack[] array) {
 		return carefulCopyArray(array, 0, array.length - 1);
 	}
 
@@ -74,11 +71,11 @@ public class ItemStackUtil {
 	 * @param end
 	 * @return
 	 */
-	public static ItemStack[] carefulCopyArray(ItemStack[] array, int start, int end) {
+	public static ItemStack[] carefulCopyArray(final ItemStack[] array, final int start, final int end) {
 		if(array == null)
 			return null;
 
-		ItemStack[] copy = new ItemStack[array.length];
+		final ItemStack[] copy = new ItemStack[array.length];
 
 		for(int i = start; i <= end; i++) {
 			copy[i] = carefulCopy(array[i]);
@@ -94,12 +91,12 @@ public class ItemStackUtil {
 	 * @param end
 	 * @return
 	 */
-	public static ItemStack[] carefulCopyArrayTruncate(ItemStack[] array, int start, int end) {
+	public static ItemStack[] carefulCopyArrayTruncate(final ItemStack[] array, final int start, final int end) {
 		if(array == null)
 			return null;
 
-		int length = end - start + 1;
-		ItemStack[] copy = new ItemStack[length];
+		final int length = end - start + 1;
+		final ItemStack[] copy = new ItemStack[length];
 
 		for(int i = 0; i < length; i++) {
 			copy[i] = carefulCopy(array[start + i]);
@@ -114,15 +111,15 @@ public class ItemStackUtil {
 	 * @param stack
 	 * @param lines
 	 */
-	public static void addTooltipToStack(ItemStack stack, String... lines) {
+	public static void addTooltipToStack(final ItemStack stack, final String... lines) {
 
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 
-		NBTTagCompound display = new NBTTagCompound();
-		NBTTagList lore = new NBTTagList();
+		final NBTTagCompound display = new NBTTagCompound();
+		final NBTTagList lore = new NBTTagList();
 
-		for(String line : lines) {
+		for(final String line : lines) {
 			lore.appendTag(new NBTTagString(TextFormatting.RESET + "" + TextFormatting.GRAY + line));
 		}
 
@@ -130,16 +127,16 @@ public class ItemStackUtil {
 		stack.getTagCompound().setTag("display", display);
 	}
 
-	public static void addStacksToNBT(ItemStack stack, ItemStack... stacks) {
+	public static void addStacksToNBT(final ItemStack stack, final ItemStack... stacks) {
 
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 
-		NBTTagList tags = new NBTTagList();
+		final NBTTagList tags = new NBTTagList();
 
 		for(int i = 0; i < stacks.length; i++) {
 			if(stacks[i] != null) {
-				NBTTagCompound slotNBT = new NBTTagCompound();
+				final NBTTagCompound slotNBT = new NBTTagCompound();
 				slotNBT.setByte("slot", (byte) i);
 				stacks[i].writeToNBT(slotNBT);
 				tags.appendTag(slotNBT);
@@ -148,19 +145,19 @@ public class ItemStackUtil {
 		stack.getTagCompound().setTag("items", tags);
 	}
 
-	public static ItemStack[] readStacksFromNBT(ItemStack stack) {
+	public static ItemStack[] readStacksFromNBT(final ItemStack stack) {
 
 		if(!stack.hasTagCompound())
 			return null;
 
-		NBTTagList list = stack.getTagCompound().getTagList("items", 10);
-		int count = list.tagCount();
+		final NBTTagList list = stack.getTagCompound().getTagList("items", 10);
+		final int count = list.tagCount();
 
-		ItemStack[] stacks = new ItemStack[count];
+		final ItemStack[] stacks = new ItemStack[count];
 
 		for(int i = 0; i < count; i++) {
-			NBTTagCompound slotNBT = list.getCompoundTagAt(i);
-			byte slot = slotNBT.getByte("slot");
+			final NBTTagCompound slotNBT = list.getCompoundTagAt(i);
+			final byte slot = slotNBT.getByte("slot");
 			if(slot >= 0 && slot < stacks.length) {
 				stacks[slot] = new ItemStack (slotNBT);
 			}
@@ -174,105 +171,105 @@ public class ItemStackUtil {
 	 * @param stack
 	 * @return
 	 */
-	public static List<String> getOreDictNames(ItemStack stack) {
-		List<String> list = new ArrayList();
+	public static List<String> getOreDictNames(final ItemStack stack) {
+		final List<String> list = new ArrayList();
 
-		int ids[] = OreDictionary.getOreIDs(stack);
-		for(int i : ids) {
+		final int[] ids = OreDictionary.getOreIDs(stack);
+		for(final int i : ids) {
 			list.add(OreDictionary.getOreName(i));
 		}
 
 		return list;
 	}
 
-	public static boolean isSameMetaItem(ItemStack stack1, ItemStack stack2) {
+	public static boolean isSameMetaItem(final ItemStack stack1, final ItemStack stack2) {
 		return stack1.getItem() == stack2.getItem() && stack1.getMetadata() == stack2.getMetadata();
 	}
 
-	public static boolean isSameMetaItem(ItemStack stack, Item item) {
+	public static boolean isSameMetaItem(final ItemStack stack, final Item item) {
 		return stack.getItem() == item;
 	}
 
 	// ItemStack from Item
 
-	public static ItemStack itemStackFrom(Item item) {
+	public static ItemStack itemStackFrom(final Item item) {
 		return new ItemStack(item);
 	}
 
-	public static ItemStack itemStackFrom(Item item, int amount) {
+	public static ItemStack itemStackFrom(final Item item, final int amount) {
 		return new ItemStack(item, amount);
 	}
 
-	public static ItemStack itemStackFrom(Item item, int amount, int meta) {
+	public static ItemStack itemStackFrom(final Item item, final int amount, final int meta) {
 		return new ItemStack(item, amount, meta);
 	}
 
 	// ItemStack from Block
 
-	public static ItemStack itemStackFrom(Block block) {
+	public static ItemStack itemStackFrom(final Block block) {
 		return new ItemStack(block);
 	}
 
-	public static ItemStack itemStackFrom(Block block, int amount) {
+	public static ItemStack itemStackFrom(final Block block, final int amount) {
 		return new ItemStack(block, amount);
 	}
 
-	public static ItemStack itemStackFrom(Block block, int amount, int meta) {
+	public static ItemStack itemStackFrom(final Block block, final int amount, final int meta) {
 		return new ItemStack(block, amount, meta);
 	}
 
 	// ItemStack from ItemStack, required for MetaItems
 
 	@Deprecated
-	public static ItemStack itemStackFrom(ItemStack stack) {
+	public static ItemStack itemStackFrom(final ItemStack stack) {
 		return stack;
 	}
 
-	public static ItemStack itemStackFrom(ItemStack stack, int amount) {
+	public static ItemStack itemStackFrom(final ItemStack stack, final int amount) {
 		return new ItemStack(stack.getItem(), amount, stack.getMetadata());
 	}
 
 	// ComparableStack from Item
 
-	public static ComparableStack comparableStackFrom(Item item) {
+	public static ComparableStack comparableStackFrom(final Item item) {
 		return new ComparableStack(item);
 	}
 
-	public static ComparableStack comparableStackFrom(Item item, int amount) {
+	public static ComparableStack comparableStackFrom(final Item item, final int amount) {
 		return new ComparableStack(item, amount);
 	}
 
-	public static ComparableStack comparableStackFrom(Item item, int amount, int meta) {
+	public static ComparableStack comparableStackFrom(final Item item, final int amount, final int meta) {
 		return new ComparableStack(item, amount, meta);
 	}
 
 	// ComparableStack from Block
 
-	public static ComparableStack comparableStackFrom(Block block) {
+	public static ComparableStack comparableStackFrom(final Block block) {
 		return new ComparableStack(block);
 	}
 
-	public static ComparableStack comparableStackFrom(Block block, int amount) {
+	public static ComparableStack comparableStackFrom(final Block block, final int amount) {
 		return new ComparableStack(block, amount);
 	}
 
-	public static ComparableStack comparableStackFrom(Block block, int amount, int meta) {
+	public static ComparableStack comparableStackFrom(final Block block, final int amount, final int meta) {
 		return new ComparableStack(block, amount, meta);
 	}
 
 	// ComparableStack from ItemStack, required for MetaItems
 
-	public static ComparableStack comparableStackFrom(ItemStack stack) {
+	public static ComparableStack comparableStackFrom(final ItemStack stack) {
 		return new ComparableStack(stack);
 	}
 
-	public static ComparableStack comparableStackFrom(ItemStack stack, int amount) {
+	public static ComparableStack comparableStackFrom(final ItemStack stack, final int amount) {
 		return new ComparableStack(stack.getItem(), amount, stack.getMetadata());
 	}
 
 	// ItemStack from NBTTagCompound
 
-	public static ItemStack itemStackFrom(NBTTagCompound compoundTag) {
+	public static ItemStack itemStackFrom(final NBTTagCompound compoundTag) {
 		return new ItemStack(compoundTag);
 	}
 

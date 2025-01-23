@@ -38,7 +38,7 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 				return;
 			}
 
-			int sunHeat = (int)(maxTU * getBrightness(world));
+			final int sunHeat = (int)(maxTU * getBrightness(world));
 
 			if(sunHeat <= 0 || !world.canSeeSky(pos.up())){
 				isOn = false;
@@ -47,16 +47,15 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 			
 			isOn = true;
 
-			TileEntity te = world.getTileEntity(new BlockPos(tX, tY - 1, tZ));
+			final TileEntity te = world.getTileEntity(new BlockPos(tX, tY - 1, tZ));
 
-			if(te instanceof TileEntitySolarBoiler) {
-				TileEntitySolarBoiler boiler = (TileEntitySolarBoiler)te;
-				boiler.heatInput += sunHeat;
+			if(te instanceof TileEntitySolarBoiler boiler) {
+                boiler.heatInput += sunHeat;
 			}
 		}
 	}
 
-	public static float getBrightness(World world) {
+	public static float getBrightness(final World world) {
 		float starAngle = world.getCelestialAngleRadians(1F);
 		if (starAngle < (float) Math.PI) {
 			starAngle += (0F - starAngle) * 0.2F;
@@ -69,7 +68,7 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	}
 	
 	public void sendUpdate(){
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setInteger("posX", tX);
 		data.setInteger("posY", tY);
 		data.setInteger("posZ", tZ);
@@ -78,14 +77,14 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		tX = nbt.getInteger("posX");
 		tY = nbt.getInteger("posY");
 		tZ = nbt.getInteger("posZ");
 		isOn = nbt.getBoolean("isOn");
 	}
 	
-	public void setTarget(int x, int y, int z) {
+	public void setTarget(final int x, final int y, final int z) {
 		tX = x;
 		tY = y;
 		tZ = z;
@@ -94,7 +93,7 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		tX = compound.getInteger("targetX");
 		tY = compound.getInteger("targetY");
 		tZ = compound.getInteger("targetZ");
@@ -102,7 +101,7 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setInteger("targetX", tX);
 		compound.setInteger("targetY", tY);
 		compound.setInteger("targetZ", tZ);

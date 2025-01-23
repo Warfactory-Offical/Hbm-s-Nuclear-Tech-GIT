@@ -26,10 +26,10 @@ import java.util.Arrays;
 public class Assembler {
 	
 	private static class ActionAddRecipe implements IAction{
-		private IIngredient[] inputs;
-		private ItemStack output;
+		private final IIngredient[] inputs;
+		private final ItemStack output;
 		private int duration = 0;
-		public ActionAddRecipe(IItemStack output, IIngredient[] inputs, int duration){
+		public ActionAddRecipe(final IItemStack output, final IIngredient[] inputs, final int duration){
 			this.inputs = inputs;
 			this.output = CraftTweakerMC.getItemStack(output);
 			this.duration = duration;
@@ -44,7 +44,7 @@ public class Assembler {
 				CraftTweakerAPI.logError("ERROR Assembler recipe input item count must be <=12 not "+this.inputs.length+"!");
 				return;
 			}
-			for(IIngredient i: this.inputs){
+			for(final IIngredient i: this.inputs){
 				if(i == null ){
 					CraftTweakerAPI.logError("ERROR Assembler recipe input items can not include an empty/air stack!");
 					return;
@@ -58,7 +58,7 @@ public class Assembler {
 				CraftTweakerAPI.logError("ERROR Assembler recipe duraction must be >=1 not "+this.duration+"!");
 				return;
 			}
-			RecipesCommon.AStack[] compInputs = NTMCraftTweaker.IIngredientsToAStack(this.inputs);
+			final RecipesCommon.AStack[] compInputs = NTMCraftTweaker.IIngredientsToAStack(this.inputs);
 			AssemblerRecipes.makeRecipe(ItemStackUtil.comparableStackFrom(this.output), compInputs, this.duration);
 		}
 		@Override
@@ -68,12 +68,12 @@ public class Assembler {
 	}
 
 	@ZenMethod
-	public static void addRecipe(IItemStack output, IIngredient[] inputs, int duration){
+	public static void addRecipe(final IItemStack output, final IIngredient[] inputs, final int duration){
 		CraftTweakerAPI.apply(new ActionAddRecipe(output, inputs, duration));
 	}
 
 	@ZenMethod
-	public static void replaceRecipe(IItemStack output, IIngredient[] inputs, int duration){
+	public static void replaceRecipe(final IItemStack output, final IIngredient[] inputs, final int duration){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(output));
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(output, inputs, duration));
 	}
@@ -81,9 +81,9 @@ public class Assembler {
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private ItemStack output;
+		private final ItemStack output;
 
-		public ActionRemoveRecipe(IItemStack output){
+		public ActionRemoveRecipe(final IItemStack output){
 			this.output = CraftTweakerMC.getItemStack(output);
 		}
 		@Override
@@ -101,7 +101,7 @@ public class Assembler {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack output){
+	public static void removeRecipe(final IItemStack output){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(output));
 	}
 

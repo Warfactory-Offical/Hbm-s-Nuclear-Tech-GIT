@@ -26,13 +26,13 @@ public class GasRenderer extends Render<EntityGasFX> {
 	private Item renderItem;
 	private static final Map<Item, TextureAtlasSprite> textures = new HashMap<Item, TextureAtlasSprite>();
 	
-	protected GasRenderer(RenderManager renderManager) {
+	protected GasRenderer(final RenderManager renderManager) {
 		super(renderManager);
 		renderItem = ModItems.gas1;
 	}
 	
 	@Override
-	public void doRender(EntityGasFX fx, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityGasFX fx, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		if(textures.isEmpty()){
 			textures.put(ModItems.gas1, RenderHelper.getItemTexture(ModItems.gas1));
 			textures.put(ModItems.gas2, RenderHelper.getItemTexture(ModItems.gas2));
@@ -67,7 +67,7 @@ public class GasRenderer extends Render<EntityGasFX> {
 			renderItem = ModItems.gas3;
 		}
 
-		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
+		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8) {
 			renderItem = ModItems.gas2;
 		}
 
@@ -75,7 +75,7 @@ public class GasRenderer extends Render<EntityGasFX> {
 			renderItem = ModItems.gas1;
 		}
 
-		TextureAtlasSprite iicon = textures.get(renderItem);
+		final TextureAtlasSprite iicon = textures.get(renderItem);
 
 		if (iicon != null) {
 			GL11.glPushMatrix();
@@ -97,18 +97,18 @@ public class GasRenderer extends Render<EntityGasFX> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityGasFX entity) {
+	protected ResourceLocation getEntityTexture(final EntityGasFX entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 	
-	private void func_77026_a(TextureAtlasSprite p_77026_2_) {
-		float f = p_77026_2_.getMinU();
-		float f1 = p_77026_2_.getMaxU();
-		float f2 = p_77026_2_.getMinV();
-		float f3 = p_77026_2_.getMaxV();
-		float f4 = 1.0F;
-		float f5 = 0.5F;
-		float f6 = 0.25F;
+	private void func_77026_a(final TextureAtlasSprite p_77026_2_) {
+		final float f = p_77026_2_.getMinU();
+		final float f1 = p_77026_2_.getMaxU();
+		final float f2 = p_77026_2_.getMinV();
+		final float f3 = p_77026_2_.getMaxV();
+		final float f4 = 1.0F;
+		final float f5 = 0.5F;
+		final float f6 = 0.25F;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		RenderHelper.startDrawingTexturedQuads();

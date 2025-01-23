@@ -11,12 +11,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderGasFlare extends TileEntitySpecialRenderer<TileEntityMachineGasFlare> {
     
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineGasFlare te) {
+	public boolean isGlobalRenderer(final TileEntityMachineGasFlare te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachineGasFlare te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineGasFlare te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();

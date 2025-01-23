@@ -10,21 +10,21 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class MultiCloudRendererFactory implements IRenderFactory<EntityModFX> {
 
-	private Item[] textureItems;
-	private int meta;
+	private final Item[] textureItems;
+	private final int meta;
 	
-	public MultiCloudRendererFactory(Item[] items) {
+	public MultiCloudRendererFactory(final Item[] items) {
 		textureItems = items;
 		this.meta = 0;
 	}
 	
-	public MultiCloudRendererFactory(Item[] items, int meta) {
+	public MultiCloudRendererFactory(final Item[] items, final int meta) {
 		textureItems = items;
 		this.meta = meta;
 	}
 	
 	@Override
-	public Render<EntityModFX> createRenderFor(RenderManager manager) {
+	public Render<EntityModFX> createRenderFor(final RenderManager manager) {
 		return new MultiCloudRenderer(textureItems, meta, manager);
 	}
 

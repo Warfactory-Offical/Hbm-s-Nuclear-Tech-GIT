@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
 public class CraneInserter extends BlockCraneBase implements IEnterableBlock {
-    public CraneInserter(Material materialIn, String s) {
+    public CraneInserter(final Material materialIn, final String s) {
         super(materialIn);
         this.setTranslationKey(s);
         this.setRegistryName(s);
@@ -33,51 +33,51 @@ public class CraneInserter extends BlockCraneBase implements IEnterableBlock {
     }
 
     @Override
-    public TileEntityCraneBase createNewTileEntity(World world, int meta) {
+    public TileEntityCraneBase createNewTileEntity(final World world, final int meta) {
         return new TileEntityCraneInserter();
     }
 
     @Override
-    public boolean canItemEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorItem entity) {
-        BlockPos pos = new BlockPos(x, y, z);
-        IBlockState state = world.getBlockState(pos);
-        EnumFacing orientation = state.getValue(BlockHorizontal.FACING);
+    public boolean canItemEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorItem entity) {
+        final BlockPos pos = new BlockPos(x, y, z);
+        final IBlockState state = world.getBlockState(pos);
+        final EnumFacing orientation = state.getValue(BlockHorizontal.FACING);
         return dir == orientation;
     }
 
     @Override
-    public void onItemEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorItem entity) {
+    public void onItemEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorItem entity) {
         if (entity == null || entity.getItemStack() == ItemStack.EMPTY || entity.getItemStack().getCount() <= 0) {
             return;
         }
 
-        ItemStack toAdd = entity.getItemStack().copy();
+        final ItemStack toAdd = entity.getItemStack().copy();
         
-        TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+        final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
         boolean worked = false;
         if(te instanceof TileEntityCraneInserter)
             worked = ((TileEntityCraneInserter)te).tryFillTeDirect(toAdd);
 
         if(!worked) {
-            EntityItem drop = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, toAdd.copy());
+            final EntityItem drop = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, toAdd.copy());
             world.spawnEntity(drop);
         }
     }
 
     @Override
-    public boolean canPackageEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorPackage entity) {
+    public boolean canPackageEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorPackage entity) {
         return false;
     }
 
     @Override
-    public void onPackageEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorPackage entity) { }
+    public void onPackageEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorPackage entity) { }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity tileentity = world.getTileEntity(pos);
+    public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        final TileEntity tileentity = world.getTileEntity(pos);
 
         if(tileentity instanceof TileEntityCraneInserter) {
-            InventoryHelper.dropInventoryItems(world, pos, (TileEntityCraneInserter) tileentity);
+            InventoryHelper.dropInventoryItems(world, pos, tileentity);
         }
         super.breakBlock(world, pos, state);
     }

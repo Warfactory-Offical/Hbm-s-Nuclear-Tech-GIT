@@ -17,147 +17,147 @@ abstract class ArithmeticOperators {
 
     public int x, y;
 
-    public Vec2i add_(int b) {
+    public Vec2i add_(final int b) {
         return Glm.add(new Vec2i(), (Vec2i) this, b, b);
     }
 
-    public Vec2i add_(int bX, int bY) {
+    public Vec2i add_(final int bX, final int bY) {
         return Glm.add(new Vec2i(), (Vec2i) this, bX, bY);
     }
 
-    public Vec2i add_(Vec2i b) {
+    public Vec2i add_(final Vec2i b) {
         return Glm.add(new Vec2i(), (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i add(int b) {
+    public Vec2i add(final int b) {
         return Glm.add((Vec2i) this, (Vec2i) this, b, b);
     }
 
-    public Vec2i add(int bX, int bY) {
+    public Vec2i add(final int bX, final int bY) {
         return Glm.add((Vec2i) this, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i add(Vec2i b) {
+    public Vec2i add(final Vec2i b) {
         return Glm.add((Vec2i) this, (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i add(int b, Vec2i res) {
+    public Vec2i add(final int b, final Vec2i res) {
         return Glm.add(res, (Vec2i) this, b, b);
     }
 
-    public Vec2i add(int bX, int bY, Vec2i res) {
+    public Vec2i add(final int bX, final int bY, final Vec2i res) {
         return Glm.add(res, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i add(Vec2i b, Vec2i res) {
+    public Vec2i add(final Vec2i b, final Vec2i res) {
         return Glm.add(res, (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i sub_(int b) {
+    public Vec2i sub_(final int b) {
         return Glm.sub(new Vec2i(), (Vec2i) this, b, b);
     }
 
-    public Vec2i sub_(int bX, int bY) {
+    public Vec2i sub_(final int bX, final int bY) {
         return Glm.sub(new Vec2i(), (Vec2i) this, bX, bY);
     }
 
-    public Vec2i sub_(Vec2i b) {
+    public Vec2i sub_(final Vec2i b) {
         return Glm.sub(new Vec2i(), (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i sub(int b) {
+    public Vec2i sub(final int b) {
         return Glm.sub((Vec2i) this, (Vec2i) this, b, b);
     }
 
-    public Vec2i sub(int bX, int bY) {
+    public Vec2i sub(final int bX, final int bY) {
         return Glm.sub((Vec2i) this, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i sub(Vec2i b) {
+    public Vec2i sub(final Vec2i b) {
         return Glm.sub((Vec2i) this, (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i sub(int b, Vec2i res) {
+    public Vec2i sub(final int b, final Vec2i res) {
         return Glm.sub(res, (Vec2i) this, b, b);
     }
 
-    public Vec2i sub(int bX, int bY, Vec2i res) {
+    public Vec2i sub(final int bX, final int bY, final Vec2i res) {
         return Glm.sub(res, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i sub(Vec2i b, Vec2i res) {
+    public Vec2i sub(final Vec2i b, final Vec2i res) {
         return Glm.sub(res, (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i mul_(int b) {
+    public Vec2i mul_(final int b) {
         return Glm.mul(new Vec2i(), (Vec2i) this, b, b);
     }
 
-    public Vec2i mul_(int bX, int bY) {
+    public Vec2i mul_(final int bX, final int bY) {
         return Glm.mul(new Vec2i(), (Vec2i) this, bX, bY);
     }
 
-    public Vec2i mul_(Vec2i b) {
+    public Vec2i mul_(final Vec2i b) {
         return Glm.mul(new Vec2i(), (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i mul(int b) {
+    public Vec2i mul(final int b) {
         return Glm.mul((Vec2i) this, (Vec2i) this, b, b);
     }
 
-    public Vec2i mul(int bX, int bY) {
+    public Vec2i mul(final int bX, final int bY) {
         return Glm.mul((Vec2i) this, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i mul(Vec2i b) {
+    public Vec2i mul(final Vec2i b) {
         return Glm.mul((Vec2i) this, (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i mul(int b, Vec2i res) {
+    public Vec2i mul(final int b, final Vec2i res) {
         return Glm.mul(res, (Vec2i) this, b, b);
     }
 
-    public Vec2i mul(int bX, int bY, Vec2i res) {
+    public Vec2i mul(final int bX, final int bY, final Vec2i res) {
         return Glm.mul(res, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i mul(Vec2i b, Vec2i res) {
+    public Vec2i mul(final Vec2i b, final Vec2i res) {
         return Glm.mul(res, (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i div_(int b) {
+    public Vec2i div_(final int b) {
         return Glm.div(new Vec2i(), (Vec2i) this, b, b);
     }
 
-    public Vec2i div_(int bX, int bY) {
+    public Vec2i div_(final int bX, final int bY) {
         return Glm.div(new Vec2i(), (Vec2i) this, bX, bY);
     }
 
-    public Vec2i div_(Vec2i b) {
+    public Vec2i div_(final Vec2i b) {
         return Glm.div(new Vec2i(), (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i div(int b) {
+    public Vec2i div(final int b) {
         return Glm.div((Vec2i) this, (Vec2i) this, b, b);
     }
 
-    public Vec2i div(int bX, int bY) {
+    public Vec2i div(final int bX, final int bY) {
         return Glm.div((Vec2i) this, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i div(Vec2i b) {
+    public Vec2i div(final Vec2i b) {
         return Glm.div((Vec2i) this, (Vec2i) this, b.x, b.y);
     }
 
-    public Vec2i div(int b, Vec2i res) {
+    public Vec2i div(final int b, final Vec2i res) {
         return Glm.div(res, (Vec2i) this, b, b);
     }
 
-    public Vec2i div(int bX, int bY, Vec2i res) {
+    public Vec2i div(final int bX, final int bY, final Vec2i res) {
         return Glm.div(res, (Vec2i) this, bX, bY);
     }
 
-    public Vec2i div(Vec2i b, Vec2i res) {
+    public Vec2i div(final Vec2i b, final Vec2i res) {
         return Glm.div(res, (Vec2i) this, b.x, b.y);
     }
 
@@ -169,7 +169,7 @@ abstract class ArithmeticOperators {
         return Glm.incr((Vec2i) this);
     }
 
-    public Vec2i incr(Vec2i res) {
+    public Vec2i incr(final Vec2i res) {
         return Glm.incr(res, (Vec2i) this);
     }
 
@@ -181,7 +181,7 @@ abstract class ArithmeticOperators {
         return Glm.decr((Vec2i) this);
     }
 
-    public Vec2i decr(Vec2i res) {
+    public Vec2i decr(final Vec2i res) {
         return Glm.decr(res, (Vec2i) this);
     }
 }

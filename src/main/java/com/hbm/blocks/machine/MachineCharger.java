@@ -28,7 +28,7 @@ public class MachineCharger extends BlockContainer implements ITooltipProvider, 
 	public final long maxThroughput;
 	public final boolean pointingUp;
 
-	public MachineCharger(Material mat, String s, long max, boolean pointingUp) {
+	public MachineCharger(final Material mat, final String s, final long max, final boolean pointingUp) {
 		super(mat);
 		this.maxThroughput = max / 20L;
 		this.pointingUp = pointingUp;
@@ -38,18 +38,18 @@ public class MachineCharger extends BlockContainer implements ITooltipProvider, 
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		return new TileEntityCharger();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
     	if(maxThroughput == Long.MAX_VALUE / 20L)
     		tooltip.add("§aMax Chargerate: Infinite HE/s");
     	else
@@ -59,15 +59,13 @@ public class MachineCharger extends BlockContainer implements ITooltipProvider, 
     }
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityCharger))
+		if(!(te instanceof TileEntityCharger charger))
 			return;
-		
-		TileEntityCharger charger = (TileEntityCharger) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 
 		if(charger.totalCapacity > 0){
 			text.add(Library.getShortNumber(charger.totalEnergy) + "/" + Library.getShortNumber(charger.totalCapacity) + " HE");

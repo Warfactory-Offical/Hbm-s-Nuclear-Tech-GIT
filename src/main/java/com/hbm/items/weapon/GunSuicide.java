@@ -32,7 +32,7 @@ public class GunSuicide extends Item {
 
 	private Item ammo;
     Random rand = new Random();
-    public GunSuicide(String s) {
+    public GunSuicide(final String s) {
     	this.setTranslationKey(s);
     	this.setRegistryName(s);
     	this.maxStackSize = 1;
@@ -43,19 +43,18 @@ public class GunSuicide extends Item {
 	}
     
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-    	if(!(entityLiving instanceof EntityPlayer))
+    public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
+    	if(!(entityLiving instanceof EntityPlayer player))
     		return;
     	if(this.ammo == null)
     		this.ammo = ModItems.gun_revolver_ammo;
-    	EntityPlayer player = (EntityPlayer)entityLiving;
-    	int j = this.getMaxItemUseDuration(stack) - timeLeft;
+        int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
-        ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ammo));
+        final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ammo));
         MinecraftForge.EVENT_BUS.post(event);
         j = event.getCharge();
 
-        boolean flag = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+        final boolean flag = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
         
 
         if (flag || Library.hasInventoryItem(player.inventory, ammo))
@@ -92,18 +91,18 @@ public class GunSuicide extends Item {
     }
     
     @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getMaxItemUseDuration(final ItemStack stack) {
     	return 72000;
     }
     
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
+    public EnumAction getItemUseAction(final ItemStack stack) {
     	return EnumAction.BOW;
     }
     
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-    	ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ammo));
+    public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+    	final ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ammo));
         MinecraftForge.EVENT_BUS.post(event);
         playerIn.setActiveHand(handIn);
     	return super.onItemRightClick(worldIn, playerIn, handIn);
@@ -115,7 +114,7 @@ public class GunSuicide extends Item {
     }
     
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
     	list.add("I've seen things...");
 		list.add("...I shouldn't have seen.");
 		list.add("");
@@ -124,8 +123,8 @@ public class GunSuicide extends Item {
     }
     
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
-    	Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+    public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
+    	final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 2.5, 0));
 		}

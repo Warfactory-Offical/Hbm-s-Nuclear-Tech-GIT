@@ -24,13 +24,12 @@ public class ItemRenderEMPRay extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(emp_rl);
 		GlStateManager.enableCull();
 		float f = 0;
-		if(this.entity instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer) this.entity;
-			f = player.getActiveItemStack().getItemUseAction() == EnumAction.BOW ? 0.15F : 0F;
+		if(this.entity instanceof EntityPlayer player){
+            f = player.getActiveItemStack().getItemUseAction() == EnumAction.BOW ? 0.15F : 0F;
 			if(f == 0.15F && player.getHeldItemMainhand().getItem() == itemStackIn.getItem() && player.getHeldItemOffhand().getItem() == itemStackIn.getItem()){
 				f = 0.075F;
 			}

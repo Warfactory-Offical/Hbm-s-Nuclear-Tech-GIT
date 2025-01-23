@@ -23,11 +23,11 @@ public class SILEX {
 		private int wavelength = -1;
 		private int solution = 0;
 		private int consumption = 0;
-		private ItemStack input;
-		private ItemStack[] outputs;
-		private int[] outputWeights;
+		private final ItemStack input;
+		private final ItemStack[] outputs;
+		private final int[] outputWeights;
 
-		public ActionAddRecipe(int wavelength, int solution, int consumption, IItemStack input, IItemStack[] outputItems, int[] outputWeights){
+		public ActionAddRecipe(final int wavelength, final int solution, final int consumption, final IItemStack input, final IItemStack[] outputItems, final int[] outputWeights){
 			this.wavelength = wavelength;
 			this.solution = solution;
 			this.consumption = consumption;
@@ -66,7 +66,7 @@ public class SILEX {
 				CraftTweakerAPI.logError("ERROR SILEX recipe output item count must be <=6 not "+this.outputs.length+"!");
 				return;
 			}
-			for(ItemStack i: this.outputs){
+			for(final ItemStack i: this.outputs){
 				if(i == null || i.isEmpty()){
 					CraftTweakerAPI.logError("ERROR SILEX recipe output items can not include an empty/air stack!");
 					return;
@@ -81,7 +81,7 @@ public class SILEX {
 				CraftTweakerAPI.logError("ERROR SILEX recipe output item and weight arrays do not match in size!");
 				return;
 			}
-			for(int i: this.outputWeights){
+			for(final int i: this.outputWeights){
 				if(i <= 0){
 					CraftTweakerAPI.logError("ERROR SILEX recipe weights can not be negative so "+i+" is invalid!");
 					return;
@@ -97,16 +97,16 @@ public class SILEX {
 	}
 
 	@ZenMethod
-	public static void addRecipe(int wavelength, int solution, int consumption, IItemStack input, IItemStack[] outputItems, int[] outputWeights){
+	public static void addRecipe(final int wavelength, final int solution, final int consumption, final IItemStack input, final IItemStack[] outputItems, final int[] outputWeights){
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(wavelength, solution, consumption, input, outputItems, outputWeights));
 	}
 
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private ItemStack input;
+		private final ItemStack input;
 
-		public ActionRemoveRecipe(IItemStack input){
+		public ActionRemoveRecipe(final IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);
 		}
 		@Override
@@ -124,7 +124,7 @@ public class SILEX {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack input){
+	public static void removeRecipe(final IItemStack input){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(input));
 	}
 

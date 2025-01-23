@@ -29,7 +29,7 @@ public class ItemCustomLore extends Item {
 
 	EnumRarity rarity;
 	
-	public ItemCustomLore(String s) {
+	public ItemCustomLore(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -39,7 +39,7 @@ public class ItemCustomLore extends Item {
 	static int setSize = 0;
 
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		if(this == ModItems.plate_euphemium ||
 //			this == ModItems.ingot_euphemium ||
 //			this == ModItems.ingot_osmiridium ||
@@ -200,7 +200,7 @@ public class ItemCustomLore extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack) {
+	public boolean hasEffect(final ItemStack stack) {
 		if(this == ModItems.rune_isa ||
     			this == ModItems.rune_dagaz ||
     			this == ModItems.rune_hagalaz ||
@@ -219,7 +219,7 @@ public class ItemCustomLore extends Item {
 		return super.hasEffect(stack);
 	}
 	
-	public ItemCustomLore setRarity(EnumRarity rarity) {
+	public ItemCustomLore setRarity(final EnumRarity rarity) {
     	this.rarity = rarity;
 		return this;
     }

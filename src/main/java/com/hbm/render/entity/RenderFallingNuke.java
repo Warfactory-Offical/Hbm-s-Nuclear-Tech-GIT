@@ -17,18 +17,18 @@ public class RenderFallingNuke extends Render<EntityFallingNuke> {
 	public static final IRenderFactory<EntityFallingNuke> FACTORY = (RenderManager man) -> {return new RenderFallingNuke(man);};
 	
 	private static final ResourceLocation objTesterModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/bombs/LilBoy.obj");
-	private IModelCustom boyModel;
-    private ResourceLocation boyTexture;
+	private final IModelCustom boyModel;
+    private final ResourceLocation boyTexture;
     private static final ResourceLocation gadget_rl = new ResourceLocation(RefStrings.MODID +":textures/models/bombs/gadget.png");
 	
-	protected RenderFallingNuke(RenderManager renderManager) {
+	protected RenderFallingNuke(final RenderManager renderManager) {
 		super(renderManager);
 		boyModel = AdvancedModelLoader.loadModel(objTesterModelRL);
 		boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/bombs/CustomNuke.png");
 	}
 
 	@Override
-	public void doRender(EntityFallingNuke entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityFallingNuke entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y, (float)z);
         
@@ -64,7 +64,7 @@ public class RenderFallingNuke extends Render<EntityFallingNuke> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityFallingNuke entity) {
+	protected ResourceLocation getEntityTexture(final EntityFallingNuke entity) {
 		return gadget_rl;
 	}
 

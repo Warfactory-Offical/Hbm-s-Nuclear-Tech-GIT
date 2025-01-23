@@ -24,7 +24,7 @@ public class ParticleTauRay extends Particle {
 
 	Vec3d[] hitPositions;
 	
-	public ParticleTauRay(World worldIn, Vec3d[] hitPositions, float width) {
+	public ParticleTauRay(final World worldIn, final Vec3d[] hitPositions, final float width) {
 		super(worldIn, 0, 0, 0);
 		this.particleMaxAge = 4;
 		this.hitPositions = hitPositions;
@@ -36,8 +36,7 @@ public class ParticleTauRay extends Particle {
 		this.particleAge ++;
 		if(this.particleAge >= this.particleMaxAge){
 			this.setExpired();
-			return;
-		}
+        }
 	}
 	
 	@Override
@@ -51,7 +50,7 @@ public class ParticleTauRay extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GlStateManager.disableLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		GlStateManager.enableBlend();
@@ -62,20 +61,20 @@ public class ParticleTauRay extends Particle {
 		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.bfg_core_lightning);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		float lifeN = (float)(particleAge+partialTicks)/(float)particleMaxAge;
-		float fade = MathHelper.clamp(2.5F-lifeN*2.5F, 0, 1);
-		GlStateManager.color(1.0F, 0.7F, 0.1F, 1F*fade);
+		final float lifeN = (particleAge+partialTicks) /(float)particleMaxAge;
+		final float fade = MathHelper.clamp(2.5F-lifeN*2.5F, 0, 1);
+		GlStateManager.color(1.0F, 0.7F, 0.1F, fade);
 		
 		ResourceManager.tau_ray.use();
 		
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		for(int i = 0; i < hitPositions.length-1; i ++){
-			Vec3d current = hitPositions[i].subtract(interpPosX, interpPosY, interpPosZ);
-			Vec3d next = hitPositions[i+1].subtract(interpPosX, interpPosY, interpPosZ);
-			Vec3d axis = next.subtract(current);
-			Vec3d toPlayer = current.subtract(0, entityIn.getEyeHeight(), 0);
-			Vec3d pos1 = axis.crossProduct(toPlayer).normalize().scale(particleScale*0.5);
-			Vec3d pos2 = pos1.scale(-1);
+			final Vec3d current = hitPositions[i].subtract(interpPosX, interpPosY, interpPosZ);
+			final Vec3d next = hitPositions[i+1].subtract(interpPosX, interpPosY, interpPosZ);
+			final Vec3d axis = next.subtract(current);
+			final Vec3d toPlayer = current.subtract(0, entityIn.getEyeHeight(), 0);
+			final Vec3d pos1 = axis.crossProduct(toPlayer).normalize().scale(particleScale*0.5);
+			final Vec3d pos2 = pos1.scale(-1);
 			buffer.pos(pos1.x + current.x, pos1.y + current.y, pos1.z + current.z).tex(0, 0).endVertex();
 			buffer.pos(pos2.x + current.x, pos2.y + current.y, pos2.z + current.z).tex(0, 1).endVertex();
 			buffer.pos(pos2.x + next.x, pos2.y + next.y, pos2.z + next.z).tex(1, 1).endVertex();

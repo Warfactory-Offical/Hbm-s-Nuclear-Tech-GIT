@@ -19,14 +19,14 @@ import net.minecraftforge.client.ForgeHooksClient;
 public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityMachineAssembler> {
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineAssembler te) {
+	public boolean isGlobalRenderer(final TileEntityMachineAssembler te) {
 		return true;
 	}
 	
     @Override
-	public void render(TileEntityMachineAssembler assembler, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+	public void render(final TileEntityMachineAssembler assembler, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha)
     {
-    	Vec3d start = new Vec3d(assembler.getPos().getX()+0.05, assembler.getPos().getY()+1.5, assembler.getPos().getZ()+3.1);
+    	final Vec3d start = new Vec3d(assembler.getPos().getX()+0.05, assembler.getPos().getY()+1.5, assembler.getPos().getZ()+3.1);
     	//RenderHelper.renderFlashLight(start, start.add(-20, 0, 0), 20, 1, ResourceManager.fl_cookie, partialTicks);
     	//FlashlightRenderer.addFlashlight(start, start.add(-20, 0, 0), 20, 20, ResourceManager.fl_cookie, true, true);
     	//LightRenderer.addPointLight(start, new Vec3d(1, 0.4, 0.1), 10);
@@ -61,7 +61,7 @@ public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityMachine
 				GL11.glTranslated(-1, 0.875, 0);
 
 	        	try {
-					ItemStack stack = AssemblerRecipes.recipeList.get(assembler.recipe).toStack();
+					final ItemStack stack = AssemblerRecipes.recipeList.get(assembler.recipe).toStack();
 
 					GL11.glTranslated(1, 0, 1);
 					if(!(stack.getItem() instanceof ItemBlock)) {
@@ -76,7 +76,7 @@ public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityMachine
 					Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 					GL11.glTranslatef(0.0F, 1.0F - 0.0625F * 165/100, 0.0F);
 					Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
-	        	} catch(Exception ex) { }
+	        	} catch(final Exception ex) { }
 
 			GL11.glPopMatrix();
         }
@@ -94,7 +94,7 @@ public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityMachine
         renderSlider(assembler, x, y, z, partialTicks);
     }
     
-	public void renderSlider(TileEntityMachineAssembler tileEntity, double x, double y, double z, float f)
+	public void renderSlider(final TileEntityMachineAssembler tileEntity, final double x, final double y, final double z, final float f)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
@@ -124,7 +124,7 @@ public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityMachine
         if(offset > 500)
         	offset = 500 - (offset - 500);
         
-        TileEntityMachineAssembler assembler = (TileEntityMachineAssembler) tileEntity;
+        final TileEntityMachineAssembler assembler = tileEntity;
         
         if(assembler.isProgressing)
         	GL11.glTranslated(offset * 0.003 - 0.75, 0, 0);
@@ -146,7 +146,7 @@ public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityMachine
         renderCogs(tileEntity, x, y, z, f);
     }
 	
-	public void renderCogs(TileEntityMachineAssembler tileEntity, double x, double y, double z, float f) {
+	public void renderCogs(final TileEntityMachineAssembler tileEntity, final double x, final double y, final double z, final float f) {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
         GlStateManager.enableLighting();
@@ -172,7 +172,7 @@ public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityMachine
 
         int rotation = (int) (System.currentTimeMillis() % (360 * 5)) / 5;
         
-        TileEntityMachineAssembler assembler = (TileEntityMachineAssembler) tileEntity;
+        final TileEntityMachineAssembler assembler = tileEntity;
 
         if(!assembler.isProgressing)
         	rotation = 0;

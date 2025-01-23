@@ -27,27 +27,23 @@ import net.minecraftforge.common.DungeonHooks;
 public class LibraryDungeon extends WorldGenerator
 {
 
-	public boolean LocationIsValidSpawn(World world, BlockPos pos)
+	public boolean LocationIsValidSpawn(final World world, final BlockPos pos)
 	{
-		IBlockState blockAboveState = world.getBlockState(pos.up(8));
-		IBlockState blockBelow = world.getBlockState(pos.down());
-		
-		if(blockAboveState.getMaterial().isSolid() && blockBelow.getMaterial().isSolid() && pos.getY() - 1 > 4)
-		{
-			return true;
-		}
-		return false;
-	}
+		final IBlockState blockAboveState = world.getBlockState(pos.up(8));
+		final IBlockState blockBelow = world.getBlockState(pos.down());
+
+        return blockAboveState.getMaterial().isSolid() && blockBelow.getMaterial().isSolid() && pos.getY() - 1 > 4;
+    }
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos)
+	public boolean generate(final World world, final Random rand, final BlockPos pos)
 	{
 		return generate(world, rand, pos, false);
 	}
 	
-	public boolean generate(World world, Random rand, BlockPos pos, boolean force)
+	public boolean generate(final World world, final Random rand, final BlockPos pos, final boolean force)
 	{
-		int i = rand.nextInt(1);
+		final int i = rand.nextInt(1);
 
 		if(i == 0)
 		{
@@ -58,123 +54,123 @@ public class LibraryDungeon extends WorldGenerator
 
 	}
 
-	public boolean generate_r0(World world, Random rand, int x, int y, int z, boolean force)
+	public boolean generate_r0(final World world, final Random rand, final int x, final int y, final int z, final boolean force)
 	{
 		if(!force && (!LocationIsValidSpawn(world, new BlockPos(x, y, z)) || !LocationIsValidSpawn(world, new BlockPos(x + 8, y, z)) || !LocationIsValidSpawn(world, new BlockPos(x + 8, y, z + 10)) || !LocationIsValidSpawn(world, new BlockPos(x, y, z + 10))))
 		{
 			return false;
 		}
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 10), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 10), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 0, z + 10), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 0, z + 10), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 0, z + 10), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 0, z + 10), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 0, z + 10), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 0, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 1, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 1, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 1, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 1, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 1, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 1, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 1, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 1, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 10), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 10), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y, z + 10), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y, z + 10), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y, z + 10), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y, z + 10), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y, z + 10), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 1, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 1, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 1, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 1, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 1, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 1, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 1, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 1, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 1), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 1), Blocks.AIR.getDefaultState(), 3);
@@ -183,7 +179,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 2), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 2), Blocks.AIR.getDefaultState(), 3);
@@ -191,7 +187,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 5, y + 1, z + 2), Blocks.AIR.getDefaultState(), 3);
 
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 2), Blocks.MOB_SPAWNER.getDefaultState(), 2);
-        TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 6, y + 1, z + 2));
+        final TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 6, y + 1, z + 2));
 
         if (tileentitymobspawner != null)
         {
@@ -203,7 +199,7 @@ public class LibraryDungeon extends WorldGenerator
         }
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 3), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 3), Blocks.AIR.getDefaultState(), 3);
@@ -212,7 +208,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 4), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 4), Blocks.AIR.getDefaultState(), 3);
@@ -221,9 +217,9 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 5), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.EAST), 3);
-        TileEntityChest tileentitychest = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 1, z + 5));
+        final TileEntityChest tileentitychest = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 1, z + 5));
 
         if (tileentitychest != null)
         {
@@ -237,7 +233,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 6), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 6), Blocks.AIR.getDefaultState(), 3);
@@ -246,7 +242,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 7), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 7), Blocks.AIR.getDefaultState(), 3);
@@ -255,9 +251,9 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 8), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.EAST), 3);
-        TileEntityChest tileentitychest1 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 1, z + 8));
+        final TileEntityChest tileentitychest1 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 1, z + 8));
 
         if (tileentitychest1 != null)
         {
@@ -271,7 +267,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 8), Blocks.BEDROCK.getDefaultState(), 3);
 
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 8), Blocks.MOB_SPAWNER.getDefaultState(), 2);
-        TileEntityMobSpawner tileentitymobspawner1 = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 6, y + 1, z + 8));
+        final TileEntityMobSpawner tileentitymobspawner1 = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 6, y + 1, z + 8));
 
         if (tileentitymobspawner1 != null)
         {
@@ -283,7 +279,7 @@ public class LibraryDungeon extends WorldGenerator
         }
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 9), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 9), Blocks.AIR.getDefaultState(), 3);
@@ -292,7 +288,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 1, z + 10), getBrick(rand), 3);
@@ -301,16 +297,16 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 1, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 1, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 2, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 2, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 2, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 2, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 2, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 2, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 2, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 2, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 2, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 2, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 2, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 2, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 2, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 2, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 2, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 2, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 1), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 1), Blocks.AIR.getDefaultState(), 3);
@@ -319,7 +315,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 2), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 2), Blocks.AIR.getDefaultState(), 3);
@@ -328,9 +324,9 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 3), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.EAST), 3);
-        TileEntityChest tileentitychest2 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 2, z + 3));
+        final TileEntityChest tileentitychest2 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 2, z + 3));
 
         if (tileentitychest2 != null)
         {
@@ -344,7 +340,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 4), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 4), Blocks.AIR.getDefaultState(), 3);
@@ -353,7 +349,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 5), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 5), Blocks.AIR.getDefaultState(), 3);
@@ -362,7 +358,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 6), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 6), Blocks.AIR.getDefaultState(), 3);
@@ -371,7 +367,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 7), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 7), Blocks.AIR.getDefaultState(), 3);
@@ -380,7 +376,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 8), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 8), Blocks.AIR.getDefaultState(), 3);
@@ -389,7 +385,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 9), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 9), Blocks.AIR.getDefaultState(), 3);
@@ -398,7 +394,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 2, z + 10), getBrick(rand), 3);
@@ -407,16 +403,16 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 2, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 2, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 2, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 3, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 3, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 3, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 3, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 3, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 3, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 3, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 3, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 3, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 3, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 3, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 3, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 3, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 3, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 3, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 3, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 1), Blocks.AIR.getDefaultState(), 3);
@@ -425,7 +421,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 2), Blocks.AIR.getDefaultState(), 3);
@@ -433,7 +429,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 3), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 3), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 3), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -441,7 +437,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 4), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 4), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 4), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -450,7 +446,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 5), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 5), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 5), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -459,7 +455,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 6), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 6), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 6), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -467,7 +463,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 7), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 7), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 7), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -476,7 +472,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 8), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 8), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 8), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -485,7 +481,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 9), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 9), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 9), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -494,7 +490,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 3, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 3, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 10), getBrick(rand), 3);
@@ -503,16 +499,16 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 4, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 4, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 4, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 4, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 4, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 4, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 4, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 4, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 4, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 4, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 4, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 4, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 4, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 4, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 4, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 4, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 1), Blocks.AIR.getDefaultState(), 3);
@@ -521,7 +517,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 2), Blocks.AIR.getDefaultState(), 3);
@@ -530,7 +526,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 3), Blocks.AIR.getDefaultState(), 3);
@@ -539,7 +535,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 4), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 4), Blocks.AIR.getDefaultState(), 3);
@@ -548,9 +544,9 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 5), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.EAST), 3);
-        TileEntityChest tileentitychest3 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 4, z + 5));
+        final TileEntityChest tileentitychest3 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 4, z + 5));
 
         if (tileentitychest3 != null)
         {
@@ -561,7 +557,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 5), Blocks.BEDROCK.getDefaultState(), 3);
 
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 5), Blocks.MOB_SPAWNER.getDefaultState(), 2);
-        TileEntityMobSpawner tileentitymobspawner2 = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 3, y + 4, z + 5));
+        final TileEntityMobSpawner tileentitymobspawner2 = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 3, y + 4, z + 5));
 
         if (tileentitymobspawner2 != null)
         {
@@ -576,7 +572,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 6), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 6), Blocks.AIR.getDefaultState(), 3);
@@ -585,7 +581,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 7), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 7), Blocks.AIR.getDefaultState(), 3);
@@ -594,7 +590,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 8), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 8), Blocks.AIR.getDefaultState(), 3);
@@ -603,10 +599,10 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 9), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 9), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.NORTH), 3);
-        TileEntityChest tileentitychest4 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 2, y + 4, z + 9));
+        final TileEntityChest tileentitychest4 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 2, y + 4, z + 9));
 
         if (tileentitychest4 != null)
         {
@@ -619,7 +615,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 4, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 4, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 4, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 4, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 4, z + 10), getBrick(rand), 3);
@@ -628,16 +624,16 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 4, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 4, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 4, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 5, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 5, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 5, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 5, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 5, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 5, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 5, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 5, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 5, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 5, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 5, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 5, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 5, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 5, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 5, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 5, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 5, z + 1), Blocks.AIR.getDefaultState(), 3);
@@ -646,7 +642,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 1), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 1), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 5, z + 2), Blocks.AIR.getDefaultState(), 3);
@@ -655,7 +651,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 2), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 2), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 5, z + 3), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -663,7 +659,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 3), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 3), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 4), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 5, z + 4), Blocks.AIR.getDefaultState(), 3);
@@ -672,7 +668,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 4), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 4), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 5), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 5, z + 5), Blocks.AIR.getDefaultState(), 3);
@@ -681,7 +677,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 5), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 5), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 6), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 5, z + 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
@@ -689,9 +685,9 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 6), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 6), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 7), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.EAST), 3);
-        TileEntityChest tileentitychest5 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 5, z + 7));
+        final TileEntityChest tileentitychest5 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 1, y + 5, z + 7));
 
         if (tileentitychest5 != null)
         {
@@ -704,7 +700,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 8), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 5, z + 8), Blocks.AIR.getDefaultState(), 3);
@@ -713,7 +709,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 9), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 9), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 5, z + 9), getShelf(rand).getDefaultState(), 3);
@@ -722,7 +718,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 5, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 5, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 5, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 5, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 5, z + 10), getBrick(rand), 3);
@@ -731,23 +727,23 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 5, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 5, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 5, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 6, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 6, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 6, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 6, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 6, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 6, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 6, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 6, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 6, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 6, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 6, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 6, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 6, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 6, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 6, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 6, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 6, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 6, z + 1), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 1), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH), 3);
-        TileEntityChest tileentitychest6 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 6, y + 6, z + 1));
+        final TileEntityChest tileentitychest6 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 6, y + 6, z + 1));
 
         if (tileentitychest6 != null)
         {
@@ -756,7 +752,7 @@ public class LibraryDungeon extends WorldGenerator
         }
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 1), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 2), Blocks.AIR.getDefaultState(), 3);
@@ -765,7 +761,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 2), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 3), Blocks.AIR.getDefaultState(), 3);
@@ -774,7 +770,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 3), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 4), Blocks.AIR.getDefaultState(), 3);
@@ -782,7 +778,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 5, y + 6, z + 4), Blocks.BEDROCK.getDefaultState(), 3);
 
 		world.setBlockState(pos.setPos(x + 5, y + 6, z + 4), Blocks.MOB_SPAWNER.getDefaultState(), 2);
-        TileEntityMobSpawner tileentitymobspawner3 = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 5, y + 6, z + 4));
+        final TileEntityMobSpawner tileentitymobspawner3 = (TileEntityMobSpawner)world.getTileEntity(pos.setPos(x + 5, y + 6, z + 4));
 
         if (tileentitymobspawner3 != null)
         {
@@ -794,7 +790,7 @@ public class LibraryDungeon extends WorldGenerator
         }
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 4), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.WEST), 3);
-        TileEntityChest tileentitychest7 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 7, y + 6, z + 4));
+        final TileEntityChest tileentitychest7 = (TileEntityChest)world.getTileEntity(pos.setPos(x + 7, y + 6, z + 4));
 
         if (tileentitychest7 != null)
         {
@@ -802,7 +798,7 @@ public class LibraryDungeon extends WorldGenerator
            // WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest7, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
         }
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 5), Blocks.AIR.getDefaultState(), 3);
@@ -811,7 +807,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 5), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 6), Blocks.AIR.getDefaultState(), 3);
@@ -820,7 +816,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 7), Blocks.AIR.getDefaultState(), 3);
@@ -829,7 +825,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 8), Blocks.AIR.getDefaultState(), 3);
@@ -838,7 +834,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 9), Blocks.AIR.getDefaultState(), 3);
@@ -847,7 +843,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 6, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 6, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 6, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 6, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 6, z + 10), getBrick(rand), 3);
@@ -856,16 +852,16 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 6, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 6, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 6, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 7, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 7, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 7, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 7, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 7, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 7, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 7, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 7, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 7, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 7, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 7, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 7, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 7, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 7, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 7, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 7, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 1), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 1), Blocks.AIR.getDefaultState(), 3);
@@ -874,7 +870,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 1), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 1), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 2), Blocks.AIR.getDefaultState(), 3);
@@ -883,7 +879,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 2), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 2), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 3), Blocks.AIR.getDefaultState(), 3);
@@ -892,7 +888,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 3), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 3), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 4), Blocks.AIR.getDefaultState(), 3);
@@ -901,7 +897,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 4), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 4), Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockHalfWoodSlab.HALF, BlockSlab.EnumBlockHalf.TOP).withProperty(BlockHalfWoodSlab.VARIANT, BlockPlanks.EnumType.OAK), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 5), Blocks.AIR.getDefaultState(), 3);
@@ -910,7 +906,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 5), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 5), getShelf(rand).getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 6), Blocks.AIR.getDefaultState(), 3);
@@ -919,7 +915,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 6), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 7), Blocks.AIR.getDefaultState(), 3);
@@ -928,7 +924,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 7), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 8), Blocks.AIR.getDefaultState(), 3);
@@ -937,7 +933,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 8), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 9), Blocks.AIR.getDefaultState(), 3);
@@ -946,7 +942,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 9), Blocks.AIR.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 7, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 7, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 7, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 7, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 7, z + 10), getBrick(rand), 3);
@@ -955,16 +951,16 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 7, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 7, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 7, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 8, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 8, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 3, y + 8, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 4, y + 8, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 5, y + 8, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 6, y + 8, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 8, z + 0), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 8, z + 0), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 1), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 8, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 8, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 3, y + 8, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 4, y + 8, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 8, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 6, y + 8, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 8, z), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 8, z), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 1), getBrick(rand), 3);
@@ -973,7 +969,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 1), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 1), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 2), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 2), getBrick(rand), 3);
@@ -982,7 +978,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 2), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 2), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 3), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 3), getBrick(rand), 3);
@@ -991,7 +987,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 3), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 3), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 4), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 4), getBrick(rand), 3);
@@ -1000,7 +996,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 4), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 4), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 5), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 5), getBrick(rand), 3);
@@ -1009,7 +1005,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 5), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 5), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 6), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 6), getBrick(rand), 3);
@@ -1018,7 +1014,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 6), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 6), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 7), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 7), getBrick(rand), 3);
@@ -1027,7 +1023,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 7), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 7), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 8), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 8), getBrick(rand), 3);
@@ -1036,7 +1032,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 8), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 8), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 9), getBrick(rand), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 9), getBrick(rand), 3);
@@ -1045,7 +1041,7 @@ public class LibraryDungeon extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 6, y + 8, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 8, z + 9), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 8, z + 9), getBrick(rand), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 8, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
+		world.setBlockState(pos.setPos(x, y + 8, z + 10), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 8, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 8, z + 10), getBrick(rand), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 8, z + 10), getBrick(rand), 3);
@@ -1059,7 +1055,7 @@ public class LibraryDungeon extends WorldGenerator
 		return true;
 
 	}
-	public boolean generate_r02_last(World world, Random rand, int x, int y, int z, MutableBlockPos pos)
+	public boolean generate_r02_last(final World world, final Random rand, final int x, final int y, final int z, final MutableBlockPos pos)
 	{
 
 		/*world.setBlock(x + 4, y + 3, z + 2, Blocks.torch, 4, 3);
@@ -1079,19 +1075,19 @@ public class LibraryDungeon extends WorldGenerator
 		return true;
 
 	}
-	public IBlockState getBrick(Random rand) {
+	public IBlockState getBrick(final Random rand) {
 		return Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.byMetadata(rand.nextInt(3)));
 		
 	}
-	public Block getShelf(Random rand) {
-		int i = rand.nextInt(2);
+	public Block getShelf(final Random rand) {
+		final int i = rand.nextInt(2);
 		if(i == 0)
 		{
 			return Blocks.PLANKS;
 		}
 		return Blocks.BOOKSHELF;
 	}
-    private ResourceLocation pickMobSpawner(Random p_76543_1_)
+    private ResourceLocation pickMobSpawner(final Random p_76543_1_)
     {
         return DungeonHooks.getRandomDungeonMob(p_76543_1_);
     }

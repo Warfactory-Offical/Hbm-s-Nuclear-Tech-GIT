@@ -24,7 +24,7 @@ public class BlockChain extends Block {
 	public static final PropertyBool END = PropertyBool.create("end");
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
-	public BlockChain(Material materialIn, String s) {
+	public BlockChain(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,22 +34,22 @@ public class BlockChain extends Block {
 	}
 
 	@Override
-	public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
+	public boolean isLadder(final IBlockState state, final IBlockAccess world, final BlockPos pos, final EntityLivingBase entity) {
 		return true;
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos) {
 		return NULL_AABB;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		float f = 0.125F;
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
+		final float f = 0.125F;
         float minY = 0;
         if(!source.isSideSolid(pos.down(), EnumFacing.UP, false))
         	minY = 0.25F;
-        int meta = state.getValue(FACING).ordinal();
+        final int meta = state.getValue(FACING).ordinal();
 
     	if(!state.getValue(WALL)) {
     		return new AxisAlignedBB(3 * f, minY, 3 * f, 5 * f, 1, 5*f);
@@ -78,7 +78,7 @@ public class BlockChain extends Block {
 	}
 	
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+	public boolean canPlaceBlockAt(final World world, final BlockPos pos) {
 		if(world.isSideSolid(pos.up(), EnumFacing.DOWN) || world.getBlockState(pos.up()).getBlock() == this)
     		return true;
 
@@ -89,7 +89,7 @@ public class BlockChain extends Block {
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		int j1 = meta;
 
         if(facing.ordinal() == 2 && world.isSideSolid(pos.south(), EnumFacing.NORTH))
@@ -104,10 +104,8 @@ public class BlockChain extends Block {
         if(facing.ordinal() == 5 && world.isSideSolid(pos.west(), EnumFacing.EAST))
             j1 = 5;
 
-        boolean end = true;
-        if(world.getBlockState(pos.down()).getBlock() == this && (j1 != 0) == world.getBlockState(pos.down()).getValue(WALL) || world.isSideSolid(pos.down(), EnumFacing.UP))
-        	end = false;
-        
+        boolean end = (world.getBlockState(pos.down()).getBlock() != this || (j1 != 0) != world.getBlockState(pos.down()).getValue(WALL)) && !world.isSideSolid(pos.down(), EnumFacing.UP);
+
         if(j1 == 0) {
         	if(world.getBlockState(pos.up()).getBlock() == this)
         		return this.getDefaultState().withProperty(FACING, world.getBlockState(pos.up()).getValue(FACING)).withProperty(WALL, world.getBlockState(pos.up()).getValue(WALL)).withProperty(END, end);
@@ -133,8 +131,8 @@ public class BlockChain extends Block {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		int l = state.getValue(FACING).ordinal();
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+		final int l = state.getValue(FACING).ordinal();
         boolean flag = false;
 
         if(world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos).getValue(WALL) == world.getBlockState(pos.down()).getValue(WALL) || world.isSideSolid(pos.down(), EnumFacing.UP)) {
@@ -179,27 +177,27 @@ public class BlockChain extends Block {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
@@ -209,18 +207,18 @@ public class BlockChain extends Block {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		int wall = state.getValue(WALL) ? 1 : 0;
-		int end = state.getValue(END) ? 1 : 0;
-		int facing = state.getValue(FACING).ordinal() - 2;
+	public int getMetaFromState(final IBlockState state) {
+		final int wall = state.getValue(WALL) ? 1 : 0;
+		final int end = state.getValue(END) ? 1 : 0;
+		final int facing = state.getValue(FACING).ordinal() - 2;
 		return (wall << 3) | (end << 2) | facing;
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState()
-				.withProperty(WALL, ((meta >> 3) & 1) > 0 ? true : false)
-				.withProperty(END, ((meta >> 2) & 1) > 0 ? true : false)
+				.withProperty(WALL, ((meta >> 3) & 1) > 0)
+				.withProperty(END, ((meta >> 2) & 1) > 0)
 				.withProperty(FACING, EnumFacing.VALUES[(meta & 2) + 2]);
 	}
 	

@@ -26,7 +26,7 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 	
 	ItemHazardModule module;
 
-	public BlockOutgas(boolean randomTick, int rate, boolean onBreak, String s) {
+	public BlockOutgas(final boolean randomTick, final int rate, final boolean onBreak, final String s) {
 		super(s, 1);
 		this.module = new ItemHazardModule();
 		this.setTickRandomly(randomTick);
@@ -36,7 +36,7 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 		this.onNeighbour = false;
 	}
 
-	public BlockOutgas(boolean randomTick, int rate, boolean onBreak, boolean onNeighbour, String s) {
+	public BlockOutgas(final boolean randomTick, final int rate, final boolean onBreak, final boolean onNeighbour, final String s) {
 		this(randomTick, rate, onBreak, s);
 		this.module = new ItemHazardModule();
 		this.onNeighbour = onNeighbour;
@@ -48,7 +48,7 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 	}
 
 	@Override
-	public int tickRate(World p_149738_1_) {
+	public int tickRate(final World p_149738_1_) {
 		return rate;
 	}
 	
@@ -83,7 +83,7 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 	}
 
 	@Override
-	public void onEntityWalk(World world, BlockPos pos, Entity entity){
+	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity){
 		if(this.randomTick && getGas() == ModBlocks.gas_asbestos) {
 			
 			if(world.getBlockState(pos.up()).getBlock() == Blocks.AIR) {
@@ -98,11 +98,11 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		if(this == ModBlocks.block_corium_cobble) RadiationSavedData.incrementRad(world, pos, 1000F, 10000F);
 		if(this == ModBlocks.ancient_scrap) RadiationSavedData.incrementRad(world, pos, 150F, 1500F);
 
-		ForgeDirection dir = ForgeDirection.getOrientation(rand.nextInt(6));
+		final ForgeDirection dir = ForgeDirection.getOrientation(rand.nextInt(6));
 		
 		if(world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock() == Blocks.AIR) {
 			world.setBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ), getGas().getDefaultState());
@@ -110,10 +110,10 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos){
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos){
 		if(onNeighbour) {
 
-			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 				
 				if(world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock() == Blocks.AIR) {
 					world.setBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ), getGas().getDefaultState());
@@ -123,7 +123,7 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 	}
 	
 	@Override
-	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune){
+	public void dropBlockAsItemWithChance(final World world, final BlockPos pos, final IBlockState state, final float chance, final int fortune){
 		if(onBreak) {
 			world.setBlockState(pos, getGas().getDefaultState());
 		}
@@ -132,7 +132,7 @@ public class BlockOutgas extends BlockNTMOre implements IItemHazard {
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state){
 		super.breakBlock(world, pos, state);
 		
 		if(this == ModBlocks.ancient_scrap) {

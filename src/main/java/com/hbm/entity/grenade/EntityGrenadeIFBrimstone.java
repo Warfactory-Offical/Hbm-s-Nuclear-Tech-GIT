@@ -11,17 +11,17 @@ import net.minecraft.world.World;
 
 public class EntityGrenadeIFBrimstone extends EntityGrenadeBouncyBase {
 
-    public EntityGrenadeIFBrimstone(World p_i1773_1_)
+    public EntityGrenadeIFBrimstone(final World p_i1773_1_)
     {
         super(p_i1773_1_);
     }
 
-    public EntityGrenadeIFBrimstone(World p_i1774_1_, EntityLivingBase p_i1774_2_, EnumHand hand)
+    public EntityGrenadeIFBrimstone(final World p_i1774_1_, final EntityLivingBase p_i1774_2_, final EnumHand hand)
     {
         super(p_i1774_1_, p_i1774_2_, hand);
     }
 
-    public EntityGrenadeIFBrimstone(World p_i1775_1_, double p_i1775_2_, double p_i1775_4_, double p_i1775_6_)
+    public EntityGrenadeIFBrimstone(final World p_i1775_1_, final double p_i1775_2_, final double p_i1775_4_, final double p_i1775_6_)
     {
         super(p_i1775_1_, p_i1775_2_, p_i1775_4_, p_i1775_6_);
     }
@@ -33,9 +33,9 @@ public class EntityGrenadeIFBrimstone extends EntityGrenadeBouncyBase {
     	if(this.timer > (this.getMaxTimer() * 0.65)) {
     		
     		if(!world.isRemote) {
-	    		EntityBullet fragment;
+	    		final EntityBullet fragment;
 	
-	    		fragment = new EntityBullet(world, (EntityPlayer) this.thrower, 3.0F, 35, 45, false, "tauDay", EnumHand.MAIN_HAND);
+	    		fragment = new EntityBullet(world, this.thrower, 3.0F, 35, 45, false, "tauDay", EnumHand.MAIN_HAND);
 	    		fragment.setDamage(rand.nextInt(301) + 100);
 	
 	    		fragment.motionX = rand.nextGaussian();
@@ -64,9 +64,9 @@ public class EntityGrenadeIFBrimstone extends EntityGrenadeBouncyBase {
     		world.newExplosion(this, posX, posY, posZ, 5, false, false);
     		
     		for(int i = 0; i < 100; i++) {
-	    		EntityBullet fragment;
+	    		final EntityBullet fragment;
 	
-	    		fragment = new EntityBullet(world, (EntityPlayer) this.thrower, 3.0F, 35, 45, false, "tauDay", EnumHand.MAIN_HAND);
+	    		fragment = new EntityBullet(world, this.thrower, 3.0F, 35, 45, false, "tauDay", EnumHand.MAIN_HAND);
 	    		fragment.setDamage(rand.nextInt(301) + 100);
 	
 	    		fragment.motionX = rand.nextGaussian() * 0.25;

@@ -34,7 +34,7 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 	public void update() {
 		if(!world.isRemote){
 			if(!this.isLocked()){
-				boolean rs = world.isBlockPowered(pos);
+				final boolean rs = world.isBlockPowered(pos);
 				if(rs){
 					tryOpen();
 				} else {
@@ -55,11 +55,11 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 				timer ++;
 				if(state == DoorState.CLOSING){
 					if(timer == 1){
-						BlockPos hydrolics = pos.offset(facing, 5);
+						final BlockPos hydrolics = pos.offset(facing, 5);
 						this.world.playSound(null, hydrolics.getX(), hydrolics.getY(), hydrolics.getZ(), HBMSoundHandler.siloclose, SoundCategory.BLOCKS, 3F, 1F);
 					}
 					if(timer == 50){
-						BlockPos mid = pos.offset(facing, 3);
+						final BlockPos mid = pos.offset(facing, 3);
 						for(int i = -1; i <= 1; i ++){
 							for(int j = -1; j <= 1; j ++){
 								placeDummy(mid.add(i, 0, j));
@@ -78,11 +78,11 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 					}
 				} else if(state == DoorState.OPENING){
 					if(timer == 1){
-						BlockPos hydrolics = pos.offset(facing, 5);
+						final BlockPos hydrolics = pos.offset(facing, 5);
 						this.world.playSound(null, hydrolics.getX(), hydrolics.getY(), hydrolics.getZ(), HBMSoundHandler.siloopen, SoundCategory.BLOCKS, 4F, 1F);
 					}
 					if(timer == 70){
-						BlockPos mid = pos.offset(facing, 3);
+						final BlockPos mid = pos.offset(facing, 3);
 						for(int i = -1; i <= 1; i ++){
 							for(int j = -1; j <= 1; j ++){
 								removeDummy(mid.add(i, 0, j));
@@ -125,24 +125,23 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 		}
 	}
 
-	public boolean placeDummy(BlockPos pos) {
+	public boolean placeDummy(final BlockPos pos) {
 		
 		if(!world.getBlockState(pos).getBlock().isReplaceable(world, pos))
 			return false;
 		
 		world.setBlockState(pos, ModBlocks.dummy_block_silo_hatch.getDefaultState());
 		
-		TileEntity te = world.getTileEntity(pos);
+		final TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = this.pos;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = this.pos;
 		}
 		
 		return true;
 	}
 	
-	public void removeDummy(BlockPos pos) {
+	public void removeDummy(final BlockPos pos) {
 		if(world.getBlockState(pos).getBlock() == ModBlocks.dummy_block_silo_hatch) {
 			DummyBlockSiloHatch.safeBreak = true;
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -151,13 +150,13 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		state = DoorState.values()[compound.getByte("state")];
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setByte("state", (byte) state.ordinal());
 		return super.writeToNBT(compound);
 	}
@@ -209,7 +208,7 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 	}
 
 	@Override
-	public void handleNewState(DoorState newState) {
+	public void handleNewState(final DoorState newState) {
 		if(this.state != newState){
 			if(this.state.isStationaryState() && newState.isMovingState()){
 				sysTime = System.currentTimeMillis();

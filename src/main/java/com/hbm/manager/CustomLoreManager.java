@@ -12,8 +12,8 @@ import java.util.*;
 
 public class CustomLoreManager {
 
-    public static void addCustomLore(ItemStack stack, List<String> list) {
-        String itemName = stack.getTranslationKey().substring(".item".length());
+    public static void addCustomLore(final ItemStack stack, final List<String> list) {
+        final String itemName = stack.getTranslationKey().substring(".item".length());
 
         if (!customLoreEntries.containsKey(itemName)) return;
 
@@ -22,13 +22,13 @@ public class CustomLoreManager {
 
     static Map<String, List<String>> customLoreEntries = new LinkedHashMap<>();
 
-    private static void addCustomLoreEntry(String itemName, String... lines) {
+    private static void addCustomLoreEntry(final String itemName, final String... lines) {
         if (!I18n.hasKey("item." + itemName +  ".name")) throw new RuntimeException(new NameNotFoundException(itemName));
         customLoreEntries.put(itemName, new ArrayList<>(Arrays.asList(lines)));
     }
 
-    private static void addCustomLoreEntry(String[] itemNames, String... lines) {
-        for (String itemName : itemNames) {
+    private static void addCustomLoreEntry(final String[] itemNames, final String... lines) {
+        for (final String itemName : itemNames) {
             addCustomLoreEntry(itemName, lines);
         }
     }

@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class BlockClorineSeal extends BlockContainer {
 
-	public BlockClorineSeal(Material materialIn, String s) {
+	public BlockClorineSeal(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,12 +21,12 @@ public class BlockClorineSeal extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityChlorineSeal();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

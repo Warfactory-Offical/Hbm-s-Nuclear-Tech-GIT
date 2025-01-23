@@ -11,12 +11,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderCapsule extends TileEntitySpecialRenderer<TileEntitySoyuzCapsule> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntitySoyuzCapsule te) {
+	public boolean isGlobalRenderer(final TileEntitySoyuzCapsule te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntitySoyuzCapsule te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntitySoyuzCapsule te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y, z + 0.5);
         GlStateManager.enableLighting();

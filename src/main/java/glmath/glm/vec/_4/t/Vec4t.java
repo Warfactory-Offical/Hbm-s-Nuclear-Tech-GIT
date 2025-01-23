@@ -16,14 +16,14 @@ public class Vec4t<T> {
     public T b;
     public T a;
 
-    public Vec4t(T t) {
+    public Vec4t(final T t) {
         r = t;
         g = t;
         b = t;
         a = t;
     }
 
-    public Vec4t(T r, T g, T b, T a) {
+    public Vec4t(final T r, final T g, final T b, final T a) {
         this.r = r;
         this.g = g;
         this.b = b;

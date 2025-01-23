@@ -25,7 +25,7 @@ public class ItemRedstoneSwordRender extends TileEntityItemStackRenderer {
 		swordModel = new ModelSword();
 	}
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_CULL_FACE);
 			if(type != TransformType.GUI){

@@ -69,17 +69,17 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return access;
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		return slot == 2 || slot == 3;
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		return i == 0 || i == 1;
 	}
 	
@@ -92,7 +92,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 
 			if(delay <= 0 && this.isOn && particles.size() < maxParticles && !inventory.getStackInSlot(0).isEmpty() && !inventory.getStackInSlot(1).isEmpty() && power >= maxPower * 0.75) {
 				if(!hopperMode || (inventory.getStackInSlot(0).getCount() > 1 && inventory.getStackInSlot(1).getCount() > 1)) {
-					ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+					final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
 					particles.add(new Particle(inventory.getStackInSlot(0), inventory.getStackInSlot(1), dir, pos.getX(), pos.getY(), pos.getZ()));
 					inventory.getStackInSlot(0).shrink(1);
 					inventory.getStackInSlot(1).shrink(1);
@@ -110,12 +110,12 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 			if(!particles.isEmpty())
 				updateParticles();
 
-			for(Particle p : particlesToRemove) {
+			for(final Particle p : particlesToRemove) {
 				particles.remove(p);
 			}
 			particlesToRemove.clear();
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isOn", isOn);
 			data.setLong("power", power);
 			data.setBoolean("analysis", analysisOnly);
@@ -133,9 +133,9 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		
 	}
 	
-	private void process(Particle p) {
+	private void process(final Particle p) {
 
-		ItemStack[] result = HadronRecipes.getOutput(p.item1, p.item2, p.momentum, analysisOnly);
+		final ItemStack[] result = HadronRecipes.getOutput(p.item1, p.item2, p.momentum, analysisOnly);
 
 		if(result == null) {
 			this.state = HadronRecipes.returnCode;
@@ -158,11 +158,11 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 			}
 			
 			if(result[0].getItem() == ModItems.particle_digamma) {
-				List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class,
+				final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class,
 						new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)
 						.grow(128, 50, 128));
 
-				for(EntityPlayer player : players)
+				for(final EntityPlayer player : players)
 					AdvancementManager.grantAchievement(player, AdvancementManager.achOmega12);
 			}
 		}
@@ -174,7 +174,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		this.isOn = data.getBoolean("isOn");
 		this.power = data.getLong("power");
 		this.analysisOnly = data.getBoolean("analysis");
@@ -190,7 +190,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 		if(meta == 0)
 			this.isOn = !this.isOn;
 		if(meta == 1)
@@ -201,29 +201,27 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	
 	private void drawPower() {
 
-		for(ForgeDirection dir : getRandomDirs()) {
+		for(final ForgeDirection dir : getRandomDirs()) {
 
 			if(power == maxPower)
 				return;
 
-			int x = pos.getX() + dir.offsetX * 2;
-			int y = pos.getY() + dir.offsetY * 2;
-			int z = pos.getZ() + dir.offsetZ * 2;
+			final int x = pos.getX() + dir.offsetX * 2;
+			final int y = pos.getY() + dir.offsetY * 2;
+			final int z = pos.getZ() + dir.offsetZ * 2;
 
-			TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+			final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
-			if(te instanceof TileEntityHadronPower) {
+			if(te instanceof TileEntityHadronPower plug) {
 
-				TileEntityHadronPower plug = (TileEntityHadronPower)te;
-
-				long toDraw = Math.min(maxPower - power, plug.getPower());
+                final long toDraw = Math.min(maxPower - power, plug.getPower());
 				this.setPower(power + toDraw);
 				plug.setPower(plug.getPower() - toDraw);
 			}
 		}
 	}
 	
-	private void finishParticle(Particle p) {
+	private void finishParticle(final Particle p) {
 		particlesToRemove.add(p);
 		if(!p.isExpired())
 			process(p);
@@ -232,7 +230,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setBoolean("isOn", isOn);
 		compound.setLong("power", power);
 		compound.setBoolean("analysis", analysisOnly);
@@ -241,7 +239,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.isOn = compound.getBoolean("isOn");
 		this.power = compound.getLong("power");
 		this.analysisOnly = compound.getBoolean("analysis");
@@ -249,7 +247,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		super.readFromNBT(compound);
 	}
 	
-	public int getPowerScaled(int i) {
+	public int getPowerScaled(final int i) {
 		return (int)(power * i / maxPower);
 	}
 
@@ -259,13 +257,13 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 
 	private void updateParticles() {
 
-		for(Particle particle : particles) {
+		for(final Particle particle : particles) {
 			particle.update();
 		}
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 		markDirty();
 	}
@@ -280,13 +278,13 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		return maxPower;
 	}
 	
-	private void setStats(EnumHadronState state, int count, boolean success) {
+	private void setStats(final EnumHadronState state, final int count, final boolean success) {
 		this.stat_state = state;
 		this.stat_charge = count;
 		this.stat_success = success;
 	}
 	
-	private void setExpireStats(EnumHadronState state, int count, int x, int y, int z) {
+	private void setExpireStats(final EnumHadronState state, final int count, final int x, final int y, final int z) {
 		this.stat_state = state;
 		this.stat_charge = count;
 		this.stat_x = x;
@@ -313,7 +311,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 
 		boolean expired = false;
 
-		public Particle(ItemStack item1, ItemStack item2, ForgeDirection dir, int posX, int posY, int posZ) {
+		public Particle(final ItemStack item1, final ItemStack item2, final ForgeDirection dir, final int posX, final int posY, final int posZ) {
 			this.item1 = item1.copy();
 			this.item2 = item2.copy();
 			this.item1.setCount(1);
@@ -327,7 +325,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 			this.momentum = 0;
 		}
 		
-		public void expire(EnumHadronState reason) {
+		public void expire(final EnumHadronState reason) {
 			if(expired)
 				return;
 
@@ -366,21 +364,21 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	 * Handles diode entering behavior and whatnot
 	 * @param p
 	 */
-	public void makeSteppy(Particle p) {
+	public void makeSteppy(final Particle p) {
 
-		ForgeDirection dir = p.dir;
+		final ForgeDirection dir = p.dir;
 
 		p.posX += dir.offsetX;
 		p.posY += dir.offsetY;
 		p.posZ += dir.offsetZ;
 
-		int x = p.posX;
-		int y = p.posY;
-		int z = p.posZ;
+		final int x = p.posX;
+		final int y = p.posY;
+		final int z = p.posZ;
 
-		IBlockState blockState = world.getBlockState(new BlockPos(x, y, z));
-		Block block = blockState.getBlock();
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final IBlockState blockState = world.getBlockState(new BlockPos(x, y, z));
+		final Block block = blockState.getBlock();
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
 		if(te instanceof TileEntityHadron) {
 
@@ -406,18 +404,18 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	 * All the checks done *after* the particle moves one tile
 	 * @param p
 	 */
-	public void checkSegment(Particle p) {
+	public void checkSegment(final Particle p) {
 
-		ForgeDirection dir = p.dir;
-		int x = p.posX;
-		int y = p.posY;
-		int z = p.posZ;
+		final ForgeDirection dir = p.dir;
+		final int x = p.posX;
+		final int y = p.posY;
+		final int z = p.posZ;
 
 		//we make a set of axis where the directional axis is 0 and the normals are 1
 		//that allows us to easily iterate through a rectangle that is normal to our moving direction
-		int dX = 1 - Math.abs(dir.offsetX);
-		int dY = 1 - Math.abs(dir.offsetY);
-		int dZ = 1 - Math.abs(dir.offsetZ);
+		final int dX = 1 - Math.abs(dir.offsetX);
+		final int dY = 1 - Math.abs(dir.offsetY);
+		final int dZ = 1 - Math.abs(dir.offsetZ);
 
 		//whether the particle has entered an analysis chamber
 		//-> all coils have to be air
@@ -428,8 +426,8 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 			for(int b = y - dY * 2; b <= y + dY * 2; b++) {
 				for(int c = z - dZ * 2; c <= z + dZ * 2;c++) {
 
-					IBlockState blockState = world.getBlockState(new BlockPos(a, b, c));
-					Block block = blockState.getBlock();
+					final IBlockState blockState = world.getBlockState(new BlockPos(a, b, c));
+					final Block block = blockState.getBlock();
 
 					/** ignore the center for now */
 					if(a == x && b == y && c == z) {
@@ -441,9 +439,9 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 						continue;
 					}
 
-					int ix = Math.abs(x - a);
-					int iy = Math.abs(y - b);
-					int iz = Math.abs(z - c);
+					final int ix = Math.abs(x - a);
+					final int iy = Math.abs(y - b);
+					final int iz = Math.abs(z - c);
 
 					/** check coils, all abs deltas are 1 or less */
 					if(ix <= 1 && iy <= 1 && iz <= 1) {
@@ -461,7 +459,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 						//not air -> not an analysis chamber
 						analysis = false;
 
-						int coilVal = coilValue(block);
+						final int coilVal = coilValue(block);
 
 						//not a valid coil: kablam!
 						if(coilVal == 0) {
@@ -488,16 +486,14 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 						if(isPlating(block))
 							continue;
 
-						TileEntity te = world.getTileEntity(new BlockPos(a, b, c));
+						final TileEntity te = world.getTileEntity(new BlockPos(a, b, c));
 
 						//power plugs are also ok, might as well succ some energy when passing
-						if(te instanceof TileEntityHadronPower) {
+						if(te instanceof TileEntityHadronPower plug) {
 
-							TileEntityHadronPower plug = (TileEntityHadronPower)te;
+                            final long bit = 10000;		//how much HE one "charge point" is
 
-							long bit = 10000;		//how much HE one "charge point" is
-
-							int times = (int) (plug.getPower() / bit);	//how many charges the plug has to offer
+							final int times = (int) (plug.getPower() / bit);	//how many charges the plug has to offer
 
 							p.charge += times;			//whichever is less, the charges in the plug or the required charges
 
@@ -531,7 +527,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 			if(p.analysis == 2) {
 				this.world.playSound(null, p.posX + 0.5, p.posY + 0.5, p.posZ + 0.5, SoundEvents.ENTITY_FIREWORK_BLAST, SoundCategory.BLOCKS, 2.0F, 2F);
 				this.state = EnumHadronState.ANALYSIS;
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "hadron");
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, p.posX + 0.5, p.posY + 0.5, p.posZ + 0.5), new TargetPoint(world.provider.getDimension(), p.posX + 0.5, p.posY + 0.5, p.posZ + 0.5, 25));
 			}
@@ -554,28 +550,27 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	 * Handles the better part of the diode behavior
 	 * @param p
 	 */
-	public void changeDirection(Particle p) {
+	public void changeDirection(final Particle p) {
 
-		ForgeDirection dir = p.dir;
+		final ForgeDirection dir = p.dir;
 
-		int x = p.posX;
-		int y = p.posY;
-		int z = p.posZ;
+		final int x = p.posX;
+		final int y = p.posY;
+		final int z = p.posZ;
 
-		int nx = x + dir.offsetX;
-		int ny = y + dir.offsetY;
-		int nz = z + dir.offsetZ;
+		final int nx = x + dir.offsetX;
+		final int ny = y + dir.offsetY;
+		final int nz = z + dir.offsetZ;
 
-		IBlockState nextState = world.getBlockState(new BlockPos(nx, ny, nz));
-		Block next = nextState.getBlock();
+		final IBlockState nextState = world.getBlockState(new BlockPos(nx, ny, nz));
+		final Block next = nextState.getBlock();
 
 		TileEntity te = world.getTileEntity(new BlockPos(nx, ny, nz));
 
 		//the next block appears to be a diode, let's see if we can enter
-		if(te instanceof TileEntityHadronDiode) {
-			TileEntityHadronDiode diode = (TileEntityHadronDiode)te;
+		if(te instanceof TileEntityHadronDiode diode) {
 
-			if(diode.getConfig(p.dir.getOpposite().ordinal()) != DiodeConfig.IN) {
+            if(diode.getConfig(p.dir.getOpposite().ordinal()) != DiodeConfig.IN) {
 				//it appears as if we have slammed into the side of a diode, ouch
 				p.expire(EnumHadronState.ERROR_DIODE_COLLISION);
 			}
@@ -591,25 +586,23 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		te = world.getTileEntity(new BlockPos(x, y, z));
 
 		//if we are currently in a diode, we might want to consider changing dirs
-		if(te instanceof TileEntityHadronDiode) {
+		if(te instanceof TileEntityHadronDiode diode) {
 
 			//since we are *in* a diode, we might want to call the warrant officer for
 			//an exemption for the coil check, because curves NEED holes to turn into, and
 			//checking for coils in spaces where there cannot be coils is quite not-good
 			p.isCheckExempt = true;
 
-			TileEntityHadronDiode diode = (TileEntityHadronDiode)te;
-
-			//the direction in which we were going anyway is an output, so we will keep going
+            //the direction in which we were going anyway is an output, so we will keep going
 			if(diode.getConfig(dir.ordinal()) == DiodeConfig.OUT) {
 				return;
 
 			//well then, iterate through some random directions and hope a valid output shows up
 			} else {
 
-				List<ForgeDirection> dirs = getRandomDirs();
+				final List<ForgeDirection> dirs = getRandomDirs();
 
-				for(ForgeDirection d : dirs) {
+				for(final ForgeDirection d : dirs) {
 
 					if(d == dir || d == dir.getOpposite())
 						continue;
@@ -633,12 +626,12 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 
 			ForgeDirection validDir = ForgeDirection.UNKNOWN;
 
-			List<ForgeDirection> dirs = getRandomDirs();
+			final List<ForgeDirection> dirs = getRandomDirs();
 
 			//System.out.println("Starting as " + dir.name());
 
 			//let's look at every direction we could go in
-			for(ForgeDirection d : dirs) {
+			for(final ForgeDirection d : dirs) {
 
 				if(d == dir || d == dir.getOpposite())
 					continue;
@@ -677,16 +670,16 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 	 */
 	private List<ForgeDirection> getRandomDirs() {
 
-		List<Integer> rands = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5} );
+		final List<Integer> rands = Arrays.asList(0, 1, 2, 3, 4, 5);
 		Collections.shuffle(rands);
-		List<ForgeDirection> dirs = new ArrayList<>();
-		for(Integer i : rands) {
+		final List<ForgeDirection> dirs = new ArrayList<>();
+		for(final Integer i : rands) {
 			dirs.add(ForgeDirection.getOrientation(i));
 		}
 		return dirs;
 	}
 
-	public int coilValue(Block b) {
+	public int coilValue(final Block b) {
 
 		if(b instanceof BlockHadronCoil)
 			return ((BlockHadronCoil)b).factor;
@@ -694,7 +687,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		return 0;
 	}
 
-	public boolean isPlating(Block b) {
+	public boolean isPlating(final Block b) {
 
 		return b instanceof BlockHadronPlating ||
 				b instanceof BlockHadronCoil ||
@@ -703,7 +696,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 				b == ModBlocks.hadron_access;
 	}
 
-	public boolean isAnalysis(Block b) {
+	public boolean isAnalysis(final Block b) {
 
 		return b == ModBlocks.hadron_analysis ||
 				b == ModBlocks.hadron_analysis_glass;
@@ -732,11 +725,11 @@ public class TileEntityHadron extends TileEntityMachineBase implements ITickable
 		public int color;
 		public boolean showCoord;
 		
-		private EnumHadronState(int color) {
+		private EnumHadronState(final int color) {
 			this(color, false);
 		}
 		
-		private EnumHadronState(int color, boolean showCoord) {
+		private EnumHadronState(final int color, final boolean showCoord) {
 			this.color = color;
 			this.showCoord = showCoord;
 		}

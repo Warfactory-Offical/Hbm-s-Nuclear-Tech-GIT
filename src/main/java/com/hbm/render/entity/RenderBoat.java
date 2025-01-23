@@ -15,12 +15,12 @@ public class RenderBoat extends Render<EntityDuchessGambit> {
 
 	public static final IRenderFactory<EntityDuchessGambit> FACTORY = (RenderManager man) -> {return new RenderBoat(man);};
 	
-	protected RenderBoat(RenderManager renderManager) {
+	protected RenderBoat(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityDuchessGambit entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityDuchessGambit entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GL11.glTranslatef((float) x, (float) y, (float) z);
@@ -37,7 +37,7 @@ public class RenderBoat extends Render<EntityDuchessGambit> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityDuchessGambit entity) {
+	protected ResourceLocation getEntityTexture(final EntityDuchessGambit entity) {
 		return ResourceManager.boxcar_tex;
 	}
 }

@@ -27,15 +27,15 @@ public class BlockNTMGlass extends BlockBreakable implements IRadResistantBlock,
 	boolean doesDrop = false;
 	boolean isRadResistant = false;
 	
-	public BlockNTMGlass(Material materialIn, BlockRenderLayer layer, String s) {
+	public BlockNTMGlass(final Material materialIn, final BlockRenderLayer layer, final String s) {
 		this(materialIn, layer, false, s);
 	}
 
-	public BlockNTMGlass(Material materialIn, BlockRenderLayer layer, boolean doesDrop, String s) {
+	public BlockNTMGlass(final Material materialIn, final BlockRenderLayer layer, final boolean doesDrop, final String s) {
 		this(materialIn, layer, doesDrop, false, s);
 	}
 
-	public BlockNTMGlass(Material materialIn, BlockRenderLayer layer, boolean doesDrop, boolean isRadResistant, String s) {
+	public BlockNTMGlass(final Material materialIn, final BlockRenderLayer layer, final boolean doesDrop, final boolean isRadResistant, final String s) {
 		super(materialIn, false);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -53,17 +53,17 @@ public class BlockNTMGlass extends BlockBreakable implements IRadResistantBlock,
 	}
 	
 	@Override
-	public BlockNTMGlass setSoundType(SoundType sound) {
+	public BlockNTMGlass setSoundType(final SoundType sound) {
 		return (BlockNTMGlass)super.setSoundType(sound);
 	}
 	
 	@Override
-	public int quantityDropped(Random random){
+	public int quantityDropped(final Random random){
 		return doesDrop ? 1 : 0;
 	}
 	
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if(this.isRadResistant){
 			RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		}
@@ -71,7 +71,7 @@ public class BlockNTMGlass extends BlockBreakable implements IRadResistantBlock,
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		if(this.isRadResistant){
 			RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		}
@@ -79,7 +79,7 @@ public class BlockNTMGlass extends BlockBreakable implements IRadResistantBlock,
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random random) {
 		return doesDrop ? 1 : 0;
 	}
 	
@@ -94,14 +94,14 @@ public class BlockNTMGlass extends BlockBreakable implements IRadResistantBlock,
 	}
 
 	@Override
-	public boolean isRadResistant(World worldIn, BlockPos blockPos){
+	public boolean isRadResistant(final World worldIn, final BlockPos blockPos){
 		return this.isRadResistant;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
-		float hardness = this.getExplosionResistance(null);
+		final float hardness = this.getExplosionResistance(null);
 		if(this.isRadResistant){
 			tooltip.add("§2[" + I18nUtil.resolveKey("trait.radshield") + "]");
 		}

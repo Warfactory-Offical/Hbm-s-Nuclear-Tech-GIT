@@ -120,14 +120,14 @@ public class BulletConfiguration {
 	public static final int BOLT_ZOMG = 3;
 	public static final int BOLT_WORM = 4;
 
-	public BulletConfiguration setToBolt(int trail) {
+	public BulletConfiguration setToBolt(final int trail) {
 
 		this.style = STYLE_BOLT;
 		this.trail = trail;
 		return this;
 	}
 
-	public BulletConfiguration setToFire(int duration) {
+	public BulletConfiguration setToFire(final int duration) {
 		this.incendiary = duration;
 		return this;
 	}
@@ -138,7 +138,7 @@ public class BulletConfiguration {
 		return this;
 	}
 	
-	public BulletConfiguration setToHoming(Item ammo) {
+	public BulletConfiguration setToHoming(final Item ammo) {
 
 		this.ammo = ammo;
 		this.bUpdate = BulletConfigFactory.getHomingBehavior(200, 45);
@@ -151,7 +151,7 @@ public class BulletConfiguration {
 		return this;
 	}
 	
-	public BulletConfiguration accuracyMod(float mod) {
+	public BulletConfiguration accuracyMod(final float mod) {
 		
 		this.spread *= mod;
 		return this;

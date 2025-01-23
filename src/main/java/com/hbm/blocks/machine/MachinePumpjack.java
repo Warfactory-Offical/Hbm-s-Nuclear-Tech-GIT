@@ -36,7 +36,7 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	public MachinePumpjack(Material materialIn, String s) {
+	public MachinePumpjack(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -45,56 +45,56 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachinePumpjack();
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.machine_pumpjack);
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
 		return ItemStackUtil.itemStackFrom(ModBlocks.machine_pumpjack);
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			TileEntity te = world.getTileEntity(pos);
+			final TileEntity te = world.getTileEntity(pos);
 			if(te instanceof TileEntityMachinePumpjack) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_pumpjack, world, pos.getX(), pos.getY(), pos.getZ());
 
@@ -106,15 +106,15 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		int i = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		EnumFacing e = placer.getHorizontalFacing().getOpposite();
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+		final int i = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		final EnumFacing e = placer.getHorizontalFacing().getOpposite();
 		world.setBlockState(pos, state.withProperty(FACING, e));
 
 		if(i == 0) {
@@ -124,28 +124,24 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockPumpjack.safeBreak = true;
 				world.setBlockState(pos.add(-2, 0, 1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(-2, 0, 1));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(-2, 0, 1));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-2, 0, -1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te2 = world.getTileEntity(pos.add(-2, 0, -1));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(pos.add(-2, 0, -1));
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-4, 0, 1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te3 = world.getTileEntity(pos.add(-4, 0, 1));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(pos.add(-4, 0, 1));
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-4, 0, -1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te4 = world.getTileEntity(pos.add(-4, 0, -1));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(pos.add(-4, 0, -1));
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockPumpjack.safeBreak = false;
 				//
@@ -160,28 +156,24 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockPumpjack.safeBreak = true;
 				world.setBlockState(pos.add(1, 0, -2), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(1, 0, -2));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(1, 0, -2));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, -2), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, -2));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(pos.add(-1, 0, -2));
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(1, 0, -4), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te3 = world.getTileEntity(pos.add(1, 0, -4));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(pos.add(1, 0, -4));
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, -4), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te4 = world.getTileEntity(pos.add(-1, 0, -4));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(pos.add(-1, 0, -4));
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockPumpjack.safeBreak = false;
 				//
@@ -196,28 +188,24 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockPumpjack.safeBreak = true;
 				world.setBlockState(pos.add(2, 0, 1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(2, 0, 1));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(2, 0, 1));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(2, 0, -1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te2 = world.getTileEntity(pos.add(2, 0, -1));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(pos.add(2, 0, -1));
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(4, 0, 1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te3 = world.getTileEntity(pos.add(4, 0, 1));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(pos.add(4, 0, 1));
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(4, 0, -1), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te4 = world.getTileEntity(pos.add(4, 0, -1));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(pos.add(4, 0, -1));
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockPumpjack.safeBreak = false;
 				//
@@ -232,28 +220,24 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockPumpjack.safeBreak = true;
 				world.setBlockState(pos.add(1, 0, 2), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(1, 0, 2));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(1, 0, 2));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, 2), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te2 = world.getTileEntity(pos.add(-1, 0, 2));
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(pos.add(-1, 0, 2));
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(1, 0, 4), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te3 = world.getTileEntity(pos.add(1, 0, 4));
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(pos.add(1, 0, 4));
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				world.setBlockState(pos.add(-1, 0, 4), ModBlocks.dummy_port_pumpjack.getDefaultState());
-				TileEntity te4 = world.getTileEntity(pos.add(-1, 0, 4));
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy) te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(pos.add(-1, 0, 4));
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockPumpjack.safeBreak = false;
 				//
@@ -265,16 +249,16 @@ public class MachinePumpjack extends BlockContainer implements IMultiBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing) state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state) {
+		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
 		if(enumfacing.getAxis() == EnumFacing.Axis.Y) {

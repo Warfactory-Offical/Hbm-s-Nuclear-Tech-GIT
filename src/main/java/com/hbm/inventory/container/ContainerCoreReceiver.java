@@ -17,11 +17,11 @@ import net.minecraftforge.fluids.FluidTank;
 
 public class ContainerCoreReceiver extends Container {
 
-	private TileEntityCoreReceiver te;
+	private final TileEntityCoreReceiver te;
 	private EntityPlayerMP player;
 
-	public ContainerCoreReceiver(EntityPlayer player, TileEntityCoreReceiver te) {
-		InventoryPlayer invPlayer = player.inventory;
+	public ContainerCoreReceiver(final EntityPlayer player, final TileEntityCoreReceiver te) {
+		final InventoryPlayer invPlayer = player.inventory;
 		if(player instanceof EntityPlayerMP)
 			this.player = (EntityPlayerMP) player;
 		this.te = te;
@@ -38,10 +38,10 @@ public class ContainerCoreReceiver extends Container {
 	}
 
 	@Override
-	public void addListener(IContainerListener listener) {
+	public void addListener(final IContainerListener listener) {
 		super.addListener(listener);
 		PacketDispatcher.sendTo(new AuxLongPacket(te.getPos(), te.syncJoules, 0), player);
-		PacketDispatcher.sendTo(new FluidTankPacket(te.getPos(), new FluidTank[] { tank }), player);
+		PacketDispatcher.sendTo(new FluidTankPacket(te.getPos(), tank), player);
 	}
 
 	int joules;
@@ -55,20 +55,20 @@ public class ContainerCoreReceiver extends Container {
 		}
 		if(!FFUtils.areTanksEqual(tank, te.tank)){
 			tank = FFUtils.copyTank(te.tank);
-			PacketDispatcher.sendTo(new FluidTankPacket(te.getPos(), new FluidTank[] { tank }), player);
+			PacketDispatcher.sendTo(new FluidTankPacket(te.getPos(), tank), player);
 		}
 		super.detectAndSendChanges();
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return te.isUseableByPlayer(player);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2) {
-		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2) {
+		final ItemStack var3 = ItemStack.EMPTY;
+		final Slot var4 = this.inventorySlots.get(par2);
 
 		if(var4 != null && var4.getHasStack()) {
 			return ItemStack.EMPTY;

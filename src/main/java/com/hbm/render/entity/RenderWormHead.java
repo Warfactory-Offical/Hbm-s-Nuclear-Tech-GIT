@@ -20,13 +20,13 @@ public class RenderWormHead extends Render<EntityBOTPrimeHead> {
 	public static final IModelCustom body = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/mobs/bot_prime_head.obj"));
 	public static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID, "textures/entity/mark_zero_head.png");
 	
-	public RenderWormHead(RenderManager rendermanagerIn) {
+	public RenderWormHead(final RenderManager rendermanagerIn) {
 		super(rendermanagerIn);
 		this.shadowOpaque = 0.0F;
 	}
 	
 	@Override
-	public void doRender(EntityBOTPrimeHead entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBOTPrimeHead entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 
@@ -44,7 +44,7 @@ public class RenderWormHead extends Render<EntityBOTPrimeHead> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBOTPrimeHead entity) {
+	protected ResourceLocation getEntityTexture(final EntityBOTPrimeHead entity) {
 		return texture;
 	}
 

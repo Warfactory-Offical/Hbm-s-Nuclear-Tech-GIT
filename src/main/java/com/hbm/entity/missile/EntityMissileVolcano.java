@@ -14,12 +14,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileVolcano extends EntityMissileBaseAdvanced {
 
-	public EntityMissileVolcano(World p_i1582_1_) {
+	public EntityMissileVolcano(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 11F);
 	}
 
-	public EntityMissileVolcano(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileVolcano(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 11F);
 	}
@@ -42,7 +42,7 @@ public class EntityMissileVolcano extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 16));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 20));

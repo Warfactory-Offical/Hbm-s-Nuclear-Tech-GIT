@@ -17,10 +17,10 @@ public abstract class TileEntityPileBase extends TileEntity implements ITickable
 	@Override
 	public abstract void update();
 	
-	protected void castRay(int flux, int range) {
+	protected void castRay(final int flux, final int range) {
 		
-		Random rand = world.rand;
-		Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
+		final Random rand = world.rand;
+		final Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 		vec.rotateAroundZ((float)(rand.nextDouble() * Math.PI * 2D));
 		vec.rotateAroundY((float)(rand.nextDouble() * Math.PI * 2D));
 		
@@ -30,9 +30,9 @@ public abstract class TileEntityPileBase extends TileEntity implements ITickable
 		
 		for(float i = 1; i <= range; i += 0.5F) {
 
-			int x = (int)Math.floor(pos.getX() + 0.5 + vec.xCoord * i);
-			int y = (int)Math.floor(pos.getY() + 0.5 + vec.yCoord * i);
-			int z = (int)Math.floor(pos.getZ() + 0.5 + vec.zCoord * i);
+			final int x = (int)Math.floor(pos.getX() + 0.5 + vec.xCoord * i);
+			final int y = (int)Math.floor(pos.getY() + 0.5 + vec.yCoord * i);
+			final int z = (int)Math.floor(pos.getZ() + 0.5 + vec.zCoord * i);
 			
 			if(x == prevX && y == prevY && z == prevZ)
 				continue;
@@ -41,7 +41,7 @@ public abstract class TileEntityPileBase extends TileEntity implements ITickable
 			prevY = y;
 			prevZ = z;
 			
-			IBlockState b = world.getBlockState(new BlockPos(x, y, z));
+			final IBlockState b = world.getBlockState(new BlockPos(x, y, z));
 			
 			if(b.getBlock() == ModBlocks.block_boron)
 				return;
@@ -49,16 +49,15 @@ public abstract class TileEntityPileBase extends TileEntity implements ITickable
 			if(b == ModBlocks.block_graphite_rod && !b.getValue(BlockGraphiteRod.OUT))
 				return;
 			
-			TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+			final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 			
-			if(te instanceof IPileNeutronReceiver) {
+			if(te instanceof IPileNeutronReceiver rec) {
 				
 				//this part throttles neutron efficiency for reactions that are way too close, efficiency reaches 100% after 2.5 meters
-				float mult = Math.min((float)i / 2.5F, 1F);
-				int n = (int)(flux * mult);
-				
-				IPileNeutronReceiver rec = (IPileNeutronReceiver) te;
-				rec.receiveNeutrons(n);
+				final float mult = Math.min(i / 2.5F, 1F);
+				final int n = (int)(flux * mult);
+
+                rec.receiveNeutrons(n);
 				return;
 			}
 		}

@@ -11,7 +11,7 @@ public enum ShapePart implements IMetaItemShape {
 
     private final String a, b, c;
 
-    ShapePart(String a, String b, String c) {
+    ShapePart(final String a, final String b, final String c) {
         this.a = a;
         this.b = b;
         this.c = c;

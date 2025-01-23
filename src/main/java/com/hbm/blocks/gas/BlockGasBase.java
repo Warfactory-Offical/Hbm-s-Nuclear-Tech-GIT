@@ -31,7 +31,7 @@ public abstract class BlockGasBase extends Block {
 	float green;
 	float blue;
 
-	public BlockGasBase(float r, float g, float b, String s) {
+	public BlockGasBase(final float r, final float g, final float b, final String s) {
 		super(ModBlocks.materialGas);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -47,17 +47,17 @@ public abstract class BlockGasBase extends Block {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.INVISIBLE;
 	}
 	
 	@Override
-	public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid){
+	public boolean canCollideCheck(final IBlockState state, final boolean hitIfLiquid){
 		return false;
 	}
 	
@@ -67,32 +67,32 @@ public abstract class BlockGasBase extends Block {
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos){
 		return NULL_AABB;
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		return Items.AIR;
 	}
 	
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side){
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state){
+	public boolean isBlockNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos){
+	public boolean isReplaceable(final IBlockAccess worldIn, final BlockPos pos){
 		return true;
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		if(!world.isRemote) {
 			if(world.rand.nextInt(2)==0){
 				if(!tryMove(world, pos.getX(), pos.getY(), pos.getZ(), getFirstDirection(world, pos.getX(), pos.getY(), pos.getZ())))
@@ -103,12 +103,12 @@ public abstract class BlockGasBase extends Block {
 	
 	public abstract ForgeDirection getFirstDirection(World world, int x, int y, int z);
 
-	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
+	public ForgeDirection getSecondDirection(final World world, final int x, final int y, final int z) {
 		return getFirstDirection(world, x, y, z);
 	}
 
-	public boolean tryMove(World world, int x, int y, int z, ForgeDirection dir) {
-		BlockPos newPos = new BlockPos(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+	public boolean tryMove(final World world, final int x, final int y, final int z, final ForgeDirection dir) {
+		final BlockPos newPos = new BlockPos(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 
 		if (!world.isBlockLoaded(newPos)) {
 			return false;
@@ -121,21 +121,21 @@ public abstract class BlockGasBase extends Block {
 		return false;
 	}
 
-	public int getDelay(World world) {
+	public int getDelay(final World world) {
 		return 20;
 	}
 
-	public ForgeDirection randomHorizontal(World world) {
+	public ForgeDirection randomHorizontal(final World world) {
 		return ForgeDirection.getOrientation(world.rand.nextInt(4) + 2);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand){
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
-		EntityPlayer p = MainRegistry.proxy.me();
+		final EntityPlayer p = MainRegistry.proxy.me();
 		if(ArmorUtil.checkArmorPiece(p, ModItems.ashglasses, 3)) {
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaExt");
 			data.setString("mode", "cloud");
 			data.setDouble("posX", pos.getX() + 0.5);

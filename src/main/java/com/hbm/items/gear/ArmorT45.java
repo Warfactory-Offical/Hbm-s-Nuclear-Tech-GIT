@@ -6,7 +6,6 @@ import com.hbm.render.model.ModelT45Boots;
 import com.hbm.render.model.ModelT45Chest;
 import com.hbm.render.model.ModelT45Helmet;
 import com.hbm.render.model.ModelT45Legs;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,12 +25,12 @@ public class ArmorT45 extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	private ModelT45Boots boots;
 	
-	public ArmorT45(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, long maxPower, long chargeRate, long consumption, long drain, String s) {
+	public ArmorT45(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn, "", maxPower, chargeRate, consumption, drain, s);
 	}
 
 	@Override
-	public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
+	public boolean isValidArmor(final ItemStack stack, final EntityEquipmentSlot armorType, final Entity entity) {
 		if (stack.getItem() == ModItems.t45_helmet)
 			return armorType == EntityEquipmentSlot.HEAD;
 		if (stack.getItem() == ModItems.t45_plate)
@@ -45,7 +44,7 @@ public class ArmorT45 extends ArmorFSBPowered {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
 		if (this == ModItems.t45_helmet) {
 			if (armorSlot == EntityEquipmentSlot.HEAD) {
 				if (this.helmet == null) {
@@ -83,7 +82,7 @@ public class ArmorT45 extends ArmorFSBPowered {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
 		if (stack.getItem() == ModItems.t45_helmet) {
 			return "hbm:textures/armor/T45Helmet.png";
 		}

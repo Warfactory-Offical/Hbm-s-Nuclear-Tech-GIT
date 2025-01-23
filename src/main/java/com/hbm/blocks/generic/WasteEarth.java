@@ -39,7 +39,7 @@ public class WasteEarth extends Block implements IItemHazard {
 	public static final PropertyInteger META = PropertyInteger.create("meta", 0, 15);
 	ItemHazardModule module;
 	
-	public WasteEarth(Material materialIn, boolean tick, String s) {
+	public WasteEarth(final Material materialIn, final boolean tick, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -51,23 +51,23 @@ public class WasteEarth extends Block implements IItemHazard {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
-	public WasteEarth(Material materialIn, SoundType type, boolean tick, String s) {
+	public WasteEarth(final Material materialIn, final SoundType type, final boolean tick, final String s) {
 		this(materialIn, tick, s);
 		setSoundType(type);
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{META});
+		return new BlockStateContainer(this, META);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(META);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(META, meta);
 	}
 
@@ -77,7 +77,7 @@ public class WasteEarth extends Block implements IItemHazard {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		if(this == ModBlocks.frozen_grass){
 			return Items.SNOWBALL;
 		}
@@ -85,12 +85,12 @@ public class WasteEarth extends Block implements IItemHazard {
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random random) {
 		return 1;
 	}
 	
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity) {
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entity) {
 		if (entity instanceof EntityLivingBase && this == ModBlocks.waste_earth) {
 
     		((EntityLivingBase) entity).addPotionEffect(new PotionEffect(HbmPotion.radiation, 15 * 20, 4));
@@ -113,7 +113,7 @@ public class WasteEarth extends Block implements IItemHazard {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
 		
 		if(this == ModBlocks.waste_earth || this == ModBlocks.waste_mycelium){
@@ -122,21 +122,21 @@ public class WasteEarth extends Block implements IItemHazard {
 	}
 
 	@Override
-	public boolean canEntitySpawn(IBlockState state, Entity entityIn){
+	public boolean canEntitySpawn(final IBlockState state, final Entity entityIn){
 		return ContaminationUtil.isRadImmune(entityIn);
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos1, IBlockState state, Random rand) {
-		int x = pos1.getX();
-		int y = pos1.getY();
-		int z = pos1.getZ();
+	public void updateTick(final World world, final BlockPos pos1, final IBlockState state, final Random rand) {
+		final int x = pos1.getX();
+		final int y = pos1.getY();
+		final int z = pos1.getZ();
 		if(this == ModBlocks.waste_mycelium && GeneralConfig.enableMycelium) {
 			for(int i = -1; i < 2; i++) {
 				for(int j = -1; j < 2; j++) {
 					for(int k = -1; k < 2; k++) {
-						Block b0 = world.getBlockState(new BlockPos(x + i, y + j, z + k)).getBlock();
-						IBlockState b1 = world.getBlockState(new BlockPos(x + i, y + j + 1, z + k));
+						final Block b0 = world.getBlockState(new BlockPos(x + i, y + j, z + k)).getBlock();
+						final IBlockState b1 = world.getBlockState(new BlockPos(x + i, y + j + 1, z + k));
 						if(!b1.isOpaqueCube() && (b0 == Blocks.DIRT || b0 == Blocks.GRASS || b0 == Blocks.MYCELIUM || b0 == ModBlocks.waste_earth)) {
 							world.setBlockState(new BlockPos(x + i, y + j, z + k), ModBlocks.waste_mycelium.getDefaultState());
 						}

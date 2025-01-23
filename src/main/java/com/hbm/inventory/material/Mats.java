@@ -46,7 +46,7 @@ public class Mats {
 	public static final int _AS = 30;
 	
 	//Vanilla and vanilla-like
-	public static final NTMMaterial MAT_STONE		= makeSmeltable(_VS + 00,	df("Stone"), 0x4D2F23).omitAutoGen();
+	public static final NTMMaterial MAT_STONE		= makeSmeltable(_VS,	df("Stone"), 0x4D2F23).omitAutoGen();
 	public static final NTMMaterial MAT_CARBON		= makeAdditive(	1499, 		df("Carbon"), 0x404040).omitAutoGen();
 	public static final NTMMaterial MAT_COAL		= make(			1400, 		COAL)		.setConversion(MAT_CARBON,  2, 1).omitAutoGen();
 	public static final NTMMaterial MAT_LIGNITE		= make(			1401, 		LIGNITE)	.setConversion(MAT_CARBON,  3, 1);
@@ -105,7 +105,7 @@ public class Mats {
 	public static final NTMMaterial MAT_BORON		= makeSmeltable(500,		B,			0xAD72AE).setShapes(DUSTTINY, INGOT, DUST, BLOCK);
 	
 	//Alloys
-	public static final NTMMaterial MAT_STEEL		= makeSmeltable(_AS + 0,	STEEL,		0x4A4A4A).setShapes(DUSTTINY, INGOT, DUST, PLATE, BLOCK);
+	public static final NTMMaterial MAT_STEEL		= makeSmeltable(_AS,	STEEL,		0x4A4A4A).setShapes(DUSTTINY, INGOT, DUST, PLATE, BLOCK);
 	public static final NTMMaterial MAT_MINGRADE	= makeSmeltable(_AS + 1,	MINGRADE,	0xE44C0F).setShapes(WIRE, INGOT, DUST, BLOCK);
 	public static final NTMMaterial MAT_ALLOY		= makeSmeltable(_AS + 2,	ALLOY,		0xFF7318).setShapes(WIRE, INGOT, DUST, PLATE, BLOCK);
 	public static final NTMMaterial MAT_DURA		= makeSmeltable(_AS + 3,	DURA,		0x376373).setShapes(INGOT, DUST, BLOCK);
@@ -118,44 +118,44 @@ public class Mats {
 	public static final NTMMaterial MAT_FLUX		= makeAdditive(_AS + 10,	df("Flux"),	0xDECCAD).setShapes(DUST);
 	public static final NTMMaterial MAT_SLAG		= makeSmeltable(_AS + 11,	SLAG,		0x6C6562).setShapes(BLOCK);
 
-	public static NTMMaterial make(int id, DictFrame dict) {
+	public static NTMMaterial make(final int id, final DictFrame dict) {
 		return new NTMMaterial(id, dict);
 	}
 	
-	public static NTMMaterial makeSmeltable(int id, DictFrame dict, int color) {
+	public static NTMMaterial makeSmeltable(final int id, final DictFrame dict, final int color) {
 		return new NTMMaterial(id, dict).smeltable(SmeltingBehavior.SMELTABLE).setMoltenColor(color);
 	}
 	
-	public static NTMMaterial makeAdditive(int id, DictFrame dict, int color) {
+	public static NTMMaterial makeAdditive(final int id, final DictFrame dict, final int color) {
 		return new NTMMaterial(id, dict).smeltable(SmeltingBehavior.ADDITIVE).setMoltenColor(color);
 	}
 	
-	public static DictFrame df(String string) {
+	public static DictFrame df(final String string) {
 		return new DictFrame(string);
 	}
 	
 	/** will not respect stacksizes - all stacks will be treated as a singular */
-	public static List<MaterialStack> getMaterialsFromItem(ItemStack stack) {
-		List<MaterialStack> list = new ArrayList();
-		List<String> names = ItemStackUtil.getOreDictNames(stack);
+	public static List<MaterialStack> getMaterialsFromItem(final ItemStack stack) {
+		final List<MaterialStack> list = new ArrayList();
+		final List<String> names = ItemStackUtil.getOreDictNames(stack);
 		
 		if(!names.isEmpty()) {
 			outer:
-			for(String name : names) {
+			for(final String name : names) {
 				
-				List<MaterialStack> oreEntries = materialOreEntries.get(name);
+				final List<MaterialStack> oreEntries = materialOreEntries.get(name);
 				
 				if(oreEntries != null) {
 					list.addAll(oreEntries);
-					break outer;
+					break;
 				}
 				
-				for(Entry<String, MaterialShapes> prefixEntry : prefixByName.entrySet()) {
-					String prefix = prefixEntry.getKey();
+				for(final Entry<String, MaterialShapes> prefixEntry : prefixByName.entrySet()) {
+					final String prefix = prefixEntry.getKey();
 						
 					if(name.startsWith(prefix)) {
-						String materialName = name.substring(prefix.length());
-						NTMMaterial material = matByName.get(materialName);
+						final String materialName = name.substring(prefix.length());
+						final NTMMaterial material = matByName.get(materialName);
 						
 						if(material != null) {
 							list.add(new MaterialStack(material, prefixEntry.getValue().q(1)));
@@ -166,7 +166,7 @@ public class Mats {
 			}
 		}
 		
-		List<MaterialStack> entries = materialEntries.get(ItemStackUtil.comparableStackFrom(stack).makeSingular());
+		final List<MaterialStack> entries = materialEntries.get(ItemStackUtil.comparableStackFrom(stack).makeSingular());
 		
 		if(entries != null) {
 			list.addAll(entries);
@@ -181,10 +181,10 @@ public class Mats {
 		return list;
 	}
 
-	public static List<MaterialStack> getSmeltingMaterialsFromItem(ItemStack stack) {
-		List<MaterialStack> baseMats = getMaterialsFromItem(stack);
-		List<MaterialStack> smelting = new ArrayList();
-		baseMats.forEach(x -> smelting.add(new MaterialStack(x.material.smeltsInto, (int) (x.amount * x.material.convOut / x.material.convIn))));
+	public static List<MaterialStack> getSmeltingMaterialsFromItem(final ItemStack stack) {
+		final List<MaterialStack> baseMats = getMaterialsFromItem(stack);
+		final List<MaterialStack> smelting = new ArrayList();
+		baseMats.forEach(x -> smelting.add(new MaterialStack(x.material.smeltsInto, x.amount * x.material.convOut / x.material.convIn)));
 		return smelting;
 	}
 	
@@ -193,7 +193,7 @@ public class Mats {
 		public final NTMMaterial material;
 		public int amount;
 		
-		public MaterialStack(NTMMaterial material, int amount) {
+		public MaterialStack(final NTMMaterial material, final int amount) {
 			this.material = material;
 			this.amount = amount;
 		}
@@ -203,7 +203,7 @@ public class Mats {
 		}
 	}
 	
-	public static String formatAmount(int amount, boolean showInMb) {
+	public static String formatAmount(int amount, final boolean showInMb) {
 		
 		if(showInMb) {
 			return (amount * 2) + "mB";
@@ -211,13 +211,13 @@ public class Mats {
 		
 		String format = "";
 		
-		int blocks = amount / BLOCK.q(1);
+		final int blocks = amount / BLOCK.q(1);
 		amount -= BLOCK.q(blocks);
-		int ingots = amount / INGOT.q(1);
+		final int ingots = amount / INGOT.q(1);
 		amount -= INGOT.q(ingots);
-		int nuggets = amount / NUGGET.q(1);
+		final int nuggets = amount / NUGGET.q(1);
 		amount -= NUGGET.q(nuggets);
-		int quanta = amount;
+		final int quanta = amount;
 		
 		if(blocks > 0) format += (blocks == 1 ? I18nUtil.resolveKey("matshape.block", blocks) : I18nUtil.resolveKey("matshape.blocks", blocks)) + " ";
 		if(ingots > 0) format += (ingots == 1 ? I18nUtil.resolveKey("matshape.ingot", ingots) : I18nUtil.resolveKey("matshape.ingots", ingots)) + " ";

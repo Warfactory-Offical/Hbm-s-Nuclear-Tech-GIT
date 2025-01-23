@@ -21,7 +21,7 @@ public class EntityMeteor extends EntityThrowable {
 
 	public boolean safe = false;
 
-	public EntityMeteor(World p_i1582_1_) {
+	public EntityMeteor(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
@@ -66,7 +66,7 @@ public class EntityMeteor extends EntityThrowable {
         
         if(GeneralConfig.enableMeteorTails && world.isRemote && world.isAreaLoaded(new BlockPos(posX, posY, posZ), 6)) {
 
-    		NBTTagCompound data = new NBTTagCompound();
+    		final NBTTagCompound data = new NBTTagCompound();
     		data.setString("type", "exhaust");
     		data.setString("mode", "meteor");
     		data.setInteger("count", 10);
@@ -81,7 +81,7 @@ public class EntityMeteor extends EntityThrowable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance) {
+    public boolean isInRangeToRenderDist(final double distance) {
         return distance < 25000;
     }
 
@@ -97,16 +97,16 @@ public class EntityMeteor extends EntityThrowable {
     }
 	
 	@Override
-	protected void onImpact(RayTraceResult result) {
+	protected void onImpact(final RayTraceResult result) {
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(final NBTTagCompound nbt) {
 		this.safe = nbt.getBoolean("safe");
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) {
+	public void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setBoolean("safe", safe);
 	}
 }

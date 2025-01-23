@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class KeypadTest extends BlockContainer {
 
-	public KeypadTest(Material m, String s) {
+	public KeypadTest(final Material m, final String s) {
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -29,20 +29,20 @@ public class KeypadTest extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityKeypadBase();
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(BlockHorizontal.FACING, placer.getHorizontalFacing().getOpposite()));
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-		TileEntityKeypadBase te = (TileEntityKeypadBase) worldIn.getTileEntity(pos);
-		AxisAlignedBB key = te.keypad.client().rayTrace(pos);
+	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World worldIn, final BlockPos pos) {
+		final TileEntityKeypadBase te = (TileEntityKeypadBase) worldIn.getTileEntity(pos);
+		final AxisAlignedBB key = te.keypad.client().rayTrace(pos);
 		if(key != null) {
 			return key;
 		}
@@ -50,8 +50,8 @@ public class KeypadTest extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntityKeypadBase te = (TileEntityKeypadBase) worldIn.getTileEntity(pos);
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final TileEntityKeypadBase te = (TileEntityKeypadBase) worldIn.getTileEntity(pos);
 		if(worldIn.isRemote) {
 			if(te.keypad.client().isPlayerMouseingOver(pos)) {
 				return te.keypad.client().playerClick(pos);
@@ -66,12 +66,12 @@ public class KeypadTest extends BlockContainer {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(BlockHorizontal.FACING).getIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		if(meta < 2 || meta > 5)
 			return this.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.byIndex(2));
 		return this.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.byIndex(meta));

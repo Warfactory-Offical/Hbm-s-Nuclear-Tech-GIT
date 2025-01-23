@@ -82,21 +82,21 @@ public class TileEntityTurretJeremy extends TileEntityTurretBaseNT {
 
 		if(timer % 40 == 0) {
 
-			BulletConfiguration conf = this.getFirstConfigLoaded();
+			final BulletConfiguration conf = this.getFirstConfigLoaded();
 
 			if(conf != null) {
 				this.spawnBullet(conf);
 				this.conusmeAmmo(conf.ammo);
 				this.world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.jeremy_fire, SoundCategory.BLOCKS, 4.0F, 1.0F);
 				
-				Vec3 pos = new Vec3(this.getTurretPos());
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				final Vec3 pos = new Vec3(this.getTurretPos());
+				final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 
 				reload = 20;
 
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaExt");
 				data.setString("mode", "largeexplode");
 				data.setFloat("size", 0F);

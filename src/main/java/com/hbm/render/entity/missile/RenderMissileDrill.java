@@ -17,16 +17,16 @@ public class RenderMissileDrill extends Render<EntityMissileDrill> {
 
 	public static final IRenderFactory<EntityMissileDrill> FACTORY = (RenderManager man) -> {return new RenderMissileDrill(man);};
 	
-	protected RenderMissileDrill(RenderManager renderManager) {
+	protected RenderMissileDrill(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMissileDrill missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileDrill missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-		double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+		final double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
 		x = renderPos[0];
 		y = renderPos[1];
 		z = renderPos[2];
@@ -44,7 +44,7 @@ public class RenderMissileDrill extends Render<EntityMissileDrill> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileDrill entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileDrill entity) {
 		return ResourceManager.missileHuge_BU_tex;
 	}
 }

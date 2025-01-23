@@ -37,7 +37,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
 	private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
     
-	public EntityRADBeast(World worldIn) {
+	public EntityRADBeast(final World worldIn) {
 		super(worldIn);
 		this.isImmuneToFire = true;
         this.experienceValue = 30;
@@ -60,11 +60,11 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     @Override
-    public void onDeath(DamageSource cause) {
+    public void onDeath(final DamageSource cause) {
     	if(this.getMaxHealth() > 150) {
-	        List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
+	        final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
 
-	        for(EntityPlayer player : players) {
+	        for(final EntityPlayer player : players) {
 	        	AdvancementManager.grantAchievement(player, AdvancementManager.achMeltdown);
 	        }
         }
@@ -88,7 +88,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+    protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
     	return SoundEvents.ENTITY_BLAZE_HURT;
     }
     
@@ -98,11 +98,11 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float f) {
+    public int getBrightnessForRender(final float f) {
         return 15728880;
     }
 
-    public float getBrightness(float f) {
+    public float getBrightness(final float f) {
         return 1.0F;
     }
     
@@ -172,16 +172,16 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     @Override
-    public boolean attackEntityAsMob(Entity target) {
+    public boolean attackEntityAsMob(final Entity target) {
     	boolean flag = false;
-    	float dist = (float) this.getDistanceSq(target);
+    	final float dist = (float) this.getDistanceSq(target);
     	if (this.idleTime <= 0 && dist < 4.0F && target.getEntityBoundingBox().maxY > this.getEntityBoundingBox().minY && target.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
             this.idleTime = 20;
             return super.attackEntityAsMob(target);
         } else if(dist < 30.0F) {
 
-            double deltaX = target.posX - this.posX;
-            double deltaZ = target.posZ - this.posZ;
+            final double deltaX = target.posX - this.posX;
+            final double deltaZ = target.posZ - this.posZ;
 
             if (this.idleTime == 0 && getAttackTarget() != null) {
 
@@ -196,12 +196,12 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     public Entity getUnfortunateSoul() {
-    	int id = this.dataManager.get(TARGET_ID);
+    	final int id = this.dataManager.get(TARGET_ID);
     	return world.getEntityByID(id);
     }
 
     @Override
-    public void fall(float distance, float damageMultiplier) {}
+    public void fall(final float distance, final float damageMultiplier) {}
     
     @Override
     protected Item getDropItem() {
@@ -209,17 +209,17 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
 
     @Override
-    protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
+    protected void dropLoot(final boolean wasRecentlyHit, final int looting, final DamageSource source) {
         super.dropLoot(wasRecentlyHit, looting, source);
         if(looting > 0) {
                 this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.POLONIUM), looting), 0);
             }
             
-        int count = this.rand.nextInt(3) + 1;
+        final int count = this.rand.nextInt(3) + 1;
         
         for(int i = 0; i < count; i++) {
             
-            int r = this.rand.nextInt(3);
+            final int r = this.rand.nextInt(3);
             
             if(r == 0) {
                 this.dropItem(this.isWet() ? ModItems.waste_uranium : ModItems.rod_uranium_fuel_depleted, 1);

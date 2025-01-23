@@ -1,20 +1,15 @@
 package com.hbm.items.meta;
-import com.hbm.inventory.OreDictManager;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
-import com.hbm.lib.RefStrings;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -28,10 +23,10 @@ public class MetaItem<
     private final EMaterial[] materials;
 
     @SafeVarargs
-    public MetaItem(EShape shape, EMaterial... materials) {
+    public MetaItem(final EShape shape, final EMaterial... materials) {
         this.materials = materials;
 
-        String name = shape.getResultingItemName();
+        final String name = shape.getResultingItemName();
 
         setTranslationKey(name);
         setRegistryName(name);
@@ -44,16 +39,16 @@ public class MetaItem<
         ModItems.ALL_ITEMS.add(this);
     }
 
-    public ItemStack getItemStack(EMaterial material, int amount) {
+    public ItemStack getItemStack(final EMaterial material, final int amount) {
         return ItemStackUtil.itemStackFrom(this, amount, Arrays.asList(materials).indexOf(material));
     }
 
-    public ItemStack getItemStack(EMaterial material) {
+    public ItemStack getItemStack(final EMaterial material) {
         return getItemStack(material, 1);
     }
 
     @Override
-    public void getSubItems(@NotNull CreativeTabs tab, @NotNull NonNullList<ItemStack> items) {
+    public void getSubItems(@NotNull final CreativeTabs tab, @NotNull final NonNullList<ItemStack> items) {
         if (isInCreativeTab(tab)) {
             for (int i = 0; i < materials.length; ++i) {
                 items.add(ItemStackUtil.itemStackFrom(this, 1, i));
@@ -63,8 +58,8 @@ public class MetaItem<
 
     @Override
     @NotNull
-    public String getTranslationKey(ItemStack stack) {
-        int meta = stack.getMetadata();
+    public String getTranslationKey(final ItemStack stack) {
+        final int meta = stack.getMetadata();
         if (meta < materials.length) return super.getTranslationKey() + "_" + materials[meta].getNameSnakeCase();
         return super.getTranslationKey() + "_error";
     }
@@ -72,7 +67,7 @@ public class MetaItem<
     @SideOnly(Side.CLIENT)
     public void registerModels() {
         for (int i = 0; i < materials.length; i++) {
-            String materialName = materials[i].getNameSnakeCase();
+            final String materialName = materials[i].getNameSnakeCase();
 
             ModelLoader
                     .setCustomModelResourceLocation(this, i,
@@ -84,7 +79,7 @@ public class MetaItem<
         }
     }
 
-    public MetaItem<EShape, EMaterial> setCreativeTab(CreativeTabs creativeTab) {
+    public MetaItem<EShape, EMaterial> setCreativeTab(final CreativeTabs creativeTab) {
         return (MetaItem<EShape, EMaterial>) super.setCreativeTab(creativeTab);
     }
 

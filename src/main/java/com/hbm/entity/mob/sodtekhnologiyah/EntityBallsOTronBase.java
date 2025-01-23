@@ -12,13 +12,10 @@ public abstract class EntityBallsOTronBase extends EntityWormBase {
 	public int attackCounter = 0;
 
 	protected final Predicate<Entity> selector = ent -> {
-			if(ent instanceof EntityWormBase && ((EntityWormBase)ent).getUniqueWormID() == EntityBallsOTronBase.this.getUniqueWormID())
-				return false;
-
-			return true;
-		};
+        return !(ent instanceof EntityWormBase) || ((EntityWormBase) ent).getUniqueWormID() != EntityBallsOTronBase.this.getUniqueWormID();
+    };
 	
-	public EntityBallsOTronBase(World world) {
+	public EntityBallsOTronBase(final World world) {
 		super(world);
 		this.setSize(2.0F, 2.0F);
 		this.isImmuneToFire = true;
@@ -30,7 +27,7 @@ public abstract class EntityBallsOTronBase extends EntityWormBase {
 	}
 	
 	@Override
-	public boolean canEntityBeSeen(Entity entityIn) {
+	public boolean canEntityBeSeen(final Entity entityIn) {
 		return this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double)entityIn.getEyeHeight(), entityIn.posZ), false, true, false) == null;
 	}
 	
@@ -41,7 +38,7 @@ public abstract class EntityBallsOTronBase extends EntityWormBase {
 	}
 
 	@Override
-	public void setPartID(int id) {
+	public void setPartID(final int id) {
 
 	}
 

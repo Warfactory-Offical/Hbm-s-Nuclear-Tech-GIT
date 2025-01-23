@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 public class ParticleContrailSolid extends ParticleContrail {
 
-	public ParticleContrailSolid(TextureManager manage, World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleContrailSolid(final TextureManager manage, final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(manage, worldIn, posXIn, posYIn, posZIn, 0.98F, 0.8F, 0.47F, 1F);
 		this.flameRed = 1F;
 		this.flameGreen = 0.5F;

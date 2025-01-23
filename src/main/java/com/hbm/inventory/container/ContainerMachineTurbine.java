@@ -12,9 +12,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineTurbine extends Container {
 
-private TileEntityMachineTurbine diFurnace;
+private final TileEntityMachineTurbine diFurnace;
 	
-	public ContainerMachineTurbine(InventoryPlayer invPlayer, TileEntityMachineTurbine tedf) {
+	public ContainerMachineTurbine(final InventoryPlayer invPlayer, final TileEntityMachineTurbine tedf) {
 		
 		diFurnace = tedf;
 
@@ -47,14 +47,14 @@ private TileEntityMachineTurbine diFurnace;
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 6) {
@@ -85,7 +85,7 @@ private TileEntityMachineTurbine diFurnace;
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 }

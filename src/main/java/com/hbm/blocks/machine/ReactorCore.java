@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class ReactorCore extends BlockContainer {
 
-	public ReactorCore(Material materialIn, String s) {
+	public ReactorCore(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -23,20 +23,20 @@ public class ReactorCore extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineReactorLarge();
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity te = worldIn.getTileEntity(pos);
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+		final TileEntity te = worldIn.getTileEntity(pos);
 		if(te instanceof TileEntityMachineReactorLarge)
 			InventoryHelper.dropInventoryItems(worldIn, pos, ((TileEntityMachineReactorLarge)te).dropProvider);
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

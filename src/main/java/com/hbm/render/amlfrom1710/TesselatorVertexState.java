@@ -6,16 +6,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TesselatorVertexState
 {
-    private int[] rawBuffer;
-    private int rawBufferIndex;
-    private int vertexCount;
-    private boolean hasTexture;
-    private boolean hasBrightness;
-    private boolean hasNormals;
-    private boolean hasColor;
+    private final int[] rawBuffer;
+    private final int rawBufferIndex;
+    private final int vertexCount;
+    private final boolean hasTexture;
+    private final boolean hasBrightness;
+    private final boolean hasNormals;
+    private final boolean hasColor;
     private static final String __OBFID = "CL_00000961";
 
-    public TesselatorVertexState(int[] p_i45079_1_, int p_i45079_2_, int p_i45079_3_, boolean p_i45079_4_, boolean p_i45079_5_, boolean p_i45079_6_, boolean p_i45079_7_)
+    public TesselatorVertexState(final int[] p_i45079_1_, final int p_i45079_2_, final int p_i45079_3_, final boolean p_i45079_4_, final boolean p_i45079_5_, final boolean p_i45079_6_, final boolean p_i45079_7_)
     {
         this.rawBuffer = p_i45079_1_;
         this.rawBufferIndex = p_i45079_2_;

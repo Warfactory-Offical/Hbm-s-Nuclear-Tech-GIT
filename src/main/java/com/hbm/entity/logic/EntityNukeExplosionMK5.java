@@ -58,14 +58,14 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 	EntityFalloutUnderGround falloutBall;
 	EntityFalloutRain falloutRain;
 
-	private int nukeTickNumber = 0;
+	private final int nukeTickNumber = 0;
 
 
-	public EntityNukeExplosionMK5(World world) {
+	public EntityNukeExplosionMK5(final World world) {
 		super(world);
 	}
 
-	public EntityNukeExplosionMK5(World world, int strength, int speed, int radius) {
+	public EntityNukeExplosionMK5(final World world, final int strength, final int speed, final int radius) {
 		super(world);
 		this.strength = strength;
 		this.radius = radius;
@@ -126,7 +126,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 		} else {
 				
 			if(fallout) {
-				EntityFalloutUnderGround falloutBall = new EntityFalloutUnderGround(this.world);
+				final EntityFalloutUnderGround falloutBall = new EntityFalloutUnderGround(this.world);
 				falloutBall.posX = this.posX;
 				falloutBall.posY = this.posY;
 				falloutBall.posZ = this.posZ;
@@ -139,7 +139,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 				falloutBall.falloutRainRadius2 = this.radius+4;
 				this.world.spawnEntity(falloutBall);
 			} else {
-				EntityFalloutRain falloutRain = new EntityFalloutRain(this.world);
+				final EntityFalloutRain falloutRain = new EntityFalloutRain(this.world);
 				falloutRain.doFallout = false;
 				falloutRain.doFlood = floodPlease;
 				falloutRain.posX = this.posX;
@@ -163,7 +163,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote && ticket != null) {
             	
             if(loaderTicket == null) {
@@ -179,10 +179,10 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks) {
+            for(final ChunkPos chunk : loadedChunks) {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
 
@@ -197,7 +197,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks) {
+            for(final ChunkPos chunk : loadedChunks) {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
         }
@@ -205,7 +205,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 
 	public void clearLoadedChunks() {
 		if(!world.isRemote && loaderTicket != null && loadedChunks != null) {
-			for(ChunkPos chunk : loadedChunks) {
+			for(final ChunkPos chunk : loadedChunks) {
 				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
 			}
 		}
@@ -224,13 +224,13 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 		}
 	}
 
-	private static boolean isWet(World world, BlockPos pos){
-		Biome b = world.getBiome(pos);
+	private static boolean isWet(final World world, final BlockPos pos){
+		final Biome b = world.getBiome(pos);
 		return b.getTempCategory() == Biome.TempCategory.OCEAN || b.isHighHumidity() || b == Biomes.BEACH || b == Biomes.OCEAN || b == Biomes.RIVER  || b == Biomes.DEEP_OCEAN || b == Biomes.FROZEN_OCEAN || b == Biomes.FROZEN_RIVER || b == Biomes.STONE_BEACH || b == Biomes.SWAMPLAND;
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(final NBTTagCompound nbt) {
 		radius = nbt.getInteger("radius");
 		strength = nbt.getInteger("strength");
 		falloutAdd = nbt.getInteger("falloutAdd");
@@ -245,7 +245,7 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) {
+	public void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("radius", radius);
 		nbt.setInteger("strength", strength);
 		nbt.setInteger("falloutAdd", falloutAdd);
@@ -258,16 +258,16 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 		}
 	}
 
-	public static EntityNukeExplosionMK5 statFac(World world, int r, double x, double y, double z) {
+	public static EntityNukeExplosionMK5 statFac(final World world, int r, final double x, final double y, final double z) {
 		if(GeneralConfig.enableExtendedLogging && !world.isRemote)
 			MainRegistry.logger.log(Level.INFO, "[NUKE] Initialized explosion at " + x + " / " + y + " / " + z + " with radius " + r + "!");
 
 		if(r == 0)
 			r = 25;
 
-		EntityNukeExplosionMK5 mk5 = new EntityNukeExplosionMK5(world);
+		final EntityNukeExplosionMK5 mk5 = new EntityNukeExplosionMK5(world);
 
-		mk5.strength = (int)(2*r);
+		mk5.strength = 2*r;
 		mk5.radius = r;
 
 		mk5.setPosition(x, y, z);
@@ -277,29 +277,29 @@ public class EntityNukeExplosionMK5 extends Entity implements IChunkLoader {
 		return mk5;
 	}
 
-	public static EntityNukeExplosionMK5 statFacFire(World world, int r, double x, double y, double z) {
+	public static EntityNukeExplosionMK5 statFacFire(final World world, final int r, final double x, final double y, final double z) {
 		
-		EntityNukeExplosionMK5 mk5 = statFac(world, r, x, y ,z);
+		final EntityNukeExplosionMK5 mk5 = statFac(world, r, x, y ,z);
 		mk5.spawnFire = true;
 		return mk5;
 	}
 
-	public static EntityNukeExplosionMK5 statFacNoRad(World world, int r, double x, double y, double z) {
+	public static EntityNukeExplosionMK5 statFacNoRad(final World world, final int r, final double x, final double y, final double z) {
 		
-		EntityNukeExplosionMK5 mk5 = statFac(world, r, x, y ,z);
+		final EntityNukeExplosionMK5 mk5 = statFac(world, r, x, y ,z);
 		mk5.fallout = false;
 		return mk5;
 	}
 
-	public static EntityNukeExplosionMK5 statFacNoRadFire(World world, int r, double x, double y, double z) {
+	public static EntityNukeExplosionMK5 statFacNoRadFire(final World world, final int r, final double x, final double y, final double z) {
 		
-		EntityNukeExplosionMK5 mk5 = statFac(world, r, x, y ,z);
+		final EntityNukeExplosionMK5 mk5 = statFac(world, r, x, y ,z);
 		mk5.fallout = false;
 		mk5.spawnFire = true;
 		return mk5;
 	}
 	
-	public EntityNukeExplosionMK5 moreFallout(int fallout) {
+	public EntityNukeExplosionMK5 moreFallout(final int fallout) {
 		falloutAdd = fallout;
 		return this;
 	}

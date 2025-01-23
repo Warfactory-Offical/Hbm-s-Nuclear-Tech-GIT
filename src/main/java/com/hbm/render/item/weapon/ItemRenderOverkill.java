@@ -54,7 +54,7 @@ public class ItemRenderOverkill extends TEISRBase {
 
 	//Drillgon200: Oh god this class is messy. I'm going to stop using the same item renderer to render every powerful gun.
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		if (stack.getItem() == ModItems.gun_revolver_pip)
 			Minecraft.getMinecraft().renderEngine.bindTexture(pipLoc);
 		if (stack.getItem() == ModItems.gun_revolver_nopip)

@@ -1,5 +1,6 @@
 package com.hbm.packet;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.hbm.tileentity.machine.TileEntityMachineRadar;
@@ -26,7 +27,7 @@ public class TERadarPacket implements IMessage {
 
 	}
 
-	public TERadarPacket(BlockPos pos, List<int[]> missiles) {
+	public TERadarPacket(final BlockPos pos, final List<int[]> missiles) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
@@ -34,28 +35,28 @@ public class TERadarPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		int size = buf.readInt();
+		final int size = buf.readInt();
 		missiles2 = new int[size][];
 		for(int i = 0; i < size; i ++){
-			int mX = buf.readInt();
-			int mZ = buf.readInt();
-			int type = buf.readInt();
-			int mY = buf.readInt();
+			final int mX = buf.readInt();
+			final int mZ = buf.readInt();
+			final int type = buf.readInt();
+			final int mY = buf.readInt();
 			missiles2[i] = new int[]{mX, mZ, type, mY};
 		}
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
 		buf.writeInt(missiles.size());
-		for(int[] missile : missiles){
+		for(final int[] missile : missiles){
 			buf.writeInt(missile[0]);
 			buf.writeInt(missile[1]);
 			buf.writeInt(missile[2]);
@@ -67,20 +68,17 @@ public class TERadarPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(TERadarPacket m, MessageContext ctx) {
+		public IMessage onMessage(final TERadarPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 				try {
-					if (te != null && te instanceof TileEntityMachineRadar) {
+					if (te != null && te instanceof TileEntityMachineRadar radar) {
 
-						TileEntityMachineRadar radar = (TileEntityMachineRadar) te;
-						radar.nearbyMissiles.clear();
-						for(int[] i : m.missiles2){
-							radar.nearbyMissiles.add(i);
-						}
+                        radar.nearbyMissiles.clear();
+                        Collections.addAll(radar.nearbyMissiles, m.missiles2);
 					}
-				} catch (Exception x) {
+				} catch (final Exception x) {
 				}
 			});
 			return null;

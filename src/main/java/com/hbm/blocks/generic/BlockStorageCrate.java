@@ -53,7 +53,7 @@ public class BlockStorageCrate extends BlockContainer {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	private static boolean dropInv = true;
 
-	public BlockStorageCrate(Material materialIn, String s){
+	public BlockStorageCrate(final Material materialIn, final String s){
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -63,7 +63,7 @@ public class BlockStorageCrate extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta){
+	public TileEntity createNewTileEntity(final World worldIn, final int meta){
 		if(this == ModBlocks.crate_iron)
 			return new TileEntityCrateIron();
 		if(this == ModBlocks.crate_steel)
@@ -93,22 +93,22 @@ public class BlockStorageCrate extends BlockContainer {
 
 
 	@Override
-	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player){
+	public boolean canHarvestBlock(final IBlockAccess world, final BlockPos pos, final EntityPlayer player){
 		return true;
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+	public boolean removedByPlayer(final IBlockState state, final World world, final BlockPos pos, final EntityPlayer player, final boolean willHarvest){
 
 		if(!player.capabilities.isCreativeMode && !world.isRemote && willHarvest) {
 			
-			ItemStack drop = ItemStackUtil.itemStackFrom(this);
-			TileEntity te = world.getTileEntity(pos);
+			final ItemStack drop = ItemStackUtil.itemStackFrom(this);
+			final TileEntity te = world.getTileEntity(pos);
 			
-			NBTTagCompound nbt = new NBTTagCompound();
+			final NBTTagCompound nbt = new NBTTagCompound();
 			
 			if(te != null) {
-				IItemHandler inventory;
+				final IItemHandler inventory;
 				if(te instanceof TileEntitySafe){
 
 					inventory = ((TileEntitySafe)te).getPackingCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -119,20 +119,19 @@ public class BlockStorageCrate extends BlockContainer {
 
 				for(int i = 0; i < inventory.getSlots(); i++) {
 					
-					ItemStack stack = inventory.getStackInSlot(i);
+					final ItemStack stack = inventory.getStackInSlot(i);
 					if(stack.isEmpty())
 						continue;
 					
-					NBTTagCompound slot = new NBTTagCompound();
+					final NBTTagCompound slot = new NBTTagCompound();
 					stack.writeToNBT(slot);
 					nbt.setTag("slot" + i, slot);
 				}
 			}
 			
-			if(te instanceof TileEntityLockableBase) {
-				TileEntityLockableBase lockable = (TileEntityLockableBase) te;
-				
-				if(lockable.isLocked()) {
+			if(te instanceof TileEntityLockableBase lockable) {
+
+                if(lockable.isLocked()) {
 					nbt.setInteger("lock", lockable.getPins());
 					nbt.setDouble("lockMod", lockable.getMod());
 				}
@@ -153,38 +152,38 @@ public class BlockStorageCrate extends BlockContainer {
 			InventoryHelper.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop);
 		}
 
-		this.dropInv = false;
-		boolean flag = world.setBlockToAir(pos);
-		this.dropInv = true;
+		dropInv = false;
+		final boolean flag = world.setBlockToAir(pos);
+		dropInv = true;
 		
 		return flag;
 	}
 
 	@Override
-	public Block setSoundType(SoundType sound){
+	public Block setSoundType(final SoundType sound){
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
-		if(this.dropInv){
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state){
+		if(dropInv){
 			InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		}
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		if(world.isRemote) {
 			return true;
 		} else if(player.getHeldItemMainhand() != null && (player.getHeldItemMainhand().getItem() instanceof ItemLock || player.getHeldItemMainhand().getItem() == ModItems.key_kit)) {
 			return false;
 
 		} else if(!player.isSneaking()) {
-			TileEntity entity = world.getTileEntity(pos);
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
+			final TileEntity entity = world.getTileEntity(pos);
+			final int x = pos.getX();
+			final int y = pos.getY();
+			final int z = pos.getZ();
 			if(entity instanceof TileEntityCrateIron && ((TileEntityCrateIron)entity).canAccess(player)) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_crate_iron, world, x, y, z);
 			}
@@ -207,22 +206,21 @@ public class BlockStorageCrate extends BlockContainer {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack){
 
-		TileEntity te = world.getTileEntity(pos);
+		final TileEntity te = world.getTileEntity(pos);
 
 		if(te != null && stack.hasTagCompound()) {
-			IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			final IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-			NBTTagCompound nbt = stack.getTagCompound();
+			final NBTTagCompound nbt = stack.getTagCompound();
 			for(int i = 0; i < inventory.getSlots(); i++) {
 				inventory.insertItem(i, ItemStackUtil.itemStackFrom(nbt.getCompoundTag("slot" + i)), false);
 			}
 			
-			if(te instanceof TileEntityLockableBase) {
-				TileEntityLockableBase lockable = (TileEntityLockableBase) te;
-				
-				if(nbt.hasKey("lock")) {
+			if(te instanceof TileEntityLockableBase lockable) {
+
+                if(nbt.hasKey("lock")) {
 					lockable.setPins(nbt.getInteger("lock"));
 					lockable.setMod(nbt.getDouble("lockMod"));
 					lockable.lock();
@@ -237,27 +235,27 @@ public class BlockStorageCrate extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand){
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand){
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return null;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state){
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state){
+		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(final int meta){
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
 		if(enumfacing.getAxis() == EnumFacing.Axis.Y) {
@@ -268,33 +266,33 @@ public class BlockStorageCrate extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot){
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot){
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn){
-		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn){
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, list, flagIn);
-		int totalSlots = getSlots();
+		final int totalSlots = getSlots();
 		if(stack.hasTagCompound()){
-			NBTTagCompound nbt = stack.getTagCompound();
+			final NBTTagCompound nbt = stack.getTagCompound();
 			int slotCount = 0;
 			for(int i=0; i<totalSlots; i++){
 				if(nbt.hasKey("slot"+i)){
 					slotCount++;
 				}
 			}
-			float percent = Library.roundFloat(slotCount * 100F/totalSlots, 1);
+			final float percent = Library.roundFloat(slotCount * 100F/totalSlots, 1);
 			String color = "§e";
 			String color2 = "§6"; 
 			if(percent >= 75){

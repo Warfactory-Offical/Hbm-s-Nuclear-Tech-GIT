@@ -14,19 +14,19 @@ public interface IConfigurableMachine {
 	/* writes the entire config for this machine using the relevant values */
 	public void writeConfig(JsonWriter writer) throws IOException;
 	
-	public static boolean grab(JsonObject obj, String name, boolean def) {
+	public static boolean grab(final JsonObject obj, final String name, final boolean def) {
 		return obj.has(name) ? obj.get(name).getAsBoolean() : def;
 	}
 	
-	public static int grab(JsonObject obj, String name, int def) {
+	public static int grab(final JsonObject obj, final String name, final int def) {
 		return obj.has(name) ? obj.get(name).getAsInt() : def;
 	}
 	
-	public static long grab(JsonObject obj, String name, long def) {
+	public static long grab(final JsonObject obj, final String name, final long def) {
 		return obj.has(name) ? obj.get(name).getAsLong() : def;
 	}
 	
-	public static double grab(JsonObject obj, String name, double def) {
+	public static double grab(final JsonObject obj, final String name, final double def) {
 		return obj.has(name) ? obj.get(name).getAsDouble() : def;
 	}
 }

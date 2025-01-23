@@ -22,7 +22,7 @@ public class TileEntityNukeGadget extends TileEntity {
 	public TileEntityNukeGadget() {
 		inventory = new ItemStackHandler(6){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -37,11 +37,11 @@ public class TileEntityNukeGadget extends TileEntity {
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -51,61 +51,38 @@ public class TileEntityNukeGadget extends TileEntity {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
 	public boolean exp1() {
-		if(inventory.getStackInSlot(1).getItem() == ModItems.gadget_explosive8)
-		{
-			return true;
-		}
-		
-		return false;
-	}
+        return inventory.getStackInSlot(1).getItem() == ModItems.gadget_explosive8;
+    }
 	
 	public boolean exp2() {
-		if(inventory.getStackInSlot(2).getItem() == ModItems.gadget_explosive8)
-		{
-			return true;
-		}
-		
-		return false;
-	}
+        return inventory.getStackInSlot(2).getItem() == ModItems.gadget_explosive8;
+    }
 	
 	public boolean exp3() {
-		if(inventory.getStackInSlot(3).getItem() == ModItems.gadget_explosive8)
-		{
-			return true;
-		}
-		
-		return false;
-	}
+        return inventory.getStackInSlot(3).getItem() == ModItems.gadget_explosive8;
+    }
 	
 	public boolean exp4() {
-		if(inventory.getStackInSlot(4).getItem() == ModItems.gadget_explosive8)
-		{
-			return true;
-		}
-		
-		return false;
-	}
+        return inventory.getStackInSlot(4).getItem() == ModItems.gadget_explosive8;
+    }
 	
 	public boolean isReady() {
-		if(this.exp1() == true && this.exp2() == true && this.exp3() == true && this.exp4() == true)
+		if(this.exp1() && this.exp2() && this.exp3() && this.exp4())
 		{
-			if(inventory.getStackInSlot(0).getItem() == ModItems.gadget_wireing && inventory.getStackInSlot(5).getItem() == ModItems.gadget_core)
-			{
-				return true;
-			}
+            return inventory.getStackInSlot(0).getItem() == ModItems.gadget_wireing && inventory.getStackInSlot(5).getItem() == ModItems.gadget_core;
 		}
 		
 		return false;
@@ -131,12 +108,12 @@ public class TileEntityNukeGadget extends TileEntity {
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 }

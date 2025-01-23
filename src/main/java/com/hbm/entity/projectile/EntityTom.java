@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTom extends EntityThrowable implements IConstantRenderer {
 
-	public EntityTom(World p_i1582_1_) {
+	public EntityTom(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 	}
@@ -41,7 +41,7 @@ public class EntityTom extends EntityThrowable implements IConstantRenderer {
         {
     		if(!this.world.isRemote) {
     			if(CompatibilityConfig.isWarDim(world)){
-	    			EntityTomBlast tom = new EntityTomBlast(world);
+	    			final EntityTomBlast tom = new EntityTomBlast(world);
 	    			tom.posX = posX;
 	    			tom.posY = posY;
 	    			tom.posZ = posZ;
@@ -49,7 +49,7 @@ public class EntityTom extends EntityThrowable implements IConstantRenderer {
 	    			world.spawnEntity(tom);
 	    		}
     			
-    			EntityCloudTom cloud = new EntityCloudTom(world, 500);
+    			final EntityCloudTom cloud = new EntityCloudTom(world, 500);
     			cloud.setLocationAndAngles(posX, posY, posZ, 0, 0);
     			world.spawnEntity(cloud);
     		}
@@ -58,12 +58,12 @@ public class EntityTom extends EntityThrowable implements IConstantRenderer {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult p_70184_1_) {
+	protected void onImpact(final RayTraceResult p_70184_1_) {
 	}
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 500000;
     }

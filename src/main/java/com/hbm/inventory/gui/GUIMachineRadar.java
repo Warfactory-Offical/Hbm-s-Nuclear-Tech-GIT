@@ -22,10 +22,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineRadar extends GuiInfoContainer {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_radar.png");
-	private TileEntityMachineRadar diFurnace;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_radar.png");
+	private final TileEntityMachineRadar diFurnace;
 
-	public GUIMachineRadar(InventoryPlayer invPlayer, TileEntityMachineRadar tedf) {
+	public GUIMachineRadar(final InventoryPlayer invPlayer, final TileEntityMachineRadar tedf) {
 		super(new ContainerMachineRadar(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -34,7 +34,7 @@ public class GUIMachineRadar extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 221, 200, 7, diFurnace.power, TileEntityMachineRadar.maxPower);
@@ -46,16 +46,16 @@ public class GUIMachineRadar extends GuiInfoContainer {
 
 
 		if(!diFurnace.nearbyMissiles.isEmpty()) {
-			for(int[] m : diFurnace.nearbyMissiles) {
-				int x = guiLeft + (int)((m[0] - diFurnace.getPos().getX()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 108;
-				int z = guiTop + (int)((m[1] - diFurnace.getPos().getZ()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 117;
+			for(final int[] m : diFurnace.nearbyMissiles) {
+				final int x = guiLeft + (int)((m[0] - diFurnace.getPos().getX()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 108;
+				final int z = guiTop + (int)((m[1] - diFurnace.getPos().getZ()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 117;
 				
 				if(mouseX + 4 > x && mouseX - 4 < x && mouseY + 4 > z && mouseY - 4 < z) {
-					double relX = m[0] - diFurnace.getPos().getX();
-					double relY = m[3] - diFurnace.getPos().getY();
-					double relZ = m[1] - diFurnace.getPos().getZ();
-					int distanceToMissile = (int)Math.sqrt(relX*relX+relY*relY+relZ*relZ);
-					String[] text = new String[] { RadarTargetType.values()[m[2]].name, "Dist.: "+distanceToMissile+"m", "Alt.: " + m[3] };
+					final double relX = m[0] - diFurnace.getPos().getX();
+					final double relY = m[3] - diFurnace.getPos().getY();
+					final double relZ = m[1] - diFurnace.getPos().getZ();
+					final int distanceToMissile = (int)Math.sqrt(relX*relX+relY*relY+relZ*relZ);
+					final String[] text = new String[] { RadarTargetType.values()[m[2]].name, "Dist.: "+distanceToMissile+"m", "Alt.: " + m[3] };
 					
 					this.drawHoveringText(Arrays.asList(text), x, z);
 					
@@ -66,7 +66,7 @@ public class GUIMachineRadar extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
 		super.mouseClicked(x, y, i);
 
 		if(guiLeft -10 <= x && guiLeft + -10 + 8 > x && guiTop + 98 < y && guiTop + 98 + 8 >= y) {
@@ -91,14 +91,14 @@ public class GUIMachineRadar extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = I18n.format("container.radar");
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = I18n.format("container.radar");
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -118,7 +118,7 @@ public class GUIMachineRadar extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft - 10, guiTop + 128, 230, 232, 8, 8);
 		
 		if(diFurnace.power > 0) {
-			int i = (int)diFurnace.getPowerScaled(200);
+			final int i = (int)diFurnace.getPowerScaled(200);
 			drawTexturedModalRect(guiLeft + 8, guiTop + 221, 0, 234, i, 16);
 		}
 
@@ -134,10 +134,10 @@ public class GUIMachineRadar extends GuiInfoContainer {
 		}
 		
 		if(!diFurnace.nearbyMissiles.isEmpty()) {
-			for(int[] m : diFurnace.nearbyMissiles) {
-				int x = (int)((m[0] - diFurnace.getPos().getX()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
-				int z = (int)((m[1] - diFurnace.getPos().getZ()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
-				int t = m[2];
+			for(final int[] m : diFurnace.nearbyMissiles) {
+				final int x = (int)((m[0] - diFurnace.getPos().getX()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
+				final int z = (int)((m[1] - diFurnace.getPos().getZ()) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
+				final int t = m[2];
 
 				drawTexturedModalRect(guiLeft + 108 + x, guiTop + 117 + z, 216, 8 * t, 8, 8);
 			}

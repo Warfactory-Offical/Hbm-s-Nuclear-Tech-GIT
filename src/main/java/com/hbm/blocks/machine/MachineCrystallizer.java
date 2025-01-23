@@ -20,12 +20,12 @@ import net.minecraft.world.World;
 
 public class MachineCrystallizer extends BlockDummyable {
 
-	public MachineCrystallizer(Material mat, String s) {
+	public MachineCrystallizer(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
+	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
 		if(meta >= 12)
 			return new TileEntityMachineCrystallizer();
 
@@ -39,18 +39,18 @@ public class MachineCrystallizer extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+			final int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
 
 			if(pos1 == null)
 				return false;
 
-			TileEntityMachineCrystallizer entity = (TileEntityMachineCrystallizer) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
+			final TileEntityMachineCrystallizer entity = (TileEntityMachineCrystallizer) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_crystallizer, world, pos1[0], pos1[1], pos1[2]);
@@ -72,7 +72,7 @@ public class MachineCrystallizer extends BlockDummyable {
 	}
 	
 	@Override
-	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
 		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
@@ -92,7 +92,7 @@ public class MachineCrystallizer extends BlockDummyable {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	

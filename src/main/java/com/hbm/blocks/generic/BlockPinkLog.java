@@ -20,7 +20,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class BlockPinkLog extends BlockLog {
 
-	public BlockPinkLog(String s) {
+	public BlockPinkLog(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
@@ -29,29 +29,29 @@ public class BlockPinkLog extends BlockLog {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(LOG_AXIS, EnumAxis.values()[meta]);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(LOG_AXIS).ordinal();
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {LOG_AXIS});
+        return new BlockStateContainer(this, LOG_AXIS);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
     	tooltip.add(I18n.format(this.getTranslationKey()+".desc"));
         super.addInformation(stack, player, tooltip, advanced);
     }

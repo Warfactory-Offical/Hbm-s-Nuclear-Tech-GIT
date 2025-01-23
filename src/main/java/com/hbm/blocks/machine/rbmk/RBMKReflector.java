@@ -9,19 +9,19 @@ import net.minecraft.world.World;
 
 public class RBMKReflector extends RBMKBase {
 
-	public RBMKReflector(String s, String c){
+	public RBMKReflector(final String s, final String c){
 		super(s, c);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		if(meta >= offset)
 			return new TileEntityRBMKReflector();
 		return null;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	

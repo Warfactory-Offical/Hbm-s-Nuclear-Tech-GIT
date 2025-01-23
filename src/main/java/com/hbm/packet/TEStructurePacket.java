@@ -24,7 +24,7 @@ public class TEStructurePacket implements IMessage {
 		
 	}
 
-	public TEStructurePacket(int x, int y, int z, int type)
+	public TEStructurePacket(final int x, final int y, final int z, final int type)
 	{
 		this.x = x;
 		this.y = y;
@@ -33,7 +33,7 @@ public class TEStructurePacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -41,7 +41,7 @@ public class TEStructurePacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -52,14 +52,13 @@ public class TEStructurePacket implements IMessage {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(TEStructurePacket m, MessageContext ctx) {
+		public IMessage onMessage(final TEStructurePacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityStructureMarker) {
-						
-					TileEntityStructureMarker marker = (TileEntityStructureMarker) te;
-					marker.type = m.type;
+				if (te != null && te instanceof TileEntityStructureMarker marker) {
+
+                    marker.type = m.type;
 				}
 			});
 			

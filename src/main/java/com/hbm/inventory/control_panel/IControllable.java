@@ -16,7 +16,7 @@ public interface IControllable {
 
 	// here most things respond by sending the out event back
 	// -- a lazy fix for other controls that share a panel not receiving the broadcast event too.
-	default void receiveEvent(BlockPos from, ControlEvent e) {}
+	default void receiveEvent(final BlockPos from, final ControlEvent e) {}
 	
 	public BlockPos getControlPos();
 	public World getControlWorld();

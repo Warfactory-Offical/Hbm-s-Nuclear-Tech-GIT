@@ -1,17 +1,12 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
-import org.apache.logging.log4j.Level;
-
-import com.hbm.util.I18nUtil;
 import com.hbm.config.GeneralConfig;
 import com.hbm.interfaces.IBomb;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
-
+import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,10 +18,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.Level;
+
+import java.util.List;
 
 public class ItemLaserDetonator extends Item {
 
-	public ItemLaserDetonator(String s) {
+	public ItemLaserDetonator(final String s) {
 		this.setRegistryName(s);
 		this.setTranslationKey(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -35,14 +33,14 @@ public class ItemLaserDetonator extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("item.detonator_laser.desc"));
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		RayTraceResult ray = Library.rayTrace(player, 500, 1);
-		BlockPos pos = ray.getBlockPos();
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final RayTraceResult ray = Library.rayTrace(player, 500, 1);
+		final BlockPos pos = ray.getBlockPos();
 		if(!world.isRemote)
 		{
 	    	if(world.getBlockState(pos).getBlock() instanceof IBomb) {

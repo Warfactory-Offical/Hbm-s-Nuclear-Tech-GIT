@@ -16,17 +16,17 @@ public class Vec3d extends FuncRelational {
         y = 0;
     }
 
-    public Vec3d(int x, int y, int z) {
+    public Vec3d(final int x, final int y, final int z) {
         this((double) x, y, z);
     }
 
-    public Vec3d(double x, double y, double z) {
+    public Vec3d(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3d set(double x, double y, double z) {
+    public Vec3d set(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 
 public class ItemStarterKit extends Item {
 
-	public ItemStarterKit(String s) {
+	public ItemStarterKit(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -38,7 +38,7 @@ public class ItemStarterKit extends Item {
 		ModItems.ALL_ITEMS.add(this);
 	}
 	
-	private void giveHaz(World world, EntityPlayer p, int tier) {
+	private void giveHaz(final World world, final EntityPlayer p, final int tier) {
     	
     	for(int i = 0; i < 4; i++) {
     		
@@ -48,7 +48,7 @@ public class ItemStarterKit extends Item {
     	}
     	switch(tier) {
     	case 0:
-    		ItemStack mask1 = ItemStackUtil.itemStackFrom(ModItems.hazmat_helmet);
+    		final ItemStack mask1 = ItemStackUtil.itemStackFrom(ModItems.hazmat_helmet);
 			ArmorUtil.installGasMaskFilter(mask1, ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter));
 			
 	    	p.inventory.armorInventory.set(3, mask1);
@@ -57,7 +57,7 @@ public class ItemStarterKit extends Item {
 	    	p.inventory.armorInventory.set(0, ItemStackUtil.itemStackFrom(ModItems.hazmat_boots));
 	    	break;
     	case 1:
-    		ItemStack mask2 = ItemStackUtil.itemStackFrom(ModItems.hazmat_helmet_red);
+    		final ItemStack mask2 = ItemStackUtil.itemStackFrom(ModItems.hazmat_helmet_red);
 			ArmorUtil.installGasMaskFilter(mask2, ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter));
 			
 	    	p.inventory.armorInventory.set(3, mask2);
@@ -66,7 +66,7 @@ public class ItemStarterKit extends Item {
 	    	p.inventory.armorInventory.set(0, ItemStackUtil.itemStackFrom(ModItems.hazmat_boots_red));
 	    	break;
     	case 2:
-    		ItemStack mask3 = ItemStackUtil.itemStackFrom(ModItems.hazmat_helmet_grey);
+    		final ItemStack mask3 = ItemStackUtil.itemStackFrom(ModItems.hazmat_helmet_grey);
 			ArmorUtil.installGasMaskFilter(mask3, ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_combo));
 			
 	    	p.inventory.armorInventory.set(3, mask3);
@@ -78,8 +78,8 @@ public class ItemStarterKit extends Item {
     }
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		
 		if(this == ModItems.nuke_starter_kit)
 		{
@@ -472,7 +472,7 @@ public class ItemStarterKit extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.gadget_kit ||
     			this == ModItems.boy_kit ||
     			this == ModItems.man_kit ||

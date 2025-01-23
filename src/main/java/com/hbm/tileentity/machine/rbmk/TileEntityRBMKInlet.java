@@ -32,19 +32,18 @@ public class TileEntityRBMKInlet extends TileEntity implements IFluidHandler, IT
 		if(!world.isRemote) {
 			
 			for(int i = 2; i < 6; i++) {
-				ForgeDirection dir = ForgeDirection.getOrientation(i);
-				Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY(), pos.getZ() + dir.offsetZ)).getBlock();
+				final ForgeDirection dir = ForgeDirection.getOrientation(i);
+				final Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY(), pos.getZ() + dir.offsetZ)).getBlock();
 				
 				if(b instanceof RBMKBase) {
-					int[] pos = ((RBMKBase)b).findCore(world, this.pos.getX() + dir.offsetX, this.pos.getY(), this.pos.getZ() + dir.offsetZ);
+					final int[] pos = ((RBMKBase)b).findCore(world, this.pos.getX() + dir.offsetX, this.pos.getY(), this.pos.getZ() + dir.offsetZ);
 					
 					if(pos != null) {
-						TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+						final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 						
-						if(te instanceof TileEntityRBMKBase) {
-							TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
-							
-							int prov = Math.min(TileEntityRBMKBase.maxWater - rbmk.water, water.getFluidAmount());
+						if(te instanceof TileEntityRBMKBase rbmk) {
+
+                            final int prov = Math.min(TileEntityRBMKBase.maxWater - rbmk.water, water.getFluidAmount());
 							rbmk.water += prov;
 							water.drain(prov, true);
 						}
@@ -55,13 +54,13 @@ public class TileEntityRBMKInlet extends TileEntity implements IFluidHandler, IT
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.water.readFromNBT(nbt.getCompoundTag("tank"));
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setTag("tank", water.writeToNBT(new NBTTagCompound()));
 		return nbt;
@@ -73,7 +72,7 @@ public class TileEntityRBMKInlet extends TileEntity implements IFluidHandler, IT
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && resource.getFluid() == FluidRegistry.WATER)
 			return water.fill(resource, doFill);
 		else
@@ -81,17 +80,17 @@ public class TileEntityRBMKInlet extends TileEntity implements IFluidHandler, IT
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return null;
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -99,7 +98,7 @@ public class TileEntityRBMKInlet extends TileEntity implements IFluidHandler, IT
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 

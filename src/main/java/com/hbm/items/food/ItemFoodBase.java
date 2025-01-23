@@ -1,12 +1,11 @@
 package com.hbm.items.food;
 
 import com.hbm.items.ModItems;
-
 import net.minecraft.item.ItemFood;
 
 public class ItemFoodBase extends ItemFood {
 
-	public ItemFoodBase(int amount, float saturation, boolean isWolfFood, String s){
+	public ItemFoodBase(final int amount, final float saturation, final boolean isWolfFood, final String s){
 		super(amount, saturation, isWolfFood);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);

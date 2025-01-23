@@ -25,23 +25,23 @@ public class HbmJeiRegistryPlugin implements IRecipeRegistryPlugin {
 	// Drillgon200: This is needed because assembler recipes can change during
 		// run time.
 	@Override
-	public <V> List<String> getRecipeCategoryUids(IFocus<V> focus) {
+	public <V> List<String> getRecipeCategoryUids(final IFocus<V> focus) {
 		return Lists.newArrayList(JEIConfig.ASSEMBLY);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IRecipeWrapper, V> List<T> getRecipeWrappers(IRecipeCategory<T> recipeCategory, IFocus<V> focus) {
+	public <T extends IRecipeWrapper, V> List<T> getRecipeWrappers(final IRecipeCategory<T> recipeCategory, final IFocus<V> focus) {
 		if(focus.getValue() instanceof ItemStack) {
-			ItemStack stack = ((ItemStack) focus.getValue()).copy();
+			final ItemStack stack = ((ItemStack) focus.getValue()).copy();
 			stack.setCount(1);
 			if(JEIConfig.ASSEMBLY.equals(recipeCategory.getUid())) {
 				if(focus.getMode() == Mode.INPUT) {
 					if(stack.getItem() == Item.getItemFromBlock(ModBlocks.machine_assembler)){
 						return getRecipeWrappers(recipeCategory);
 					}
-					List<T> list = (List<T>) AssemblerRecipes.recipes.entrySet().stream().filter(recipe -> {
-						for(AStack input : recipe.getValue()) {
+					final List<T> list = (List<T>) AssemblerRecipes.recipes.entrySet().stream().filter(recipe -> {
+						for(final AStack input : recipe.getValue()) {
 							if(input.copy().singulize().isApplicable(stack))
 								return true;
 						}
@@ -58,7 +58,7 @@ public class HbmJeiRegistryPlugin implements IRecipeRegistryPlugin {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IRecipeWrapper> List<T> getRecipeWrappers(IRecipeCategory<T> recipeCategory) {
+	public <T extends IRecipeWrapper> List<T> getRecipeWrappers(final IRecipeCategory<T> recipeCategory) {
 		if(recipeCategory.getUid().equals(JEIConfig.ASSEMBLY)) {
 			
 			return (List<T>) AssemblerRecipes.recipes.entrySet().stream().map(recipe -> new AssemblerRecipeWrapper(recipe.getKey().toStack(), recipe.getValue(), AssemblerRecipes.time.get(recipe.getKey()))).collect(Collectors.toList());

@@ -1,77 +1,46 @@
 package com.hbm.main;
-import com.hbm.items.meta.materials.MaterialMineral;
-import com.hbm.util.ItemStackUtil;
-
-import java.lang.reflect.Field;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map.Entry;
-import java.util.Random;
-
-import com.hbm.hazard_old.HazardSystem;
-import net.minecraft.util.math.Vec3d;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.Multimap;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.capability.HbmCapability;
+import com.hbm.capability.HbmCapability.IHBMData;
 import com.hbm.capability.HbmLivingCapability;
 import com.hbm.capability.HbmLivingProps;
-import com.hbm.capability.HbmCapability.IHBMData;
-import com.hbm.config.GeneralConfig;
 import com.hbm.config.CompatibilityConfig;
+import com.hbm.config.GeneralConfig;
 import com.hbm.config.RadiationConfig;
 import com.hbm.entity.logic.IChunkLoader;
 import com.hbm.entity.mob.EntityCyberCrab;
 import com.hbm.entity.mob.EntityTaintedCreeper;
 import com.hbm.entity.projectile.EntityBurningFOEQ;
 import com.hbm.forgefluid.FFPipeNetwork;
-import com.hbm.potion.HbmDetox;
-import com.hbm.handler.ArmorModHandler;
-import com.hbm.handler.ArmorUtil;
-import com.hbm.handler.BossSpawnHandler;
-import com.hbm.handler.EntityEffectHandler;
-import com.hbm.handler.HTTPHandler;
-import com.hbm.handler.JetpackHandler;
-import com.hbm.handler.MissileStruct;
-import com.hbm.handler.WeightedRandomChestContentFrom1710;
+import com.hbm.handler.*;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
+import com.hbm.hazard_old.HazardSystem;
 import com.hbm.interfaces.IBomb;
 import com.hbm.inventory.AssemblerRecipes;
 import com.hbm.items.IEquipReceiver;
 import com.hbm.items.ModItems;
-import com.hbm.items.tool.ItemDigammaDiagnostic;
 import com.hbm.items.armor.ItemArmorMod;
 import com.hbm.items.armor.ItemModRevive;
 import com.hbm.items.armor.ItemModShackles;
 import com.hbm.items.gear.ArmorFSB;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.items.special.ItemHot;
+import com.hbm.items.tool.ItemDigammaDiagnostic;
 import com.hbm.items.weapon.ItemGunBase;
-import com.hbm.lib.ForgeDirection;
-import com.hbm.lib.HBMSoundHandler;
-import com.hbm.lib.Library;
-import com.hbm.lib.ModDamageSource;
-import com.hbm.lib.RefStrings;
-import com.hbm.util.ArmorRegistry;
-import com.hbm.util.ArmorRegistry.HazardClass;
-import com.hbm.packet.AssemblerRecipeSyncPacket;
-import com.hbm.packet.AuxParticlePacketNT;
-import com.hbm.packet.KeybindPacket;
-import com.hbm.packet.PacketDispatcher;
-import com.hbm.packet.PlayerInformPacket;
-import com.hbm.packet.SurveyPacket;
+import com.hbm.lib.*;
+import com.hbm.packet.*;
 import com.hbm.particle.bullet_hit.EntityHitDataHandler;
+import com.hbm.potion.HbmDetox;
 import com.hbm.tileentity.machine.rbmk.RBMKDials;
 import com.hbm.tileentity.network.RTTYSystem;
+import com.hbm.util.ArmorRegistry;
+import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.EnchantmentUtil;
 import com.hbm.util.EntityDamageUtil;
+import com.hbm.util.ItemStackUtil;
 import com.hbm.world.generator.TimedGenerator;
-
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -80,14 +49,9 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -97,48 +61,29 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootEntry;
-import net.minecraft.world.storage.loot.LootEntryItem;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraft.world.storage.loot.RandomValueRange;
+import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.conditions.RandomChanceWithLooting;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityEvent.EnteringChunk;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent;
 import net.minecraftforge.event.entity.player.PlayerFlyableFallEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -156,6 +101,14 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.registries.DataSerializerEntry;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.Level;
+
+import java.lang.reflect.Field;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 public class ModEventHandler {
@@ -169,15 +122,15 @@ public class ModEventHandler {
 
 
 	@SubscribeEvent
-	public void soundRegistering(RegistryEvent.Register<SoundEvent> evt) {
+	public void soundRegistering(final RegistryEvent.Register<SoundEvent> evt) {
 
-		for(SoundEvent e : HBMSoundHandler.ALL_SOUNDS) {
+		for(final SoundEvent e : HBMSoundHandler.ALL_SOUNDS) {
 			evt.getRegistry().register(e);
 		}
 	}
 
 	@SubscribeEvent
-	public void attachRadCap(AttachCapabilitiesEvent<Entity> e) {
+	public void attachRadCap(final AttachCapabilitiesEvent<Entity> e) {
 		if(e.getObject() instanceof EntityLivingBase)
 			e.addCapability(ENT_HBM_PROP_ID, new HbmLivingCapability.EntityHbmPropsProvider());
 		if(e.getObject() instanceof EntityPlayer){
@@ -186,10 +139,10 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void worldUnload(WorldEvent.Unload e) {
-		Iterator<FFPipeNetwork> itr = MainRegistry.allPipeNetworks.iterator();
+	public void worldUnload(final WorldEvent.Unload e) {
+		final Iterator<FFPipeNetwork> itr = MainRegistry.allPipeNetworks.iterator();
 		while(itr.hasNext()) {
-			FFPipeNetwork net = itr.next();
+			final FFPipeNetwork net = itr.next();
 			if(net.getNetworkWorld() == e.getWorld()) {
 				net.destroySoft();
 				itr.remove();
@@ -198,7 +151,7 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void potionCheck(PotionApplicableEvent e) {
+	public void potionCheck(final PotionApplicableEvent e) {
 		if(HbmDetox.isBlacklisted(e.getPotionEffect().getPotion()) && ArmorUtil.checkForHazmat(e.getEntityLiving()) && ArmorRegistry.hasProtection(e.getEntityLiving(), EntityEquipmentSlot.HEAD, HazardClass.BACTERIA)){
 			e.setResult(Result.DENY);
 			ArmorUtil.damageGasMaskFilter(e.getEntityLiving(), 10);
@@ -206,20 +159,20 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void enteringChunk(EnteringChunk evt) {
+	public void enteringChunk(final EnteringChunk evt) {
 		if(evt.getEntity() instanceof IChunkLoader) {
 			((IChunkLoader) evt.getEntity()).loadNeighboringChunks(evt.getNewChunkX(), evt.getNewChunkZ());
 		}
 	}
 
 	@SubscribeEvent
-	public void onItemToss(ItemTossEvent event){
-		ItemStack yeet = event.getEntityItem().getItem();
+	public void onItemToss(final ItemTossEvent event){
+		final ItemStack yeet = event.getEntityItem().getItem();
 
 		if(yeet.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(yeet)) {
 
-			ItemStack[] mods = ArmorModHandler.pryMods(yeet);
-			ItemStack cladding = mods[ArmorModHandler.cladding];
+			final ItemStack[] mods = ArmorModHandler.pryMods(yeet);
+			final ItemStack cladding = mods[ArmorModHandler.cladding];
 
 			if(cladding != null && cladding.getItem() == ModItems.cladding_obsidian) {
 				event.getEntity().setEntityInvulnerable(true);
@@ -232,7 +185,7 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void lootTableLoad(LootTableLoadEvent e){
+	public void lootTableLoad(final LootTableLoadEvent e){
 		//Drillgon200: Yeah we're doing this in code. Screw minecraft json.
 		if(CompatibilityConfig.modLoot){
 			addWeightedRandomToLootTable(e, LootTableList.CHESTS_VILLAGE_BLACKSMITH, new WeightedRandomChestContentFrom1710(ItemStackUtil.itemStackFrom(ModItems.armor_polish), 1, 1, 3));
@@ -247,35 +200,35 @@ public class ModEventHandler {
 		}
 	}
 
-	private void addWeightedRandomToLootTable(LootTableLoadEvent e, ResourceLocation loc, WeightedRandomChestContentFrom1710 content){
+	private void addWeightedRandomToLootTable(final LootTableLoadEvent e, final ResourceLocation loc, final WeightedRandomChestContentFrom1710 content){
 		if(e.getName().equals(loc)){
-			LootCondition[] conds = new LootCondition[0];
-			LootFunction[] funcs = new LootFunction[1];
+			final LootCondition[] conds = new LootCondition[0];
+			final LootFunction[] funcs = new LootFunction[1];
 			funcs[0] = new LootFunction(conds){
 				@Override
-				public ItemStack apply(ItemStack stack, Random rand, LootContext context){
-					ItemStack sta = content.theItemId.copy();
+				public ItemStack apply(final ItemStack stack, final Random rand, final LootContext context){
+					final ItemStack sta = content.theItemId.copy();
 					sta.setCount(content.theMinimumChanceToGenerateItem + rand.nextInt(content.theMaximumChanceToGenerateItem - content.theMinimumChanceToGenerateItem + 1));
 					return sta;
 				}
 			};
-			LootEntry entry = new LootEntryItem(content.theItemId.getItem(), content.itemWeight, 1, funcs, conds, content.theItemId.getTranslationKey() + "_loot");
-			LootPool pool = new LootPool(new LootEntry[]{entry}, new LootCondition[]{new RandomChanceWithLooting(0.25F, 0.1F)}, new RandomValueRange(1), new RandomValueRange(0), content.theItemId.getTranslationKey() + "_loot");
+			final LootEntry entry = new LootEntryItem(content.theItemId.getItem(), content.itemWeight, 1, funcs, conds, content.theItemId.getTranslationKey() + "_loot");
+			final LootPool pool = new LootPool(new LootEntry[]{entry}, new LootCondition[]{new RandomChanceWithLooting(0.25F, 0.1F)}, new RandomValueRange(1), new RandomValueRange(0), content.theItemId.getTranslationKey() + "_loot");
 			e.getTable().addPool(pool);
 		}
 	}
 
 	/// SMELTING ///
 	@SubscribeEvent
-	public void itemSmelted(PlayerEvent.ItemSmeltedEvent event) {
+	public void itemSmelted(final PlayerEvent.ItemSmeltedEvent event) {
 		if (event.player.world.isRemote) return;
 
-		ItemStack smeltedItem = event.smelting;
-		int randomChance = 64;
+		final ItemStack smeltedItem = event.smelting;
+		final int randomChance = 64;
 
 		// Check for specific smelting results and handle rewards
 		if (ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) || ItemStackUtil.isSameMetaItem(smeltedItem, ModItems.ingot.getItemStack(MaterialMineral.URANIUM))) {
-			Item rewardItem = ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) ? ModItems.lodestone : ModItems.quartz_plutonium;
+			final Item rewardItem = ItemStackUtil.isSameMetaItem(smeltedItem, Items.IRON_INGOT) ? ModItems.lodestone : ModItems.quartz_plutonium;
 
 			if (event.player.getRNG().nextInt(randomChance) == 0) {
 				giveOrDropItem(event.player, ItemStackUtil.itemStackFrom(rewardItem));
@@ -284,7 +237,7 @@ public class ModEventHandler {
 	}
 
 	// Utility method to handle giving or dropping the reward item
-	private void giveOrDropItem(EntityPlayer player, ItemStack reward) {
+	private void giveOrDropItem(final EntityPlayer player, final ItemStack reward) {
 		if (!player.inventory.addItemStackToInventory(reward)) {
 			player.dropItem(reward, false);
 		} else {
@@ -292,26 +245,25 @@ public class ModEventHandler {
 		}
 	}
 	///MOB SPAWNING
-	public boolean canWear(Entity entity){
+	public boolean canWear(final Entity entity){
 		return entity instanceof EntityZombie || entity instanceof EntitySkeleton || entity instanceof EntityVillager || entity instanceof EntityIronGolem;
 	}
 
 	@SubscribeEvent
-	public void mobSpawn(LivingSpawnEvent.SpecialSpawn event) {
+	public void mobSpawn(final LivingSpawnEvent.SpecialSpawn event) {
 		if(CompatibilityConfig.mobGear){
-			EntityLivingBase entity = event.getEntityLiving();
-			World world = event.getWorld();
+			final EntityLivingBase entity = event.getEntityLiving();
+			final World world = event.getWorld();
 
-			if(entity instanceof EntityLiving && canWear(entity)) {
-				int randomArmorNumber = rand.nextInt(2<<16);
-				int randomHandNumber = rand.nextInt(256);
-				EntityLiving mob = (EntityLiving)entity;
-				boolean hasMainHand = !mob.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty();
-				boolean hasOffHand = !mob.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty();
-				boolean hasHat = !mob.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty();
-				boolean hasChest = !mob.getItemStackFromSlot(EntityEquipmentSlot.CHEST).isEmpty();
-				boolean hasLegs = !mob.getItemStackFromSlot(EntityEquipmentSlot.LEGS).isEmpty();
-				boolean hasFeet = !mob.getItemStackFromSlot(EntityEquipmentSlot.FEET).isEmpty();
+			if(entity instanceof EntityLiving mob && canWear(entity)) {
+				final int randomArmorNumber = rand.nextInt(2<<16);
+				final int randomHandNumber = rand.nextInt(256);
+                final boolean hasMainHand = !mob.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty();
+				final boolean hasOffHand = !mob.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty();
+				final boolean hasHat = !mob.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty();
+				final boolean hasChest = !mob.getItemStackFromSlot(EntityEquipmentSlot.CHEST).isEmpty();
+				final boolean hasLegs = !mob.getItemStackFromSlot(EntityEquipmentSlot.LEGS).isEmpty();
+				final boolean hasFeet = !mob.getItemStackFromSlot(EntityEquipmentSlot.FEET).isEmpty();
 
 				if(!hasHat){
 					if(rand.nextInt(64) == 0)
@@ -416,21 +368,21 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onClickSign(PlayerInteractEvent event) {
+	public void onClickSign(final PlayerInteractEvent event) {
 
-		BlockPos pos = event.getPos();
-		World world = event.getWorld();
+		final BlockPos pos = event.getPos();
+		final World world = event.getWorld();
 
 		if(!world.isRemote && world.getBlockState(pos).getBlock() == Blocks.STANDING_SIGN) {
 
-			TileEntitySign sign = (TileEntitySign) world.getTileEntity(pos);
+			final TileEntitySign sign = (TileEntitySign) world.getTileEntity(pos);
 
-			String result = smoosh(sign.signText[0].getUnformattedText(), sign.signText[1].getUnformattedText(), sign.signText[2].getUnformattedText(), sign.signText[3].getUnformattedText());
+			final String result = smoosh(sign.signText[0].getUnformattedText(), sign.signText[1].getUnformattedText(), sign.signText[2].getUnformattedText(), sign.signText[3].getUnformattedText());
 			//System.out.println(result);
 
 			if(hashes.contains(result)){
 				world.destroyBlock(pos, false);
-				EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ItemStackUtil.itemStackFrom(ModItems.bobmazon_hidden));
+				final EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ItemStackUtil.itemStackFrom(ModItems.bobmazon_hidden));
 				entityitem.setPickupDelay(10);
 				world.spawnEntity(entityitem);
 			}
@@ -438,15 +390,15 @@ public class ModEventHandler {
 
 	}
 
-	private String smoosh(String s1, String s2, String s3, String s4) {
+	private String smoosh(final String s1, final String s2, final String s3, final String s4) {
 
-		Random rand = new Random();
+		final Random rand = new Random();
 		String s = "";
 
-		byte[] b1 = s1.getBytes();
-		byte[] b2 = s2.getBytes();
-		byte[] b3 = s3.getBytes();
-		byte[] b4 = s4.getBytes();
+		final byte[] b1 = s1.getBytes();
+		final byte[] b2 = s2.getBytes();
+		final byte[] b3 = s3.getBytes();
+		final byte[] b4 = s4.getBytes();
 
 		if(b1.length == 0 || b2.length == 0 || b3.length == 0 || b4.length == 0)
 			return "";
@@ -475,29 +427,29 @@ public class ModEventHandler {
 		return getHash(s);
 	}
 
-	private String getHash(String inp) {
+	private String getHash(final String inp) {
 
 		try {
-			MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-			byte[] bytes = sha256.digest(inp.getBytes());
+			final MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+			final byte[] bytes = sha256.digest(inp.getBytes());
 			String str = "";
 
-			for(int b : bytes)
+			for(final int b : bytes)
 				str = str + Integer.toString((b & 0xFF) + 256, 16).substring(1);
 
 			return str;
 
-		} catch(NoSuchAlgorithmException e) {
+		} catch(final NoSuchAlgorithmException e) {
 		}
 
 		return "";
 	}
 
 	@SubscribeEvent
-	public void chatEvent(ServerChatEvent event) {
+	public void chatEvent(final ServerChatEvent event) {
 
-		EntityPlayerMP player = event.getPlayer();
-		String message = event.getMessage();
+		final EntityPlayerMP player = event.getPlayer();
+		final String message = event.getMessage();
 		//boolean conditions for the illiterate, edition 1
 		//bellow you can see the header of an if-block. inside the brackets, there is a boolean statement.
 		//that means nothing other than its value totaling either 'true' or 'false'
@@ -533,9 +485,9 @@ public class ModEventHandler {
 		//                 V            V  V                                              V            V  V
 		if(GeneralConfig.enableDebugMode && player.getUniqueID().toString().equals(Library.HbMinecraft) && message.startsWith("!")) {
 
-			String[] msg = message.split(" ");
+			final String[] msg = message.split(" ");
 
-			String m = msg[0].substring(1, msg[0].length()).toLowerCase();
+			final String m = msg[0].substring(1).toLowerCase();
 
 			if("gv".equals(m)) {
 
@@ -555,7 +507,7 @@ public class ModEventHandler {
 					meta = (int) (double) NumberUtils.createDouble(msg[3]);
 				}
 
-				Item item = Item.getItemById(id);
+				final Item item = Item.getItemById(id);
 
 				if(item != null && size > 0 && meta >= 0) {
 					player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(item, size, meta));
@@ -568,14 +520,14 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void worldTick(WorldTickEvent event) {
+	public void worldTick(final WorldTickEvent event) {
 		if (event.world == null || event.world.isRemote) return; // Dont bother updating shit
 
 		// Handle pipe network updates
 		if (!MainRegistry.allPipeNetworks.isEmpty()) {
-			Iterator<FFPipeNetwork> itr = MainRegistry.allPipeNetworks.iterator();
+			final Iterator<FFPipeNetwork> itr = MainRegistry.allPipeNetworks.iterator();
 			while (itr.hasNext()) {
-				FFPipeNetwork net = itr.next();
+				final FFPipeNetwork net = itr.next();
 
 				if (net == null || net.getNetworkWorld() != event.world) continue; // Skip for invalid
 
@@ -588,7 +540,7 @@ public class ModEventHandler {
 			}
 		}
 
-		long worldTime = event.world.getTotalWorldTime();
+		final long worldTime = event.world.getTotalWorldTime();
 
 		// Perform periodic operations
 		if (worldTime % 100 == 97) {
@@ -596,7 +548,7 @@ public class ModEventHandler {
 		}
 
 		// Hazard system update for dropped items
-		for (Object e : event.world.loadedEntityList) {
+		for (final Object e : event.world.loadedEntityList) {
 			if (e instanceof EntityItem) {
 				HazardSystem.updateDroppedItem((EntityItem) e);
 			}
@@ -610,7 +562,7 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void serverTick(ServerTickEvent e){
+	public void serverTick(final ServerTickEvent e){
 		if(e.phase == Phase.START){
 			JetpackHandler.serverTick();
 			RTTYSystem.updateBroadcastQueue();
@@ -622,10 +574,10 @@ public class ModEventHandler {
 	// Drillgon200: So 1.12.2's going to ignore ISpecialArmor if the damage is
 	// unblockable, huh?
 	@SubscribeEvent
-	public void onEntityHurt(LivingHurtEvent e) {
-		EntityLivingBase ent = e.getEntityLiving();
+	public void onEntityHurt(final LivingHurtEvent e) {
+		final EntityLivingBase ent = e.getEntityLiving();
 		if(e.getEntityLiving() instanceof EntityPlayer) {
-			if(ArmorUtil.checkArmor((EntityPlayer) e.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
+			if(ArmorUtil.checkArmor(e.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
 				e.setCanceled(true);
 			}
 		}
@@ -633,9 +585,9 @@ public class ModEventHandler {
 
 		/// V1 ///
 		if(EntityDamageUtil.wasAttackedByV1(e.getSource())) {
-			EntityPlayer attacker = (EntityPlayer) ((EntityDamageSource)e.getSource()).getImmediateSource();
+			final EntityPlayer attacker = (EntityPlayer) e.getSource().getImmediateSource();
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaburst");
 			data.setInteger("count", (int)Math.min(ent.getMaxHealth() / 2F, 250));
 			data.setDouble("motion", 0.1D);
@@ -650,11 +602,11 @@ public class ModEventHandler {
 
 		for(int i = 2; i < 6; i++) {
 
-			ItemStack armor = ent.getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
+			final ItemStack armor = ent.getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
 
 			if(armor != null && ArmorModHandler.hasMods(armor)) {
 
-				for(ItemStack mod : ArmorModHandler.pryMods(armor)) {
+				for(final ItemStack mod : ArmorModHandler.pryMods(armor)) {
 
 					if(mod != null && mod.getItem() instanceof ItemArmorMod) {
 						((ItemArmorMod)mod.getItem()).modDamage(e, armor);
@@ -665,10 +617,10 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onEntityAttacked(LivingAttackEvent event) {
-		EntityLivingBase e = event.getEntityLiving();
+	public void onEntityAttacked(final LivingAttackEvent event) {
+		final EntityLivingBase e = event.getEntityLiving();
 
-		if(e instanceof EntityPlayer && ArmorUtil.checkArmor((EntityPlayer) e, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
+		if(e instanceof EntityPlayer && ArmorUtil.checkArmor(e, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
 			if(event.getSource() != ModDamageSource.digamma){
 				e.world.playSound(null, e.posX, e.posY, e.posZ, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 5F, 1.0F + e.getRNG().nextFloat() * 0.5F);
 				event.setCanceled(true);
@@ -679,18 +631,18 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerFall(PlayerFlyableFallEvent event) {
+	public void onPlayerFall(final PlayerFlyableFallEvent event) {
 		ArmorFSB.handleFall(event.getEntityPlayer());
 	}
 
 	@SubscribeEvent
-	public void onEntityFall(LivingFallEvent event) {
+	public void onEntityFall(final LivingFallEvent event) {
 		ArmorFSB.handleFall(event.getEntityLiving());
 	}
 
 	@SubscribeEvent
-	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		EntityPlayer player = event.player;
+	public void onPlayerTick(final TickEvent.PlayerTickEvent event) {
+		final EntityPlayer player = event.player;
 
 		//Client-side
 		if (player.world.isRemote) {
@@ -717,7 +669,7 @@ public class ModEventHandler {
 		}
 	}
 
-	private void handleGhostFix(EntityPlayer player) {
+	private void handleGhostFix(final EntityPlayer player) {
 		if (!Float.isFinite(player.getHealth()) || !Float.isFinite(player.getAbsorptionAmount())) {
 			player.sendMessage(new TextComponentString("Your health has been restored!"));
 			player.world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.syringeUse, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -726,9 +678,9 @@ public class ModEventHandler {
 		}
 	}
 
-	private void handleBetaHealth(EntityPlayer player) {
+	private void handleBetaHealth(final EntityPlayer player) {
 		if (Library.hasInventoryItem(player.inventory, ModItems.beta)) {
-			int foodLevel = player.getFoodStats().getFoodLevel();
+			final int foodLevel = player.getFoodStats().getFoodLevel();
 			if (foodLevel < 10) {
 				player.getFoodStats().setFoodLevel(10);
 			} else if (foodLevel > 10) {
@@ -738,8 +690,8 @@ public class ModEventHandler {
 		}
 	}
 
-	private void handleClientSideParticleEffect(EntityPlayer player) {
-		double angle = Math.toRadians(player.ticksExisted * 3);
+	private void handleClientSideParticleEffect(final EntityPlayer player) {
+		final double angle = Math.toRadians(player.ticksExisted * 3);
 		Vec3d vec = new Vec3d(3, 0, 0).rotateYaw((float) angle);
 
 		for (int k = 0; k < 5; k++) {
@@ -749,13 +701,13 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onLivingDeath(LivingDeathEvent event) {
+	public void onLivingDeath(final LivingDeathEvent event) {
 		HbmLivingProps.setRadiation(event.getEntityLiving(), 0);
 		if(event.getEntity().world.isRemote)
 			return;
 
 		if(event.getEntityLiving() instanceof EntityPlayer) {
-			if(ArmorUtil.checkArmor((EntityPlayer) event.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
+			if(ArmorUtil.checkArmor(event.getEntityLiving(), ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots)) {
 				if(event.getSource() != ModDamageSource.digamma){
 					event.setCanceled(true);
 					event.getEntityLiving().setHealth(event.getEntityLiving().getMaxHealth());
@@ -765,7 +717,7 @@ public class ModEventHandler {
 		if(event.isCancelable() && event.isCanceled())
 			return;
 		if(GeneralConfig.enableCataclysm) {
-			EntityBurningFOEQ foeq = new EntityBurningFOEQ(event.getEntity().world);
+			final EntityBurningFOEQ foeq = new EntityBurningFOEQ(event.getEntity().world);
 			foeq.setPositionAndRotation(event.getEntity().posX, 500, event.getEntity().posZ, 0.0F, 0.0F);
 			event.getEntity().world.spawnEntity(foeq);
 		}
@@ -779,15 +731,15 @@ public class ModEventHandler {
 
 		if(event.getEntity() instanceof EntityTaintedCreeper && event.getSource() == ModDamageSource.boxcar) {
 
-			for(EntityPlayer player : event.getEntity().getEntityWorld().getEntitiesWithinAABB(EntityPlayer.class, event.getEntity().getEntityBoundingBox().grow(50, 50, 50))) {
+			for(final EntityPlayer player : event.getEntity().getEntityWorld().getEntitiesWithinAABB(EntityPlayer.class, event.getEntity().getEntityBoundingBox().grow(50, 50, 50))) {
 				AdvancementManager.grantAchievement(player, AdvancementManager.bobHidden);
 			}
 		}
 
 		if(!event.getEntityLiving().world.isRemote) {
 
-			if(event.getSource() instanceof EntityDamageSource && ((EntityDamageSource)event.getSource()).getTrueSource() instanceof EntityPlayer
-					 && !(((EntityDamageSource)event.getSource()).getTrueSource() instanceof FakePlayer)) {
+			if(event.getSource() instanceof EntityDamageSource && event.getSource().getTrueSource() instanceof EntityPlayer
+					 && !(event.getSource().getTrueSource() instanceof FakePlayer)) {
 
 				if(event.getEntityLiving() instanceof EntitySpider && event.getEntityLiving().getRNG().nextInt(500) == 0) {
 					event.getEntityLiving().dropItem(ModItems.spider_milk, 1);
@@ -813,14 +765,14 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void onEntityDeathFirst(LivingDeathEvent event){
+	public void onEntityDeathFirst(final LivingDeathEvent event){
 		for(int i = 2; i < 6; i++) {
 
-			ItemStack stack = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
+			final ItemStack stack = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
 
 			if(stack != null && stack.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(stack)) {
 
-				ItemStack revive = ArmorModHandler.pryMods(stack)[ArmorModHandler.extra];
+				final ItemStack revive = ArmorModHandler.pryMods(stack)[ArmorModHandler.extra];
 
 				if(revive != null) {
 
@@ -845,7 +797,7 @@ public class ModEventHandler {
 
 						revive.setItemDamage(revive.getItemDamage() + 1);
 
-						int dmg = revive.getItemDamage();
+						final int dmg = revive.getItemDamage();
 						ArmorModHandler.applyMod(stack, revive);
 
 						event.getEntityLiving().setHealth(event.getEntityLiving().getMaxHealth());
@@ -859,40 +811,38 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onEntityDeathLast(LivingDeathEvent event){
-		EntityLivingBase entity = event.getEntityLiving();
+	public void onEntityDeathLast(final LivingDeathEvent event){
+		final EntityLivingBase entity = event.getEntityLiving();
 
 		if(EntityDamageUtil.wasAttackedByV1(event.getSource())) {
 
-			NBTTagCompound vdat = new NBTTagCompound();
+			final NBTTagCompound vdat = new NBTTagCompound();
 			vdat.setString("type", "giblets");
 			vdat.setInteger("ent", entity.getEntityId());
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(vdat, entity.posX, entity.posY + entity.height * 0.5, entity.posZ), new TargetPoint(entity.dimension, entity.posX, entity.posY + entity.height * 0.5, entity.posZ, 150));
 
 			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, SoundCategory.HOSTILE, 2.0F, 0.95F + entity.world.rand.nextFloat() * 0.2F);
 
-			EntityPlayer attacker = (EntityPlayer) ((EntityDamageSource)event.getSource()).getImmediateSource();
+			final EntityPlayer attacker = (EntityPlayer) event.getSource().getImmediateSource();
 
 			if(attacker.getDistanceSq(entity) < 100) {
 				attacker.heal(entity.getMaxHealth() * 0.25F);
 			}
 		}
 
-		if(entity instanceof EntityPlayer) {
+		if(entity instanceof EntityPlayer player) {
 
-			EntityPlayer player = (EntityPlayer) entity;
+            for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 
-			for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
-
-				ItemStack stack = player.inventory.getStackInSlot(i);
+				final ItemStack stack = player.inventory.getStackInSlot(i);
 
 				if(stack != null && stack.getItem() == ModItems.detonator_deadman) {
 
 					if(stack.getTagCompound() != null) {
 
-						int x = stack.getTagCompound().getInteger("x");
-						int y = stack.getTagCompound().getInteger("y");
-						int z = stack.getTagCompound().getInteger("z");
+						final int x = stack.getTagCompound().getInteger("x");
+						final int y = stack.getTagCompound().getInteger("y");
+						final int z = stack.getTagCompound().getInteger("z");
 
 						if(!player.world.isRemote && player.world.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof IBomb) {
 
@@ -914,10 +864,10 @@ public class ModEventHandler {
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@SubscribeEvent
-	public void onLivingUpdate(LivingUpdateEvent event) {
+	public void onLivingUpdate(final LivingUpdateEvent event) {
 		if (event.isCancelable() && event.isCanceled()) return;
 
-		EntityLivingBase entity = event.getEntityLiving();
+		final EntityLivingBase entity = event.getEntityLiving();
 		ArmorFSB.handleTick(entity);
 
 		// Reflection field initialization
@@ -927,30 +877,29 @@ public class ModEventHandler {
 		}
 
 		try {
-			NonNullList<ItemStack> handInventory = (NonNullList<ItemStack>) r_handInventory.get(entity);
-			NonNullList<ItemStack> armorArray = (NonNullList<ItemStack>) r_armorArray.get(entity);
+			final NonNullList<ItemStack> handInventory = (NonNullList<ItemStack>) r_handInventory.get(entity);
+			final NonNullList<ItemStack> armorArray = (NonNullList<ItemStack>) r_armorArray.get(entity);
 
 			// Handle equipped items for main hand and off-hand
-			if (entity instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) entity;
-				handleEquipUpdate(player, handInventory.get(0), EnumHand.MAIN_HAND);
+			if (entity instanceof EntityPlayer player) {
+                handleEquipUpdate(player, handInventory.get(0), EnumHand.MAIN_HAND);
 				handleEquipUpdate(player, handInventory.get(1), EnumHand.OFF_HAND);
 			}
 
 			// Handle armor updates
 			for (int i = 2; i < 6; i++) {
-				EntityEquipmentSlot slot = EntityEquipmentSlot.values()[i];
-				ItemStack previousArmor = (armorArray != null) ? armorArray.get(i - 2) : ItemStack.EMPTY;
-				ItemStack currentArmor = entity.getItemStackFromSlot(slot);
+				final EntityEquipmentSlot slot = EntityEquipmentSlot.values()[i];
+				final ItemStack previousArmor = (armorArray != null) ? armorArray.get(i - 2) : ItemStack.EMPTY;
+				final ItemStack currentArmor = entity.getItemStackFromSlot(slot);
 
-				boolean needsReapply = armorArray != null && !ItemStack.areItemStacksEqual(previousArmor, currentArmor);
+				final boolean needsReapply = armorArray != null && !ItemStack.areItemStacksEqual(previousArmor, currentArmor);
 				if (needsReapply) {
 					removeOldModifiers(previousArmor, slot, entity);
 					applyNewModifiers(currentArmor, slot, entity);
 				}
 			}
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			//TODO:Figure out how to log that
 		}
 
@@ -965,19 +914,19 @@ public class ModEventHandler {
 	}
 
 	// Handle item equip logic for a given hand
-	private void handleEquipUpdate(EntityPlayer player, ItemStack previousItem, EnumHand hand) {
-		ItemStack currentItem = player.getHeldItem(hand);
+	private void handleEquipUpdate(final EntityPlayer player, final ItemStack previousItem, final EnumHand hand) {
+		final ItemStack currentItem = player.getHeldItem(hand);
 		if (currentItem.getItem() instanceof IEquipReceiver && !ItemStack.areItemsEqual(previousItem, currentItem)) {
 			((IEquipReceiver) currentItem.getItem()).onEquip(player, hand);
 		}
 	}
 
 	// Remove old attribute modifiers for armor
-	private void removeOldModifiers(ItemStack previousArmor, EntityEquipmentSlot slot, EntityLivingBase entity) {
+	private void removeOldModifiers(final ItemStack previousArmor, final EntityEquipmentSlot slot, final EntityLivingBase entity) {
 		if (previousArmor != null && ArmorModHandler.hasMods(previousArmor)) {
-			for (ItemStack mod : ArmorModHandler.pryMods(previousArmor)) {
+			for (final ItemStack mod : ArmorModHandler.pryMods(previousArmor)) {
 				if (mod != null && mod.getItem() instanceof ItemArmorMod) {
-					Multimap<String, AttributeModifier> modifiers = ((ItemArmorMod) mod.getItem()).getModifiers(slot, previousArmor);
+					final Multimap<String, AttributeModifier> modifiers = ((ItemArmorMod) mod.getItem()).getModifiers(slot, previousArmor);
 					if (modifiers != null) {
 						entity.getAttributeMap().removeAttributeModifiers(modifiers);
 					}
@@ -987,12 +936,12 @@ public class ModEventHandler {
 	}
 
 	// Apply new attribute modifiers for armor
-	private void applyNewModifiers(ItemStack currentArmor, EntityEquipmentSlot slot, EntityLivingBase entity) {
+	private void applyNewModifiers(final ItemStack currentArmor, final EntityEquipmentSlot slot, final EntityLivingBase entity) {
 		if (currentArmor != null && ArmorModHandler.hasMods(currentArmor)) {
-			for (ItemStack mod : ArmorModHandler.pryMods(currentArmor)) {
+			for (final ItemStack mod : ArmorModHandler.pryMods(currentArmor)) {
 				if (mod != null && mod.getItem() instanceof ItemArmorMod) {
 					((ItemArmorMod) mod.getItem()).modUpdate(entity, currentArmor);
-					Multimap<String, AttributeModifier> modifiers = ((ItemArmorMod) mod.getItem()).getModifiers(slot, currentArmor);
+					final Multimap<String, AttributeModifier> modifiers = ((ItemArmorMod) mod.getItem()).getModifiers(slot, currentArmor);
 					if (modifiers != null) {
 						entity.getAttributeMap().applyAttributeModifiers(modifiers);
 					}
@@ -1001,7 +950,7 @@ public class ModEventHandler {
 		}
 	}
 	@SubscribeEvent
-	public void onEntityJump(LivingJumpEvent event) {
+	public void onEntityJump(final LivingJumpEvent event) {
 		if(event.isCancelable() && event.isCanceled())
 			return;
 		ArmorFSB.handleJump(event.getEntityLiving());
@@ -1009,21 +958,21 @@ public class ModEventHandler {
 
 
 	@SubscribeEvent
-	public void blockBreak(BlockEvent.BreakEvent event){
+	public void blockBreak(final BlockEvent.BreakEvent event){
 		if(event.isCancelable() && event.isCanceled())
 			return;
 		if(!(event.getPlayer() instanceof EntityPlayerMP))
 			return;
 
-		Block block = event.getState().getBlock();
+		final Block block = event.getState().getBlock();
 
 		if(block == Blocks.COAL_ORE || block == Blocks.COAL_BLOCK || block == ModBlocks.ore_lignite) {
 
-			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
-				int x = event.getPos().getX() + dir.offsetX;
-				int y = event.getPos().getY() + dir.offsetY;
-				int z = event.getPos().getZ() + dir.offsetZ;
+				final int x = event.getPos().getX() + dir.offsetX;
+				final int y = event.getPos().getY() + dir.offsetY;
+				final int z = event.getPos().getZ() + dir.offsetZ;
 
 				if(event.getWorld().rand.nextInt(2) == 0 && event.getWorld().getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.AIR)
 					event.getWorld().setBlockState(new BlockPos(x, y, z), ModBlocks.gas_coal.getDefaultState());
@@ -1032,12 +981,11 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void clientJoinServer(PlayerLoggedInEvent e) {
-		if(e.player instanceof EntityPlayerMP){
-			EntityPlayerMP playerMP = (EntityPlayerMP)e.player;
-			PacketDispatcher.sendTo(new AssemblerRecipeSyncPacket(AssemblerRecipes.recipeList, AssemblerRecipes.hidden), playerMP);
+	public void clientJoinServer(final PlayerLoggedInEvent e) {
+		if(e.player instanceof EntityPlayerMP playerMP){
+            PacketDispatcher.sendTo(new AssemblerRecipeSyncPacket(AssemblerRecipes.recipeList, AssemblerRecipes.hidden), playerMP);
 			JetpackHandler.playerLoggedIn(e);
-			IHBMData props = HbmCapability.getData(e.player);
+			final IHBMData props = HbmCapability.getData(e.player);
 
 			PacketDispatcher.sendTo(new KeybindPacket(EnumKeybind.TOGGLE_JETPACK, props.getEnableBackpack()), playerMP);
 			PacketDispatcher.sendTo(new KeybindPacket(EnumKeybind.TOGGLE_HEAD, props.getEnableHUD()), playerMP);
@@ -1051,9 +999,9 @@ public class ModEventHandler {
 				e.player.sendMessage(new TextComponentTranslation("chat.curver", RefStrings.VERSION));
 
 				if(HTTPHandler.changes != ""){
-					String[] lines = HTTPHandler.changes.split("\\$");
+					final String[] lines = HTTPHandler.changes.split("\\$");
 					e.player.sendMessage(new TextComponentString("§6[Some of the new Features]§r"));//RefStrings.CHANGELOG
-					for(String w: lines){
+					for(final String w: lines){
 						e.player.sendMessage(new TextComponentString(w));//RefStrings.CHANGELOG
 					}
 				}
@@ -1071,34 +1019,34 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void worldLoad(WorldEvent.Load e) {
+	public void worldLoad(final WorldEvent.Load e) {
 		JetpackHandler.worldLoad(e);
 	}
 
 	@SubscribeEvent
-	public void worldSave(WorldEvent.Save e) {
+	public void worldSave(final WorldEvent.Save e) {
 		JetpackHandler.worldSave(e);
 	}
 
 	@SubscribeEvent
-	public void onDataSerializerRegister(RegistryEvent.Register<DataSerializerEntry> evt) {
+	public void onDataSerializerRegister(final RegistryEvent.Register<DataSerializerEntry> evt) {
 		evt.getRegistry().register(new DataSerializerEntry(MissileStruct.SERIALIZER).setRegistryName(new ResourceLocation(RefStrings.MODID, "missile_struct")));
 	}
 
 	@SubscribeEvent
-	public void anvilUpdateEvent(AnvilUpdateEvent event) {
+	public void anvilUpdateEvent(final AnvilUpdateEvent event) {
 
 		if(event.getLeft().getItem() instanceof ItemGunBase && event.getRight().getItem() == Items.ENCHANTED_BOOK) {
 
 			event.setOutput(event.getLeft().copy());
 
-            Map<Enchantment, Integer> mapright = EnchantmentHelper.getEnchantments(event.getRight());
-            Iterator<Entry<Enchantment, Integer>> itr = mapright.entrySet().iterator();
+            final Map<Enchantment, Integer> mapright = EnchantmentHelper.getEnchantments(event.getRight());
+            final Iterator<Entry<Enchantment, Integer>> itr = mapright.entrySet().iterator();
 
             while(itr.hasNext()) {
-            	Entry<Enchantment, Integer> entry = itr.next();
-            	Enchantment e = entry.getKey();
-            	int j = entry.getValue();
+            	final Entry<Enchantment, Integer> entry = itr.next();
+            	final Enchantment e = entry.getKey();
+            	final int j = entry.getValue();
 
             	EnchantmentUtil.removeEnchantment(event.getOutput(), e);
             	EnchantmentUtil.addEnchantment(event.getOutput(), e, j);
@@ -1109,12 +1057,12 @@ public class ModEventHandler {
 		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE)) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE)) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
-			double h1 = ItemHot.getHeat(event.getLeft());
-			double h2 = ItemHot.getHeat(event.getRight());
+			final double h1 = ItemHot.getHeat(event.getLeft());
+			final double h2 = ItemHot.getHeat(event.getRight());
 
 			if(h1 >= 0.5 && h2 >= 0.5) {
 
-				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED));
+				final ItemStack out = ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED));
 				ItemHot.heatUp(out, (h1 + h2) / 2D);
 				event.setOutput(out);
 	            event.setCost(10);
@@ -1124,12 +1072,12 @@ public class ModEventHandler {
 		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
-			double h1 = ItemHot.getHeat(event.getLeft());
-			double h2 = ItemHot.getHeat(event.getRight());
+			final double h1 = ItemHot.getHeat(event.getLeft());
+			final double h2 = ItemHot.getHeat(event.getRight());
 
 			if(h1 >= 0.5 && h2 >= 0.5) {
 
-				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.blade_meteorite);
+				final ItemStack out = ItemStackUtil.itemStackFrom(ModItems.blade_meteorite);
 				ItemHot.heatUp(out, (h1 + h2) / 2D);
 				event.setOutput(out);
 	            event.setCost(30);
@@ -1139,11 +1087,11 @@ public class ModEventHandler {
 		if(ItemStackUtil.isSameMetaItem(event.getLeft(), ModItems.meteorite_sword_seared) && ItemStackUtil.isSameMetaItem(event.getRight(), ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)) &&
 				event.getLeft().getCount() == 1 && event.getRight().getCount() == 1) {
 
-			double h2 = ItemHot.getHeat(event.getRight());
+			final double h2 = ItemHot.getHeat(event.getRight());
 
 			if(h2 >= 0.5) {
 
-				ItemStack out = ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_reforged);
+				final ItemStack out = ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_reforged);
 				event.setOutput(out);
 	            event.setCost(50);
 			}
@@ -1152,19 +1100,19 @@ public class ModEventHandler {
 		if(event.getLeft().getItem() == ModItems.ingot_steel_dusted && event.getRight().getItem() == ModItems.ingot_steel_dusted &&
 				event.getLeft().getCount() ==  event.getRight().getCount()) {
 
-			double h1 = ItemHot.getHeat(event.getLeft());
-			double h2 = ItemHot.getHeat(event.getRight());
+			final double h1 = ItemHot.getHeat(event.getLeft());
+			final double h2 = ItemHot.getHeat(event.getRight());
 
 			if(h2 >= 0.5) {
 
-				int i1 = event.getLeft().getItemDamage();
-				int i2 = event.getRight().getItemDamage();
+				final int i1 = event.getLeft().getItemDamage();
+				final int i2 = event.getRight().getItemDamage();
 
-				int i3 = Math.min(i1, i2) + 1;
+				final int i3 = Math.min(i1, i2) + 1;
 
-				boolean done = i3 >= 10;
+				final boolean done = i3 >= 10;
 
-				ItemStack out;
+				final ItemStack out;
 				if(done){
 					out = ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CHAINSTEEL), event.getLeft().getCount());
 				} else {
@@ -1179,9 +1127,9 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onFoodEaten(LivingEntityUseItemEvent.Finish event) {
+	public void onFoodEaten(final LivingEntityUseItemEvent.Finish event) {
 
-		ItemStack stack = event.getItem();
+		final ItemStack stack = event.getItem();
 
 		if(stack != null && stack.getItem() instanceof ItemFood) {
 
@@ -1194,9 +1142,9 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+	public void onPlayerRespawn(final PlayerEvent.PlayerRespawnEvent event) {
 
-		EntityPlayer player = event.player;
+		final EntityPlayer player = event.player;
 
 		if(player.getDisplayName().getUnformattedText().equals("Dr_Nostalgia") && !player.world.isRemote) {
 
@@ -1210,7 +1158,7 @@ public class ModEventHandler {
 
 	
 	@SubscribeEvent
-	public void craftingRegister(RegistryEvent.Register<IRecipe> e){
+	public void craftingRegister(final RegistryEvent.Register<IRecipe> e){
 		long mem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 		System.out.println("Memory usage before: " + mem);
 		CraftingManager.hack = e;
@@ -1223,21 +1171,21 @@ public class ModEventHandler {
 	// TODO should probably use these.
 
 	@SubscribeEvent
-	public void onItemRegister(RegistryEvent.Register<Item> evt) {
+	public void onItemRegister(final RegistryEvent.Register<Item> evt) {
 	}
 
 	@SubscribeEvent
-	public void onBlockRegister(RegistryEvent.Register<Block> evt) {
+	public void onBlockRegister(final RegistryEvent.Register<Block> evt) {
 	}
 
 	@SubscribeEvent
-	public void onRecipeRegister(RegistryEvent.Register<IRecipe> evt) {
-		IRecipe[] recipes = new IRecipe[12];
-		IRecipe recipe = null;
+	public void onRecipeRegister(final RegistryEvent.Register<IRecipe> evt) {
+		final IRecipe[] recipes = new IRecipe[12];
+		final IRecipe recipe = null;
 		doesArrayContain(recipes, recipe);
 	}
 
-	public static boolean doesArrayContain(Object[] array, Object objectCheck){
+	public static boolean doesArrayContain(final Object[] array, final Object objectCheck){
 		System.out.println("On Recipe Register");
 		return false;
 	}

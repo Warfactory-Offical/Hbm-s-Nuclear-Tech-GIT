@@ -26,7 +26,7 @@ public class RefineryRecipeHandler implements IRecipeCategory<RefineryRecipe> {
 	protected final IDrawableStatic powerStatic;
 	protected final IDrawableAnimated powerAnimated;
 	
-	public RefineryRecipeHandler(IGuiHelper help) {
+	public RefineryRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 145, 55);
 		
 		powerStatic = help.createDrawable(gui_rl, 0, 86, 16, 52);
@@ -57,14 +57,14 @@ public class RefineryRecipeHandler implements IRecipeCategory<RefineryRecipe> {
 	}
 
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 77, 20);
 		powerAnimated.draw(minecraft, 2, 2);
 	}
 	
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, RefineryRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final RefineryRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 46, 19);
 		

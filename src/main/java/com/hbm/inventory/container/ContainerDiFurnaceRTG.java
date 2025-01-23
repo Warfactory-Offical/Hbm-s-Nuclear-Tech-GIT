@@ -11,10 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerDiFurnaceRTG extends Container {
-	private TileEntityDiFurnaceRTG bFurnace;
+	private final TileEntityDiFurnaceRTG bFurnace;
 	// private int progress;
 
-	public ContainerDiFurnaceRTG(InventoryPlayer playerInv, TileEntityDiFurnaceRTG teIn) {
+	public ContainerDiFurnaceRTG(final InventoryPlayer playerInv, final TileEntityDiFurnaceRTG teIn) {
 		bFurnace = teIn;
 		// Input
 		this.addSlotToContainer(new SlotItemHandler(teIn.inventory, 0, 80, 18));
@@ -41,19 +41,19 @@ public class ContainerDiFurnaceRTG extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return bFurnace.isUseableByPlayer(player);
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 3) {

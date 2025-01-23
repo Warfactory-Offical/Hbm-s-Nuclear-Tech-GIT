@@ -15,10 +15,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineDiesel extends GuiInfoContainer {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/GUIDiesel.png");
-	private TileEntityMachineDiesel diFurnace;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/GUIDiesel.png");
+	private final TileEntityMachineDiesel diFurnace;
 
-	public GUIMachineDiesel(InventoryPlayer invPlayer, TileEntityMachineDiesel tedf) {
+	public GUIMachineDiesel(final InventoryPlayer invPlayer, final TileEntityMachineDiesel tedf) {
 		super(new ContainerMachineDiesel(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -27,40 +27,40 @@ public class GUIMachineDiesel extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 69 - 52, 16, 52, diFurnace.tank, diFurnace.tankType);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 69 - 52, 16, 52, diFurnace.power, diFurnace.powerCap);
 
-		String[] text1 = I18nUtil.resolveKeyArray("desc.guimachinediesel1");
+		final String[] text1 = I18nUtil.resolveKeyArray("desc.guimachinediesel1");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		
 		if(!diFurnace.hasAcceptableFuel()) {
 			
-			String[] text2 = I18nUtil.resolveKeyArray("desc.guimachinediesel2");
+			final String[] text2 = I18nUtil.resolveKeyArray("desc.guimachinediesel2");
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
 		if(diFurnace.power > 0) {
-			int i = (int)diFurnace.getPowerScaled(52);
+			final int i = (int)diFurnace.getPowerScaled(52);
 			drawTexturedModalRect(guiLeft + 152, guiTop + 69 - i, 176, 52 - i, 16, i);
 		}
 		

@@ -22,19 +22,19 @@ public class AnvilSmithingCyanideRecipe extends AnvilSmithingRecipe {
 	}
 	
 	@Override
-	public boolean matches(ItemStack left, ItemStack right) {
+	public boolean matches(final ItemStack left, final ItemStack right) {
 		return doesStackMatch(right, this.right) && left.getItem() instanceof ItemFood;
 	}
 
 	@Override
-	public int matchesInt(ItemStack left, ItemStack right) {
+	public int matchesInt(final ItemStack left, final ItemStack right) {
 		return matches(left, right) ? 0 : -1;
 	}
 	
 	@Override
-	public ItemStack getOutput(ItemStack left, ItemStack right) {
+	public ItemStack getOutput(final ItemStack left, final ItemStack right) {
 		
-		ItemStack out = left.copy();
+		final ItemStack out = left.copy();
 		out.setCount(1);
 		if(!out.hasTagCompound())
 			out.setTagCompound(new NBTTagCompound());

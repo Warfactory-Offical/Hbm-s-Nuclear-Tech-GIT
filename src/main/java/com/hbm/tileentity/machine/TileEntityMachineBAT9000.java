@@ -29,12 +29,12 @@ public class TileEntityMachineBAT9000 extends TileEntityBarrel {
 		}
 	}
 
-	public void fillFluid(BlockPos pos1, FluidTank tank) {
+	public void fillFluid(final BlockPos pos1, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, pos1, 512000);
 	}
 
 	@Override
-	public void fillFluidInit(FluidTank type) {
+	public void fillFluidInit(final FluidTank type) {
 		fillFluid(new BlockPos(this.pos.getX() + 1, this.pos.getY(), this.pos.getZ() + 3), type);
 		fillFluid(new BlockPos(this.pos.getX() - 1, this.pos.getY(), this.pos.getZ() + 3), type);
 		fillFluid(new BlockPos(this.pos.getX() + 1, this.pos.getY(), this.pos.getZ() - 3), type);

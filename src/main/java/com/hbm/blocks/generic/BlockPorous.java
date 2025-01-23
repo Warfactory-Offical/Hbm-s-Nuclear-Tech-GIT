@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class BlockPorous extends Block {
 
-	public BlockPorous(String s) {
+	public BlockPorous(final String s) {
 		super(Material.ROCK);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -31,39 +31,39 @@ public class BlockPorous extends Block {
 	
 	@Untested
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		//in theory this should keep the block silk-harvestable, but dropping smooth stone instead
 		return Item.getItemFromBlock(Blocks.STONE);
 	}
 	
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state){
+	public void onBlockAdded(final World world, final BlockPos pos, final IBlockState state){
 		super.onBlockAdded(world, pos, state);
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 		return 90 + world.rand.nextInt(20);
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World worldIn, final BlockPos pos, final IBlockState state, final Random rand){
 		RadiationSavedData.decrementRad(worldIn, pos, 10F);
 	}
 	
 	@Override
-	public boolean isReplaceableOreGen(IBlockState state, IBlockAccess world, BlockPos pos, Predicate<IBlockState> target){
+	public boolean isReplaceableOreGen(final IBlockState state, final IBlockAccess world, final BlockPos pos, final Predicate<IBlockState> target){
 		return target.apply(this.getDefaultState()) || target.apply(Blocks.STONE.getDefaultState());
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(final IBlockState state){
 		return 0;
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(final int meta){
 		return this.getDefaultState();
 	}
 	

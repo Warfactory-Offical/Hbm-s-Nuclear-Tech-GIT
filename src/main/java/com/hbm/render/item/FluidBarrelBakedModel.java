@@ -18,7 +18,7 @@ import net.minecraft.util.EnumFacing;
 public class FluidBarrelBakedModel implements IBakedModel {
 
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
 		return Collections.emptyList();
 	}
 
@@ -48,9 +48,9 @@ public class FluidBarrelBakedModel implements IBakedModel {
 	}
 	
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(final TransformType cameraTransformType) {
 		FluidBarrelRender.INSTANCE.type = cameraTransformType;
-		Pair<? extends IBakedModel, Matrix4f> par = FluidBarrelRender.INSTANCE.itemModel.handlePerspective(cameraTransformType);
+		final Pair<? extends IBakedModel, Matrix4f> par = FluidBarrelRender.INSTANCE.itemModel.handlePerspective(cameraTransformType);
 		return Pair.of(this, par.getRight());
 	}
 

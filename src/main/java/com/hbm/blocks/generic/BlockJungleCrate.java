@@ -18,7 +18,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockJungleCrate extends Block {
 
-	public BlockJungleCrate(Material materialIn, String s) {
+	public BlockJungleCrate(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -29,7 +29,7 @@ public class BlockJungleCrate extends Block {
 	Random rand = new Random();
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune) {
 		drops.add(ItemStackUtil.itemStackFrom(Items.GOLD_INGOT, 4 + rand.nextInt(4)));
 		drops.add(ItemStackUtil.itemStackFrom(Items.GOLD_NUGGET, 8 + rand.nextInt(10)));
 		drops.add(ItemStackUtil.itemStackFrom(ModItems.powder_gold, 2 + rand.nextInt(3)));
@@ -43,7 +43,7 @@ public class BlockJungleCrate extends Block {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	

@@ -21,7 +21,7 @@ public class ItemTurretAmmo extends Item {
 	Block turret;
 	int count;
 	
-	public ItemTurretAmmo(Block b, int i, String string) {
+	public ItemTurretAmmo(final Block b, final int i, final String string) {
 		this.setTranslationKey(string);
 		this.setRegistryName(string);
 		this.setCreativeTab(MainRegistry.weaponTab);
@@ -32,7 +32,7 @@ public class ItemTurretAmmo extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(player.isSneaking())
 			return EnumActionResult.PASS;
 		
@@ -40,7 +40,7 @@ public class ItemTurretAmmo extends Item {
 			
 			if(worldIn.getTileEntity(pos) instanceof TileEntityTurretBase) {
 				((TileEntityTurretBase)worldIn.getTileEntity(pos)).ammo += count;
-            	ItemStack stack = player.getHeldItem(hand);
+            	final ItemStack stack = player.getHeldItem(hand);
             	stack.shrink(1);
             	
             	player.setHeldItem(hand, stack.copy());

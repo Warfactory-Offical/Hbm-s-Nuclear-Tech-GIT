@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class MachineRecipes {
 
 	// return: Fluid, amount produced, amount required, HE produced
-	public static Object[] getTurbineOutput(Fluid type) {
+	public static Object[] getTurbineOutput(final Fluid type) {
 
 		if (type == ModForgeFluids.steam) {
 			return new Object[] { ModForgeFluids.spentsteam, 5, 500, 50 };
@@ -35,9 +35,9 @@ public class MachineRecipes {
 		return null;
 	}
 
-	public static List<GasCentOutput> getGasCentOutput(Fluid fluid) {
+	public static List<GasCentOutput> getGasCentOutput(final Fluid fluid) {
 		
-		List<GasCentOutput> list = new ArrayList<GasCentOutput>();
+		final List<GasCentOutput> list = new ArrayList<GasCentOutput>();
 		if(fluid == null){
 			return null;
 		} else if(fluid == ModForgeFluids.uf6){
@@ -98,7 +98,7 @@ public class MachineRecipes {
 		public ItemStack output;
 		public int slot;
 		
-		public GasCentOutput(int w, ItemStack s, int i) {
+		public GasCentOutput(final int w, final ItemStack s, final int i) {
 			weight = w;
 			output = s;
 			slot = i;
@@ -106,7 +106,7 @@ public class MachineRecipes {
 	}
 
 
-	public static int getFluidConsumedGasCent(Fluid fluid) {
+	public static int getFluidConsumedGasCent(final Fluid fluid) {
 		if(fluid == null)
 			return 0;
 		else if(fluid == FluidRegistry.LAVA)

@@ -16,16 +16,16 @@ public class RenderBaleflare extends Render<EntityBaleflare> {
 
 	public static final IRenderFactory<EntityBaleflare> FACTORY = (RenderManager man) -> {return new RenderBaleflare(man);};
 	
-	private ModelBaleflare miniNuke;
-	private static ResourceLocation bale_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/BaleFlare.png");
+	private final ModelBaleflare miniNuke;
+	private static final ResourceLocation bale_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/BaleFlare.png");
 	
-	protected RenderBaleflare(RenderManager renderManager) {
+	protected RenderBaleflare(final RenderManager renderManager) {
 		super(renderManager);
 		miniNuke = new ModelBaleflare();
 	}
 	
 	@Override
-	public void doRender(EntityBaleflare entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBaleflare entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -38,10 +38,10 @@ public class RenderBaleflare extends Render<EntityBaleflare> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
+	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBaleflare entity) {
+	protected ResourceLocation getEntityTexture(final EntityBaleflare entity) {
 		return bale_rl;
 	}
 

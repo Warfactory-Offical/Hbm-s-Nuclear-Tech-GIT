@@ -22,26 +22,26 @@ public class ModelRendererObj {
     String[] parts;
     IModelCustom model;
 
-    public ModelRendererObj(IModelCustom model, String... parts) {
+    public ModelRendererObj(final IModelCustom model, final String... parts) {
     	this.model = model;
     	this.parts = parts;
     }
     
-    public ModelRendererObj setPosition(float x, float y, float z) {
+    public ModelRendererObj setPosition(final float x, final float y, final float z) {
         this.offsetX = x;
         this.offsetY = y;
         this.offsetZ = z;
         return this;
     }
 
-    public ModelRendererObj setRotationPoint(float x, float y, float z) {
+    public ModelRendererObj setRotationPoint(final float x, final float y, final float z) {
         this.rotationPointX = x;
         this.rotationPointY = y;
         this.rotationPointZ = z;
         return this;
     }
     
-    public void copyTo(ModelRendererObj obj) {
+    public void copyTo(final ModelRendererObj obj) {
 
     	obj.offsetX = offsetX;
     	obj.offsetY = offsetY;
@@ -55,7 +55,7 @@ public class ModelRendererObj {
     }
 
     @SideOnly(Side.CLIENT)
-    public void render(float scale) {
+    public void render(final float scale) {
     	GL11.glPushMatrix();
 
         GL11.glTranslatef(this.offsetX * scale, this.offsetY * scale, this.offsetZ * scale);
@@ -82,7 +82,7 @@ public class ModelRendererObj {
     	GL11.glScalef(scale, scale, scale);
 
     	if(parts != null && parts.length > 0)
-    		for(String part : parts)
+    		for(final String part : parts)
     			model.renderPart(part);
     	else
     		model.renderAll();

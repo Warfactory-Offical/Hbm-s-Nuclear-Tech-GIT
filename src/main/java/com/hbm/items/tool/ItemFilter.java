@@ -1,24 +1,23 @@
 package com.hbm.items.tool;
 
 
+import api.hbm.item.IGasMask;
 import com.hbm.handler.ArmorModHandler;
+import com.hbm.handler.ArmorUtil;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-import com.hbm.handler.ArmorUtil;
-
-import api.hbm.item.IGasMask;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemFilter extends Item {
 	
-	public ItemFilter(String s, int durability) {
+	public ItemFilter(final String s, final int durability) {
 		this.setMaxDamage(durability);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,43 +25,42 @@ public class ItemFilter extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
 		
-		ItemStack helmet = player.inventory.armorInventory.get(3);
-		ItemStack stack = player.getHeldItem(hand);
+		final ItemStack helmet = player.inventory.armorInventory.get(3);
+		final ItemStack stack = player.getHeldItem(hand);
 		if(helmet == null || helmet.isEmpty())
-			return ActionResult.<ItemStack> newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+			return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 		
 		if(!(helmet.getItem() instanceof IGasMask)) {
 			
 			if(ArmorModHandler.hasMods(helmet)) {
-				ItemStack[] mods = ArmorModHandler.pryMods(helmet);
+				final ItemStack[] mods = ArmorModHandler.pryMods(helmet);
 				
 				if(mods[ArmorModHandler.helmet_only] != null) {
-					ItemStack mask = mods[ArmorModHandler.helmet_only];
+					final ItemStack mask = mods[ArmorModHandler.helmet_only];
 					
-					ItemStack ret = installFilterOn(mask, stack, world, player);
+					final ItemStack ret = installFilterOn(mask, stack, world, player);
 					ArmorModHandler.applyMod(helmet, mask);
-					return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, ret);
+					return ActionResult.newResult(EnumActionResult.SUCCESS, ret);
 				}
 			}
 		}
 		
-		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, installFilterOn(helmet, stack, world, player));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, installFilterOn(helmet, stack, world, player));
 	}
 	
-	private ItemStack installFilterOn(ItemStack helmet, ItemStack filter, World world, EntityPlayer player) {
+	private ItemStack installFilterOn(final ItemStack helmet, ItemStack filter, final World world, final EntityPlayer player) {
 		
-		if(!(helmet.getItem() instanceof IGasMask)) {
+		if(!(helmet.getItem() instanceof IGasMask mask)) {
 			return filter;
 		}
-		
-		IGasMask mask = (IGasMask) helmet.getItem();
-		if(!mask.isFilterApplicable(helmet, filter))
+
+        if(!mask.isFilterApplicable(helmet, filter))
 			return filter;
 		
-		ItemStack copy = filter.copy();
-		ItemStack current = ArmorUtil.getGasMaskFilter(helmet);
+		final ItemStack copy = filter.copy();
+		final ItemStack current = ArmorUtil.getGasMaskFilter(helmet);
 		
 		if(current != null) {
 			filter = current;

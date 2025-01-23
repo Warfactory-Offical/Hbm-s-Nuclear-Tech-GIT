@@ -16,15 +16,15 @@ public class RenderCarrierMissile extends Render<EntityCarrier> {
 
 	public static final IRenderFactory<EntityCarrier> FACTORY = (RenderManager man) -> {return new RenderCarrierMissile(man);};
 	
-	protected RenderCarrierMissile(RenderManager renderManager) {
+	protected RenderCarrierMissile(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityCarrier rocket, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityCarrier rocket, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-		double[] renderPos = RenderHelper.getRenderPosFromMissile(rocket, partialTicks);
+		final double[] renderPos = RenderHelper.getRenderPosFromMissile(rocket, partialTicks);
 		x = renderPos[0];
 		y = renderPos[1];
 		z = renderPos[2];
@@ -58,7 +58,7 @@ public class RenderCarrierMissile extends Render<EntityCarrier> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityCarrier entity) {
+	protected ResourceLocation getEntityTexture(final EntityCarrier entity) {
 		return ResourceManager.missileCarrier_tex;
 	}
 

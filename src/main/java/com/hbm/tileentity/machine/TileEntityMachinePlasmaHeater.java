@@ -67,8 +67,8 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 			/// START Managing all the internal stuff ///
 			power = Library.chargeTEFromItems(inventory, 0, power, maxPower);
 
-			int maxConv = 50;
-			int powerReq = 100000;
+			final int maxConv = 50;
+			final int powerReq = 100000;
 
 			int convert = Math.min(tanks[0].getFluidAmount(), tanks[1].getFluidAmount());
 			convert = Math.min(convert, (plasma.getCapacity() - plasma.getFluidAmount()) * 2);
@@ -82,27 +82,26 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 				tanks[1].drain(convert, true);
 
 				plasma.fill(new FluidStack(plasmaType, convert*2), true);
-				power -= convert * powerReq;
+				power -= (long) convert * powerReq;
 				this.markDirty();
 			}
 			/// END Managing all the internal stuff ///
 
 			/// START Loading plasma into the ITER ///
 
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
-			int dist = 11;
+			final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+			final int dist = 11;
 
 			if(world.getBlockState(new BlockPos(pos.getX() + dir.offsetX * dist, pos.getY() + 2, pos.getZ() + dir.offsetZ * dist)).getBlock() == ModBlocks.iter) {
-				int[] pos1 = ((MachineITER)ModBlocks.iter).findCore(world, pos.getX() + dir.offsetX * dist, pos.getY() + 2, pos.getZ() + dir.offsetZ * dist);
-				Fluid type = plasma.getFluid() == null ? null : plasma.getFluid().getFluid();
+				final int[] pos1 = ((MachineITER)ModBlocks.iter).findCore(world, pos.getX() + dir.offsetX * dist, pos.getY() + 2, pos.getZ() + dir.offsetZ * dist);
+				final Fluid type = plasma.getFluid() == null ? null : plasma.getFluid().getFluid();
 				
 				if(pos1 != null) {
-					TileEntity te = world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
+					final TileEntity te = world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
 
-					if(te instanceof TileEntityITER) {
-						TileEntityITER iter = (TileEntityITER)te;
+					if(te instanceof TileEntityITER iter) {
 
-						if(iter.plasma.getFluidAmount() == 0 && type != null) {
+                        if(iter.plasma.getFluidAmount() == 0 && type != null) {
 							iter.plasmaType = type;
 						}
 
@@ -125,8 +124,8 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 			/// END Loading plasma into the ITER ///
 
 			/// START Notif packets ///
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tanks[0], tanks[1], plasma}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20)); 
-			NBTTagCompound data = new NBTTagCompound();
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1], plasma), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			this.networkPack(data, 50);
 			/// END Notif packets ///
@@ -134,14 +133,14 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 	}
 
 	private void updateConnections()  {
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		ForgeDirection side = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection side = dir.getRotation(ForgeDirection.UP);
 		
 		for(int i = 1; i < 4; i++) {
 			for(int j = -1; j < 2; j++) {
@@ -157,7 +156,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 		this.types[0] = tanks[0].getFluid() == null ? null : tanks[0].getFluid().getFluid();
 		this.types[1] = tanks[1].getFluid() == null ? null : tanks[1].getFluid().getFluid();
 
-		List<Fluid> types = Arrays.asList(this.types[0], this.types[1]);
+		final List<Fluid> types = Arrays.asList(this.types[0], this.types[1]);
 
 		if(types.contains(ModForgeFluids.deuterium) && types.contains(ModForgeFluids.tritium)) {
 			plasmaType = ModForgeFluids.plasma_dt;
@@ -187,12 +186,12 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 		plasmaType = null;
 	}
 	
-	public long getPowerScaled(int i) {
+	public long getPowerScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setTag("fuel_1", tanks[0].writeToNBT(new NBTTagCompound()));
 		compound.setTag("fuel_2", tanks[1].writeToNBT(new NBTTagCompound()));
@@ -203,7 +202,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		power = compound.getLong("power");
 		tanks[0].readFromNBT(compound.getCompoundTag("fuel_1"));
@@ -225,7 +224,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 
@@ -245,7 +244,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource != null){
 			if(tanks[0].getFluid() == null || tanks[0].getFluid().getFluid() == resource.getFluid()){
 				if(tanks[1].getFluid() != null && tanks[1].getFluid().getFluid() == resource.getFluid()){
@@ -263,17 +262,17 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 3){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -283,7 +282,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -291,7 +290,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		}

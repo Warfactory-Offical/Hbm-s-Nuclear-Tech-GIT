@@ -11,12 +11,12 @@ public class EntityBurrowingNT extends EntityCreature {
 	protected float dragInAir;
 	protected float dragInGround;
 	
-	public EntityBurrowingNT(World worldIn) {
+	public EntityBurrowingNT(final World worldIn) {
 		super(worldIn);
 	}
 	
 	@Override
-	public void fall(float distance, float damageMultiplier) {}
+	public void fall(final float distance, final float damageMultiplier) {}
 	
 	@Override
 	public float getEyeHeight() {
@@ -28,10 +28,10 @@ public class EntityBurrowingNT extends EntityCreature {
 	}
 	
 	@Override
-	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
+	protected void updateFallState(final double y, final boolean onGroundIn, final IBlockState state, final BlockPos pos) {}
 	
 	@Override
-	public void travel(float strafe, float vertical, float forward) {
+	public void travel(final float strafe, final float vertical, final float forward) {
 		float drag = this.dragInGround;
 		
 		if((!isEntityInsideOpaqueBlock()) && (!isInWater()) && (!isInLava())) {

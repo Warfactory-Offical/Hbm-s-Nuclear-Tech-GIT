@@ -39,7 +39,7 @@ public class GUIScreenBobmazon extends GuiScreen {
     List<FolderButton> buttons = new ArrayList<FolderButton>();
     private final EntityPlayer player;
     
-    public GUIScreenBobmazon(EntityPlayer player, List<Offer> offers) {
+    public GUIScreenBobmazon(final EntityPlayer player, final List<Offer> offers) {
     	
     	this.player = player;
 
@@ -57,7 +57,7 @@ public class GUIScreenBobmazon extends GuiScreen {
     		currentPage = getPageCount();
     }
     
-    public void drawScreen(int mouseX, int mouseY, float f)
+    public void drawScreen(final int mouseX, final int mouseY, final float f)
     {
         this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
@@ -90,34 +90,34 @@ public class GUIScreenBobmazon extends GuiScreen {
         	buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18, guiTop + 26 + (27 * 3), 2, "Next"));
     }
 
-    protected void mouseClicked(int i, int j, int k) {
+    protected void mouseClicked(final int i, final int j, final int k) {
     	try {
-    		for(FolderButton b : buttons)
+    		for(final FolderButton b : buttons)
     			if(b.isMouseOnButton(i, j))
     				b.executeAction();
-    	} catch (Exception ex) {
+    	} catch (final Exception ex) {
     		updateButtons();
     	}
     }
 	
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
 
 		this.fontRenderer.drawString(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1)), 
 				guiLeft + this.xSize / 2 - this.fontRenderer.getStringWidth(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1))) / 2, guiTop + 205, 4210752);
 		
-		for(FolderButton b : buttons)
+		for(final FolderButton b : buttons)
 			if(b.isMouseOnButton(i, j))
 				b.drawString(i, j);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		for(FolderButton b : buttons)
+		for(final FolderButton b : buttons)
 			b.drawButton(b.isMouseOnButton(i, j));
-		for(FolderButton b : buttons)
+		for(final FolderButton b : buttons)
 			b.drawIcon(b.isMouseOnButton(i, j));
         
         for(int d = currentPage * 3; d < Math.min(currentPage * 3 + 3, offers.size()); d++) {
@@ -125,7 +125,7 @@ public class GUIScreenBobmazon extends GuiScreen {
         }
 	}
 	
-    protected void keyTyped(char p_73869_1_, int p_73869_2_)
+    protected void keyTyped(final char p_73869_1_, final int p_73869_2_)
     {
         if (p_73869_2_ == 1 || p_73869_2_ == this.mc.gameSettings.keyBindInventory.getKeyCode())
         {
@@ -143,47 +143,47 @@ public class GUIScreenBobmazon extends GuiScreen {
 		String info;
 		Offer offer;
 		
-		public FolderButton(int x, int y, int t, String i) {
+		public FolderButton(final int x, final int y, final int t, final String i) {
 			xPos = x;
 			yPos = y;
 			type = t;
 			info = i;
 		}
 		
-		public FolderButton(int x, int y, Offer offer) {
+		public FolderButton(final int x, final int y, final Offer offer) {
 			xPos = x;
 			yPos = y;
 			type = 0;
 			this.offer = offer;
 		}
 		
-		public void updateButton(int mouseX, int mouseY) {
+		public void updateButton(final int mouseX, final int mouseY) {
 		}
 		
-		public boolean isMouseOnButton(int mouseX, int mouseY) {
+		public boolean isMouseOnButton(final int mouseX, final int mouseY) {
 			return xPos <= mouseX && xPos + 18 > mouseX && yPos < mouseY && yPos + 18 >= mouseY;
 		}
 		
-		public void drawButton(boolean b) {
+		public void drawButton(final boolean b) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 			drawTexturedModalRect(xPos, yPos, b ? 176 + 18 : 176, type == 1 ? 18 : (type == 2 ? 36 : 0), 18, 18);
 		}
 		
-		public void drawIcon(boolean b) {
+		public void drawIcon(final boolean b) {
 			try {
 		        RenderHelper.enableGUIStandardItemLighting();
 				if(offer != null) {
 					itemRender.renderItemAndEffectIntoGUI(player, offer.offer, xPos + 1, yPos + 1);
 				}
 				RenderHelper.disableStandardItemLighting();
-			} catch(Exception x) { }
+			} catch(final Exception x) { }
 		}
 		
-		public void drawString(int x, int y) {
+		public void drawString(final int x, final int y) {
 			if(info == null || info.isEmpty())
 				return;
 			
-			drawHoveringText(Arrays.asList(new String[] { info }), x, y);
+			drawHoveringText(Arrays.asList(info), x, y);
 		}
 		
 		public void executeAction() {
@@ -216,7 +216,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 		public String comment;
 		public String author;
 		
-		public Offer(ItemStack offer, Requirement requirement, int cost, int rating, String comment, String author) {
+		public Offer(final ItemStack offer, final Requirement requirement, final int cost, final int rating, final String comment, final String author) {
 			this.offer = offer;
 			this.requirement = requirement;
 			this.cost = cost;
@@ -225,7 +225,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 			this.author = author;
 		}
 		
-		public Offer(ItemStack offer, Requirement requirement, int cost) {
+		public Offer(final ItemStack offer, final Requirement requirement, final int cost) {
 			this.offer = offer;
 			this.requirement = requirement;
 			this.cost = cost;
@@ -234,7 +234,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 			this.author = "";
 		}
 		
-		public void drawRequirement(GUIScreenBobmazon gui, int x, int y) {
+		public void drawRequirement(final GUIScreenBobmazon gui, final int x, final int y) {
 			try {
 
 				RenderHelper.enableGUIStandardItemLighting();
@@ -249,7 +249,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 
 				GL11.glPushMatrix();
 				
-				float scale = 0.65F;
+				final float scale = 0.65F;
 				GL11.glScalef(scale, scale, scale);
 				gui.fontRenderer.drawString(I18n.format(offer.getDisplayName()) + count, (int)((x + 20) / scale), (int)((y - 12) / scale), 4210752);
 				
@@ -277,7 +277,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 				}
 		        GlStateManager.enableLighting();
 		        
-			} catch(Exception ex) { }
+			} catch(final Exception ex) { }
 		}
 		
 	}
@@ -291,12 +291,12 @@ public class GUIScreenBobmazon extends GuiScreen {
 		NUCLEAR(AdvancementManager.bobNuclear, "bobnuclear"),
 		HIDDEN(AdvancementManager.bobHidden, "bobhidden");
 		
-		private Requirement(Advancement achievement, String advName) {
+		private Requirement(final Advancement achievement, final String advName) {
 			this.setAchievement(achievement);
 			this.advName = advName;
 		}
 		
-		public boolean fullfills(EntityPlayerMP player) {
+		public boolean fullfills(final EntityPlayerMP player) {
 			
 			return player.getAdvancements().getProgress(getAchievement()).isDone();
 		}
@@ -313,12 +313,12 @@ public class GUIScreenBobmazon extends GuiScreen {
 			return Minecraft.getMinecraft().player.connection.getAdvancementManager().getAdvancementList().getAdvancement(new ResourceLocation(RefStrings.MODID, advName));
 		}
 
-		public void setAchievement(Advancement achievement) {
+		public void setAchievement(final Advancement achievement) {
 			this.achievement = achievement;
 		}
 
 		private Advancement achievement;
-		private String advName;
+		private final String advName;
 	}
 
 }

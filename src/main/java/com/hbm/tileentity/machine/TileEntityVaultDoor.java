@@ -48,9 +48,9 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 			if(!isLocked()) {
 				boolean flagX = false;
 				boolean flagZ = false;
-				int xCoord = pos.getX();
-				int yCoord = pos.getY();
-				int zCoord = pos.getZ();
+				final int xCoord = pos.getX();
+				final int yCoord = pos.getY();
+				final int zCoord = pos.getZ();
 
 				for(int x = pos.getX() - 2; x <= xCoord + 2; x++)
 					for(int y = yCoord; y <= yCoord + 5; y++)
@@ -175,27 +175,26 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 		return false;
 	}
 	
-	public boolean placeDummy(int x, int y, int z){
+	public boolean placeDummy(final int x, final int y, final int z){
 		return placeDummy(new BlockPos(x, y, z));
 	}
 	
-	public boolean placeDummy(BlockPos dummyPos) {
+	public boolean placeDummy(final BlockPos dummyPos) {
 		if(!world.getBlockState(dummyPos).getBlock().isReplaceable(world, dummyPos))
 			return false;
 		
 		world.setBlockState(dummyPos, ModBlocks.dummy_block_vault.getDefaultState());
 		
-		TileEntity te = world.getTileEntity(dummyPos);
+		final TileEntity te = world.getTileEntity(dummyPos);
 		
-		if(te instanceof TileEntityDummy) {
-			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.target = pos;
+		if(te instanceof TileEntityDummy dummy) {
+            dummy.target = pos;
 		}
 		
 		return true;
 	}
 	
-	public void removeDummy(BlockPos dummyPos) {
+	public void removeDummy(final BlockPos dummyPos) {
 		if(world.getBlockState(dummyPos).getBlock() == ModBlocks.dummy_block_vault) {
 			DummyBlockVault.safeBreak = true;
 			world.setBlockState(dummyPos, Blocks.AIR.getDefaultState());
@@ -303,7 +302,7 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		state = DoorState.values()[compound.getInteger("state")];
 		sysTime = compound.getLong("sysTime");
 		timer = compound.getInteger("timer");
@@ -312,7 +311,7 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setInteger("state", state.ordinal());
 		compound.setLong("sysTime", sysTime);
 		compound.setInteger("timer", timer);
@@ -360,7 +359,7 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(DoorState state) {
+	public void handleNewState(final DoorState state) {
 		// TODO: Move audio into this method from update method to match sliding blast door
 	}
 }

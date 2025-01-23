@@ -45,16 +45,16 @@ public class SubElementVariables extends SubElement {
     Map<String, GuiButton> btns_var_delete = new HashMap<>();
     Map<String, GuiTextField> txts_var_data = new HashMap<>();
 
-    public SubElementVariables(GuiControlEdit gui) {
+    public SubElementVariables(final GuiControlEdit gui) {
         super(gui);
         newVarData = new DataValueFloat(0);
     }
 
     @Override
     protected void initGui() {
-        int cY = gui.height/2;
-        int gLeft = gui.getGuiLeft();
-        int gTop = gui.getGuiTop();
+        final int cY = gui.height/2;
+        final int gLeft = gui.getGuiLeft();
+        final int gTop = gui.getGuiTop();
 
         btn_back = gui.addButton(new GuiButton(gui.currentButtonId(), gLeft+7, gTop+13, 30, 20, "Back"));
         btn_newString = gui.addButton(new GuiButton(gui.currentButtonId(), gLeft+7, gTop+68, 43, 20, "String"));
@@ -83,16 +83,16 @@ public class SubElementVariables extends SubElement {
     @Override
     protected void update() {
         super.update();
-        for (Map.Entry<String, GuiTextField> e : txts_var_data.entrySet()) {
+        for (final Map.Entry<String, GuiTextField> e : txts_var_data.entrySet()) {
             e.getValue().updateCursorCounter();
         }
     }
 
     @Override
     protected void drawScreen() {
-        int cY = gui.height/2;
+        final int cY = gui.height/2;
 
-        String text = currentPage + "/" + numPages;
+        final String text = currentPage + "/" + numPages;
         gui.getFontRenderer().drawString(text, (gui.getGuiLeft()+216) - gui.getFontRenderer().getStringWidth(text)/2F, cY-103, 0xFF777777, false);
 
         if (isGlobalScope) {
@@ -120,8 +120,8 @@ public class SubElementVariables extends SubElement {
         }
     }
 
-    protected void drawVarList(Map<String, DataValue> varList) {
-        int cY = gui.height/2 + this.list_offset;
+    protected void drawVarList(final Map<String, DataValue> varList) {
+        final int cY = gui.height/2 + this.list_offset;
 
         gui.getButtons().removeAll(btns_var_delete.values());
         btns_var_delete.clear();
@@ -129,12 +129,12 @@ public class SubElementVariables extends SubElement {
         String text;
         int i = 0;
 
-        for (Map.Entry<String, DataValue> e : varList.entrySet()) {
-            int j = i%6;
+        for (final Map.Entry<String, DataValue> e : varList.entrySet()) {
+            final int j = i%6;
             text = e.getKey();
 
             btns_var_delete.put(e.getKey(), new GuiButton(gui.currentButtonId(), gui.getGuiLeft()+60, (cY-52)+(j*28), 20, 20, "X"));
-            GuiButton btn_del = btns_var_delete.get(e.getKey());
+            final GuiButton btn_del = btns_var_delete.get(e.getKey());
             btn_del.enabled = false;
             btn_del.visible = false;
 
@@ -155,14 +155,14 @@ public class SubElementVariables extends SubElement {
 
                 if (txts_var_data.containsKey(e.getKey())) {
                     if (txts_var_data.get(e.getKey()).isFocused()) {
-                        DataValue.DataType type = varList.get(e.getKey()).getType();
+                        final DataValue.DataType type = varList.get(e.getKey()).getType();
                         switch (type) {
                             case NUMBER: varList.put(e.getKey(), new DataValueFloat(Float.parseFloat((txts_var_data.get(e.getKey()).getText().isEmpty())? "0" : txts_var_data.get(e.getKey()).getText()))); break;
                             case STRING: varList.put(e.getKey(), new DataValueString(txts_var_data.get(e.getKey()).getText())); break;
                         }
                     }
                 } else {
-                    GuiTextField txt = new GuiTextField(3000 + i, gui.getFontRenderer(), gui.getGuiLeft() + 167, (cY - 52) + (j * 28), 75, 20);
+                    final GuiTextField txt = new GuiTextField(3000 + i, gui.getFontRenderer(), gui.getGuiLeft() + 167, (cY - 52) + (j * 28), 75, 20);
                     txt.setText(e.getValue().toString());
                     txt.setTextColor((e.getValue().getType() == NUMBER) ? 0x99CCFF : 0xFFFF99);
                     txts_var_data.put(e.getKey(), txt);
@@ -176,13 +176,13 @@ public class SubElementVariables extends SubElement {
 
         gui.getButtons().addAll(btns_var_delete.values());
 
-        for (Map.Entry<String, GuiTextField> txt : txts_var_data.entrySet()) {
+        for (final Map.Entry<String, GuiTextField> txt : txts_var_data.entrySet()) {
             txt.getValue().drawTextBox();
         }
     }
 
     protected void drawCreateVar() {
-        int cY = gui.height/2;
+        final int cY = gui.height/2;
 
         String text = "";
         switch (newVarData.getType()) {
@@ -196,12 +196,12 @@ public class SubElementVariables extends SubElement {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int button) {
+    protected void mouseClicked(final int mouseX, final int mouseY, final int button) {
         super.mouseClicked(mouseX, mouseY, button);
         this.txt_newVarName.mouseClicked(mouseX, mouseY, button);
         this.txt_newVarData.mouseClicked(mouseX, mouseY, button);
 
-        for (Map.Entry<String, GuiTextField> field : txts_var_data.entrySet()) {
+        for (final Map.Entry<String, GuiTextField> field : txts_var_data.entrySet()) {
             //TODO: support enums, probably just cycle through values on press
             if (isGlobalScope || (gui.currentEditControl.vars.get(field.getKey()).getType() != ENUM)) {
                 field.getValue().mouseClicked(mouseX, mouseY, button);
@@ -210,14 +210,14 @@ public class SubElementVariables extends SubElement {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) {
+    protected void keyTyped(final char typedChar, final int keyCode) {
         super.keyTyped(typedChar, keyCode);
         this.txt_newVarName.textboxKeyTyped(typedChar, keyCode);
         this.txt_newVarData.textboxKeyTyped(typedChar, keyCode);
 
         final boolean isDigitOrControlChar = Character.isDigit(typedChar) || Character.getType(typedChar) == Character.CONTROL;
 
-        for (Map.Entry<String, GuiTextField> field : txts_var_data.entrySet()) {
+        for (final Map.Entry<String, GuiTextField> field : txts_var_data.entrySet()) {
             final boolean isNumberType = (isGlobalScope && gui.control.panel.globalVars.get(field.getKey()).getType() == NUMBER)
                     || (!isGlobalScope && gui.currentEditControl.vars.get(field.getKey()).getType() == NUMBER);
 
@@ -228,7 +228,7 @@ public class SubElementVariables extends SubElement {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected void actionPerformed(final GuiButton button) {
         if (button == btn_newNumber) {
             newVarData = new DataValueFloat(0);
             txt_newVarData.setText(newVarData.toString());
@@ -251,7 +251,7 @@ public class SubElementVariables extends SubElement {
             if (isGlobalScope) {
                 gui.control.panel.globalVars.clear();
             } else {
-                for (String s : gui.currentEditControl.customVarNames) {
+                for (final String s : gui.currentEditControl.customVarNames) {
                     gui.currentEditControl.vars.remove(s);
                 }
             }
@@ -302,7 +302,7 @@ public class SubElementVariables extends SubElement {
             txts_var_data.clear();
         }
         else if (btns_var_delete.containsValue(button)) {
-            for (Map.Entry<String, GuiButton> e : btns_var_delete.entrySet()) {
+            for (final Map.Entry<String, GuiButton> e : btns_var_delete.entrySet()) {
                 if (e.getValue().equals(button)) {
                     if (isGlobalScope) {
                         gui.control.panel.globalVars.remove(e.getKey());
@@ -317,7 +317,7 @@ public class SubElementVariables extends SubElement {
     }
 
     @Override
-    protected void enableButtons(boolean enable) {
+    protected void enableButtons(final boolean enable) {
         btn_clearAll.enabled = enable;
         btn_clearAll.visible = enable;
         btn_back.enabled = enable;
@@ -342,12 +342,12 @@ public class SubElementVariables extends SubElement {
         txt_newVarData.setEnabled(enable);
         txt_newVarData.setVisible(enable);
 
-        for (Map.Entry<String, GuiTextField> e : txts_var_data.entrySet()) {
+        for (final Map.Entry<String, GuiTextField> e : txts_var_data.entrySet()) {
             e.getValue().setEnabled(enable);
             e.getValue().setVisible(enable);
         }
 
-        for (Map.Entry<String, GuiButton> b : btns_var_delete.entrySet()) {
+        for (final Map.Entry<String, GuiButton> b : btns_var_delete.entrySet()) {
             b.getValue().enabled = enable;
             b.getValue().visible = enable;
         }

@@ -96,7 +96,7 @@ public class JEIConfig implements IModPlugin {
 	public static final String TRANSMUTATION = "hbm.transmutation";
 
 	@Override
-	public void register(IModRegistry registry) {
+	public void register(final IModRegistry registry) {
 		if(!GeneralConfig.jei)
 			return;
 		registry.addRecipeRegistryPlugin(new HbmJeiRegistryPlugin());
@@ -226,7 +226,7 @@ public class JEIConfig implements IModPlugin {
 		registry.addRecipeClickArea(GUIRBMKOutgasser.class, 64, 53, 48, 16, RBMKOUTGASSER);
 		registry.addRecipeClickArea(GUIMachineSchrabidiumTransmutator.class, 64, 56, 66, 31, TRANSMUTATION);
 
-		IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
+		final IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
 
 		// Some things are even beyond my control...or are they?
 		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.memory));
@@ -293,10 +293,10 @@ public class JEIConfig implements IModPlugin {
 	}
 
 	@Override
-	public void registerCategories(IRecipeCategoryRegistration registry) {
+	public void registerCategories(final IRecipeCategoryRegistration registry) {
 		if(!GeneralConfig.jei)
 			return;
-		IGuiHelper help = registry.getJeiHelpers().getGuiHelper();
+		final IGuiHelper help = registry.getJeiHelpers().getGuiHelper();
 		registry.addRecipeCategories(new AnvilRecipeHandler(help),
 				new SmithingRecipeHandler(help),
 				new PressRecipeHandler(help),
@@ -338,29 +338,29 @@ public class JEIConfig implements IModPlugin {
 	}
 
 	@Override
-	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+	public void registerItemSubtypes(final ISubtypeRegistry subtypeRegistry) {
 		if(!GeneralConfig.jei)
 			return;
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.cell, (ItemStack stack) -> {
-			FluidStack fluid = FluidUtil.getFluidContained(stack);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.cell, (final ItemStack stack) -> {
+			final FluidStack fluid = FluidUtil.getFluidContained(stack);
 			return ModItems.cell.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_barrel_full, (ItemStack stack) -> {
-			FluidStack fluid = FluidUtil.getFluidContained(stack);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_barrel_full, (final ItemStack stack) -> {
+			final FluidStack fluid = FluidUtil.getFluidContained(stack);
 			return ModItems.fluid_barrel_full.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_tank_full, (ItemStack stack) -> {
-			FluidStack fluid = FluidUtil.getFluidContained(stack);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_tank_full, (final ItemStack stack) -> {
+			final FluidStack fluid = FluidUtil.getFluidContained(stack);
 			return ModItems.fluid_tank_full.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.canister_generic, (ItemStack stack) -> {
-			FluidStack fluid = FluidUtil.getFluidContained(stack);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.canister_generic, (final ItemStack stack) -> {
+			final FluidStack fluid = FluidUtil.getFluidContained(stack);
 			return ModItems.canister_generic.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.missile_custom, (ItemStack stack) -> {
-			return ModItems.missile_custom.getTranslationKey() + "w" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "warhead")) + "f" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "fuselage")) + "s" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "stability")) + "t" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "thruster"));
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.missile_custom, (final ItemStack stack) -> {
+			return ModItems.missile_custom.getTranslationKey() + "w" + ItemCustomMissile.readFromNBT(stack, "warhead") + "f" + ItemCustomMissile.readFromNBT(stack, "fuselage") + "s" + ItemCustomMissile.readFromNBT(stack, "stability") + "t" + ItemCustomMissile.readFromNBT(stack, "thruster");
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_icon, (ItemStack stack) -> {
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_icon, (final ItemStack stack) -> {
 			if(stack.hasTagCompound()) {
 				String s = "";
 				if(stack.getTagCompound().hasKey("type"))
@@ -372,6 +372,6 @@ public class JEIConfig implements IModPlugin {
 	}
 
 	@Override
-	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+	public void onRuntimeAvailable(final IJeiRuntime jeiRuntime) {
 	}
 }

@@ -31,13 +31,13 @@ public class ParticleFakeBrightness extends Particle {
 	boolean local;
 	public float fadeInKoeff = 2;
 	
-	public ParticleFakeBrightness(World worldIn, double posXIn, double posYIn, double posZIn, float scale, int age) {
+	public ParticleFakeBrightness(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale, final int age) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.particleMaxAge = age;
 	}
 	
-	public ParticleFakeBrightness color(float r, float g, float b, float a){
+	public ParticleFakeBrightness color(final float r, final float g, final float b, final float a){
 		this.particleRed = r;
 		this.particleGreen = g;
 		this.particleBlue = b;
@@ -56,8 +56,7 @@ public class ParticleFakeBrightness extends Particle {
 		if(particleAge >= particleMaxAge){
 			setExpired();
 			LensVisibilityHandler.delete(visibilityId);
-			return;
-		}
+        }
 	}
 
 	@Override
@@ -71,20 +70,20 @@ public class ParticleFakeBrightness extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GL11.glPushMatrix();
 		GlStateManager.disableDepth();
 		
         if(local){
-			float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
-	        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
-	        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
+			final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
+	        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
+	        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
 	        GL11.glTranslated(f5, f6, f7);
 	        if(BobMathUtil.r_viewMat == null){
 				BobMathUtil.r_viewMat = ReflectionHelper.findField(ActiveRenderInfo.class, "MODELVIEW", "field_178812_b");
 			}
 			try {
-				FloatBuffer view_mat = (FloatBuffer) BobMathUtil.r_viewMat.get(null);
+				final FloatBuffer view_mat = (FloatBuffer) BobMathUtil.r_viewMat.get(null);
 				view_mat.rewind();
 				GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER);
 				for(int i = 0; i < 12; i ++){
@@ -92,20 +91,20 @@ public class ParticleFakeBrightness extends Particle {
 				}
 				ClientProxy.AUX_GL_BUFFER.rewind();
 				GL11.glLoadMatrix(ClientProxy.AUX_GL_BUFFER);
-			} catch(IllegalArgumentException | IllegalAccessException e) {
+			} catch(final IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
         } else {
-        	double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-            double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-            double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+        	final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+            final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+            final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
             
             interpPosX = entPosX;
             interpPosY = entPosY;
             interpPosZ = entPosZ;
-        	float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-            float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-            float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+        	final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+            final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+            final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
             GL11.glTranslated(f5, f6, f7);
         }
 		if(visibilityId == -1){
@@ -118,11 +117,11 @@ public class ParticleFakeBrightness extends Particle {
 		float visibility = LensVisibilityHandler.getVisibility(visibilityId);
 		visibility *= visibility;
 		
-		float ageN = (float)(this.particleAge+partialTicks)/(float)this.particleMaxAge;
-		float scale = MathHelper.clamp(ageN*fadeInKoeff, 0, 1)* MathHelper.clamp(2-ageN*fadeInKoeff+0.1F, 0, 1);
-		float f4 = 0.1F * this.particleScale * visibility*scale;
+		final float ageN = (this.particleAge+partialTicks) /(float)this.particleMaxAge;
+		final float scale = MathHelper.clamp(ageN*fadeInKoeff, 0, 1)* MathHelper.clamp(2-ageN*fadeInKoeff+0.1F, 0, 1);
+		final float f4 = 0.1F * this.particleScale * visibility*scale;
         
-        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
+        final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
         if(!local){
         	GlStateManager.enableBlend();
         	GlStateManager.disableAlpha();

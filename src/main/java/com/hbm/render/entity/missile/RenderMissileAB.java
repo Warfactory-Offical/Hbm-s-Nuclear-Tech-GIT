@@ -16,16 +16,16 @@ public class RenderMissileAB extends Render<EntityMissileAntiBallistic> {
 
 	public static final IRenderFactory<EntityMissileAntiBallistic> FACTORY = (RenderManager man) -> {return new RenderMissileAB(man);};
 	
-	protected RenderMissileAB(RenderManager renderManager) {
+	protected RenderMissileAB(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMissileAntiBallistic missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileAntiBallistic missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-		double[] pos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+		final double[] pos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
 		x = pos[0];
 		y = pos[1];
 		z = pos[2];
@@ -42,7 +42,7 @@ public class RenderMissileAB extends Render<EntityMissileAntiBallistic> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileAntiBallistic entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileAntiBallistic entity) {
 		return ResourceManager.missileAA_tex;
 	}
 

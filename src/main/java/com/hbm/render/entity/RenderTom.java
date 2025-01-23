@@ -23,19 +23,19 @@ public class RenderTom<T extends Entity> extends Render<T> {
 		return new RenderTom<EntityTom>(man);
 	};
 
-	protected RenderTom(RenderManager renderManager) {
+	protected RenderTom(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final T entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		if(entity instanceof EntityRailgunBlast) {
 			GL11.glPushMatrix();
 			GL11.glTranslated(x, y, z);
 			GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
 
-			int i = 0;
+			final int i = 0;
 
 			// if(entity instanceof EntityShell || entity instanceof
 			// EntityMissileShell)
@@ -55,7 +55,7 @@ public class RenderTom<T extends Entity> extends Render<T> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	protected ResourceLocation getEntityTexture(final T entity) {
 		return null;
 	}
 

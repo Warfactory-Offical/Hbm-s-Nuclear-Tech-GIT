@@ -33,7 +33,7 @@ public class TileEntityNukeCustom extends TileEntity implements ITickable {
 	public TileEntityNukeCustom() {
 		inventory = new ItemStackHandler(27){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -48,11 +48,11 @@ public class TileEntityNukeCustom extends TileEntity implements ITickable {
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -62,14 +62,14 @@ public class TileEntityNukeCustom extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
@@ -247,12 +247,12 @@ public class TileEntityNukeCustom extends TileEntity implements ITickable {
 		float euph = 0F;
 		
 		for(int i = 0; i < inventory.getSlots(); i ++) {
-			ItemStack stack = inventory.getStackInSlot(i);
+			final ItemStack stack = inventory.getStackInSlot(i);
 			if(stack.isEmpty())
 				continue;
 			
-			ComparableStack comp = new NbtComparableStack(stack).makeSingular();
-			CustomNukeEntry ent = entries.get(comp);
+			final ComparableStack comp = new NbtComparableStack(stack).makeSingular();
+			final CustomNukeEntry ent = entries.get(comp);
 			
 			if(ent == null)
 				continue;
@@ -351,7 +351,7 @@ public class TileEntityNukeCustom extends TileEntity implements ITickable {
 	public boolean isFalling() {
 
 		for(int i = 0; i < inventory.getSlots(); i ++) {
-			ItemStack stack = inventory.getStackInSlot(i);
+			final ItemStack stack = inventory.getStackInSlot(i);
 			if(stack != null && stack.getItem() == ModItems.custom_fall)
 				return true;
 		}
@@ -396,7 +396,7 @@ public class TileEntityNukeCustom extends TileEntity implements ITickable {
 
 		String name;
 
-		EnumBombType(String name) {
+		EnumBombType(final String name) {
 			this.name = name;
 		}
 
@@ -417,13 +417,13 @@ public class TileEntityNukeCustom extends TileEntity implements ITickable {
 		public EnumEntryType entry;
 		public float value;
 
-		public CustomNukeEntry(EnumBombType type, float value) {
+		public CustomNukeEntry(final EnumBombType type, final float value) {
 			this.type = type;
 			this.entry = EnumEntryType.ADD;
 			this.value = value;
 		}
 
-		public CustomNukeEntry(EnumBombType type, float value, EnumEntryType entry) {
+		public CustomNukeEntry(final EnumBombType type, final float value, final EnumEntryType entry) {
 			this(type, value);
 			this.entry = entry;
 		}

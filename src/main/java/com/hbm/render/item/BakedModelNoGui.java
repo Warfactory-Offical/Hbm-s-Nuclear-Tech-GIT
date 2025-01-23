@@ -20,30 +20,30 @@ import net.minecraft.world.World;
 
 public class BakedModelNoGui implements IBakedModel {
 
-	private TEISRBase renderer;
+	private final TEISRBase renderer;
 	
-	public BakedModelNoGui(TEISRBase renderer) {
+	public BakedModelNoGui(final TEISRBase renderer) {
 		this.renderer = renderer;
 	}
 	
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
 		return renderer.type != TransformType.GUI ? Collections.emptyList() : renderer.itemModel.getQuads(state, side, rand);
 	}
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return renderer.type != TransformType.GUI ? false : renderer.itemModel.isAmbientOcclusion();
+		return renderer.type == TransformType.GUI && renderer.itemModel.isAmbientOcclusion();
 	}
 
 	@Override
 	public boolean isGui3d() {
-		return renderer.type != TransformType.GUI ? false : renderer.itemModel.isGui3d();
+		return renderer.type == TransformType.GUI && renderer.itemModel.isGui3d();
 	}
 
 	@Override
 	public boolean isBuiltInRenderer() {
-		return renderer.type != TransformType.GUI ? true : renderer.itemModel.isBuiltInRenderer();
+		return renderer.type != TransformType.GUI || renderer.itemModel.isBuiltInRenderer();
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class BakedModelNoGui implements IBakedModel {
 	public ItemOverrideList getOverrides() {
 		return renderer.type != TransformType.GUI ? new ItemOverrideList(Collections.emptyList()){
 			@Override
-			public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+			public IBakedModel handleItemState(final IBakedModel originalModel, final ItemStack stack, final World world, final EntityLivingBase entity) {
 				renderer.entity = entity;
 				renderer.world = world;
 				return super.handleItemState(originalModel, stack, world, entity);
@@ -64,7 +64,7 @@ public class BakedModelNoGui implements IBakedModel {
 	}
 
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(final TransformType cameraTransformType) {
 		renderer.type = cameraTransformType;
 		return Pair.of(this, renderer.itemModel.handlePerspective(cameraTransformType).getRight());
 	}

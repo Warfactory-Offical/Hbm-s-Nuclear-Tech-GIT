@@ -39,7 +39,7 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ITickable, I
 	public TileEntityMachineUF6Tank() {
 		inventory = new ItemStackHandler(4){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -56,11 +56,11 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ITickable, I
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -70,7 +70,7 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ITickable, I
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		tank.readFromNBT(compound);
 		tankType = ModForgeFluids.uf6;
 		if(compound.hasKey("inventory"))
@@ -79,7 +79,7 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ITickable, I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		tank.writeToNBT(compound);
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
@@ -97,16 +97,14 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ITickable, I
 		}
 	}
 	
-	protected boolean inputValidForTank(int irrelevant, int slot){
+	protected boolean inputValidForTank(final int irrelevant, final int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty() && tank != null){
-			if(isValidFluidForTank(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
-				return true;
-			}
+            return isValidFluidForTank(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
 		}
 		return false;
 	}
 	
-	private boolean isValidFluidForTank(FluidStack stack) {
+	private boolean isValidFluidForTank(final FluidStack stack) {
 		if(stack == null || tank == null)
 			return false;
 		return stack.getFluid() == tankType;
@@ -124,16 +122,15 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ITickable, I
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 1){
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		}
@@ -141,7 +138,7 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ITickable, I
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 

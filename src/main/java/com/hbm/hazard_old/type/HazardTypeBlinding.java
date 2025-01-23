@@ -21,7 +21,7 @@ import java.util.List;
 public class HazardTypeBlinding extends HazardTypeBase {
 
 	@Override
-	public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
+	public void onUpdate(final EntityLivingBase target, final float level, final ItemStack stack) {
 		
 		if(RadiationConfig.disableBlinding)
 			return;
@@ -33,11 +33,11 @@ public class HazardTypeBlinding extends HazardTypeBase {
 
 
 	@Override
-	public void updateEntity(EntityItem item, float level) { }
+	public void updateEntity(final EntityItem item, final float level) { }
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addHazardInformation(EntityPlayer player, List list, float level, ItemStack stack, List<HazardModifier> modifiers) {
+	public void addHazardInformation(final EntityPlayer player, final List list, final float level, final ItemStack stack, final List<HazardModifier> modifiers) {
 		list.add(TextFormatting.DARK_AQUA + "[" + I18nUtil.resolveKey("trait.blinding") + "]");
 	}
 

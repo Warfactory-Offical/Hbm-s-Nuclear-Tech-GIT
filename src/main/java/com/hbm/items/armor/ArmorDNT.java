@@ -1,8 +1,5 @@
 package com.hbm.items.armor;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.google.common.collect.Multimap;
 import com.hbm.capability.HbmCapability;
 import com.hbm.capability.HbmCapability.IHBMData;
@@ -11,11 +8,8 @@ import com.hbm.items.ModItems;
 import com.hbm.items.gear.ArmorFSB;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
-import com.hbm.packet.AuxParticlePacketNT;
-import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.model.ModelArmorDNT;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -26,20 +20,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+import java.util.UUID;
+
 public class ArmorDNT extends ArmorFSBPowered {
 
-	public ArmorDNT(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
+	public ArmorDNT(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
 		super(material, layer, slot, texture, maxPower, chargeRate, consumption, drain, s);
 	}
 
@@ -48,7 +43,7 @@ public class ArmorDNT extends ArmorFSBPowered {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
+	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
 		if(models == null) {
 			models = new ModelArmorDNT[4];
 
@@ -62,17 +57,17 @@ public class ArmorDNT extends ArmorFSBPowered {
 	private static final UUID speed = UUID.fromString("6ab858ba-d712-485c-bae9-e5e765fc555a");
 
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
 
 		super.onArmorTick(world, player, stack);
 		
 		if(this != ModItems.dns_plate)
 			return;
 
-		IHBMData props = HbmCapability.getData(player);
+		final IHBMData props = HbmCapability.getData(player);
 		
 		/// SPEED ///
-		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(EntityEquipmentSlot.CHEST, stack);
+		final Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(EntityEquipmentSlot.CHEST, stack);
 		multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(speed, "DNT SPEED", 0.25, 0));
 		player.getAttributeMap().removeAttributeModifiers(multimap);
 		
@@ -122,9 +117,9 @@ public class ArmorDNT extends ArmorFSBPowered {
 	}
 	
 	@Override
-	public void handleAttack(LivingAttackEvent event, ArmorFSB chestplate) {
+	public void handleAttack(final LivingAttackEvent event, final ArmorFSB chestplate) {
 
-		EntityLivingBase e = event.getEntityLiving();
+		final EntityLivingBase e = event.getEntityLiving();
 
 		if(ArmorFSB.hasFSBArmor(e)) {
 				
@@ -138,9 +133,9 @@ public class ArmorDNT extends ArmorFSBPowered {
 	}
 	
 	@Override
-	public void handleHurt(LivingHurtEvent event, ArmorFSB chestplate) {
+	public void handleHurt(final LivingHurtEvent event, final ArmorFSB chestplate) {
 
-		EntityLivingBase e = event.getEntityLiving();
+		final EntityLivingBase e = event.getEntityLiving();
 
 		if(ArmorFSB.hasFSBArmor(e)) {
 				
@@ -153,8 +148,8 @@ public class ArmorDNT extends ArmorFSBPowered {
 		}
 	}
 
-	public static String getColor(long a, long b){
-		float fraction = 100F * a/b;
+	public static String getColor(final long a, final long b){
+		final float fraction = 100F * a/b;
 		if(fraction > 75)
 			return "§a";
 		if(fraction > 25)
@@ -163,15 +158,15 @@ public class ArmorDNT extends ArmorFSBPowered {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
-		long power = getCharge(stack);
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+		final long power = getCharge(stack);
     	list.add("Charge: " + getColor(power, maxPower) + Library.getShortNumber(power) + " §2/ " + Library.getShortNumber(maxPower));
 
 		list.add(TextFormatting.GOLD + I18nUtil.resolveKey("armor.fullSetBonus"));
 
 		if(!effects.isEmpty()) {
 
-			for(PotionEffect effect : effects) {
+			for(final PotionEffect effect : effects) {
 				list.add(TextFormatting.AQUA + "  " + I18n.format(effect.getEffectName()));
 			}
 		}

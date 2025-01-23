@@ -17,8 +17,8 @@ import net.minecraft.util.text.TextFormatting;
 
 public class BreederRecipes {
 
-	private static LinkedHashMap<ComparableStack, BreederRecipe> recipes = new LinkedHashMap<>();
-	private static LinkedHashMap<ComparableStack, int[]> fuels = new LinkedHashMap<>();
+	private static final LinkedHashMap<ComparableStack, BreederRecipe> recipes = new LinkedHashMap<>();
+	private static final LinkedHashMap<ComparableStack, int[]> fuels = new LinkedHashMap<>();
 	//for the int array: [0] => level (1-4) [1] => amount of operations
 	
 	public static void registerRecipes() {
@@ -140,41 +140,41 @@ public class BreederRecipes {
 		addFuel(ItemStackUtil.comparableStackFrom(ModItems.rod_quad_balefire_blazing), 4, 300);
 	}
 
-	public static void addRecipe(ComparableStack input, Item output, int heatLvl){
+	public static void addRecipe(final ComparableStack input, final Item output, final int heatLvl){
 		addRecipe(input, ItemStackUtil.itemStackFrom(output), heatLvl);
 	}
-	public static void addRecipe(ComparableStack input, ItemStack output, int heatLvl){
+	public static void addRecipe(final ComparableStack input, final ItemStack output, final int heatLvl){
 		recipes.put(input, new BreederRecipe(output, heatLvl));
 	}
 
-	public static void removeRecipe(ComparableStack input){
+	public static void removeRecipe(final ComparableStack input){
 		recipes.remove(input);
 	}
 
-	public static void addFuel(ComparableStack input, int heatLvl, int usesInNuclearFurnace){
+	public static void addFuel(final ComparableStack input, final int heatLvl, final int usesInNuclearFurnace){
 		fuels.put(input, new int[] {heatLvl, usesInNuclearFurnace});
 	}
 
-	public static void removeFuel(ComparableStack input){
+	public static void removeFuel(final ComparableStack input){
 		fuels.remove(input);
 	}
 	
 	public static LinkedHashMap<ItemStack, BreederRecipe> getAllRecipes() {
 		
-		LinkedHashMap<ItemStack, BreederRecipe> map = new LinkedHashMap<>();
+		final LinkedHashMap<ItemStack, BreederRecipe> map = new LinkedHashMap<>();
 		
-		for(Map.Entry<ComparableStack, BreederRecipe> recipe : recipes.entrySet()) {
+		for(final Map.Entry<ComparableStack, BreederRecipe> recipe : recipes.entrySet()) {
 			map.put(recipe.getKey().toStack(), recipe.getValue());
 		}
 		
 		return map;
 	}
 	
-	public static List<ItemStack> getAllFuelsFromHEAT(int heat) {
+	public static List<ItemStack> getAllFuelsFromHEAT(final int heat) {
 		
-		List<ItemStack> list = new ArrayList<>();
+		final List<ItemStack> list = new ArrayList<>();
 		
-		for(Map.Entry<ComparableStack, int[]> fuel : fuels.entrySet()) {
+		for(final Map.Entry<ComparableStack, int[]> fuel : fuels.entrySet()) {
 			
 			if(fuel.getValue()[0] >= heat) {
 				list.add(fuel.getKey().toStack());
@@ -184,12 +184,12 @@ public class BreederRecipes {
 		return list;
 	}
 	
-	public static BreederRecipe getOutput(ItemStack stack) {
+	public static BreederRecipe getOutput(final ItemStack stack) {
 		
 		if(stack == null)
 			return null;
 		
-		ComparableStack sta = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
+		final ComparableStack sta = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
 		return BreederRecipes.recipes.get(sta);
 	}
 	
@@ -198,18 +198,18 @@ public class BreederRecipes {
 	 * @param stack
 	 * @return an integer array (possibly null) with two fields, the HEAT value and the amount of operations
 	 */
-	public static int[] getFuelValue(ItemStack stack) {
+	public static int[] getFuelValue(final ItemStack stack) {
 		
 		if(stack == null)
 			return null;
 		
-		ComparableStack sta = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
-		int[] ret = BreederRecipes.fuels.get(sta);
+		final ComparableStack sta = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
+		final int[] ret = BreederRecipes.fuels.get(sta);
 		
 		return ret;
 	}
 	
-	public static String getHEATString(String string, int heat) {
+	public static String getHEATString(String string, final int heat) {
 
 		if(heat == 1)
 			string =  TextFormatting.GREEN + string;
@@ -231,11 +231,11 @@ public class BreederRecipes {
 		
 		public BreederRecipe() { }
 		
-		public BreederRecipe(Item output, int heat) {
+		public BreederRecipe(final Item output, final int heat) {
 			this(ItemStackUtil.itemStackFrom(output), heat);
 		}
 		
-		public BreederRecipe(ItemStack output, int heat) {
+		public BreederRecipe(final ItemStack output, final int heat) {
 			this.output = output;
 			this.heat = heat;
 		}

@@ -30,7 +30,7 @@ public class BlockHadronDiode extends BlockContainer implements IToolable {
 		}
 	}
 	
-	public BlockHadronDiode(Material materialIn, String s) {
+	public BlockHadronDiode(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -39,22 +39,22 @@ public class BlockHadronDiode extends BlockContainer implements IToolable {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityHadronDiode();
 	}
 	
 	@Override
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool){
+	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool){
 		if(tool != ToolType.SCREWDRIVER)
 			return false;
 		
 		if(!world.isRemote) {
-			TileEntityHadronDiode diode = (TileEntityHadronDiode) world.getTileEntity(new BlockPos(x, y, z));
+			final TileEntityHadronDiode diode = (TileEntityHadronDiode) world.getTileEntity(new BlockPos(x, y, z));
 			int config = diode.getConfig(side.ordinal()).ordinal();
 			config += 1;
 			config %= DiodeConfig.values().length;
@@ -65,8 +65,8 @@ public class BlockHadronDiode extends BlockContainer implements IToolable {
 		return true;
 	}
 	
-	public static void resetBlockState(World world, BlockPos pos){
-		TileEntityHadronDiode diode = (TileEntityHadronDiode) world.getTileEntity(pos);
+	public static void resetBlockState(final World world, final BlockPos pos){
+		final TileEntityHadronDiode diode = (TileEntityHadronDiode) world.getTileEntity(pos);
 		IBlockState newState = ModBlocks.hadron_diode.getDefaultState();
 		for(int i = 0; i < 6; i++){
 			newState = newState.withProperty(BlockHadronDiode.textures[i], diode.sides[i].ordinal());
@@ -77,7 +77,7 @@ public class BlockHadronDiode extends BlockContainer implements IToolable {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
@@ -87,12 +87,12 @@ public class BlockHadronDiode extends BlockContainer implements IToolable {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return 0;
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState();
 	}
 	

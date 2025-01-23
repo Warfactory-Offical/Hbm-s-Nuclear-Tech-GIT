@@ -21,27 +21,27 @@ public class RenderUFO extends Render<EntityUFO> {
 
 	public static final IRenderFactory<EntityUFO> FACTORY = man -> new RenderUFO(man);
 	
-	protected RenderUFO(RenderManager renderManager){
+	protected RenderUFO(final RenderManager renderManager){
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityUFO ufo, double x, double y, double z, float entityYaw, float partialTicks){
+	public void doRender(final EntityUFO ufo, final double x, final double y, final double z, final float entityYaw, final float partialTicks){
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y + 1, z);
 		
 		if(!ufo.isEntityAlive()) {
-			float tilt = ufo.deathTime + 30 + partialTicks;
+			final float tilt = ufo.deathTime + 30 + partialTicks;
 			GL11.glRotatef(tilt, 1, 0, 1);
 		}
 		
-		double scale = 2D;
+		final double scale = 2D;
 		
 		this.bindTexture(getEntityTexture(ufo));
 		
 		GL11.glPushMatrix();
-		double rot = (ufo.ticksExisted + partialTicks) * 5 % 360D;
+		final double rot = (ufo.ticksExisted + partialTicks) * 5 % 360D;
 		GL11.glRotated(rot, 0, 1, 0);
 		GL11.glScaled(scale, scale, scale);
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -50,8 +50,8 @@ public class RenderUFO extends Render<EntityUFO> {
 		GL11.glPopMatrix();
 
 		if(ufo.getBeam()) {
-			int ix = (int)Math.floor(ufo.posX);
-			int iz = (int)Math.floor(ufo.posZ);
+			final int ix = (int)Math.floor(ufo.posX);
+			final int iz = (int)Math.floor(ufo.posZ);
 			int iy = 0;
 			
 			for(int i = (int)Math.ceil(ufo.posY); i >= 0; i--) {
@@ -62,7 +62,7 @@ public class RenderUFO extends Render<EntityUFO> {
 				}
 			}
 			
-			double length = ufo.posY - iy;
+			final double length = ufo.posY - iy;
 			
 			if(length > 0) {
 				BeamPronter.prontBeam(Vec3.createVectorHelper(0, -length, 0), EnumWaveType.SPIRAL, EnumBeamType.SOLID, 0x101020, 0x101020, 0, (int)(length + 1), 0F, 6, (float)scale * 0.75F);
@@ -75,7 +75,7 @@ public class RenderUFO extends Render<EntityUFO> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityUFO entity){
+	protected ResourceLocation getEntityTexture(final EntityUFO entity){
 		return ResourceManager.ufo_tex;
 	}
 

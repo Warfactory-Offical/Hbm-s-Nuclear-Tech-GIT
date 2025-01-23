@@ -14,13 +14,13 @@ public class Vec3bool extends FuncRelational {
     public Vec3bool() {
     }
 
-    public Vec3bool(boolean x, boolean y, boolean z) {
+    public Vec3bool(final boolean x, final boolean y, final boolean z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3bool set(boolean x, boolean y, boolean z) {
+    public Vec3bool set(final boolean x, final boolean y, final boolean z) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -78,24 +78,24 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource == null || resource.getFluid() != ModForgeFluids.cryogel)
 			return 0;
 		return tank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void addEnergy(long energy, EnumFacing dir) {
+	public void addEnergy(final long energy, final EnumFacing dir) {
 		// only accept lasers from the front
 		if(dir.getOpposite().ordinal() == this.getBlockMetadata()) {
 			if(Long.MAX_VALUE - joules < energy)
@@ -109,7 +109,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 1)
 			tank.readFromNBT(tags[0]);
 	}
@@ -127,7 +127,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		joules = compound.getLong("joules");
 		tank.readFromNBT(compound.getCompoundTag("tank"));
@@ -135,7 +135,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setLong("joules", joules);
 		compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
@@ -143,12 +143,12 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -161,7 +161,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

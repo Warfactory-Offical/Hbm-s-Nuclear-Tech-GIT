@@ -12,12 +12,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderCompactLauncher extends TileEntitySpecialRenderer<TileEntityCompactLauncher> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityCompactLauncher te) {
+	public boolean isGlobalRenderer(final TileEntityCompactLauncher te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityCompactLauncher launcher, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityCompactLauncher launcher, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 		

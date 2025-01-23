@@ -37,7 +37,7 @@ public class TrappedBrick extends BlockContainer {
 
 	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
 	
-	public TrappedBrick(Material materialIn, String s) {
+	public TrappedBrick(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -46,36 +46,34 @@ public class TrappedBrick extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(Trap.get(meta).type == TrapType.DETECTOR)
 			return new TileEntityTrappedBrick();
 		return null;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> list, final ITooltipFlag advanced) {
 		list.add(Trap.get(stack.getItemDamage()).toString());
 	}
 	
 	@Override
-	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		int meta = world.getBlockState(pos).getValue(TYPE);
+	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity) {
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
+		final int meta = world.getBlockState(pos).getValue(TYPE);
 
-    	if(world.isRemote || Trap.get(meta).type != TrapType.ON_STEP || !(entity instanceof EntityPlayer)) {
+    	if(world.isRemote || Trap.get(meta).type != TrapType.ON_STEP || !(entity instanceof EntityPlayer player)) {
     		return;
     	}
 
-    	EntityPlayer player = (EntityPlayer)entity;
-
-		switch(Trap.get(meta)) {
+        switch(Trap.get(meta)) {
 		case FIRE:
 			if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock().isReplaceable(world, new BlockPos(x, y + 1, z)))
 				world.setBlockState(new BlockPos(x, y + 1, z), Blocks.FIRE.getDefaultState());
@@ -83,8 +81,8 @@ public class TrappedBrick extends BlockContainer {
 		case SPIKES:
 			if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock().isReplaceable(world, new BlockPos(x, y + 1, z)))
 				world.setBlockState(new BlockPos(x, y + 1, z), ModBlocks.spikes.getDefaultState());
-			List<Entity> targets = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y + 1, z, x + 1, y + 2, z + 1));
-			for(Entity e : targets)
+			final List<Entity> targets = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y + 1, z, x + 1, y + 2, z + 1));
+			for(final Entity e : targets)
 				e.attackEntityFrom(ModDamageSource.spikes, 10);
 			world.playSound(null, x + 0.5, y + 1.5, z + 0.5, HBMSoundHandler.slicer, SoundCategory.HOSTILE, 1.0F, 1.0F);
 			break;
@@ -103,7 +101,7 @@ public class TrappedBrick extends BlockContainer {
 						if(world.rand.nextBoolean())
 							continue;
 
-						Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
+						final Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
 							world.setBlockState(new BlockPos(x + a, y + b, z + c), ModBlocks.brick_jungle_ooze.getDefaultState());
 						}
@@ -119,7 +117,7 @@ public class TrappedBrick extends BlockContainer {
 						if(world.rand.nextBoolean())
 							continue;
 
-						Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
+						final Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
 							world.setBlockState(new BlockPos(x + a, y + b, z + c), ModBlocks.brick_jungle_mystic.getDefaultState());
 						}
@@ -147,18 +145,18 @@ public class TrappedBrick extends BlockContainer {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(TYPE);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(TYPE, meta);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubBlocks(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH)
 			for (int i = 0; i < Trap.values().length; ++i) {
 				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
@@ -190,11 +188,11 @@ public class TrappedBrick extends BlockContainer {
 
 		public TrapType type;
 
-		private Trap(TrapType type) {
+		private Trap(final TrapType type) {
 			this.type = type;
 		}
 
-		public static Trap get(int i) {
+		public static Trap get(final int i) {
 
 			if(i >= 0 && i < Trap.values().length)
 				return Trap.values()[i];

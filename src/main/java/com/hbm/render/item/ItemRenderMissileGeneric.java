@@ -35,14 +35,14 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		TYPE_CARRIER
 	}
 	
-	public ItemRenderMissileGeneric(RenderMissileType category) {
+	public ItemRenderMissileGeneric(final RenderMissileType category) {
 		this.category = category;
 	}
 
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 	
-		Consumer<TextureManager> renderer = renderers.get(ItemStackUtil.comparableStackFrom(item).makeSingular());
+		final Consumer<TextureManager> renderer = renderers.get(ItemStackUtil.comparableStackFrom(item).makeSingular());
 		if(renderer == null) return;
 		
 		GL11.glPushMatrix();
@@ -69,7 +69,7 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		switch(type) {
 		case THIRD_PERSON_LEFT_HAND:
 		case THIRD_PERSON_RIGHT_HAND:
-			double s = 0.15;
+			final double s = 0.15;
 			GL11.glTranslated(0.5, -0.25, 0.25);
 			GL11.glScaled(s, s, s);
 			GL11.glScaled(guiScale, guiScale, guiScale);
@@ -77,7 +77,7 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 			break;
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			double heldScale = 0.1;
+			final double heldScale = 0.1;
 			GL11.glTranslated(0.5, 0.25, 0.3);
 			GL11.glScaled(heldScale, heldScale, heldScale);
 			GL11.glScaled(guiScale, guiScale, guiScale);
@@ -85,12 +85,12 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		case GROUND:
 		case FIXED:
 		case HEAD:
-			double s2 = 0.15;
+			final double s2 = 0.15;
 			GL11.glScaled(s2, s2, s2);
 			break;
 		case GUI:
 			RenderHelper.enableGUIStandardItemLighting();
-			double s3 = 0.0625;
+			final double s3 = 0.0625;
 			GL11.glScaled(s3, s3, s3);
 			GL11.glTranslated(15 - guiOffset, 1 + guiOffset, 0);
 			GL11.glScaled(guiScale, guiScale, guiScale);
@@ -108,11 +108,11 @@ public class ItemRenderMissileGeneric extends TEISRBase {
 		GL11.glPopMatrix();
 	}
 	
-	public static Consumer<TextureManager> generateStandard(ResourceLocation texture, IModelCustom model) { return generateWithScale(texture, model, 1F); }
-	public static Consumer<TextureManager> generateLarge(ResourceLocation texture, IModelCustom model) { return generateWithScale(texture, model, 1.5F); }
-	public static Consumer<TextureManager> generateDouble(ResourceLocation texture, IModelCustom model) { return generateWithScale(texture, model, 2F); }
+	public static Consumer<TextureManager> generateStandard(final ResourceLocation texture, final IModelCustom model) { return generateWithScale(texture, model, 1F); }
+	public static Consumer<TextureManager> generateLarge(final ResourceLocation texture, final IModelCustom model) { return generateWithScale(texture, model, 1.5F); }
+	public static Consumer<TextureManager> generateDouble(final ResourceLocation texture, final IModelCustom model) { return generateWithScale(texture, model, 2F); }
 	
-	public static Consumer<TextureManager> generateWithScale(ResourceLocation texture, IModelCustom model, float scale) {
+	public static Consumer<TextureManager> generateWithScale(final ResourceLocation texture, final IModelCustom model, final float scale) {
 		return x -> {
 			GL11.glScalef(scale, scale, scale);
 			GL11.glShadeModel(GL11.GL_SMOOTH);

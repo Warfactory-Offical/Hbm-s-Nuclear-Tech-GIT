@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 public class BlockTab extends CreativeTabs {
 
-	public BlockTab(int index, String label) {
+	public BlockTab(final int index, final String label) {
 		super(index, label);
 	}
 

@@ -13,15 +13,15 @@ public abstract class TileEntityTickingBase extends TileEntityLoadedBase impleme
 	
 	public abstract String getInventoryName();
 	
-	public int getGaugeScaled(int i, FluidTank tank) {
+	public int getGaugeScaled(final int i, final FluidTank tank) {
 		return tank.getFluidAmount() * i / tank.getCapacity();
 	}
 	
-	public void networkPack(NBTTagCompound nbt, int range) {
+	public void networkPack(final NBTTagCompound nbt, final int range) {
 
 		if(!world.isRemote)
 			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, pos), new TargetPoint(this.world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), range));
 	}
 	
-	public void networkUnpack(NBTTagCompound nbt) { }
+	public void networkUnpack(final NBTTagCompound nbt) { }
 }

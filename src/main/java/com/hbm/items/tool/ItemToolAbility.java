@@ -1,24 +1,17 @@
 package com.hbm.items.tool;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
+import api.hbm.item.IDepthRockTool;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.hbm.handler.ToolAbility;
-import com.hbm.handler.ToolAbility.SilkAbility;
-import com.hbm.handler.WeaponAbility;
-import com.hbm.util.I18nUtil;
-import com.hbm.items.ModItems;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockBedrockOre;
 import com.hbm.blocks.generic.BlockBedrockOreTE;
-
-import api.hbm.item.IDepthRockTool;
+import com.hbm.handler.ToolAbility;
+import com.hbm.handler.ToolAbility.SilkAbility;
+import com.hbm.handler.WeaponAbility;
+import com.hbm.items.ModItems;
+import com.hbm.util.I18nUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -38,11 +31,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.server.SPacketBlockChange;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -53,17 +42,19 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.*;
+
 public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRockTool {
 
-	private EnumToolType toolType;
+	private final EnumToolType toolType;
 	private EnumRarity rarity = EnumRarity.COMMON;
 	//was there a reason for this to be private?
     protected float damage;
     protected double movement;
-    private List<ToolAbility> breakAbility = new ArrayList<ToolAbility>() {
+    private final List<ToolAbility> breakAbility = new ArrayList<ToolAbility>() {
 		private static final long serialVersionUID = 153867601249309418L;
 	{ add(null); }};
-    private List<WeaponAbility> hitAbility = new ArrayList<WeaponAbility>();
+    private final List<WeaponAbility> hitAbility = new ArrayList<WeaponAbility>();
 
     private boolean rockBreaker = false;
     
@@ -71,26 +62,26 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	public static enum EnumToolType {
 		
 		PICKAXE(
-				Sets.newHashSet(new Material[] { Material.IRON, Material.ANVIL, Material.ROCK }),
+				Sets.newHashSet(Material.IRON, Material.ANVIL, Material.ROCK),
 				Sets.newHashSet(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE)
 		),
 		AXE(
-				Sets.newHashSet(new Material[] { Material.WOOD, Material.PLANTS, Material.VINE }),
+				Sets.newHashSet(Material.WOOD, Material.PLANTS, Material.VINE),
 				Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE)
 		),
 		SHOVEL(
-				Sets.newHashSet(new Material[] { Material.CLAY, Material.SAND, Material.GROUND, Material.SNOW, Material.CRAFTED_SNOW }),
+				Sets.newHashSet(Material.CLAY, Material.SAND, Material.GROUND, Material.SNOW, Material.CRAFTED_SNOW),
 				Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.CONCRETE_POWDER)
 		),
 		MINER(
-				Sets.newHashSet(new Material[] { Material.GRASS, Material.IRON, Material.ANVIL, Material.ROCK, Material.CLAY, Material.SAND, Material.GROUND, Material.SNOW, Material.CRAFTED_SNOW })
+				Sets.newHashSet(Material.GRASS, Material.IRON, Material.ANVIL, Material.ROCK, Material.CLAY, Material.SAND, Material.GROUND, Material.SNOW, Material.CRAFTED_SNOW)
 		);
 		
-		private EnumToolType(Set<Material> materials) {
+		private EnumToolType(final Set<Material> materials) {
 			this.materials = materials;
 		}
 		
-		private EnumToolType(Set<Material> materials, Set<Block> blocks) {
+		private EnumToolType(final Set<Material> materials, final Set<Block> blocks) {
 			this.materials = materials;
 			this.blocks = blocks;
 		}
@@ -99,7 +90,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		public Set<Block> blocks = new HashSet<Block>();
 	}
 	
-	public ItemToolAbility(float damage, float attackSpeedIn, double movement, ToolMaterial material, EnumToolType type, String s) {
+	public ItemToolAbility(final float damage, final float attackSpeedIn, final double movement, final ToolMaterial material, final EnumToolType type, final String s) {
 		super(0, attackSpeedIn, material, type.blocks);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -117,19 +108,19 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		ModItems.ALL_ITEMS.add(this);
 	}
 	
-	public ItemToolAbility addBreakAbility(ToolAbility breakAbility) {
+	public ItemToolAbility addBreakAbility(final ToolAbility breakAbility) {
 		this.breakAbility.add(breakAbility);
 		return this;
 	}
 	
-	public ItemToolAbility addHitAbility(WeaponAbility weaponAbility) {
+	public ItemToolAbility addHitAbility(final WeaponAbility weaponAbility) {
 		this.hitAbility.add(weaponAbility);
 		return this;
 	}
 	
 	//<insert obvious Rarity joke here>
 	//Drillgon200: What?
-	public ItemToolAbility setRarity(EnumRarity rarity) {
+	public ItemToolAbility setRarity(final EnumRarity rarity) {
 		this.rarity = rarity;
 		return this;
 	}
@@ -137,15 +128,15 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	//Drillgon200: Dang it bob, override annotations matter!
 	@SuppressWarnings("deprecation")
 	@Override
-    public EnumRarity getRarity(ItemStack stack) {
+    public EnumRarity getRarity(final ItemStack stack) {
         return this.rarity != EnumRarity.COMMON ? this.rarity : super.getRarity(stack);
     }
 	
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+	public boolean hitEntity(final ItemStack stack, final EntityLivingBase target, final EntityLivingBase attacker) {
 		if(!attacker.world.isRemote && !this.hitAbility.isEmpty() && attacker instanceof EntityPlayer && canOperate(stack)) {
     		
-    		for(WeaponAbility ability : this.hitAbility) {
+    		for(final WeaponAbility ability : this.hitAbility) {
 				ability.onHit(attacker.world, (EntityPlayer) attacker, target, this);
     		}
     	}
@@ -154,9 +145,9 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	}
 	
 	@Override
-	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player) {
-		World world = player.world;
-    	IBlockState block = world.getBlockState(pos);
+	public boolean onBlockStartBreak(final ItemStack stack, final BlockPos pos, final EntityPlayer player) {
+		final World world = player.world;
+    	final IBlockState block = world.getBlockState(pos);
     	
     	if(!world.isRemote && canHarvestBlock(block, stack) && this.getCurrentAbility(stack) != null && canOperate(stack))
     		this.getCurrentAbility(stack).onDig(world, pos.getX(), pos.getY(), pos.getZ(), player, block, this, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
@@ -165,7 +156,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	}
 	
 	@Override
-	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+	public float getDestroySpeed(final ItemStack stack, final IBlockState state) {
 		if(!canOperate(stack))
     		return 1;
     	
@@ -179,7 +170,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	}
 	
 	@Override
-	public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+	public boolean canHarvestBlock(final IBlockState state, final ItemStack stack) {
 		if(!canOperate(stack)) return false;
 
 		if(isForbiddenBlock(state.getBlock())) return false;
@@ -190,16 +181,16 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     	return getDestroySpeed(stack, state) > 1;
 	}
 
-	public static boolean isForbiddenBlock(Block b){
+	public static boolean isForbiddenBlock(final Block b){
 		return (b == Blocks.BARRIER || b == Blocks.BEDROCK || b == Blocks.COMMAND_BLOCK || b == Blocks.CHAIN_COMMAND_BLOCK || b == Blocks.REPEATING_COMMAND_BLOCK || b == ModBlocks.ore_bedrock_oil || b instanceof BlockBedrockOre || b instanceof BlockBedrockOreTE );
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot slot) {
-		Multimap<String, AttributeModifier> map = HashMultimap.<String, AttributeModifier>create();
+	public Multimap<String, AttributeModifier> getItemAttributeModifiers(final EntityEquipmentSlot slot) {
+		final Multimap<String, AttributeModifier> map = HashMultimap.create();
 		if(slot == EntityEquipmentSlot.MAINHAND){
 			map.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(UUID.fromString("91AEAA56-376B-4498-935B-2F7F68070635"), "Tool modifier", movement, 1));
-			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double)this.damage, 0));
+			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", this.damage, 0));
 		}
         return map;
 	}
@@ -207,30 +198,29 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	//that's slimelad's code
     //creative commons 3 and all that jazz
 	@Override
-    public void breakExtraBlock(World world, int x, int y, int z, EntityPlayer playerEntity, int refX, int refY, int refZ, EnumHand hand) {
-    	BlockPos pos = new BlockPos(x, y, z);
+    public void breakExtraBlock(final World world, final int x, final int y, final int z, final EntityPlayer playerEntity, final int refX, final int refY, final int refZ, final EnumHand hand) {
+    	final BlockPos pos = new BlockPos(x, y, z);
         if (world.isAirBlock(pos))
             return;
 
-        if(!(playerEntity instanceof EntityPlayerMP))
+        if(!(playerEntity instanceof EntityPlayerMP player))
             return;
-        
-        EntityPlayerMP player = (EntityPlayerMP) playerEntity;
-        ItemStack stack = player.getHeldItem(hand);
 
-        IBlockState block = world.getBlockState(pos);
+        final ItemStack stack = player.getHeldItem(hand);
+
+        final IBlockState block = world.getBlockState(pos);
 
         if(!canHarvestBlock(block, stack))
             return;
 
-        IBlockState refBlock = world.getBlockState(new BlockPos(refX, refY, refZ));
-        float refStrength = ForgeHooks.blockStrength(refBlock, player, world, new BlockPos(refX, refY, refZ));
-        float strength = ForgeHooks.blockStrength(block, player, world, pos);
+        final IBlockState refBlock = world.getBlockState(new BlockPos(refX, refY, refZ));
+        final float refStrength = ForgeHooks.blockStrength(refBlock, player, world, new BlockPos(refX, refY, refZ));
+        final float strength = ForgeHooks.blockStrength(block, player, world, pos);
 
         if (!ForgeHooks.canHarvestBlock(block.getBlock(), player, world, pos) || refStrength/strength > 10f)
             return;
 
-        int event = ForgeHooks.onBlockBreakEvent(world, player.interactionManager.getGameType(), player, pos);
+        final int event = ForgeHooks.onBlockBreakEvent(world, player.interactionManager.getGameType(), player, pos);
         if(event < 0)
             return;
 
@@ -266,7 +256,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
             {
                 block.getBlock().onPlayerDestroy(world, pos, block);
             }
-            ItemStack itemstack = player.getHeldItem(hand);
+            final ItemStack itemstack = player.getHeldItem(hand);
             if (itemstack != null)
             {
                 itemstack.onBlockDestroyed(world, block, new BlockPos(x, y, z), player);
@@ -283,17 +273,17 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack) {
-    	return getCurrentAbility(stack) != null ? true : super.hasEffect(stack);
+    public boolean hasEffect(final ItemStack stack) {
+    	return getCurrentAbility(stack) != null || super.hasEffect(stack);
     }
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
     	if(this.breakAbility.size() > 1) {
     		list.add(I18nUtil.resolveKey("tool.ability.list"));
     		
-    		for(ToolAbility ability : this.breakAbility) {
+    		for(final ToolAbility ability : this.breakAbility) {
     			
     			if(ability != null) {
     				
@@ -312,7 +302,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     		
     		list.add(I18nUtil.resolveKey("tool.ability.weaponlist"));
     		
-    		for(WeaponAbility ability : this.hitAbility) {
+    		for(final WeaponAbility ability : this.hitAbility) {
 				list.add("  " + TextFormatting.RED + ability.getFullName());
     		}
     	}
@@ -323,8 +313,8 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     }
     
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-    	ItemStack stack = player.getHeldItem(hand);
+    public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+    	final ItemStack stack = player.getHeldItem(hand);
     	if(this.breakAbility.size() < 2 || !canOperate(stack))
     		return EnumActionResult.PASS;
     	if(!worldIn.isRemote){
@@ -334,8 +324,8 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     }
     
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-    	ItemStack stack = player.getHeldItem(hand);
+    public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+    	final ItemStack stack = player.getHeldItem(hand);
     	
     	if(world.isRemote || this.breakAbility.size() < 2 || !canOperate(stack))
     		return super.onItemRightClick(world, player, hand);
@@ -345,7 +335,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     	return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
     }
     
-    private void switchMode(EntityPlayer player, ItemStack stack){
+    private void switchMode(final EntityPlayer player, final ItemStack stack){
     	int i = getAbility(stack);
     	i++;
     	
@@ -360,7 +350,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 				new TextComponentString("[")
 				.appendSibling(new TextComponentTranslation("chat.ability"))
 				.appendSibling(new TextComponentString(" "))
-				.appendSibling(new TextComponentTranslation(getCurrentAbility(stack).getName(), new Object[0]))
+				.appendSibling(new TextComponentTranslation(getCurrentAbility(stack).getName()))
 				.appendSibling(new TextComponentString(getCurrentAbility(stack).getExtension() + " ")
 				.appendSibling(new TextComponentTranslation("chat.blacklist"))
 				.appendSibling(new TextComponentString("]")))
@@ -389,14 +379,14 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
         player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.25F, getCurrentAbility(stack) == null ? 0.75F : 1.25F);
     }
     
-    private ToolAbility getCurrentAbility(ItemStack stack) {
+    private ToolAbility getCurrentAbility(final ItemStack stack) {
     	
-    	int ability = getAbility(stack) % this.breakAbility.size();
+    	final int ability = getAbility(stack) % this.breakAbility.size();
     	
     	return this.breakAbility.get(ability);
     }
     
-    private int getAbility(ItemStack stack) {
+    private int getAbility(final ItemStack stack) {
     	
     	if(stack.hasTagCompound())
     		return stack.getTagCompound().getInteger("ability");
@@ -404,7 +394,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     	return 0;
     }
     
-    private void setAbility(ItemStack stack, int ability) {
+    private void setAbility(final ItemStack stack, final int ability) {
 
     	if(!stack.hasTagCompound())
     		stack.setTagCompound(new NBTTagCompound());
@@ -412,7 +402,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
     	stack.getTagCompound().setInteger("ability", ability);
     }
     
-    protected boolean canOperate(ItemStack stack) {
+    protected boolean canOperate(final ItemStack stack) {
     	return true;
     }
 
@@ -423,7 +413,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	
 	
 	@Override
-	public boolean canBreakRock(World world, EntityPlayer player, ItemStack tool, IBlockState block, BlockPos pos){
+	public boolean canBreakRock(final World world, final EntityPlayer player, final ItemStack tool, final IBlockState block, final BlockPos pos){
 		return canOperate(tool) && this.rockBreaker;
 	}
 }

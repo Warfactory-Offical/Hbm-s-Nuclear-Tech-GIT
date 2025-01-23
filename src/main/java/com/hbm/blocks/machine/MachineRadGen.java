@@ -35,7 +35,7 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
-	public MachineRadGen(Material materialIn, String s) {
+	public MachineRadGen(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -44,48 +44,48 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineRadGen();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.machine_radgen);
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		EnumFacing e = placer.getHorizontalFacing().getOpposite();
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+		final EnumFacing e = placer.getHorizontalFacing().getOpposite();
 		world.setBlockState(pos, state.withProperty(FACING, e));
 		if (e == EnumFacing.EAST) {
 			if(MultiblockHandler.checkSpace(world, pos, MultiblockHandler.radGenDimensionEast)) {
@@ -94,10 +94,9 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, 4), ModBlocks.dummy_port_radgen.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(0, 0, 4));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(0, 0, 4));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -112,10 +111,9 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(-4, 0, 0), ModBlocks.dummy_port_radgen.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(-4, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(-4, 0, 0));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -130,10 +128,9 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(0, 0, -4), ModBlocks.dummy_port_radgen.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(0, 0, -4));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(0, 0, -4));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -148,10 +145,9 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 				//
 				DummyBlockRadGen.safeBreak = true;
 				world.setBlockState(pos.add(4, 0, 0), ModBlocks.dummy_port_radgen.getDefaultState());
-				TileEntity te = world.getTileEntity(pos.add(4, 0, 0));
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(pos.add(4, 0, 0));
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockRadGen.safeBreak = false;
 				//
@@ -162,13 +158,13 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityMachineRadGen entity = (TileEntityMachineRadGen) world.getTileEntity(pos);
+			final TileEntityMachineRadGen entity = (TileEntityMachineRadGen) world.getTileEntity(pos);
     		if(entity != null)
     		{
     			player.openGui(MainRegistry.instance, ModBlocks.guiID_radgen, world, pos.getX(), pos.getY(), pos.getZ());
@@ -180,28 +176,28 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state) {
+		return state.getValue(FACING).getIndex();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
@@ -215,14 +211,14 @@ public class MachineRadGen extends BlockContainer implements IMultiBlock {
 	
 	
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 }

@@ -17,30 +17,30 @@ import net.minecraft.world.World;
 
 public class MachineReactor extends BlockDummyable {
 
-	public MachineReactor(Material m, String s) {
+	public MachineReactor(final Material m, final String s) {
 		super(m, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(meta >= 12)
 			return new TileEntityMachineReactor();
 		return new TileEntityProxyInventory();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
 			if(pos == null)
 				return false;
 
-			TileEntityMachineReactor entity = (TileEntityMachineReactor) world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			final TileEntityMachineReactor entity = (TileEntityMachineReactor) world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_reactor, world, pos[0], pos[1], pos[2]);

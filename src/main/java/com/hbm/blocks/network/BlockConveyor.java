@@ -35,7 +35,7 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final AxisAlignedBB CONVEYOR_BB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F);
 
-	public BlockConveyor(Material materialIn, String s) {
+	public BlockConveyor(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -43,25 +43,25 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 	@Override
-	public boolean canItemStay(World world, int x, int y, int z, Vec3d itemPos) {
+	public boolean canItemStay(final World world, final int x, final int y, final int z, final Vec3d itemPos) {
 		return true;
 	}
 
 	@Override
-	public Vec3d getTravelLocation(World world, int x, int y, int z, Vec3d itemPos, double speed) {
-		BlockPos pos = new BlockPos(x, y, z);
-		EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
-		Vec3d snap = this.getClosestSnappingPosition(world, pos, itemPos);
-		Vec3d dest = new Vec3d(
+	public Vec3d getTravelLocation(final World world, final int x, final int y, final int z, final Vec3d itemPos, final double speed) {
+		final BlockPos pos = new BlockPos(x, y, z);
+		final EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
+		final Vec3d snap = this.getClosestSnappingPosition(world, pos, itemPos);
+		final Vec3d dest = new Vec3d(
 				snap.x - dir.getXOffset() * speed,
 				snap.y - dir.getYOffset() * speed,
 				snap.z - dir.getZOffset() * speed);
-		Vec3d motion = new Vec3d(
+		final Vec3d motion = new Vec3d(
 				dest.x - itemPos.x,
 				dest.y - itemPos.y,
 				dest.z - itemPos.z);
-		double len = motion.length();
-		Vec3d ret = new Vec3d(
+		final double len = motion.length();
+		final Vec3d ret = new Vec3d(
 				itemPos.x + motion.x / len * speed,
 				itemPos.y + motion.y / len * speed,
 				itemPos.z + motion.z / len * speed);
@@ -69,20 +69,20 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
 	}
 
 
-	public EnumFacing getTravelDirection(World world, BlockPos pos, Vec3d itemPos) {
+	public EnumFacing getTravelDirection(final World world, final BlockPos pos, final Vec3d itemPos) {
 		return EnumFacing.byIndex(world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos)));
 	}
 
 	@Override
-	public Vec3d getClosestSnappingPosition(World world, BlockPos pos, Vec3d itemPos) {
-		EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
+	public Vec3d getClosestSnappingPosition(final World world, final BlockPos pos, final Vec3d itemPos) {
+		final EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
 
-		double posX = MathHelper.clamp(itemPos.x, pos.getX(), pos.getX() + 1);
-		double posZ = MathHelper.clamp(itemPos.z, pos.getZ(), pos.getZ() + 1);
+		final double posX = MathHelper.clamp(itemPos.x, pos.getX(), pos.getX() + 1);
+		final double posZ = MathHelper.clamp(itemPos.z, pos.getZ(), pos.getZ() + 1);
 
 		double x = pos.getX() + 0.5;
 		double z = pos.getZ() + 0.5;
-		double y = pos.getY() + 0.25;
+		final double y = pos.getY() + 0.25;
 
 		if (dir.getAxis() == EnumFacing.Axis.X) {
 			x = posX;
@@ -94,15 +94,15 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(final World world, final BlockPos pos, final IBlockState state, final Entity entity) {
 		if(!world.isRemote) {
 
 			if(entity instanceof EntityItem && entity.ticksExisted > 10 && !entity.isDead) {
 
-				EntityMovingItem item = new EntityMovingItem(world);
+				final EntityMovingItem item = new EntityMovingItem(world);
 				item.setItemStack(((EntityItem)entity).getItem());
-				Vec3d entityPos = new Vec3d(entity.posX, entity.posY, entity.posZ);
-				Vec3d snap = this.getClosestSnappingPosition(world, pos, entityPos);
+				final Vec3d entityPos = new Vec3d(entity.posX, entity.posY, entity.posZ);
+				final Vec3d snap = this.getClosestSnappingPosition(world, pos, entityPos);
 				item.setPositionAndRotation(snap.x, snap.y, snap.z, 0, 0);
 				world.spawnEntity(item);
 				
@@ -114,62 +114,62 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
 
 	
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face){
+	public BlockFaceShape getBlockFaceShape(final IBlockAccess worldIn, final IBlockState state, final BlockPos pos, final EnumFacing face){
 		return BlockFaceShape.CENTER;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		return CONVEYOR_BB;
 	}
 	
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state) {
+		return state.getValue(FACING).getIndex();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
@@ -180,29 +180,29 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
         return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
 
-	protected int getPathDirection(int meta) {
+	protected int getPathDirection(final int meta) {
 
 		if(meta >= 6 && meta <= 9) return 1;
 		if(meta >= 10 && meta <= 13) return 2;
 		return 0;
 	}
 
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, IToolable.ToolType tool) {
+	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final IToolable.ToolType tool) {
 		if(tool != IToolable.ToolType.SCREWDRIVER)
 			return false;
-		BlockPos pos = new BlockPos(x, y, z);
-		IBlockState state = world.getBlockState(pos);
+		final BlockPos pos = new BlockPos(x, y, z);
+		final IBlockState state = world.getBlockState(pos);
 
 		int meta = getMetaFromState(state);
 		int newMeta = meta;
 
-		int dir = getPathDirection(meta);
+		final int dir = getPathDirection(meta);
 
 		if(!player.isSneaking()) {
 			if(meta > 9) meta -= 8;
 			if(meta > 5) meta -= 4;
 
-			EnumFacing facing = EnumFacing.byIndex(meta & 7);
+			final EnumFacing facing = EnumFacing.byIndex(meta & 7);
 			newMeta = facing.rotateY().getIndex() + dir * 4;
 		} else {
 			if(dir < 2)
@@ -211,7 +211,7 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
 				newMeta -= 8;
 		}
 
-		IBlockState newState = getStateFromMeta(newMeta);
+		final IBlockState newState = getStateFromMeta(newMeta);
 		world.setBlockState(pos, newState, 3);
 
 		return true;
@@ -220,13 +220,13 @@ public class BlockConveyor extends Block implements IConveyorBelt, IToolable {
 	
 	
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 }

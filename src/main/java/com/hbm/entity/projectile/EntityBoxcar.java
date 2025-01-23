@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityBoxcar extends EntityThrowable implements IConstantRenderer {
 
-	public EntityBoxcar(World worldIn) {
+	public EntityBoxcar(final World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
@@ -47,8 +47,8 @@ public class EntityBoxcar extends EntityThrowable implements IConstantRenderer {
 		this.motionY -= 0.03;
 		if(motionY < -1.5)
 			motionY = -1.5;
-        BlockPos pos = new BlockPos((int)this.posX, (int)this.posY, (int)this.posZ);
-        Block b = this.world.getBlockState(pos).getBlock();
+        final BlockPos pos = new BlockPos((int)this.posX, (int)this.posY, (int)this.posZ);
+        final Block b = this.world.getBlockState(pos).getBlock();
         if(b != Blocks.AIR && b != Blocks.WATER && b != Blocks.FLOWING_WATER && !b.isReplaceable(world, pos))
         {
             this.world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.oldExplosion, SoundCategory.HOSTILE, 10000.0F, 0.5F + this.rand.nextFloat() * 0.1F);
@@ -60,9 +60,9 @@ public class EntityBoxcar extends EntityThrowable implements IConstantRenderer {
     		ExplosionLarge.spawnShock(world, posX, posY + 1, posZ, 24, 1);
     		if(CompatibilityConfig.isWarDim(world)){
 
-	    		List<Entity> list = (List<Entity>)world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(posX - 2, posY - 2, posZ - 2, posX + 2, posY + 2, posZ + 2));
+	    		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(posX - 2, posY - 2, posZ - 2, posX + 2, posY + 2, posZ + 2));
 	    			
-	    		for(Entity e : list) {
+	    		for(final Entity e : list) {
 	    			e.attackEntityFrom(ModDamageSource.boxcar, 1000);
 	    		}
 	    		
@@ -73,13 +73,13 @@ public class EntityBoxcar extends EntityThrowable implements IConstantRenderer {
 	}
 	
 	@Override
-	protected void onImpact(RayTraceResult result) {
+	protected void onImpact(final RayTraceResult result) {
 		
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean isInRangeToRenderDist(final double distance) {
 		return distance < 25000;
 	}
 

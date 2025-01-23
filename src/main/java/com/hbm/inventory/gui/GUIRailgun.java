@@ -17,10 +17,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIRailgun extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_railgun.png");
-	private TileEntityRailgun railgun;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_railgun.png");
+	private final TileEntityRailgun railgun;
 
-	public GUIRailgun(InventoryPlayer invPlayer, TileEntityRailgun tedf) {
+	public GUIRailgun(final InventoryPlayer invPlayer, final TileEntityRailgun tedf) {
 		super(new ContainerRailgun(invPlayer, tedf));
 		railgun = tedf;
 
@@ -29,21 +29,21 @@ public class GUIRailgun extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		super.renderHoveredToolTip(mouseX, mouseY);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 51, 160, 16, this.railgun.getPower(), this.railgun.getMaxPower());
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.railgun.hasCustomInventoryName() ? this.railgun.getInventoryName() : I18n.format(this.railgun.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.railgun.hasCustomInventoryName() ? this.railgun.getInventoryName() : I18n.format(this.railgun.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
 		super.mouseClicked(x, y, i);
 		
 		if(!isTargeting() && !isFiring()) {
@@ -58,13 +58,13 @@ public class GUIRailgun extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		int j1 = (int) railgun.getPowerScaled(160);
+		final int j1 = (int) railgun.getPowerScaled(160);
 		drawTexturedModalRect(guiLeft + 8, guiTop + 53, 8, 166, j1, 16);
 
 		if(isTargeting())

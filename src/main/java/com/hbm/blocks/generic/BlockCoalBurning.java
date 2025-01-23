@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class BlockCoalBurning extends BlockOre {
 
-	public BlockCoalBurning(String s) {
+	public BlockCoalBurning(final String s) {
 		super();
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,9 +28,9 @@ public class BlockCoalBurning extends BlockOre {
 	}
 	
 	@Override
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+	public void randomDisplayTick(final IBlockState state, final World world, final BlockPos pos, final Random rand) {
 		super.randomDisplayTick(state, world, pos, rand);
-		for(EnumFacing dir : EnumFacing.VALUES) {
+		for(final EnumFacing dir : EnumFacing.VALUES) {
 
         	if(dir == EnumFacing.DOWN)
         		continue;
@@ -56,18 +56,18 @@ public class BlockCoalBurning extends BlockOre {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState());
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
 		entityIn.setFire(3);
 	}
 }

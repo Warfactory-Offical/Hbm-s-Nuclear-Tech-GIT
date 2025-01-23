@@ -12,7 +12,7 @@ public class SoundLoopTurbofan extends SoundLoopMachine {
 	
 	public static List<SoundLoopTurbofan> list = new ArrayList<SoundLoopTurbofan>();
 
-	public SoundLoopTurbofan(SoundEvent path, TileEntity te) {
+	public SoundLoopTurbofan(final SoundEvent path, final TileEntity te) {
 		super(path, te);
 		list.add(this);
 	}
@@ -21,10 +21,9 @@ public class SoundLoopTurbofan extends SoundLoopMachine {
 	public void update() {
 		super.update();
 		
-		if(te instanceof TileEntityMachineTurbofan) {
-			TileEntityMachineTurbofan drill = (TileEntityMachineTurbofan)te;
-			
-			if(this.volume != 10)
+		if(te instanceof TileEntityMachineTurbofan drill) {
+
+            if(this.volume != 10)
 				volume = 10;
 			
 			if(!drill.isRunning)

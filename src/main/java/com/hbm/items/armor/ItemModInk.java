@@ -1,10 +1,7 @@
 package com.hbm.items.armor;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -12,14 +9,16 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import java.util.List;
+
 public class ItemModInk extends ItemArmorMod {
 
-	public ItemModInk(String s) {
+	public ItemModInk(final String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
 		list.add(TextFormatting.LIGHT_PURPLE + "10% chance to nullify damage");
 		list.add(TextFormatting.LIGHT_PURPLE + "Flowers!");
 		list.add("");
@@ -27,12 +26,12 @@ public class ItemModInk extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
+	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
 		list.add(TextFormatting.LIGHT_PURPLE + "  " + stack.getDisplayName() + " (10% chance to nullify damage)");
 	}
 	
 	@Override
-	public void modDamage(LivingHurtEvent event, ItemStack armor) {
+	public void modDamage(final LivingHurtEvent event, final ItemStack armor) {
 		
 		if(event.getEntity().world.rand.nextInt(10) == 0) {
 			event.setAmount(0);

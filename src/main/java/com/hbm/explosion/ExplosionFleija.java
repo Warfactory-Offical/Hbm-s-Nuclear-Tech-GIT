@@ -26,7 +26,7 @@ public class ExplosionFleija
 	public float explosionCoefficient = 1.0F;
 	public float explosionCoefficient2 = 1.0F;
 	
-	public void saveToNbt(NBTTagCompound nbt, String name) {
+	public void saveToNbt(final NBTTagCompound nbt, final String name) {
 		nbt.setInteger(name + "posX", posX);
 		nbt.setInteger(name + "posY", posY);
 		nbt.setInteger(name + "posZ", posZ);
@@ -43,7 +43,7 @@ public class ExplosionFleija
 		nbt.setFloat(name + "explosionCoefficient2", explosionCoefficient2);
 	}
 	
-	public void readFromNbt(NBTTagCompound nbt, String name) {
+	public void readFromNbt(final NBTTagCompound nbt, final String name) {
 		posX = nbt.getInteger(name + "posX");
 		posY = nbt.getInteger(name + "posY");
 		posZ = nbt.getInteger(name + "posZ");
@@ -60,7 +60,7 @@ public class ExplosionFleija
 		explosionCoefficient2 = nbt.getFloat(name + "explosionCoefficient2");
 	}
 	
-	public ExplosionFleija(int x, int y, int z, World world, int rad, float coefficient, float coefficient2)
+	public ExplosionFleija(final int x, final int y, final int z, final World world, final int rad, final float coefficient, final float coefficient2)
 	{
 		this.posX = x;
 		this.posY = y;
@@ -84,7 +84,7 @@ public class ExplosionFleija
 		//Should never happen, but someone got a / by 0 exception here so who knows.
 		if(shell == 0)
 			shell = 1;
-		int shell2 = this.shell * 2;
+		final int shell2 = this.shell * 2;
 		this.leg = (int) Math.floor((this.n - (shell2 - 1) * (shell2 - 1)) / shell2);
 		this.element = (this.n - (shell2 - 1) * (shell2 - 1)) - shell2 * this.leg - this.shell + 1;
 		this.lastposX = this.leg == 0 ? this.shell : this.leg == 1 ? -this.element : this.leg == 2 ? -this.shell : this.element;
@@ -93,9 +93,9 @@ public class ExplosionFleija
 		return this.n > this.nlimit;
 	}
 
-	private void breakColumn(int x, int z)
+	private void breakColumn(final int x, final int z)
 	{
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		int dist = this.radius2 - (x * x + z * z);
 		if (dist > 0)
 		{

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderLandmine extends TileEntitySpecialRenderer<TileEntityLandmine> {
 
 	@Override
-	public void render(TileEntityLandmine te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityLandmine te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -21,7 +21,7 @@ public class RenderLandmine extends TileEntitySpecialRenderer<TileEntityLandmine
         
 		GL11.glRotatef(180, 0F, 1F, 0F);
 
-		Block block = te.getWorld().getBlockState(te.getPos()).getBlock();
+		final Block block = te.getWorld().getBlockState(te.getPos()).getBlock();
 
 		if(block == ModBlocks.mine_ap) {
 	        GL11.glTranslated(0, -0.075, 0);

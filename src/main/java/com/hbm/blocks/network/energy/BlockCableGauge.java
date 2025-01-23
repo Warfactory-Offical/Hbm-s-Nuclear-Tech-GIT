@@ -45,7 +45,7 @@ public class BlockCableGauge extends BlockContainer implements ILookOverlay, ITo
 	
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
-	public BlockCableGauge(Material materialIn, String s) {
+	public BlockCableGauge(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -56,16 +56,16 @@ public class BlockCableGauge extends BlockContainer implements ILookOverlay, ITo
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state){
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state){
+		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
         if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
             enumfacing = EnumFacing.NORTH;
@@ -74,52 +74,50 @@ public class BlockCableGauge extends BlockContainer implements ILookOverlay, ITo
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot){
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot){
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn){
-		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn){
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		return new TileEntityCableGauge();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
         this.addStandardInfo(tooltip);
         super.addInformation(stack, player, tooltip, advanced);
     }
 
     @SideOnly(Side.CLIENT)
-	public void printHook(Pre event, World world, int x, int y, int z){
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z){
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityCableGauge))
+		if(!(te instanceof TileEntityCableGauge diode))
 			return;
-		
-		TileEntityCableGauge diode = (TileEntityCableGauge) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 		text.add(Library.getShortNumber(diode.deltaLastSecond) + "HE/s");
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getTranslationKey() + ".name"), 0xffff00, 0x404000, text);
@@ -139,27 +137,27 @@ public class BlockCableGauge extends BlockContainer implements ILookOverlay, ITo
 			if(!world.isRemote) {
 				
 				if(network != null) {
-					long total = network.getTotalTransfer();
-					long deltaTick = total - this.lastMeasurement;
+					final long total = network.getTotalTransfer();
+					final long deltaTick = total - this.lastMeasurement;
 					this.lastMeasurement = total;
 					
 					try {
 						if(world.getTotalWorldTime() % 20 == 0) {
 							this.deltaLastSecond = this.deltaSecond;
 							this.deltaSecond = 0;
-							NBTTagCompound data = new NBTTagCompound();
+							final NBTTagCompound data = new NBTTagCompound();
 							data.setLong("deltaS", deltaLastSecond);
 							INBTPacketReceiver.networkPack(this, data, 25);
 						}
 						this.deltaSecond += deltaTick;
 						
-					} catch(Exception ex) { }
+					} catch(final Exception ex) { }
 				}
 			}
 		}
 
 		@Override
-		public void networkUnpack(NBTTagCompound nbt) {
+		public void networkUnpack(final NBTTagCompound nbt) {
 			this.deltaLastSecond = Math.max(nbt.getLong("deltaS"), 0);
 		}
 	
@@ -169,7 +167,7 @@ public class BlockCableGauge extends BlockContainer implements ILookOverlay, ITo
 		}
 
 		@Callback(doc = "getPowerPerS(); returns the power(long) per s traveling through the gauge.")
-		public Object[] getPowerPerS(Context context, Arguments args) {
+		public Object[] getPowerPerS(final Context context, final Arguments args) {
 			return new Object[] {deltaLastSecond};
 		}
 	}

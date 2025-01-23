@@ -11,12 +11,12 @@ import net.minecraft.util.math.BlockPos;
 
 public abstract class NodeOutput extends Node {
 
-	public NodeOutput(float x, float y){
+	public NodeOutput(final float x, final float y){
 		super(x, y);
 	}
 	
 	@Override
-	public DataValue evaluate(int idx){
+	public DataValue evaluate(final int idx){
 		//Output nodes don't need this
 		return null;
 	}

@@ -10,29 +10,29 @@ import net.minecraft.world.World;
 
 public class Sellafield {
 	
-	private double depthFunc(double x, double rad, double depth) {
+	private double depthFunc(final double x, final double rad, final double depth) {
 		
 		return -Math.pow(x, 2) / Math.pow(rad, 2) * depth + depth;
 	}
 	
-	public void generate(World world, int x, int z, double radius, double depth) {
+	public void generate(final World world, final int x, final int z, final double radius, final double depth) {
 		
 		if(world.isRemote)
 			return;
 		
-		Random rand = new Random();
+		final Random rand = new Random();
 		
-		int iRad = (int)Math.round(radius);
+		final int iRad = (int)Math.round(radius);
 		
 		for(int a = -iRad - 5; a <= iRad + 5; a++) {
 			
 			for(int b = -iRad - 5; b <= iRad + 5; b++) {
 				
-				double r = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+				final double r = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 				
 				if(r - rand.nextInt(3) <= radius) {
 					
-					int dep = (int)depthFunc(r, radius, depth);
+					final int dep = (int)depthFunc(r, radius, depth);
 					dig(world, x + a, z + b, dep);
 
 					if(r + rand.nextInt(3) <= radius / 6D) {
@@ -55,9 +55,9 @@ public class Sellafield {
 		placeCore(world, x, z, radius * 0.3D);
 	}
 	
-	private void dig(World world, int x, int z, int depth) {
+	private void dig(final World world, final int x, final int z, final int depth) {
 		
-		int y = world.getHeight(x, z) - 1;
+		final int y = world.getHeight(x, z) - 1;
 		
 		if(y < depth * 2)
 			return;
@@ -66,17 +66,17 @@ public class Sellafield {
 			world.setBlockToAir(new BlockPos(x, y - i, z));
 	}
 	
-	private void place(World world, int x, int z, int depth, Block block) {
+	private void place(final World world, final int x, final int z, final int depth, final Block block) {
 		
-		int y = world.getHeight(x, z) - 1;
+		final int y = world.getHeight(x, z) - 1;
 		
 		for(int i = 0; i < depth; i++)
 			world.setBlockState(new BlockPos(x, y - i, z), block.getDefaultState());
 	}
 	
-	private void placeCore(World world, int x, int z, double rad) {
+	private void placeCore(final World world, final int x, final int z, final double rad) {
 		
-		int y = world.getHeight(x, z) - 1;
+		final int y = world.getHeight(x, z) - 1;
 		
 		world.setBlockState(new BlockPos(x, y, z), ModBlocks.sellafield_core.getDefaultState());
 		//Drillgon200: This tile entity is never actually created anywhere

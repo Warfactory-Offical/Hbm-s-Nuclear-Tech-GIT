@@ -9,7 +9,7 @@ public class BlockRadResistantHazard extends BlockRadResistant implements IItemH
 
 	ItemHazardModule module;
 	
-	public BlockRadResistantHazard(Material materialIn, String s) {
+	public BlockRadResistantHazard(final Material materialIn, final String s) {
 		super(materialIn, s);
 		this.module = new ItemHazardModule();
 	}

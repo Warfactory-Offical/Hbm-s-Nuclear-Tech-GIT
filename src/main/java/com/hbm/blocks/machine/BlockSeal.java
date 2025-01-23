@@ -30,7 +30,7 @@ public class BlockSeal extends Block implements IBomb {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 	
-	public BlockSeal(Material materialIn, String s) {
+	public BlockSeal(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -39,17 +39,17 @@ public class BlockSeal extends Block implements IBomb {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking()) {
-			int i = BlockSeal.getFrameSize(world, pos);
+			final int i = BlockSeal.getFrameSize(world, pos);
 			
 			if(i != 0)
 				if(BlockSeal.isSealClosed(world, pos, i))
@@ -63,10 +63,10 @@ public class BlockSeal extends Block implements IBomb {
 		}
 	}
 	
-	public static int getFrameSize(World world, BlockPos pos) {
+	public static int getFrameSize(final World world, final BlockPos pos) {
 		if(world.getBlockState(pos).getBlock() != ModBlocks.seal_controller)
 			return 0;
-		int max = 7;
+		final int max = 7;
 		
 		for(int size = 1; size < max; size ++) {
 			
@@ -119,7 +119,7 @@ public class BlockSeal extends Block implements IBomb {
 		return 0;
 	}
 	
-	public static void closeSeal(World world, BlockPos pos, int size) {
+	public static void closeSeal(final World world, final BlockPos pos, final int size) {
 
 		int xOff = 0;
 		int zOff = 0;
@@ -136,7 +136,7 @@ public class BlockSeal extends Block implements IBomb {
 			for(int Z = pos.getZ() - size + 1; Z <= pos.getZ() + size - 1; Z++) {
 				if(world.getBlockState(new BlockPos(X + xOff, pos.getY(), Z + zOff)).getBlock() == Blocks.AIR && !world.isRemote) {
 					world.setBlockState(new BlockPos(X + xOff, pos.getY(), Z + zOff), ModBlocks.seal_hatch.getDefaultState());
-					TileEntity te = world.getTileEntity(new BlockPos(X + xOff, pos.getY(), Z + zOff));
+					final TileEntity te = world.getTileEntity(new BlockPos(X + xOff, pos.getY(), Z + zOff));
 					if(te != null && te instanceof TileEntityHatch)
 						((TileEntityHatch)te).setControllerPos(pos);
 						
@@ -145,7 +145,7 @@ public class BlockSeal extends Block implements IBomb {
 		}
 	}
 	
-	public static void openSeal(World world, BlockPos pos, int size) {
+	public static void openSeal(final World world, final BlockPos pos, final int size) {
 		
 		int xOff = 0;
 		int zOff = 0;
@@ -167,7 +167,7 @@ public class BlockSeal extends Block implements IBomb {
 		}
 	}
 	
-	public static boolean isSealClosed(World world, BlockPos pos, int size) {
+	public static boolean isSealClosed(final World world, final BlockPos pos, final int size) {
 		
 		int xOff = 0;
 		int zOff = 0;
@@ -192,8 +192,8 @@ public class BlockSeal extends Block implements IBomb {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
-		int i = BlockSeal.getFrameSize(world, pos);
+	public void explode(final World world, final BlockPos pos) {
+		final int i = BlockSeal.getFrameSize(world, pos);
 		
 		if(i != 0)
 			if(BlockSeal.isSealClosed(world, pos, i))
@@ -203,13 +203,13 @@ public class BlockSeal extends Block implements IBomb {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block block, final BlockPos fromPos) {
 		if (world.isBlockPowered(pos))
         {
         	if(!world.getBlockState(pos).getValue(ACTIVATED)) {
         		world.setBlockState(pos, world.getBlockState(pos).withProperty(ACTIVATED, true), 2);
         		
-        		int i = BlockSeal.getFrameSize(world, pos);
+        		final int i = BlockSeal.getFrameSize(world, pos);
         		
         		if(i != 0)
         			if(BlockSeal.isSealClosed(world, pos, i))
@@ -227,28 +227,28 @@ public class BlockSeal extends Block implements IBomb {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING, ACTIVATED});
+		return new BlockStateContainer(this, FACING, ACTIVATED);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return (((EnumFacing)state.getValue(FACING)).getIndex() << 1) + (state.getValue(ACTIVATED) == true ? 1 : 0);
+	public int getMetaFromState(final IBlockState state) {
+		return (state.getValue(FACING).getIndex() << 1) + (state.getValue(ACTIVATED) ? 1 : 0);
 	}
 	
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		boolean activated = (meta & 1) == 1 ? true : false;
+		final boolean activated = (meta & 1) == 1;
 		meta = meta >> 1;
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
@@ -263,14 +263,14 @@ public class BlockSeal extends Block implements IBomb {
 	
 	
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 }

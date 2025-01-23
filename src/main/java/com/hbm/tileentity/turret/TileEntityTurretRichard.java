@@ -98,7 +98,7 @@ public class TileEntityTurretRichard extends TileEntityTurretBaseNT {
 				this.loaded = 0;
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("loaded", this.loaded);
 			this.networkPack(data, 250);
 		}
@@ -113,7 +113,7 @@ public class TileEntityTurretRichard extends TileEntityTurretBaseNT {
 		
 		if(timer > 0 && timer % 10 == 0) {
 			
-			BulletConfiguration conf = this.getFirstConfigLoaded();
+			final BulletConfiguration conf = this.getFirstConfigLoaded();
 			
 			if(conf != null) {
 				this.spawnBullet(conf);
@@ -131,7 +131,7 @@ public class TileEntityTurretRichard extends TileEntityTurretBaseNT {
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt){
+	public void networkUnpack(final NBTTagCompound nbt){
 		if(nbt.hasKey("loaded"))
 			this.loaded = nbt.getInteger("loaded");
 		else
@@ -139,13 +139,13 @@ public class TileEntityTurretRichard extends TileEntityTurretBaseNT {
 	}
 
 	@Override
-	public void spawnBullet(BulletConfiguration bullet){
-		Vec3 pos = new Vec3(this.getTurretPos());
-		Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+	public void spawnBullet(final BulletConfiguration bullet){
+		final Vec3 pos = new Vec3(this.getTurretPos());
+		final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 		
-		EntityBulletBase proj = new EntityBulletBase(world, BulletConfigSyncingUtil.getKey(bullet));
+		final EntityBulletBase proj = new EntityBulletBase(world, BulletConfigSyncingUtil.getKey(bullet));
 		proj.setPositionAndRotation(pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord, 0.0F, 0.0F);
 		
 		proj.shoot(vec.xCoord, vec.yCoord, vec.zCoord, bullet.velocity * 0.75F, bullet.spread);
@@ -153,13 +153,13 @@ public class TileEntityTurretRichard extends TileEntityTurretBaseNT {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt){
+	public void readFromNBT(final NBTTagCompound nbt){
 		this.loaded = nbt.getInteger("loaded");
 		super.readFromNBT(nbt);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt){
 		nbt.setInteger("loaded", this.loaded);
 		return super.writeToNBT(nbt);
 	}

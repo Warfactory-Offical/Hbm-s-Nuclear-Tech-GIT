@@ -83,7 +83,7 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	public TileEntityLaunchTable() {
 		inventory = new ItemStackHandler(8){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -107,11 +107,11 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -119,11 +119,11 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 		}
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getSolidScaled(int i) {
+	public int getSolidScaled(final int i) {
 		return (solid * i) / maxSolid;
 	}
 	
@@ -158,9 +158,9 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, solid, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, padSize.ordinal(), 1), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, clearingTimer, 2), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tanks[0], tanks[1]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			
-			MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
+			final MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
 			if(needsUpdate){
 				needsUpdate = false;
 			}
@@ -181,9 +181,9 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 			}
 		} else {
 			
-			List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 10, pos.getZ() + 1.5));
+			final List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 10, pos.getZ() + 1.5));
 			
-			for(Entity e : entities) {
+			for(final Entity e : entities) {
 				
 				if(e instanceof EntityMissileCustom) {
 					
@@ -207,21 +207,18 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	}
 	
 	public boolean canLaunch() {
-		
-		if(power >= maxPower * 0.75 && isMissileValid() && hasDesignator() && hasFuel() && clearingTimer == 0)
-			return true;
-		
-		return false;
-	}
+
+        return power >= maxPower * 0.75 && isMissileValid() && hasDesignator() && hasFuel() && clearingTimer == 0;
+    }
 	
 	public void launch() {
 
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.missileTakeoff, SoundCategory.BLOCKS, 10.0F, 1.0F);
 
-		int tX = inventory.getStackInSlot(1).getTagCompound().getInteger("xCoord");
-		int tZ = inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
+		final int tX = inventory.getStackInSlot(1).getTagCompound().getInteger("xCoord");
+		final int tZ = inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
 		
-		EntityMissileCustom missile = new EntityMissileCustom(world, pos.getX() + 0.5F, pos.getY() + 1.5F, pos.getZ() + 0.5F, tX, tZ, getStruct(inventory.getStackInSlot(0)));
+		final EntityMissileCustom missile = new EntityMissileCustom(world, pos.getX() + 0.5F, pos.getY() + 1.5F, pos.getZ() + 0.5F, tX, tZ, getStruct(inventory.getStackInSlot(0)));
 		world.spawnEntity(missile);
 		
 		subtractFuel();
@@ -236,15 +233,15 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	
 	private void subtractFuel() {
 		
-		MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
+		final MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
 		
 		if(multipart == null || multipart.fuselage == null)
 			return;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		final ItemMissile fuselage = multipart.fuselage;
 		
-		float f = (Float)fuselage.attributes[1];
-		int fuel = (int)f;
+		final float f = (Float)fuselage.attributes[1];
+		final int fuel = (int)f;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
@@ -270,19 +267,19 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 		this.power -= maxPower * 0.75;
 	}
 	
-	public static MissileStruct getStruct(ItemStack stack) {
+	public static MissileStruct getStruct(final ItemStack stack) {
 		
 		return ItemCustomMissile.getStruct(stack);
 	}
 	
 	public boolean isMissileValid() {
 		
-		MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
+		final MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
 		
 		if(multipart == null || multipart.fuselage == null)
 			return false;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		final ItemMissile fuselage = multipart.fuselage;
 		
 		return fuselage.top == padSize;
 	}
@@ -299,14 +296,14 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	
 	public int solidState() {
 		
-		MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
+		final MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
 		
 		if(multipart == null || multipart.fuselage == null)
 			return -1;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		final ItemMissile fuselage = multipart.fuselage;
 		
-		if((FuelType)fuselage.attributes[0] == FuelType.SOLID) {
+		if(fuselage.attributes[0] == FuelType.SOLID) {
 			
 			if(solid >= (Float)fuselage.attributes[1])
 				return 1;
@@ -319,12 +316,12 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	
 	public int liquidState() {
 		
-		MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
+		final MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
 		
 		if(multipart == null || multipart.fuselage == null)
 			return -1;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		final ItemMissile fuselage = multipart.fuselage;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
@@ -344,12 +341,12 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	
 	public int oxidizerState() {
 		
-		MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
+		final MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
 		
 		if(multipart == null || multipart.fuselage == null)
 			return -1;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		final ItemMissile fuselage = multipart.fuselage;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
@@ -368,12 +365,12 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	
 	public void updateTypes() {
 		
-		MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
+		final MissileStruct multipart = getStruct(inventory.getStackInSlot(0));
 		
 		if(multipart == null || multipart.fuselage == null)
 			return;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		final ItemMissile fuselage = multipart.fuselage;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
@@ -395,23 +392,21 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 		}
 	}
 
-	protected boolean inputValidForTank(int tank, int slot){
+	protected boolean inputValidForTank(final int tank, final int slot){
 		if(tanks[tank] != null){
-			if(isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
-				return true;
-			}
+            return isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
 		}
 		return false;
 	}
 	
-	private boolean isValidFluidForTank(int tank, FluidStack stack) {
+	private boolean isValidFluidForTank(final int tank, final FluidStack stack) {
 		if(stack == null || tanks[tank] == null)
 			return false;
 		return stack.getFluid() == tankTypes[tank];
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setTag("inventory", inventory.serializeNBT());
 		nbt.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		if(tankTypes[0] != null)
@@ -425,7 +420,7 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		if(nbt.hasKey("inventory"))
 			inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
 		if(nbt.hasKey("tanks"))
@@ -453,7 +448,7 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	}
 	
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 
@@ -473,7 +468,7 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource == null){
 			return 0;
 		} else if(resource.getFluid() == tankTypes[0]){
@@ -486,27 +481,26 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 2){
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return true;
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -517,7 +511,7 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -527,9 +521,9 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 		}
 	}
 
-	public boolean setCoords(int x, int z){
+	public boolean setCoords(final int x, final int z){
 		if(!inventory.getStackInSlot(1).isEmpty() && (inventory.getStackInSlot(1).getItem() == ModItems.designator || inventory.getStackInSlot(1).getItem() == ModItems.designator_range || inventory.getStackInSlot(1).getItem() == ModItems.designator_manual)){
-			NBTTagCompound nbt;
+			final NBTTagCompound nbt;
 			if(inventory.getStackInSlot(1).hasTagCompound())
 				nbt = inventory.getStackInSlot(1).getTagCompound();
 			else
@@ -550,16 +544,16 @@ public class TileEntityLaunchTable extends TileEntityLoadedBase implements ITick
 	}
 
 	@Callback(doc = "setTarget(x:int, z:int); saves coords in target designator item - returns true if it worked")
-	public Object[] setTarget(Context context, Arguments args) {
-		int x = args.checkInteger(0);
-		int z = args.checkInteger(1);
+	public Object[] setTarget(final Context context, final Arguments args) {
+		final int x = args.checkInteger(0);
+		final int z = args.checkInteger(1);
 		
 		return new Object[] {setCoords(x, z)};
 	}
 
 	@Callback(doc = "launch(); tries to launch the rocket")
-	public Object[] launch(Context context, Arguments args) {
-		Block b = world.getBlockState(pos).getBlock();
+	public Object[] launch(final Context context, final Arguments args) {
+		final Block b = world.getBlockState(pos).getBlock();
 		if(b instanceof IBomb){
 			((IBomb)b).explode(world, pos);
 		}

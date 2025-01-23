@@ -52,7 +52,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      *
      * @param value
      */
-    public UShort(byte value) {
+    public UShort(final byte value) {
         this.value = value;
     }
 
@@ -61,7 +61,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      *
      * @param value
      */
-    public UShort(short value) {
+    public UShort(final short value) {
         this.value = value;
     }
 
@@ -70,7 +70,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      *
      * @param value
      */
-    public UShort(int value) {
+    public UShort(final int value) {
         this.value = (short) value;
     }
 
@@ -79,7 +79,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      *
      * @param value
      */
-    public UShort(long value) {
+    public UShort(final long value) {
         this.value = (short) value;
     }
 
@@ -88,7 +88,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      *
      * @param value
      */
-    public UShort(BigInteger value) {
+    public UShort(final BigInteger value) {
         this.value = value.shortValue();
     }
 
@@ -96,11 +96,11 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      * Create an <code>unsigned short</code>
      *
      */
-    private UShort(String value) {
+    private UShort(final String value) {
         this.value = Short.parseShort(value);
     }
 
-    public UShort(UShort uShort) {
+    public UShort(final UShort uShort) {
         this.value = uShort.value;
     }
 
@@ -110,7 +110,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof UShort) {
             return value == ((UShort) obj).value;
         }
@@ -123,8 +123,9 @@ public final class UShort extends UNumber implements Comparable<UShort> {
     }
 
     @Override
-    public int compareTo(UShort o) {
-        int a = value, b = o.value;
+    public int compareTo(final UShort o) {
+        final int a = value;
+        final int b = o.value;
         return a < b ? -1 : (a == b ? 0 : 1);
     }
     
@@ -143,7 +144,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(byte value) throws ArithmeticException {
+    public static short checkSigned(final byte value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -157,7 +158,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(short value) throws ArithmeticException {
+    public static short checkSigned(final short value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -171,7 +172,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(int value) throws ArithmeticException {
+    public static short checkSigned(final int value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -185,7 +186,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(long value) throws ArithmeticException {
+    public static short checkSigned(final long value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -199,7 +200,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(BigInteger value) throws ArithmeticException {
+    public static short checkSigned(final BigInteger value) throws ArithmeticException {
         if (value.compareTo(BigInteger.ZERO) < 0 || value.intValue() > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -213,7 +214,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(String value) throws ArithmeticException {
+    public static short checkSigned(final String value) throws ArithmeticException {
         if (value.startsWith("-")) {
             throw new ArithmeticException("Value is out of range : " + value);
         }

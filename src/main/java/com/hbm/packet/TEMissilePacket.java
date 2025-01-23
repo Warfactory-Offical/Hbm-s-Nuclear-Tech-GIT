@@ -27,7 +27,7 @@ public class TEMissilePacket implements IMessage {
 		
 	}
 
-	public TEMissilePacket(int x, int y, int z, ItemStack stack)
+	public TEMissilePacket(final int x, final int y, final int z, final ItemStack stack)
 	{
 		this.x = x;
 		this.y = y;
@@ -92,7 +92,7 @@ public class TEMissilePacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -101,7 +101,7 @@ public class TEMissilePacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -113,12 +113,12 @@ public class TEMissilePacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(TEMissilePacket message, MessageContext ctx) {
+		public IMessage onMessage(final TEMissilePacket message, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				World world = Minecraft.getMinecraft().world;
-				BlockPos pos = new BlockPos(message.x, message.y, message.z);
+				final World world = Minecraft.getMinecraft().world;
+				final BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				if(world.isBlockLoaded(pos)){
-					TileEntity te = world.getTileEntity(pos);
+					final TileEntity te = world.getTileEntity(pos);
 					if(te instanceof TileEntityLaunchPad){
 						((TileEntityLaunchPad)te).state = message.type;
 					}

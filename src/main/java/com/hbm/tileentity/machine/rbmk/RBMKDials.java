@@ -27,8 +27,8 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	public static final String KEY_REASIM_BOILERS = "dialReasimBoilers";
 	public static final String KEY_REASIM_BOILER_SPEED = "dialReasimBoilerSpeed";
 	
-	public static void createDials(World world) {
-		GameRules rules = world.getGameRules();
+	public static void createDials(final World world) {
+		final GameRules rules = world.getGameRules();
 		
 		if(!rules.getBoolean(KEY_SAVE_DIALS)) {
 			rules.setOrCreateGameRule(KEY_PASSIVE_COOLING, "1.0");
@@ -57,7 +57,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getPassiveCooling(World world) {
+	public static double getPassiveCooling(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_PASSIVE_COOLING), 5.0D), 0.0D);
 	}
 	
@@ -66,7 +66,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return [0;1]
 	 */
-	public static double getColumnHeatFlow(World world) {
+	public static double getColumnHeatFlow(final World world) {
 		return MathHelper.clamp(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_COLUMN_HEAT_FLOW), 5.0D), 0.0D, 1.0D);
 	}
 	
@@ -75,7 +75,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getFuelDiffusionMod(World world) {
+	public static double getFuelDiffusionMod(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_FUEL_DIFFUSION_MOD), 1.0D), 0.0D);
 	}
 	
@@ -84,7 +84,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return [0;1]
 	 */
-	public static double getFuelHeatProvision(World world) {
+	public static double getFuelHeatProvision(final World world) {
 		return MathHelper.clamp(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_HEAT_PROVISION), 0.2D), 0.0D, 1.0D);
 	}
 	
@@ -93,7 +93,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return [0;250]
 	 */
-	public static int getColumnHeight(World world) {
+	public static int getColumnHeight(final World world) {
 		return MathHelper.clamp(shittyWorkaroundParseInt(world.getGameRules().getString(KEY_COLUMN_HEIGHT), 4), 1, 250) - 1;
 	}
 	
@@ -102,7 +102,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return
 	 */
-	public static boolean getPermaScrap(World world) {
+	public static boolean getPermaScrap(final World world) {
 		return world.getGameRules().getBoolean(KEY_PERMANENT_SCRAP);
 	}
 	
@@ -111,7 +111,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getBoilerHeatConsumption(World world) {
+	public static double getBoilerHeatConsumption(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_BOILER_HEAT_CONSUMPTION), 0.1D), 0D);
 	}
 	
@@ -120,7 +120,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getControlSpeed(World world) {
+	public static double getControlSpeed(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_CONTROL_SPEED_MOD), 1.0D), 0.0D);
 	}
 	
@@ -129,7 +129,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getReactivityMod(World world) {
+	public static double getReactivityMod(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_REACTIVITY_MOD), 1.0D), 0.0D);
 	}
 	
@@ -138,7 +138,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getOutgasserMod(World world) {
+	public static double getOutgasserMod(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_OUTGASSER_MOD), 1.0D), 0.0D);
 	}
 	
@@ -147,7 +147,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getSurgeMod(World world) {
+	public static double getSurgeMod(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_SURGE_MOD), 1.0D), 0.0D);
 	}
 	
@@ -156,7 +156,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return [1;100]
 	 */
-	public static int getFluxRange(World world) {
+	public static int getFluxRange(final World world) {
 		return MathHelper.clamp(shittyWorkaroundParseInt(world.getGameRules().getString(KEY_FLUX_RANGE), 5), 1, 100);
 	}
 	
@@ -165,7 +165,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return [1;100]
 	 */
-	public static int getReaSimRange(World world) {
+	public static int getReaSimRange(final World world) {
 		return MathHelper.clamp(shittyWorkaroundParseInt(world.getGameRules().getString(KEY_REASIM_RANGE), 10), 1, 100);
 	}
 	
@@ -174,7 +174,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return [1;24]
 	 */
-	public static int getReaSimCount(World world) {
+	public static int getReaSimCount(final World world) {
 		return MathHelper.clamp(shittyWorkaroundParseInt(world.getGameRules().getString(KEY_REASIM_COUNT), 6), 1, 24);
 	}
 	
@@ -183,7 +183,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return >0
 	 */
-	public static double getReaSimOutputMod(World world) {
+	public static double getReaSimOutputMod(final World world) {
 		return Math.max(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_REASIM_MOD), 1.0D), 0.0D);
 	}
 	
@@ -192,7 +192,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return
 	 */
-	public static boolean getReasimBoilers(World world) {
+	public static boolean getReasimBoilers(final World world) {
 		return world.getGameRules().getBoolean(KEY_REASIM_BOILERS) || (GeneralConfig.enable528 && GeneralConfig.enable528ReasimBoilers);
 	}
 	
@@ -201,21 +201,21 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @param world
 	 * @return [0;1]
 	 */
-	public static double getReaSimBoilerSpeed(World world) {
+	public static double getReaSimBoilerSpeed(final World world) {
 		return MathHelper.clamp(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_REASIM_BOILER_SPEED), 0.05D), 0.0D, 1.0D);
 	}
 	
 	//why make the double representation accessible in a game rule when you can just force me to add a second pointless parsing operation?
-	public static double shittyWorkaroundParseDouble(String s, double def) {
+	public static double shittyWorkaroundParseDouble(final String s, final double def) {
 		try {
 			return Double.parseDouble(s);
-		} catch(Exception ex) { }
+		} catch(final Exception ex) { }
 		return def;
 	}
-	public static int shittyWorkaroundParseInt(String s, int def) {
+	public static int shittyWorkaroundParseInt(final String s, final int def) {
 		try {
 			return Integer.parseInt(s);
-		} catch(Exception ex) { }
+		} catch(final Exception ex) { }
 		return def;
 	}
 }

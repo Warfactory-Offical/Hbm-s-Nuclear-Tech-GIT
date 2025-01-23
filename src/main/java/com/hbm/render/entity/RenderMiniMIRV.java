@@ -16,16 +16,16 @@ public class RenderMiniMIRV extends Render<EntityMiniMIRV> {
 
 	public static final IRenderFactory<EntityMiniMIRV> FACTORY = (RenderManager man) -> {return new RenderMiniMIRV(man);};
 	
-	private ModelMIRV miniNuke;
-	private static ResourceLocation mirv_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/Mirv.png");
+	private final ModelMIRV miniNuke;
+	private static final ResourceLocation mirv_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/Mirv.png");
 	
-	protected RenderMiniMIRV(RenderManager renderManager) {
+	protected RenderMiniMIRV(final RenderManager renderManager) {
 		super(renderManager);
 		miniNuke = new ModelMIRV();
 	}
 	
 	@Override
-	public void doRender(EntityMiniMIRV entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMiniMIRV entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -38,10 +38,10 @@ public class RenderMiniMIRV extends Render<EntityMiniMIRV> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
+	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMiniMIRV entity) {
+	protected ResourceLocation getEntityTexture(final EntityMiniMIRV entity) {
 		return mirv_rl;
 	}
 

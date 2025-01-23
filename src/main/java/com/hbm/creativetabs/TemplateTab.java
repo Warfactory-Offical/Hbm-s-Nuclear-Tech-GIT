@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class TemplateTab extends CreativeTabs {
 
-	public TemplateTab(int index, String label) {
+	public TemplateTab(final int index, final String label) {
 		super(index, label);
 		this.setBackgroundImageName("item_search.png");
 	}

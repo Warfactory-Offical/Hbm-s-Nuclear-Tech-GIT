@@ -36,7 +36,7 @@ public class ItemHazardModule {
 
 
 
-	public void setMod(float tempMod) {
+	public void setMod(final float tempMod) {
 		this.tempMod = tempMod;
 	}
 	
@@ -44,31 +44,31 @@ public class ItemHazardModule {
 		return this.radiation > 0;
 	}
 	
-	public void addRadiation(float radiation) {
+	public void addRadiation(final float radiation) {
 		this.radiation = radiation;
 	}
 	
-	public void addDigamma(float digamma) {
+	public void addDigamma(final float digamma) {
 		this.digamma = digamma;
 	}
 	
-	public void addFire(int fire) {
+	public void addFire(final int fire) {
 		this.fire = fire;
 	}
 
-	public void addCryogenic(int cryogenicLvl) {
+	public void addCryogenic(final int cryogenicLvl) {
 		this.cryogenic = cryogenicLvl;
 	}
 
-	public void addToxic(int toxicLvl) {
+	public void addToxic(final int toxicLvl) {
 		this.toxic = toxicLvl;
 	}
 	
-	public void addCoal(int coal) {
+	public void addCoal(final int coal) {
 		this.coal = coal;
 	}
 	
-	public void addAsbestos(int asbestos) {
+	public void addAsbestos(final int asbestos) {
 		this.asbestos = asbestos;
 	}
 	
@@ -80,13 +80,13 @@ public class ItemHazardModule {
 		this.hydro = true;
 	}
 	
-	public void addExplosive(float bang) {
+	public void addExplosive(final float bang) {
 		this.explosive = bang;
 	}
 
 
 	@Deprecated
-	public void applyEffects(EntityLivingBase entity, float mod, int slot, boolean currentItem, EnumHand hand) {
+	public void applyEffects(final EntityLivingBase entity, final float mod, final int slot, final boolean currentItem, final EnumHand hand) {
 //
 //		boolean reacher = false;
 //
@@ -201,7 +201,7 @@ public class ItemHazardModule {
 //		}
 	}
 
-	public static float getNewValue(float radiation){
+	public static float getNewValue(final float radiation){
 		if(radiation < 1000000){
 			return radiation;
 		} else if(radiation < 1000000000){
@@ -211,7 +211,7 @@ public class ItemHazardModule {
 		}
 	}
 
-	public static String getSuffix(float radiation){
+	public static String getSuffix(final float radiation){
 		if(radiation < 1000000){
 			return "";
 		} else if(radiation < 1000000000){
@@ -221,7 +221,7 @@ public class ItemHazardModule {
 		}
 	}
 
-	public void addInformation(ItemStack stack, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final List<String> list, final ITooltipFlag flagIn) {
 //
 //		if(this.radiation * tempMod > 0) {
 //			list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("trait.radioactive") + "]");
@@ -283,7 +283,7 @@ public class ItemHazardModule {
 //			}
 //		}
 
-		int[] breeder = BreederRecipes.getFuelValue(stack);
+		final int[] breeder = BreederRecipes.getFuelValue(stack);
 
 		if(breeder != null) {
 			list.add(BreederRecipes.getHEATString("[" + I18nUtil.resolveKey("trait.heat", breeder[0]) + "]", breeder[0]));
@@ -292,7 +292,7 @@ public class ItemHazardModule {
 		}
 	}
 
-	public boolean onEntityItemUpdate(EntityItem item) {
+	public boolean onEntityItemUpdate(final EntityItem item) {
 //
 //		if(!item.world.isRemote) {
 //			if(this.hydro && (item.isInWater() || item.world.isRainingAt(new BlockPos((int)item.posX, (int)item.posY, (int)item.posZ)) || item.world.getBlockState(new BlockPos((int)item.posX, (int)item.posY, (int)item.posZ)).getMaterial() == Material.WATER)) {

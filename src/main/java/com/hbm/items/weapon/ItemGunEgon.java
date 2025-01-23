@@ -53,45 +53,45 @@ public class ItemGunEgon extends ItemGunBase {
 	public static Map<EntityPlayer, ParticleGluonBurnTrail> activeTrailParticles = new HashMap<>();
 	public static Map<EntityPlayer, GunEgonSoundHandler> soundsByPlayer = new HashMap<>();
 	
-	public ItemGunEgon(GunConfiguration config, String s) {
+	public ItemGunEgon(final GunConfiguration config, final String s) {
 		super(config, s);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	protected void updateClient(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand hand) {
+	protected void updateClient(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand hand) {
 		super.updateClient(stack, world, player, slot, hand);
 		if(hand == EnumHand.OFF_HAND)
 			return;
 		if(player == Minecraft.getMinecraft().player){
 			if(m1 && Library.countInventoryItem(player.inventory, getBeltType(player, stack, true)) >= 2){
 				activeTicks = Math.min(activeTicks + 1, 5);
-				float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+1);
-				Vec3d look = Library.changeByAngle(player.getLook(1), angles[0], angles[1]);
-				RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, 1);
+				final float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+1);
+				final Vec3d look = Library.changeByAngle(player.getLook(1), angles[0], angles[1]);
+				final RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, 1);
 				if(r != null && r.hitVec != null && r.typeOfHit != Type.MISS && r.sideHit != null){
-					Vec3i norm = r.sideHit.getDirectionVec();
-					Vec3d pos = r.hitVec.add(norm.getX()*0.1F, norm.getY()*0.1F, norm.getZ()*0.1F);
-					ParticleGluonFlare flare = new ParticleGluonFlare(world, pos.x, pos.y, pos.z, player);
+					final Vec3i norm = r.sideHit.getDirectionVec();
+					final Vec3d pos = r.hitVec.add(norm.getX()*0.1F, norm.getY()*0.1F, norm.getZ()*0.1F);
+					final ParticleGluonFlare flare = new ParticleGluonFlare(world, pos.x, pos.y, pos.z, player);
 					Minecraft.getMinecraft().effectRenderer.addEffect(flare);
 				} else {
-					Vec3d pos = player.getPositionEyes(1).add(look.scale(50));
-					ParticleGluonFlare flare = new ParticleGluonFlare(world, pos.x, pos.y, pos.z, player);
+					final Vec3d pos = player.getPositionEyes(1).add(look.scale(50));
+					final ParticleGluonFlare flare = new ParticleGluonFlare(world, pos.x, pos.y, pos.z, player);
 					Minecraft.getMinecraft().effectRenderer.addEffect(flare);
 				}
 				
-				Random rand = world.rand;
-				float partialTicks = MainRegistry.proxy.partialTicks();
-				float[] offset = ItemRenderGunEgon.getOffset(player.world.getTotalWorldTime()+partialTicks);
-				float fovDiff = (ModEventHandlerClient.currentFOV-70)*0.0002F;
+				final Random rand = world.rand;
+				final float partialTicks = MainRegistry.proxy.partialTicks();
+				final float[] offset = ItemRenderGunEgon.getOffset(player.world.getTotalWorldTime()+partialTicks);
+				final float fovDiff = (ModEventHandlerClient.currentFOV-70)*0.0002F;
 				Vec3d start = new Vec3d(-0.18+offset[0]*0.075F-fovDiff, -0.2+offset[1]*0.1F, 0.5-fovDiff*30);
 				start = start.rotatePitch((float) Math.toRadians(-(player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks)));
 				start = start.rotateYaw((float) Math.toRadians(-(player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTicks)));
 
 				start = start.add(player.getPositionEyes(partialTicks));
 				for(int i = 0; i < 2; i ++){
-					Vec3d randPos = new Vec3d(rand.nextFloat()-0.5, rand.nextFloat()-0.5, rand.nextFloat()-0.5).scale(0.05);
-					ParticleTauParticle p = new ParticleTauParticle(world, start.x+randPos.x, start.y+randPos.y, start.z+randPos.z, 0.05F, 0.02F, 1, 3, 0F);
+					final Vec3d randPos = new Vec3d(rand.nextFloat()-0.5, rand.nextFloat()-0.5, rand.nextFloat()-0.5).scale(0.05);
+					final ParticleTauParticle p = new ParticleTauParticle(world, start.x+randPos.x, start.y+randPos.y, start.z+randPos.z, 0.05F, 0.02F, 1, 3, 0F);
 					p.motion((rand.nextFloat()-0.5F)*0.04F, (rand.nextFloat()-0.5F)*0.04F, (rand.nextFloat()-0.5F)*0.04F);
 					p.lifetime(6+rand.nextInt(4));
 					p.color(0.2F, 0.4F+world.rand.nextFloat()*0.5F, 1F, 2F);
@@ -123,7 +123,7 @@ public class ItemGunEgon extends ItemGunBase {
 	}
 	
 	@Override
-	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand hand) {
+	protected void updateServer(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand hand) {
 		super.updateServer(stack, world, player, slot, hand);
 		if(hand == EnumHand.OFF_HAND)
 			return;
@@ -133,16 +133,15 @@ public class ItemGunEgon extends ItemGunBase {
 				Library.consumeInventoryItem(player.inventory, getBeltType(player, stack, true));
 				Library.consumeInventoryItem(player.inventory, getBeltType(player, stack, true));
 			}
-			float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+1);
-			Vec3d look = Library.changeByAngle(player.getLook(1), angles[0], angles[1]);
-			RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, 1);
-			if(r != null && r.typeOfHit == Type.ENTITY && r.entityHit instanceof EntityLivingBase && CompatibilityConfig.isWarDim(world)){
-				EntityLivingBase ent = ((EntityLivingBase)r.entityHit);
-				if(ent instanceof EntityPlayer && ((EntityPlayer)ent).isCreative()){
+			final float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+1);
+			final Vec3d look = Library.changeByAngle(player.getLook(1), angles[0], angles[1]);
+			final RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, 1);
+			if(r != null && r.typeOfHit == Type.ENTITY && r.entityHit instanceof EntityLivingBase ent && CompatibilityConfig.isWarDim(world)){
+                if(ent instanceof EntityPlayer && ((EntityPlayer)ent).isCreative()){
 					return;
 				}
-				this.charge = this.charge * this.chargeScaling;
-				float damage = Math.min(ent.getHealth(), this.charge);
+				this.charge = this.charge * chargeScaling;
+				final float damage = Math.min(ent.getHealth(), this.charge);
 				ent.getCombatTracker().trackDamage(ModDamageSource.gluon, ent.getHealth(), damage);
 				ent.setHealth(ent.getHealth()-damage);
 				
@@ -171,29 +170,29 @@ public class ItemGunEgon extends ItemGunBase {
 	}
 	
 	/// if the gun is firing ///
-	public static void setIsFiring(ItemStack stack, boolean b) {
+	public static void setIsFiring(final ItemStack stack, final boolean b) {
 		writeNBT(stack, "egonFiring", b ? 1 : 0);
 	}
 	
-	public static boolean getIsFiring(ItemStack stack) {
+	public static boolean getIsFiring(final ItemStack stack) {
 		return readNBT(stack, "egonFiring") == 1;
 	}
 	
 	@Override
-	protected boolean tryShoot(ItemStack stack, World world, EntityPlayer player, boolean main) {
+	protected boolean tryShoot(final ItemStack stack, final World world, final EntityPlayer player, final boolean main) {
 		return false;
 	}
 	
-	public static float getFirstPersonAnimFade(EntityPlayer ent){
+	public static float getFirstPersonAnimFade(final EntityPlayer ent){
 		if(ent.getHeldItemMainhand().getItem() != ModItems.gun_egon)
 			return 0;
 		return MathHelper.clamp((m1 && Library.countInventoryItem(ent.inventory, getBeltType(ent, ent.getHeldItemMainhand(), true)) >= 2 ? activeTicks + MainRegistry.proxy.partialTicks() : activeTicks - MainRegistry.proxy.partialTicks() )/5F, 0, 1);
 	}
 	
-	public static float[] getBeamDirectionOffset(float time){
-		float sinval = MathHelper.sin(time*1.2F)+MathHelper.sin(time*0.8F-10)+MathHelper.sin(time*1.0F+10);
+	public static float[] getBeamDirectionOffset(final float time){
+		float sinval = MathHelper.sin(time*1.2F)+MathHelper.sin(time*0.8F-10)+MathHelper.sin(time +10);
 		sinval/=3;
-		float sinval2 = MathHelper.sin(time*0.6F)+MathHelper.sin(time*0.2F+20)+MathHelper.sin(time*0.1F+20);
+		final float sinval2 = MathHelper.sin(time*0.6F)+MathHelper.sin(time*0.2F+20)+MathHelper.sin(time*0.1F+20);
 		sinval/=3;
 		return new float[]{BobMathUtil.remap(sinval, -1, 1, -3, 3), BobMathUtil.remap(sinval2, -1, 1, -0.5F, 0.5F)};
 	}
@@ -206,9 +205,9 @@ public class ItemGunEgon extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHud(ScaledResolution res, GuiIngame gui, ItemStack stack, float partialTicks) {
-		float x = res.getScaledWidth()/2;
-		float y = res.getScaledHeight()/2;
+	public void renderHud(final ScaledResolution res, final GuiIngame gui, final ItemStack stack, final float partialTicks) {
+		final float x = res.getScaledWidth()/2;
+		final float y = res.getScaledHeight()/2;
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.gluontau_hud);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);

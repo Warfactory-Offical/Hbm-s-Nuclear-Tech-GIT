@@ -35,7 +35,7 @@ public class TileEntityBlackBook extends TileEntity implements ITickable {
 			end = false;
 			effectTime ++;
 			if(effectTime == 1){
-				ParticleBookCircle b = new ParticleBookCircle(this, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, 3);
+				final ParticleBookCircle b = new ParticleBookCircle(this, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, 3);
 				Minecraft.getMinecraft().effectRenderer.addEffect(b);
 			}
 			if(effectTime >= 100){

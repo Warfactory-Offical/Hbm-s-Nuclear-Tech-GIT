@@ -26,7 +26,7 @@ public class ExplosionTom
 	private int leg;
 	private int element;
 	
-	public void saveToNbt(NBTTagCompound nbt, String name) {
+	public void saveToNbt(final NBTTagCompound nbt, final String name) {
 		nbt.setInteger(name + "posX", posX);
 		nbt.setInteger(name + "posY", posY);
 		nbt.setInteger(name + "posZ", posZ);
@@ -41,7 +41,7 @@ public class ExplosionTom
 		nbt.setInteger(name + "element", element);
 	}
 	
-	public void readFromNbt(NBTTagCompound nbt, String name) {
+	public void readFromNbt(final NBTTagCompound nbt, final String name) {
 		posX = nbt.getInteger(name + "posX");
 		posY = nbt.getInteger(name + "posY");
 		posZ = nbt.getInteger(name + "posZ");
@@ -56,7 +56,7 @@ public class ExplosionTom
 		element = nbt.getInteger(name + "element");
 	}
 	
-	public ExplosionTom(int x, int y, int z, World world, int rad)
+	public ExplosionTom(final int x, final int y, final int z, final World world, final int rad)
 	{
 		this.posX = x;
 		this.posY = y;
@@ -76,7 +76,7 @@ public class ExplosionTom
 		}
 		breakColumn(this.lastposX, this.lastposZ);
 		this.shell = (int) Math.floor((Math.sqrt(n) + 1) / 2);
-		int shell2 = this.shell * 2;
+		final int shell2 = this.shell * 2;
 		this.leg = (int) Math.floor((this.n - (shell2 - 1) * (shell2 - 1)) / shell2);
 		this.element = (this.n - (shell2 - 1) * (shell2 - 1)) - shell2 * this.leg - this.shell + 1;
 		this.lastposX = this.leg == 0 ? this.shell : this.leg == 1 ? -this.element : this.leg == 2 ? -this.shell : this.element;
@@ -85,32 +85,32 @@ public class ExplosionTom
 		return this.n > this.nlimit;
 	}
 
-	private void breakColumn(int x, int z) {
-		int dist = this.radius2 - (x * x + z * z);
+	private void breakColumn(final int x, final int z) {
+		final int dist = this.radius2 - (x * x + z * z);
 
 		if(dist > 0) {
-			int pX = posX + x;
-			int pZ = posZ + z;
-			double X = Math.pow((this.posX - pX), 2);
-			double Z = Math.pow((this.posZ - pZ), 2);
-			double distance = Math.sqrt(X + Z); // Distance calculations used for crater rim stuff
+			final int pX = posX + x;
+			final int pZ = posZ + z;
+			final double X = Math.pow((this.posX - pX), 2);
+			final double Z = Math.pow((this.posZ - pZ), 2);
+			final double distance = Math.sqrt(X + Z); // Distance calculations used for crater rim stuff
 
 			int y = 256;
-			int terrain = 61;
+			final int terrain = 61;
 
-			double cA = (terrain - Math.pow(Math.E, -Math.pow(Math.sqrt(x * x + z * z), 2) / 40000) * 13) + world.rand.nextInt(2); // Basic crater bowl shape
-			double cB = cA + Math.pow(Math.E, -Math.pow(Math.sqrt(x * x + z * z) - 200, 2) / 400) * 13 ;// Crater peak ring
-			int craterFloor = (int) (cB + Math.pow(Math.E, -Math.pow(Math.sqrt(x * x + z * z) - 500, 2) / 2000) * 37); // Crater rim
-			MutableBlockPos pos = new BlockPos.MutableBlockPos();
+			final double cA = (terrain - Math.pow(Math.E, -Math.pow(Math.sqrt(x * x + z * z), 2) / 40000) * 13) + world.rand.nextInt(2); // Basic crater bowl shape
+			final double cB = cA + Math.pow(Math.E, -Math.pow(Math.sqrt(x * x + z * z) - 200, 2) / 400) * 13 ;// Crater peak ring
+			final int craterFloor = (int) (cB + Math.pow(Math.E, -Math.pow(Math.sqrt(x * x + z * z) - 500, 2) / 2000) * 37); // Crater rim
+			final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 			for(int i = 256; i > 0; i--) {
 				if(i == craterFloor || !world.isAirBlock(pos.setPos(pX, i, pZ))) {
 					y = i;
 					break;
 				}
 			}
-			int height = terrain - 14;
-			int offset = 20;
-			int threshold = (int) ((float) Math.sqrt(x * x + z * z) * (float) (height + offset) / (float) this.radius) + world.rand.nextInt(2) - offset;
+			final int height = terrain - 14;
+			final int offset = 20;
+			final int threshold = (int) ((float) Math.sqrt(x * x + z * z) * (float) (height + offset) / (float) this.radius) + world.rand.nextInt(2) - offset;
 
 			Material m;
 			while(y > threshold) {

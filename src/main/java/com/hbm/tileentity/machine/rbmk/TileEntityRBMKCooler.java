@@ -38,7 +38,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 		this.tank = new FluidTank(ModForgeFluids.cryogel, 0, 16000);
 	}
 
-	public void getDiagData(NBTTagCompound nbt) {
+	public void getDiagData(final NBTTagCompound nbt) {
 		this.writeToNBT(nbt);
 		nbt.removeTag("jumpheight");
 	}
@@ -50,8 +50,8 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 
 			if((int) (this.heat) > 750) {
 
-				int heatProvided = (int) (this.heat - 750D);
-				int cooling = Math.min(heatProvided, tank.getFluidAmount());
+				final int heatProvided = (int) (this.heat - 750D);
+				final int cooling = Math.min(heatProvided, tank.getFluidAmount());
 
 				this.heat -= cooling;
 				this.tank.drain(cooling, true);
@@ -59,9 +59,9 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 				this.lastCooled = cooling;
 
 				if(lastCooled > 0) {
-					List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX(), pos.getY()+rbmkHeight, pos.getZ(), pos.getX()+1, pos.getY()+rbmkHeight+6, pos.getZ()+1));
+					final List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX(), pos.getY()+rbmkHeight, pos.getZ(), pos.getX()+1, pos.getY()+rbmkHeight+6, pos.getZ()+1));
 
-					for(Entity e : entities) {
+					for(final Entity e : entities) {
 						e.setFire(5);
 						e.attackEntityFrom(DamageSource.IN_FIRE, 10);
 					}
@@ -122,7 +122,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		tank.readFromNBT(nbt.getCompoundTag("cryo"));
@@ -130,7 +130,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setTag("cryo", tank.writeToNBT(new NBTTagCompound()));
@@ -139,9 +139,8 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 	}
 
 	@Override
-    public void recievePacket(NBTTagCompound[] tags) {
+    public void recievePacket(final NBTTagCompound[] tags) {
         if (tags.length != 1) {
-            return;
         } else {
             tank.readFromNBT(tags[0]);
         }
@@ -154,7 +153,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 
 	@Override
 	public NBTTagCompound getNBTForConsole() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setInteger("cryo", this.tank.getFluidAmount());
 		data.setInteger("cooled", this.lastCooled);
 		return data;
@@ -166,7 +165,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && resource.getFluid() == ModForgeFluids.cryogel){
 			return tank.fill(resource, doFill);
 		}
@@ -174,22 +173,22 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return null;
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
@@ -198,7 +197,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidHa
 	// control panel
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		Map<String, DataValue> data = super.getQueryData();
+		final Map<String, DataValue> data = super.getQueryData();
 
 		data.put("coolant", new DataValueFloat(tank.getFluidAmount()));
 

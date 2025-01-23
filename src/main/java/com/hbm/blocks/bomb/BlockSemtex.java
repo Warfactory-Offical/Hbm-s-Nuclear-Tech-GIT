@@ -26,7 +26,7 @@ public class BlockSemtex extends Block implements IBomb {
 	
 	public static final PropertyDirection FACING = BlockDirectional.FACING;
 	
-	public BlockSemtex(Material mat, String s) {
+	public BlockSemtex(final Material mat, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -35,30 +35,30 @@ public class BlockSemtex extends Block implements IBomb {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound){
+	public Block setSoundType(final SoundType sound){
 		return super.setSoundType(sound);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack){
 		worldIn.setBlockState(pos, state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer).getOpposite()), 2);
 	}
 	
 
 	@Override
-	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn){
+	public void onExplosionDestroy(final World worldIn, final BlockPos pos, final Explosion explosionIn){
 		this.explode(worldIn, pos);
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos){
+	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos){
 		if(worldIn.isBlockPowered(pos)){
 			this.explode(worldIn, pos);
 		}
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(final World world, final BlockPos pos) {
 		if(!world.isRemote) {
 			new ExplosionNT(world, null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 50).overrideResolution(64).explode();
 			ExplosionLarge.spawnParticles(world, pos.getX(), pos.getY(), pos.getZ(), ExplosionLarge.cloudFunction(15));
@@ -67,28 +67,28 @@ public class BlockSemtex extends Block implements IBomb {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing)state.getValue(FACING)).getIndex();
+	public int getMetaFromState(final IBlockState state) {
+		return state.getValue(FACING).getIndex();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumfacing = EnumFacing.byIndex(meta);
+	public IBlockState getStateFromMeta(final int meta) {
+		final EnumFacing enumfacing = EnumFacing.byIndex(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
 	
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 }

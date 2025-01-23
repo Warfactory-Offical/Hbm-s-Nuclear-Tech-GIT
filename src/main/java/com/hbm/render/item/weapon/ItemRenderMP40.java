@@ -22,7 +22,7 @@ public class ItemRenderMP40 extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GlStateManager.enableCull();
 		Minecraft.getMinecraft().renderEngine.bindTexture(mp40_rl);
 		

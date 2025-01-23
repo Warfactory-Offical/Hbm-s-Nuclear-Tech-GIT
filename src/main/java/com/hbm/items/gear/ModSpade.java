@@ -2,11 +2,10 @@ package com.hbm.items.gear;
 
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.item.ItemSpade;
 
 public class ModSpade extends ItemSpade {
-	public ModSpade(ToolMaterial t, String s){
+	public ModSpade(final ToolMaterial t, final String s){
 		
 		super(t);
 		this.setTranslationKey(s);

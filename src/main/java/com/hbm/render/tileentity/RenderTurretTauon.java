@@ -16,9 +16,9 @@ import net.minecraft.util.math.Vec3d;
 public class RenderTurretTauon extends RenderTurretBase<TileEntityTurretTauon> {
 
 	@Override
-	public void render(TileEntityTurretTauon te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
-		TileEntityTurretTauon turret = (TileEntityTurretTauon)te;
-		Vec3d off = turret.getHorizontalOffset();
+	public void render(final TileEntityTurretTauon te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
+		final TileEntityTurretTauon turret = te;
+		final Vec3d off = turret.getHorizontalOffset();
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + off.x, y, z + off.z);
@@ -31,8 +31,8 @@ public class RenderTurretTauon extends RenderTurretBase<TileEntityTurretTauon> {
 		bindTexture(ResourceManager.turret_base_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");
 		
-		double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
-		double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
+		final double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
+		final double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
 		
 		GL11.glRotated(yaw, 0, 1, 0);
 		bindTexture(ResourceManager.turret_carriage_tex);
@@ -54,7 +54,7 @@ public class RenderTurretTauon extends RenderTurretBase<TileEntityTurretTauon> {
 			GL11.glPopMatrix();
 		}
 		
-		float rot = turret.lastSpin + (turret.spin - turret.lastSpin) * partialTicks;
+		final float rot = turret.lastSpin + (turret.spin - turret.lastSpin) * partialTicks;
 		GL11.glTranslated(0, 1.375, 0);
 		GL11.glRotated(rot, -1, 0, 0);
 		GL11.glTranslated(0, -1.375, 0);

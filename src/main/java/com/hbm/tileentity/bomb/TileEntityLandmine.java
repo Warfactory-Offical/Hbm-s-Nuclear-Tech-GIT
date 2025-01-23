@@ -24,7 +24,7 @@ public class TileEntityLandmine extends TileEntity implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			Block block = world.getBlockState(pos).getBlock();
+			final Block block = world.getBlockState(pos).getBlock();
 			double range = 1;
 			double height = 1;
 
@@ -42,10 +42,10 @@ public class TileEntityLandmine extends TileEntity implements ITickable {
 				range = 2.5D;
 			}
 	
-			List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - range, pos.getY() - height, pos.getZ() - range, pos.getX() + range, pos.getY() + height, pos.getZ() + range));
+			final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - range, pos.getY() - height, pos.getZ() - range, pos.getX() + range, pos.getY() + height, pos.getZ() + range));
 	
 			boolean flag = false;
-			for (Entity e : list) {
+			for (final Entity e : list) {
 	
 				if (e instanceof EntityLivingBase) {
 	
@@ -69,13 +69,13 @@ public class TileEntityLandmine extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		isPrimed = compound.getBoolean("primed");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setBoolean("primed", isPrimed);
 		return super.writeToNBT(compound);
 	}

@@ -34,7 +34,7 @@ public class BobmazonOfferFactory {
 	
 	public static void init() {
 
-		int inflation = 5;
+		final int inflation = 5;
 		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM)), Requirement.NUCLEAR, 6 * inflation));
 		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U233)), Requirement.NUCLEAR, 20 * inflation));
 		materials.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U238)), Requirement.NUCLEAR, 15 * inflation));
@@ -187,7 +187,7 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.gun_hk69, 24), Requirement.HIDDEN, 8 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ammo_grenade, 6), Requirement.HIDDEN, 4 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.ammo_grenade_sleek, 6), Requirement.HIDDEN, 6 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.gun_kit_1, 10), Requirement.HIDDEN, 1 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.gun_kit_1, 10), Requirement.HIDDEN, inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.gun_kit_2, 5), Requirement.HIDDEN, 3 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.machine_epress, 2), Requirement.HIDDEN, 5 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.machine_assembler, 1), Requirement.HIDDEN, 5 * inflation));
@@ -209,7 +209,7 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.loot_10, 1), Requirement.HIDDEN, 2 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.loot_15, 1), Requirement.HIDDEN, 2 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.loot_misc, 1), Requirement.HIDDEN, 2 * inflation));
-		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.crate_can, 1), Requirement.HIDDEN, 1 * inflation));
+		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.crate_can, 1), Requirement.HIDDEN, inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModBlocks.crate_ammo, 1), Requirement.HIDDEN, 15 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.crucible, 1, 3), Requirement.STEEL, 10 * inflation));
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.spawn_chopper, 1), Requirement.STEEL, 100 * inflation));
@@ -225,7 +225,7 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(ItemStackUtil.itemStackFrom(ModItems.euphemium_kit, 1), Requirement.HIDDEN, 640 * inflation));
 	}
 	
-	public static List<Offer> getOffers(ItemStack stack) {
+	public static List<Offer> getOffers(final ItemStack stack) {
 		
 		if(stack != null) {
 			if(stack.getItem() == ModItems.bobmazon_materials)

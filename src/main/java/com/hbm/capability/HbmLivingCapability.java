@@ -70,7 +70,7 @@ public class HbmLivingCapability {
 		public static final int maxBlacklung = 60 * 60 * 20;
 		private int bombTimer;
 		private int contagion;
-		private List<ContaminationEffect> contamination = new ArrayList<>();
+		private final List<ContaminationEffect> contamination = new ArrayList<>();
 		
 		@Override
 		public float getRads() {
@@ -78,7 +78,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setRads(float rads) {
+		public void setRads(final float rads) {
 			this.rads = MathHelper.clamp(rads, 0, 2500);
 		}
 
@@ -88,17 +88,17 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setNeutrons(float neutrons) {
+		public void setNeutrons(final float neutrons) {
 			this.neutrons = Math.max(neutrons, 0);
 		}
 		
 		@Override
-		public void increaseRads(float rads){
+		public void increaseRads(final float rads){
 			this.rads = MathHelper.clamp(this.rads + rads, 0, 2500);
 		}
 		
 		@Override
-		public void decreaseRads(float rads){
+		public void decreaseRads(final float rads){
 			this.rads = MathHelper.clamp(this.rads - rads, 0, 2500);
 		}
 
@@ -108,7 +108,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setRadsEnv(float rads){
+		public void setRadsEnv(final float rads){
 			envRads = rads;
 		}
 
@@ -118,7 +118,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setRadBuf(float buf){
+		public void setRadBuf(final float buf){
 			radBuf = buf;
 		}
 
@@ -128,17 +128,17 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setDigamma(float dig){
+		public void setDigamma(final float dig){
 			digamma = dig;
 		}
 
 		@Override
-		public void increaseDigamma(float dig){
+		public void increaseDigamma(final float dig){
 			this.digamma = MathHelper.clamp(this.digamma + dig, 0, 1000);
 		}
 		
 		@Override
-		public void decreaseDigamma(float dig){
+		public void decreaseDigamma(final float dig){
 			this.digamma = MathHelper.clamp(this.digamma - dig, 0, 1000);
 		}
 
@@ -148,7 +148,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setAsbestos(int asbestos){
+		public void setAsbestos(final int asbestos){
 			this.asbestos = asbestos;
 		}
 
@@ -158,7 +158,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setBlacklung(int blacklung){
+		public void setBlacklung(final int blacklung){
 			this.blacklung = blacklung;
 		}
 
@@ -168,7 +168,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setBombTimer(int bombTimer){
+		public void setBombTimer(final int bombTimer){
 			this.bombTimer = bombTimer;
 		}
 
@@ -178,7 +178,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void setContagion(int cont){
+		public void setContagion(final int cont){
 			contagion = cont;
 		}
 		
@@ -188,7 +188,7 @@ public class HbmLivingCapability {
 		}
 		
 		@Override
-		public void saveNBTData(NBTTagCompound tag){
+		public void saveNBTData(final NBTTagCompound tag){
 			tag.setFloat("rads", getRads());
 			tag.setFloat("neutrons", getNeutrons());
 			tag.setFloat("envRads", getRadsEnv());
@@ -205,7 +205,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void loadNBTData(NBTTagCompound tag){
+		public void loadNBTData(final NBTTagCompound tag){
 			setRads(tag.getFloat("rads"));
 			setNeutrons(tag.getFloat("neutrons"));
 			setRadsEnv(tag.getFloat("envRads"));
@@ -225,17 +225,16 @@ public class HbmLivingCapability {
 	public static class EntityHbmPropsStorage implements IStorage<IEntityHbmProps>{
 
 		@Override
-		public NBTBase writeNBT(Capability<IEntityHbmProps> capability, IEntityHbmProps instance, EnumFacing side) {
-			NBTTagCompound tag = new NBTTagCompound();
+		public NBTBase writeNBT(final Capability<IEntityHbmProps> capability, final IEntityHbmProps instance, final EnumFacing side) {
+			final NBTTagCompound tag = new NBTTagCompound();
 			instance.saveNBTData(tag);
 			return tag;
 		}
 
 		@Override
-		public void readNBT(Capability<IEntityHbmProps> capability, IEntityHbmProps instance, EnumFacing side, NBTBase nbt) {
-			if(nbt instanceof NBTTagCompound){
-				NBTTagCompound tag = (NBTTagCompound)nbt;
-				instance.loadNBTData(tag);
+		public void readNBT(final Capability<IEntityHbmProps> capability, final IEntityHbmProps instance, final EnumFacing side, final NBTBase nbt) {
+			if(nbt instanceof NBTTagCompound tag){
+                instance.loadNBTData(tag);
 			}
 		}
 		
@@ -249,60 +248,60 @@ public class HbmLivingCapability {
 				return 0;
 			}
 			@Override
-			public void setRads(float rads) {
+			public void setRads(final float rads) {
 			}
 			@Override
 			public float getNeutrons() {
 				return 0;
 			}
 			@Override
-			public void setNeutrons(float neutrons) {
+			public void setNeutrons(final float neutrons) {
 			}
 			@Override
-			public void increaseRads(float rads) {
+			public void increaseRads(final float rads) {
 			}
 			@Override
-			public void decreaseRads(float rads) {
+			public void decreaseRads(final float rads) {
 			}
 			@Override
 			public float getRadsEnv(){
 				return 0;
 			}
 			@Override
-			public void setRadsEnv(float rads){
+			public void setRadsEnv(final float rads){
 			}
 			@Override
 			public float getRadBuf(){
 				return 0;
 			}
 			@Override
-			public void setRadBuf(float buf){
+			public void setRadBuf(final float buf){
 			}
 			@Override
 			public float getDigamma(){
 				return 0;
 			}
 			@Override
-			public void setDigamma(float dig){
+			public void setDigamma(final float dig){
 			}
 			@Override
-			public void increaseDigamma(float dig){
+			public void increaseDigamma(final float dig){
 			}
 			@Override
-			public void decreaseDigamma(float dig){
+			public void decreaseDigamma(final float dig){
 			}
 			@Override
 			public int getAsbestos(){
 				return 0;
 			}
 			@Override
-			public void setAsbestos(int asbestos){
+			public void setAsbestos(final int asbestos){
 			}
 			@Override
-			public void saveNBTData(NBTTagCompound tag){
+			public void saveNBTData(final NBTTagCompound tag){
 			}
 			@Override
-			public void loadNBTData(NBTTagCompound tag){
+			public void loadNBTData(final NBTTagCompound tag){
 			}
 			@Override
 			public List<ContaminationEffect> getContaminationEffectList(){
@@ -313,37 +312,37 @@ public class HbmLivingCapability {
 				return 0;
 			}
 			@Override
-			public void setBlacklung(int blacklung){
+			public void setBlacklung(final int blacklung){
 			}
 			@Override
 			public int getBombTimer(){
 				return 0;
 			}
 			@Override
-			public void setBombTimer(int bombTimer){
+			public void setBombTimer(final int bombTimer){
 			}
 			@Override
 			public int getContagion(){
 				return 0;
 			}
 			@Override
-			public void setContagion(int cont){
+			public void setContagion(final int cont){
 			}
 		};
 		
 		@CapabilityInject(IEntityHbmProps.class)
 		public static final Capability<IEntityHbmProps> ENT_HBM_PROPS_CAP = null;
 		
-		private IEntityHbmProps instance = ENT_HBM_PROPS_CAP.getDefaultInstance();
+		private final IEntityHbmProps instance = ENT_HBM_PROPS_CAP.getDefaultInstance();
 		
 		@Override
-		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 			return capability == ENT_HBM_PROPS_CAP;
 		}
 
 		@Override
-		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-			return capability == ENT_HBM_PROPS_CAP ? ENT_HBM_PROPS_CAP.<T>cast(this.instance) : null;
+		public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+			return capability == ENT_HBM_PROPS_CAP ? ENT_HBM_PROPS_CAP.cast(this.instance) : null;
 		}
 
 		@Override
@@ -352,7 +351,7 @@ public class HbmLivingCapability {
 		}
 
 		@Override
-		public void deserializeNBT(NBTBase nbt) {
+		public void deserializeNBT(final NBTBase nbt) {
 			ENT_HBM_PROPS_CAP.getStorage().readNBT(ENT_HBM_PROPS_CAP, instance, null, nbt);
 		}
 		

@@ -2,13 +2,11 @@ package com.hbm.items.tool;
 
 import com.hbm.blocks.bomb.BlockCrashedBomb;
 import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemCell;
 import com.hbm.items.special.ItemCustomLore;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -18,16 +16,16 @@ import net.minecraft.world.World;
 
 public class ItemAmatExtractor extends ItemCustomLore {
 
-	public ItemAmatExtractor(String s){
+	public ItemAmatExtractor(final String s){
 		super(s);
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		if(world.getBlockState(pos).getBlock() instanceof BlockCrashedBomb) {
 			if(!world.isRemote && ItemCell.hasEmptyCell(player)) {
 				
-				float chance = world.rand.nextFloat();
+				final float chance = world.rand.nextFloat();
 				
 				if(chance < 0.01) {
 					((BlockCrashedBomb) world.getBlockState(pos).getBlock()).explode(world, pos);

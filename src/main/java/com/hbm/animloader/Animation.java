@@ -12,7 +12,7 @@ public class Animation {
 	public Map<String, Transform[]> objectTransforms = new HashMap<String, Transform[]>();
 	
 	private static Animation createBlankAnimation(){
-		Animation anim = new Animation();
+		final Animation anim = new Animation();
 		anim.numKeyFrames = 0;
 		anim.length = 0;
 		anim.objectTransforms = new HashMap<String, Transform[]>();

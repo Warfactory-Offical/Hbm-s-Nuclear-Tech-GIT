@@ -56,7 +56,7 @@ public final class ULong implements Comparable<ULong> {
      *
      * @param value
      */
-    public ULong(byte value) {
+    public ULong(final byte value) {
         this.value = value;
     }
 
@@ -65,7 +65,7 @@ public final class ULong implements Comparable<ULong> {
      *
      * @param value
      */
-    public ULong(short value) {
+    public ULong(final short value) {
         this.value = value;
     }
 
@@ -74,7 +74,7 @@ public final class ULong implements Comparable<ULong> {
      *
      * @param value
      */
-    public ULong(int value) {
+    public ULong(final int value) {
         this.value = (short) value;
     }
 
@@ -83,7 +83,7 @@ public final class ULong implements Comparable<ULong> {
      *
      * @param value
      */
-    public ULong(long value) {
+    public ULong(final long value) {
         this.value = value;
     }
 
@@ -92,18 +92,18 @@ public final class ULong implements Comparable<ULong> {
      *
      * @param value
      */
-    public ULong(BigInteger value) {
+    public ULong(final BigInteger value) {
         this.value = value.longValue();
     }
 
     /**
      * Create an <code>unsigned long</code>
      */
-    private ULong(String value) {
+    private ULong(final String value) {
         this.value = Long.parseLong(value);
     }
 
-    public ULong(ULong uLong) {
+    public ULong(final ULong uLong) {
         this.value = uLong.value;
     }
 
@@ -113,7 +113,7 @@ public final class ULong implements Comparable<ULong> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof ULong) {
             return value == ((ULong) obj).value;
         }
@@ -126,7 +126,7 @@ public final class ULong implements Comparable<ULong> {
     }
 
     @Override
-    public int compareTo(ULong o) {
+    public int compareTo(final ULong o) {
         return Long.compareUnsigned(value, o.value);
     }
     
@@ -137,7 +137,7 @@ public final class ULong implements Comparable<ULong> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(byte value) throws ArithmeticException {
+    public static short checkSigned(final byte value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -151,7 +151,7 @@ public final class ULong implements Comparable<ULong> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(short value) throws ArithmeticException {
+    public static short checkSigned(final short value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -165,7 +165,7 @@ public final class ULong implements Comparable<ULong> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(int value) throws ArithmeticException {
+    public static short checkSigned(final int value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -179,7 +179,7 @@ public final class ULong implements Comparable<ULong> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(long value) throws ArithmeticException {
+    public static short checkSigned(final long value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -193,7 +193,7 @@ public final class ULong implements Comparable<ULong> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(BigInteger value) throws ArithmeticException {
+    public static short checkSigned(final BigInteger value) throws ArithmeticException {
         if (value.compareTo(BigInteger.ZERO) < 0 || value.intValue() > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -207,7 +207,7 @@ public final class ULong implements Comparable<ULong> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static short checkSigned(String value) throws ArithmeticException {
+    public static short checkSigned(final String value) throws ArithmeticException {
         if (value.startsWith("-")) {
             throw new ArithmeticException("Value is out of range : " + value);
         }

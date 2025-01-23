@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 public class ParticleContrailDark extends ParticleContrail {
 
-	public ParticleContrailDark(TextureManager manage, World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleContrailDark(final TextureManager manage, final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(manage, worldIn, posXIn, posYIn, posZIn, 0.4F, 0.4F, 0.4F, 1F);
 		this.flameRed = 1F;
 		this.flameGreen = 0.75F;

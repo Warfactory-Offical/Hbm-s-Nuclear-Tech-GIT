@@ -1,11 +1,7 @@
 package com.hbm.items.gear;
 
-import java.util.List;
-import java.util.Random;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,11 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 public class ArmorAustralium extends ItemArmor {
 
 	Random rand = new Random();
 	
-	public ArmorAustralium(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
+	public ArmorAustralium(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -29,7 +28,7 @@ public class ArmorAustralium extends ItemArmor {
 	}
 
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack armor) {
+	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack armor) {
 		if(armor.getItemDamage() < armor.getMaxDamage()) {
 			if (armor.getItem() == ModItems.australium_iii) {
 				if(rand.nextInt(3) == 0) {
@@ -42,14 +41,14 @@ public class ArmorAustralium extends ItemArmor {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if (stack.getItem() == ModItems.australium_iii)
 			tooltip.add("Ouch, that hurts.");
 	}
 	
 	@Override
 	
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
 		if(stack.getItem().equals(ModItems.australium_iii)) {
 			return (RefStrings.MODID + ":textures/armor/australium_iii.png");
 		}

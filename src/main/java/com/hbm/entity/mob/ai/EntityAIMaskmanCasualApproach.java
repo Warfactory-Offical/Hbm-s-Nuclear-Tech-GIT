@@ -27,12 +27,12 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 
 	private int failedPathFindingPenalty;
 	
-	public EntityAIMaskmanCasualApproach(EntityCreature owner, Class target, double speed, boolean longMemory) {
+	public EntityAIMaskmanCasualApproach(final EntityCreature owner, final Class target, final double speed, final boolean longMemory) {
 		this(owner, speed, longMemory);
 		this.classTarget = target;
 	}
 
-	public EntityAIMaskmanCasualApproach(EntityCreature owner, double speed, boolean longMemory) {
+	public EntityAIMaskmanCasualApproach(final EntityCreature owner, final double speed, final boolean longMemory) {
 		this.attacker = owner;
 		this.worldObj = owner.world;
 		this.speedTowardsTarget = speed;
@@ -42,7 +42,7 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 	
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
+		final EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
 
 		if(entitylivingbase == null) {
 			return false;
@@ -57,7 +57,7 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 
 			if(--this.pathTimer <= 0) {
 
-				double[] pos = getApproachPos();
+				final double[] pos = getApproachPos();
 				this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(pos[0], pos[1], pos[2]);
 				this.pathTimer = 4 + this.attacker.getRNG().nextInt(7);
 				return this.entityPathEntity != null;
@@ -70,12 +70,10 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 	
 	@Override
 	public boolean shouldContinueExecuting() {
-		EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
+		final EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
 
-		return entitylivingbase == null ? false
-				: (!entitylivingbase.isEntityAlive() ? false
-				: (!this.longMemory ? !this.attacker.getNavigator().noPath()
-				: this.attacker.isWithinHomeDistanceFromPosition(new BlockPos(MathHelper.floor(entitylivingbase.posX), MathHelper.floor(entitylivingbase.posY), MathHelper.floor(entitylivingbase.posZ)))));
+		return entitylivingbase != null && (entitylivingbase.isEntityAlive() && (!this.longMemory ? !this.attacker.getNavigator().noPath()
+                : this.attacker.isWithinHomeDistanceFromPosition(new BlockPos(MathHelper.floor(entitylivingbase.posX), MathHelper.floor(entitylivingbase.posY), MathHelper.floor(entitylivingbase.posZ)))));
 	}
 	
 	@Override
@@ -91,10 +89,10 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 	
 	@Override
 	public void updateTask() {
-		EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
+		final EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
 		this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
-		double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
-		double d1 = (double) (this.attacker.width * 2.0F * this.attacker.width * 2.0F + entitylivingbase.width);
+		final double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
+		final double d1 = this.attacker.width * 2.0F * this.attacker.width * 2.0F + entitylivingbase.width;
 
 		this.pathTimer--;
 
@@ -110,7 +108,7 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 
 			if(this.attacker.getNavigator().getPath() != null) {
 
-				PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
+				final PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
 				if(finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1) {
 					failedPathFindingPenalty = 0;
 
@@ -128,7 +126,7 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 				this.pathTimer += 5;
 			}
 
-			double[] pos = getApproachPos();
+			final double[] pos = getApproachPos();
 			if(!this.attacker.getNavigator().tryMoveToXYZ(pos[0], pos[1], pos[2], speedTowardsTarget)) {
 				this.pathTimer += 15;
 			}
@@ -147,17 +145,17 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 	
 	public double[] getApproachPos() {
 
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		final EntityLivingBase target = this.attacker.getAttackTarget();
 
 		Vec3 vec = Vec3.createVectorHelper(this.attacker.posX - target.posX, this.attacker.posY - target.posY, this.attacker.posZ - target.posZ);
 
-		double range = Math.min(vec.length(), 20) - 10;
+		final double range = Math.min(vec.length(), 20) - 10;
 
 		vec = vec.normalize();
 
-    	double x = this.attacker.posX + vec.xCoord * range + this.attacker.getRNG().nextGaussian() * 2;
-    	double y = this.attacker.posY + vec.yCoord - 5 + this.attacker.getRNG().nextInt(11);
-    	double z = this.attacker.posZ + vec.zCoord * range + this.attacker.getRNG().nextGaussian() * 2;
+    	final double x = this.attacker.posX + vec.xCoord * range + this.attacker.getRNG().nextGaussian() * 2;
+    	final double y = this.attacker.posY + vec.yCoord - 5 + this.attacker.getRNG().nextInt(11);
+    	final double z = this.attacker.posZ + vec.zCoord * range + this.attacker.getRNG().nextGaussian() * 2;
 
     	return new double[] {x, y, z};
 	}

@@ -26,7 +26,7 @@ public class GunFolly extends Item implements IHoldableWeapon {
 		return Crosshair.L_SPLIT;
 	}
 	
-	public GunFolly(String s) {
+	public GunFolly(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -35,10 +35,10 @@ public class GunFolly extends Item implements IHoldableWeapon {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		
-		int state = getState(stack);
+		final int state = getState(stack);
 		
 		if(state == 0) {
 			
@@ -70,18 +70,18 @@ public class GunFolly extends Item implements IHoldableWeapon {
 				setState(stack, 0);
 				world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.follyFire, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-				double mult = 1.75D;
+				final double mult = 1.75D;
 				
 				player.motionX -= player.getLookVec().x * mult;
 				player.motionY -= player.getLookVec().y * mult;
 				player.motionZ -= player.getLookVec().z * mult;
 
 				if (!world.isRemote) {
-					EntityBulletBase bullet = new EntityBulletBase(world, BulletConfigSyncingUtil.TEST_CONFIG, player, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+					final EntityBulletBase bullet = new EntityBulletBase(world, BulletConfigSyncingUtil.TEST_CONFIG, player, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 					world.spawnEntity(bullet);
 					
 					for(int i = 0; i < 25; i++) {
-						EntitySSmokeFX flame = new EntitySSmokeFX(world);
+						final EntitySSmokeFX flame = new EntitySSmokeFX(world);
 						
 						flame.motionX = player.getLookVec().x;
 						flame.motionY = player.getLookVec().y;
@@ -100,12 +100,12 @@ public class GunFolly extends Item implements IHoldableWeapon {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
 		return false;
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected) {
 		if(getState(stack) == 3) {
 			
 			if(isSelected) {
@@ -128,23 +128,23 @@ public class GunFolly extends Item implements IHoldableWeapon {
 		}
 	}
 	
-	public static void setState(ItemStack stack, int i) {
+	public static void setState(final ItemStack stack, final int i) {
 		writeNBT(stack, "state", i);
 	}
 	
-	public static int getState(ItemStack stack) {
+	public static int getState(final ItemStack stack) {
 		return readNBT(stack, "state");
 	}
 	
-	public static void setTimer(ItemStack stack, int i) {
+	public static void setTimer(final ItemStack stack, final int i) {
 		writeNBT(stack, "timer", i);
 	}
 	
-	public static int getTimer(ItemStack stack) {
+	public static int getTimer(final ItemStack stack) {
 		return readNBT(stack, "timer");
 	}
 	
-	private static void writeNBT(ItemStack stack, String key, int value) {
+	private static void writeNBT(final ItemStack stack, final String key, final int value) {
 		
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
@@ -152,7 +152,7 @@ public class GunFolly extends Item implements IHoldableWeapon {
 		stack.getTagCompound().setInteger(key, value);
 	}
 	
-	private static int readNBT(ItemStack stack, String key) {
+	private static int readNBT(final ItemStack stack, final String key) {
 		
 		if(!stack.hasTagCompound())
 			return 0;

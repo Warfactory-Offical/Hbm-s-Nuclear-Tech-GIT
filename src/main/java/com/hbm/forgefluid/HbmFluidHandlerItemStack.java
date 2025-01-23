@@ -15,10 +15,10 @@ public class HbmFluidHandlerItemStack implements IFluidHandlerItem, ICapabilityP
 
 	public static final String FLUID_NBT_KEY = "HbmFluidKey";
 
-	private ItemStack container;
-	private int cap;
+	private final ItemStack container;
+	private final int cap;
 	
-	public HbmFluidHandlerItemStack(ItemStack stack, int cap){
+	public HbmFluidHandlerItemStack(final ItemStack stack, final int cap){
 		container = stack;
 		this.cap = cap;
 	}
@@ -32,18 +32,18 @@ public class HbmFluidHandlerItemStack implements IFluidHandlerItem, ICapabilityP
 		if(!container.hasTagCompound()){
 			container.setTagCompound(new NBTTagCompound());
 		}
-		NBTTagCompound tag = container.getTagCompound();
+		final NBTTagCompound tag = container.getTagCompound();
 		if(!tag.hasKey(FLUID_NBT_KEY)){
 			return null;
 		}
 		return FluidStack.loadFluidStackFromNBT(tag.getCompoundTag(FLUID_NBT_KEY));
 	}
 	
-	private void setFluid(FluidStack fluid){
+	private void setFluid(final FluidStack fluid){
 		if(!container.hasTagCompound()){
 			container.setTagCompound(new NBTTagCompound());
 		}
-		NBTTagCompound tag = container.getTagCompound();
+		final NBTTagCompound tag = container.getTagCompound();
 		if(fluid == null){
 			container.setItemDamage(0);
 			tag.removeTag(FLUID_NBT_KEY);
@@ -54,11 +54,11 @@ public class HbmFluidHandlerItemStack implements IFluidHandlerItem, ICapabilityP
 	}
 	
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource == null || container.getCount() > 1)
 			return 0;
-		FluidStack contained = getFluid();
-		int filled;
+		final FluidStack contained = getFluid();
+		final int filled;
 		if(contained == null){
 			filled = Math.min(cap, resource.amount);
 			if(doFill){
@@ -78,20 +78,20 @@ public class HbmFluidHandlerItemStack implements IFluidHandlerItem, ICapabilityP
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(container.getCount() > 1 || resource == null || (getFluid() != null && getFluid().getFluid() != resource.getFluid()))
 			return null;
 		return drain(resource.amount, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		if(container.getCount() > 1)
 			return null;
-		FluidStack contained = getFluid();
+		final FluidStack contained = getFluid();
 		if(contained == null)
 			return null;
-		int drained = Math.min(contained.amount, maxDrain);
+		final int drained = Math.min(contained.amount, maxDrain);
 		if(drained <= 0)
 			return null;
 		if(doDrain){
@@ -101,7 +101,7 @@ public class HbmFluidHandlerItemStack implements IFluidHandlerItem, ICapabilityP
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(container.getCount() > 1)
 			return false;
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
@@ -109,7 +109,7 @@ public class HbmFluidHandlerItemStack implements IFluidHandlerItem, ICapabilityP
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(container.getCount() > 1)
 			return null;
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY ? (T)this : null;

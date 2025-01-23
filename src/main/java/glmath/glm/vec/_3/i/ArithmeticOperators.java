@@ -17,147 +17,147 @@ abstract class ArithmeticOperators {
 
     public int x, y, z;
 
-    public Vec3i add_(int b) {
+    public Vec3i add_(final int b) {
         return Glm.add(new Vec3i(), (Vec3i) this, b, b, b);
     }
 
-    public Vec3i add_(int bX, int bY, int bZ) {
+    public Vec3i add_(final int bX, final int bY, final int bZ) {
         return Glm.add(new Vec3i(), (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i add_(Vec3i b) {
+    public Vec3i add_(final Vec3i b) {
         return Glm.add(new Vec3i(), (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i add(int b) {
+    public Vec3i add(final int b) {
         return Glm.add((Vec3i) this, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i add(int bX, int bY, int bZ) {
+    public Vec3i add(final int bX, final int bY, final int bZ) {
         return Glm.add((Vec3i) this, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i add(Vec3i b) {
+    public Vec3i add(final Vec3i b) {
         return Glm.add((Vec3i) this, (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i add(int b, Vec3i res) {
+    public Vec3i add(final int b, final Vec3i res) {
         return Glm.add(res, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i add(int bX, int bY, int bZ, Vec3i res) {
+    public Vec3i add(final int bX, final int bY, final int bZ, final Vec3i res) {
         return Glm.add(res, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i add(Vec3i b, Vec3i res) {
+    public Vec3i add(final Vec3i b, final Vec3i res) {
         return Glm.add(res, (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i sub_(int b) {
+    public Vec3i sub_(final int b) {
         return Glm.sub(new Vec3i(), (Vec3i) this, b, b, b);
     }
 
-    public Vec3i sub_(int bX, int bY, int bZ) {
+    public Vec3i sub_(final int bX, final int bY, final int bZ) {
         return Glm.sub(new Vec3i(), (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i sub_(Vec3i b) {
+    public Vec3i sub_(final Vec3i b) {
         return Glm.sub(new Vec3i(), (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i sub(int b) {
+    public Vec3i sub(final int b) {
         return Glm.sub((Vec3i) this, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i sub(int bX, int bY, int bZ) {
+    public Vec3i sub(final int bX, final int bY, final int bZ) {
         return Glm.sub((Vec3i) this, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i sub(Vec3i b) {
+    public Vec3i sub(final Vec3i b) {
         return Glm.sub((Vec3i) this, (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i sub(int b, Vec3i res) {
+    public Vec3i sub(final int b, final Vec3i res) {
         return Glm.sub(res, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i sub(int bX, int bY, int bZ, Vec3i res) {
+    public Vec3i sub(final int bX, final int bY, final int bZ, final Vec3i res) {
         return Glm.sub(res, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i sub(Vec3i b, Vec3i res) {
+    public Vec3i sub(final Vec3i b, final Vec3i res) {
         return Glm.sub(res, (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i mul_(int b) {
+    public Vec3i mul_(final int b) {
         return Glm.mul(new Vec3i(), (Vec3i) this, b, b, b);
     }
 
-    public Vec3i mul_(int bX, int bY, int bZ) {
+    public Vec3i mul_(final int bX, final int bY, final int bZ) {
         return Glm.mul(new Vec3i(), (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i mul_(Vec3i b) {
+    public Vec3i mul_(final Vec3i b) {
         return Glm.mul(new Vec3i(), (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i mul(int b) {
+    public Vec3i mul(final int b) {
         return Glm.mul((Vec3i) this, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i mul(int bX, int bY, int bZ) {
+    public Vec3i mul(final int bX, final int bY, final int bZ) {
         return Glm.mul((Vec3i) this, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i mul(Vec3i b) {
+    public Vec3i mul(final Vec3i b) {
         return Glm.mul((Vec3i) this, (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i mul(int b, Vec3i res) {
+    public Vec3i mul(final int b, final Vec3i res) {
         return Glm.mul(res, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i mul(int bX, int bY, int bZ, Vec3i res) {
+    public Vec3i mul(final int bX, final int bY, final int bZ, final Vec3i res) {
         return Glm.mul(res, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i mul(Vec3i b, Vec3i res) {
+    public Vec3i mul(final Vec3i b, final Vec3i res) {
         return Glm.mul(res, (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i div_(int b) {
+    public Vec3i div_(final int b) {
         return Glm.div(new Vec3i(), (Vec3i) this, b, b, b);
     }
 
-    public Vec3i div_(int bX, int bY, int bZ) {
+    public Vec3i div_(final int bX, final int bY, final int bZ) {
         return Glm.div(new Vec3i(), (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i div_(Vec3i b) {
+    public Vec3i div_(final Vec3i b) {
         return Glm.div(new Vec3i(), (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i div(int b) {
+    public Vec3i div(final int b) {
         return Glm.div((Vec3i) this, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i div(int bX, int bY, int bZ) {
+    public Vec3i div(final int bX, final int bY, final int bZ) {
         return Glm.div((Vec3i) this, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i div(Vec3i b) {
+    public Vec3i div(final Vec3i b) {
         return Glm.div((Vec3i) this, (Vec3i) this, b.x, b.y, b.z);
     }
 
-    public Vec3i div(int b, Vec3i res) {
+    public Vec3i div(final int b, final Vec3i res) {
         return Glm.div(res, (Vec3i) this, b, b, b);
     }
 
-    public Vec3i div(int bX, int bY, int bZ, Vec3i res) {
+    public Vec3i div(final int bX, final int bY, final int bZ, final Vec3i res) {
         return Glm.div(res, (Vec3i) this, bX, bY, bZ);
     }
 
-    public Vec3i div(Vec3i b, Vec3i res) {
+    public Vec3i div(final Vec3i b, final Vec3i res) {
         return Glm.div(res, (Vec3i) this, b.x, b.y, b.z);
     }
 
@@ -169,7 +169,7 @@ abstract class ArithmeticOperators {
         return Glm.incr((Vec3i) this);
     }
 
-    public Vec3i incr(Vec3i res) {
+    public Vec3i incr(final Vec3i res) {
         return Glm.incr(res, (Vec3i) this);
     }
 
@@ -181,7 +181,7 @@ abstract class ArithmeticOperators {
         return Glm.decr((Vec3i) this);
     }
 
-    public Vec3i decr(Vec3i res) {
+    public Vec3i decr(final Vec3i res) {
         return Glm.decr(res, (Vec3i) this);
     }
 }

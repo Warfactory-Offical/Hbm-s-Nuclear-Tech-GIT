@@ -40,7 +40,7 @@ public class NukeFleija extends BlockContainer implements IBomb {
 
 	public static final PropertyInteger FACING = PropertyInteger.create("facing", 2, 5);
 	
-	public NukeFleija(Material materialIn, String s) {
+	public NukeFleija(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -51,22 +51,22 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityNukeFleija();
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.nuke_fleija);
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 
-		TileEntity tileentity = world.getTileEntity(pos);
+		final TileEntity tileentity = world.getTileEntity(pos);
 
 		if (tileentity instanceof TileEntityNukeFleija) {
-			InventoryHelper.dropInventoryItems(world, pos, (TileEntityNukeFleija) tileentity);
+			InventoryHelper.dropInventoryItems(world, pos, tileentity);
 
 			world.updateComparatorOutputLevel(pos, this);
 		}
@@ -75,13 +75,13 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityNukeFleija entity = (TileEntityNukeFleija) world.getTileEntity(pos);
+			final TileEntityNukeFleija entity = (TileEntityNukeFleija) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_nuke_fleija, world, pos.getX(), pos.getY(), pos.getZ());
@@ -93,9 +93,9 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		
-		TileEntityNukeFleija entity = (TileEntityNukeFleija) worldIn.getTileEntity(pos);
+		final TileEntityNukeFleija entity = (TileEntityNukeFleija) worldIn.getTileEntity(pos);
         if (worldIn.isBlockPowered(pos) && !worldIn.isRemote)
         {
         	if(entity.isReady())
@@ -108,14 +108,14 @@ public class NukeFleija extends BlockContainer implements IBomb {
         }
 	}
 	
-	public boolean igniteTestBomb(World world, int x, int y, int z, int r)
+	public boolean igniteTestBomb(final World world, final int x, final int y, final int z, final int r)
 	{
 		if (!world.isRemote)
 		{
 			//world.spawnParticle("hugeexplosion", x, y, z, 0, 0, 0);
 			world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 			
-			EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
+			final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
 			entity.posX = x;
 			entity.posY = y;
 			entity.posZ = z;
@@ -127,7 +127,7 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	    	
 	    		world.spawnEntity(entity);
 	    		
-	    		EntityCloudFleija cloud = new EntityCloudFleija(world, r);
+	    		final EntityCloudFleija cloud = new EntityCloudFleija(world, r);
 	    		cloud.posX = x;
 	    		cloud.posY = y;
 	    		cloud.posZ = z;
@@ -139,38 +139,38 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
-		int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase player, final ItemStack stack) {
+		final int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		
 		if(i == 0)
 		{
@@ -191,8 +191,8 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
-		TileEntityNukeFleija entity = (TileEntityNukeFleija) world.getTileEntity(pos);
+	public void explode(final World world, final BlockPos pos) {
+		final TileEntityNukeFleija entity = (TileEntityNukeFleija) world.getTileEntity(pos);
         //if (p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z))
         {
         	if(entity.isReady())
@@ -206,12 +206,12 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(FACING);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		if(meta >= 2 && meta <=5)
 			return this.getDefaultState().withProperty(FACING, meta);
 		return this.getDefaultState().withProperty(FACING, 2);
@@ -219,11 +219,11 @@ public class NukeFleija extends BlockContainer implements IBomb {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("§b["+ I18nUtil.resolveKey("trait.schrabbomb")+"]§r");
 		tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.fleijaRadius)+"§r");
 	}

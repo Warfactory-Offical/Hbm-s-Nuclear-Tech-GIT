@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 public class ResourceTab extends CreativeTabs {
 
-	public ResourceTab(int index, String label) {
+	public ResourceTab(final int index, final String label) {
 		super(index, label);
 	}
 

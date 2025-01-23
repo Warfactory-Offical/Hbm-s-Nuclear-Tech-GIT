@@ -21,12 +21,12 @@ import net.minecraftforge.client.ForgeHooksClient;
 public class RenderEPress extends TileEntitySpecialRenderer<TileEntityMachineEPress> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineEPress te) {
+	public boolean isGlobalRenderer(final TileEntityMachineEPress te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachineEPress te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineEPress te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GlStateManager.enableLighting();
@@ -52,7 +52,7 @@ public class RenderEPress extends TileEntitySpecialRenderer<TileEntityMachineEPr
     renderTileEntityAt2(te, x, y, z, partialTicks);
 	}
 	
-	public void renderTileEntityAt2(TileEntity tileentity, double x, double y, double z, float f) {
+	public void renderTileEntityAt2(final TileEntity tileentity, final double x, final double y, final double z, final float f) {
 		GL11.glPushMatrix();
 			GL11.glTranslated(x + 0.5D, y + 1 + 1 - 0.125, z + 0.5D);
 			GlStateManager.enableLighting();
@@ -69,8 +69,8 @@ public class RenderEPress extends TileEntitySpecialRenderer<TileEntityMachineEPr
 				GL11.glRotatef(180, 0F, 1F, 0F); break;
 			}
 
-			TileEntityMachineEPress press = (TileEntityMachineEPress)tileentity;
-			float f1 = press.progress * (1 - 0.125F) / TileEntityMachineEPress.maxProgress;
+			final TileEntityMachineEPress press = (TileEntityMachineEPress)tileentity;
+			final float f1 = press.progress * (1 - 0.125F) / TileEntityMachineEPress.maxProgress;
 			GL11.glTranslated(0, -f1, 0);
 		
 			this.bindTexture(ResourceManager.epress_head_tex);
@@ -82,7 +82,7 @@ public class RenderEPress extends TileEntitySpecialRenderer<TileEntityMachineEPr
         renderTileEntityAt3(tileentity, x, y, z, f);
     }
     
-	public void renderTileEntityAt3(TileEntity tileentity, double x, double y, double z, float f) {
+	public void renderTileEntityAt3(final TileEntity tileentity, final double x, final double y, final double z, final float f) {
 		GL11.glPushMatrix();
 			GL11.glTranslated(x + 0.5D, y + 1, z + 0.5);
 			GlStateManager.enableLighting();
@@ -104,8 +104,8 @@ public class RenderEPress extends TileEntitySpecialRenderer<TileEntityMachineEPr
 			GL11.glTranslatef(1.0F, 1.0F - 0.0625F * 165/100, 0.0F);
 			GL11.glTranslatef(-1, -1.15F, 0);
 			
-			TileEntityMachineEPress press = (TileEntityMachineEPress)tileentity;
-			ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(press.item), 1, press.meta);
+			final TileEntityMachineEPress press = (TileEntityMachineEPress)tileentity;
+			final ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(press.item), 1, press.meta);
 			
 			if(!(stack.getItem() instanceof ItemBlock)) {
 				IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, tileentity.getWorld(), null);

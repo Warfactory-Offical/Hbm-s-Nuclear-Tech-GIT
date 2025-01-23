@@ -11,9 +11,9 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityProxyConductor extends TileEntityProxyBase implements IEnergyConductor {
 
 	@Override
-	public long transferPower(long power) {
+	public long transferPower(final long power) {
 		
-		TileEntity te = this.getTE();
+		final TileEntity te = this.getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).transferPower(power);
@@ -25,7 +25,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public long getPower() {
 		
-		TileEntity te = this.getTE();
+		final TileEntity te = this.getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).getPower();
@@ -37,7 +37,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public long getMaxPower() {
 		
-		TileEntity te = this.getTE();
+		final TileEntity te = this.getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).getMaxPower();
@@ -49,7 +49,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public IPowerNet getPowerNet() {
 		
-		TileEntity te = this.getTE();
+		final TileEntity te = this.getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).getPowerNet();
@@ -59,9 +59,9 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	}
 
 	@Override
-	public void setPowerNet(IPowerNet network) {
+	public void setPowerNet(final IPowerNet network) {
 		
-		TileEntity te = this.getTE();
+		final TileEntity te = this.getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			((IEnergyConductor)te).setPowerNet(network);

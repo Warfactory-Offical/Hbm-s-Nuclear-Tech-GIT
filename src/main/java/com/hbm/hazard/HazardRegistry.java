@@ -237,13 +237,13 @@ public class HazardRegistry {
     private static final Map<Pair<Item, Integer>, HazardList> hazardMap = new LinkedHashMap<>();
 
     private static void populate() {
-        for (Map.Entry<String, Float> shapeEntry : shapeMultipliers.entrySet()) {
-            for (MaterialMineral material : MaterialMineral.values()) {
+        for (final Map.Entry<String, Float> shapeEntry : shapeMultipliers.entrySet()) {
+            for (final MaterialMineral material : MaterialMineral.values()) {
                 if (!materialHazards.containsKey(material)) continue; // TODO: remove
 
                 final String oreDictEntryName = shapeEntry.getKey() + material.getNamePascalCase();
 
-                HazardList hazards = new HazardList(
+                final HazardList hazards = new HazardList(
                         materialHazards
                                 .get(material)
                                 .stream()
@@ -251,8 +251,8 @@ public class HazardRegistry {
                                 .collect(Collectors.toList())
                 );
 
-                for (ItemStack is : OreDictionary.getOres(oreDictEntryName)) {
-                    Pair<Item, Integer> key = new Pair<>(is.getItem(), is.getMetadata());
+                for (final ItemStack is : OreDictionary.getOres(oreDictEntryName)) {
+                    final Pair<Item, Integer> key = new Pair<>(is.getItem(), is.getMetadata());
                     hazardMap.put(key, hazards);
                 }
             }
@@ -264,8 +264,8 @@ public class HazardRegistry {
         ));
     }
 
-    public static HazardList getHazardsForItemStack(ItemStack is) {
-        Pair<Item, Integer> key = new Pair<>(is.getItem(), is.getMetadata());
+    public static HazardList getHazardsForItemStack(final ItemStack is) {
+        final Pair<Item, Integer> key = new Pair<>(is.getItem(), is.getMetadata());
 
         return new HazardList(
                 hazardMap.containsKey(key)
@@ -279,22 +279,22 @@ public class HazardRegistry {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void addFullTooltip(ItemStack stack, EntityPlayer player, List<String> list) {
-        HazardList hazards = getHazardsForItemStack(stack);
+    public static void addFullTooltip(final ItemStack stack, final EntityPlayer player, final List<String> list) {
+        final HazardList hazards = getHazardsForItemStack(stack);
         hazards.addHazardInformation(player, list, stack);
     }
 
-    private static void applyHazards(ItemStack stack, EntityPlayer target) {
-        HazardList hazards = getHazardsForItemStack(stack);
+    private static void applyHazards(final ItemStack stack, final EntityPlayer target) {
+        final HazardList hazards = getHazardsForItemStack(stack);
         hazards.onUpdate(target, stack);
     }
 
-    public static void updatePlayerInventory(EntityPlayer player) {
-        NonNullList<ItemStack> mainInventory = player.inventory.mainInventory;
-        NonNullList<ItemStack> armorInventory = player.inventory.armorInventory;
+    public static void updatePlayerInventory(final EntityPlayer player) {
+        final NonNullList<ItemStack> mainInventory = player.inventory.mainInventory;
+        final NonNullList<ItemStack> armorInventory = player.inventory.armorInventory;
 
         for (int i = 0; i < mainInventory.size(); i++) {
-            ItemStack stack = mainInventory.get(i);
+            final ItemStack stack = mainInventory.get(i);
 
             if (!stack.isEmpty()) {
                 applyHazards(stack, player);
@@ -305,7 +305,7 @@ public class HazardRegistry {
             }
         }
 
-        for (ItemStack stack : armorInventory) {
+        for (final ItemStack stack : armorInventory) {
             if (!stack.isEmpty()) {
                 applyHazards(stack, player);
             }

@@ -35,7 +35,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 	public void update() {
 		
 		if(!world.isRemote) {
-			MachineCharger c = (MachineCharger)world.getBlockState(pos).getBlock();
+			final MachineCharger c = (MachineCharger)world.getBlockState(pos).getBlock();
 			this.maxChargeRate = c.maxThroughput;
 			this.pointingUp = c.pointingUp;
 
@@ -47,14 +47,13 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 			totalEnergy = 0;
 			charge = 0;
 			
-			for(EntityPlayer player : players) {
-				InventoryPlayer inv = player.inventory;
+			for(final EntityPlayer player : players) {
+				final InventoryPlayer inv = player.inventory;
 				for(int i = 0; i < inv.getSizeInventory(); i ++){
 					
-					ItemStack stack = inv.getStackInSlot(i);
-					if(stack != null && stack.getItem() instanceof IBatteryItem) {
-						IBatteryItem battery = (IBatteryItem) stack.getItem();
-						totalCapacity += battery.getMaxCharge();
+					final ItemStack stack = inv.getStackInSlot(i);
+					if(stack != null && stack.getItem() instanceof IBatteryItem battery) {
+                        totalCapacity += battery.getMaxCharge();
 						totalEnergy += battery.getCharge(stack);
 						charge += Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
 					}
@@ -67,7 +66,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 				lastOp--;
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("o", isOn);
 			data.setBoolean("u", pointingUp);
 			data.setLong("m", totalCapacity);
@@ -80,7 +79,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.isOn = nbt.getBoolean("o");
 		this.pointingUp = nbt.getBoolean("u");
 		this.totalCapacity = nbt.getLong("m");
@@ -100,7 +99,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public void setPower(long power) { }
+	public void setPower(final long power) { }
 	
 	@Override
 	public long transferPower(long power) {
@@ -110,17 +109,16 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 		
 		actualCharge = 0;
 		long chargeBudget = maxChargeRate;
-		for(EntityPlayer player : players) {
-			InventoryPlayer inv = player.inventory;
+		for(final EntityPlayer player : players) {
+			final InventoryPlayer inv = player.inventory;
 			for(int i = 0; i < inv.getSizeInventory(); i ++){
 
 				if(chargeBudget > 0 && power > 0){
-					ItemStack stack = inv.getStackInSlot(i);
+					final ItemStack stack = inv.getStackInSlot(i);
 					
-					if(stack != null && stack.getItem() instanceof IBatteryItem) {
-						IBatteryItem battery = (IBatteryItem) stack.getItem();
-						
-						long toCharge = Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
+					if(stack != null && stack.getItem() instanceof IBatteryItem battery) {
+
+                        long toCharge = Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
 						toCharge = Math.min(toCharge, chargeBudget);
 						toCharge = Math.min(toCharge, power);
 						battery.chargeBattery(stack, toCharge);

@@ -1,5 +1,4 @@
 package com.hbm.util;
-import com.hbm.util.ItemStackUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -12,35 +11,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Compat {
-	public static Item tryLoadItem(String domain, String name) {
+	public static Item tryLoadItem(final String domain, final String name) {
 		return Item.REGISTRY.getObject(new ResourceLocation(domain, name));
 	}
 	
-	public static Block tryLoadBlock(String domain, String name){
+	public static Block tryLoadBlock(final String domain, final String name){
 		return Block.REGISTRY.getObject(new ResourceLocation(domain, name));
 	}
-	public static List<ItemStack> scrapeItemFromME(ItemStack meDrive) {
-		List<ItemStack> stacks = new ArrayList();
+	public static List<ItemStack> scrapeItemFromME(final ItemStack meDrive) {
+		final List<ItemStack> stacks = new ArrayList();
 
 		try {
 			if(meDrive != null && meDrive.hasTagCompound()) {
-				NBTTagCompound nbt = meDrive.getTagCompound();
-				int types = nbt.getShort("it"); //ITEM_TYPE_TAG
+				final NBTTagCompound nbt = meDrive.getTagCompound();
+				final int types = nbt.getShort("it"); //ITEM_TYPE_TAG
 
 				for(int i = 0; i < types; i++) {
-					NBTBase stackTag = nbt.getTag("#" + i);
+					final NBTBase stackTag = nbt.getTag("#" + i);
 
-					if(stackTag instanceof NBTTagCompound) {
-						NBTTagCompound compound = (NBTTagCompound) stackTag;
-						ItemStack stack = ItemStackUtil.itemStackFrom(compound);
+					if(stackTag instanceof NBTTagCompound compound) {
+                        final ItemStack stack = ItemStackUtil.itemStackFrom(compound);
 
-						int count = nbt.getInteger("@" + i);
+						final int count = nbt.getInteger("@" + i);
 						stack.setCount(count);
 						stacks.add(stack);
 					}
 				}
 			}
-		} catch(Exception ex) { }
+		} catch(final Exception ex) { }
 
 		return stacks;
 	}

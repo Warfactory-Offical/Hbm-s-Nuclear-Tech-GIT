@@ -1,18 +1,15 @@
 package com.hbm.items.gear;
 
-import java.util.List;
-
 import com.hbm.interfaces.IHasCustomModel;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -21,6 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class RedstoneSword extends ItemSword implements IHasCustomModel {
 
@@ -31,7 +30,7 @@ public class RedstoneSword extends ItemSword implements IHasCustomModel {
 	
 	public static final ModelResourceLocation rsModel = new ModelResourceLocation("hbm:redstone_sword", "inventory");
 	
-	public RedstoneSword(ToolMaterial t, String s){
+	public RedstoneSword(final ToolMaterial t, final String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -47,13 +46,13 @@ public class RedstoneSword extends ItemSword implements IHasCustomModel {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
 		list.add("§5§lVery First NTM Item");
 	}
 
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(worldIn.isRemote){
 			return EnumActionResult.PASS;
 		}
@@ -90,7 +89,7 @@ public class RedstoneSword extends ItemSword implements IHasCustomModel {
         {
             ++x;
         }
-        BlockPos editpos = new BlockPos(x, y, z);
+        final BlockPos editpos = new BlockPos(x, y, z);
         if(!player.canPlayerEdit(editpos, facing, player.getHeldItem(hand))){
         	return EnumActionResult.PASS;
         } else {

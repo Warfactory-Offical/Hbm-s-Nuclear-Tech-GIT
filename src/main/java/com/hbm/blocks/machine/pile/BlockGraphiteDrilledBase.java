@@ -26,7 +26,7 @@ public class BlockGraphiteDrilledBase extends BlockHazardFuel {
 
 	public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
 
-	public BlockGraphiteDrilledBase(String s) {
+	public BlockGraphiteDrilledBase(final String s) {
 		super(ModBlocks.block_graphite.getDefaultState().getMaterial(), s, ((BlockHazardFuel) ModBlocks.block_graphite).encouragement, ((BlockHazardFuel) ModBlocks.block_graphite).flammability, 16000);
 		this.setCreativeTab(null);
 		this.setSoundType(SoundType.METAL);
@@ -34,9 +34,9 @@ public class BlockGraphiteDrilledBase extends BlockHazardFuel {
 		this.setResistance(10.0F);
 	}
 	
-	protected static void ejectItem(World world, int x, int y, int z, EnumFacing dir, ItemStack stack) {
+	protected static void ejectItem(final World world, final int x, final int y, final int z, final EnumFacing dir, final ItemStack stack) {
 		
-		EntityItem dust = new EntityItem(world, x + 0.5D + dir.getXOffset() * 0.75D, y + 0.5D + dir.getYOffset() * 0.75D, z + 0.5D + dir.getZOffset() * 0.75D, stack);
+		final EntityItem dust = new EntityItem(world, x + 0.5D + dir.getXOffset() * 0.75D, y + 0.5D + dir.getYOffset() * 0.75D, z + 0.5D + dir.getZOffset() * 0.75D, stack);
 		dust.motionX = dir.getXOffset() * 0.25;
 		dust.motionY = dir.getYOffset() * 0.25;
 		dust.motionZ = dir.getZOffset() * 0.25;
@@ -44,22 +44,22 @@ public class BlockGraphiteDrilledBase extends BlockHazardFuel {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		return Items.AIR;
 	}
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune){
 		drops.add(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.GRAPHITE), 8));
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(final IBlockState state){
 		return state.getValue(AXIS).ordinal();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(final int meta){
 		return this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.values()[meta&3]);
 	}
 	

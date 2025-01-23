@@ -57,7 +57,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 		return "container.machineElectricBoiler";
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -66,30 +66,29 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
+		final int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
 		return false;
 	}
 	
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(i == 4)
-			if(stack != null && stack.getItem() instanceof IBatteryItem)
-				return true;
+            return stack != null && stack.getItem() instanceof IBatteryItem;
 		return false;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		heat = nbt.getInteger("heat");
 		power = nbt.getLong("power");
 		if(nbt.hasKey("inventory"))
@@ -100,7 +99,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("heat", heat);
 		nbt.setLong("power", power);
 		nbt.setTag("inventory", inventory.serializeNBT());
@@ -108,11 +107,11 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 		return super.writeToNBT(nbt);
 	}
 
-	public int getHeatScaled(int i) {
+	public int getHeatScaled(final int i) {
 		return (heat * i) / maxHeat;
 	}
 
-	public long getPowerScaled(int i) {
+	public long getPowerScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 
@@ -142,7 +141,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 			if(FFUtils.fillFluidContainer(inventory, tanks[1], 5, 6))
 				needsUpdate = true;
 
-			Object[] outs;
+			final Object[] outs;
 			if(tanks[0].getFluid() != null)
 				outs = HeatRecipes.getBoilerOutput(tanks[0].getFluid().getFluid());
 			else
@@ -193,7 +192,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 		}
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		boolean update = needsUpdate;
 
 		update = FFUtils.fillFluid(this, tank, world, pos.west(), 16000) || update;
@@ -206,31 +205,27 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 		needsUpdate = update;
 	}
 
-	private boolean isValidFluid(FluidStack stack) {
+	private boolean isValidFluid(final FluidStack stack) {
 		if(stack == null)
 			return false;
 		return HeatRecipes.hasBoilRecipe(stack.getFluid());
 	}
 
-	protected boolean inputValidForTank(int tank, int slot) {
-		if(isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))) {
-			return true;
-		}
-		return false;
-	}
+	protected boolean inputValidForTank(final int tank, final int slot) {
+        return isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
+    }
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 2) {
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 		}
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 
@@ -251,7 +246,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(isValidFluid(resource)) {
 			return tanks[0].fill(resource, doFill);
 		}
@@ -259,7 +254,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource == null || !resource.isFluidEqual(tanks[1].getFluid())) {
 			return null;
 		}
@@ -267,13 +262,13 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 
 	private long detectPower;
 	private int detectHeat;
-	private FluidTank[] detectTanks = new FluidTank[] { null, null };
+	private final FluidTank[] detectTanks = new FluidTank[] { null, null };
 
 	private void detectAndSendChanges() {
 		boolean mark = false;
@@ -302,12 +297,12 @@ public class TileEntityMachineBoilerElectric extends TileEntityMachineBase imple
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {

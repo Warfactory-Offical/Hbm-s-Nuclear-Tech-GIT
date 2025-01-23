@@ -8,15 +8,15 @@ import net.minecraft.util.math.MathHelper;
 
 public class WormMovementBodyNT {
 
-	private EntityWormBaseNT user;
+	private final EntityWormBaseNT user;
 
-	public WormMovementBodyNT(EntityWormBaseNT user) {
+	public WormMovementBodyNT(final EntityWormBaseNT user) {
 		this.user = user;
 	}
 
 	protected void updateMovement() {
 
-		double targetingRange = 128.0D;
+		final double targetingRange = 128.0D;
 
 		if((this.user.targetedEntity != null) && (this.user.targetedEntity.getDistanceSq(this.user) < targetingRange * targetingRange)) {
 			this.user.waypointX = this.user.targetedEntity.posX;
@@ -28,10 +28,10 @@ public class WormMovementBodyNT {
 			findEntityToFollow(this.user.world.getEntitiesWithinAABB(EntityWormBaseNT.class, this.user.getEntityBoundingBox().grow(this.user.rangeForParts, this.user.rangeForParts, this.user.rangeForParts), EntityWormBaseNT.wormSelector));
 		}
 
-		double deltaX = this.user.waypointX - this.user.posX;
-		double deltaY = this.user.waypointY - this.user.posY;
-		double deltaZ = this.user.waypointZ - this.user.posZ;
-		double deltaDist = MathHelper.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+		final double deltaX = this.user.waypointX - this.user.posX;
+		final double deltaY = this.user.waypointY - this.user.posY;
+		final double deltaZ = this.user.waypointZ - this.user.posZ;
+		final double deltaDist = MathHelper.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 
 		if(this.user.targetedEntity != null) {
 			this.user.faceEntity(this.user.targetedEntity, 180.0F, 180.0F);
@@ -50,18 +50,18 @@ public class WormMovementBodyNT {
 		}
 	}
 
-	protected void findEntityToFollow(List<EntityWormBaseNT> segments) {
-		for(EntityWormBaseNT segment : segments) {
+	protected void findEntityToFollow(final List<EntityWormBaseNT> segments) {
+		for(final EntityWormBaseNT segment : segments) {
 
 			if(segment.getHeadID() == this.user.getHeadID()) {
 				if(segment.getIsHead()) {
 					if(this.user.getPartNumber() == 0) {
-						this.user.targetedEntity = ((Entity) segment);
+						this.user.targetedEntity = segment;
 					}
-					this.user.followed = ((EntityLivingBase) segment);
+					this.user.followed = segment;
 
 				} else if(segment.getPartNumber() == this.user.getPartNumber() - 1) {
-					this.user.targetedEntity = ((Entity) segment);
+					this.user.targetedEntity = segment;
 				}
 			}
 		}

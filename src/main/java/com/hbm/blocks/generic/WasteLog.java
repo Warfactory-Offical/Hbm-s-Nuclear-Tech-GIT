@@ -28,7 +28,7 @@ public class WasteLog extends BlockRotatedPillar implements IItemHazard {
 
 	ItemHazardModule module;
 	
-	public WasteLog(Material mat, SoundType type, String s) {
+	public WasteLog(final Material mat, final SoundType type, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -45,7 +45,7 @@ public class WasteLog extends BlockRotatedPillar implements IItemHazard {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		if(this == ModBlocks.waste_log) {
 			return Items.COAL;
 		}
@@ -56,8 +56,8 @@ public class WasteLog extends BlockRotatedPillar implements IItemHazard {
 	}
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune) {
+		final Random rand = world instanceof World ? ((World)world).rand : RANDOM;
 		if(this == ModBlocks.waste_log){
 			if(rand.nextInt(1000) == 0) {
 		        drops.add(ItemStackUtil.itemStackFrom(ModItems.burnt_bark));
@@ -74,24 +74,24 @@ public class WasteLog extends BlockRotatedPillar implements IItemHazard {
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random random) {
 		return 2 + random.nextInt(3);
 	}
 
-	public IBlockState withSameRotationState(IBlockState state){
+	public IBlockState withSameRotationState(final IBlockState state){
 		if(state == null)
 			return this.getDefaultState();
-		return this.getDefaultState().withProperty(super.AXIS, state.getValue(super.AXIS));
+		return this.getDefaultState().withProperty(AXIS, state.getValue(AXIS));
 	}
 
-	public IBlockState getSameRotationState(IBlockState state){
+	public IBlockState getSameRotationState(final IBlockState state){
 		if(state == null)
 			return this.getDefaultState();
-		BlockLog.EnumAxis logAxis = state.getValue(BlockLog.LOG_AXIS);
-		if(logAxis == BlockLog.EnumAxis.Y) return this.getDefaultState().withProperty(super.AXIS, Axis.Y);
-		if(logAxis == BlockLog.EnumAxis.Z) return this.getDefaultState().withProperty(super.AXIS, Axis.Z);
+		final BlockLog.EnumAxis logAxis = state.getValue(BlockLog.LOG_AXIS);
+		if(logAxis == BlockLog.EnumAxis.Y) return this.getDefaultState().withProperty(AXIS, Axis.Y);
+		if(logAxis == BlockLog.EnumAxis.Z) return this.getDefaultState().withProperty(AXIS, Axis.Z);
 		if(logAxis == BlockLog.EnumAxis.X) return this.getDefaultState();
-		if(logAxis == BlockLog.EnumAxis.NONE) return this.getDefaultState().withProperty(super.AXIS, Axis.Y);
+		if(logAxis == BlockLog.EnumAxis.NONE) return this.getDefaultState().withProperty(AXIS, Axis.Y);
 		return null;
 	}
 }

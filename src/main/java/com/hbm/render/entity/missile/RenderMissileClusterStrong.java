@@ -17,16 +17,16 @@ public class RenderMissileClusterStrong extends Render<EntityMissileClusterStron
 
 	public static final IRenderFactory<EntityMissileClusterStrong> FACTORY = (RenderManager man) -> {return new RenderMissileClusterStrong(man);};
 	
-	protected RenderMissileClusterStrong(RenderManager renderManager) {
+	protected RenderMissileClusterStrong(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMissileClusterStrong missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileClusterStrong missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
         GlStateManager.enableLighting();
-        double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+        final double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
         x = renderPos[0];
         y = renderPos[1];
         z = renderPos[2];
@@ -44,7 +44,7 @@ public class RenderMissileClusterStrong extends Render<EntityMissileClusterStron
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileClusterStrong entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileClusterStrong entity) {
 		return ResourceManager.missileStrong_CL_tex;
 	}
 }

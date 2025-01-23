@@ -423,20 +423,20 @@ public class ModForgeFluids {
 	}
 
 	@SubscribeEvent
-	public static void worldLoad(WorldEvent.Load evt) {
+	public static void worldLoad(final WorldEvent.Load evt) {
 		setFromRegistry();
 	}
 
 	public static void registerFluidColors(){
-		for(Fluid f : FluidRegistry.getRegisteredFluids().values()){
+		for(final Fluid f : FluidRegistry.getRegisteredFluids().values()){
 			fluidColors.put(f, FFUtils.getColorFromFluid(f));
 		}
 	}
 
-	public static int getFluidColor(Fluid f){
+	public static int getFluidColor(final Fluid f){
 		if(f == null)
 			return 0;
-		Integer color = fluidColors.get(f);
+		final Integer color = fluidColors.get(f);
 		if(color == null)
 			return 0xFFFFFF;
 		return color;

@@ -25,7 +25,7 @@ public class AuxLongPacket implements IMessage {
 
 	}
 
-	public AuxLongPacket(int x, int y, int z, long value, int id) {
+	public AuxLongPacket(final int x, final int y, final int z, final long value, final int id) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -33,12 +33,12 @@ public class AuxLongPacket implements IMessage {
 		this.id = id;
 	}
 
-	public AuxLongPacket(BlockPos pos, long value, int id) {
+	public AuxLongPacket(final BlockPos pos, final long value, final int id) {
 		this(pos.getX(), pos.getY(), pos.getZ(), value, id);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -47,7 +47,7 @@ public class AuxLongPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -59,10 +59,10 @@ public class AuxLongPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(AuxLongPacket m, MessageContext ctx) {
+		public IMessage onMessage(final AuxLongPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				try {
-					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+					final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 					if(te instanceof TileEntityCoreEmitter){
 						if(m.id == 0)
 							((TileEntityCoreEmitter) te).prev = m.value;
@@ -70,7 +70,7 @@ public class AuxLongPacket implements IMessage {
 						if(m.id == 0)
 							((TileEntityCoreReceiver)te).joules = m.value;
 					}
-				} catch(Exception x) {
+				} catch(final Exception x) {
 				}
 			});
 

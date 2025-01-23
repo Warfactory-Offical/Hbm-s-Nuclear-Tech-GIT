@@ -13,14 +13,14 @@ public class HbmDetox {
 	public static Potion viral;
 
 	public static void init(){
-		for(String s : PotionConfig.potionBlacklist){
-			Potion p = Potion.getPotionFromResourceLocation(s);
+		for(final String s : PotionConfig.potionBlacklist){
+			final Potion p = Potion.getPotionFromResourceLocation(s);
 			if(p != null)
 				blacklistedPotions.add(p);
 		}
 	}
 
-	public static boolean isBlacklisted(Potion p){
+	public static boolean isBlacklisted(final Potion p){
 		return blacklistedPotions.contains(p);
 	}
 }

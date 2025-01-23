@@ -20,10 +20,10 @@ import net.minecraft.item.ItemStack;
 public class IrradiationChannel {
 	
 	private static class ActionAddRecipe implements IAction{
-		private ItemStack input;
-		private ItemStack output;
+		private final ItemStack input;
+		private final ItemStack output;
 		private int flux = 0;
-		public ActionAddRecipe(IItemStack input, IItemStack output, int flux){
+		public ActionAddRecipe(final IItemStack input, final IItemStack output, final int flux){
 			this.input = CraftTweakerMC.getItemStack(input);
 			this.output = CraftTweakerMC.getItemStack(output);
 			this.flux = flux;
@@ -51,16 +51,16 @@ public class IrradiationChannel {
 	}
 
 	@ZenMethod
-	public static void addRecipe(IItemStack input, IItemStack output, int flux){
+	public static void addRecipe(final IItemStack input, final IItemStack output, final int flux){
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(input, output, flux));
 	}
 
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private ItemStack input;
+		private final ItemStack input;
 
-		public ActionRemoveRecipe(IItemStack input){
+		public ActionRemoveRecipe(final IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);
 		}
 		@Override
@@ -78,7 +78,7 @@ public class IrradiationChannel {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack input){
+	public static void removeRecipe(final IItemStack input){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(input));
 	}
 

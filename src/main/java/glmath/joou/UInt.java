@@ -57,7 +57,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      *
      * @param value
      */
-    public UInt(byte value) {
+    public UInt(final byte value) {
         this.value = value;
     }
 
@@ -66,39 +66,39 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      *
      * @param value
      */
-    public UInt(short value) {
+    public UInt(final short value) {
         this.value = value;
     }
 
     /**
      * Create an <code>unsigned int</code>.
      */
-    public UInt(int value) {
+    public UInt(final int value) {
         this.value = value;
     }
 
     /**
      * Create an <code>unsigned int</code>
      */
-    public UInt(long value) {
+    public UInt(final long value) {
         this.value = (int) value;
     }
 
     /**
      * Create an <code>unsigned int</code>
      */
-    public UInt(BigInteger value) {
+    public UInt(final BigInteger value) {
         this.value = value.intValue();
     }
 
     /**
      * Create an <code>unsigned int</code> /code>
      */
-    public UInt(String value) {
+    public UInt(final String value) {
         this.value = Integer.parseInt(value);
     }
 
-    public UInt(UInt uInteger) {
+    public UInt(final UInt uInteger) {
         this.value = uInteger.value;
     }
 
@@ -108,7 +108,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof UInt) {
             return value == ((UInt) obj).value;
         }
@@ -122,7 +122,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
     }
 
     @Override
-    public int compareTo(UInt o) {
+    public int compareTo(final UInt o) {
         return Integer.compareUnsigned(value, o.value);
     }
     
@@ -137,7 +137,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static int checkSigned(byte value) throws ArithmeticException {
+    public static int checkSigned(final byte value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -151,7 +151,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static int checkSigned(short value) throws ArithmeticException {
+    public static int checkSigned(final short value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -165,7 +165,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static int checkSigned(int value) throws ArithmeticException {
+    public static int checkSigned(final int value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -179,7 +179,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static int checkSigned(long value) throws ArithmeticException {
+    public static int checkSigned(final long value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -193,7 +193,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static int checkSigned(BigInteger value) throws ArithmeticException {
+    public static int checkSigned(final BigInteger value) throws ArithmeticException {
         if (value.compareTo(BigInteger.ZERO) < 0 || value.longValue() > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -207,7 +207,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static int checkSigned(String value) throws ArithmeticException {
+    public static int checkSigned(final String value) throws ArithmeticException {
         if (value.startsWith("-")) {
             throw new ArithmeticException("Value is out of range : " + value);
         }

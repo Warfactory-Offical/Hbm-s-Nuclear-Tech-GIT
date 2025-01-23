@@ -20,7 +20,7 @@ public class EntityCloudFleijaRainbow extends Entity {
 	public int age;
     public float scale = 0;
 
-	public EntityCloudFleijaRainbow(World p_i1582_1_) {
+	public EntityCloudFleijaRainbow(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1, 4);
 		this.ignoreFrustumCheck = true;
@@ -48,7 +48,7 @@ public class EntityCloudFleijaRainbow extends Entity {
     }
     
 
-	public EntityCloudFleijaRainbow(World p_i1582_1_, int maxAge) {
+	public EntityCloudFleijaRainbow(final World p_i1582_1_, final int maxAge) {
 		super(p_i1582_1_);
 		this.setSize(20, 40);
 		this.isImmuneToFire = true;
@@ -74,19 +74,19 @@ public class EntityCloudFleijaRainbow extends Entity {
     }
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
+	protected void readEntityFromNBT(final NBTTagCompound p_70037_1_) {
 		age = p_70037_1_.getShort("age");
 		scale = p_70037_1_.getShort("scale");
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
+	protected void writeEntityToNBT(final NBTTagCompound p_70014_1_) {
 		p_70014_1_.setShort("age", (short)age);
 		p_70014_1_.setShort("scale", (short)scale);
 		
 	}
 	
-	public void setMaxAge(int i) {
+	public void setMaxAge(final int i) {
 		this.dataManager.set(MAXAGE, Integer.valueOf(i));
 	}
 	
@@ -96,7 +96,7 @@ public class EntityCloudFleijaRainbow extends Entity {
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 25000;
     }

@@ -11,12 +11,12 @@ import net.minecraft.item.Item;
 
 public class BlockDepthOre extends BlockDepth {
 	
-	public BlockDepthOre(String s){
+	public BlockDepthOre(final String s){
 		super(s);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		if(this == ModBlocks.cluster_depth_iron) {
 			return ModItems.crystal_iron;
 		}
@@ -43,7 +43,7 @@ public class BlockDepthOre extends BlockDepth {
 	}
 	
 	@Override
-	public int quantityDropped(Random rand) {
+	public int quantityDropped(final Random rand) {
 		
 		if(this == ModBlocks.ore_depth_cinnebar) {
 			return 2 + rand.nextInt(3);
@@ -62,7 +62,7 @@ public class BlockDepthOre extends BlockDepth {
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(final IBlockState state) {
 		if(this == ModBlocks.ore_depth_zirconium) {
 			return ModItems.nugget.getItemStack(MaterialMineral.ZIRCONIUM).getMetadata();
 		}

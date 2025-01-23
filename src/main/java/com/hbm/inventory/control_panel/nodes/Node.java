@@ -33,18 +33,18 @@ public abstract class Node {
 	public abstract NodeType getType();
 	public abstract String getDisplayName();
 	
-	public Node(float x, float y){
+	public Node(final float x, final float y){
 		setPosition(x, y);
 	}
 	
-	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
-		NBTTagCompound inputs = new NBTTagCompound();
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
+		final NBTTagCompound inputs = new NBTTagCompound();
 		for(int i = 0; i < this.inputs.size(); i ++){
 			inputs.setTag("con"+i, this.inputs.get(i).writeToNBT(new NBTTagCompound(), sys));
 		}
 		tag.setTag("in", inputs);
 		
-		NBTTagCompound outputs = new NBTTagCompound();
+		final NBTTagCompound outputs = new NBTTagCompound();
 		for(int i = 0; i < this.outputs.size(); i ++){
 			outputs.setTag("con"+i, this.outputs.get(i).writeToNBT(new NBTTagCompound(), sys));
 		}
@@ -57,19 +57,19 @@ public abstract class Node {
 		return tag;
 	}
 	
-	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		this.inputs.clear();
 		this.outputs.clear();
-		NBTTagCompound inputs = tag.getCompoundTag("in");
+		final NBTTagCompound inputs = tag.getCompoundTag("in");
 		for(int i = 0; i < inputs.getKeySet().size(); i ++){
-			NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
+			final NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
 			c.readFromNBT(inputs.getCompoundTag("con"+i), sys);
 			this.inputs.add(c);
 		}
 		
-		NBTTagCompound outputs = tag.getCompoundTag("out");
+		final NBTTagCompound outputs = tag.getCompoundTag("out");
 		for(int i = 0; i < outputs.getKeySet().size(); i ++){
-			NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
+			final NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
 			c.readFromNBT(outputs.getCompoundTag("con"+i), sys);
 			this.outputs.add(c);
 		}
@@ -80,15 +80,15 @@ public abstract class Node {
 		cacheValid = false;
 	}
 	
-	public static Node nodeFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public static Node nodeFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		Node node = null;
 		switch(tag.getString("nodeType")){
 		case "cancelEvent":
 			node = new NodeCancelEvent(0, 0);
 			break;
 		case "eventBroadcast":
-			NBTTagCompound list = tag.getCompoundTag("itemList");
-			List<ControlEvent> l = new ArrayList<>();
+			final NBTTagCompound list = tag.getCompoundTag("itemList");
+			final List<ControlEvent> l = new ArrayList<>();
 			for(int i = 0; i < list.getKeySet().size(); i ++){
 				l.add(ControlEvent.getRegisteredEvent(list.getString("item"+i)));
 			}
@@ -118,7 +118,7 @@ public abstract class Node {
 			node = new NodeConditional(0, 0);
 			break;
 		case "setVar":
-			int ctrlIdx2 = tag.getInteger("controlIdx");
+			final int ctrlIdx2 = tag.getInteger("controlIdx");
 			node = new NodeSetVar(0, 0, sys.parent.panel.controls.get(ctrlIdx2));
 			break;
 		case "input":
@@ -128,23 +128,23 @@ public abstract class Node {
 		return node;
 	}
 	
-	public void setPosition(float x, float y){
+	public void setPosition(final float x, final float y){
 		this.posX = x;
 		this.posY = y;
-		for(NodeElement c : otherElements)
+		for(final NodeElement c : otherElements)
 			c.resetOffset();
-		for(NodeConnection c : inputs)
+		for(final NodeConnection c : inputs)
 			c.resetOffset();
-		for(NodeConnection c : outputs)
+		for(final NodeConnection c : outputs)
 			c.resetOffset();
 	}
 	
-	public void render(float mX, float mY, boolean isActive, boolean isSelected){
+	public void render(final float mX, final float mY, final boolean isActive, final boolean isSelected){
 		float[] color;
 		Minecraft.getMinecraft().getTextureManager().bindTexture(NodeSystem.node_tex);
 		if(isActive || isSelected){
 			color = isActive ? new float[]{0.7F, 0.7F, 0.7F} : new float[]{1F, 0.5F, 0.1F};
-			float edge = 0.5F;
+			final float edge = 0.5F;
 			Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 			RenderHelper.drawGuiRectBatchedColor(posX-edge, posY-edge, 0, 0.875F, 40+edge*2, 6+edge*2, 0.625F, 0.96875F, color[0], color[1], color[2], 1);
 			RenderHelper.drawGuiRectBatchedColor(posX-edge, posY+6, 0, 0.96875F, 40+edge*2, size+edge, 0.625F, 0.984375F, color[0], color[1], color[2], 1);
@@ -166,7 +166,7 @@ public abstract class Node {
 		for(int i = otherElements.size()-1; i >= 0; i --)
 			otherElements.get(i).render(mX, mY);
 
-		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		GL11.glPushMatrix();
 		GL11.glTranslated(posX, posY, 0);
 		GL11.glScaled(0.5, 0.5, 0.5);
@@ -175,10 +175,10 @@ public abstract class Node {
 		GL11.glPopMatrix();
 	}
 	
-	public void drawConnections(float mX, float mY){
-		for(NodeConnection n : inputs)
+	public void drawConnections(final float mX, final float mY){
+		for(final NodeConnection n : inputs)
 			n.drawLine(mX, mY);
-		for(NodeConnection n : outputs)
+		for(final NodeConnection n : outputs)
 			n.drawLine(mX, mY);
 	}
 	
@@ -187,8 +187,8 @@ public abstract class Node {
 		this.setPosition(posX, posY);
 	}
 	
-	public boolean onClick(float x, float y){
-		for(NodeElement n : otherElements){
+	public boolean onClick(final float x, final float y){
+		for(final NodeElement n : otherElements){
 			if(n.onClick(x, y))
 				return true;
 		}

@@ -16,7 +16,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class CraneExtractor extends BlockCraneBase {
-    public CraneExtractor(Material materialIn, String s) {
+    public CraneExtractor(final Material materialIn, final String s) {
         super(materialIn);
         this.setTranslationKey(s);
         this.setRegistryName(s);
@@ -24,21 +24,21 @@ public class CraneExtractor extends BlockCraneBase {
     }
 
     @Override
-    public TileEntityCraneBase createNewTileEntity(World world, int meta) {
+    public TileEntityCraneBase createNewTileEntity(final World world, final int meta) {
         return new TileEntityCraneExtractor();
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public boolean canConnectRedstone(final IBlockState state, final IBlockAccess world, final BlockPos pos, final EnumFacing side) {
         return true;
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity tileentity = world.getTileEntity(pos);
+    public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        final TileEntity tileentity = world.getTileEntity(pos);
 
         if(tileentity instanceof TileEntityCraneExtractor) {
-            InventoryHelper.dropInventoryItems(world, pos, (TileEntityCraneExtractor) tileentity);
+            InventoryHelper.dropInventoryItems(world, pos, tileentity);
         }
         super.breakBlock(world, pos, state);
     }

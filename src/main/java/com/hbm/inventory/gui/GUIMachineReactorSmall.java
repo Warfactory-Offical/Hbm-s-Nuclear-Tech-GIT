@@ -21,12 +21,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIMachineReactorSmall extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_experimental.png");
-	private static ResourceLocation overlay = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_overlay_experimental.png");
-	private TileEntityMachineReactorSmall diFurnace;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_experimental.png");
+	private static final ResourceLocation overlay = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_overlay_experimental.png");
+	private final TileEntityMachineReactorSmall diFurnace;
 	private boolean toggleOverlay = false;
 
-	public GUIMachineReactorSmall(InventoryPlayer invPlayer, TileEntityMachineReactorSmall tedf) {
+	public GUIMachineReactorSmall(final InventoryPlayer invPlayer, final TileEntityMachineReactorSmall tedf) {
 		super(new ContainerMachineReactorSmall(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -35,7 +35,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 6, guiTop + 5, 16, 52, diFurnace.tanks[0], diFurnace.tankTypes[0]);
@@ -44,7 +44,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 42, guiTop + 5, 4, 88, new String[] { "Core Temperature:", "   " + Math.round((diFurnace.coreHeat) * 0.00002 * 980 + 20) + "°C" });
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 48, guiTop + 5, 4, 88, new String[] { "Hull Temperature:", "   " + Math.round((diFurnace.hullHeat) * 0.00001 * 980 + 20) + "°C" });
 		
-		String[] text = new String[] { "Coolant will move heat from the core to",
+		final String[] text = new String[] { "Coolant will move heat from the core to",
 				"the hull. Water will use that heat and",
 				"generate steam.",
 				"Water consumption rate:",
@@ -57,19 +57,19 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 				"sides will pour into the tank." };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		
-		String[] text1 = new String[] { "Raise/lower the control rods",
+		final String[] text1 = new String[] { "Raise/lower the control rods",
 				"using the button next to the",
 				"fluid gauges." };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 
 		if(diFurnace.tanks[0].getFluidAmount() <= 0) {
-			String[] text2 = new String[] { "Error: Water is required for",
+			final String[] text2 = new String[] { "Error: Water is required for",
 					"the reactor to function properly!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 32 + 16, text2);
 		}
 
 		if(diFurnace.tanks[1].getFluidAmount() <= 0) {
-			String[] text3 = new String[] { "Error: Coolant is required for",
+			final String[] text3 = new String[] { "Error: Coolant is required for",
 					"the reactor to function properly!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 32 + 16, text3);
 		}
@@ -84,24 +84,24 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 			s = "100x";
 		}
 		
-		String[] text4 = new String[] { "Steam compression switch",
+		final String[] text4 = new String[] { "Steam compression switch",
 				"Current compression level: " + s};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 4, guiTop + 105, 16, 20, mouseX, mouseY, text4);
 		
-		String[] text5 = new String[] { diFurnace.retracting ? "Raise control rods" : "Lower control rods"};
+		final String[] text5 = new String[] { diFurnace.retracting ? "Raise control rods" : "Lower control rods"};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 35, guiTop + 106, 18, 18, mouseX, mouseY, text5);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 		
 		this.fontRenderer.drawString(name, 121 - this.fontRenderer.getStringWidth(name) / 2, 6, 15066597);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), this.xSize-this.fontRenderer.getStringWidth(I18n.format("container.inventory"))-6, this.ySize - 96 + 2, 4210752);
 	}
 
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
 		
     	if(guiLeft + 35 <= x && guiLeft + 35 + 16 > x && guiTop + 107 < y && guiTop + 107 + 16 >= y) {
@@ -131,7 +131,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
     }
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
@@ -153,7 +153,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		if(diFurnace.hasCoreHeat()) {
 			int i = diFurnace.getCoreHeatScaled(88);
 			
-			i = (int) Math.min(i, 88);
+			i = Math.min(i, 88);
 			
 			drawTexturedModalRect(guiLeft + 42, guiTop + 94 - i, 176, 124-i, 4, i);
 		}
@@ -161,7 +161,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		if(diFurnace.hasHullHeat()) {
 			int i = diFurnace.getHullHeatScaled(88);
 			
-			i = (int) Math.min(i, 88);
+			i = Math.min(i, 88);
 			
 			drawTexturedModalRect(guiLeft + 48, guiTop + 94 - i, 180, 124-i, 4, i);
 		}
@@ -185,11 +185,11 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+	protected void mouseClickMove(final int mouseX, final int mouseY, final int clickedMouseButton, final long timeSinceLastClick) {
 		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 	}
 	
-    protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException
+    protected void keyTyped(final char p_73869_1_, final int p_73869_2_) throws IOException
     {
         super.keyTyped(p_73869_1_, p_73869_2_);
         

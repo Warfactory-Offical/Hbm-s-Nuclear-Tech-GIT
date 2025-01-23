@@ -23,7 +23,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	
 	public List<BlockPos> connected = new ArrayList<BlockPos>();
 	
-	public static boolean canConnect(TileEntityPylonBase first, TileEntityPylonBase second) {
+	public static boolean canConnect(final TileEntityPylonBase first, final TileEntityPylonBase second) {
 		
 		if(first.getConnectionType() != second.getConnectionType())
 			return false;
@@ -31,12 +31,12 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 		if(first == second)
 			return false;
 		
-		double len = Math.min(first.getMaxWireLength(), second.getMaxWireLength());
+		final double len = Math.min(first.getMaxWireLength(), second.getMaxWireLength());
 		
-		BlockPos firstPos = first.getConnectionPoint();
-		BlockPos secondPos = second.getConnectionPoint();
+		final BlockPos firstPos = first.getConnectionPoint();
+		final BlockPos secondPos = second.getConnectionPoint();
 		
-		Vec3 delta = Vec3.createVectorHelper(
+		final Vec3 delta = Vec3.createVectorHelper(
 				(secondPos.getX()) - (firstPos.getX()),
 				(secondPos.getY()) - (firstPos.getY()),
 				(secondPos.getZ()) - (firstPos.getZ())
@@ -45,7 +45,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 		return len >= delta.length();
 	}
 	
-	public void addConnection(BlockPos targetPos) {
+	public void addConnection(final BlockPos targetPos) {
 		if(connected.contains(targetPos))
 			return;
 		connected.add(targetPos);
@@ -60,20 +60,19 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 		this.markDirty();
 	}
 
-	public void removeConnection(BlockPos pos) {
+	public void removeConnection(final BlockPos pos) {
 		connected.remove(pos);
 	}
 
-	public void disconnect(BlockPos targetPos) {
-		TileEntity te = world.getTileEntity(targetPos);
+	public void disconnect(final BlockPos targetPos) {
+		final TileEntity te = world.getTileEntity(targetPos);
 			
 		if(te == this)
 			return;
 		
-		if(te instanceof TileEntityPylonBase) {
-			TileEntityPylonBase pylon = (TileEntityPylonBase) te;
-			
-			if(pylon.connected.contains(this.pos)){
+		if(te instanceof TileEntityPylonBase pylon) {
+
+            if(pylon.connected.contains(this.pos)){
 				pylon.removeConnection(this.pos);
 				if (!world.isRemote)
 					PacketDispatcher.wrapper.sendToAllAround(new TEPylonSenderPacket(targetPos.getX(), targetPos.getY(), targetPos.getZ(), pos.getX(), pos.getY(), pos.getZ(), false), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
@@ -84,7 +83,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	
 	public void disconnectAll() {
 		
-		for(BlockPos targetPos : connected) {
+		for(final BlockPos targetPos : connected) {
 			
 			disconnect(targetPos);
 		}
@@ -93,15 +92,13 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	@Override
 	protected void connect() {
 		
-		for(BlockPos targetPos : getConnectionPoints()) {
+		for(final BlockPos targetPos : getConnectionPoints()) {
 			
-			TileEntity te = world.getTileEntity(targetPos);
+			final TileEntity te = world.getTileEntity(targetPos);
 			
-			if(te instanceof IEnergyConductor) {
-				
-				IEnergyConductor conductor = (IEnergyConductor) te;
-				
-				if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
+			if(te instanceof IEnergyConductor conductor) {
+
+                if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
 					conductor.getPowerNet().joinLink(this);
 				}
 				
@@ -122,7 +119,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	public abstract int getMaxWireLength();
 	
 	public BlockPos getConnectionPoint() {
-		Vec3[] mounts = this.getMountPos();
+		final Vec3[] mounts = this.getMountPos();
 		
 		if(mounts == null || mounts.length == 0)
 			return pos.add(0.5, 0.5, 0.5);
@@ -131,12 +128,12 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		int[] conX = new int[connected.size()];
-		int[] conY = new int[connected.size()];
-		int[] conZ = new int[connected.size()];
+		final int[] conX = new int[connected.size()];
+		final int[] conY = new int[connected.size()];
+		final int[] conZ = new int[connected.size()];
 		
 		for(int i = 0; i < connected.size(); i++) {
 			conX[i] = connected.get(i).getX();
@@ -151,16 +148,16 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
 		this.connected.clear();
 		
-		int[] conX = nbt.getIntArray("conX");
-		int[] conY = nbt.getIntArray("conY");
-		int[] conZ = nbt.getIntArray("conZ");
+		final int[] conX = nbt.getIntArray("conX");
+		final int[] conY = nbt.getIntArray("conY");
+		final int[] conZ = nbt.getIntArray("conZ");
 
-		BlockPos[] con = new BlockPos[conX.length];
+		final BlockPos[] con = new BlockPos[conX.length];
 		
 		for(int i = 0; i < conX.length; i++) {
 			connected.add(new BlockPos(conX[i], conY[i], conZ[i]));
@@ -169,20 +166,20 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket(){
-		NBTTagCompound nbt = new NBTTagCompound();
+		final NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 		return new SPacketUpdateTileEntity(this.getPos(), 0, nbt);
 	}
 
 	@Override
 	public NBTTagCompound getUpdateTag(){
-		NBTTagCompound nbt = new NBTTagCompound();
+		final NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 		return nbt;
 	}
 	
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 

@@ -13,7 +13,7 @@ public class SoundLoopFel extends SoundLoopMachine {
 	
 	public static List<SoundLoopFel> list = new ArrayList<SoundLoopFel>();
 
-	public SoundLoopFel(SoundEvent path, TileEntity te) {
+	public SoundLoopFel(final SoundEvent path, final TileEntity te) {
 		super(path, te);
 		list.add(this);
 	}
@@ -22,20 +22,18 @@ public class SoundLoopFel extends SoundLoopMachine {
 	public void update() {
 		super.update();
 		
-		if(te instanceof TileEntityFEL) {
-			TileEntityFEL plant = (TileEntityFEL)te;
-			
-			if(this.volume != 3)
+		if(te instanceof TileEntityFEL plant) {
+
+            if(this.volume != 3)
 				volume = 3;
 			
 			if(!plant.isOn)
 				this.donePlaying = true;
 		}
 
-		if(te instanceof TileEntityMachineMiningLaser) {
-			TileEntityMachineMiningLaser plant = (TileEntityMachineMiningLaser)te;
-			
-			if(this.volume != 3)
+		if(te instanceof TileEntityMachineMiningLaser plant) {
+
+            if(this.volume != 3)
 				volume = 3;
 			
 			if(!plant.isOn)

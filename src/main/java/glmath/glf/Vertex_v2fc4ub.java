@@ -21,17 +21,17 @@ public class Vertex_v2fc4ub {
     public Vec2 position;
     public Vec4u8 color;
 
-    public Vertex_v2fc4ub(Vec2 position, Vec4u8 color) {
+    public Vertex_v2fc4ub(final Vec2 position, final Vec4u8 color) {
         this.position = position;
         this.color = color;
     }
 
-    public void toBb(ByteBuffer bb, int index) {
+    public void toBb(final ByteBuffer bb, final int index) {
         bb
-                .putFloat(index * SIZE + 0 * Float.BYTES, position.x)
-                .putFloat(index * SIZE + 1 * Float.BYTES, position.y)
-                .put(index * SIZE + 2 * Float.BYTES + 0 * Byte.BYTES, color.x)
-                .put(index * SIZE + 2 * Float.BYTES + 1 * Byte.BYTES, color.y)
+                .putFloat(index * SIZE, position.x)
+                .putFloat(index * SIZE + Float.BYTES, position.y)
+                .put(index * SIZE + 2 * Float.BYTES, color.x)
+                .put(index * SIZE + 2 * Float.BYTES + Byte.BYTES, color.y)
                 .put(index * SIZE + 2 * Float.BYTES + 2 * Byte.BYTES, color.z)
                 .put(index * SIZE + 2 * Float.BYTES + 3 * Byte.BYTES, color.w);
     }

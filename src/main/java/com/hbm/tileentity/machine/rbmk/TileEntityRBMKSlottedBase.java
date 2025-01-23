@@ -17,28 +17,28 @@ public abstract class TileEntityRBMKSlottedBase extends TileEntityRBMKActiveBase
 
 	public ItemStackHandler inventory;
 
-	public TileEntityRBMKSlottedBase(int scount) {
+	public TileEntityRBMKSlottedBase(final int scount) {
 		inventory = new ItemStackHandler(scount){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
 			
 			@Override
-			public boolean isItemValid(int slot, ItemStack itemStack) {
+			public boolean isItemValid(final int slot, final ItemStack itemStack) {
 				return isItemValidForSlot(slot, itemStack);
 			}
 
 			@Override
-			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(final int slot, final ItemStack stack, final boolean simulate) {
 				if(canInsertItem(slot, stack, stack.getCount()))
 					return super.insertItem(slot, stack, simulate);
 				return stack;
 			}
 
 			@Override
-			public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			public ItemStack extractItem(final int slot, final int amount, final boolean simulate) {
 				if(canExtractItem(slot, inventory.getStackInSlot(slot), amount))
 					return super.extractItem(slot, amount, simulate);
 				return ItemStack.EMPTY;
@@ -46,24 +46,24 @@ public abstract class TileEntityRBMKSlottedBase extends TileEntityRBMKActiveBase
 		};
 	}
 
-	public int getGaugeScaled(int i, FluidTank tank) {
+	public int getGaugeScaled(final int i, final FluidTank tank) {
 		return tank.getFluidAmount() * i / tank.getCapacity();
 	}
 
-	public void networkPack(NBTTagCompound nbt, int range) {
+	public void networkPack(final NBTTagCompound nbt, final int range) {
 		if(!world.isRemote)
 			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, pos), new TargetPoint(this.world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), range));
 	}
 
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		super.networkUnpack(nbt);
 	}
 
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		if(!diag) {
 			inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
@@ -71,7 +71,7 @@ public abstract class TileEntityRBMKSlottedBase extends TileEntityRBMKActiveBase
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
 		if(!diag) {
@@ -80,25 +80,25 @@ public abstract class TileEntityRBMKSlottedBase extends TileEntityRBMKActiveBase
 		return nbt;
 	}
 	
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		return true;
 	}
 	
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		return true;
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : 
 			super.getCapability(capability, facing);
 	}

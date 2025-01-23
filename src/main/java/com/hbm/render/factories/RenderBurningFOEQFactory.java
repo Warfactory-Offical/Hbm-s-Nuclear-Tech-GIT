@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderBurningFOEQFactory implements IRenderFactory<EntityBurningFOEQ> {
 
 	@Override
-	public Render<? super EntityBurningFOEQ> createRenderFor(RenderManager manager) {
+	public Render<? super EntityBurningFOEQ> createRenderFor(final RenderManager manager) {
 		return new RenderFOEQ(manager);
 	}
 

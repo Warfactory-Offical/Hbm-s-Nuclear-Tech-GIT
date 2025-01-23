@@ -51,17 +51,17 @@ public class NodeSystem {
 	public Control parent;
 	public List<Node> nodes = new ArrayList<>();
 	public List<NodeOutput> outputNodes = new ArrayList<>();
-	private Map<String, DataValue> vars = new HashMap<>();
+	private final Map<String, DataValue> vars = new HashMap<>();
 
 	// an array of subsystems owned by the various nodes sharing a system layer (sublayering is then done recursively)
 	// ○|￣|_   <-- me
 	public Map<Node, NodeSystem> subSystems = new HashMap<>();
 
-	public NodeSystem(Control parent){
+	public NodeSystem(final Control parent){
 		this.parent = parent;
 	}
 	
-	public NodeSystem(Control parent, SubElementNodeEditor gui){
+	public NodeSystem(final Control parent, final SubElementNodeEditor gui){
 		this(parent);
 		nodeEditor = gui;
 		this.gui = gui.gui;
@@ -71,23 +71,23 @@ public class NodeSystem {
 		dragDist = 0;
 	}
 	
-	public void setVar(String name, DataValue val){
+	public void setVar(final String name, final DataValue val){
 		vars.put(name, val);
 	}
 	
-	public DataValue getVar(String name){
-		DataValue val = vars.get(name);
+	public DataValue getVar(final String name){
+		final DataValue val = vars.get(name);
 		if(val == null)
 			return new DataValueFloat(0);
 		return val;
 	}
 	
-	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		NBTTagCompound nodes = new NBTTagCompound();
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag) {
+		final NBTTagCompound nodes = new NBTTagCompound();
 
 		for (int i = 0; i < this.nodes.size(); i ++) {
-			Node node = this.nodes.get(i);
-			NBTTagCompound nodeTag = node.writeToNBT(new NBTTagCompound(), this);
+			final Node node = this.nodes.get(i);
+			final NBTTagCompound nodeTag = node.writeToNBT(new NBTTagCompound(), this);
 			if (node instanceof NodeFunction) {
 				nodeTag.setTag("SS", subSystems.get(node).writeToNBT(new NBTTagCompound()));
 			}
@@ -95,8 +95,8 @@ public class NodeSystem {
 		}
 		tag.setTag("N", nodes);
 
-		NBTTagCompound vars = new NBTTagCompound();
-		for (Entry<String, DataValue> e : this.vars.entrySet()) {
+		final NBTTagCompound vars = new NBTTagCompound();
+		for (final Entry<String, DataValue> e : this.vars.entrySet()) {
 			vars.setTag(e.getKey(), e.getValue().writeToNBT());
 		}
 		tag.setTag("V", vars);
@@ -104,21 +104,21 @@ public class NodeSystem {
 		return tag;
 	}
 
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(final NBTTagCompound tag) {
 		this.nodes.clear();
 		this.outputNodes.clear();
 		this.subSystems.clear();
 
-		NBTTagCompound nodes = tag.getCompoundTag("N");
+		final NBTTagCompound nodes = tag.getCompoundTag("N");
 		for (int i = 0; i < nodes.getKeySet().size(); i ++) {
-			NBTTagCompound nodeTag = nodes.getCompoundTag("n"+i);
-			Node node = Node.nodeFromNBT(nodeTag, this);
+			final NBTTagCompound nodeTag = nodes.getCompoundTag("n"+i);
+			final Node node = Node.nodeFromNBT(nodeTag, this);
 
 			if (node instanceof NodeOutput) {
 				outputNodes.add((NodeOutput) node);
 			}
 			if (node instanceof NodeFunction && nodeTag.hasKey("SS")) {
-				NodeSystem subsystem = new NodeSystem(parent);
+				final NodeSystem subsystem = new NodeSystem(parent);
 				subsystem.readFromNBT(nodeTag.getCompoundTag("SS"));
 				subSystems.put(node, subsystem);
 			}
@@ -128,10 +128,10 @@ public class NodeSystem {
 			this.nodes.get(i).readFromNBT(nodes.getCompoundTag("n"+i), this);
 		}
 
-		NBTTagCompound vars = tag.getCompoundTag("V");
-		for (String k : vars.getKeySet()) {
-			NBTBase base = vars.getTag(k);
-			DataValue val = DataValue.newFromNBT(base);
+		final NBTTagCompound vars = tag.getCompoundTag("V");
+		for (final String k : vars.getKeySet()) {
+			final NBTBase base = vars.getTag(k);
+			final DataValue val = DataValue.newFromNBT(base);
 			if (val != null) {
 				this.vars.put(k, val);
 			}
@@ -149,15 +149,15 @@ public class NodeSystem {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void render(float mX, float mY){
+	public void render(final float mX, final float mY){
 		if(drag && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-			float distX = gui.mouseX - lastMouseX;
-			float distY = gui.mouseY - lastMouseY;
+			final float distX = gui.mouseX - lastMouseX;
+			final float distY = gui.mouseY - lastMouseY;
 			dragDist += Math.sqrt(distX*distX + distY*distY);
-			for(Node n : selectedNodes){
+			for(final Node n : selectedNodes){
 				n.setPosition(n.posX+(gui.mouseX-lastMouseX)*nodeEditor.gridScale, n.posY+(gui.mouseY-lastMouseY)*nodeEditor.gridScale);
 			}
-			for (Node n : nodes) {
+			for (final Node n : nodes) {
 				n.setPosition(n.posX, n.posY); // to fix elements not rendering in edit mode
 			}
 			lastMouseX = gui.mouseX;
@@ -173,11 +173,11 @@ public class NodeSystem {
 		if(connectionInProgress != null){
 			end:
 			for(int i = nodes.size()-1; i >= 0; i --){
-				Node n = nodes.get(i);
+				final Node n = nodes.get(i);
 				if(RenderHelper.intersects2DBox(mX, mY, n.getExtendedBoundingBox())){
-					for(NodeConnection c : (connectionInProgress.isInput ? n.outputs : n.inputs)){
+					for(final NodeConnection c : (connectionInProgress.isInput ? n.outputs : n.inputs)){
 						if(connectionInProgress.parent != c.parent && RenderHelper.intersects2DBox(mX, mY, c.getPortBox())){
-							float[] center = RenderHelper.getBoxCenter(c.getPortBox());
+							final float[] center = RenderHelper.getBoxCenter(c.getPortBox());
 							nodeMx = center[0];
 							nodeMy = center[1];
 							break end;
@@ -186,19 +186,19 @@ public class NodeSystem {
 				}
 			}
 		}
-		for(Node node : nodes){
+		for(final Node node : nodes){
 			node.drawConnections(nodeMx, nodeMy);
 		}
 		Tessellator.getInstance().draw();
 		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 		GlStateManager.glLineWidth(2);
 		GlStateManager.enableTexture2D();
-		for(Node node : nodes){
+		for(final Node node : nodes){
 			node.render(mX, mY, activeNode == node, selectedNodes.contains(node));
 		}
 	}
 	
-	public void addNode(Node n){
+	public void addNode(final Node n){
 		nodes.add(n);
 
 		if (n instanceof NodeFunction && !subSystems.containsKey(n)) {
@@ -209,7 +209,7 @@ public class NodeSystem {
 		}
 	}
 	
-	public void removeNode(Node n){
+	public void removeNode(final Node n){
 		if(activeNode == n)
 			activeNode = null;
 		selectedNodes.remove(n);
@@ -218,13 +218,13 @@ public class NodeSystem {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public NodeElement getNodeElementPressed(float x, float y) {
+	public NodeElement getNodeElementPressed(final float x, final float y) {
 		lastMouseX = gui.mouseX;
 		lastMouseY = gui.mouseY;
-		float gridMX = (gui.mouseX-gui.getGuiLeft())*nodeEditor.gridScale + gui.getGuiLeft() + nodeEditor.gridX;
-		float gridMY = (gui.mouseY-gui.getGuiTop())*nodeEditor.gridScale + gui.getGuiTop() - nodeEditor.gridY;
+		final float gridMX = (gui.mouseX-gui.getGuiLeft())*nodeEditor.gridScale + gui.getGuiLeft() + nodeEditor.gridX;
+		final float gridMY = (gui.mouseY-gui.getGuiTop())*nodeEditor.gridScale + gui.getGuiTop() - nodeEditor.gridY;
 		for (int i = nodes.size()-1; i >= 0; i--) {
-			for (NodeElement e : nodes.get(i).otherElements) {
+			for (final NodeElement e : nodes.get(i).otherElements) {
 				if (e instanceof NodeButton) {
 					if (e.onClick(gridMX, gridMY)) {
 						return e;
@@ -236,11 +236,11 @@ public class NodeSystem {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onClick(float x, float y){
+	public void onClick(final float x, final float y){
 		lastMouseX = gui.mouseX;
 		lastMouseY = gui.mouseY;
-		float gridMX = (gui.mouseX-gui.getGuiLeft())*nodeEditor.gridScale + gui.getGuiLeft() + nodeEditor.gridX;
-		float gridMY = (gui.mouseY-gui.getGuiTop())*nodeEditor.gridScale + gui.getGuiTop() - nodeEditor.gridY;
+		final float gridMX = (gui.mouseX-gui.getGuiLeft())*nodeEditor.gridScale + gui.getGuiLeft() + nodeEditor.gridX;
+		final float gridMY = (gui.mouseY-gui.getGuiTop())*nodeEditor.gridScale + gui.getGuiTop() - nodeEditor.gridY;
 		//Click handling
 		for(int i = nodes.size()-1; i >= 0; i --){
 			if(nodes.get(i).onClick(gridMX, gridMY))
@@ -248,12 +248,12 @@ public class NodeSystem {
 		}
 		//Do line connection handling
 		for(int i = nodes.size()-1; i >= 0; i --){
-			Node n = nodes.get(i);
+			final Node n = nodes.get(i);
 			if(RenderHelper.intersects2DBox(gridMX, gridMY, n.getExtendedBoundingBox())){
-				List<NodeConnection> union = new ArrayList<>();
+				final List<NodeConnection> union = new ArrayList<>();
 				union.addAll(n.inputs);
 				union.addAll(n.outputs);
-				for(NodeConnection c : union){
+				for(final NodeConnection c : union){
 					if(RenderHelper.intersects2DBox(gridMX, gridMY, c.getPortBox())){
 						if(c.connection != null){
 							connectionInProgress = c.removeConnection();
@@ -269,16 +269,16 @@ public class NodeSystem {
 		}
 		drag = true;
 		dragDist = 0;
-		boolean shift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		final boolean shift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		if(!shift && selectedNodes.size() <= 1){
 			selectedNodes.clear();
 			activeNode = null;
 		}
 		boolean clear = true;
 		for(int i = nodes.size()-1; i >= 0; i --){
-			Node n = nodes.get(i);
-			boolean intersectsBox = RenderHelper.intersects2DBox(gridMX, gridMY, n.getBoundingBox());
-			for(NodeConnection c : n.inputs){
+			final Node n = nodes.get(i);
+			final boolean intersectsBox = RenderHelper.intersects2DBox(gridMX, gridMY, n.getBoundingBox());
+			for(final NodeConnection c : n.inputs){
 				if(c.enumSelector != null){
 					if(currentTypingBox != null){
 						currentTypingBox.stopTyping();
@@ -322,14 +322,14 @@ public class NodeSystem {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void clickReleased(float x, float y){
-		float gridMX = (gui.mouseX-gui.getGuiLeft())*nodeEditor.gridScale + gui.getGuiLeft() + nodeEditor.gridX;
-		float gridMY = (gui.mouseY-gui.getGuiTop())*nodeEditor.gridScale + gui.getGuiTop() - nodeEditor.gridY;
+	public void clickReleased(final float x, final float y){
+		final float gridMX = (gui.mouseX-gui.getGuiLeft())*nodeEditor.gridScale + gui.getGuiLeft() + nodeEditor.gridX;
+		final float gridMY = (gui.mouseY-gui.getGuiTop())*nodeEditor.gridScale + gui.getGuiTop() - nodeEditor.gridY;
 		if(connectionInProgress != null){
 			for(int i = nodes.size()-1; i >= 0; i --){
-				Node n = nodes.get(i);
+				final Node n = nodes.get(i);
 				if(RenderHelper.intersects2DBox(gridMX, gridMY, n.getExtendedBoundingBox())){
-					for(NodeConnection c : (connectionInProgress.isInput ? n.outputs : n.inputs)){
+					for(final NodeConnection c : (connectionInProgress.isInput ? n.outputs : n.inputs)){
 						if(connectionInProgress.parent != c.parent && RenderHelper.intersects2DBox(gridMX, gridMY, c.getPortBox())){
 							c.removeConnection();
 							//Only input nodes draw lines, so we don't have to maintain a connection list at each output
@@ -353,7 +353,7 @@ public class NodeSystem {
 		}
 		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && dragDist == 0){
 			for(int i = nodes.size()-1; i >= 0; i --){
-				Node n = nodes.get(i);
+				final Node n = nodes.get(i);
 				if(RenderHelper.intersects2DBox(gridMX, gridMY, n.getBoundingBox())){
 					selectedNodes.clear();
 					selectedNodes.add(n);
@@ -366,7 +366,7 @@ public class NodeSystem {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void keyTyped(char c, int key){
+	public void keyTyped(final char c, final int key){
 		if(currentTypingBox != null){
 			currentTypingBox.keyTyped(c, key);
 			if(!currentTypingBox.isTyping)
@@ -375,14 +375,14 @@ public class NodeSystem {
 	}
 
 	public void resetCachedValues(){
-		for(Node n : nodes){
+		for(final Node n : nodes){
 			n.cacheValid = false;
 		}
 	}
 
-	public void receiveEvent(ControlPanel panel, Control ctrl, ControlEvent evt) {
+	public void receiveEvent(final ControlPanel panel, final Control ctrl, final ControlEvent evt) {
 		resetCachedValues();
-		for (Node n : nodes) {
+		for (final Node n : nodes) {
 			if (n instanceof NodeInput) {
 				((NodeInput)n).setOutputFromVars(evt.vars);
 			}
@@ -392,7 +392,7 @@ public class NodeSystem {
 				}
 			}
 		}
-		for (NodeOutput o : outputNodes) {
+		for (final NodeOutput o : outputNodes) {
 			o.doOutput(panel.parent, ctrl.sendNodeMap, ctrl.connectedSet);
 		}
 	}

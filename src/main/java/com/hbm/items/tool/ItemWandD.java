@@ -1,7 +1,5 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
@@ -14,7 +12,6 @@ import com.hbm.render.util.BakedModelUtil;
 import com.hbm.render.util.BakedModelUtil.DecalType;
 import com.hbm.tileentity.conductor.TileEntityFFDuctBaseMk2;
 import com.hbm.tileentity.network.energy.TileEntityPylonBase;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -39,9 +36,11 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class ItemWandD extends Item {
 
-	public ItemWandD(String s) {
+	public ItemWandD(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -49,8 +48,8 @@ public class ItemWandD extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		Block b = world.getBlockState(pos).getBlock();
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final Block b = world.getBlockState(pos).getBlock();
 
 		if(!world.isRemote)
 		{
@@ -67,19 +66,19 @@ public class ItemWandD extends Item {
 			if (b == ModBlocks.block_copper)
 				MainRegistry.z--;
 			if (b == ModBlocks.red_pylon) {
-				TileEntityPylonBase te = (TileEntityPylonBase) world.getTileEntity(pos);
+				final TileEntityPylonBase te = (TileEntityPylonBase) world.getTileEntity(pos);
 				for(int i = 0; i < te.connected.size(); i++)
 					if(world.isRemote)
 						player.sendMessage(new TextComponentString(te.connected.get(i).getX() + " " + te.connected.get(i).getY() + " " + te.connected.get(i).getZ()));
 			}
 			
 			if(player.isSneaking()){
-				RayTraceResult pos1 = Library.rayTrace(player, 500, 1);
+				final RayTraceResult pos1 = Library.rayTrace(player, 500, 1);
 				if(pos1 != null && pos1.typeOfHit == RayTraceResult.Type.BLOCK) {
 					
-					int x = pos1.getBlockPos().getX();
-					int z = pos1.getBlockPos().getZ();
-					int y = world.getHeight(x, z);
+					final int x = pos1.getBlockPos().getX();
+					final int z = pos1.getBlockPos().getZ();
+					final int y = world.getHeight(x, z);
 					world.setBlockState(new BlockPos(x, y, z), Blocks.CHEST.getDefaultState());
 					((TileEntityChest)world.getTileEntity(new BlockPos(x, y, z))).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, world.rand.nextLong());
 
@@ -114,13 +113,13 @@ public class ItemWandD extends Item {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void clickClient(World world, EntityPlayer player, BlockPos pos, float hitX, float hitY, float hitZ){
+	public void clickClient(final World world, final EntityPlayer player, final BlockPos pos, final float hitX, final float hitY, final float hitZ){
 		Vec3d look = player.getLookVec();
-		int[] dl = BakedModelUtil.generateDecalMesh(world, look, 1, pos.getX()+hitX, pos.getY()+hitY, pos.getZ()+hitZ, DecalType.REGULAR);
+		final int[] dl = BakedModelUtil.generateDecalMesh(world, look, 1, pos.getX()+hitX, pos.getY()+hitY, pos.getZ()+hitZ, DecalType.REGULAR);
 		//look = look.scale(0.001F);
 		//Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleDecal(world, dl[0], ResourceManager.blood_dec1, 80, pos.getX()+hitX-look.x, pos.getY()+hitY-look.y, pos.getZ()+hitZ-look.z));
 		
-		BlockPos[] blocks = new BlockPos[7];
+		final BlockPos[] blocks = new BlockPos[7];
 		blocks[0] = pos;
 		blocks[1] = pos.up();
 		blocks[2] = blocks[1].up();
@@ -138,13 +137,13 @@ public class ItemWandD extends Item {
 			blood.motion((float)dir.x, (float)dir.y, (float)dir.z);
 			ParticleBatchRenderer.addParticle(blood);
 		}*/
-		int[] data = BakedModelUtil.generateDecalMesh(world, look, 1, pos.getX()+hitX, pos.getY()+hitY, pos.getZ()+hitZ, DecalType.FLOW, ResourceManager.blood_particles, world.rand.nextInt(9), 4);
+		final int[] data = BakedModelUtil.generateDecalMesh(world, look, 1, pos.getX()+hitX, pos.getY()+hitY, pos.getZ()+hitZ, DecalType.FLOW, ResourceManager.blood_particles, world.rand.nextInt(9), 4);
 		look = look.scale(0.001F);
 		Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleDecalFlow(world, data, 120, pos.getX()+hitX-look.x, pos.getY()+hitY-look.y, pos.getZ()+hitZ-look.z).shader(ResourceManager.blood_dissolve));
 	}
 	
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
+	public boolean itemInteractionForEntity(final ItemStack stack, final EntityPlayer playerIn, final EntityLivingBase target, final EnumHand hand) {
 		if(target.world.isRemote){
 			//DisintegrationParticleHandler.spawnGluonDisintegrateParticles(target);
 		} else {
@@ -153,20 +152,19 @@ public class ItemWandD extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
 		if(player.isSneaking())
 		{
 			if(world.isRemote)
 				player.sendMessage(new TextComponentString(MainRegistry.x + " " + MainRegistry.y + " " + MainRegistry.z));
 		} else {
 			if(!world.isRemote){
-				RayTraceResult r = Library.rayTraceIncludeEntities(player, 50, 1);
-				if(r != null && r.entityHit instanceof EntityLivingBase){
-					EntityLivingBase ent = ((EntityLivingBase)r.entityHit);
-					ent.setHealth(0);
+				final RayTraceResult r = Library.rayTraceIncludeEntities(player, 50, 1);
+				if(r != null && r.entityHit instanceof EntityLivingBase ent){
+                    ent.setHealth(0);
 					if(ent.getHealth() <= 0){
-						Vec3d norm = new Vec3d(world.rand.nextFloat()*2-1, world.rand.nextFloat()*2-1, world.rand.nextFloat()*2-1).normalize();
-						float[] planeEquation = new float[]{(float)norm.x, (float)norm.y, (float)norm.z, -ent.getEyeHeight()*0.5F*(float)norm.y};
+						final Vec3d norm = new Vec3d(world.rand.nextFloat()*2-1, world.rand.nextFloat()*2-1, world.rand.nextFloat()*2-1).normalize();
+						final float[] planeEquation = new float[]{(float)norm.x, (float)norm.y, (float)norm.z, -ent.getEyeHeight()*0.5F*(float)norm.y};
 						//planeEquation = new float[]{0, 1, 0, -ent.getEyeHeight()*0.5F};
 						ent.setDead();
 						PacketDispatcher.wrapper.sendToAllTracking(new PacketSpecialDeath(ent, 3, planeEquation), ent);
@@ -182,7 +180,7 @@ public class ItemWandD extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.debugwand"));
 	}
 }

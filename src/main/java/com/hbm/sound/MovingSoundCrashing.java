@@ -8,7 +8,7 @@ import net.minecraft.util.SoundEvent;
 
 public class MovingSoundCrashing extends MovingSoundPlayerLoop {
 
-	public MovingSoundCrashing(SoundEvent p_i45104_1_, SoundCategory c, Entity player, EnumHbmSound type) {
+	public MovingSoundCrashing(final SoundEvent p_i45104_1_, final SoundCategory c, final Entity player, final EnumHbmSound type) {
 		super(p_i45104_1_, c, player, type);
 	}
 

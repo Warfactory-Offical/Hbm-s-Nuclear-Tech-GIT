@@ -19,16 +19,16 @@ public class RenderMissileNuclear extends Render<EntityMissileBaseAdvanced> {
 
 	public static final IRenderFactory<EntityMissileBaseAdvanced> FACTORY = (RenderManager man) -> {return new RenderMissileNuclear(man);};
 	
-	protected RenderMissileNuclear(RenderManager renderManager) {
+	protected RenderMissileNuclear(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMissileBaseAdvanced missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileBaseAdvanced missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-        double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+        final double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
         x = renderPos[0];
         y = renderPos[1];
         z = renderPos[2];
@@ -51,7 +51,7 @@ public class RenderMissileNuclear extends Render<EntityMissileBaseAdvanced> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileBaseAdvanced entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileBaseAdvanced entity) {
 		return ResourceManager.missileNuclear_tex;
 	}
 

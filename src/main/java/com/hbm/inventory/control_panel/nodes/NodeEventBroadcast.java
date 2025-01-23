@@ -25,13 +25,13 @@ public class NodeEventBroadcast extends NodeOutput {
 
 	public String eventName;
 	
-	public NodeEventBroadcast(float x, float y, List<ControlEvent> ableToBroadcast){
+	public NodeEventBroadcast(final float x, final float y, final List<ControlEvent> ableToBroadcast){
 		super(x, y);
-		NodeDropdown opSelector = new NodeDropdown(this, otherElements.size(), s -> {
+		final NodeDropdown opSelector = new NodeDropdown(this, otherElements.size(), s -> {
 			setEvent(s);
 			return null;
 		}, () -> eventName);
-		for(ControlEvent c : ableToBroadcast){
+		for(final ControlEvent c : ableToBroadcast){
 			opSelector.list.addItems(c.name);
 		}
 		this.otherElements.add(opSelector);
@@ -39,12 +39,12 @@ public class NodeEventBroadcast extends NodeOutput {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
 		tag.setString("nodeType", "eventBroadcast");
 		tag.setString("eventName", eventName);
-		NBTTagCompound list = new NBTTagCompound();
+		final NBTTagCompound list = new NBTTagCompound();
 		int i = 0;
-		for(String s : ((NodeDropdown)this.otherElements.get(0)).list.itemNames){
+		for(final String s : ((NodeDropdown)this.otherElements.get(0)).list.itemNames){
 			list.setString("item"+i, s);
 			i++;
 		}
@@ -53,16 +53,16 @@ public class NodeEventBroadcast extends NodeOutput {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		eventName = tag.getString("eventName");
 		super.readFromNBT(tag, sys);
 	}
 
 	@Override
-	public boolean doOutput(IControllable from, Map<String, NodeSystem> sendNodeMap, List<BlockPos> positions){
-		World world = from.getControlWorld();
-		ControlEvent e = ControlEvent.newEvent(eventName);
-		for(NodeConnection c : inputs){
+	public boolean doOutput(final IControllable from, final Map<String, NodeSystem> sendNodeMap, final List<BlockPos> positions){
+		final World world = from.getControlWorld();
+		final ControlEvent e = ControlEvent.newEvent(eventName);
+		for(final NodeConnection c : inputs){
 			if(c.name.startsWith("Cancel")){
 				if(c.evaluate().getBoolean())
 					return true;
@@ -72,12 +72,12 @@ public class NodeEventBroadcast extends NodeOutput {
 		}
 		if(sendNodeMap != null){
 			if(sendNodeMap.containsKey(e.name)){
-				NodeSystem sys = sendNodeMap.get(e.name);
+				final NodeSystem sys = sendNodeMap.get(e.name);
 				cont:
 				for(int i = 0; i < positions.size(); i ++){
 					sys.resetCachedValues();
 					sys.setVar("receiver_id", new DataValueFloat(i));
-					for(NodeOutput o : sys.outputNodes){
+					for(final NodeOutput o : sys.outputNodes){
 						//If canceled, don't continue;
 						if(!o.doOutput(from, sendNodeMap, positions))
 							continue cont;
@@ -93,14 +93,14 @@ public class NodeEventBroadcast extends NodeOutput {
 		return true;
 	}
 	
-	public void setEvent(String name){
+	public void setEvent(final String name){
 		eventName = name;
-		for(NodeConnection c : inputs){
+		for(final NodeConnection c : inputs){
 			c.removeConnection();
 		}
 		this.inputs.clear();
-		ControlEvent evt = ControlEvent.getRegisteredEvent(name);
-		for(Entry<String, DataValue> e : evt.vars.entrySet()){
+		final ControlEvent evt = ControlEvent.getRegisteredEvent(name);
+		for(final Entry<String, DataValue> e : evt.vars.entrySet()){
 			inputs.add(new NodeConnection(e.getKey(), this, inputs.size(), true, e.getValue().getType(), e.getValue()));
 		}
 		inputs.add(new NodeConnection("Cancel", this, inputs.size(), true, DataType.GENERIC, new DataValueFloat(0)));

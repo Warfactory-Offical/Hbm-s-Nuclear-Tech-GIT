@@ -61,7 +61,7 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 	private Ticket loaderTicket;
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(final NBTTagCompound nbt) {
 		age = nbt.getInteger("age");
 		destructionRange = nbt.getInteger("destructionRange");
 		speed = nbt.getInteger("speed");
@@ -72,9 +72,9 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 		waste = nbt.getBoolean("waste");
 		extType = nbt.getInteger("extType");
 		
-		long time = nbt.getLong("milliTime");
+		final long time = nbt.getLong("milliTime");
 		
-		if(BombConfig.limitExplosionLifespan > 0 && System.currentTimeMillis() - time > BombConfig.limitExplosionLifespan * 1000)
+		if(BombConfig.limitExplosionLifespan > 0 && System.currentTimeMillis() - time > BombConfig.limitExplosionLifespan * 1000L)
 			this.setDead();
 		
     	if(this.waste)
@@ -106,7 +106,7 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("age", age);
 		nbt.setInteger("destructionRange", destructionRange);
 		nbt.setInteger("speed", speed);
@@ -134,7 +134,7 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 		
 	}
 
-	public EntityNukeExplosionMK3(World p_i1582_1_) {
+	public EntityNukeExplosionMK3(final World p_i1582_1_) {
 		super(p_i1582_1_);
 	}
 
@@ -207,7 +207,7 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
         	}
         } else {
 			if (!did2 && waste) {
-				EntityFalloutRain fallout = new EntityFalloutRain(this.world, (int)(this.destructionRange * 1.8) * 10);
+				final EntityFalloutRain fallout = new EntityFalloutRain(this.world, (int)(this.destructionRange * 1.8) * 10);
 				fallout.posX = this.posX;
 				fallout.posY = this.posY;
 				fallout.posZ = this.posZ;
@@ -228,7 +228,7 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -247,10 +247,10 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -266,7 +266,7 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -275,10 +275,10 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 
 	public static HashMap<ATEntry, Long> at = new HashMap();
 
-	private static void createParticle(World world, int dim, double x, double y, double z, float r, float g, float b) {
+	private static void createParticle(final World world, final int dim, final double x, final double y, final double z, final float r, final float g, final float b) {
 		world.playSound(null, x+0.5D, y+0.5D, z+0.5D, HBMSoundHandler.ufoBlast, SoundCategory.HOSTILE, 15.0F, 1.0F);
 						
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "plasmablast");
 		data.setFloat("r", r);
 		data.setFloat("g", g);
@@ -287,23 +287,23 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x+0.5D, y+0.5D, z+0.5D), new TargetPoint(dim, x, y, z, 150));
 	}
 
-	public static boolean isJammed(World world, Entity entity) {
+	public static boolean isJammed(final World world, final Entity entity) {
 		
-		Iterator<Entry<ATEntry, Long>> it = at.entrySet().iterator();
+		final Iterator<Entry<ATEntry, Long>> it = at.entrySet().iterator();
 		
 		while(it.hasNext()) { // checking each jammer if it is in range
 			
-			Entry<ATEntry, Long> next = it.next();
+			final Entry<ATEntry, Long> next = it.next();
 			if(next.getValue() < world.getTotalWorldTime()) {
 				it.remove();
 				continue;
 			}
 			
-			ATEntry jammer = next.getKey();
+			final ATEntry jammer = next.getKey();
 			if(jammer.dim != world.provider.getDimension())
 				continue;
 			
-			double distance = Math.sqrt(Math.pow(entity.posX - jammer.x, 2) + Math.pow(entity.posY - jammer.y, 2) + Math.pow(entity.posZ - jammer.z, 2));
+			final double distance = Math.sqrt(Math.pow(entity.posX - jammer.x, 2) + Math.pow(entity.posY - jammer.y, 2) + Math.pow(entity.posZ - jammer.z, 2));
 			
 			if(distance < 300) {
 				
@@ -324,7 +324,7 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 		int y;
 		int z;
 		
-		public ATEntry(int dim, int x, int y, int z) {
+		public ATEntry(final int dim, final int x, final int y, final int z) {
 			this.dim = dim;
 			this.x = x;
 			this.y = y;
@@ -343,23 +343,21 @@ public class EntityNukeExplosionMK3 extends Entity implements IChunkLoader {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if(this == obj)
 				return true;
 			if(obj == null)
 				return false;
 			if(getClass() != obj.getClass())
 				return false;
-			ATEntry other = (ATEntry) obj;
+			final ATEntry other = (ATEntry) obj;
 			if(dim != other.dim)
 				return false;
 			if(x != other.x)
 				return false;
 			if(y != other.y)
 				return false;
-			if(z != other.z)
-				return false;
-			return true;
-		}
+            return z == other.z;
+        }
 	}
 }

@@ -16,24 +16,24 @@ public class Vec2b extends FuncRelational {
         y = 0;
     }
 
-    public Vec2b(int s) {
+    public Vec2b(final int s) {
         this((byte) s, (byte) s);
     }
 
-    public Vec2b(int x, int y) {
+    public Vec2b(final int x, final int y) {
         this((byte) x, (byte) y);
     }
 
-    public Vec2b(byte x, byte y) {
+    public Vec2b(final byte x, final byte y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vec2b set(int x, int y) {
+    public Vec2b set(final int x, final int y) {
         return set((byte) x, (byte) y);
     }
 
-    public Vec2b set(byte x, byte y) {
+    public Vec2b set(final byte x, final byte y) {
         this.x = x;
         this.y = y;
         return this;

@@ -20,7 +20,7 @@ public class AuxParticlePacket implements IMessage {
 		
 	}
 
-	public AuxParticlePacket(double x, double y, double z, int type)
+	public AuxParticlePacket(final double x, final double y, final double z, final int type)
 	{
 		this.x = x;
 		this.y = y;
@@ -29,7 +29,7 @@ public class AuxParticlePacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readDouble();
 		y = buf.readDouble();
 		z = buf.readDouble();
@@ -37,7 +37,7 @@ public class AuxParticlePacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeDouble(x);
 		buf.writeDouble(y);
 		buf.writeDouble(z);
@@ -47,13 +47,13 @@ public class AuxParticlePacket implements IMessage {
 	public static class Handler implements IMessageHandler<AuxParticlePacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(AuxParticlePacket m, MessageContext ctx) {
+		public IMessage onMessage(final AuxParticlePacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				try {
 					
 					MainRegistry.proxy.particleControl(m.x, m.y, m.z, m.type);
 					
-				} catch(Exception x) { }
+				} catch(final Exception x) { }
 			});
 			
 			

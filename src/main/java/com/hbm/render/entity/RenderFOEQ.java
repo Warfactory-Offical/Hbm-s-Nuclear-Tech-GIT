@@ -14,12 +14,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderFOEQ extends Render<EntityBurningFOEQ> {
 
-	public RenderFOEQ(RenderManager renderManager) {
+	public RenderFOEQ(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityBurningFOEQ e, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBurningFOEQ e, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_CURRENT_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_LIGHTING_BIT);
         GL11.glTranslatef((float)x, (float)y - 10, (float)z);
@@ -37,7 +37,7 @@ public class RenderFOEQ extends Render<EntityBurningFOEQ> {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_BLEND);
 		
-		Random rand = new Random(System.currentTimeMillis() / 50);
+		final Random rand = new Random(System.currentTimeMillis() / 50);
 
         GL11.glScaled(1.15, 0.75, 1.15);
         GL11.glTranslated(0, -0.5, 0.3);
@@ -72,7 +72,7 @@ public class RenderFOEQ extends Render<EntityBurningFOEQ> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBurningFOEQ entity) {
+	protected ResourceLocation getEntityTexture(final EntityBurningFOEQ entity) {
 		return ResourceManager.sat_foeq_tex;
 	}
 

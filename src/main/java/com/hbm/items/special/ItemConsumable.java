@@ -38,7 +38,7 @@ public class ItemConsumable extends Item {
 
 	Random rand = new Random();
 	
-	public ItemConsumable(String s) {
+	public ItemConsumable(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -47,19 +47,19 @@ public class ItemConsumable extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
 		return 	ConsumableHandler.handleItemUse(world, player, hand, this );
 	}
 
 	@Override
-	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer attacker, Entity target) {
+	public boolean onLeftClickEntity(final ItemStack stack, final EntityPlayer attacker, final Entity target) {
 		if (!(target instanceof EntityLivingBase))
 			return false; // To Oliwer509: Nice try cunt
 		return ConsumableHandler.handleHit(stack, attacker, (EntityLivingBase) target);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.syringe_antidote) {
 			tooltip.add("Removes all potion effects");
 		}

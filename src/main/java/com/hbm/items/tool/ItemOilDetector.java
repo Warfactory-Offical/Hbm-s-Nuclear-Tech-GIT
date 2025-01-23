@@ -1,11 +1,8 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,17 +12,19 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemOilDetector extends Item {
 
-	public ItemOilDetector(String s) {
+	public ItemOilDetector(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -33,37 +32,37 @@ public class ItemOilDetector extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18n.format(this.getTranslationKey() + ".desc1"));
 		tooltip.add(I18n.format(this.getTranslationKey() + ".desc2"));
 	}
 
-	public static boolean isOil(World world, BlockPos b){
+	public static boolean isOil(final World world, final BlockPos b){
 		return world.getBlockState(b).getBlock() == ModBlocks.ore_oil;
 	}
 
-	public static boolean isBedrockOil(World world, BlockPos b){
+	public static boolean isBedrockOil(final World world, final BlockPos b){
 		return world.getBlockState(b).getBlock() == ModBlocks.ore_bedrock_oil;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
 		boolean bedrockoil = false;
 		boolean oil = false;
-		int x = (int)player.posX;
-		int y = (int)player.posY;
-		int z = (int)player.posZ;
-		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		final int x = (int)player.posX;
+		final int y = (int)player.posY;
+		final int z = (int)player.posZ;
+		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
 		
 		boolean directoil = false;
 		for(int ly = y + 15; ly > 0; ly--){
 			directoil |= isOil(world, mPos.setPos(x, ly, z));
 			if(directoil) break;
 		}
-		boolean directBedrock = isBedrockOil(world, new BlockPos(x, 0, z));
+		final boolean directBedrock = isBedrockOil(world, new BlockPos(x, 0, z));
 		
-		int range = 25;
-		int samples = 50;
+		final int range = 25;
+		final int samples = 50;
 
 		int lx = 0;
 		int lz = 0;

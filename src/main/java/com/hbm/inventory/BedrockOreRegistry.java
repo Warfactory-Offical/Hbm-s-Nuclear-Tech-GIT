@@ -43,23 +43,21 @@ public class BedrockOreRegistry {
 		fillOreCasino();
 	}
 
-	public static boolean is3DBlock(String ore){
+	public static boolean is3DBlock(final String ore){
 		boolean isBlock = false;
-		for(ItemStack item : OreDictionary.getOres(ore))
+		for(final ItemStack item : OreDictionary.getOres(ore))
 			isBlock |= (item != null && !item.isEmpty() && item.getItem() instanceof ItemBlock);
-			if(isBlock) return true;
-		return false;
-	}
+        return isBlock;
+    }
 
-	public static boolean isActualItem(String ore){
+	public static boolean isActualItem(final String ore){
 		boolean isActualItem = false;
-		for(ItemStack item : OreDictionary.getOres(ore))
+		for(final ItemStack item : OreDictionary.getOres(ore))
 			isActualItem |= (item != null && !item.isEmpty() && item.getItem() != Items.AIR);
-			if(isActualItem) return true;
-		return false;
-	}
+        return isActualItem;
+    }
 
-	public static boolean tryRegister(int index, String oreName, String output){
+	public static boolean tryRegister(final int index, final String oreName, final String output){
 		if(OreDictionary.doesOreNameExist(output) && isActualItem(output)){
 			oreIndexes.put(index, oreName);
 			oreToIndexes.put(oreName, index);
@@ -72,10 +70,10 @@ public class BedrockOreRegistry {
 
 	public static void collectBedrockOres(){
 		int index = 0;
-		for(String oreName : OreDictionary.getOreNames()){
+		for(final String oreName : OreDictionary.getOreNames()){
 			if(oreName.startsWith("ore") && is3DBlock(oreName) && !CompatibilityConfig.bedrockOreBlacklist.contains(oreName)){
 
-				String resourceName = oreName.substring(3);
+				final String resourceName = oreName.substring(3);
 				
 				String oreOutput = "gem"+resourceName;
 				if(tryRegister(index, oreName, oreOutput)){
@@ -110,19 +108,19 @@ public class BedrockOreRegistry {
 		}
 	}
 
-	public static int getOreIndex(String ore){
-		Integer x = oreToIndexes.get(ore);
+	public static int getOreIndex(final String ore){
+		final Integer x = oreToIndexes.get(ore);
 		if(x == null) return -1;
 		return x;
 	}
 
-	public static int getOreTier(String ore){
-		Integer x = oreTiers.get(ore);
+	public static int getOreTier(final String ore){
+		final Integer x = oreTiers.get(ore);
 		if(x == null) return 0;
 		return x;
 	}
 
-	public static FluidStack getFluidRequirement(int tier){
+	public static FluidStack getFluidRequirement(final int tier){
 		if(tier == 1) return new FluidStack(ModForgeFluids.acid, 8000);
 		if(tier == 2) return new FluidStack(ModForgeFluids.sulfuric_acid, 500);
 		if(tier == 3) return new FluidStack(ModForgeFluids.nitric_acid, 500);
@@ -133,7 +131,7 @@ public class BedrockOreRegistry {
 		return new FluidStack(ModForgeFluids.solvent, 300);
 	}
 
-	public static int getTierWeight(int tier){
+	public static int getTierWeight(final int tier){
 		if(tier <= 1) return 64;
 		if(tier == 2) return 48;
 		if(tier == 3) return 32;
@@ -144,10 +142,10 @@ public class BedrockOreRegistry {
 	}
 
 	public static void fillOreCasino(){
-		for(Integer dimID : BedrockOreJsonConfig.dimOres.keySet()){
+		for(final Integer dimID : BedrockOreJsonConfig.dimOres.keySet()){
 
-			List<WeightedRandomObject> oreWeights = new ArrayList();
-			for(String oreName : oreResults.keySet()){
+			final List<WeightedRandomObject> oreWeights = new ArrayList();
+			for(final String oreName : oreResults.keySet()){
 
 				if(BedrockOreJsonConfig.isOreAllowed(dimID, oreName))
 					oreWeights.add(new WeightedRandomObject(oreName, getTierWeight(getOreTier(oreName))));
@@ -156,38 +154,38 @@ public class BedrockOreRegistry {
 		}
 	}
 
-	public static String rollOreName(int dimID, Random rand){
+	public static String rollOreName(final int dimID, final Random rand){
 		if(oreCasino.get(dimID).isEmpty()) return null;
 		return WeightedRandom.getRandomItem(rand, oreCasino.get(dimID)).asString();
 	}
 
-	public static int getDirectOreTier(String oreName){
+	public static int getDirectOreTier(final String oreName){
 		int tierCount = 0;
 		int tierSum = 0;
-		List<ItemStack> outputs = OreDictionary.getOres(oreName);
+		final List<ItemStack> outputs = OreDictionary.getOres(oreName);
 		Block ore = null;
-		for(ItemStack stack : outputs){
+		for(final ItemStack stack : outputs){
 			ore = Block.getBlockFromItem(stack.getItem());
-			int tier = ore.getHarvestLevel(ore.getDefaultState());
+			final int tier = ore.getHarvestLevel(ore.getDefaultState());
 			if(tier > -1){
 				tierSum += tier;
 				tierCount++;
 			}
 		}
 		if(tierCount > 0)
-			return (int)(tierSum/tierCount);
+			return tierSum/tierCount;
 		return 0;
 	}
 
-	public static String getOreName(String oreName){
+	public static String getOreName(final String oreName){
 		return oreName.substring(3).replaceAll("([A-Z])", " $1").trim();
 	}
 
 	public static void registerOreColors(){
-		for(Map.Entry<String, String> entry : oreResults.entrySet()) {
-			List<ItemStack> oreResult = OreDictionary.getOres(entry.getValue());
+		for(final Map.Entry<String, String> entry : oreResults.entrySet()) {
+			final List<ItemStack> oreResult = OreDictionary.getOres(entry.getValue());
 			if(oreResult.size() > 0){
-				int color = Library.getColorFromItemStack(oreResult.get(0));
+				final int color = Library.getColorFromItemStack(oreResult.get(0));
 				oreColors.put(entry.getKey(), color);
 			}
 		}
@@ -196,30 +194,30 @@ public class BedrockOreRegistry {
 	//used by Resource Scanner Sat
 	public static HashMap<String, Integer> oreScanColors = new HashMap<>();
 	public static void registerScannerOreColors(){
-		for(String entry : OreDictionary.getOreNames()) {
+		for(final String entry : OreDictionary.getOreNames()) {
 			if(!entry.startsWith("ore")) continue;
-			List<ItemStack> oreResult = OreDictionary.getOres(entry);
+			final List<ItemStack> oreResult = OreDictionary.getOres(entry);
 			if(oreResult.size() > 0){
-				int color = Library.getColorFromItemStack(oreResult.get(0));
+				final int color = Library.getColorFromItemStack(oreResult.get(0));
 				oreScanColors.put(entry, color);
 			}
 		}
 	}
 
-	public static int getOreScanColor(String ore){
-		Integer x = oreScanColors.get(ore);
+	public static int getOreScanColor(final String ore){
+		final Integer x = oreScanColors.get(ore);
 		if(x == null) return 0;
 		return x;
 	}
 
-	public static ItemStack getResource(String ore){
-		List<ItemStack> outputs = OreDictionary.getOres(oreResults.get(ore));
+	public static ItemStack getResource(final String ore){
+		final List<ItemStack> outputs = OreDictionary.getOres(oreResults.get(ore));
 		if(outputs.size() > 0) return outputs.get(0);
 		return ItemStackUtil.itemStackFrom(Items.AIR);
 	}
 
-	public static int getOreColor(String ore){
-		Integer x = oreColors.get(ore);
+	public static int getOreColor(final String ore){
+		final Integer x = oreColors.get(ore);
 		if(x == null) return 0xFFFFFF;
 		return x;
 	}

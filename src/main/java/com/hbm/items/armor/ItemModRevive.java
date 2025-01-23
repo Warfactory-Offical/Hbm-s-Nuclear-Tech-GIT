@@ -1,24 +1,23 @@
 package com.hbm.items.armor;
 
-import java.util.List;
-
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemModRevive extends ItemArmorMod {
 
-	public ItemModRevive(int durability, String s) {
+	public ItemModRevive(final int durability, final String s) {
 		super(ArmorModHandler.extra, false, false, true, false, s);
 		this.setMaxDamage(durability);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
 		if(this == ModItems.scrumpy) {
 			list.add(TextFormatting.GOLD + "But how did you survive?");
 			list.add(TextFormatting.RED + "I was drunk.");
@@ -42,7 +41,7 @@ public class ItemModRevive extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
+	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
 		list.add(TextFormatting.GOLD + "  " + stack.getDisplayName() + " (" + (stack.getMaxDamage() - stack.getItemDamage()) + " revives left)");
 	}
 }

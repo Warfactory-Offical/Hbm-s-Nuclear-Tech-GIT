@@ -23,11 +23,11 @@ public class NodeSetVar extends NodeOutput {
 	public NodeDropdown varSelector;
 	public String varName;
 	
-	public NodeSetVar(float x, float y, Control ctrl){
+	public NodeSetVar(final float x, final float y, final Control ctrl){
 		super(x, y);
 		this.ctrl = ctrl;
 		this.inputs.add(new NodeConnection("Input", this, 0, true, DataType.GENERIC, new DataValueFloat(0)));
-		NodeDropdown globalSelector = new NodeDropdown(this, otherElements.size(), s -> {
+		final NodeDropdown globalSelector = new NodeDropdown(this, otherElements.size(), s -> {
 			if(s.equals("Global") && !global){
 				global = true;
 				varName = "";
@@ -44,7 +44,7 @@ public class NodeSetVar extends NodeOutput {
 		
 		varSelector = new NodeDropdown(this, otherElements.size(), s -> {
 			varName = s;
-			DataValue val = global ? ctrl.getGlobalVar(s) : ctrl.getVar(s);
+			final DataValue val = global ? ctrl.getGlobalVar(s) : ctrl.getVar(s);
 			this.inputs.get(0).type = val.getType();
 			this.inputs.get(0).setDefault(val);
 			return null;
@@ -57,7 +57,7 @@ public class NodeSetVar extends NodeOutput {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
 		tag.setString("nodeType", "setVar");
 		tag.setInteger("controlIdx", sys.parent.panel.controls.indexOf(sys.parent));
 		tag.setBoolean("global", global);
@@ -66,7 +66,7 @@ public class NodeSetVar extends NodeOutput {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		global = tag.getBoolean("global");
 		varName = tag.getString("varName");
 		super.readFromNBT(tag, sys);
@@ -75,18 +75,18 @@ public class NodeSetVar extends NodeOutput {
 	public void setVarSelector(){
 		varSelector.list.itemNames.clear();
 		if(global){
-			for(String name : ctrl.panel.globalVars.keySet()){
+			for(final String name : ctrl.panel.globalVars.keySet()){
 				varSelector.list.addItems(name);
 			}
 		} else {
-			for(String name : ctrl.vars.keySet()){
+			for(final String name : ctrl.vars.keySet()){
 				varSelector.list.addItems(name);
 			}
 		}
 	}
 	
 	@Override
-	public boolean doOutput(IControllable from, Map<String, NodeSystem> sendNodeMap, List<BlockPos> positions){
+	public boolean doOutput(final IControllable from, final Map<String, NodeSystem> sendNodeMap, final List<BlockPos> positions){
 		if(varName.isEmpty())
 			return false;
 		if(global){
@@ -97,10 +97,10 @@ public class NodeSetVar extends NodeOutput {
 		return false;
 	}
 
-	public NodeSetVar setData(String varName, boolean isGlobal) {
+	public NodeSetVar setData(final String varName, final boolean isGlobal) {
 		this.varName = varName;
 		this.global = isGlobal;
-		DataValue val = global ? ctrl.getGlobalVar(varName) : ctrl.getVar(varName);
+		final DataValue val = global ? ctrl.getGlobalVar(varName) : ctrl.getVar(varName);
 		this.inputs.get(0).type = val.getType();
 		this.inputs.get(0).setDefault(val);
 		return this;

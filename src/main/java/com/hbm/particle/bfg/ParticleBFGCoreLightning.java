@@ -27,7 +27,7 @@ public class ParticleBFGCoreLightning extends Particle {
 	float prevAlpha;
 	float randomOffset;
 	
-	public ParticleBFGCoreLightning(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleBFGCoreLightning(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.canCollide = false;
 		this.particleMaxAge = 20;
@@ -44,7 +44,7 @@ public class ParticleBFGCoreLightning extends Particle {
 		this.particleAge++;
 		if(particleAge >= particleMaxAge)
 			this.setExpired();
-		float timeScale = this.particleAge/(float)this.particleMaxAge;
+		final float timeScale = this.particleAge/(float)this.particleMaxAge;
 		
 		this.prevAlpha = particleAlpha;
 		this.particleAlpha = MathHelper.clamp(1-BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0.8, 1), 0.8F, 1F, 0F, 1.1F), 0, 1);
@@ -57,16 +57,16 @@ public class ParticleBFGCoreLightning extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entity, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GL11.glPushMatrix();
 		
-		double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
-		double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
-		double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
+		final double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
+		final double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
+		final double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
 		
-		double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-		double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-		double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+		final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+		final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+		final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
 
 		GL11.glTranslated(d0 - d3, d1 - d4, d2 - d5);
 		
@@ -75,16 +75,16 @@ public class ParticleBFGCoreLightning extends Particle {
         GlStateManager.depthMask(false);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-        float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
+        final float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
         GlStateManager.color(0.5F, 1F, 0.5F, alpha);
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.bfg_core_lightning);
-		Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+        final BufferBuilder buf = tes.getBuffer();
         
-        Vec3d look = entity.getPositionEyes(partialTicks).subtract(d0, d1, d2);
-        Vec3 point1 = Vec3.createVectorHelper(look.x, look.y, look.z).crossProduct(Vec3.createVectorHelper(0, 0, 1)).normalize().mult((float) (0.5*particleScale));
-        Vec3 point2 = point1.mult(-1);
+        final Vec3d look = entity.getPositionEyes(partialTicks).subtract(d0, d1, d2);
+        final Vec3 point1 = Vec3.createVectorHelper(look.x, look.y, look.z).crossProduct(Vec3.createVectorHelper(0, 0, 1)).normalize().mult((float) (0.5*particleScale));
+        final Vec3 point2 = point1.mult(-1);
         
         HbmShaderManager.useWormShader(randomOffset);
         

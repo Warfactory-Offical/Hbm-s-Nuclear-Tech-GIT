@@ -1,12 +1,8 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -22,11 +18,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 public class ItemCrateCaller extends Item {
 
 	Random rand = new Random();
 	
-	public ItemCrateCaller(String s) {
+	public ItemCrateCaller(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.canRepair = false;
@@ -36,21 +35,21 @@ public class ItemCrateCaller extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.callsp"));
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		stack.damageItem(1, player);
 
-		int x = rand.nextInt(31) - 15;
-		int z = rand.nextInt(31) - 15;
+		final int x = rand.nextInt(31) - 15;
+		final int z = rand.nextInt(31) - 15;
 		
 		Block crate = ModBlocks.crate;
 		
-		int i = rand.nextInt(1000);
+		final int i = rand.nextInt(1000);
 		
 		if(i < 350)
 			crate = ModBlocks.crate_weapon;

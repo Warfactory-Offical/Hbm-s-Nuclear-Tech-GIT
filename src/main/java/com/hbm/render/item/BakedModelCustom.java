@@ -20,14 +20,14 @@ import net.minecraft.world.World;
 
 public class BakedModelCustom implements IBakedModel {
 
-	private TEISRBase renderer;
+	private final TEISRBase renderer;
 	
-	public BakedModelCustom(TEISRBase renderer) {
+	public BakedModelCustom(final TEISRBase renderer) {
 		this.renderer = renderer;
 	}
 	
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
 		return Collections.emptyList();
 	}
 
@@ -55,7 +55,7 @@ public class BakedModelCustom implements IBakedModel {
 	public ItemOverrideList getOverrides() {
 		return new ItemOverrideList(Collections.emptyList()){
 			@Override
-			public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+			public IBakedModel handleItemState(final IBakedModel originalModel, final ItemStack stack, final World world, final EntityLivingBase entity) {
 				renderer.entity = entity;
 				renderer.world = world;
 				return super.handleItemState(originalModel, stack, world, entity);
@@ -64,9 +64,9 @@ public class BakedModelCustom implements IBakedModel {
 	}
 	
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(final TransformType cameraTransformType) {
 		renderer.type = cameraTransformType;
-		Pair<? extends IBakedModel, Matrix4f> par = renderer.itemModel.handlePerspective(cameraTransformType);
+		final Pair<? extends IBakedModel, Matrix4f> par = renderer.itemModel.handlePerspective(cameraTransformType);
 		return Pair.of(this, renderer.doNullTransform() && cameraTransformType == TransformType.GUI ? null : par.getRight());
 	}
 

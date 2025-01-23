@@ -12,12 +12,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderPlasmaHeater extends TileEntitySpecialRenderer<TileEntityMachinePlasmaHeater> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachinePlasmaHeater te) {
+	public boolean isGlobalRenderer(final TileEntityMachinePlasmaHeater te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachinePlasmaHeater te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachinePlasmaHeater te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)x + 0.5F, (float)y, (float)z + 0.5F);
 

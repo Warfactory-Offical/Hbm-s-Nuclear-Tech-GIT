@@ -52,7 +52,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 
 			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 150));
 			
-			int convert = Math.min(tanks[0].getFluidAmount(), tanks[1].getCapacity() - tanks[1].getFluidAmount());
+			final int convert = Math.min(tanks[0].getFluidAmount(), tanks[1].getCapacity() - tanks[1].getFluidAmount());
 			if(convert > 0)
 				this.waterTimer = 20;
 
@@ -65,45 +65,45 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	public void networkPack() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		data.setByte("timer", (byte) this.waterTimer);
 		INBTPacketReceiver.networkPack(this, data, 150);
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		FFUtils.deserializeTankArray(data.getTagList("tanks", 10), tanks);
 		this.waterTimer = data.getByte("timer");
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		tanks[0].readFromNBT(nbt.getCompoundTag("steam"));
 		tanks[1].readFromNBT(nbt.getCompoundTag("water"));
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setTag("steam", tanks[1].writeToNBT(new NBTTagCompound()));
 		nbt.setTag("water", tanks[1].writeToNBT(new NBTTagCompound()));
 		return nbt;
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 			fillFluid(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, tank);
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank type) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank type) {
 		FFUtils.fillFluid(this, type, world, new BlockPos(x, y, z), type.getCapacity());
 	}
 	
 	@Override
-	public void recievePacket(NBTTagCompound[] tags){
+	public void recievePacket(final NBTTagCompound[] tags){
 		if(tags.length == 1){
 			tanks[0].readFromNBT(tags[0]);
 		}
@@ -115,7 +115,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && resource.getFluid() == ModForgeFluids.spentsteam){
 			return tanks[0].fill(resource, doFill);
 		}
@@ -123,7 +123,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		if(resource != null && resource.getFluid() == FluidRegistry.WATER){
 			return tanks[1].drain(resource, doDrain);
 		}
@@ -131,12 +131,12 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -144,7 +144,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

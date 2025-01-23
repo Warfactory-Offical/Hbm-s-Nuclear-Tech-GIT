@@ -24,7 +24,7 @@ public class MobConfig {
 	public static int elementalAmount = 10;
 	public static int elementalDistance = 32;
 	
-	public static void loadFromConfig(Configuration config) {
+	public static void loadFromConfig(final Configuration config) {
 
 		final String CATEGORY = "12_mobs";
 

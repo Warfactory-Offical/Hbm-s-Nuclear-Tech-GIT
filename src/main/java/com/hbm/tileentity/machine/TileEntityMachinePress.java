@@ -40,22 +40,22 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 		super(4);
 	}
 	
-	public int getPowerScaled(int i) {
+	public int getPowerScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 
-	public int getBurnScaled(int i) {
+	public int getBurnScaled(final int i) {
 		if(maxBurn == 0)
 			return 0;
 		return (burnTime * i) / maxBurn;
 	}
 
-	public int getProgressScaled(int i) {
+	public int getProgressScaled(final int i) {
 		return (progress * i) / maxProgress;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		progress = nbt.getInteger("progress");
@@ -69,11 +69,11 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 		isRetracting = nbt.getBoolean("ret");
 		detectIsRetracting = !isRetracting;
 		if(nbt.hasKey("inventory"))
-			((ItemStackHandler) inventory).deserializeNBT((NBTTagCompound) nbt.getTag("inventory"));
+			inventory.deserializeNBT((NBTTagCompound) nbt.getTag("inventory"));
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("progress", progress);
@@ -82,7 +82,7 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 		nbt.setInteger("maxBurn", maxBurn);
 		nbt.setBoolean("ret", isRetracting);
 
-		nbt.setTag("inventory", ((ItemStackHandler) inventory).serializeNBT());
+		nbt.setTag("inventory", inventory.serializeNBT());
 
 		return nbt;
 	}
@@ -108,7 +108,7 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 			if(!(world.isBlockPowered(pos))) {
 				if(inventory.getStackInSlot(0) != ItemStack.EMPTY && this.burnTime == 0 && TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(0)) > 0) {
 					this.maxBurn = this.burnTime = TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(0)) / 8;
-					ItemStack copy = inventory.getStackInSlot(0).copy();
+					final ItemStack copy = inventory.getStackInSlot(0).copy();
 					inventory.getStackInSlot(0).shrink(1);
 
 					if(inventory.getStackInSlot(0).getCount() <= 0) {
@@ -122,10 +122,10 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 
 				if(power >= maxPower / 3) {
 
-					int speed = power * 25 / maxPower;
+					final int speed = power * 25 / maxPower;
 
 					if(inventory.getStackInSlot(1) != ItemStack.EMPTY && inventory.getStackInSlot(2) != ItemStack.EMPTY) {
-						ItemStack stack = PressRecipes.getPressResult(inventory.getStackInSlot(2).copy(), inventory.getStackInSlot(1).copy());
+						final ItemStack stack = PressRecipes.getPressResult(inventory.getStackInSlot(2).copy(), inventory.getStackInSlot(1).copy());
 						if(stack != null && (inventory.getStackInSlot(3) == ItemStack.EMPTY || (inventory.getStackInSlot(3).getItem() == stack.getItem() && inventory.getStackInSlot(3).getCount() + stack.getCount() <= inventory.getStackInSlot(3).getMaxStackSize()))) {
 							if(progress >= maxProgress) {
 
@@ -135,11 +135,9 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 									inventory.setStackInSlot(3, stack.copy());
 								else
 									inventory.getStackInSlot(3).grow(stack.getCount());
-								;
 
-								inventory.getStackInSlot(2).shrink(1);
-								;
-								if(inventory.getStackInSlot(2).getCount() <= 0)
+                                inventory.getStackInSlot(2).shrink(1);
+                                if(inventory.getStackInSlot(2).getCount() <= 0)
 									inventory.setStackInSlot(2, ItemStack.EMPTY);
 
 								if(inventory.getStackInSlot(1).getMaxDamage() > 0){
@@ -192,12 +190,12 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return super.getCapability(capability, facing);
 	}
 
@@ -206,7 +204,7 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 		return "container.press";
 	}
 	
-	public boolean isUsableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(final EntityPlayer player) {
 		if(player.world.getTileEntity(this.pos) != this) {
 			return false;
 		} else {
@@ -215,33 +213,31 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
+		final int i = e.ordinal();
 		return i == 0 ? new int[] { 3 } : new int[]{ 0, 1, 2 };
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
 		return slot == 3;
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack){
+	public boolean isItemValidForSlot(final int i, final ItemStack stack){
 		if(stack.getItem() instanceof ItemStamp && i == 1)
 			return true;
 		
 		if(TileEntityFurnace.getItemBurnTime(stack) > 0 && i == 0)
 			return true;
-		
-		if(!(stack.getItem() instanceof ItemStamp) && i == 2)
-			return true;
-		return false;
-	}
+
+        return !(stack.getItem() instanceof ItemStamp) && i == 2;
+    }
 
 	private int detectProgress;
 	private int detectPower;

@@ -20,7 +20,7 @@ public class LargeReactorPacket implements IMessage {
 	public LargeReactorPacket() {
 	}
 	
-	public LargeReactorPacket(BlockPos pos, int rods, int coreHeat, int hullHeat, int fuel, int maxFuel, int waste, int maxWaste, int type) {
+	public LargeReactorPacket(final BlockPos pos, final int rods, final int coreHeat, final int hullHeat, final int fuel, final int maxFuel, final int waste, final int maxWaste, final int type) {
 		x = pos.getX();
 		y = pos.getY();
 		z = pos.getZ();
@@ -35,7 +35,7 @@ public class LargeReactorPacket implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -50,7 +50,7 @@ public class LargeReactorPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -69,12 +69,11 @@ public class LargeReactorPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(LargeReactorPacket m, MessageContext ctx) {
+		public IMessage onMessage(final LargeReactorPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
-				if(te instanceof TileEntityMachineReactorLarge){
-					TileEntityMachineReactorLarge r = (TileEntityMachineReactorLarge)te;
-					r.rods = m.rods;
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				if(te instanceof TileEntityMachineReactorLarge r){
+                    r.rods = m.rods;
 					r.coreHeat = m.coreHeat;
 					r.hullHeat = m.hullHeat;
 					r.fuel = m.fuel;

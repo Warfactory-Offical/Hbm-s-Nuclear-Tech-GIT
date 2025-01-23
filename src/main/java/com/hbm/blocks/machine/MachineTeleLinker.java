@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class MachineTeleLinker extends BlockContainer {
 
-	public MachineTeleLinker(Material materialIn, String s) {
+	public MachineTeleLinker(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -27,18 +27,18 @@ public class MachineTeleLinker extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineTeleLinker();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityMachineTeleLinker entity = (TileEntityMachineTeleLinker) world.getTileEntity(pos);
+			final TileEntityMachineTeleLinker entity = (TileEntityMachineTeleLinker) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_telelinker, world, pos.getX(), pos.getY(), pos.getZ());
@@ -50,15 +50,15 @@ public class MachineTeleLinker extends BlockContainer {
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity te = worldIn.getTileEntity(pos);
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+		final TileEntity te = worldIn.getTileEntity(pos);
 		if(te instanceof TileEntityMachineTeleLinker)
 			InventoryHelper.dropInventoryItems(worldIn, pos, ((TileEntityMachineTeleLinker)te).dropProvider);
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

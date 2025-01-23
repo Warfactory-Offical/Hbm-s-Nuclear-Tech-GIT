@@ -18,10 +18,10 @@ import net.minecraft.util.ResourceLocation;
 public class GUIMachineChemplant extends GuiInfoContainer {
 
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_chemplant.png");
-	private TileEntityMachineChemplant chemplant;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_chemplant.png");
+	private final TileEntityMachineChemplant chemplant;
 	
-	public GUIMachineChemplant(InventoryPlayer invPlayer, TileEntityMachineChemplant tedf) {
+	public GUIMachineChemplant(final InventoryPlayer invPlayer, final TileEntityMachineChemplant tedf) {
 		super(new ContainerMachineChemplant(invPlayer, tedf));
 		chemplant = tedf;
 		
@@ -30,7 +30,7 @@ public class GUIMachineChemplant extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		this.renderHoveredToolTip(mouseX, mouseY);
 		
@@ -43,34 +43,34 @@ public class GUIMachineChemplant extends GuiInfoContainer {
 		
 		if(chemplant.getStackInSlot(4) == null || chemplant.getStackInSlot(4).isEmpty() || chemplant.getStackInSlot(4).getItem()!= ModItems.chemistry_template) {
 
-			String[] text = new String[] { "Error: This machine requires a chemistry template!" };
+			final String[] text = new String[] { "Error: This machine requires a chemistry template!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		}
 
-		String[] text = I18nUtil.resolveKeyArray("desc.guiacceptupgrades1");
+		final String[] text = I18nUtil.resolveKeyArray("desc.guiacceptupgrades1");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 105, guiTop + 40, 8, 8, guiLeft + 105, guiTop + 40 + 16, text);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer( int i, int j) {
-		String name = this.chemplant.hasCustomInventoryName() ? this.chemplant.getInventoryName() : I18n.format(this.chemplant.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.chemplant.hasCustomInventoryName() ? this.chemplant.getInventoryName() : I18n.format(this.chemplant.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		this.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		int i = (int)chemplant.getPowerScaled(52);
+		final int i = (int)chemplant.getPowerScaled(52);
 		drawTexturedModalRect(guiLeft + 44, guiTop + 70 - i, 176, 52 - i, 16, i);
 		
 		if(chemplant.isProgressing){
-		int j = chemplant.getProgressScaled(90);
+		final int j = chemplant.getProgressScaled(90);
 		drawTexturedModalRect(guiLeft + 43, guiTop + 89, 0, 222, j, 18);
 		} else {
 			drawTexturedModalRect(guiLeft + 43, guiTop + 89, 0, 222, 0, 18);

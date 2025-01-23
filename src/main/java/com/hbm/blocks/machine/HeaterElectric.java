@@ -27,12 +27,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class HeaterElectric extends BlockDummyable implements ILookOverlay, ITooltipProvider, IToolable {
 
-	public HeaterElectric(Material mat, String s) {
+	public HeaterElectric(final Material mat, final String s) {
         super(mat, s);
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= 12)
 			return new TileEntityHeaterElectric();
@@ -54,33 +54,31 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		this.makeExtra(world, x, y, z);
 	}
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
         this.addStandardInfo(tooltip);
     }
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		final int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
 		
-		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityHeaterElectric))
+		if(!(te instanceof TileEntityHeaterElectric heater))
 			return;
-		
-		TileEntityHeaterElectric heater = (TileEntityHeaterElectric) te;
 
-		List<String> text = new ArrayList();
+        final List<String> text = new ArrayList();
 		text.add(String.format("%,d", heater.heatEnergy) + " TU");
 		text.add("§a-> §r" + heater.getConsumption() + " HE/t");
 		text.add("§c<- §r" + heater.getHeatGen() + " TU/t");
@@ -89,22 +87,21 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 	}
 
 	@Override
-    public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool) {
+    public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool) {
    		if(tool != ToolType.SCREWDRIVER && tool != ToolType.HAND_DRILL)
 			return false;
 		
 		if(world.isRemote) return true;
 		
-		int[] pos = this.findCore(world, x, y, z);
+		final int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos == null) return false;
 		
-		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityHeaterElectric)) return false;
-		
-		TileEntityHeaterElectric tile = (TileEntityHeaterElectric) te;
-		if(tool == ToolType.SCREWDRIVER)
+		if(!(te instanceof TileEntityHeaterElectric tile)) return false;
+
+        if(tool == ToolType.SCREWDRIVER)
             tile.toggleSettingUp();
         else
             tile.toggleSettingDown();

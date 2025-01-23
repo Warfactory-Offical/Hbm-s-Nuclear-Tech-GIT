@@ -52,28 +52,28 @@ public abstract class ToolAbility {
 		
 		int radius;
 		
-		public RecursionAbility(int radius) {
+		public RecursionAbility(final int radius) {
 			this.radius = radius;
 		}
 		
-		private Set<BlockPos> pos = new HashSet<BlockPos>();
+		private final Set<BlockPos> pos = new HashSet<BlockPos>();
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, final IBlockState block, final IItemAbility tool, final EnumHand hand) {
 			
-			Block b = world.getBlockState(new BlockPos(x, y, z)).getBlock();
+			final Block b = world.getBlockState(new BlockPos(x, y, z)).getBlock();
 
 			if(b == Blocks.STONE && !ToolConfig.recursiveStone)
 				return;
 			if(b == Blocks.NETHERRACK && !ToolConfig.recursiveNetherrack)
 				return;
 			
-			List<Integer> indices = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5});
+			final List<Integer> indices = Arrays.asList(0, 1, 2, 3, 4, 5);
 			Collections.shuffle(indices);
 			
 			pos.clear();
 			
-			for(Integer i : indices) {
+			for(final Integer i : indices) {
 				switch(i) {
 				case 0: breakExtra(world, x + 1, y, z, x, y, z, player, tool, hand, 0); break;
 				case 1: breakExtra(world, x - 1, y, z, x, y, z, player, tool, hand, 0); break;
@@ -90,11 +90,11 @@ public abstract class ToolAbility {
 			return ToolConfig.abilityVein;
 		}
 
-		private boolean areRedstone(IBlockState ref, IBlockState b){
+		private boolean areRedstone(final IBlockState ref, final IBlockState b){
 			return ref.getBlock() instanceof BlockRedstoneOre && b.getBlock() instanceof BlockRedstoneOre;
 		}
 		
-		private void breakExtra(World world, int x, int y, int z, int refX, int refY, int refZ, EntityPlayer player, IItemAbility tool, EnumHand hand, int depth) {
+		private void breakExtra(final World world, final int x, final int y, final int z, final int refX, final int refY, final int refZ, final EntityPlayer player, final IItemAbility tool, final EnumHand hand, int depth) {
 			
 			if(pos.contains(new BlockPos(x, y, z)))
 				return;
@@ -113,8 +113,8 @@ public abstract class ToolAbility {
 			if(Vec3.createVectorHelper(x - refX, y - refY, z - refZ).length() > radius)
 				return;
 			
-			IBlockState b = world.getBlockState(new BlockPos(x, y, z));
-			IBlockState ref = world.getBlockState(new BlockPos(refX, refY, refZ));
+			final IBlockState b = world.getBlockState(new BlockPos(x, y, z));
+			final IBlockState ref = world.getBlockState(new BlockPos(refX, refY, refZ));
 			
 			if(b != ref && !areRedstone(ref, b))
 				return;
@@ -124,10 +124,10 @@ public abstract class ToolAbility {
 			
 			tool.breakExtraBlock(world, x, y, z, player, refX, refY, refZ, hand);
 			
-			List<Integer> indices = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5});
+			final List<Integer> indices = Arrays.asList(0, 1, 2, 3, 4, 5);
 			Collections.shuffle(indices);
 			
-			for(Integer i : indices) {
+			for(final Integer i : indices) {
 				switch(i) {
 				case 0: breakExtra(world, x + 1, y, z, refX, refY, refZ, player, tool, hand, depth); break;
 				case 1: breakExtra(world, x - 1, y, z, refX, refY, refZ, player, tool, hand, depth); break;
@@ -161,12 +161,12 @@ public abstract class ToolAbility {
 
 		int range;
 		
-		public HammerAbility(int range) {
+		public HammerAbility(final int range) {
 			this.range = range;
 		}
 		
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, final IBlockState block, final IItemAbility tool, final EnumHand hand) {
 			
 			for(int a = x - range; a <= x + range; a++) {
 				for(int b = y - range; b <= y + range; b++) {
@@ -206,15 +206,15 @@ public abstract class ToolAbility {
 	public static class SmelterAbility extends ToolAbility {
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, IBlockState block, final IItemAbility tool, final EnumHand hand) {
 			
 			if(isNBTThing(block.getBlock())) return;
 			//a band-aid on a gaping wound
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 			
-			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
-			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
+			final ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			final ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 			
 			if(result != null && !result.isEmpty()) {
 				world.setBlockToAir(new BlockPos(x, y, z));
@@ -247,14 +247,14 @@ public abstract class ToolAbility {
 	public static class ShredderAbility extends ToolAbility {
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, IBlockState block, final IItemAbility tool, final EnumHand hand) {
 			
 			//a band-aid on a gaping wound
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 			
-			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
-			ItemStack result = ShredderRecipes.getShredderResult(stack);
+			final ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			final ItemStack result = ShredderRecipes.getShredderResult(stack);
 			
 			if(result != null && result.getItem() != ModItems.scrap) {
 				world.setBlockToAir(new BlockPos(x, y, z));
@@ -287,19 +287,19 @@ public abstract class ToolAbility {
 	public static class CentrifugeAbility extends ToolAbility {
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, IBlockState block, final IItemAbility tool, final EnumHand hand) {
 			
 			//a band-aid on a gaping wound
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 			
-			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
-			ItemStack[] result = CentrifugeRecipes.getOutput(stack);
+			final ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			final ItemStack[] result = CentrifugeRecipes.getOutput(stack);
 			
 			if(result != null) {
 				world.setBlockToAir(new BlockPos(x, y, z));
 				
-				for(ItemStack st : result) {
+				for(final ItemStack st : result) {
 					if(st != null)
 						world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, st.copy()));
 				}
@@ -331,7 +331,7 @@ public abstract class ToolAbility {
 	public static class SilkAbility extends ToolAbility {
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, final IBlockState block, final IItemAbility tool, final EnumHand hand) {
 			//if the tool is already enchanted, do nothing
 			if(EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, player.getHeldItem(hand)) > 0 || player.getHeldItem(hand).isEmpty())
 				return;
@@ -339,10 +339,10 @@ public abstract class ToolAbility {
 			if(isNBTThing(block.getBlock())) return;
 
 			//add enchantment
-			ItemStack stack = player.getHeldItem(hand);
+			final ItemStack stack = player.getHeldItem(hand);
 
 			EnchantmentUtil.addEnchantment(stack, Enchantments.SILK_TOUCH, 1);
-			BlockPos pos = new BlockPos(x, y, z);
+			final BlockPos pos = new BlockPos(x, y, z);
 			block.getBlock().harvestBlock(world, player, pos, block, world.getTileEntity(pos), stack);
 			
 			EnchantmentUtil.removeEnchantment(stack, Enchantments.SILK_TOUCH);
@@ -375,12 +375,12 @@ public abstract class ToolAbility {
 
 		int luck;
 
-		public LuckAbility(int luck) {
+		public LuckAbility(final int luck) {
 			this.luck = luck;
 		}
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, final IBlockState block, final IItemAbility tool, final EnumHand hand) {
 			//if the tool is already enchanted, do nothing
 			if(EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, player.getHeldItem(hand)) > 0 || player.getHeldItem(hand) == null)
 				return;
@@ -388,10 +388,10 @@ public abstract class ToolAbility {
 			if(isNBTThing(block.getBlock())) return;
 
 			//add enchantment
-			ItemStack stack = player.getHeldItem(hand);
+			final ItemStack stack = player.getHeldItem(hand);
 			
 			EnchantmentUtil.addEnchantment(stack, Enchantments.FORTUNE, luck);
-			BlockPos pos = new BlockPos(x, y, z);
+			final BlockPos pos = new BlockPos(x, y, z);
 			block.getBlock().harvestBlock(world, player, pos, block, world.getTileEntity(pos), stack);
 			EnchantmentUtil.removeEnchantment(stack, Enchantments.FORTUNE);
 
@@ -422,14 +422,14 @@ public abstract class ToolAbility {
 	public static class CrystallizerAbility extends ToolAbility {
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, IBlockState block, final IItemAbility tool, final EnumHand hand) {
 
 			//a band-aid on a gaping wound
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
 				block = Blocks.REDSTONE_ORE.getDefaultState();
 
-			ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
-			ItemStack result = CrystallizerRecipes.getOutputItem(stack);
+			final ItemStack stack = ItemStackUtil.itemStackFrom(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+			final ItemStack result = CrystallizerRecipes.getOutputItem(stack);
 
 			if(result != null) {
 				world.setBlockToAir(new BlockPos(x, y, z));
@@ -461,7 +461,7 @@ public abstract class ToolAbility {
 	public static class MercuryAbility extends ToolAbility {
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, IBlockState block, final IItemAbility tool, final EnumHand hand) {
 
 			//a band-aid on a gaping wound
 			if(block.getBlock() == Blocks.LIT_REDSTONE_ORE)
@@ -505,14 +505,14 @@ public abstract class ToolAbility {
 
 		float strength;
 
-		public ExplosionAbility(float strength) {
+		public ExplosionAbility(final float strength) {
 			this.strength = strength;
 		}
 
 		@Override
-		public void onDig(World world, int x, int y, int z, EntityPlayer player, IBlockState block, IItemAbility tool, EnumHand hand) {
+		public void onDig(final World world, final int x, final int y, final int z, final EntityPlayer player, final IBlockState block, final IItemAbility tool, final EnumHand hand) {
 
-			ExplosionNT ex = new ExplosionNT(player.world, player, x + 0.5, y + 0.5, z + 0.5, strength);
+			final ExplosionNT ex = new ExplosionNT(player.world, player, x + 0.5, y + 0.5, z + 0.5, strength);
 			ex.addAttrib(ExAttrib.ALLDROP);
 			ex.addAttrib(ExAttrib.NOHURT);
 			ex.addAttrib(ExAttrib.NOPARTICLE);
@@ -542,7 +542,7 @@ public abstract class ToolAbility {
 		}
 	}
 
-	public boolean isNBTThing(Block b){
+	public boolean isNBTThing(final Block b){
 		return b instanceof BlockStorageCrate || b instanceof MachineBattery || b instanceof MachineFENSU;
 	}
 }

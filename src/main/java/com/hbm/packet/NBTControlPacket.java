@@ -24,11 +24,11 @@ public class NBTControlPacket implements IMessage {
 
 	public NBTControlPacket() { }
 
-	public NBTControlPacket(NBTTagCompound nbt, BlockPos pos) {
+	public NBTControlPacket(final NBTTagCompound nbt, final BlockPos pos) {
 		this(nbt, pos.getX(), pos.getY(), pos.getZ());
 	}
 	
-	public NBTControlPacket(NBTTagCompound nbt, int x, int y, int z) {
+	public NBTControlPacket(final NBTTagCompound nbt, final int x, final int y, final int z) {
 		
 		this.buffer = new PacketBuffer(Unpooled.buffer());
 		this.x = x;
@@ -39,7 +39,7 @@ public class NBTControlPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		
 		x = buf.readInt();
 		y = buf.readInt();
@@ -52,7 +52,7 @@ public class NBTControlPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		
 		buf.writeInt(x);
 		buf.writeInt(y);
@@ -67,31 +67,29 @@ public class NBTControlPacket implements IMessage {
 	public static class Handler implements IMessageHandler<NBTControlPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(NBTControlPacket m, MessageContext ctx) {
+		public IMessage onMessage(final NBTControlPacket m, final MessageContext ctx) {
 
 			ctx.getServerHandler().player.server.addScheduledTask(() -> {
-				EntityPlayer p = ctx.getServerHandler().player;
+				final EntityPlayer p = ctx.getServerHandler().player;
 				
 				if(p.world == null)
 					return;
 				
-				TileEntity te = p.world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				final TileEntity te = p.world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 				
 				try {
 					
-					NBTTagCompound nbt = m.buffer.readCompoundTag();
+					final NBTTagCompound nbt = m.buffer.readCompoundTag();
 					
 					if(nbt != null) {
-						if(te instanceof IControlReceiver) {
-							
-							IControlReceiver tile = (IControlReceiver)te;
-							
-							if(tile.hasPermission(p))
+						if(te instanceof IControlReceiver tile) {
+
+                            if(tile.hasPermission(p))
 								tile.receiveControl(nbt);
 						}
 					}
 					
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					e.printStackTrace();
 				}
 			});

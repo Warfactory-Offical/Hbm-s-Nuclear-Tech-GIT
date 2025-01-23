@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileExo extends EntityMissileBaseAdvanced {
 
-	public EntityMissileExo(World p_i1582_1_) {
+	public EntityMissileExo(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1.25F, 10F);
 	}
 
-	public EntityMissileExo(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileExo(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1.25F, 10F);
 	}
@@ -30,7 +30,7 @@ public class EntityMissileExo extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 10));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 14));

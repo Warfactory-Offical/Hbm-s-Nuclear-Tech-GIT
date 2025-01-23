@@ -43,7 +43,7 @@ public class TileEntityTrappedBrick extends TileEntity implements ITickable {
 			
 			//Apparently I still need to do a check because some chunk pregenerators are buggy.
 			if(detector != null){
-				List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, detector);
+				final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, detector);
 
 				if(!players.isEmpty())
 					trigger();
@@ -53,27 +53,27 @@ public class TileEntityTrappedBrick extends TileEntity implements ITickable {
 
 	private void trigger() {
 
-		Trap trap = Trap.get(this.getBlockMetadata());
+		final Trap trap = Trap.get(this.getBlockMetadata());
 
 		switch(trap) {
 		case FALLING_ROCKS:
 			for(int x = 0; x < 3; x++) {
 				for(int z = 0; z < 3; z++) {
-					EntityRubble rubble = new EntityRubble(world, pos.getX() - 0.5 + x, pos.getY() - 0.5, pos.getZ() - 0.5 + z);
+					final EntityRubble rubble = new EntityRubble(world, pos.getX() - 0.5 + x, pos.getY() - 0.5, pos.getZ() - 0.5 + z);
 					rubble.setMetaBasedOnBlock(ModBlocks.reinforced_stone, 0);
 					world.spawnEntity(rubble);
 				}
 			}
 			break;
 		case ARROW:
-			EntityArrow arrow = new EntityTippedArrow(world);
+			final EntityArrow arrow = new EntityTippedArrow(world);
 			arrow.setPosition(pos.getX() + 0.5 + dir.offsetX, pos.getY() + 0.5, pos.getZ() + 0.5 + dir.offsetZ);
 			arrow.motionX = dir.offsetX;
 			arrow.motionZ = dir.offsetZ;
 			world.spawnEntity(arrow);
 			break;
 		case FLAMING_ARROW:
-			EntityArrow farrow = new EntityTippedArrow(world);
+			final EntityArrow farrow = new EntityTippedArrow(world);
 			farrow.setPosition(pos.getX() + 0.5 + dir.offsetX, pos.getY() + 0.5, pos.getZ() + 0.5 + dir.offsetZ);
 			farrow.motionX = dir.offsetX;
 			farrow.motionZ = dir.offsetZ;
@@ -85,14 +85,14 @@ public class TileEntityTrappedBrick extends TileEntity implements ITickable {
 				world.setBlockState(new BlockPos(pos.getX(), pos.getY() - 1 - i, pos.getZ()), ModBlocks.concrete_pillar.getDefaultState());
 			break;
 		case POISON_DART:
-			EntityBulletBase dart = new EntityBulletBase(world, BulletConfigSyncingUtil.G20_CAUSTIC);
+			final EntityBulletBase dart = new EntityBulletBase(world, BulletConfigSyncingUtil.G20_CAUSTIC);
 			dart.setPosition(pos.getX() + 0.5 + dir.offsetX, pos.getY() + 0.5, pos.getZ() + 0.5 + dir.offsetZ);
 			dart.motionX = dir.offsetX;
 			dart.motionZ = dir.offsetZ;
 			world.spawnEntity(dart);
 			break;
 		case ZOMBIE:
-			EntityZombie zombie = new EntityZombie(world);
+			final EntityZombie zombie = new EntityZombie(world);
 			zombie.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 			switch(world.rand.nextInt(3)) {
 			case 0: zombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.chernobylsign)); break;
@@ -104,7 +104,7 @@ public class TileEntityTrappedBrick extends TileEntity implements ITickable {
 			break;
 		case SPIDERS:
 			for(int i = 0; i < 3; i++) {
-				EntityCaveSpider spider = new EntityCaveSpider(world);
+				final EntityCaveSpider spider = new EntityCaveSpider(world);
 				spider.setPosition(pos.getX() + 0.5, pos.getY() - 1, pos.getZ() + 0.5);
 				world.spawnEntity(spider);
 			}
@@ -118,7 +118,7 @@ public class TileEntityTrappedBrick extends TileEntity implements ITickable {
 	
 	private void setDetector() {
 
-		Trap trap = Trap.get(this.getBlockMetadata());
+		final Trap trap = Trap.get(this.getBlockMetadata());
 
 		switch(trap) {
 		case FALLING_ROCKS:
@@ -149,19 +149,19 @@ public class TileEntityTrappedBrick extends TileEntity implements ITickable {
 
 	private void setDetectorDirectional() {
 
-		List<ForgeDirection> dirs = Arrays.asList(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
+		final List<ForgeDirection> dirs = Arrays.asList(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
 
 		Collections.shuffle(dirs);
 
-		for(ForgeDirection dir : dirs) {
+		for(final ForgeDirection dir : dirs) {
 
 			if(world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY(), pos.getZ() + dir.offsetZ)).getBlock() == Blocks.AIR) {
 
 				double minX = pos.getX() + 0.4;
-				double minY = pos.getY() + 0.4;
+				final double minY = pos.getY() + 0.4;
 				double minZ = pos.getZ() + 0.4;
 				double maxX = pos.getX() + 0.6;
-				double maxY = pos.getY() + 0.6;
+				final double maxY = pos.getY() + 0.6;
 				double maxZ = pos.getZ() + 0.6;
 
 				if(dir.offsetX > 0)

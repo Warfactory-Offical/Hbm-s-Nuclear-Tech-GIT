@@ -64,7 +64,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		power = nbt.getLong("powerTime");
 		progress = nbt.getShort("CookTime");
 		tank.readFromNBT(nbt);
@@ -75,7 +75,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setLong("powerTime", power);
 		nbt.setShort("cookTime", (short) progress);
 		tank.writeToNBT(nbt);
@@ -83,11 +83,11 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 		return super.writeToNBT(nbt);
 	}
 	
-	public int getCentrifugeProgressScaled(int i) {
+	public int getCentrifugeProgressScaled(final int i) {
 		return (progress * i) / processingSpeed;
 	}
 	
-	public long getPowerRemainingScaled(int i) {
+	public long getPowerRemainingScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 	
@@ -95,7 +95,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 		
 		if(power > 0 && this.tank.getFluidAmount() >= MachineRecipes.getFluidConsumedGasCent(tank.getFluid() == null ? null : tank.getFluid().getFluid())) {
 			
-			List<GasCentOutput> list = MachineRecipes.getGasCentOutput(tank.getFluid() == null ? null : tank.getFluid().getFluid());
+			final List<GasCentOutput> list = MachineRecipes.getGasCentOutput(tank.getFluid() == null ? null : tank.getFluid().getFluid());
 			
 			if(list == null)
 				return false;
@@ -105,7 +105,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 			
 			for(int i = 0; i < list.size(); i++) {
 				
-				int slot = i + 5;
+				final int slot = i + 5;
 				
 				if(inventory.getStackInSlot(slot).isEmpty())
 					continue;
@@ -126,11 +126,11 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	
 	private void process() {
 
-		List<GasCentOutput> out = MachineRecipes.getGasCentOutput(tank.getFluid() == null ? null : tank.getFluid().getFluid());
+		final List<GasCentOutput> out = MachineRecipes.getGasCentOutput(tank.getFluid() == null ? null : tank.getFluid().getFluid());
 		this.progress = 0;
 		tank.drain(MachineRecipes.getFluidConsumedGasCent(tank.getFluid() == null ? null : tank.getFluid().getFluid()), true);
 		
-		List<GasCentOutput> random = new ArrayList<GasCentOutput>();
+		final List<GasCentOutput> random = new ArrayList<GasCentOutput>();
 		
 		for(int i = 0; i < out.size(); i++) {
 			for(int j = 0; j < out.get(i).weight; j++) {
@@ -140,9 +140,9 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 		
 		Collections.shuffle(random);
 		
-		GasCentOutput result = random.get(world.rand.nextInt(random.size()));
+		final GasCentOutput result = random.get(world.rand.nextInt(random.size()));
 		
-		int slot = result.slot + 4;
+		final int slot = result.slot + 4;
 		
 		if(inventory.getStackInSlot(slot).isEmpty()) {
 			inventory.setStackInSlot(slot, result.output.copy());
@@ -228,28 +228,26 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 			markDirty();
 	}
 
-	protected boolean inputValidForTank(int tank, int slot){
+	protected boolean inputValidForTank(final int tank, final int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty()){
-			if(isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
-				return true;
-			}
+            return isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
 		}
 		return false;
 	}
 	
-	private boolean isValidFluid(FluidStack stack) {
+	private boolean isValidFluid(final FluidStack stack) {
 		if(stack == null)
 			return false;
 		return MachineRecipes.getFluidConsumedGasCent(stack.getFluid()) != 0;
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		return slot > 3;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
 		return new int[]{0, 3, 4, 5, 6, 7, 8};
 	}
 	
@@ -266,7 +264,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 
@@ -282,10 +280,9 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 1){
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
@@ -296,7 +293,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if (isValidFluid(resource)) {
 			return tank.fill(resource, doFill);
 		}
@@ -304,22 +301,22 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {

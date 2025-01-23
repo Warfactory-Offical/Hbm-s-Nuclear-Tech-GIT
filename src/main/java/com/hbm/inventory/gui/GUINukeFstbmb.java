@@ -22,10 +22,10 @@ import net.minecraft.util.math.MathHelper;
 public class GUINukeFstbmb extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/weapon/fstbmbSchematic.png");
-	private TileEntityNukeBalefire bomb;
+	private final TileEntityNukeBalefire bomb;
 	private GuiTextField timer;
 
-	public GUINukeFstbmb(InventoryPlayer invPlayer, TileEntityNukeBalefire bomb) {
+	public GUINukeFstbmb(final InventoryPlayer invPlayer, final TileEntityNukeBalefire bomb) {
 		super(new ContainerNukeFstbmb(invPlayer, bomb));
 		this.bomb = bomb;
 
@@ -47,13 +47,13 @@ public class GUINukeFstbmb extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
 		super.mouseClicked(x, y, i);
 		this.timer.mouseClicked(x, y, i);
 
@@ -65,16 +65,16 @@ public class GUINukeFstbmb extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
 
-		String name = this.bomb.hasCustomInventoryName() ? this.bomb.getInventoryName() : I18n.format(this.bomb.getInventoryName());
+		final String name = this.bomb.hasCustomInventoryName() ? this.bomb.getInventoryName() : I18n.format(this.bomb.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
 		if(bomb.hasBattery()) {
-			String timer = bomb.getMinutes() + ":" + bomb.getSeconds();
-			double scale = 0.75;
+			final String timer = bomb.getMinutes() + ":" + bomb.getSeconds();
+			final double scale = 0.75;
 			GL11.glScaled(scale, scale, scale);
 			this.fontRenderer.drawString(timer, (int) ((69 - this.fontRenderer.getStringWidth(timer) / 2) * (1 / scale)), (int) (95.5 * (1 / scale)), 0xff0000);
 
@@ -83,7 +83,7 @@ public class GUINukeFstbmb extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -92,7 +92,7 @@ public class GUINukeFstbmb extends GuiInfoContainer {
 		if(bomb.hasEgg())
 			drawTexturedModalRect(guiLeft + 19, guiTop + 90, 176, 0, 30, 16);
 
-		int battery = bomb.getBattery();
+		final int battery = bomb.getBattery();
 
 		if(battery == 1)
 			drawTexturedModalRect(guiLeft + 88, guiTop + 93, 176, 16, 18, 10);
@@ -106,11 +106,11 @@ public class GUINukeFstbmb extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+	protected void keyTyped(final char typedChar, final int keyCode) throws IOException {
 		if(this.timer.textboxKeyTyped(typedChar, keyCode)) {
 
 			if(NumberUtils.isCreatable(timer.getText())) {
-				int j = MathHelper.clamp(Integer.parseInt(timer.getText()), 1, 999);
+				final int j = MathHelper.clamp(Integer.parseInt(timer.getText()), 1, 999);
 				PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(bomb.getPos(), j, 1));
 			}
 

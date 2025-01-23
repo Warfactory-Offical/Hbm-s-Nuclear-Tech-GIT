@@ -12,7 +12,7 @@ public class ContainerCraneBoxer extends Container {
 
     protected TileEntityCraneBoxer boxer;
 
-    public ContainerCraneBoxer(InventoryPlayer invPlayer, TileEntityCraneBoxer boxer) {
+    public ContainerCraneBoxer(final InventoryPlayer invPlayer, final TileEntityCraneBoxer boxer) {
         this.boxer = boxer;
 
         for(int i = 0; i < 3; i++) {
@@ -33,12 +33,12 @@ public class ContainerCraneBoxer extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
+    public ItemStack transferStackInSlot(final EntityPlayer player, final int slot) {
         ItemStack var3 = ItemStack.EMPTY;
-        Slot var4 = (Slot) this.inventorySlots.get(slot);
+        final Slot var4 = this.inventorySlots.get(slot);
 
         if(var4 != null && var4.getHasStack()) {
-            ItemStack var5 = var4.getStack();
+            final ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
             if(slot <= 21) {
@@ -65,7 +65,7 @@ public class ContainerCraneBoxer extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(final EntityPlayer player) {
         return boxer.isUseableByPlayer(player);
     }
 }

@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 public class WasteDrum extends BlockContainer implements ITooltipProvider {
 
-	public WasteDrum(Material materialIn, String s) {
+	public WasteDrum(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,18 +33,18 @@ public class WasteDrum extends BlockContainer implements ITooltipProvider {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityWasteDrum();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityWasteDrum entity = (TileEntityWasteDrum) world.getTileEntity(pos);
+			final TileEntityWasteDrum entity = (TileEntityWasteDrum) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_waste_drum, world, pos.getX(), pos.getY(), pos.getZ());
@@ -56,24 +56,24 @@ public class WasteDrum extends BlockContainer implements ITooltipProvider {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos){
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos){
 		if(!world.isRemote)
 			((TileEntityWasteDrum) world.getTileEntity(pos)).updateWater();
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		this.addStandardInfo(list);
 		super.addInformation(stack, worldIn, list, flagIn);
 	}

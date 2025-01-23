@@ -23,7 +23,7 @@ public class BlockMachineBase extends BlockContainer {
 
 	int guiID = -1;
 	
-	public BlockMachineBase(Material materialIn, int guiID, String s) {
+	public BlockMachineBase(final Material materialIn, final int guiID, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,12 +33,12 @@ public class BlockMachineBase extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return null;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(guiID == -1)
 			return false;
 
@@ -56,13 +56,13 @@ public class BlockMachineBase extends BlockContainer {
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		if(!rotatable())
 			return;
 		worldIn.setBlockState(pos, state.withProperty(BlockHorizontal.FACING, placer.getHorizontalFacing().getOpposite()));
@@ -72,20 +72,20 @@ public class BlockMachineBase extends BlockContainer {
 	@Override
 	protected BlockStateContainer createBlockState() {
 		if(rotatable()){
-			return new BlockStateContainer(this, new IProperty[]{BlockHorizontal.FACING});
+			return new BlockStateContainer(this, BlockHorizontal.FACING);
 		}
 		return super.createBlockState();
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		if(!rotatable())
 			return 0;
-		return ((EnumFacing)state.getValue(BlockHorizontal.FACING)).getIndex();
+		return state.getValue(BlockHorizontal.FACING).getIndex();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		if(!rotatable())
 			return this.getDefaultState();
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);

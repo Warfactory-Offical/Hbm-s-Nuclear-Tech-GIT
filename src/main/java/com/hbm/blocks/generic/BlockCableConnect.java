@@ -10,12 +10,12 @@ import net.minecraft.util.math.BlockPos;
 
 public class BlockCableConnect extends BlockBase implements IEnergyConnectorBlock {
 
-	public BlockCableConnect(Material material, String s) {
+	public BlockCableConnect(final Material material, final String s) {
 		super(material, s);
 	}
 
 	@Override 
-	public boolean canConnect(IBlockAccess world, BlockPos pos, ForgeDirection dir){
+	public boolean canConnect(final IBlockAccess world, final BlockPos pos, final ForgeDirection dir){
 		return true; 
 	}
 }

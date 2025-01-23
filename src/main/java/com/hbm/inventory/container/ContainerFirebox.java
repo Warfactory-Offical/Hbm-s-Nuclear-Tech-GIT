@@ -13,7 +13,7 @@ public class ContainerFirebox extends Container {
 	
 	protected TileEntityFireboxBase firebox;
 	
-	public ContainerFirebox(InventoryPlayer invPlayer, TileEntityFireboxBase furnace) {
+	public ContainerFirebox(final InventoryPlayer invPlayer, final TileEntityFireboxBase furnace) {
 		this.firebox = furnace;
 		this.firebox.playersUsing++;
 		
@@ -32,12 +32,12 @@ public class ContainerFirebox extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+	public ItemStack transferStackInSlot(final EntityPlayer player, final int index) {
 		ItemStack stack = ItemStack.EMPTY;
-		Slot slot = (Slot) this.inventorySlots.get(index);
+		final Slot slot = this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack originalStack = slot.getStack();
+			final ItemStack originalStack = slot.getStack();
 			stack = originalStack.copy();
 
 			if(index <= 1) {
@@ -62,12 +62,12 @@ public class ContainerFirebox extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return firebox.isUseableByPlayer(player);
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer player) {
+	public void onContainerClosed(final EntityPlayer player) {
 		super.onContainerClosed(player);
 		this.firebox.playersUsing--;
 	}

@@ -13,7 +13,7 @@ public class GunGrenadeFactory {
 
 	public static GunConfiguration getHK69Config() {
 		
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 30;
 		config.roundsPerCycle = 1;
@@ -52,7 +52,7 @@ public class GunGrenadeFactory {
 
 	public static BulletConfiguration getGrenadeConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade;
 		bullet.velocity = 2.0F;
@@ -66,7 +66,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeHEConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_he;
 		bullet.velocity = 2.0F;
@@ -81,7 +81,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeIncendirayConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_incendiary;
 		bullet.velocity = 2.0F;
@@ -96,7 +96,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeChlorineConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_toxic;
 		bullet.velocity = 2.0F;
@@ -112,7 +112,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeSleekConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_sleek;
 		bullet.velocity = 2.0F;
@@ -128,7 +128,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeConcussionConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_concussion;
 		bullet.velocity = 2.0F;
@@ -143,7 +143,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeFinnedConfig() {
 		
-		BulletConfiguration bullet = getGrenadeConfig();
+		final BulletConfiguration bullet = getGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_finned;
 		bullet.gravity = 0.02;
@@ -155,7 +155,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeNuclearConfig() {
 		
-		BulletConfiguration bullet = getGrenadeConfig();
+		final BulletConfiguration bullet = getGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_nuclear;
 		bullet.velocity = 4;
@@ -167,7 +167,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadePhosphorusConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 		
 		bullet.ammo = ModItems.ammo_grenade_phosphorus;
 		bullet.velocity = 2.0F;
@@ -184,7 +184,7 @@ public class GunGrenadeFactory {
 	
 	public static BulletConfiguration getGrenadeTracerConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 
 		bullet.ammo = ModItems.ammo_grenade_tracer;
 		bullet.velocity = 2.0F;
@@ -198,7 +198,7 @@ public class GunGrenadeFactory {
 
 	public static BulletConfiguration getGrenadeKampfConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 
 		bullet.ammo = ModItems.ammo_grenade_kampf;
 		bullet.spread = 0.0F;

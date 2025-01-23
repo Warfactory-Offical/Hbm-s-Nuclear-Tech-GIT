@@ -20,14 +20,14 @@ public class RenderHunterChopper extends Render<EntityHunterChopper> {
 	//ProtoCopter mine;
 	ModelHunterChopper mine2;
 	
-	protected RenderHunterChopper(RenderManager renderManager) {
+	protected RenderHunterChopper(final RenderManager renderManager) {
 		super(renderManager);
 		//mine = new ProtoCopter();
 		mine2 = new ModelHunterChopper();
 	}
 	
 	@Override
-	public void doRender(EntityHunterChopper rocket, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityHunterChopper rocket, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glTranslatef(0.0625F * 0, 0.0625F * 32, 0.0625F * 0);
@@ -48,7 +48,7 @@ public class RenderHunterChopper extends Render<EntityHunterChopper> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityHunterChopper entity) {
+	protected ResourceLocation getEntityTexture(final EntityHunterChopper entity) {
 		return chopper_rl;
 	}
 

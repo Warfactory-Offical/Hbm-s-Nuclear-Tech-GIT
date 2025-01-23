@@ -24,7 +24,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class MachineTeleporter extends BlockContainer implements ILookOverlay {
 
-	public MachineTeleporter(Material materialIn, String s) {
+	public MachineTeleporter(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,22 +33,20 @@ public class MachineTeleporter extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineTeleporter();
 	}
 	
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 		
-		TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(tile instanceof TileEntityMachineTeleporter)) return;
+		if(!(tile instanceof TileEntityMachineTeleporter tele)) return;
+
+        final List<String> text = new ArrayList();
 		
-		TileEntityMachineTeleporter tele = (TileEntityMachineTeleporter) tile;
-		
-		List<String> text = new ArrayList();
-		
-		text.add((tele.power >= tele.consumption ? "§a" : "§c") + String.format("%,d", tele.power) + " / " + String.format("%,d", tele.maxPower));
+		text.add((tele.power >= TileEntityMachineTeleporter.consumption ? "§a" : "§c") + String.format("%,d", tele.power) + " / " + String.format("%,d", TileEntityMachineTeleporter.maxPower));
 		if(tele.target == null) {
 			text.add("§cNo destination set!");
 		} else {
@@ -59,7 +57,7 @@ public class MachineTeleporter extends BlockContainer implements ILookOverlay {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 }

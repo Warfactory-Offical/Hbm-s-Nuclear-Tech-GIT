@@ -23,7 +23,7 @@ public class ParticleRBMKFlame extends Particle {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/particle/rbmk_fire.png");
 	
-	public ParticleRBMKFlame(World worldIn, double posXIn, double posYIn, double posZIn, int maxAge){
+	public ParticleRBMKFlame(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final int maxAge){
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleMaxAge = maxAge;
 		this.particleScale = rand.nextFloat() + 1F;
@@ -35,7 +35,7 @@ public class ParticleRBMKFlame extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
 		Minecraft.getMinecraft().getTextureManager().bindTexture(getTexture());
 		com.hbm.render.RenderHelper.resetParticleInterpPos(entityIn, partialTicks);
 		
@@ -51,16 +51,16 @@ public class ParticleRBMKFlame extends Particle {
 		if(this.particleAge > this.particleMaxAge)
 			this.particleAge = this.particleMaxAge;
 		
-		int texIndex = this.particleAge * 5 % 14;
-		float f0 = 1F / 14F;
+		final int texIndex = this.particleAge * 5 % 14;
+		final float f0 = 1F / 14F;
 
-		float uMin = texIndex % 5 * f0;
-		float uMax = uMin + f0;
-		float vMin = 0;
-		float vMax = 1;
+		final float uMin = texIndex % 5 * f0;
+		final float uMax = uMin + f0;
+		final float vMin = 0;
+		final float vMax = 1;
 			
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = tes.getBuffer();
 		
 		GlStateManager.glNormal3f(0, 1, 0);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, this.particleAlpha);
@@ -80,17 +80,17 @@ public class ParticleRBMKFlame extends Particle {
 
 		this.particleAlpha *= 0.5F;
 		
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+		final float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
+		final float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
+		final float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 		
 		GL11.glTranslatef(pX + rotationX, pY + rotationZ, pZ + rotationYZ);
 		GL11.glRotatef(-Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
 
-		buf.pos((double) (-this.particleScale - 1), (double) (-this.particleScale * 2), (double) (0)).tex(uMax, vMax).endVertex();
-		buf.pos((double) (-this.particleScale - 1), (double) (this.particleScale * 2), (double) 0).tex(uMax, vMin).endVertex();
-		buf.pos((double) (this.particleScale - 1), (double) (this.particleScale * 2), (double) (0)).tex(uMin, vMin).endVertex();
-		buf.pos((double) (this.particleScale - 1), (double) (-this.particleScale * 2), (double) (0)).tex(uMin, vMax).endVertex();
+		buf.pos(-this.particleScale - 1, -this.particleScale * 2, 0).tex(uMax, vMax).endVertex();
+		buf.pos(-this.particleScale - 1, this.particleScale * 2, 0).tex(uMax, vMin).endVertex();
+		buf.pos(this.particleScale - 1, this.particleScale * 2, 0).tex(uMin, vMin).endVertex();
+		buf.pos(this.particleScale - 1, -this.particleScale * 2, 0).tex(uMin, vMax).endVertex();
 		
 		tes.draw();
 		

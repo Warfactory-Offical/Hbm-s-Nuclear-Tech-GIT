@@ -22,17 +22,17 @@ public class ItemRendererMeteorSword extends TEISRBase {
 	float g;
 	float b;
 	
-	public ItemRendererMeteorSword(float r, float g, float b) {
+	public ItemRendererMeteorSword(final float r, final float g, final float b) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
 	}
 	
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GL11.glTranslated(0.5, 0.5, 0.5);
 
-		Minecraft mc = Minecraft.getMinecraft();
+		final Minecraft mc = Minecraft.getMinecraft();
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, itemModel);
 
         mc.renderEngine.bindTexture(RenderMiscEffects.glint);
@@ -45,11 +45,11 @@ public class ItemRendererMeteorSword extends TEISRBase {
 
         for (int j1 = 0; j1 < 2; ++j1) {
         	 GlStateManager.blendFunc(GlStateManager.SourceFactor.DST_ALPHA, GlStateManager.DestFactor.ONE);
-            float f = 0.00390625F;
-            float f1 = 0.00390625F;
-            float f2 = (float)(Minecraft.getSystemTime() % (long)(3000 + j1 * 1873)) / (3000.0F + (float)(j1 * 1873))/8F;
-            float f3 = 0.0F;
-            Tessellator tessellator = Tessellator.getInstance();
+            final float f = 0.00390625F;
+            final float f1 = 0.00390625F;
+            final float f2 = (float)(Minecraft.getSystemTime() % (long)(3000 + j1 * 1873)) / (3000.0F + (float)(j1 * 1873))/8F;
+            final float f3 = 0.0F;
+            final Tessellator tessellator = Tessellator.getInstance();
             float f4 = 4.0F;
 
             if (j1 == 1)
@@ -57,15 +57,15 @@ public class ItemRendererMeteorSword extends TEISRBase {
                 f4 = -1.0F;
             }
 
-            float in = 0.36F;
+            final float in = 0.36F;
 
             GlStateManager.color(r * in, g * in, b * in, 1.0F);
 
-            int p_77018_2_ = 0;
-            int p_77018_4_ = 16;
-            int p_77018_3_ = 0;
-            int p_77018_5_ = 16;
-            int zLevel = 0;
+            final int p_77018_2_ = 0;
+            final int p_77018_4_ = 16;
+            final int p_77018_3_ = 0;
+            final int p_77018_5_ = 16;
+            final int zLevel = 0;
             GL11.glMatrixMode(GL11.GL_TEXTURE);
             GL11.glPushMatrix();
             GL11.glScaled(8, 8, 8);
@@ -76,17 +76,17 @@ public class ItemRendererMeteorSword extends TEISRBase {
             GlStateManager.pushMatrix();
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);
             
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            final BufferBuilder bufferbuilder = tessellator.getBuffer();
             bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 
-            int color = (0xFF << 24) | ((byte)((r * in) * 255) << 16) | ((byte)((g * in) * 255) << 8) | ((byte)((b * in) * 255));
+            final int color = (0xFF << 24) | ((byte)((r * in) * 255) << 16) | ((byte)((g * in) * 255) << 8) | ((byte)((b * in) * 255));
             
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (final EnumFacing enumfacing : EnumFacing.values())
             {
-            	 Minecraft.getMinecraft().getRenderItem().renderQuads(bufferbuilder, itemModel.getQuads((IBlockState)null, enumfacing, 0L), color, stack);
+            	 Minecraft.getMinecraft().getRenderItem().renderQuads(bufferbuilder, itemModel.getQuads(null, enumfacing, 0L), color, stack);
             }
 
-            Minecraft.getMinecraft().getRenderItem().renderQuads(bufferbuilder, itemModel.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
+            Minecraft.getMinecraft().getRenderItem().renderQuads(bufferbuilder, itemModel.getQuads(null, null, 0L), color, stack);
             tessellator.draw();
             
             GL11.glPopMatrix();

@@ -12,7 +12,7 @@ public class EntityAINuclearCreeperSwell extends EntityAIBase {
     EntityLivingBase creeperAttackTarget;
     private static final String __OBFID = "CL_00001614";
 
-    public EntityAINuclearCreeperSwell(EntityNuclearCreeper p_i1655_1_)
+    public EntityAINuclearCreeperSwell(final EntityNuclearCreeper p_i1655_1_)
     {
         this.swellingCreeper = p_i1655_1_;
         this.setMutexBits(1);
@@ -24,7 +24,7 @@ public class EntityAINuclearCreeperSwell extends EntityAIBase {
     @Override
 	public boolean shouldExecute()
     {
-        EntityLivingBase entitylivingbase = this.swellingCreeper.getAttackTarget();
+        final EntityLivingBase entitylivingbase = this.swellingCreeper.getAttackTarget();
         return this.swellingCreeper.getCreeperState() > 0 || entitylivingbase != null && this.swellingCreeper.getDistanceSq(entitylivingbase) < 9.0D;
     }
 

@@ -1,11 +1,8 @@
 package com.hbm.items.tool;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.items.ModItems;
 import com.hbm.tileentity.machine.TileEntityLockableBase;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,9 +14,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemCounterfitKeys extends Item {
 
-	public ItemCounterfitKeys(String s) {
+	public ItemCounterfitKeys(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -27,15 +26,13 @@ public class ItemCounterfitKeys extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityLockableBase) {
-			
-			TileEntityLockableBase locked = (TileEntityLockableBase) te;
-			
-			if(locked.isLocked()) {
-				ItemStack st = ItemStackUtil.itemStackFrom(ModItems.key_fake);
+		if(te instanceof TileEntityLockableBase locked) {
+
+            if(locked.isLocked()) {
+				final ItemStack st = ItemStackUtil.itemStackFrom(ModItems.key_fake);
 				ItemKeyPin.setPins(st, locked.getPins());
 				
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, st.copy());
@@ -56,7 +53,7 @@ public class ItemCounterfitKeys extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add("Use on a locked container to create two counterfeit keys!");
 	}
 }

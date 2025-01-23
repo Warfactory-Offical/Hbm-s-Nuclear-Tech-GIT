@@ -17,21 +17,21 @@ import net.minecraftforge.fluids.Fluid;
 public class RenderFluidDuctMk2<T extends TileEntityFFDuctBaseMk2> extends TileEntitySpecialRenderer<T> {
 	
 	@Override
-	public void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final T te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		if(te.getBlockType() == ModBlocks.fluid_duct_solid)
 			return;
 		GL11.glPushMatrix();
 		GlStateManager.enableLighting();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
-		boolean pX = te.connections[3] != null;
-		boolean nX = te.connections[5] != null;
-		boolean pY = te.connections[0] != null;
-		boolean nY = te.connections[1] != null;
-		boolean pZ = te.connections[4] != null;
-		boolean nZ = te.connections[2] != null;
+		final boolean pX = te.connections[3] != null;
+		final boolean nX = te.connections[5] != null;
+		final boolean pY = te.connections[0] != null;
+		final boolean nY = te.connections[1] != null;
+		final boolean pZ = te.connections[4] != null;
+		final boolean nZ = te.connections[2] != null;
 		
-		int mask = 0 + (pX ? 32 : 0) + (nX ? 16 : 0) + (pY ? 8 : 0) + (nY ? 4 : 0) + (pZ ? 2 : 0) + (nZ ? 1 : 0);
+		final int mask = (pX ? 32 : 0) + (nX ? 16 : 0) + (pY ? 8 : 0) + (nY ? 4 : 0) + (pZ ? 2 : 0) + (nZ ? 1 : 0);
 		
 		GL11.glTranslated(x + 0.5F, y + 0.5F, z + 0.5F);
 		

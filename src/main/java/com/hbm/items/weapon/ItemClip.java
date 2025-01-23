@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class ItemClip extends Item {
 
-	public ItemClip(String s) {
+	public ItemClip(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxDamage(1);
@@ -27,10 +27,10 @@ public class ItemClip extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand handIn) {
-		ItemStack stack = player.getHeldItem(handIn);
-		stack.shrink(1);;
-		if(stack.getCount() <= 0)
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer player, final EnumHand handIn) {
+		final ItemStack stack = player.getHeldItem(handIn);
+		stack.shrink(1);
+        if(stack.getCount() <= 0)
 			stack.damageItem(5, player);
 		
 		//REVOLVERS
@@ -311,7 +311,7 @@ public class ItemClip extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.ammo_container)
 		{
 			tooltip.add("Gives ammo for all held weapons.");

@@ -15,28 +15,28 @@ public class SchistStratum {
 	NoiseGeneratorPerlin noise;
 
 	@SubscribeEvent
-	public void onDecorate(DecorateBiomeEvent.Pre event) {
+	public void onDecorate(final DecorateBiomeEvent.Pre event) {
 
 		if(this.noise == null) {
 			this.noise = new NoiseGeneratorPerlin(event.getRand(), 4);
 		}
 
-		World world = event.getWorld();
+		final World world = event.getWorld();
 		
 		if(world.provider.getDimension() != 0)
 			return;
 		
-		int cX = event.getChunkPos().x * 16;
-		int cZ = event.getChunkPos().z * 16;
+		final int cX = event.getChunkPos().x * 16;
+		final int cZ = event.getChunkPos().z * 16;
 		
-		double scale = 0.01D;
-		int threshold = 5;
+		final double scale = 0.01D;
+		final int threshold = 5;
 
 		for(int x = cX; x < cX + 16; x++) {
 			
 			for(int z = cZ; z < cZ + 16; z++) {
 				
-				double n = noise.getValue(x * scale, z * scale);
+				final double n = noise.getValue(x * scale, z * scale);
 				if(n > threshold) {
 					int range = (int)((n - threshold) * 3);
 					
@@ -48,7 +48,7 @@ public class SchistStratum {
 					
 					for(int y = 30 - range; y <= 30 + range; y++) {
 						
-						IBlockState target = world.getBlockState(new BlockPos(x, y, z));
+						final IBlockState target = world.getBlockState(new BlockPos(x, y, z));
 						
 						if(target.isNormalCube() && target.getMaterial() == Material.ROCK) {
 							world.setBlockState(new BlockPos(x, y, z), ModBlocks.stone_gneiss.getDefaultState(), 2);

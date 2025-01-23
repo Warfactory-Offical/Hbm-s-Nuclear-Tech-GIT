@@ -14,10 +14,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUIAMSBase extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_ams_base.png");
-	private TileEntityAMSBase base;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_ams_base.png");
+	private final TileEntityAMSBase base;
 	
-	public GUIAMSBase(InventoryPlayer invPlayer, TileEntityAMSBase tedf) {
+	public GUIAMSBase(final InventoryPlayer invPlayer, final TileEntityAMSBase tedf) {
 		super(new ContainerAMSBase(invPlayer, tedf));
 		base = tedf;
 		
@@ -26,7 +26,7 @@ public class GUIAMSBase extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 70 - 52, 16, 52, base.tanks[0]);
@@ -39,7 +39,7 @@ public class GUIAMSBase extends GuiInfoContainer {
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 125, guiTop + 124 - 106, 7, 106, new String[] { "Heat:", base.heat + "/" + TileEntityAMSBase.maxHeat });
 
 		if(!base.hasResonators()) {
-			String[] text = new String[] { "Error: Three satellite ID-chips linked",
+			final String[] text = new String[] { "Error: Three satellite ID-chips linked",
 				"to xenium resonators are required",
 				"for this machine to work!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
@@ -48,37 +48,37 @@ public class GUIAMSBase extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer( int i, int j) {
-		String name = this.base.hasCustomInventoryName() ? this.base.getInventoryName() : I18n.format(this.base.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.base.hasCustomInventoryName() ? this.base.getInventoryName() : I18n.format(this.base.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		int i = (int)base.getPowerScaled(106);
+		final int i = (int)base.getPowerScaled(106);
 		drawTexturedModalRect(guiLeft + 116, guiTop + 124 - i, 206, 106 - i, 7, i);
 		
-		int j = base.getFieldScaled(106);
+		final int j = base.getFieldScaled(106);
 		drawTexturedModalRect(guiLeft + 44, guiTop + 124 - j, 192, 106 - j, 7, j);
 		
-		int k = base.getEfficiencyScaled(106);
+		final int k = base.getEfficiencyScaled(106);
 		drawTexturedModalRect(guiLeft + 53, guiTop + 124 - k, 199, 106 - k, 7, k);
 		
-		int l = base.getHeatScaled(106);
+		final int l = base.getHeatScaled(106);
 		drawTexturedModalRect(guiLeft + 125, guiTop + 124 - l, 213, 106 - l, 7, l);
 		
-		int m = base.mode;
+		final int m = base.mode;
 		if(m > 0)
 		drawTexturedModalRect(guiLeft + 80, guiTop + 108, 176, 32 + 16 * m, 16, 16);
 		
-		int n = base.warning;
+		final int n = base.warning;
 		if(n > 0)
 		drawTexturedModalRect(guiLeft + 80, guiTop + 18, 176, 32 + 16 * n, 16, 16);
 		

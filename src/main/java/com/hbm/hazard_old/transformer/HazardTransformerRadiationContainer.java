@@ -17,13 +17,13 @@ import net.minecraft.nbt.NBTTagCompound;
 public class HazardTransformerRadiationContainer extends HazardTransformerBase {
 
 	@Override
-	public void transformPre(ItemStack stack, List<HazardEntry> entries) { }
+	public void transformPre(final ItemStack stack, final List<HazardEntry> entries) { }
 
 	@Override
-	public void transformPost(ItemStack stack, List<HazardEntry> entries) {
+	public void transformPost(final ItemStack stack, final List<HazardEntry> entries) {
 		
-		boolean isCrate = Block.getBlockFromItem(stack.getItem()) instanceof BlockStorageCrate;
-		boolean isBox = stack.getItem() == ModItems.containment_box;
+		final boolean isCrate = Block.getBlockFromItem(stack.getItem()) instanceof BlockStorageCrate;
+		final boolean isBox = stack.getItem() == ModItems.containment_box;
 		//boolean isBag = stack.getItem() == ModItems.plastic_bag;
 
 		//TODO:Add that bag
@@ -36,8 +36,8 @@ public class HazardTransformerRadiationContainer extends HazardTransformerBase {
 		if(isCrate) {
 
 			for(int i = 0; i < 104; i++) {
-				NBTTagCompound slotTag = stack.getTagCompound().getCompoundTag("slot"+i);
-				ItemStack held = ItemStackUtil.itemStackFrom(slotTag);
+				final NBTTagCompound slotTag = stack.getTagCompound().getCompoundTag("slot"+i);
+				final ItemStack held = ItemStackUtil.itemStackFrom(slotTag);
 
 
 				if(held != null) {
@@ -49,10 +49,10 @@ public class HazardTransformerRadiationContainer extends HazardTransformerBase {
 		if(isBox) {
 
 			//ItemStack[] fromNBT = ItemStackUtil.readStacksFromNBT(stack, 20);
-			ItemStack[] fromNBT = ItemStackUtil.readStacksFromNBT(stack);
+			final ItemStack[] fromNBT = ItemStackUtil.readStacksFromNBT(stack);
 			if(fromNBT == null) return;
 			
-			for(ItemStack held : fromNBT) {
+			for(final ItemStack held : fromNBT) {
 				if(held != null) {
 					radiation += HazardSystem.getHazardLevelFromStack(held, HazardRegistry.RADIATION) * held.getCount();
 				}

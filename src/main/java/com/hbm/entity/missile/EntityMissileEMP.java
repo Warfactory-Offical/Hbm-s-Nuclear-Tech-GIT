@@ -14,12 +14,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileEMP extends EntityMissileBaseAdvanced {
 
-	public EntityMissileEMP(World p_i1582_1_) {
+	public EntityMissileEMP(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 7F);
 	}
 
-	public EntityMissileEMP(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileEMP(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 7F);
 	}
@@ -29,7 +29,7 @@ public class EntityMissileEMP extends EntityMissileBaseAdvanced {
         if (!this.world.isRemote)
         {
 			ExplosionNukeGeneric.empBlast(world, (int)posX, (int)posY, (int)posZ, 50);
-			EntityEMPBlast wave = new EntityEMPBlast(world, 50);
+			final EntityEMPBlast wave = new EntityEMPBlast(world, 50);
 			wave.posX = posX;
 			wave.posY = posY;
 			wave.posZ = posZ;
@@ -39,7 +39,7 @@ public class EntityMissileEMP extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 4));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));

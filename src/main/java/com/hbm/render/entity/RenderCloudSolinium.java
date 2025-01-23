@@ -18,12 +18,12 @@ public class RenderCloudSolinium extends Render<EntityCloudSolinium> {
 	public static final IRenderFactory<EntityCloudSolinium> FACTORY = (RenderManager man) -> {return new RenderCloudSolinium(man);};
 	
 	private static final ResourceLocation objTesterModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/Sphere.obj");
-	private IModelCustom blastModel;
-    private ResourceLocation blastTexture;
+	private final IModelCustom blastModel;
+    private final ResourceLocation blastTexture;
     public float scale = 0;
     public float ring = 0;
     
-	protected RenderCloudSolinium(RenderManager renderManager) {
+	protected RenderCloudSolinium(final RenderManager renderManager) {
 		super(renderManager);
 		blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
     	blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/explosion/BlastSolinium.png");
@@ -31,7 +31,7 @@ public class RenderCloudSolinium extends Render<EntityCloudSolinium> {
 	}
 	
 	@Override
-	public void doRender(EntityCloudSolinium cloud, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityCloudSolinium cloud, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -47,7 +47,7 @@ public class RenderCloudSolinium extends Render<EntityCloudSolinium> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityCloudSolinium entity) {
+	protected ResourceLocation getEntityTexture(final EntityCloudSolinium entity) {
 		return null;
 	}
 

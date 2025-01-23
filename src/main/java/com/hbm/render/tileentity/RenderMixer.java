@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.FluidTank;
 public class RenderMixer extends TileEntitySpecialRenderer<TileEntityMachineMixer> {
 
 	@Override
-	public void render(TileEntityMachineMixer mixer, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineMixer mixer, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GlStateManager.enableLighting();
@@ -50,7 +50,7 @@ public class RenderMixer extends TileEntitySpecialRenderer<TileEntityMachineMixe
 			GL11.glAlphaFunc(GL11.GL_GREATER, 0);
 			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			
-			Color color = new Color(ModForgeFluids.getFluidColor(mixer.outputFluid));
+			final Color color = new Color(ModForgeFluids.getFluidColor(mixer.outputFluid));
 			GL11.glColor4f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 0.75F);
 			GL11.glTranslated(0, 1, 0);
 			if(mixer.uuMixer){

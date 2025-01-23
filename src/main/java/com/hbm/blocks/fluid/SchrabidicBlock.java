@@ -21,7 +21,7 @@ public class SchrabidicBlock extends BlockFluidClassic {
 
 	public static DamageSource damageSource;
 	
-	public SchrabidicBlock(Fluid fluid, Material material, DamageSource source, String s) {
+	public SchrabidicBlock(final Fluid fluid, final Material material, final DamageSource source, final String s) {
 		super(fluid, material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,7 +34,7 @@ public class SchrabidicBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean canDisplace(IBlockAccess world, BlockPos pos) {
+	public boolean canDisplace(final IBlockAccess world, final BlockPos pos) {
 		if (world.getBlockState(pos).getMaterial().isLiquid()) {
 			return false;
 		}
@@ -42,7 +42,7 @@ public class SchrabidicBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean displaceIfPossible(World world, BlockPos pos) {
+	public boolean displaceIfPossible(final World world, final BlockPos pos) {
 		if (world.getBlockState(pos).getMaterial().isLiquid()) {
 			return false;
 		}
@@ -50,18 +50,18 @@ public class SchrabidicBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity) {
 		entity.setInWeb();
 		if(entity instanceof EntityLivingBase)
 			ContaminationUtil.contaminate((EntityLivingBase)entity, HazardType.RADIATION, ContaminationType.CREATIVE, 10.0F);
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighbourPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block neighborBlock, final BlockPos neighbourPos) {
 		super.neighborChanged(state, world, pos, neighborBlock, neighbourPos);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
 		if(reactToBlocks(world, x + 1, y, z))
 			world.setBlockState(pos, ModBlocks.sellafield_slaked.getDefaultState());
 		if(reactToBlocks(world, x - 1, y, z))
@@ -76,17 +76,15 @@ public class SchrabidicBlock extends BlockFluidClassic {
 			world.setBlockState(pos, ModBlocks.sellafield_slaked.getDefaultState());
 	}
 	
-	public boolean reactToBlocks(World world, int x, int y, int z) {
+	public boolean reactToBlocks(final World world, final int x, final int y, final int z) {
 		if(world.getBlockState(new BlockPos(x, y, z)).getMaterial() != ModBlocks.fluidschrabidic) {
-			if(world.getBlockState(new BlockPos(x, y, z)).getMaterial().isLiquid()) {
-				return true;
-			}
+            return world.getBlockState(new BlockPos(x, y, z)).getMaterial().isLiquid();
 		}
 		return false;
 	}
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 		return 15;
 	}
 

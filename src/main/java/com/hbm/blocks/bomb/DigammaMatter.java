@@ -21,9 +21,9 @@ public class DigammaMatter extends Block {
 	
 	public static final PropertyInteger META = BlockDummyable.META;
 	
-	private static Random rand = new Random(); 
+	private static final Random rand = new Random();
 
-	public DigammaMatter(String s) {
+	public DigammaMatter(final String s) {
 		super(Material.PORTAL);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,42 +32,42 @@ public class DigammaMatter extends Block {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos){
 		return NULL_AABB;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(IBlockState state){
+	public boolean isBlockNormalCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
-		float pixel = 0.0625F;
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
+		final float pixel = 0.0625F;
 		return new AxisAlignedBB(rand.nextInt(9) * pixel, rand.nextInt(9) * pixel, rand.nextInt(9) * pixel, 1.0F - rand.nextInt(9) * pixel, 1.0F - rand.nextInt(9) * pixel, 1.0F - rand.nextInt(9) * pixel);
 	}
 	
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state){
+	public void onBlockAdded(final World world, final BlockPos pos, final IBlockState state){
 		if(!world.isRemote)
 			world.scheduleUpdate(pos, this, 10 + rand.nextInt(40));
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		if(!world.isRemote) {
 			
-			int meta = state.getValue(META);
+			final int meta = state.getValue(META);
 			
 			if(meta >= 7) {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -80,7 +80,7 @@ public class DigammaMatter extends Block {
 					for(int j = -1; j <= 1; j++) {
 						for(int k = -1; k <= 1; k++) {
 							
-							int dist = Math.abs(i) + Math.abs(j) + Math.abs(k);
+							final int dist = Math.abs(i) + Math.abs(j) + Math.abs(k);
 							
 							if(dist > 0 && dist < 3) {
 								if(world.getBlockState(new BlockPos(pos.getX() + i, pos.getY() + j, pos.getZ() + k)).getBlock() != this)
@@ -95,16 +95,16 @@ public class DigammaMatter extends Block {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{META});
+		return new BlockStateContainer(this, META);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(META);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(META, meta);
 	}
 	

@@ -36,7 +36,7 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 
 	public static final ModelResourceLocation identifierModel = new ModelResourceLocation(RefStrings.MODID + ":forge_fluid_identifier", "inventory");
 
-	public ItemForgeFluidIdentifier(String s) {
+	public ItemForgeFluidIdentifier(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.partsTab);
@@ -45,7 +45,7 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack) {
+	public ItemStack getContainerItem(final ItemStack itemStack) {
 		return itemStack.copy();
 	}
 
@@ -55,13 +55,13 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(GeneralConfig.registerTanks){
 			if (tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
-				for (Entry<String, Fluid> set : FluidRegistry.getRegisteredFluids().entrySet()) {
+				for (final Entry<String, Fluid> set : FluidRegistry.getRegisteredFluids().entrySet()) {
 					if(FluidTypeHandler.noID(set.getValue())) continue;
-					ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
-					NBTTagCompound tag = new NBTTagCompound();
+					final ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
+					final NBTTagCompound tag = new NBTTagCompound();
 					tag.setString("fluidtype", set.getKey());
 					stack.setTagCompound(tag);
 					items.add(stack);
@@ -71,7 +71,7 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if (!(stack.getItem() instanceof ItemForgeFluidIdentifier))
 			return;
 		Fluid f = null;
@@ -87,27 +87,26 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 			list.add("   " + "ERROR - bad data");
 	}
 
-	public static Fluid getType(ItemStack stack) {
+	public static Fluid getType(final ItemStack stack) {
 		if (stack != null && stack.getItem() instanceof ItemForgeFluidIdentifier && stack.hasTagCompound())
 			return FluidRegistry.getFluid(stack.getTagCompound().getString("fluidtype"));
 		else
 			return null;
 	}
 	
-	public static ItemStack getStackFromFluid(Fluid f){
-		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.forge_fluid_identifier, 1, 0);
-		NBTTagCompound tag = new NBTTagCompound();
+	public static ItemStack getStackFromFluid(final Fluid f){
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.forge_fluid_identifier, 1, 0);
+		final NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("fluidtype", f.getName());
 		stack.setTagCompound(tag);
 		return stack;
 	}
 
-	public static void spreadType(World worldIn, BlockPos pos, Fluid hand, Fluid pipe, int x){
+	public static void spreadType(final World worldIn, final BlockPos pos, final Fluid hand, final Fluid pipe, final int x){
 		if(x > 0){
-			TileEntity te = worldIn.getTileEntity(pos);
-			if(te != null && te instanceof TileEntityFFDuctBaseMk2){
-				TileEntityFFDuctBaseMk2 duct = (TileEntityFFDuctBaseMk2) te;
-				if(duct.getType() == pipe){
+			final TileEntity te = worldIn.getTileEntity(pos);
+			if(te != null && te instanceof TileEntityFFDuctBaseMk2 duct){
+                if(duct.getType() == pipe){
 					duct.setType(hand);
 					duct.markDirty();
 					spreadType(worldIn, pos.add(1, 0, 0), hand, pipe, x-1);
@@ -122,8 +121,8 @@ public class ItemForgeFluidIdentifier extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = worldIn.getTileEntity(pos);
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final TileEntity te = worldIn.getTileEntity(pos);
 		TileEntityFFDuctBaseMk2 duct = null;
 		if(te != null && te instanceof TileEntityFFDuctBaseMk2){
 			duct = (TileEntityFFDuctBaseMk2) te;

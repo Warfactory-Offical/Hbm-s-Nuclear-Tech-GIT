@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class ToxicFluid extends Fluid {
 
-	public ToxicFluid(String name){
+	public ToxicFluid(final String name){
 		super(name, new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/toxic_still"), new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/toxic_flowing"), Color.white);
 	}
 	

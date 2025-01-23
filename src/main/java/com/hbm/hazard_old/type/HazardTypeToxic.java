@@ -23,17 +23,16 @@ import static com.hbm.hazard_old.helper.HazardHelper.applyPotionEffect;
 
 public class HazardTypeToxic extends HazardTypeBase {
 	@Override
-	public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
+	public void onUpdate(final EntityLivingBase target, final float level, final ItemStack stack) {
 
 		if (RadiationConfig.disableToxic) return;
 
-		boolean reacher = HazardHelper.isHoldingReacher(target);
+		final boolean reacher = HazardHelper.isHoldingReacher(target);
 		boolean hasToxFilter = false;
 		boolean hasHazmat = false;
 
-		if (target instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) target;
-			hasToxFilter = ArmorRegistry.hasProtection(player, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.NERVE_AGENT);
+		if (target instanceof EntityPlayer player) {
+            hasToxFilter = ArmorRegistry.hasProtection(player, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.NERVE_AGENT);
 
 			if (hasToxFilter) {
 				ArmorUtil.damageGasMaskFilter(player, 1);
@@ -42,7 +41,7 @@ public class HazardTypeToxic extends HazardTypeBase {
 			hasHazmat = ArmorUtil.checkForHazmat(player);
 		}
 
-		boolean isUnprotected = !(hasToxFilter || hasHazmat || reacher);
+		final boolean isUnprotected = !(hasToxFilter || hasHazmat || reacher);
 
 		if (isUnprotected) {
 			applyPotionEffect(target, MobEffects.WEAKNESS, 110, (int) (level - 1));
@@ -76,12 +75,12 @@ public class HazardTypeToxic extends HazardTypeBase {
 
 
     @Override
-    public void updateEntity(EntityItem item, float level) { }
+    public void updateEntity(final EntityItem item, final float level) { }
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public void addHazardInformation(EntityPlayer player, List list, float level, ItemStack stack, List<HazardModifier> modifiers) {
-		String adjectiveKey;
+    public void addHazardInformation(final EntityPlayer player, final List list, final float level, final ItemStack stack, final List<HazardModifier> modifiers) {
+		final String adjectiveKey;
 
 		if (level > 16) {
 			adjectiveKey = "adjective.extreme";

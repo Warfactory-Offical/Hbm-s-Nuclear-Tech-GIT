@@ -28,7 +28,7 @@ public class EntityNukeExplosionPlus extends Entity {
 	public boolean did2 = false;
 	public boolean waste = true;
 	
-	public EntityNukeExplosionPlus(World worldIn) {
+	public EntityNukeExplosionPlus(final World worldIn) {
 		super(worldIn);
 	}
 	
@@ -80,7 +80,7 @@ public class EntityNukeExplosionPlus extends Entity {
         	ContaminationUtil.radiate(this.world, this.posX, this.posY, this.posZ, this.destructionRange * 2, this.destructionRange * 10, 0, this.destructionRange * 2, this.destructionRange * 3);
         } else {
 			if (!did2 && waste) {
-				EntityFalloutRain fallout = new EntityFalloutRain(this.world, (this.wasteRange) * 10);
+				final EntityFalloutRain fallout = new EntityFalloutRain(this.world, (this.wasteRange) * 10);
 				fallout.posX = this.posX;
 				fallout.posY = this.posY;
 				fallout.posZ = this.posZ;
@@ -100,11 +100,11 @@ public class EntityNukeExplosionPlus extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 	}
 
 }

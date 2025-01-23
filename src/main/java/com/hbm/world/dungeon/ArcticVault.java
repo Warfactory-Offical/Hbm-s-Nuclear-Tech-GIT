@@ -20,11 +20,11 @@ import net.minecraft.world.biome.Biome;
 
 public class ArcticVault {
 
-	public void trySpawn(World world, int x, int y, int z) {
+	public void trySpawn(final World world, final int x, int y, final int z) {
 
 		y--;
 
-		Biome biome = world.getBiome(new BlockPos(x, y, z));
+		final Biome biome = world.getBiome(new BlockPos(x, y, z));
 
 		if(biome.getTemperature(new BlockPos(x, y, z)) < 0.2 && world.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.ROCK) {
 			build(world, x, y, z);
@@ -32,11 +32,11 @@ public class ArcticVault {
 
 	}
 
-	private void build(World world, int x, int y, int z) {
+	private void build(final World world, final int x, final int y, final int z) {
 
-		List<IBlockState> brick = Arrays.asList(Blocks.STONEBRICK.getDefaultState(), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED));
-		List<IBlockState> web = Arrays.asList(Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), Blocks.WEB.getDefaultState());
-		List<IBlockState> crates = Arrays.asList(ModBlocks.crate.getDefaultState(), ModBlocks.crate_metal.getDefaultState(), ModBlocks.crate_ammo.getDefaultState(), ModBlocks.crate_can.getDefaultState(), ModBlocks.crate_jungle.getDefaultState());
+		final List<IBlockState> brick = Arrays.asList(Blocks.STONEBRICK.getDefaultState(), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED));
+		final List<IBlockState> web = Arrays.asList(Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), Blocks.WEB.getDefaultState());
+		final List<IBlockState> crates = Arrays.asList(ModBlocks.crate.getDefaultState(), ModBlocks.crate_metal.getDefaultState(), ModBlocks.crate_ammo.getDefaultState(), ModBlocks.crate_can.getDefaultState(), ModBlocks.crate_jungle.getDefaultState());
 
 		DungeonToolbox.generateBox(world, x - 5, y, z - 5, 11, 1, 11, brick);
 		DungeonToolbox.generateBox(world, x - 5, y + 6, z - 5, 11, 1, 11, brick);
@@ -53,17 +53,17 @@ public class ArcticVault {
 		DungeonToolbox.generateBox(world, x - 4, y + 4, z - 4, 9, 2, 9, web);
 
 		for(int i = 0; i < 15; i++) {
-			int ix = x - 4 + world.rand.nextInt(10);
-			int iz = z - 4 + world.rand.nextInt(10);
+			final int ix = x - 4 + world.rand.nextInt(10);
+			final int iz = z - 4 + world.rand.nextInt(10);
 
 			if(world.getBlockState(new BlockPos(ix, y + 1, iz)).getBlock() == Blocks.SNOW_LAYER) {
-				IBlockState b = DungeonToolbox.getRandom(crates, world.rand);
+				final IBlockState b = DungeonToolbox.getRandom(crates, world.rand);
 				world.setBlockState(new BlockPos(ix, y + 1, iz), b, 2);
 				world.setBlockState(new BlockPos(ix, y + 2, iz), Blocks.SNOW_LAYER.getDefaultState());
 			}
 		}
 
-		int iy = world.getHeight(x, z);
+		final int iy = world.getHeight(x, z);
 
 		if(world.getBlockState(new BlockPos(x, iy - 1, z)).isSideSolid(world, new BlockPos(x, iy - 1, z), EnumFacing.UP)) {
 			world.setBlockState(new BlockPos(x, iy, z), ModBlocks.tape_recorder.getDefaultState());

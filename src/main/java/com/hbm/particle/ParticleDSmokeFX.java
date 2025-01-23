@@ -14,11 +14,11 @@ public class ParticleDSmokeFX extends Particle {
 
 	public static TextureAtlasSprite[] sprites = new TextureAtlasSprite[8];
 
-	public ParticleDSmokeFX(World p_i1225_1_, double p_i1225_2_, double p_i1225_4_, double p_i1225_6_, double p_i1225_8_, double p_i1225_10_, double p_i1225_12_) {
+	public ParticleDSmokeFX(final World p_i1225_1_, final double p_i1225_2_, final double p_i1225_4_, final double p_i1225_6_, final double p_i1225_8_, final double p_i1225_10_, final double p_i1225_12_) {
 		this(p_i1225_1_, p_i1225_2_, p_i1225_4_, p_i1225_6_, p_i1225_8_, p_i1225_10_, p_i1225_12_, 1.0F);
 	}
 
-	public ParticleDSmokeFX(World p_i1226_1_, double p_i1226_2_, double p_i1226_4_, double p_i1226_6_, double p_i1226_8_, double p_i1226_10_, double p_i1226_12_, float p_i1226_14_) {
+	public ParticleDSmokeFX(final World p_i1226_1_, final double p_i1226_2_, final double p_i1226_4_, final double p_i1226_6_, final double p_i1226_8_, final double p_i1226_10_, final double p_i1226_12_, final float p_i1226_14_) {
 		super(p_i1226_1_, p_i1226_2_, p_i1226_4_, p_i1226_6_, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;
@@ -35,7 +35,7 @@ public class ParticleDSmokeFX extends Particle {
 		this.canCollide = true;
 	}
 
-	public void setMotion(double x, double y, double z) {
+	public void setMotion(final double x, final double y, final double z) {
 		this.motionX = x;
 		this.motionY = y;
 		this.motionZ = z;
@@ -77,7 +77,7 @@ public class ParticleDSmokeFX extends Particle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		particleTexture = null;
 		if (this.particleAge <= this.particleMaxAge && this.particleAge >= this.particleMaxAge / 8 * 7) {
 			particleTexture = sprites[7];
@@ -103,7 +103,7 @@ public class ParticleDSmokeFX extends Particle {
 			particleTexture = sprites[2];
 		}
 
-		if (this.particleAge < this.particleMaxAge / 8 * 2 && this.particleAge >= this.particleMaxAge / 8 * 1) {
+		if (this.particleAge < this.particleMaxAge / 8 * 2 && this.particleAge >= this.particleMaxAge / 8) {
 			particleTexture = sprites[1];
 		}
 
@@ -114,18 +114,18 @@ public class ParticleDSmokeFX extends Particle {
 		if (particleTexture != null) {
 
 			////
-			Random randy = new Random(this.hashCode());
+			final Random randy = new Random(this.hashCode());
 			////
-			Random rand = new Random(100);
+			final Random rand = new Random(100);
 			for (int i = 0; i < 5; i++) {
-				double d = randy.nextInt(10) * 0.05;
+				final double d = randy.nextInt(10) * 0.05;
 				GL11.glColor3d(1 - d, 1 - d, 1 - d);
 				this.particleRed = this.particleBlue = this.particleGreen = (float) (1 - d);
 				
-				double dX = (rand.nextGaussian() - 1D) * 0.15D;
-				double dY = (rand.nextGaussian() - 1D) * 0.15D;
-				double dZ = (rand.nextGaussian() - 1D) * 0.15D;
-				double size = rand.nextDouble() * 0.5D + 0.35D;
+				final double dX = (rand.nextGaussian() - 1D) * 0.15D;
+				final double dY = (rand.nextGaussian() - 1D) * 0.15D;
+				final double dZ = (rand.nextGaussian() - 1D) * 0.15D;
+				final double size = rand.nextDouble() * 0.5D + 0.35D;
 				
 				this.particleScale *= size;
 				interpPosX += dX;

@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 
 public class MissilePronter {
 
-	public static void prontMissile(MissileMultipart missile, TextureManager tex) {
+	public static void prontMissile(final MissileMultipart missile, final TextureManager tex) {
 		
 		//if(!missile.hadFuselage())
 		//	return;

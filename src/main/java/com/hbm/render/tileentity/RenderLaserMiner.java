@@ -15,16 +15,16 @@ import net.minecraft.util.math.MathHelper;
 public class RenderLaserMiner extends TileEntitySpecialRenderer<TileEntityMachineMiningLaser> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityMachineMiningLaser te) {
+	public boolean isGlobalRenderer(final TileEntityMachineMiningLaser te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMachineMiningLaser te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineMiningLaser te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y - 1, z + 0.5);
 
-		TileEntityMachineMiningLaser laser = (TileEntityMachineMiningLaser)te;
+		final TileEntityMachineMiningLaser laser = te;
 		double tx = x;
 		double ty = 0;
 		double tz = z;
@@ -33,24 +33,24 @@ public class RenderLaserMiner extends TileEntitySpecialRenderer<TileEntityMachin
 			ty = (laser.targetY - laser.lastTargetY) * partialTicks + laser.lastTargetY;
 			tz = (laser.targetZ - laser.lastTargetZ) * partialTicks + laser.lastTargetZ;
 		}
-		double vx = tx - laser.getPos().getX();
-		double vy = ty - laser.getPos().getY() + 3;
-		double vz = tz - laser.getPos().getZ();
+		final double vx = tx - laser.getPos().getX();
+		final double vy = ty - laser.getPos().getY() + 3;
+		final double vz = tz - laser.getPos().getZ();
 
 		Vec3 nVec = Vec3.createVectorHelper(vx, vy, vz);
 		nVec = nVec.normalize();
 
-		double d = 1.5D;
+		final double d = 1.5D;
 		nVec.xCoord *= d;
 		nVec.yCoord *= d;
 		nVec.zCoord *= d;
 
-		Vec3 vec = Vec3.createVectorHelper(vx - nVec.xCoord, vy - nVec.yCoord, vz - nVec.zCoord);
+		final Vec3 vec = Vec3.createVectorHelper(vx - nVec.xCoord, vy - nVec.yCoord, vz - nVec.zCoord);
 
 		double length = vec.length();
-		double yaw = Math.toDegrees(Math.atan2(vec.xCoord, vec.zCoord));
-		double sqrt = MathHelper.sqrt(vec.xCoord * vec.xCoord + vec.zCoord * vec.zCoord);
-		double pitch = Math.toDegrees(Math.atan2(vec.yCoord, sqrt));
+		final double yaw = Math.toDegrees(Math.atan2(vec.xCoord, vec.zCoord));
+		final double sqrt = MathHelper.sqrt(vec.xCoord * vec.xCoord + vec.zCoord * vec.zCoord);
+		final double pitch = Math.toDegrees(Math.atan2(vec.yCoord, sqrt));
 		//turns out using tan(vec.yCoord, length) was inaccurate,
 		//the emitter wouldn't match the laser perfectly when pointing down
 
@@ -77,7 +77,7 @@ public class RenderLaserMiner extends TileEntitySpecialRenderer<TileEntityMachin
 		if(laser.beam) {
 			length = vec.length();
 			GL11.glTranslated(nVec.xCoord, nVec.yCoord - 1, nVec.zCoord);
-			int range = (int)Math.ceil(length * 0.5);
+			final int range = (int)Math.ceil(length * 0.5);
 			BeamPronter.prontBeam(vec, EnumWaveType.STRAIGHT, EnumBeamType.SOLID, 0xa00000, 0xFFFFFF, 0, 1, 0, 3, 0.09F);
 		}
 

@@ -25,13 +25,13 @@ public class RenderRADBeast extends RenderLiving<EntityRADBeast> {
 	private static final ResourceLocation blazeTextures = new ResourceLocation(RefStrings.MODID, "textures/entity/radbeast.png");
     private static final ResourceLocation mask = new ResourceLocation(RefStrings.MODID, "textures/armor/ModelM65Blaze.png");
 	
-	public RenderRADBeast(RenderManager rendermanagerIn) {
+	public RenderRADBeast(final RenderManager rendermanagerIn) {
 		super(rendermanagerIn, new ModelBlaze(), 0.5F);
 	}
 
 	@Override
-	public void doRender(EntityRADBeast entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		Entity victim = entity.getUnfortunateSoul();
+	public void doRender(final EntityRADBeast entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+		final Entity victim = entity.getUnfortunateSoul();
 		
 		if(victim != null) {
 
@@ -39,18 +39,18 @@ public class RenderRADBeast extends RenderLiving<EntityRADBeast> {
 			
             GL11.glTranslated(x, y + 1.25, z);
             
-	        double sx = entity.posX;
-	        double sy = entity.posY + 1.25;
-	        double sz = entity.posZ;
+	        final double sx = entity.posX;
+	        final double sy = entity.posY + 1.25;
+	        final double sz = entity.posZ;
 
-	        double tX = victim.posX;
+	        final double tX = victim.posX;
 	        double tY = victim.posY + victim.height / 2;
-	        double tZ = victim.posZ;
+	        final double tZ = victim.posZ;
 	        
 	        if(victim == Minecraft.getMinecraft().player)
 	        	tY -= 1.5;
 	        
-	    	double length = Math.sqrt(Math.pow(tX - sx, 2) + Math.pow(tY - sy, 2) + Math.pow(tZ - sz, 2));
+	    	final double length = Math.sqrt(Math.pow(tX - sx, 2) + Math.pow(tY - sy, 2) + Math.pow(tZ - sz, 2));
 	        BeamPronter.prontBeam(Vec3.createVectorHelper(tX - sx, tY - sy, tZ - sz), EnumWaveType.RANDOM, EnumBeamType.SOLID, 0x004000, 0x004000, (int) (entity.world.getTotalWorldTime() % 1000 + 1), (int) (length * 5), 0.125F, 2, 0.03125F);
 			
 	        GL11.glPopMatrix();
@@ -59,14 +59,14 @@ public class RenderRADBeast extends RenderLiving<EntityRADBeast> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityRADBeast entity) {
+	protected ResourceLocation getEntityTexture(final EntityRADBeast entity) {
 		return blazeTextures;
 	}
 	
 	private ModelM65Blaze modelM65;
 	
 	@Override
-	protected void renderModel(EntityRADBeast entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	protected void renderModel(final EntityRADBeast entitylivingbaseIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYaw, final float headPitch, final float scaleFactor) {
 		this.bindTexture(mask);
 			
 		if(this.modelM65 == null){

@@ -63,11 +63,11 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -76,7 +76,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		detectPower = power + 1;
 		if (compound.hasKey("inventory"))
@@ -86,7 +86,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -94,7 +94,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 		return super.writeToNBT(compound);
 	}
 
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 
@@ -143,7 +143,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 
@@ -164,18 +164,18 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 
-	public boolean setCoords(int x, int z){
+	public boolean setCoords(final int x, final int z){
 		if(!inventory.getStackInSlot(1).isEmpty() && (inventory.getStackInSlot(1).getItem() == ModItems.designator || inventory.getStackInSlot(1).getItem() == ModItems.designator_range || inventory.getStackInSlot(1).getItem() == ModItems.designator_manual)){
-			NBTTagCompound nbt;
+			final NBTTagCompound nbt;
 			if(inventory.getStackInSlot(1).hasTagCompound())
 				nbt = inventory.getStackInSlot(1).getTagCompound();
 			else
@@ -196,16 +196,16 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Callback(doc = "setTarget(x:int, z:int); saves coords in target designator item - returns true if it worked")
-	public Object[] setTarget(Context context, Arguments args) {
-		int x = args.checkInteger(0);
-		int z = args.checkInteger(1);
+	public Object[] setTarget(final Context context, final Arguments args) {
+		final int x = args.checkInteger(0);
+		final int z = args.checkInteger(1);
 		
 		return new Object[] {setCoords(x, z)};
 	}
 
 	@Callback(doc = "launch(); tries to launch the rocket")
-	public Object[] launch(Context context, Arguments args) {
-		Block b = world.getBlockState(pos).getBlock();
+	public Object[] launch(final Context context, final Arguments args) {
+		final Block b = world.getBlockState(pos).getBlock();
 		if(b instanceof IBomb){
 			((IBomb)b).explode(world, pos);
 		}

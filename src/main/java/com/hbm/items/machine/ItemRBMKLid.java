@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class ItemRBMKLid extends Item {
 
-	public ItemRBMKLid(String s){
+	public ItemRBMKLid(final String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -28,25 +28,22 @@ public class ItemRBMKLid extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos bpos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
-		Block b = world.getBlockState(bpos).getBlock();
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos bpos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+		final Block b = world.getBlockState(bpos).getBlock();
 		
-		if(!world.isRemote && b instanceof RBMKBase) {
-			RBMKBase rbmk = (RBMKBase) b;
-			
-			int[] pos = rbmk.findCore(world, bpos.getX(), bpos.getY(), bpos.getZ());
+		if(!world.isRemote && b instanceof RBMKBase rbmk) {
+
+            final int[] pos = rbmk.findCore(world, bpos.getX(), bpos.getY(), bpos.getZ());
 			
 			if(pos == null)
 				return EnumActionResult.FAIL;
 			
-			TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
-			if(!(te instanceof TileEntityRBMKBase))
+			if(!(te instanceof TileEntityRBMKBase tile))
 				return EnumActionResult.FAIL;
-			
-			TileEntityRBMKBase tile = (TileEntityRBMKBase) te;
-			
-			if(tile.hasLid())
+
+            if(tile.hasLid())
 				return EnumActionResult.FAIL;
 			
 			int meta = RBMKBase.DIR_NORMAL_LID.ordinal();
@@ -59,7 +56,7 @@ public class ItemRBMKLid extends Item {
 			}
 			
 			world.setBlockState(new BlockPos(pos[0], pos[1], pos[2]), world.getBlockState(new BlockPos(pos[0], pos[1], pos[2])).withProperty(BlockDummyable.META, meta + RBMKBase.offset), 3);
-			NBTTagCompound nbt = tile.writeToNBT(new NBTTagCompound());
+			final NBTTagCompound nbt = tile.writeToNBT(new NBTTagCompound());
 			world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2])).readFromNBT(nbt);
 			
 			player.getHeldItem(hand).shrink(1);

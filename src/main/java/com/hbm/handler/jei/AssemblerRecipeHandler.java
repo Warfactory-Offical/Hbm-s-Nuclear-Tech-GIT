@@ -30,7 +30,7 @@ public class AssemblerRecipeHandler implements IRecipeCategory<AssemblerRecipeWr
 	protected final IDrawableStatic staticPower;
 	protected final IDrawableAnimated animatedPower;
 	
-	public AssemblerRecipeHandler(IGuiHelper help) {
+	public AssemblerRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 156, 56);
 		staticArrow = help.createDrawable(gui_rl, 16, 86, 36, 18);
 		animatedArrow = help.createAnimatedDrawable(staticArrow, 48, StartDirection.LEFT, false);
@@ -64,15 +64,15 @@ public class AssemblerRecipeHandler implements IRecipeCategory<AssemblerRecipeWr
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		animatedArrow.draw(minecraft, 100, 19);
 		animatedPower.draw(minecraft, 2, 2);
 	}
 	
 	
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, AssemblerRecipeWrapper recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final AssemblerRecipeWrapper recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(inputSlots[0], true, 28, 1);
 		guiItemStacks.init(inputSlots[1], true, 46, 1);

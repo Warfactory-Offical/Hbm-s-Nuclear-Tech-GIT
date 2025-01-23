@@ -8,9 +8,9 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityProxyEnergy extends TileEntityProxyBase implements IEnergyUser {
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 
-		TileEntity te = getTE();
+		final TileEntity te = getTE();
 
 		if(te instanceof IEnergyUser) {
 			((IEnergyUser) te).setPower(i);
@@ -20,7 +20,7 @@ public class TileEntityProxyEnergy extends TileEntityProxyBase implements IEnerg
 	@Override
 	public long getPower() {
 
-		TileEntity te = getTE();
+		final TileEntity te = getTE();
 
 		if(te instanceof IEnergyUser) {
 			return ((IEnergyUser) te).getPower();
@@ -32,7 +32,7 @@ public class TileEntityProxyEnergy extends TileEntityProxyBase implements IEnerg
 	@Override
 	public long getMaxPower() {
 
-		TileEntity te = getTE();
+		final TileEntity te = getTE();
 
 		if(te instanceof IEnergyUser) {
 			return ((IEnergyUser) te).getMaxPower();

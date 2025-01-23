@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 public class NukeTab extends CreativeTabs {
 
-	public NukeTab(int index, String label) {
+	public NukeTab(final int index, final String label) {
 		super(index, label);
 		this.setBackgroundImageName("nuke.png");
 	}

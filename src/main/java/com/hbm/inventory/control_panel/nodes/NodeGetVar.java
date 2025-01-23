@@ -18,11 +18,11 @@ public class NodeGetVar extends Node {
 	public String varName;
 	public NodeDropdown varSelector;
 	
-	public NodeGetVar(float x, float y, Control ctrl){
+	public NodeGetVar(final float x, final float y, final Control ctrl){
 		super(x, y);
 		this.ctrl = ctrl;
 		this.outputs.add(new NodeConnection("Output", this, outputs.size(), false, DataType.GENERIC, new DataValueFloat(0)));
-		NodeDropdown globalSelector = new NodeDropdown(this, otherElements.size(), s -> {
+		final NodeDropdown globalSelector = new NodeDropdown(this, otherElements.size(), s -> {
 			if(s.equals("Global") && !global){
 				global = true;
 				varName = "";
@@ -49,7 +49,7 @@ public class NodeGetVar extends Node {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
 		tag.setString("nodeType", "getVar");
 		tag.setInteger("controlIdx", sys.parent.panel.controls.indexOf(sys.parent));
 		tag.setBoolean("global", global);
@@ -58,7 +58,7 @@ public class NodeGetVar extends Node {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		global = tag.getBoolean("global");
 		varName = tag.getString("varName");
 		super.readFromNBT(tag, sys);
@@ -67,18 +67,18 @@ public class NodeGetVar extends Node {
 	public void setVarSelector(){
 		varSelector.list.itemNames.clear();
 		if(global){
-			for(String name : ctrl.panel.globalVars.keySet()){
+			for(final String name : ctrl.panel.globalVars.keySet()){
 				varSelector.list.addItems(name);
 			}
 		} else {
-			for(String name : ctrl.vars.keySet()){
+			for(final String name : ctrl.vars.keySet()){
 				varSelector.list.addItems(name);
 			}
 		}
 	}
 
 	@Override
-	public DataValue evaluate(int idx){
+	public DataValue evaluate(final int idx){
 		if(varName.isEmpty())
 			return new DataValueFloat(0);
 		if(global){
@@ -88,7 +88,7 @@ public class NodeGetVar extends Node {
 		}
 	}
 
-	public NodeGetVar setData(String varName, boolean isGlobal) {
+	public NodeGetVar setData(final String varName, final boolean isGlobal) {
 		this.varName = varName;
 		this.global = isGlobal;
 		this.outputs.get(0).type = evaluate(0).getType();

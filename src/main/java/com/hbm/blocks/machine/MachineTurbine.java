@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class MachineTurbine extends BlockContainer {
 
-	public MachineTurbine(Material materialIn, String s) {
+	public MachineTurbine(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,18 +28,18 @@ public class MachineTurbine extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineTurbine();
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (world.isRemote) {
 			return true;
 		} else if (!player.isSneaking()) {
-			TileEntity te = world.getTileEntity(pos);
+			final TileEntity te = world.getTileEntity(pos);
 
-			TileEntityMachineTurbine entity = (TileEntityMachineTurbine) te;
+			final TileEntityMachineTurbine entity = (TileEntityMachineTurbine) te;
 			if (entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_turbine, world, pos.getX(), pos.getY(), pos.getZ());
 			}
@@ -51,19 +51,19 @@ public class MachineTurbine extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		final TileEntity tileentity = worldIn.getTileEntity(pos);
 
 		if (tileentity instanceof TileEntityMachineTurbine) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityMachineTurbine) tileentity);
+			InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 }

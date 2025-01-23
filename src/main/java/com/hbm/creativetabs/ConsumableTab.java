@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class ConsumableTab extends CreativeTabs {
 
-	public ConsumableTab(int index, String label) {
+	public ConsumableTab(final int index, final String label) {
 		super(index, label);
 	}
 

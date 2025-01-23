@@ -21,7 +21,7 @@ public class MissilePart {
 	public IModelCustom model;
 	public ResourceLocation texture;
 	
-	private MissilePart(Item item, PartType type, double height, double guiheight, IModelCustom model, ResourceLocation texture) {
+	private MissilePart(final Item item, final PartType type, final double height, final double guiheight, final IModelCustom model, final ResourceLocation texture) {
 		this.part = item;
 		this.type = type;
 		this.height = height;
@@ -177,13 +177,13 @@ public class MissilePart {
 		
 	}
 	
-	public static void registerPart(Item item, PartType type, double height, double guiheight, IModelCustom model, ResourceLocation texture) {
+	public static void registerPart(final Item item, final PartType type, final double height, final double guiheight, final IModelCustom model, final ResourceLocation texture) {
 		
-		MissilePart part = new MissilePart(item, type, height, guiheight, model, texture);
+		final MissilePart part = new MissilePart(item, type, height, guiheight, model, texture);
 		parts.put(item.hashCode(), part);
 	}
 	
-	public static MissilePart getPart(Item item) {
+	public static MissilePart getPart(final Item item) {
 		
 		if(item == null)
 			return null;

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class BlockPlasma extends Block {
 
-	public BlockPlasma(Material m, String s) {
+	public BlockPlasma(final Material m, final String s) {
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,39 +28,39 @@ public class BlockPlasma extends Block {
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 		if (world.getGameRules().getBoolean("doFireTick"))
         	world.setBlockToAir(pos);
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos) {
 		return NULL_AABB;
 	}
 	
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entityIn) {
 		entityIn.setFire(10);
 		entityIn.setInWeb();
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 }

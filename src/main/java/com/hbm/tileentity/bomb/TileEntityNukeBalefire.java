@@ -52,7 +52,7 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 				explode();
 			}
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("timer", timer);
 			data.setBoolean("loaded", this.isLoaded());
 			data.setBoolean("started", started);
@@ -60,7 +60,7 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 		}
 	}
 	
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 
 		if(meta == 0 && this.isLoaded()) {
 			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.fstbmbStart, SoundCategory.BLOCKS, 5.0F, 1.0F);
@@ -72,7 +72,7 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		timer = data.getInteger("timer");
 		started = data.getBoolean("started");
 		loaded = data.getBoolean("loaded");
@@ -85,12 +85,8 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 
 	public boolean hasEgg() {
 
-		if(inventory.getStackInSlot(0).getItem() == ModItems.egg_balefire) {
-			return true;
-		}
-
-		return false;
-	}
+        return inventory.getStackInSlot(0).getItem() == ModItems.egg_balefire;
+    }
 
 	public boolean hasBattery() {
 
@@ -117,11 +113,11 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 
 		world.destroyBlock(pos, false);
 
-		EntityBalefire bf = new EntityBalefire(world);
+		final EntityBalefire bf = new EntityBalefire(world);
 		bf.posX = pos.getX() + 0.5;
 		bf.posY = pos.getY() + 0.5;
 		bf.posZ = pos.getZ() + 0.5;
-		bf.destructionRange = (int) 250;
+		bf.destructionRange = 250;
 		world.spawnEntity(bf);
 		if(BombConfig.enableNukeClouds) {
 			EntityNukeTorex.statFacBale(world, pos.getX() + 0.5, pos.getY() + 5, pos.getZ() + 0.5, 250F);
@@ -149,14 +145,14 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		started = compound.getBoolean("started");
 		timer = compound.getInteger("timer");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setBoolean("started", started);
 		compound.setInteger("timer", timer);
 		return super.writeToNBT(compound);

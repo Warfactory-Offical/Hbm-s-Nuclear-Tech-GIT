@@ -16,16 +16,16 @@ public class RenderMissileBHole extends Render<EntityMissileBHole> {
 
 	public static final IRenderFactory<EntityMissileBHole> FACTORY = (RenderManager man) -> {return new RenderMissileBHole(man);};
 	
-	protected RenderMissileBHole(RenderManager renderManager) {
+	protected RenderMissileBHole(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityMissileBHole missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileBHole missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-		double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+		final double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
 		x = renderPos[0];
 		y = renderPos[1];
 		z = renderPos[2];
@@ -43,7 +43,7 @@ public class RenderMissileBHole extends Render<EntityMissileBHole> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileBHole entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileBHole entity) {
 		return ResourceManager.missileMicroBHole_tex;
 	}
 

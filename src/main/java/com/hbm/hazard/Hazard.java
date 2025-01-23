@@ -12,13 +12,13 @@ public class Hazard {
         HOT,
         HYDROACTIVE,
         RADIATION,
-        TOXIC;
+        TOXIC
     }
 
     private final Type type;
     private final float strength;
 
-    public Hazard(Type type, float strength) {
+    public Hazard(final Type type, final float strength) {
         this.type = type;
         this.strength = strength;
     }
@@ -31,7 +31,7 @@ public class Hazard {
         return strength;
     }
 
-    public Hazard multiply(float multiplier) {
+    public Hazard multiply(final float multiplier) {
         return new Hazard(type, strength * multiplier);
     }
 

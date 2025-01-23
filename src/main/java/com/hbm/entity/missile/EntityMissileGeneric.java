@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileGeneric extends EntityMissileBaseAdvanced {
 
-	public EntityMissileGeneric(World worldIn) {
+	public EntityMissileGeneric(final World worldIn) {
 		super(worldIn);
 		this.setSize(1F, 6F);
 	}
 	
-	public EntityMissileGeneric(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileGeneric(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 6F);
 	}
@@ -34,7 +34,7 @@ public class EntityMissileGeneric extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.thruster_small, 1));

@@ -18,13 +18,13 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITicka
 	public int gen = 0;
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		return super.writeToNBT(compound);
 	}
@@ -32,7 +32,7 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITicka
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			long prevPower = power;
+			final long prevPower = power;
 			this.sendPower(world, pos);
 
 			if(world.getTotalWorldTime() % 20 == 0)
@@ -66,7 +66,7 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITicka
 		return h - pos.getY() - 1;
 	}
 	
-	public boolean checkSegment(int y) {
+	public boolean checkSegment(final int y) {
 		
 		//   BBB
 		//   BAB
@@ -89,7 +89,7 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITicka
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

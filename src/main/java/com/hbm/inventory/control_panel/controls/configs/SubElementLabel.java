@@ -34,7 +34,7 @@ public class SubElementLabel extends SubElementBaseConfig {
     GuiTextField textField;
     GuiSlider slideScale;
 
-    public SubElementLabel(GuiControlEdit gui, Map<String, DataValue> map) {
+    public SubElementLabel(final GuiControlEdit gui, final Map<String, DataValue> map) {
         super(gui);
         this.colorR = map.get("colorR").getNumber();
         this.colorG = map.get("colorG").getNumber();
@@ -45,7 +45,7 @@ public class SubElementLabel extends SubElementBaseConfig {
 
     @Override
     public Map<String, DataValue> getConfigs() {
-        Map<String, DataValue> m = new HashMap<>();
+        final Map<String, DataValue> m = new HashMap<>();
         m.put("colorR", new DataValueFloat(colorR));
         m.put("colorG", new DataValueFloat(colorG));
         m.put("colorB", new DataValueFloat(colorB));
@@ -56,8 +56,8 @@ public class SubElementLabel extends SubElementBaseConfig {
 
     @Override
     public void initGui() {
-        int cX = gui.width/2;
-        int cY = gui.height/2;
+        final int cX = gui.width/2;
+        final int cY = gui.height/2;
 
         slideColorR = gui.addButton(new GuiSlider(gui.currentButtonId(), cX-85, gui.getGuiTop()+70, 80, 15, TextFormatting.RED+"R ", "", 0, 100, colorR*100, false, true));
         slideColorG = gui.addButton(new GuiSlider(gui.currentButtonId(), cX-85, gui.getGuiTop()+90, 80, 15, TextFormatting.GREEN+"G ", "", 0, 100, colorG*100, false, true));
@@ -87,19 +87,19 @@ public class SubElementLabel extends SubElementBaseConfig {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int button) {
+    protected void mouseClicked(final int mouseX, final int mouseY, final int button) {
         super.mouseClicked(mouseX, mouseY, button);
         this.textField.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) {
+    protected void keyTyped(final char typedChar, final int keyCode) {
         super.keyTyped(typedChar, keyCode);
         this.textField.textboxKeyTyped(typedChar, keyCode);
     }
 
     @Override
-    public void mouseReleased(int mouseX, int mouseY, int state) {
+    public void mouseReleased(final int mouseX, final int mouseY, final int state) {
         colorR = (float) slideColorR.sliderValue;
         colorG = (float) slideColorG.sliderValue;
         colorB = (float) slideColorB.sliderValue;
@@ -107,7 +107,7 @@ public class SubElementLabel extends SubElementBaseConfig {
     }
 
     @Override
-    public void enableButtons(boolean enable) {
+    public void enableButtons(final boolean enable) {
         slideColorR.visible = enable;
         slideColorR.enabled = enable;
         slideColorG.visible = enable;

@@ -31,15 +31,13 @@ public class TileEntityCableBaseNT extends TileEntity implements ITickable, IEne
 	
 	protected void connect() {
 		
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			
-			TileEntity te = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
+			final TileEntity te = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
 			
-			if(te instanceof IEnergyConductor) {
-				
-				IEnergyConductor conductor = (IEnergyConductor) te;
-				
-				if(!conductor.canConnect(dir.getOpposite()))
+			if(te instanceof IEnergyConductor conductor) {
+
+                if(!conductor.canConnect(dir.getOpposite()))
 					continue;
 				
 				if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
@@ -73,7 +71,7 @@ public class TileEntityCableBaseNT extends TileEntity implements ITickable, IEne
 	}
 
 	@Override
-	public boolean canConnect(ForgeDirection dir) {
+	public boolean canConnect(final ForgeDirection dir) {
 		return dir != ForgeDirection.UNKNOWN;
 	}
 
@@ -88,12 +86,12 @@ public class TileEntityCableBaseNT extends TileEntity implements ITickable, IEne
 	}
 
 	@Override
-	public void setPowerNet(IPowerNet network) {
+	public void setPowerNet(final IPowerNet network) {
 		this.network = network;
 	}
 
 	@Override
-	public long transferPower(long power) {
+	public long transferPower(final long power) {
 		
 		if(this.network == null)
 			return power;

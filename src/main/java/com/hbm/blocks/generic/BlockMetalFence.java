@@ -25,7 +25,7 @@ public class BlockMetalFence extends BlockFence {
     public static final AxisAlignedBB NORTH_SHORT_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.375D);
     public static final AxisAlignedBB EAST_SHORT_AABB = new AxisAlignedBB(0.625D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
 	
-	public BlockMetalFence(Material materialIn, MapColor mapColorIn, String s) {
+	public BlockMetalFence(final Material materialIn, final MapColor mapColorIn, final String s) {
 		super(materialIn, mapColorIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,12 +34,12 @@ public class BlockMetalFence extends BlockFence {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		return false;
 	}
 	
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) {
+	public void addCollisionBoxToList(IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entityIn, final boolean isActualState) {
 		if (!isActualState)
         {
             state = state.getActualState(worldIn, pos);
@@ -47,22 +47,22 @@ public class BlockMetalFence extends BlockFence {
 
         addCollisionBoxToList(pos, entityBox, collidingBoxes, PILLAR_SHORT_AABB);
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if (state.getValue(NORTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_SHORT_AABB);
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if (state.getValue(EAST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_SHORT_AABB);
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if (state.getValue(SOUTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_SHORT_AABB);
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if (state.getValue(WEST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_SHORT_AABB);
         }

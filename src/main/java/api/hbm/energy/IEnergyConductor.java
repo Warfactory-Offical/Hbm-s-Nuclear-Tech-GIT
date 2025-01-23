@@ -1,13 +1,12 @@
 package api.hbm.energy;
 
+import com.hbm.lib.ForgeDirection;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.hbm.lib.ForgeDirection;
-
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * For compatible cables with no buffer, using the IPowertNet. You can make your own cables with IEnergyConnector as well, but they won't join their power network.
@@ -27,11 +26,11 @@ public interface IEnergyConductor extends IEnergyConnector {
 		return getIdentityFromTile((TileEntity) this);
 	}
 	
-	public static int getIdentityFromTile(TileEntity te) {
+	public static int getIdentityFromTile(final TileEntity te) {
 		return getIdentityFromPos(te.getPos());
 	}
 	
-	public static int getIdentityFromPos(BlockPos pos) {
+	public static int getIdentityFromPos(final BlockPos pos) {
 		final int prime = 27644437; // must be this large to minimize localized collisions
 		int result = 1;
 		result = prime * result + pos.getX();
@@ -54,15 +53,15 @@ public interface IEnergyConductor extends IEnergyConnector {
 	 * Each link has to decide what other links will join the same net.
 	 * @param copy
 	 */
-	public default void reevaluate(HashMap<Integer, IEnergyConductor> copy, HashMap<Integer, Integer> proxies) {
+	public default void reevaluate(final HashMap<Integer, IEnergyConductor> copy, final HashMap<Integer, Integer> proxies) {
 
-		for(BlockPos pos : getConnectionPoints()) {
-			int id = IEnergyConductor.getIdentityFromPos(pos);
+		for(final BlockPos pos : getConnectionPoints()) {
+			final int id = IEnergyConductor.getIdentityFromPos(pos);
 			
 			IEnergyConductor neighbor = copy.get(id);
 			
 			if(neighbor == null) {
-				Integer newId = proxies.get(id);
+				final Integer newId = proxies.get(id);
 				
 				if(newId != null) {
 					neighbor = copy.get(newId);
@@ -93,10 +92,10 @@ public interface IEnergyConductor extends IEnergyConnector {
 	 */
 	public default List<BlockPos> getConnectionPoints() {
 
-		List<BlockPos> pos = new ArrayList();
-		TileEntity tile = (TileEntity) this;
+		final List<BlockPos> pos = new ArrayList();
+		final TileEntity tile = (TileEntity) this;
 		
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			pos.add(tile.getPos().add(dir.offsetX, dir.offsetY, dir.offsetZ));
 		}
 		
@@ -115,7 +114,7 @@ public interface IEnergyConductor extends IEnergyConnector {
 
 	//TODO: check if this standard implementation doesn't break anything (it shouldn't but right now it's a bit redundant) also: remove duplicate implementations
 	@Override
-	public default long transferPower(long power) {
+	public default long transferPower(final long power) {
 		
 		if(this.getPowerNet() == null)
 			return power;

@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 
 public abstract class ParticleFirstPerson extends Particle {
 
-	public ParticleFirstPerson(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleFirstPerson(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 	}
 	
@@ -14,7 +14,7 @@ public abstract class ParticleFirstPerson extends Particle {
 	public static enum ParticleType {
 		TAU,
 		GLUON,
-		CRUCIBLE;
-	}
+		CRUCIBLE
+    }
 
 }

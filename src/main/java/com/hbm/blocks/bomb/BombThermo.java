@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BombThermo extends Block implements IBomb {
 
-	public BombThermo(Material materialIn, String s) {
+	public BombThermo(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -22,7 +22,7 @@ public class BombThermo extends Block implements IBomb {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if (!worldIn.isRemote && worldIn.isBlockPowered(pos))
         {
 			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -45,7 +45,7 @@ public class BombThermo extends Block implements IBomb {
 	
 
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(final World world, final BlockPos pos) {
 		if(world.isRemote)
 			return;
 		world.setBlockState(pos, Blocks.AIR.getDefaultState());

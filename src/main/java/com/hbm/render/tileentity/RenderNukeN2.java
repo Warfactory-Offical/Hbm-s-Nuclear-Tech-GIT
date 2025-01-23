@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderNukeN2 extends TileEntitySpecialRenderer<TileEntityNukeN2> {
 
 	@Override
-	public void render(TileEntityNukeN2 te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityNukeN2 te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_LIGHTING);

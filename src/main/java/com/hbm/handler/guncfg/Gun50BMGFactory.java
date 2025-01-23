@@ -28,7 +28,7 @@ public class Gun50BMGFactory {
 
 	public static GunConfiguration getCalamityConfig(){
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 6;
 		config.roundsPerCycle = 1;
@@ -64,7 +64,7 @@ public class Gun50BMGFactory {
 
 	public static GunConfiguration getSaddleConfig(){
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 3;
 		config.roundsPerCycle = 1;
@@ -101,7 +101,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg;
 		bullet.spread *= inaccuracy;
@@ -113,7 +113,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGFireConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_incendiary;
 		bullet.spread *= inaccuracy;
@@ -127,7 +127,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGExplosiveConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_explosive;
 		bullet.spread *= inaccuracy;
@@ -141,7 +141,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGDUConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_du;
 		bullet.spread *= inaccuracy;
@@ -155,7 +155,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGStarConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_star;
 		bullet.spread *= inaccuracy;
@@ -169,7 +169,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGPhosphorusConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_phosphorus;
 		bullet.spread *= inaccuracy;
@@ -179,7 +179,7 @@ public class Gun50BMGFactory {
 		bullet.incendiary = 5;
 		bullet.doesPenetrate = false;
 
-		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
+		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
 		eff.getCurativeItems().clear();
 		bullet.effects = new ArrayList<PotionEffect>();
 		bullet.effects.add(new PotionEffect(eff));
@@ -187,9 +187,9 @@ public class Gun50BMGFactory {
 		bullet.bImpact = new IBulletImpactBehavior(){
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z){
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z){
 
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaburst");
 				data.setString("mode", "flame");
 				data.setInteger("count", 15);
@@ -204,7 +204,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGAPConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_ap;
 		bullet.spread *= inaccuracy;
@@ -218,7 +218,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGSleekConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_sleek;
 		bullet.spread *= inaccuracy;
@@ -231,12 +231,12 @@ public class Gun50BMGFactory {
 		bullet.bHit = new IBulletHitBehavior(){
 
 			@Override
-			public void behaveEntityHit(EntityBulletBase bullet, Entity hit){
+			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit){
 
 				if(bullet.world.isRemote)
 					return;
 
-				EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
+				final EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
 				meteor.setPosition(hit.posX, hit.posY + 30 + meteor.world.rand.nextInt(10), hit.posZ);
 				meteor.motionY = -1D;
 				meteor.shooter = bullet.shooter;
@@ -247,7 +247,7 @@ public class Gun50BMGFactory {
 		bullet.bImpact = new IBulletImpactBehavior(){
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z){
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z){
 
 				if(bullet.world.isRemote)
 					return;
@@ -255,7 +255,7 @@ public class Gun50BMGFactory {
 				if(y == -1)
 					return;
 
-				EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
+				final EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
 				meteor.setPosition(bullet.posX, bullet.posY + 30 + meteor.world.rand.nextInt(10), bullet.posZ);
 				meteor.motionY = -1D;
 				meteor.shooter = bullet.shooter;
@@ -268,7 +268,7 @@ public class Gun50BMGFactory {
 
 	public static GunConfiguration getAR15Config(){
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 1;
 		config.roundsPerCycle = 1;
@@ -306,7 +306,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGFlechetteConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_flechette;
 		bullet.spread *= inaccuracy;
@@ -319,7 +319,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGFlechetteAMConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_flechette_am;
 		bullet.spread *= inaccuracy;
@@ -330,7 +330,7 @@ public class Gun50BMGFactory {
 		bullet.bHit = new IBulletHitBehavior(){
 
 			@Override
-			public void behaveEntityHit(EntityBulletBase bullet, Entity hit){
+			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit){
 
 				if(bullet.world.isRemote)
 					return;
@@ -346,7 +346,7 @@ public class Gun50BMGFactory {
 
 	public static BulletConfiguration get50BMGFlechettePOConfig(){
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_50bmg_flechette_po;
 		bullet.spread *= inaccuracy;
@@ -357,7 +357,7 @@ public class Gun50BMGFactory {
 		bullet.bHit = new IBulletHitBehavior(){
 
 			@Override
-			public void behaveEntityHit(EntityBulletBase bullet, Entity hit){
+			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit){
 
 				if(bullet.world.isRemote)
 					return;

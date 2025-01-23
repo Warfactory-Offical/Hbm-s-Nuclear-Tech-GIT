@@ -18,11 +18,11 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCoreStabilizer extends Container {
 
-	private TileEntityCoreStabilizer nukeBoy;
+	private final TileEntityCoreStabilizer nukeBoy;
 	private EntityPlayerMP player;
 	
-	public ContainerCoreStabilizer(EntityPlayer player, TileEntityCoreStabilizer tedf) {
-		InventoryPlayer invPlayer = player.inventory;
+	public ContainerCoreStabilizer(final EntityPlayer player, final TileEntityCoreStabilizer tedf) {
+		final InventoryPlayer invPlayer = player.inventory;
 		if(player instanceof EntityPlayerMP)
 			this.player = (EntityPlayerMP) player;
 		nukeBoy = tedf;
@@ -44,14 +44,14 @@ public class ContainerCoreStabilizer extends Container {
 	}
 	
 	@Override
-	public void addListener(IContainerListener listener) {
+	public void addListener(final IContainerListener listener) {
 		super.addListener(listener);
 		listener.sendWindowProperty(this, 0, nukeBoy.watts);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setLong("power", nukeBoy.power);
 		data.setInteger("watts", nukeBoy.watts);
 		data.setBoolean("isOn", nukeBoy.isOn);
@@ -60,7 +60,7 @@ public class ContainerCoreStabilizer extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(int id, int data) {
+	public void updateProgressBar(final int id, final int data) {
 		if(id == 0){
 			if(Minecraft.getMinecraft().currentScreen instanceof GUICoreStabilizer){
 				((GUICoreStabilizer)Minecraft.getMinecraft().currentScreen).syncTextField(data);
@@ -70,14 +70,14 @@ public class ContainerCoreStabilizer extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 == 0) {
@@ -102,7 +102,7 @@ public class ContainerCoreStabilizer extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return nukeBoy.isUseableByPlayer(player);
 	}
 }

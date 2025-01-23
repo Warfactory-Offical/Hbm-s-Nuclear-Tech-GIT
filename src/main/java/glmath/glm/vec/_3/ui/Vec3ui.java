@@ -18,17 +18,17 @@ public class Vec3ui extends FuncRelational {
         y.value = 0;
     }
 
-    public Vec3ui(int x, int y, int z) {
+    public Vec3ui(final int x, final int y, final int z) {
         this(new UInt(x), new UInt(y), new UInt(z));
     }
 
-    public Vec3ui(UInt x, UInt y, UInt z) {
+    public Vec3ui(final UInt x, final UInt y, final UInt z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3ui set(UInt x, UInt y, UInt z) {
+    public Vec3ui set(final UInt x, final UInt y, final UInt z) {
         this.x = x;
         this.y = y;
         this.z = z;

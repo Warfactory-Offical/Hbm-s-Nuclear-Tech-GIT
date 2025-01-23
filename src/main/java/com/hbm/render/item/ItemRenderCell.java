@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidUtil;
 public class ItemRenderCell extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		IBakedModel model = null;
 		if(FluidUtil.getFluidContained(stack) != null && EnumCell.contains(FluidUtil.getFluidContained(stack).getFluid()))
 			model = EnumCell.getEnumFromFluid(FluidUtil.getFluidContained(stack).getFluid()).getRenderModel();

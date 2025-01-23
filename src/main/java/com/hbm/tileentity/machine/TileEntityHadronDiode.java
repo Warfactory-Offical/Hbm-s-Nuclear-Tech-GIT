@@ -44,7 +44,7 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	
 	public void sendSides() {
 
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 
 		for(int i = 0; i < 6; i++) {
 
@@ -56,19 +56,19 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		for(int i = 0; i < 6; i++) {
 			sides[i] = DiodeConfig.values()[nbt.getInteger("" + i)];
 		}
 		//world.markBlockRangeForRenderUpdate(pos, pos);
 	}
 	
-	public DiodeConfig getConfig(int side) {
+	public DiodeConfig getConfig(final int side) {
 
 		if(ForgeDirection.getOrientation(side) == ForgeDirection.UNKNOWN)
 			return DiodeConfig.NONE;
 
-		DiodeConfig conf = sides[side];
+		final DiodeConfig conf = sides[side];
 
 		if(conf == null)
 			return DiodeConfig.NONE;
@@ -76,14 +76,14 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 		return conf;
 	}
 
-	public void setConfig(int side, int config) {
+	public void setConfig(final int side, final int config) {
 		sides[side] = DiodeConfig.values()[config];
 		this.markDirty();
 		sendSides();
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		for(int i = 0; i < 6; i++) {
 			sides[i] = DiodeConfig.values()[compound.getInteger("side_" + i)];
 		}
@@ -93,7 +93,7 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		for(int i = 0; i < 6; i++) {
 
 			if(sides[i] != null) {

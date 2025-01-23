@@ -28,7 +28,7 @@ public class HTTPHandler {
 			loadOF();
 			loadSoyuz();
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			MainRegistry.logger.warn("Version checker failed!");
 		}
 	}
@@ -36,22 +36,22 @@ public class HTTPHandler {
 	@Untested
 	private static void loadOF(){
 		//Drillgon200: Yeah this is retarded but apparently optifine isn't added to the list of forge mods
-		File mods = new File(MainRegistry.proxy.getDataDir().getPath() + "/mods/");
-		DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+		final File mods = new File(MainRegistry.proxy.getDataDir().getPath() + "/mods/");
+		final DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
 	        @Override
-	        public boolean accept(Path file) throws IOException {
+	        public boolean accept(final Path file) throws IOException {
 	            return (Files.isDirectory(file));
 	        }
 	    };
-	    Path dir = mods.toPath();
-	    try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, filter)) {
-	        for (Path path : stream) {
+	    final Path dir = mods.toPath();
+	    try (final DirectoryStream<Path> stream = Files.newDirectoryStream(dir, filter)) {
+	        for (final Path path : stream) {
 	            if(path.getFileName().toString().toLowerCase().contains("optifine")){
 	            	optifine = true;
 	            	return;
 	            }
 	        }
-	    } catch (IOException ex) {
+	    } catch (final IOException ex) {
 	        ex.printStackTrace();
 	    }
 	    if(optifine){
@@ -61,8 +61,8 @@ public class HTTPHandler {
 
 	private static void loadVersion() throws IOException {
 
-		URL github = new URL("https://raw.githubusercontent.com/Alcatergit/Hbm-s-Nuclear-Tech-GIT/Custom-1.12.2/src/main/java/com/hbm/lib/RefStrings.java");
-        BufferedReader in = new BufferedReader(new InputStreamReader(github.openStream()));
+		final URL github = new URL("https://raw.githubusercontent.com/Alcatergit/Hbm-s-Nuclear-Tech-GIT/Custom-1.12.2/src/main/java/com/hbm/lib/RefStrings.java");
+        final BufferedReader in = new BufferedReader(new InputStreamReader(github.openStream()));
 
         MainRegistry.logger.info("Searching for new versions...");
         String line;
@@ -71,10 +71,10 @@ public class HTTPHandler {
 
             if(line.contains("String VERSION")) {
 
-            	int begin = line.indexOf('"');
-            	int end = line.lastIndexOf('"');
+            	final int begin = line.indexOf('"');
+            	final int end = line.lastIndexOf('"');
 
-            	String sub = line.substring(begin + 1, end);
+            	final String sub = line.substring(begin + 1, end);
 
             	newVersion = !RefStrings.VERSION.equals(sub);
             	versionNumber = sub;
@@ -82,10 +82,10 @@ public class HTTPHandler {
             }
             if(line.contains("String CHANGELOG")) {
 
-            	int begin = line.indexOf('"');
-            	int end = line.lastIndexOf('"');
+            	final int begin = line.indexOf('"');
+            	final int end = line.lastIndexOf('"');
 
-            	String sub = line.substring(begin + 1, end);
+            	final String sub = line.substring(begin + 1, end);
 
             	changes = sub.replaceAll("Â", "");
     	        MainRegistry.logger.info("Found changelog " + sub);
@@ -99,10 +99,10 @@ public class HTTPHandler {
 
 	private static void loadSoyuz() throws IOException {
 
-		URL github = new URL("https://gist.githubusercontent.com/HbmMods/a1cad71d00b6915945a43961d0037a43/raw/soyuz_holo");
-        BufferedReader in = new BufferedReader(new InputStreamReader(github.openStream()));
+		final URL github = new URL("https://gist.githubusercontent.com/HbmMods/a1cad71d00b6915945a43961d0037a43/raw/soyuz_holo");
+        final BufferedReader in = new BufferedReader(new InputStreamReader(github.openStream()));
 
-        String line = in.readLine();
+        final String line = in.readLine();
 
         if(line != null)
         	capsule = line;

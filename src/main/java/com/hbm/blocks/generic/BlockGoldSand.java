@@ -21,19 +21,19 @@ public class BlockGoldSand extends BlockFallingBase implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public BlockGoldSand(Material m, String s, SoundType type){
+	public BlockGoldSand(final Material m, final String s, final SoundType type){
 		super(m, s, type);
 		this.module = new ItemHazardModule();
 	}
 	
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity) {
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entity) {
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase)entity, 0.5F, 0, false, EnumHand.MAIN_HAND);
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase)entity, 0.5F, 0, false, EnumHand.MAIN_HAND);
 	}

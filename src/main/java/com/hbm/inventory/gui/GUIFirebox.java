@@ -11,10 +11,10 @@ import org.lwjgl.opengl.GL11;
 
 public class GUIFirebox extends GuiInfoContainer {
 	
-	private TileEntityFireboxBase firebox;
+	private final TileEntityFireboxBase firebox;
 	private final ResourceLocation texture;
 
-	public GUIFirebox(InventoryPlayer invPlayer, TileEntityFireboxBase tedf, ResourceLocation texture) {
+	public GUIFirebox(final InventoryPlayer invPlayer, final TileEntityFireboxBase tedf, final ResourceLocation texture) {
 		super(new ContainerFirebox(invPlayer, tedf));
 		firebox = tedf;
 		this.texture = texture;
@@ -24,7 +24,7 @@ public class GUIFirebox extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float interp) {
+	public void drawScreen(final int mouseX, final int mouseY, final float interp) {
 		super.drawScreen(mouseX, mouseY, interp);
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 80, guiTop + 27, 71, 7, mouseX, mouseY, new String[] { String.format("%,d", firebox.heatEnergy) + " / " + String.format("%,d", firebox.getMaxHeat()) + "TU" });
@@ -33,26 +33,26 @@ public class GUIFirebox extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.firebox.hasCustomInventoryName() ? this.firebox.getInventoryName() : I18n.format(this.firebox.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.firebox.hasCustomInventoryName() ? this.firebox.getInventoryName() : I18n.format(this.firebox.getInventoryName());
 
-		int color = firebox instanceof TileEntityHeaterOven ? 0xffffff : 4210752;
+		final int color = firebox instanceof TileEntityHeaterOven ? 0xffffff : 4210752;
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, color);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		int i = firebox.heatEnergy * 69 / firebox.getMaxHeat();
+		final int i = firebox.heatEnergy * 69 / firebox.getMaxHeat();
 		drawTexturedModalRect(guiLeft + 81, guiTop + 28, 176, 0, i, 5);
 		
-		int j = firebox.burnTime * 70 / Math.max(firebox.maxBurnTime, 1);
+		final int j = firebox.burnTime * 70 / Math.max(firebox.maxBurnTime, 1);
 		drawTexturedModalRect(guiLeft + 81, guiTop + 37, 176, 5, j, 5);
 		
 		if(firebox.wasOn) {

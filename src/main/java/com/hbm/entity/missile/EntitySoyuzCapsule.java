@@ -21,7 +21,7 @@ public class EntitySoyuzCapsule extends EntityThrowable {
 	public int soyuz;
 	public ItemStack[] payload = new ItemStack[18];
 
-	public EntitySoyuzCapsule(World p_i1582_1_) {
+	public EntitySoyuzCapsule(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
@@ -48,7 +48,7 @@ public class EntitySoyuzCapsule extends EntityThrowable {
     		if(!world.isRemote) {
     			world.setBlockState(new BlockPos((int)(this.posX), (int)(this.posY + 1), (int)(this.posZ)), ModBlocks.soyuz_capsule.getDefaultState());
     			
-    			TileEntitySoyuzCapsule capsule = (TileEntitySoyuzCapsule)world.getTileEntity(new BlockPos((int)(this.posX), (int)(this.posY + 1), (int)(this.posZ)));
+    			final TileEntitySoyuzCapsule capsule = (TileEntitySoyuzCapsule)world.getTileEntity(new BlockPos((int)(this.posX), (int)(this.posY + 1), (int)(this.posZ)));
     			if(capsule != null) {
     				
     				for(int i = 0; i < payload.length; i++) {
@@ -73,27 +73,27 @@ public class EntitySoyuzCapsule extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(RayTraceResult p_70184_1_) {
+	protected void onImpact(final RayTraceResult p_70184_1_) {
 		
 	}
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 500000;
     }
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(final NBTTagCompound nbt) {
 
-		NBTTagList list = nbt.getTagList("items", 10);
+		final NBTTagList list = nbt.getTagList("items", 10);
 		
 		soyuz = nbt.getInteger("soyuz");
 
 		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
-			byte b0 = nbt1.getByte("slot");
+			final NBTTagCompound nbt1 = list.getCompoundTagAt(i);
+			final byte b0 = nbt1.getByte("slot");
 			if (b0 >= 0 && b0 < payload.length) {
 				payload[b0] = ItemStackUtil.itemStackFrom(nbt1);
 			}
@@ -101,15 +101,15 @@ public class EntitySoyuzCapsule extends EntityThrowable {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) {
+	public void writeEntityToNBT(final NBTTagCompound nbt) {
 
-		NBTTagList list = new NBTTagList();
+		final NBTTagList list = new NBTTagList();
 		
 		nbt.setInteger("soyuz", soyuz);
 
 		for (int i = 0; i < payload.length; i++) {
 			if (payload[i] != null) {
-				NBTTagCompound nbt1 = new NBTTagCompound();
+				final NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
 				payload[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);

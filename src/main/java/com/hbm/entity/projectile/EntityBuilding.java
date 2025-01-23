@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityBuilding extends EntityThrowable {
 
-	public EntityBuilding(World p_i1582_1_) {
+	public EntityBuilding(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
@@ -50,20 +50,20 @@ public class EntityBuilding extends EntityThrowable {
     		ExplosionLarge.spawnShock(world, posX, posY + 1, posZ, 24, 3);
     		ExplosionLarge.spawnShock(world, posX, posY + 1, posZ, 24, 3);
     		if(CompatibilityConfig.isWarDim(world)){
-	    		List<Entity> list = (List<Entity>)world.getEntitiesWithinAABBExcludingEntity(null, 
+	    		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null,
 	    				new AxisAlignedBB(posX - 8, posY - 8, posZ - 8, posX + 8, posY + 8, posZ + 8));
 	    			
-	    		for(Entity e : list) {
+	    		for(final Entity e : list) {
 	    			e.attackEntityFrom(ModDamageSource.building, 1000);
 	    		}
 	    		
 	    		for(int i = 0; i < 250; i++) {
 	    			
-	    			Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
+	    			final Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 	    			vec.rotateAroundZ((float) (-rand.nextFloat() * Math.PI / 2));
 	    			vec.rotateAroundY((float) (rand.nextFloat() * Math.PI * 2));
 	    			
-	    			EntityRubble rubble = new EntityRubble(world, posX, posY + 3, posZ);
+	    			final EntityRubble rubble = new EntityRubble(world, posX, posY + 3, posZ);
 	    			rubble.setMetaBasedOnBlock(Blocks.BRICK_BLOCK, 0);
 	    			rubble.motionX = vec.xCoord;
 	    			rubble.motionY = vec.yCoord;
@@ -75,13 +75,13 @@ public class EntityBuilding extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(RayTraceResult p_70184_1_) {
+	protected void onImpact(final RayTraceResult p_70184_1_) {
 		
 	}
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 25000;
     }

@@ -29,12 +29,12 @@ import net.minecraft.world.World;
 
 public class SoyuzLauncher extends BlockDummyable {
 
-	public SoyuzLauncher(Material materialIn, String s) {
+	public SoyuzLauncher(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(meta == 2 || meta == 3)
 			return new TileEntityProxyCombo(false, true, true);
 		if(meta >= ForgeDirection.UNKNOWN.ordinal())
@@ -44,16 +44,16 @@ public class SoyuzLauncher extends BlockDummyable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+			final int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
 
 			if(pos1 == null)
 				return false;
 
-			TileEntitySoyuzLauncher entity = (TileEntitySoyuzLauncher) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
+			final TileEntitySoyuzLauncher entity = (TileEntitySoyuzLauncher) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
 			if(entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_soyuz_launcher, world, pos1[0], pos1[1], pos1[2]);
 			}
@@ -66,23 +66,22 @@ public class SoyuzLauncher extends BlockDummyable {
 	public static final int height = 4;
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
-		if(!(player instanceof EntityPlayer))
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase player, final ItemStack itemStack) {
+		if(!(player instanceof EntityPlayer pl))
 			return;
 
-		EntityPlayer pl = (EntityPlayer) player;
-		EnumHand hand = player.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+        final EnumHand hand = player.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 
-		int o = -getOffset();
+		final int o = -getOffset();
 
-		ForgeDirection dir = ForgeDirection.EAST;
+		final ForgeDirection dir = ForgeDirection.EAST;
 
 		if(!checkRequirement(world, pos.getX(), pos.getY(), pos.getZ(), dir, o)) {
 			world.setBlockToAir(pos);
 
 			if(!pl.capabilities.isCreativeMode) {
-				ItemStack stack = pl.inventory.mainInventory.get(pl.inventory.currentItem);
-				Item item = Item.getItemFromBlock(this);
+				final ItemStack stack = pl.inventory.mainInventory.get(pl.inventory.currentItem);
+				final Item item = Item.getItemFromBlock(this);
 
 				if(stack == null) {
 					pl.inventory.mainInventory.set(pl.inventory.currentItem, ItemStackUtil.itemStackFrom(this));
@@ -98,9 +97,9 @@ public class SoyuzLauncher extends BlockDummyable {
 			return;
 		}
 
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
 
 		world.setBlockState(new BlockPos(x + dir.offsetX * o, y + dir.offsetY * o + height, z + dir.offsetZ * o), this.getDefaultState().withProperty(META, dir.ordinal() + offset), 3);
 		fillSpace(world, x, y, z, dir, o);
@@ -110,7 +109,7 @@ public class SoyuzLauncher extends BlockDummyable {
 	}
 
 	@Override
-	public boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public boolean checkRequirement(final World world, int x, int y, int z, final ForgeDirection dir, final int o) {
 		x = x + dir.offsetX * o;
 		y = y + dir.offsetY * o + height;
 		z = z + dir.offsetZ * o;
@@ -127,14 +126,11 @@ public class SoyuzLauncher extends BlockDummyable {
 			return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { 0, 4, 1, 1, -6, 8 }, x, y, z, dir))
 			return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { 0, 4, 2, 2, 9, -5 }, x, y, z, dir))
-			return false;
-
-		return true;
-	}
+        return MultiblockHandlerXR.checkSpace(world, x, y, z, new int[]{0, 4, 2, 2, 9, -5}, x, y, z, dir);
+    }
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, int x, int y, int z, final ForgeDirection dir, final int o) {
 		x = x + dir.offsetX * o;
 		y = y + dir.offsetY * o + height;
 		z = z + dir.offsetZ * o;
@@ -161,12 +157,12 @@ public class SoyuzLauncher extends BlockDummyable {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 		if(world.getTileEntity(pos) != null) {
 			InventoryHelper.dropInventoryItems(world, pos, world.getTileEntity(pos));
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
+			final int x = pos.getX();
+			final int y = pos.getY();
+			final int z = pos.getZ();
 			for(int l = 0; l < 10; l++)
 				world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher, 38)));
 			for(int l = 0; l < 8; l++)
@@ -180,12 +176,12 @@ public class SoyuzLauncher extends BlockDummyable {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

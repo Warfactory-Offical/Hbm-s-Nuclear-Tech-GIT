@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class MachineAmgen extends BlockContainer {
 
-	public MachineAmgen(Material materialIn, String s) {
+	public MachineAmgen(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,12 +21,12 @@ public class MachineAmgen extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineAmgen();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

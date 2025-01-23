@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class ItemAmmo extends Item {
 
-	public ItemAmmo(String s) {
+	public ItemAmmo(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -23,7 +23,7 @@ public class ItemAmmo extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 
 		//BOLTS
 		if(this == ModItems.ammo_75bolt) {

@@ -46,7 +46,7 @@ public class AuxButtonPacket implements IMessage {
 		
 	}
 
-	public AuxButtonPacket(int x, int y, int z, int value, int id)
+	public AuxButtonPacket(final int x, final int y, final int z, final int value, final int id)
 	{
 		this.x = x;
 		this.y = y;
@@ -55,12 +55,12 @@ public class AuxButtonPacket implements IMessage {
 		this.id = id;
 	}
 	
-	public AuxButtonPacket(BlockPos pos, int value, int id){
+	public AuxButtonPacket(final BlockPos pos, final int value, final int id){
 		this(pos.getX(), pos.getY(), pos.getZ(), value, id);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -69,7 +69,7 @@ public class AuxButtonPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -80,20 +80,20 @@ public class AuxButtonPacket implements IMessage {
 	public static class Handler implements IMessageHandler<AuxButtonPacket, IMessage> {
 
 		@Override
-		public IMessage onMessage(AuxButtonPacket m, MessageContext ctx) {
+		public IMessage onMessage(final AuxButtonPacket m, final MessageContext ctx) {
 			ctx.getServerHandler().player.getServer().addScheduledTask(() -> {
-				EntityPlayer p = ctx.getServerHandler().player;
-				BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				final EntityPlayer p = ctx.getServerHandler().player;
+				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
 				
 				//why make new packets when you can just abuse and uglify the existing ones?
 				if(m.value == 999) {
 					if(GeneralConfig.duckButton){
-						NBTTagCompound perDat = p.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+						final NBTTagCompound perDat = p.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
 						if(!perDat.getBoolean("hasDucked")) {
-							EntityDuck ducc = new EntityDuck(p.world);
+							final EntityDuck ducc = new EntityDuck(p.world);
 							ducc.setPosition(p.posX, p.posY + p.eyeHeight, p.posZ);
 
-							Vec3d vec = p.getLookVec();
+							final Vec3d vec = p.getLookVec();
 							ducc.motionX = vec.x;
 							ducc.motionY = vec.y;
 							ducc.motionZ = vec.z;
@@ -109,7 +109,7 @@ public class AuxButtonPacket implements IMessage {
 					return;
 				}
 				if(m.id == 1000){
-					boolean clicked = m.value > 0;
+					final boolean clicked = m.value > 0;
 					if(ctx.getServerHandler().player.getHeldItemMainhand().getItem() instanceof ItemCrucible){
 						ItemCrucible.doSpecialClick = clicked;
 					}
@@ -126,12 +126,11 @@ public class AuxButtonPacket implements IMessage {
 				if(!p.world.isBlockLoaded(pos))
 					return;
 				//try {
-					TileEntity te = p.world.getTileEntity(pos);
+					final TileEntity te = p.world.getTileEntity(pos);
 					
-					if (te instanceof TileEntityMachineReactorSmall) {
-						TileEntityMachineReactorSmall reactor = (TileEntityMachineReactorSmall)te;
-						
-						if(m.id == 0)
+					if (te instanceof TileEntityMachineReactorSmall reactor) {
+
+                        if(m.id == 0)
 							reactor.retracting = m.value == 1;
 						if(m.id == 1) {
 							reactor.compress(m.value);
@@ -150,25 +149,22 @@ public class AuxButtonPacket implements IMessage {
 						}
 					}
 					
-					*/if (te instanceof TileEntityForceField) {
-						TileEntityForceField field = (TileEntityForceField)te;
-						
-						field.isOn = !field.isOn;
+					*/if (te instanceof TileEntityForceField field) {
+
+                    field.isOn = !field.isOn;
 					}
 					
-					if (te instanceof TileEntityReactorControl) {
-						TileEntityReactorControl control = (TileEntityReactorControl)te;
-						
-						if(m.id == 1)
+					if (te instanceof TileEntityReactorControl control) {
+
+                        if(m.id == 1)
 							control.auto = m.value == 1;
 						
 						if(control.link != null) {
-							TileEntity reac = p.world.getTileEntity(control.link);
+							final TileEntity reac = p.world.getTileEntity(control.link);
 							
-							if (reac instanceof TileEntityMachineReactorSmall) {
-								TileEntityMachineReactorSmall reactor = (TileEntityMachineReactorSmall)reac;
-								
-								if(m.id == 0)
+							if (reac instanceof TileEntityMachineReactorSmall reactor) {
+
+                                if(m.id == 0)
 									reactor.retracting = m.value == 0;
 								
 								if(m.id == 2) {
@@ -176,10 +172,9 @@ public class AuxButtonPacket implements IMessage {
 								}
 							}
 							
-							if (reac instanceof TileEntityMachineReactorLarge) {
-								TileEntityMachineReactorLarge reactor = (TileEntityMachineReactorLarge)reac;
-								
-								if(m.id == 0) {
+							if (reac instanceof TileEntityMachineReactorLarge reactor) {
+
+                                if(m.id == 0) {
 									reactor.rods = m.value;
 								}
 								
@@ -190,11 +185,10 @@ public class AuxButtonPacket implements IMessage {
 						}
 						
 					}
-					TileEntity reac = p.world.getTileEntity(new BlockPos(m.x, m.y, m.z));
-					if (reac instanceof TileEntityMachineReactorLarge) {
-						TileEntityMachineReactorLarge reactor = (TileEntityMachineReactorLarge)reac;
-						
-						if(m.id == 0) {
+					final TileEntity reac = p.world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+					if (reac instanceof TileEntityMachineReactorLarge reactor) {
+
+                        if(m.id == 0) {
 							reactor.rods = m.value;
 						}
 						
@@ -203,22 +197,19 @@ public class AuxButtonPacket implements IMessage {
 						}
 					}
 					
-					if (te instanceof TileEntityMachineMissileAssembly) {
-						TileEntityMachineMissileAssembly assembly = (TileEntityMachineMissileAssembly)te;
-						
-						assembly.construct();
+					if (te instanceof TileEntityMachineMissileAssembly assembly) {
+
+                        assembly.construct();
 					}
 					
-					if (te instanceof TileEntityLaunchTable) {
-						TileEntityLaunchTable launcher = (TileEntityLaunchTable)te;
-						
-						launcher.padSize = PartSize.values()[m.value];
+					if (te instanceof TileEntityLaunchTable launcher) {
+
+                        launcher.padSize = PartSize.values()[m.value];
 					}
 					
-					if (te instanceof TileEntityRailgun) {
-						TileEntityRailgun gun = (TileEntityRailgun)te;
-						
-						if(m.id == 0) {
+					if (te instanceof TileEntityRailgun gun) {
+
+                        if(m.id == 0) {
 							if(gun.setAngles(false)) {
 								p.world.playSound(null, m.x, m.y, m.z, HBMSoundHandler.buttonYes, SoundCategory.BLOCKS, 1.0F, 1.0F);
 								p.world.playSound(null, m.x, m.y, m.z, HBMSoundHandler.railgunOrientation, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -239,16 +230,14 @@ public class AuxButtonPacket implements IMessage {
 							}
 						}
 					}
-					if (te instanceof TileEntityBarrel) {
-						TileEntityBarrel barrel = (TileEntityBarrel)te;
+					if (te instanceof TileEntityBarrel barrel) {
 
-						barrel.mode = (short) ((barrel.mode + 1) % TileEntityBarrel.modes);
+                        barrel.mode = (short) ((barrel.mode + 1) % TileEntityBarrel.modes);
 						barrel.markDirty();
 					}
-					if (te instanceof TileEntityCoreEmitter) {
-						TileEntityCoreEmitter core = (TileEntityCoreEmitter)te;
+					if (te instanceof TileEntityCoreEmitter core) {
 
-						if(m.id == 0) {
+                        if(m.id == 0) {
 							core.watts = m.value;
 						}
 						if(m.id == 1) {
@@ -256,26 +245,23 @@ public class AuxButtonPacket implements IMessage {
 						}
 					}
 					
-					if (te instanceof TileEntityCoreStabilizer) {
-						TileEntityCoreStabilizer core = (TileEntityCoreStabilizer)te;
+					if (te instanceof TileEntityCoreStabilizer core) {
 
-						if(m.id == 0) {
+                        if(m.id == 0) {
 							core.watts = m.value;
 						}
 					}
 					
-					if (te instanceof TileEntitySoyuzLauncher) {
-						TileEntitySoyuzLauncher launcher = (TileEntitySoyuzLauncher)te;
+					if (te instanceof TileEntitySoyuzLauncher launcher) {
 
-						if(m.id == 0)
+                        if(m.id == 0)
 							launcher.mode = (byte) m.value;
 						if(m.id == 1)
 							launcher.startCountdown();
 					}
-					if (te instanceof TileEntityMachineBattery) {
-						TileEntityMachineBattery bat = (TileEntityMachineBattery)te;
+					if (te instanceof TileEntityMachineBattery bat) {
 
-						if(m.id == 0) {
+                        if(m.id == 0) {
 							bat.redLow = (short) ((bat.redLow + 1) % 4);
 							bat.markDirty();
 						}
@@ -294,20 +280,17 @@ public class AuxButtonPacket implements IMessage {
 							bat.markDirty();
 						}
 					}
-					if (te instanceof TileEntityMachineMiningLaser) {
-						TileEntityMachineMiningLaser laser = (TileEntityMachineMiningLaser)te;
+					if (te instanceof TileEntityMachineMiningLaser laser) {
 
-						laser.isOn = !laser.isOn;
+                        laser.isOn = !laser.isOn;
 					}
 
-					if(te instanceof TileEntityMachineRadar) {
-						TileEntityMachineRadar radar = (TileEntityMachineRadar)te;
-						radar.handleButtonPacket(m.value, m.id);
+					if(te instanceof TileEntityMachineRadar radar) {
+                        radar.handleButtonPacket(m.value, m.id);
 					}
 					/// yes ///
-					if(te instanceof TileEntityMachineBase) {
-						TileEntityMachineBase base = (TileEntityMachineBase)te;
-						base.handleButtonPacket(m.value, m.id);
+					if(te instanceof TileEntityMachineBase base) {
+                        base.handleButtonPacket(m.value, m.id);
 					}
 					
 				//} catch (Exception x) { }

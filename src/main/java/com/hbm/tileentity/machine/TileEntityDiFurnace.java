@@ -31,7 +31,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.dualPower = compound.getInteger("dualPower");
 		this.dualCookTime = compound.getInteger("cookTime");
 		this.detectDualCookTime = this.dualCookTime;
@@ -42,7 +42,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setInteger("dualPower", this.dualPower);
 		compound.setInteger("cookTime", this.dualCookTime);
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -51,17 +51,17 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	
 	@Override
 	public void update() {
-		boolean flag = this.hasPower();
-        boolean extension = world.getBlockState(pos.up()).getBlock() == ModBlocks.machine_difurnace_ext;
+		final boolean flag = this.hasPower();
+        final boolean extension = world.getBlockState(pos.up()).getBlock() == ModBlocks.machine_difurnace_ext;
 
 		if(this.dualPower > 0) {
 			this.dualPower--;
 		}
-		int itemPower = DiFurnaceRecipes.getItemPower(inventory.getStackInSlot(2));
+		final int itemPower = DiFurnaceRecipes.getItemPower(inventory.getStackInSlot(2));
 		if (this.hasItemPower(inventory.getStackInSlot(2)) && this.dualPower <= (TileEntityDiFurnace.maxPower - itemPower)) {
 			this.dualPower += itemPower;
 			if (!inventory.getStackInSlot(2).isEmpty()) {
-				ItemStack copy = inventory.getStackInSlot(2).copy();
+				final ItemStack copy = inventory.getStackInSlot(2).copy();
 				inventory.getStackInSlot(2).shrink(1);
 				if (inventory.getStackInSlot(2).isEmpty()) {
 					inventory.setStackInSlot(2, copy.getItem().getContainerItem(copy));
@@ -80,14 +80,9 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 
 		if(!world.isRemote)
 		{
-			boolean trigger = true;
-			
-			if(flag && canProcess() && this.dualCookTime == 0)
-			{
-				trigger = false;
-			}
-			
-			if(trigger)
+			boolean trigger = !flag || !canProcess() || this.dualCookTime != 0;
+
+            if(trigger)
             {
                 MachineDiFurnace.updateBlockState(this.dualCookTime > 0, extension, this.world, pos);
             }
@@ -96,7 +91,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 		this.detectAndSendChanges();
 	}
 	
-	public boolean hasItemPower(ItemStack itemStack) {
+	public boolean hasItemPower(final ItemStack itemStack) {
 		return DiFurnaceRecipes.getItemPower(itemStack) > 0;
 	}
 	
@@ -106,13 +101,13 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+		final int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(i == 3)
 			return false;
 		if(i == 2)
@@ -121,20 +116,18 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		if(slot == 0 && isItemValidForSlot(slot, itemStack)) return inventory.getStackInSlot(1).getItem() != itemStack.getItem();
 		if(slot == 1 && isItemValidForSlot(slot, itemStack)) return inventory.getStackInSlot(0).getItem() != itemStack.getItem();
 		return isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
-		if(slot == 3)
-			return true;
-		return false;
-	}
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+        return slot == 3;
+    }
 	
-	public boolean isUsableByPlayer(EntityPlayer player){
+	public boolean isUsableByPlayer(final EntityPlayer player){
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -143,11 +136,11 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 		}
 	}
 	
-	public int getDiFurnaceProgressScaled(int i) {
+	public int getDiFurnaceProgressScaled(final int i) {
 		return (dualCookTime * i) / processingSpeed;
 	}
 	
-	public int getPowerRemainingScaled(int i) {
+	public int getPowerRemainingScaled(final int i) {
 		return (dualPower * i) / maxPower;
 	}
 	
@@ -156,7 +149,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 		{
 			return false;
 		}
-		ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
+		final ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
 		if(itemStack == null)
 		{	
 			return false;
@@ -179,7 +172,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	
 	private void processItem() {
 		if(canProcess()) {
-			ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
+			final ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
 			
 			if(inventory.getStackInSlot(3).isEmpty())
 			{

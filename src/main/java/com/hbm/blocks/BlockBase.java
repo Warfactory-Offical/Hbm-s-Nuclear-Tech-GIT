@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class BlockBase extends Block {
 	
-	public BlockBase(Material m, String s){
+	public BlockBase(final Material m, final String s){
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,7 +28,7 @@ public class BlockBase extends Block {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
-	public BlockBase(Material m, SoundType sound, String s){
+	public BlockBase(final Material m, final SoundType sound, final String s){
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -39,18 +39,18 @@ public class BlockBase extends Block {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> list, final ITooltipFlag advanced) {
 		if(stack.getItem() == Item.getItemFromBlock(ModBlocks.meteor_battery)){
 			list.add(I18nUtil.resolveKey("desc.teslacoils"));
 		}
 		
-		float hardness = this.getExplosionResistance(null);
+		final float hardness = this.getExplosionResistance(null);
 		if(hardness > 50){
 			list.add(TextFormatting.GOLD + I18nUtil.resolveKey("trait.blastres", hardness));
 		}
 	}
 
-	public Block setSoundType(SoundType sound){
+	public Block setSoundType(final SoundType sound){
 		return super.setSoundType(sound);
 	}
 }

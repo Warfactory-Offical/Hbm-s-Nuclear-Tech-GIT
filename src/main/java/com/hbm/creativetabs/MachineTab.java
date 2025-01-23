@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 public class MachineTab extends CreativeTabs {
 
-	public MachineTab(int index, String label) {
+	public MachineTab(final int index, final String label) {
 		super(index, label);
 	}
 

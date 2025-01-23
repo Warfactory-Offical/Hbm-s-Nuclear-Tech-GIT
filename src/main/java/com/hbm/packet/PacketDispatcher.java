@@ -142,7 +142,7 @@ public class PacketDispatcher {
 //		wrapper.registerMessage(ControlPanelLinkerClientPacket.Handler.class, ControlPanelUpdatePacket.class, i++, Side.CLIENT);
 	}
 	
-	public static void sendTo(IMessage message, EntityPlayerMP player){
+	public static void sendTo(final IMessage message, final EntityPlayerMP player){
 		if(player != null)
 			wrapper.sendTo(message, player);
 	}

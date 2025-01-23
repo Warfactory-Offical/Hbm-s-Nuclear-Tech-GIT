@@ -40,33 +40,33 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class BakedModelUtil {
 
-	private static BufferBuilder buffer = new BufferBuilder(1024*16);
-	private static final int BYTES_PER_VERTEX = 4*3 + 4*1 + 4*2 + 2*2 + 2*2;
+	private static final BufferBuilder buffer = new BufferBuilder(1024*16);
+	private static final int BYTES_PER_VERTEX = 4*3 + 4 + 4*2 + 2*2 + 2*2;
 	
 	public static enum DecalType {
 		REGULAR,
 		VBO,
-		FLOW;
-	}
+		FLOW
+    }
 	
-	public static int[] generateDecalMesh(World world, Vec3d normal, float scale, float offsetX, float offsetY, float offsetZ, DecalType type){
+	public static int[] generateDecalMesh(final World world, final Vec3d normal, final float scale, final float offsetX, final float offsetY, final float offsetZ, final DecalType type){
 		return generateDecalMesh(world, normal, scale, offsetX, offsetY, offsetZ, type, null);
 	}
 	
-	public static int[] generateDecalMesh(World world, Vec3d normal, float scale, float offsetX, float offsetY, float offsetZ, DecalType type, @Nullable ResourceLocation texture, int... data){
-		Vec3d euler = BobMathUtil.getEulerAngles(normal);
-		float roll = world.rand.nextFloat()*2F*(float)Math.PI;
-		Matrix3f rot = eulerToMat((float)Math.toRadians(euler.x), (float)Math.toRadians(euler.y+90), roll);
-		Vec3d c1 = new Vec3d(rot.m00, rot.m01, rot.m02);
-		Vec3d c2 = new Vec3d(rot.m10, rot.m11, rot.m12);
-		Vec3d c3 = new Vec3d(rot.m20, rot.m21, rot.m22);
+	public static int[] generateDecalMesh(final World world, final Vec3d normal, final float scale, final float offsetX, final float offsetY, final float offsetZ, final DecalType type, @Nullable final ResourceLocation texture, final int... data){
+		final Vec3d euler = BobMathUtil.getEulerAngles(normal);
+		final float roll = world.rand.nextFloat()*2F*(float)Math.PI;
+		final Matrix3f rot = eulerToMat((float)Math.toRadians(euler.x), (float)Math.toRadians(euler.y+90), roll);
+		final Vec3d c1 = new Vec3d(rot.m00, rot.m01, rot.m02);
+		final Vec3d c2 = new Vec3d(rot.m10, rot.m11, rot.m12);
+		final Vec3d c3 = new Vec3d(rot.m20, rot.m21, rot.m22);
 		//System.out.println(c1);
 		//System.out.println(c2);
 		//System.out.println(c3);
 		//System.out.println(normal);
 		//System.out.println();
 		
-		float[][] planes = new float[6][4];
+		final float[][] planes = new float[6][4];
 		planes[0] = new float[]{(float)c1.x, (float)c1.y, (float)c1.z, scale};
 		planes[1] = new float[]{(float)-c1.x, (float)-c1.y, (float)-c1.z, scale};
 		planes[2] = new float[]{(float)c2.x, (float)c2.y, (float)c2.z, scale};
@@ -74,32 +74,32 @@ public class BakedModelUtil {
 		planes[4] = new float[]{(float)c3.x, (float)c3.y, (float)c3.z, scale*3};
 		planes[5] = new float[]{(float)-c3.x, (float)-c3.y, (float)-c3.z, scale*3};
 		
-		AxisAlignedBB box = getBox(c1.scale(scale), c2.scale(scale), c3.scale(scale*3)).offset(offsetX, offsetY, offsetZ);
+		final AxisAlignedBB box = getBox(c1.scale(scale), c2.scale(scale), c3.scale(scale*3)).offset(offsetX, offsetY, offsetZ);
 		
-		List<Triangle> tris = new ArrayList<>();
+		final List<Triangle> tris = new ArrayList<>();
 		for(int i = (int) Math.floor(box.minX); i <= Math.ceil(box.maxX); i ++){
 			for(int j = (int) Math.floor(box.minY); j <= Math.ceil(box.maxY); j ++){
 				for(int k = (int) Math.floor(box.minZ); k <= Math.ceil(box.maxZ); k ++){
-					BlockPos pos = new BlockPos(i, j, k);
+					final BlockPos pos = new BlockPos(i, j, k);
 					IBlockState state = world.getBlockState(pos);
 					state = state.getActualState(world, pos);
 					if(state.getRenderType() != EnumBlockRenderType.MODEL)
 						continue;
-					IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+					final IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 					List<Triangle> block_tris = triangulateBlockModel(world, pos, model, state, MathHelper.getPositionRandom(pos), -offsetX, -offsetY, -offsetZ, true);
-					Iterator<Triangle> itr = block_tris.iterator();
+					final Iterator<Triangle> itr = block_tris.iterator();
 					while(itr.hasNext()){
-						Triangle t = itr.next();
-						Vec3d tnorm = t.v2.pos.subtract(t.v1.pos).crossProduct(t.v3.pos.subtract(t.v1.pos)).normalize();
+						final Triangle t = itr.next();
+						final Vec3d tnorm = t.v2.pos.subtract(t.v1.pos).crossProduct(t.v3.pos.subtract(t.v1.pos)).normalize();
 						if(tnorm.dotProduct(normal) > -0.2)
 							itr.remove();
 					}
 					List<Triangle> newTris;
 					for(int p = 0; p < planes.length; p ++){
 						newTris = new ArrayList<>();
-						float[] plane = planes[p];
-						for(Triangle t : block_tris){
-							Triangle[][] clipped = planeClipTriangle(t, plane);
+						final float[] plane = planes[p];
+						for(final Triangle t : block_tris){
+							final Triangle[][] clipped = planeClipTriangle(t, plane);
 							if(clipped[0][0] != null)
 								newTris.add(clipped[0][0]);
 							if(clipped[0][1] != null)
@@ -116,13 +116,13 @@ public class BakedModelUtil {
 			geo[0] = GLCompat.genBuffers();
 			geo[1] = tris.size()*3;
 			GLCompat.bindBuffer(GLCompat.GL_ARRAY_BUFFER, geo[0]);
-			ByteBuffer buf = buffer.getByteBuffer();
+			final ByteBuffer buf = buffer.getByteBuffer();
 			buf.clear();
-			for(Triangle t : tris){
+			for(final Triangle t : tris){
 				if(BYTES_PER_VERTEX*3 > buf.remaining()){
 					continue;
 				}
-				for(Vertex v : t.vertices()){
+				for(final Vertex v : t.vertices()){
 					buf.putFloat((float)v.pos.x);
 					buf.putFloat((float) v.pos.y);
 					buf.putFloat((float)v.pos.z);
@@ -134,7 +134,7 @@ public class BakedModelUtil {
 					buf.putFloat(v.v);
 					buf.putShort((short)(v.lmapU*65535));
 					buf.putShort((short)(v.lmapV*65535));
-					Vector3f projTex = new Vector3f((float)v.pos.x, (float)v.pos.y, (float)v.pos.z);
+					final Vector3f projTex = new Vector3f((float)v.pos.x, (float)v.pos.y, (float)v.pos.z);
 					rot.transform(projTex);
 					projTex.x = projTex.x*0.5F/scale + 0.5F;
 					projTex.y = projTex.y*0.5F/scale + 0.5F;
@@ -156,18 +156,18 @@ public class BakedModelUtil {
 			//Render into display list
 			geo[0] = GL11.glGenLists(1);
 			GL11.glNewList(geo[0], GL11.GL_COMPILE);
-			Tessellator tes = Tessellator.getInstance();
-			BufferBuilder buf = tes.getBuffer();
+			final Tessellator tes = Tessellator.getInstance();
+			final BufferBuilder buf = tes.getBuffer();
 			buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
-			for(Triangle t : tris){
-				Vec3d norm = t.v2.pos.subtract(t.v1.pos).crossProduct(t.v3.pos.subtract(t.v1.pos)).normalize();
-				Vector3f tex1 = new Vector3f((float)t.v1.pos.x, (float)t.v1.pos.y, (float)t.v1.pos.z);
+			for(final Triangle t : tris){
+				final Vec3d norm = t.v2.pos.subtract(t.v1.pos).crossProduct(t.v3.pos.subtract(t.v1.pos)).normalize();
+				final Vector3f tex1 = new Vector3f((float)t.v1.pos.x, (float)t.v1.pos.y, (float)t.v1.pos.z);
 				rot.transform(tex1);
-				Vector3f tex2 = new Vector3f((float)t.v2.pos.x, (float)t.v2.pos.y, (float)t.v2.pos.z);
+				final Vector3f tex2 = new Vector3f((float)t.v2.pos.x, (float)t.v2.pos.y, (float)t.v2.pos.z);
 				rot.transform(tex2);
-				Vector3f tex3 = new Vector3f((float)t.v3.pos.x, (float)t.v3.pos.y, (float)t.v3.pos.z);
+				final Vector3f tex3 = new Vector3f((float)t.v3.pos.x, (float)t.v3.pos.y, (float)t.v3.pos.z);
 				rot.transform(tex3);
-				float invScale = 1F/scale;
+				final float invScale = 1F/scale;
 				buf.pos(t.v1.pos.x, t.v1.pos.y, t.v1.pos.z).tex(tex1.x*0.5*invScale+0.5, tex1.y*0.5*invScale+0.5).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
 				buf.pos(t.v2.pos.x, t.v2.pos.y, t.v2.pos.z).tex(tex2.x*0.5*invScale+0.5, tex2.y*0.5*invScale+0.5).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
 				buf.pos(t.v3.pos.x, t.v3.pos.y, t.v3.pos.z).tex(tex3.x*0.5*invScale+0.5, tex3.y*0.5*invScale+0.5).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
@@ -188,16 +188,16 @@ public class BakedModelUtil {
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-				int texId = Minecraft.getMinecraft().getTextureManager().getTexture(texture).getGlTextureId();
-				int width = geo[5] = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
-				int height = geo[6] = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
+				final int texId = Minecraft.getMinecraft().getTextureManager().getTexture(texture).getGlTextureId();
+				final int width = geo[5] = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+				final int height = geo[6] = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
 				
-				int fbo = geo[1] = GLCompat.genFramebuffers();
-				int fbo2 = geo[3] = GLCompat.genFramebuffers();
-				int gravmap = geo[2] = GL11.glGenTextures();
-				int gravmap2 = geo[4] = GL11.glGenTextures();
+				final int fbo = geo[1] = GLCompat.genFramebuffers();
+				final int fbo2 = geo[3] = GLCompat.genFramebuffers();
+				final int gravmap = geo[2] = GL11.glGenTextures();
+				final int gravmap2 = geo[4] = GL11.glGenTextures();
 				
-				int depth = GLCompat.genRenderbuffers();
+				final int depth = GLCompat.genRenderbuffers();
 				GLCompat.bindRenderbuffer(GLCompat.GL_RENDERBUFFER, depth);
 				GLCompat.renderbufferStorage(GLCompat.GL_RENDERBUFFER, GLCompat.GL_DEPTH_COMPONENT24, width, height);
 				
@@ -235,14 +235,14 @@ public class BakedModelUtil {
 		        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				
 		        if(data.length > 0){
-		        	int texIdx = data[0];
-		        	int rows = data[1];
+		        	final int texIdx = data[0];
+		        	final int rows = data[1];
 		        	GlStateManager.matrixMode(GL11.GL_TEXTURE);
 					GL11.glPushMatrix();
 					GL11.glLoadIdentity();
-					float size = 1F/rows;
-			        float u = (texIdx%rows)*size;
-			        float v = (texIdx/4)*size;
+					final float size = 1F/rows;
+			        final float u = (texIdx%rows)*size;
+			        final float v = (texIdx/4)*size;
 			        GL11.glTranslated(u, v, 0);
 			        GL11.glScaled(size, size, 1);
 					GlStateManager.matrixMode(GL11.GL_MODELVIEW);
@@ -258,14 +258,14 @@ public class BakedModelUtil {
 				ResourceManager.gravitymap_render.use();
 				
 				//Don't really know why this needs a negative roll but ok.
-				Matrix3f rot2 = eulerToMat((float)Math.toRadians(euler.x), (float)Math.toRadians(euler.y+90), 0);
-				Matrix3f mR = new Matrix3f();
+				final Matrix3f rot2 = eulerToMat((float)Math.toRadians(euler.x), (float)Math.toRadians(euler.y+90), 0);
+				final Matrix3f mR = new Matrix3f();
 				mR.rotZ(-roll);
 				mR.mul(rot2);
-				Vec3d tanDir = new Vec3d(mR.m10, mR.m11, mR.m12);
+				final Vec3d tanDir = new Vec3d(mR.m10, mR.m11, mR.m12);
 				
 				ResourceManager.gravitymap_render.uniform3f("tanDirection", (float)tanDir.x, (float)tanDir.y, (float)tanDir.z);
-				Vector3f gravity = new Vector3f(0, 0.5F, 0);
+				final Vector3f gravity = new Vector3f(0, 0.5F, 0);
 				//rot.transform(gravity);
 				ResourceManager.gravitymap_render.uniform3f("gravity", gravity.x, gravity.y, gravity.z);
 				for(int i = 0; i < 3; i ++)
@@ -342,50 +342,50 @@ public class BakedModelUtil {
 		GLCompat.disableVertexAttribArray(5);
 	}
 	
-	public static AxisAlignedBB getBox(Vec3d a, Vec3d b, Vec3d c){
-		double x = Math.max(Math.max(Math.abs(a.x), Math.abs(b.x)), Math.abs(c.x));
-		double y = Math.max(Math.max(Math.abs(a.y), Math.abs(b.y)), Math.abs(c.y));
-		double z = Math.max(Math.max(Math.abs(a.z), Math.abs(b.z)), Math.abs(c.z));
+	public static AxisAlignedBB getBox(final Vec3d a, final Vec3d b, final Vec3d c){
+		final double x = Math.max(Math.max(Math.abs(a.x), Math.abs(b.x)), Math.abs(c.x));
+		final double y = Math.max(Math.max(Math.abs(a.y), Math.abs(b.y)), Math.abs(c.y));
+		final double z = Math.max(Math.max(Math.abs(a.z), Math.abs(b.z)), Math.abs(c.z));
 		
 		return new AxisAlignedBB(-x, -y, -z, x, y, z);
 	}
 	
-	public static Matrix3f normalToMat(Vec3d normal, float roll){
-		Vec3d euler = BobMathUtil.getEulerAngles(normal);
+	public static Matrix3f normalToMat(final Vec3d normal, final float roll){
+		final Vec3d euler = BobMathUtil.getEulerAngles(normal);
 		return eulerToMat((float)Math.toRadians(euler.x), (float)Math.toRadians(euler.y+90), roll);
 	}
 	
-	public static Matrix3f eulerToMat(float yaw, float pitch, float roll){
+	public static Matrix3f eulerToMat(final float yaw, final float pitch, final float roll){
 		//Could this be more optimized? Yeah, but it's not like I'm calling it that often.
-		Matrix3f mY = new Matrix3f();
+		final Matrix3f mY = new Matrix3f();
 		mY.rotY(-yaw);
-		Matrix3f mP = new Matrix3f();
+		final Matrix3f mP = new Matrix3f();
 		mP.rotX(pitch);
-		Matrix3f mR = new Matrix3f();
+		final Matrix3f mR = new Matrix3f();
 		mR.rotZ(roll);
 		mR.mul(mP);
 		mR.mul(mY);
 		return mR;
 	}
 	
-	public static List<Triangle> triangulateBlockModel(IBakedModel b, IBlockState state, long rand, float offsetX, float offsetY, float offsetZ){
+	public static List<Triangle> triangulateBlockModel(final IBakedModel b, final IBlockState state, final long rand, final float offsetX, final float offsetY, final float offsetZ){
 		return triangulateBlockModel(null, null, b, state, rand, offsetX, offsetY, offsetZ, false);
 	}
 	
-	public static List<Triangle> triangulateBlockModel(World world, BlockPos pos, IBakedModel b, IBlockState state, long rand, float offsetX, float offsetY, float offsetZ, boolean checkSides){
-		List<Triangle> tris = new ArrayList<>();
+	public static List<Triangle> triangulateBlockModel(final World world, final BlockPos pos, final IBakedModel b, final IBlockState state, final long rand, final float offsetX, final float offsetY, final float offsetZ, final boolean checkSides){
+		final List<Triangle> tris = new ArrayList<>();
 		
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(world, b, state, pos, buffer, true);
 		buffer.finishDrawing();
-		IntBuffer buf = buffer.getByteBuffer().asIntBuffer();
-		int[] vertexData = new int[DefaultVertexFormats.BLOCK.getIntegerSize()*4];
+		final IntBuffer buf = buffer.getByteBuffer().asIntBuffer();
+		final int[] vertexData = new int[DefaultVertexFormats.BLOCK.getIntegerSize()*4];
 		for(int i = 0; i < buf.limit(); i += DefaultVertexFormats.BLOCK.getIntegerSize()*4){
 			buf.get(vertexData);
-			Vertex v0 = new Vertex(vertexData, 0, offsetX, offsetY, offsetZ);
-			Vertex v1 = new Vertex(vertexData, 1, offsetX, offsetY, offsetZ);
-			Vertex v2 = new Vertex(vertexData, 2, offsetX, offsetY, offsetZ);
-			Vertex v3 = new Vertex(vertexData, 3, offsetX, offsetY, offsetZ);
+			final Vertex v0 = new Vertex(vertexData, 0, offsetX, offsetY, offsetZ);
+			final Vertex v1 = new Vertex(vertexData, 1, offsetX, offsetY, offsetZ);
+			final Vertex v2 = new Vertex(vertexData, 2, offsetX, offsetY, offsetZ);
+			final Vertex v3 = new Vertex(vertexData, 3, offsetX, offsetY, offsetZ);
 			tris.add(new Triangle(v0, v1, v2));
 			tris.add(new Triangle(v2, v3, v0));
 		}
@@ -411,15 +411,15 @@ public class BakedModelUtil {
 		return tris;
 	}
 	
-	public static Triangle[][] planeClipTriangle(Triangle t, float[] plane){
-		Triangle[][] clipped = new Triangle[2][2];
+	public static Triangle[][] planeClipTriangle(final Triangle t, final float[] plane){
+		final Triangle[][] clipped = new Triangle[2][2];
 		clipped[0] = new Triangle[]{null, null};
 		clipped[1] = new Triangle[]{null, null};
 		//Clip each triangle to the plane.
 		//TODO move this to a generic helper method for clipping triangles?
-		boolean p1 = t.v1.pos.x*plane[0]+t.v1.pos.y*plane[1]+t.v1.pos.z*plane[2]+plane[3] > 0;
-		boolean p2 = t.v2.pos.x*plane[0]+t.v2.pos.y*plane[1]+t.v2.pos.z*plane[2]+plane[3] > 0;
-		boolean p3 = t.v3.pos.x*plane[0]+t.v3.pos.y*plane[1]+t.v3.pos.z*plane[2]+plane[3] > 0;
+		final boolean p1 = t.v1.pos.x*plane[0]+t.v1.pos.y*plane[1]+t.v1.pos.z*plane[2]+plane[3] > 0;
+		final boolean p2 = t.v2.pos.x*plane[0]+t.v2.pos.y*plane[1]+t.v2.pos.z*plane[2]+plane[3] > 0;
+		final boolean p3 = t.v3.pos.x*plane[0]+t.v3.pos.y*plane[1]+t.v3.pos.z*plane[2]+plane[3] > 0;
 		//If all points on positive side, add to side 1 
 		if(p1 && p2 && p3){
 			clipped[0][0] = t;
@@ -428,8 +428,10 @@ public class BakedModelUtil {
 			clipped[1][0] = t;
 		//else if only one is positive, clip and add 1 triangle to side 1, 2 to side 2
 		} else if(p1 ^ p2 ^ p3){
-			Vertex a, b, c;
-			if(p1){
+			final Vertex a;
+            Vertex b;
+            final Vertex c;
+            if(p1){
 				a = t.v1;
 				b = t.v2;
 				c = t.v3;
@@ -442,12 +444,12 @@ public class BakedModelUtil {
 				b = t.v1;
 				c = t.v2;
 			}
-			Vec3d rAB = b.pos.subtract(a.pos);
-			Vec3d rAC = c.pos.subtract(a.pos);
-			float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
-			float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
-			Vertex d = a.lerp(b, interceptAB);
-			Vertex e = a.lerp(c, interceptAC);
+			final Vec3d rAB = b.pos.subtract(a.pos);
+			final Vec3d rAC = c.pos.subtract(a.pos);
+			final float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
+			final float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
+			final Vertex d = a.lerp(b, interceptAB);
+			final Vertex e = a.lerp(c, interceptAC);
 			
 			clipped[1][0] = new Triangle(d, b, e);
 			clipped[1][1] = new Triangle(b, c, e);
@@ -455,8 +457,10 @@ public class BakedModelUtil {
 			
 		//else one is negative, clip and add 2 triangles to side 1, 1 to side 2.
 		} else {
-			Vertex a, b, c;
-			if(!p1){
+			final Vertex a;
+            Vertex b;
+            final Vertex c;
+            if(!p1){
 				a = t.v1;
 				b = t.v2;
 				c = t.v3;
@@ -470,12 +474,12 @@ public class BakedModelUtil {
 				c = t.v2;
 			}
 			//Duplicated code. Eh, I don't feel like redesigning this.
-			Vec3d rAB = b.pos.subtract(a.pos);
-			Vec3d rAC = c.pos.subtract(a.pos);
-			float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
-			float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
-			Vertex d = a.lerp(b, interceptAB);
-			Vertex e = a.lerp(c, interceptAC);
+			final Vec3d rAB = b.pos.subtract(a.pos);
+			final Vec3d rAC = c.pos.subtract(a.pos);
+			final float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
+			final float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
+			final Vertex d = a.lerp(b, interceptAB);
+			final Vertex e = a.lerp(c, interceptAC);
 			
 			clipped[0][0] = new Triangle(d, b, e);
 			clipped[0][1] = new Triangle(b, c, e);
@@ -484,9 +488,9 @@ public class BakedModelUtil {
 		return clipped;
 	}
 	
-	public static double rayPlaneIntercept(Vec3d start, Vec3d ray, float[] plane){
-		double num = -(plane[0]*start.x + plane[1]*start.y + plane[2]*start.z + plane[3]);
-		double denom = plane[0]*ray.x + plane[1]*ray.y + plane[2]*ray.z;
+	public static double rayPlaneIntercept(final Vec3d start, final Vec3d ray, final float[] plane){
+		final double num = -(plane[0]*start.x + plane[1]*start.y + plane[2]*start.z + plane[3]);
+		final double denom = plane[0]*ray.x + plane[1]*ray.y + plane[2]*ray.z;
 		return num/denom;
 	}
 	
@@ -497,22 +501,22 @@ public class BakedModelUtil {
 		public float lmapU;
 		public float lmapV;
 		
-		public Vertex(int[] vertexData, int offset, float oX, float oY, float oZ) {
+		public Vertex(final int[] vertexData, int offset, final float oX, final float oY, final float oZ) {
 			offset *= 7;
-			float x = Float.intBitsToFloat(vertexData[0+offset])+oX;
-			float y = Float.intBitsToFloat(vertexData[1+offset])+oY;
-			float z = Float.intBitsToFloat(vertexData[2+offset])+oZ;
+			final float x = Float.intBitsToFloat(vertexData[offset])+oX;
+			final float y = Float.intBitsToFloat(vertexData[1+offset])+oY;
+			final float z = Float.intBitsToFloat(vertexData[2+offset])+oZ;
 			pos = new Vec3d(x, y, z);
-			int color = vertexData[3+offset];
+			final int color = vertexData[3+offset];
 			a = ((color >> 24) & 255) / 255F;
 			b = ((color >> 16) & 255) / 255F;
 			g = ((color >> 8) & 255) / 255F;
 			r = ((color) & 255) / 255F;
 			u = Float.intBitsToFloat(vertexData[4+offset]);
 			v = Float.intBitsToFloat(vertexData[5+offset]);
-			int i = vertexData[6+offset];
-			int j = i >>> 16 & 65535;
-	        int k = i & 65535;
+			final int i = vertexData[6+offset];
+			final int j = i >>> 16 & 65535;
+	        final int k = i & 65535;
 	        lmapU = j/255F;
 	        lmapV = k/255F;
 		}
@@ -520,8 +524,8 @@ public class BakedModelUtil {
 		public Vertex() {
 		}
 		
-		public Vertex lerp(Vertex other, float amount){
-			Vertex l = new Vertex();
+		public Vertex lerp(final Vertex other, final float amount){
+			final Vertex l = new Vertex();
 			l.pos = pos.add(other.pos.subtract(pos).scale(amount));
 			l.a = a + (other.a-a)*amount;
 			l.r = r + (other.r-r)*amount;
@@ -539,7 +543,7 @@ public class BakedModelUtil {
 		
 		public Vertex v1, v2, v3;
 		
-		public Triangle(Vertex v1, Vertex v2, Vertex v3) {
+		public Triangle(final Vertex v1, final Vertex v2, final Vertex v3) {
 			this.v1 = v1;
 			this.v2 = v2;
 			this.v3 = v3;

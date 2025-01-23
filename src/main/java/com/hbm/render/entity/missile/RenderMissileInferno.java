@@ -17,16 +17,16 @@ public class RenderMissileInferno extends Render<EntityMissileInferno> {
 	
 	public static final IRenderFactory<EntityMissileInferno> FACTORY = (RenderManager man) -> {return new RenderMissileInferno(man);};
 	
-	protected RenderMissileInferno(RenderManager renderManager) {
+	protected RenderMissileInferno(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMissileInferno missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileInferno missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-		double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+		final double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
 		x = renderPos[0];
 		y = renderPos[1];
 		z = renderPos[2];
@@ -44,7 +44,7 @@ public class RenderMissileInferno extends Render<EntityMissileInferno> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileInferno entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileInferno entity) {
 		return ResourceManager.missileHuge_IN_tex;
 	}
 }

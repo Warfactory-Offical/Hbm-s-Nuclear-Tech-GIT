@@ -2,7 +2,6 @@ package com.hbm.items.gear;
 
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -10,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class MaskOfInfamy extends ItemArmor {
 
-	public MaskOfInfamy(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
+	public MaskOfInfamy(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -19,7 +18,7 @@ public class MaskOfInfamy extends ItemArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
 		return (RefStrings.MODID + ":textures/armor/MaskOfInfamy.png");
 	}
 

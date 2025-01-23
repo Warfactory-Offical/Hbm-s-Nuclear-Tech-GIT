@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSmolder extends Block {
 
-	public BlockSmolder(Material materialIn, String s) {
+	public BlockSmolder(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,7 +28,7 @@ public class BlockSmolder extends Block {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+	public void randomDisplayTick(final IBlockState state, final World world, final BlockPos pos, final Random rand) {
 		super.randomDisplayTick(state, world, pos, rand);
 		if(world.getBlockState(pos.up()).getMaterial() == Material.AIR) {
 
@@ -38,12 +38,12 @@ public class BlockSmolder extends Block {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return ModItems.powder_fire;
 	}
 	
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
 		entityIn.setFire(3);
 	}
 

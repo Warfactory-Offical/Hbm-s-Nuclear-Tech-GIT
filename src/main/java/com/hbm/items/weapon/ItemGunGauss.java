@@ -59,12 +59,12 @@ public class ItemGunGauss extends ItemGunBase {
 	private AudioWrapper chargeLoop;
 	public static int firstPersonFireCounter = -1;
 
-	public ItemGunGauss(GunConfiguration config, GunConfiguration alt, String s) {
+	public ItemGunGauss(final GunConfiguration config, final GunConfiguration alt, final String s) {
 		super(config, alt, s);
 	}
 	
 	@Override
-	public void endAction(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void endAction(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 		if(getHasShot(stack)) {
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.sparkShoot, SoundCategory.PLAYERS, 1.0F, 1.0F);
 			setHasShot(stack, false);
@@ -82,10 +82,10 @@ public class ItemGunGauss extends ItemGunBase {
 	}
 	
 	
-	public void doTauShot(World world, @Nullable Entity player, Vec3d prevPos, Vec3d direction, float damage){
+	public void doTauShot(final World world, @Nullable final Entity player, Vec3d prevPos, Vec3d direction, final float damage){
 		final int MAX_BOUNCES = 4;
 		for(int i = 0; i < MAX_BOUNCES; i ++){
-			RayTraceResult r = Library.rayTraceIncludeEntities(world, prevPos, direction.scale(40).add(prevPos), player);
+			final RayTraceResult r = Library.rayTraceIncludeEntities(world, prevPos, direction.scale(40).add(prevPos), player);
 			if(r == null || r.typeOfHit == Type.MISS){
 				break;
 			} else if(r.typeOfHit == Type.ENTITY && CompatibilityConfig.isWarDim(world)){
@@ -93,13 +93,13 @@ public class ItemGunGauss extends ItemGunBase {
 					if(hurtResistantTime == null)
 						hurtResistantTime = ReflectionHelper.findField(Entity.class, "hurtResistantTime", "field_70172_ad");
 					hurtResistantTime.setInt(r.entityHit, 0);
-				} catch (Exception x){
+				} catch (final Exception x){
 					x.printStackTrace();
 				}
 				r.entityHit.attackEntityFrom(ModDamageSource.causeTauDamage(player, null), damage);
 				break;
 			} else {
-				Vec3d normal = new Vec3d(r.sideHit.getXOffset(), r.sideHit.getYOffset(), r.sideHit.getZOffset());
+				final Vec3d normal = new Vec3d(r.sideHit.getXOffset(), r.sideHit.getYOffset(), r.sideHit.getZOffset());
 				if(Math.acos(normal.dotProduct(direction.scale(-1))) > Math.toRadians(20)){
 					switch(r.sideHit.getAxis()){
 					case X:
@@ -119,20 +119,20 @@ public class ItemGunGauss extends ItemGunBase {
 					for(int j = 0; j < 3 + world.rand.nextInt(5); j ++){
 						//Gets a random vector rotated within a cone and then rotates it to the particle data's direction
 						//Create a new vector and rotate it randomly about the x axis within the angle specified, then rotate that by random degrees to get the random cone vector
-						Vec3 up = Vec3.createVectorHelper(0, 1, 0);
+						final Vec3 up = Vec3.createVectorHelper(0, 1, 0);
 						up.rotateAroundX((float) Math.toRadians(world.rand.nextFloat()*75));
 						up.rotateAroundY((float) Math.toRadians(world.rand.nextFloat()*360));
 						//Finds the angles for the particle direction and rotate our random cone vector to it.
-						Vec3 direction2 = new Vec3(direction);
-						Vec3 angles = BobMathUtil.getEulerAngles(direction2);
+						final Vec3 direction2 = new Vec3(direction);
+						final Vec3 angles = BobMathUtil.getEulerAngles(direction2);
 						Vec3 newDirection = Vec3.createVectorHelper(up.xCoord, up.yCoord, up.zCoord);
 						newDirection.rotateAroundX((float) Math.toRadians(angles.yCoord-90));
 						newDirection.rotateAroundY((float) Math.toRadians(angles.xCoord));
 						newDirection = newDirection.mult(3);
 						RayTraceResult r2 = Library.rayTraceIncludeEntities(world, r.hitVec.add(newDirection.xCoord*0.01, newDirection.yCoord*0.01, newDirection.zCoord*0.01), r.hitVec.add(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord), player);
 						if(r2 != null && r2.typeOfHit == Type.BLOCK){
-							Vec3d vec1 = r2.hitVec.add(new Vec3d(newDirection.xCoord*0.01, newDirection.yCoord*0.01, newDirection.zCoord*0.01));
-							Vec3d vec2 = r.hitVec.add(new Vec3d(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord));
+							final Vec3d vec1 = r2.hitVec.add(new Vec3d(newDirection.xCoord*0.01, newDirection.yCoord*0.01, newDirection.zCoord*0.01));
+							final Vec3d vec2 = r.hitVec.add(new Vec3d(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord));
 							r2 = Library.rayTraceIncludeEntities(world, vec1, vec2, player);
 						}
 						//Yeah, it's some repeated code, but the alternative was even worse and buggier.
@@ -141,7 +141,7 @@ public class ItemGunGauss extends ItemGunBase {
 								if(hurtResistantTime == null)
 									hurtResistantTime = ReflectionHelper.findField(Entity.class, "hurtResistantTime", "field_70172_ad");
 								hurtResistantTime.setInt(r2.entityHit, 0);
-							} catch (Exception x){
+							} catch (final Exception x){
 								x.printStackTrace();
 							}
 							r2.entityHit.attackEntityFrom(ModDamageSource.causeTauDamage(player, null), damage*0.5F);
@@ -155,24 +155,24 @@ public class ItemGunGauss extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void endActionClient(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void endActionClient(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 		if(chargeLoop != null) {
 			chargeLoop.stopSound();
 			chargeLoop = null;
 		}
 		if(firstPersonFireCounter > 10){
 			for(int i = 0; i < 50; i ++){
-				double randX = player.world.rand.nextGaussian()*0.01;
-				double randY = player.world.rand.nextGaussian()*0.01;
-				double randZ = player.world.rand.nextGaussian()*0.01;
-				ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(player.world, -1.25-player.world.rand.nextFloat()*0.28F+randX, 0.25+randY, 0.2+randZ, 1.8F);
+				final double randX = player.world.rand.nextGaussian()*0.01;
+				final double randY = player.world.rand.nextGaussian()*0.01;
+				final double randZ = player.world.rand.nextGaussian()*0.01;
+				final ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(player.world, -1.25-player.world.rand.nextFloat()*0.28F+randX, 0.25+randY, 0.2+randZ, 1.8F);
 				t.color(1F, 0.7F, 0.1F, 0.05F);
 				t.lifetime(40);
 				t.fadeIn(false);
 				ModEventHandlerClient.firstPersonAuxParticles.add(t);
 			}
 			doTauBeamFX(player, 1.0F, 0.9F, 0.6F, 1.0F, 12, player);
-			Vec3d motion = player.getLookVec().scale(-((float)firstPersonFireCounter/300F));
+			final Vec3d motion = player.getLookVec().scale(-((float)firstPersonFireCounter/300F));
 			player.motionX += motion.x;
 			player.motionY += motion.y;
 			player.motionZ += motion.z;
@@ -181,12 +181,12 @@ public class ItemGunGauss extends ItemGunBase {
 	}
 	
 	@Override
-	protected void altFire(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	protected void altFire(final ItemStack stack, final World world, final EntityPlayer player, final EnumHand hand) {
 		setCharge(stack, 1);
 	}
 	
 	@Override
-	public void startAction(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void startAction(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 		super.startAction(stack, world, player, main, hand);
 		if(!main && getItemWear(stack) < mainConfig.durability && Library.hasInventoryItem(player.inventory, ModItems.gun_xvl1456_ammo)) {
 			PacketDispatcher.sendTo(new GunAnimationPacket(AnimType.SPINUP.ordinal(), hand), (EntityPlayerMP) player);
@@ -195,12 +195,12 @@ public class ItemGunGauss extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onFireClient(ItemStack stack, EntityPlayer player, boolean shouldDoThirdPerson) {
+	public void onFireClient(final ItemStack stack, final EntityPlayer player, final boolean shouldDoThirdPerson) {
 		for(int i = 0; i < 50; i ++){
-			double randX = player.world.rand.nextGaussian()*0.01;
-			double randY = player.world.rand.nextGaussian()*0.01;
-			double randZ = player.world.rand.nextGaussian()*0.01;
-			ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(player.world, -1.25-player.world.rand.nextFloat()*0.28F+randX, 0.25+randY, 0.2+randZ, 1.8F);
+			final double randX = player.world.rand.nextGaussian()*0.01;
+			final double randY = player.world.rand.nextGaussian()*0.01;
+			final double randZ = player.world.rand.nextGaussian()*0.01;
+			final ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(player.world, -1.25-player.world.rand.nextFloat()*0.28F+randX, 0.25+randY, 0.2+randZ, 1.8F);
 			t.color(1F, 0.7F, 0.1F, 0.05F);
 			t.lifetime(40);
 			t.fadeIn(false);
@@ -210,12 +210,12 @@ public class ItemGunGauss extends ItemGunBase {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void doTauBeamFX(EntityPlayer player, float r, float g, float b, float a, int life, @Nullable Entity shooter){
-		ArrayList<Vec3d> hitPoints = new ArrayList<>(3);
+	public static void doTauBeamFX(final EntityPlayer player, final float r, final float g, final float b, final float a, final int life, @Nullable final Entity shooter){
+		final ArrayList<Vec3d> hitPoints = new ArrayList<>(3);
 		doTauBeamHits(player.world, player.getPositionEyes(MainRegistry.proxy.partialTicks()), player.getLook(MainRegistry.proxy.partialTicks()), hitPoints, shooter);
-		Vec3d[] hps = hitPoints.toArray(new Vec3d[hitPoints.size()]);
+		final Vec3d[] hps = hitPoints.toArray(new Vec3d[hitPoints.size()]);
 		hps[0] = new Vec3d(-0.38, -0.22, 0.3).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYawHead)).add(player.getPositionEyes(MainRegistry.proxy.partialTicks()));
-		ParticleTauBeam beam = new ParticleTauBeam(player.world, hps, 0.2F);
+		final ParticleTauBeam beam = new ParticleTauBeam(player.world, hps, 0.2F);
 		beam.color(r, g, b, a);
 		beam.lifetime(life);
 		Minecraft.getMinecraft().effectRenderer.addEffect(beam);
@@ -223,16 +223,16 @@ public class ItemGunGauss extends ItemGunBase {
 	
 	//This code looks like a mess but I don't know how to improve it without making more of a mess.
 	@SideOnly(Side.CLIENT)
-	public static void doTauBeamHits(World world, Vec3d prevPos, Vec3d direction, List<Vec3d> hitPoints, @Nullable Entity shooter){
+	public static void doTauBeamHits(final World world, Vec3d prevPos, Vec3d direction, final List<Vec3d> hitPoints, @Nullable final Entity shooter){
 		final int MAX_BOUNCES = 4;
 		hitPoints.add(prevPos);
 		for(int i = 0; i < MAX_BOUNCES; i ++){
-			RayTraceResult r = Library.rayTraceIncludeEntities(world, prevPos, direction.scale(40).add(prevPos), shooter);
+			final RayTraceResult r = Library.rayTraceIncludeEntities(world, prevPos, direction.scale(40).add(prevPos), shooter);
 			if(r == null || r.typeOfHit == Type.MISS){
 				hitPoints.add(direction.scale(40).add(prevPos));
 				break;
 			} else if(r.typeOfHit == Type.ENTITY){
-				Vec3d normal = new Vec3d(r.sideHit.getXOffset(), r.sideHit.getYOffset(), r.sideHit.getZOffset());
+				final Vec3d normal = new Vec3d(r.sideHit.getXOffset(), r.sideHit.getYOffset(), r.sideHit.getZOffset());
 				Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTauHit(world, r.hitVec.x, r.hitVec.y, r.hitVec.z, 0.5F, normal));
 				hitPoints.add(r.hitVec);
 				switch(r.sideHit.getAxis()){
@@ -247,7 +247,7 @@ public class ItemGunGauss extends ItemGunBase {
 					break;
 				}
 				
-				NBTTagCompound tag = new NBTTagCompound();
+				final NBTTagCompound tag = new NBTTagCompound();
 				tag.setString("type", "spark");
 				tag.setString("mode", "coneBurst");
 				tag.setDouble("posX", r.hitVec.x);
@@ -294,30 +294,30 @@ public class ItemGunGauss extends ItemGunBase {
 					for(int j = 0; j < 3 + world.rand.nextInt(5); j ++){
 						//Gets a random vector rotated within a cone and then rotates it to the particle data's direction
 						//Create a new vector and rotate it randomly about the x axis within the angle specified, then rotate that by random degrees to get the random cone vector
-						Vec3 up = Vec3.createVectorHelper(0, 1, 0);
+						final Vec3 up = Vec3.createVectorHelper(0, 1, 0);
 						up.rotateAroundX((float) Math.toRadians(world.rand.nextFloat()*45));
 						up.rotateAroundY((float) Math.toRadians(world.rand.nextFloat()*360));
 						//Finds the angles for the particle direction and rotate our random cone vector to it.
-						Vec3 direction2 = new Vec3(direction);
-						Vec3 angles = BobMathUtil.getEulerAngles(direction2);
+						final Vec3 direction2 = new Vec3(direction);
+						final Vec3 angles = BobMathUtil.getEulerAngles(direction2);
 						Vec3 newDirection = Vec3.createVectorHelper(up.xCoord, up.yCoord, up.zCoord);
 						newDirection.rotateAroundX((float) Math.toRadians(angles.yCoord-90));
 						newDirection.rotateAroundY((float) Math.toRadians(angles.xCoord));
 						newDirection = newDirection.mult(3);
 						RayTraceResult r2 = Library.rayTraceIncludeEntities(world, r.hitVec.add(newDirection.xCoord*0.01, newDirection.yCoord*0.01, newDirection.zCoord*0.01), r.hitVec.add(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord), shooter);
 						if(r2 != null && r2.typeOfHit == Type.BLOCK){
-							Vec3d vec1 = r2.hitVec.add(new Vec3d(newDirection.xCoord*0.01, newDirection.yCoord*0.01, newDirection.zCoord*0.01));
-							Vec3d vec2 = r.hitVec.add(new Vec3d(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord));
+							final Vec3d vec1 = r2.hitVec.add(new Vec3d(newDirection.xCoord*0.01, newDirection.yCoord*0.01, newDirection.zCoord*0.01));
+							final Vec3d vec2 = r.hitVec.add(new Vec3d(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord));
 							r2 = Library.rayTraceIncludeEntities(world, vec1, vec2, shooter);
 						}
 						//Yeah, it's some repeated code, but the alternative was even worse and buggier.
 						if(r2 == null || r2.typeOfHit == Type.MISS){
-							ParticleTauRay ray = new ParticleTauRay(world, new Vec3d[]{r.hitVec, new Vec3d(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord).add(r.hitVec)}, 0.25F);
+							final ParticleTauRay ray = new ParticleTauRay(world, new Vec3d[]{r.hitVec, new Vec3d(newDirection.xCoord, newDirection.yCoord, newDirection.zCoord).add(r.hitVec)}, 0.25F);
 							Minecraft.getMinecraft().effectRenderer.addEffect(ray);
 						} else if(r2.typeOfHit == Type.ENTITY){
 							normal = new Vec3d(r2.sideHit.getXOffset(), r2.sideHit.getYOffset(), r2.sideHit.getZOffset());
 							Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTauHit(world, r2.hitVec.x, r2.hitVec.y, r2.hitVec.z, 0.5F, normal));
-							ParticleTauRay ray = new ParticleTauRay(world, new Vec3d[]{r.hitVec, r2.hitVec}, 0.25F);
+							final ParticleTauRay ray = new ParticleTauRay(world, new Vec3d[]{r.hitVec, r2.hitVec}, 0.25F);
 							Minecraft.getMinecraft().effectRenderer.addEffect(ray);
 							switch(r2.sideHit.getAxis()){
 							case X:
@@ -331,7 +331,7 @@ public class ItemGunGauss extends ItemGunBase {
 								break;
 							}
 							
-							NBTTagCompound tag = new NBTTagCompound();
+							final NBTTagCompound tag = new NBTTagCompound();
 							tag.setString("type", "spark");
 							tag.setString("mode", "coneBurst");
 							tag.setDouble("posX", r2.hitVec.x);
@@ -354,7 +354,7 @@ public class ItemGunGauss extends ItemGunBase {
 							tag.setFloat("randomVelocity", 0.1F);
 							MainRegistry.proxy.effectNT(tag);
 						} else {
-							ParticleTauRay ray = new ParticleTauRay(world, new Vec3d[]{r.hitVec, r2.hitVec}, 0.25F);
+							final ParticleTauRay ray = new ParticleTauRay(world, new Vec3d[]{r.hitVec, r2.hitVec}, 0.25F);
 							Minecraft.getMinecraft().effectRenderer.addEffect(ray);
 							normal = new Vec3d(r2.sideHit.getXOffset(), r2.sideHit.getYOffset(), r2.sideHit.getZOffset());
 							Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTauHit(world, r2.hitVec.x, r2.hitVec.y, r2.hitVec.z, 0.75F, normal));
@@ -368,7 +368,7 @@ public class ItemGunGauss extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void startActionClient(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void startActionClient(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 		if(!main && getItemWear(stack) < mainConfig.durability && Library.hasInventoryItem(player.inventory, ModItems.gun_xvl1456_ammo)) {
 			chargeLoop = MainRegistry.proxy.getLoopedSound(HBMSoundHandler.tauChargeLoop2, SoundCategory.PLAYERS, (float)player.posX, (float)player.posY, (float)player.posZ, 1.0F, 0.75F);
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.tauChargeLoop2, SoundCategory.PLAYERS, 1.0F, 0.75F);
@@ -381,11 +381,11 @@ public class ItemGunGauss extends ItemGunBase {
 	}
 	
 	@Override
-	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand isCurrentItem) {
+	protected void updateServer(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand isCurrentItem) {
 		super.updateServer(stack, world, player, slot, isCurrentItem);
 		if(getIsAltDown(stack) && getItemWear(stack) < mainConfig.durability) {
 			
-			int c = getCharge(stack);
+			final int c = getCharge(stack);
 			
 			if(c > 200) {
 				setCharge(stack, 0);
@@ -427,9 +427,9 @@ public class ItemGunGauss extends ItemGunBase {
 	//Drillgon200: The default trefoil reticle looks terrible in my opinion, so I'm going to borrow the circle from black mesa.
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHud(ScaledResolution res, GuiIngame gui, ItemStack stack, float partialTicks) {
-		float x = res.getScaledWidth()/2;
-		float y = res.getScaledHeight()/2;
+	public void renderHud(final ScaledResolution res, final GuiIngame gui, final ItemStack stack, final float partialTicks) {
+		final float x = res.getScaledWidth()/2;
+		final float y = res.getScaledHeight()/2;
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.gluontau_hud);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -443,19 +443,19 @@ public class ItemGunGauss extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	protected void updateClient(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand isCurrentItem) {
+	protected void updateClient(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand isCurrentItem) {
 		super.updateClient(stack, world, player, slot, isCurrentItem);
 		if(getItemWear(stack) >= mainConfig.durability && firstPersonFireCounter >= 0){
 			endActionClient(stack, world, player, false, isCurrentItem);
 		}
 		if(firstPersonFireCounter >= 0){
-			ParticleTauLightning lightning = new ParticleTauLightning(world, 0, 0.25, 0.2, 5+Math.min(((float)firstPersonFireCounter/25F), 2), 8+world.rand.nextFloat()*15);
+			final ParticleTauLightning lightning = new ParticleTauLightning(world, 0, 0.25, 0.2, 5+Math.min(((float)firstPersonFireCounter/25F), 2), 8+world.rand.nextFloat()*15);
 			lightning.lifetime(4);
 			lightning.color(1F, 0.5F, 0.1F, 0.1F+(float)Math.min(((float)firstPersonFireCounter/400F), 0.1));
 			ModEventHandlerClient.firstPersonAuxParticles.add(lightning);
 			if(firstPersonFireCounter % 3 == 0){
-				ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(world, -1.25, 0.25, 0.2, 1+Math.min(((float)firstPersonFireCounter/10F), 10));
-				ParticleTauParticleFirstPerson t2 = new ParticleTauParticleFirstPerson(world, 0, 0.25, 0.2, 10+Math.min(((float)firstPersonFireCounter/10F), 10));
+				final ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(world, -1.25, 0.25, 0.2, 1+Math.min(((float)firstPersonFireCounter/10F), 10));
+				final ParticleTauParticleFirstPerson t2 = new ParticleTauParticleFirstPerson(world, 0, 0.25, 0.2, 10+Math.min(((float)firstPersonFireCounter/10F), 10));
 				t.color(1F, 0.35F, 0.1F, 1.5F);
 				t.lifetime(5);
 				t2.color(1F, 0.35F, 0.1F, 0.8F+Math.min(((float)firstPersonFireCounter/800F), 1));
@@ -465,26 +465,26 @@ public class ItemGunGauss extends ItemGunBase {
 			}
 			if(firstPersonFireCounter > 20){
 				for(int i = 0; i < 3; i ++){
-					double randX = player.world.rand.nextGaussian()*0.01;
-					double randY = player.world.rand.nextGaussian()*0.01;
-					double randZ = player.world.rand.nextGaussian()*0.01;
-					ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(world, -1.25-world.rand.nextFloat()*0.28F+randX, 0.25+randY, 0.2+randZ, 0.4F+Math.min(((float)firstPersonFireCounter/10F), 1.5F));
+					final double randX = player.world.rand.nextGaussian()*0.01;
+					final double randY = player.world.rand.nextGaussian()*0.01;
+					final double randZ = player.world.rand.nextGaussian()*0.01;
+					final ParticleTauParticleFirstPerson t = new ParticleTauParticleFirstPerson(world, -1.25-world.rand.nextFloat()*0.28F+randX, 0.25+randY, 0.2+randZ, 0.4F+Math.min(((float)firstPersonFireCounter/10F), 1.5F));
 					t.color(1F, 0.7F, 0.1F, 0.05F);
 					t.lifetime(40);
 					ModEventHandlerClient.firstPersonAuxParticles.add(t);
 				}
 			}
 			if(firstPersonFireCounter == 100){
-				ParticleTauMuzzleLightning ml = new ParticleTauMuzzleLightning(world, -1.5, 0.25, 0.2, 0.1F);
+				final ParticleTauMuzzleLightning ml = new ParticleTauMuzzleLightning(world, -1.5, 0.25, 0.2, 0.1F);
 				ModEventHandlerClient.firstPersonAuxParticles.add(ml);
 			}
 			if((firstPersonFireCounter > 40 && (firstPersonFireCounter % 10 == 0 || firstPersonFireCounter % 7 == 0)) ||
 					(firstPersonFireCounter > 120 && (firstPersonFireCounter % 8 == 0 || firstPersonFireCounter % 5 == 0))){
-				float offset = (1-((float)firstPersonFireCounter/200F))*0.05F;
-				Vec3d pos = new Vec3d(-0.48, -0.15-offset, 1.3).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYawHead)).add(player.getPositionEyes(MainRegistry.proxy.partialTicks()));
-				Vec3d pos2 = new Vec3d(-0.47, -0.15-offset, 1.3).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYawHead)).add(player.getPositionEyes(MainRegistry.proxy.partialTicks()));
-				Vec3d direction = pos2.subtract(pos).normalize();
-				NBTTagCompound tag = new NBTTagCompound();
+				final float offset = (1-((float)firstPersonFireCounter/200F))*0.05F;
+				final Vec3d pos = new Vec3d(-0.48, -0.15-offset, 1.3).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYawHead)).add(player.getPositionEyes(MainRegistry.proxy.partialTicks()));
+				final Vec3d pos2 = new Vec3d(-0.47, -0.15-offset, 1.3).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYawHead)).add(player.getPositionEyes(MainRegistry.proxy.partialTicks()));
+				final Vec3d direction = pos2.subtract(pos).normalize();
+				final NBTTagCompound tag = new NBTTagCompound();
 				tag.setString("type", "spark");
 				tag.setString("mode", "coneBurst");
 				tag.setDouble("posX", pos.x);
@@ -516,7 +516,7 @@ public class ItemGunGauss extends ItemGunBase {
 	}
 	
 	@Override
-	protected void spawnProjectile(World world, EntityPlayer player, ItemStack stack, int config, EnumHand hand) {
+	protected void spawnProjectile(final World world, final EntityPlayer player, final ItemStack stack, final int config, final EnumHand hand) {
 		if(this.mainConfig.animations.containsKey(AnimType.CYCLE) && player instanceof EntityPlayerMP)
 			PacketDispatcher.wrapper.sendTo(new GunAnimationPacket(AnimType.CYCLE.ordinal(), hand), (EntityPlayerMP) player);
 		PacketDispatcher.wrapper.sendToAllTracking(new GunFXPacket(player, hand, FXType.FIRE), new TargetPoint(world.provider.getDimension(), player.posX, player.posY, player.posZ, 1));
@@ -524,28 +524,28 @@ public class ItemGunGauss extends ItemGunBase {
 		setHasShot(stack, true);
 	}
 	
-	public static void setHasShot(ItemStack stack, boolean b) {
+	public static void setHasShot(final ItemStack stack, final boolean b) {
 		writeNBT(stack, "hasShot", b ? 1 : 0);
 	}
 	
-	public static boolean getHasShot(ItemStack stack) {
+	public static boolean getHasShot(final ItemStack stack) {
 		return readNBT(stack, "hasShot") == 1;
 	}
 	
 	/// gauss charge state ///
-	public static void setCharge(ItemStack stack, int i) {
+	public static void setCharge(final ItemStack stack, final int i) {
 		writeNBT(stack, "gauss_charge", i);
 	}
 	
-	public static int getCharge(ItemStack stack) {
+	public static int getCharge(final ItemStack stack) {
 		return readNBT(stack, "gauss_charge");
 	}
 	
-	public static void setStored(ItemStack stack, int i) {
+	public static void setStored(final ItemStack stack, final int i) {
 		writeNBT(stack, "gauss_stored", i);
 	}
 	
-	public static int getStored(ItemStack stack) {
+	public static int getStored(final ItemStack stack) {
 		return readNBT(stack, "gauss_stored");
 	}
 }

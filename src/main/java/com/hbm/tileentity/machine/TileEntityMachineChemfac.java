@@ -59,13 +59,13 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 
 		inventory = new ItemStackHandler(77) {
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				super.onContentsChanged(slot);
 				markDirty();
 			}
 
 			@Override
-			public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+			public void setStackInSlot(final int slot, @Nonnull final ItemStack stack) {
 				super.setStackInSlot(slot, stack);
 				if(!stack.isEmpty() && slot >= 1 && slot <= 4 && stack.getItem() instanceof ItemMachineUpgrade) {
 					world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, HBMSoundHandler.upgradePlug, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -90,9 +90,9 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 			this.consumption = 100;
 
 			upgradeManager.eval(inventory, 1, 4);
-			int speedLevel = Math.min(upgradeManager.getLevel(UpgradeType.SPEED), 6);
-			int powerLevel = Math.min(upgradeManager.getLevel(UpgradeType.POWER), 3);
-			int overLevel = upgradeManager.getLevel(UpgradeType.OVERDRIVE);
+			final int speedLevel = Math.min(upgradeManager.getLevel(UpgradeType.SPEED), 6);
+			final int powerLevel = Math.min(upgradeManager.getLevel(UpgradeType.POWER), 3);
+			final int overLevel = upgradeManager.getLevel(UpgradeType.OVERDRIVE);
 
 			this.speed -= speedLevel * 15;
 			this.consumption += speedLevel * 300;
@@ -105,25 +105,25 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 				this.speed = 1;
 			}
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", this.power);
 			data.setIntArray("progress", this.progress);
 			data.setIntArray("maxProgress", this.maxProgress);
 			data.setBoolean("isProgressing", isProgressing);
 			data.setTag("tanks", serializeTanks());
 
-			NBTTagCompound tankWater = new NBTTagCompound();
+			final NBTTagCompound tankWater = new NBTTagCompound();
 			water.writeToNBT(tankWater);
 			data.setTag("water", tankWater);
 
-			NBTTagCompound tankSteam = new NBTTagCompound();
+			final NBTTagCompound tankSteam = new NBTTagCompound();
 			steam.writeToNBT(tankSteam);
 			data.setTag("steam", tankSteam);
 
 			PacketDispatcher.wrapper.sendToAll(new LoopedSoundPacket(pos.getX(), pos.getY(), pos.getZ()));
 			this.networkPack(data, 150);
 		} else {
-			float maxSpeed = 30F;
+			final float maxSpeed = 30F;
 
 			if(isProgressing) {
 				rotSpeed += 0.1;
@@ -133,13 +133,13 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 				}
 
 				if(rotSpeed == maxSpeed && world.getTotalWorldTime() % 5 == 0) {
-					ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
-					ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-					Random rand = world.rand;
+					final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+					final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+					final Random rand = world.rand;
 
-					double x = pos.getX() + 0.5 - rot.offsetX * 0.5;
-					double y = pos.getY() + 3;
-					double z = pos.getZ() + 0.5 - rot.offsetZ * 0.5;
+					final double x = pos.getX() + 0.5 - rot.offsetX * 0.5;
+					final double y = pos.getY() + 3;
+					final double z = pos.getZ() + 0.5 - rot.offsetZ * 0.5;
 
 					world.spawnParticle(EnumParticleTypes.CLOUD, x + dir.offsetX * 1.5 + rand.nextGaussian() * 0.2, y, z + dir.offsetZ * 1.5 + rand.nextGaussian() * 0.2, 0.0D, 0.15D, 0.0D);
 					world.spawnParticle(EnumParticleTypes.CLOUD, x + dir.offsetX * -0.5 + rand.nextGaussian() * 0.2, y, z + dir.offsetZ * -0.5 + rand.nextGaussian() * 0.2, 0.0D, 0.15D, 0.0D);
@@ -163,7 +163,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 		this.progress = nbt.getIntArray("progress");
 		this.maxProgress = nbt.getIntArray("maxProgress");
@@ -180,12 +180,12 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 
 
 	@Override
-	protected boolean canProcess(int index) {
+	protected boolean canProcess(final int index) {
 		return super.canProcess(index) && this.water.tank.getFluidAmount() >= getWaterRequired() && this.steam.tank.getFluidAmount() + getWaterRequired() <= this.steam.tank.getCapacity();
 	}
 
 	@Override
-	protected void process(int index) {
+	protected void process(final int index) {
 		super.process(index);
 		this.water.tank.drain(getWaterRequired(), true);
 		this.steam.tank.fill(new FluidStack(ModForgeFluids.hotcoolant, getWaterRequired()), true);
@@ -193,14 +193,14 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 
 
 	private void updateConnections() {
-		for (Pair<BlockPos, ForgeDirection> pos : getConPos()) {
+		for (final Pair<BlockPos, ForgeDirection> pos : getConPos()) {
 			this.trySubscribe(world, pos.getLeft(), pos.getRight());
 		}
 	}
 
 	private void sendFluids() {
-		for (Pair<BlockPos, ForgeDirection> pos : getConPos()) {
-			for (TypedFluidTank tank : outTanks()) {
+		for (final Pair<BlockPos, ForgeDirection> pos : getConPos()) {
+			for (final TypedFluidTank tank : outTanks()) {
 				if(tank.type != null && tank.tank.getFluidAmount() > 0) {
 					FFUtils.fillFluid(this, tank.tank, world, pos.getLeft(), tank.tank.getFluidAmount());
 				}
@@ -216,8 +216,8 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 
 		conPos = new ArrayList<>();
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
-		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
 		for (int i = 0; i < 6; i++) {
 			conPos.add(Pair.of(pos.add(dir.offsetX * (3 - i) + rot.offsetX * 3, 4, dir.offsetZ * (3 - i) + rot.offsetZ * 3), Library.POS_Y));
@@ -253,12 +253,12 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 	}
 
 	@Override
-	public int getTemplateIndex(int index) {
+	public int getTemplateIndex(final int index) {
 		return 13 + index * 9;
 	}
 
 	@Override
-	public int[] getSlotIndicesFromIndex(int index) {
+	public int[] getSlotIndicesFromIndex(final int index) {
 		return new int[]{5 + index * 9, 8 + index * 9, 9 + index * 9, 12 + index * 9};
 	}
 
@@ -271,14 +271,14 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 			return inPos;
 		}
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		inPos = new BlockPos[]{
-				pos.add(dir.offsetX * 4 - rot.offsetX * 1, 0, dir.offsetZ * 4 - rot.offsetZ * 1),
+				pos.add(dir.offsetX * 4 - rot.offsetX, 0, dir.offsetZ * 4 - rot.offsetZ),
 				pos.add(-dir.offsetX * 5 + rot.offsetX * 2, 0, -dir.offsetZ * 5 + rot.offsetZ * 2),
 				pos.add(-dir.offsetX * 2 - rot.offsetX * 4, 0, -dir.offsetZ * 2 - rot.offsetZ * 4),
-				pos.add(dir.offsetX * 1 + rot.offsetX * 5, 0, dir.offsetZ * 1 + rot.offsetZ * 5)
+				pos.add(dir.offsetX + rot.offsetX * 5, 0, dir.offsetZ + rot.offsetZ * 5)
 		};
 
 		return inPos;
@@ -289,13 +289,13 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 		if(outPos != null)
 			return outPos;
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		outPos = new BlockPos[]{
 				pos.add(dir.offsetX * 4 + rot.offsetX * 2, 0, dir.offsetZ * 4 + rot.offsetZ * 2),
-				pos.add(-dir.offsetX * 5 - rot.offsetX * 1, 0, -dir.offsetZ * 5 - rot.offsetZ * 1),
-				pos.add(dir.offsetX * 1 - rot.offsetX * 4, 0, dir.offsetZ * 1 - rot.offsetZ * 4),
+				pos.add(-dir.offsetX * 5 - rot.offsetX, 0, -dir.offsetZ * 5 - rot.offsetZ),
+				pos.add(dir.offsetX - rot.offsetX * 4, 0, dir.offsetZ - rot.offsetZ * 4),
 				pos.add(-dir.offsetX * 2 + rot.offsetX * 5, 0, -dir.offsetZ * 2 + rot.offsetZ * 5)
 		};
 
@@ -320,12 +320,12 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		NBTTagCompound tankWater = new NBTTagCompound();
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+		final NBTTagCompound tankWater = new NBTTagCompound();
 		water.tank.writeToNBT(tankWater);
 		nbt.setTag("water", tankWater);
 
-		NBTTagCompound tankSteam = new NBTTagCompound();
+		final NBTTagCompound tankSteam = new NBTTagCompound();
 		steam.tank.writeToNBT(tankSteam);
 		nbt.setTag("steam", tankSteam);
 
@@ -333,7 +333,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		water.tank.readFromNBT(nbt.getCompoundTag("water"));
@@ -342,7 +342,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 
 	@Override
 	protected List<TypedFluidTank> inTanks() {
-		List<TypedFluidTank> inTanks = super.inTanks();
+		final List<TypedFluidTank> inTanks = super.inTanks();
 		inTanks.add(water);
 
 		return inTanks;
@@ -350,7 +350,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 
 	@Override
 	public List<TypedFluidTank> outTanks() {
-		List<TypedFluidTank> outTanks = super.outTanks();
+		final List<TypedFluidTank> outTanks = super.outTanks();
 		outTanks.add(steam);
 
 		return outTanks;
@@ -375,18 +375,18 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 	}
 
 	@Override
-	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		return new ContainerChemfac(player.inventory, this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		return new GUIChemfac(player.inventory, this);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -395,7 +395,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase imp
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return true;
 		}

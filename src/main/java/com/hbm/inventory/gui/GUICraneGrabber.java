@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GUICraneGrabber extends GuiInfoContainer {
-    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_grabber.png");
+    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_grabber.png");
     public TileEntityCraneGrabber grabber;
 
-    public GUICraneGrabber(InventoryPlayer invPlayer, TileEntityCraneGrabber tedf) {
+    public GUICraneGrabber(final InventoryPlayer invPlayer, final TileEntityCraneGrabber tedf) {
         super(new ContainerCraneGrabber(invPlayer, tedf));
         grabber = tedf;
 
@@ -34,12 +34,12 @@ public class GUICraneGrabber extends GuiInfoContainer {
     }
 
     @Override
-    public void drawScreen(int x, int y, float interp) {
+    public void drawScreen(final int x, final int y, final float interp) {
         super.drawScreen(x, y, interp);
 
         if(this.mc.player.getHeldItemMainhand().isEmpty()) {
             for(int i = 0; i < 9; ++i) {
-                Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
+                final Slot slot = this.inventorySlots.inventorySlots.get(i);
 
                 if(this.isMouseOverSlot(slot, x, y) && grabber.matcher.modes[i] != null) {
 
@@ -51,7 +51,7 @@ public class GUICraneGrabber extends GuiInfoContainer {
                         default: label += I18nUtil.resolveKey("desc.oredictmatch")+" " + grabber.matcher.modes[i]; break;
                     }
 
-                    this.drawHoveringText(Arrays.asList(new String[] { TextFormatting.RED + I18nUtil.resolveKey("desc.rcchange"), label }), x, y - 30);
+                    this.drawHoveringText(Arrays.asList(TextFormatting.RED + I18nUtil.resolveKey("desc.rcchange"), label), x, y - 30);
                 }
             }
         }
@@ -59,27 +59,27 @@ public class GUICraneGrabber extends GuiInfoContainer {
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int i) throws IOException {
+    protected void mouseClicked(final int x, final int y, final int i) throws IOException {
         super.mouseClicked(x, y, i);
 
         if(guiLeft + 97 <= x && guiLeft + 97 + 14 > x && guiTop + 30 < y && guiTop + 30 + 26 >= y) {
 
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            NBTTagCompound data = new NBTTagCompound();
+            final NBTTagCompound data = new NBTTagCompound();
             data.setBoolean("isWhitelist", true);
             PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, grabber.getPos()));
         }
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int i, int j) {
-        String name = this.grabber.hasCustomInventoryName() ? this.grabber.getInventoryName() : I18n.format(this.grabber.getInventoryName());
+    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+        final String name = this.grabber.hasCustomInventoryName() ? this.grabber.getInventoryName() : I18n.format(this.grabber.getInventoryName());
         this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+    protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
         super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);

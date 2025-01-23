@@ -1,12 +1,9 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
-import com.hbm.items.ModItems;
-import com.hbm.main.MainRegistry;
-
 import api.hbm.block.IToolable;
 import api.hbm.block.IToolable.ToolType;
+import com.hbm.items.ModItems;
+import com.hbm.main.MainRegistry;
 import com.hbm.util.I18nUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -19,11 +16,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemTooling extends Item {
 
 	protected ToolType type;
 	
-	public ItemTooling(ToolType type, int dura, String s) {
+	public ItemTooling(final ToolType type, final int dura, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxStackSize(1);
@@ -36,8 +35,8 @@ public class ItemTooling extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		Block b = world.getBlockState(pos).getBlock();
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final Block b = world.getBlockState(pos).getBlock();
 		
 		if(b instanceof IToolable) {
 			if(((IToolable)b).onScrew(world, player, pos.getX(), pos.getY(), pos.getZ(), facing, hitX, hitY, hitZ, hand, this.type)) {
@@ -52,7 +51,7 @@ public class ItemTooling extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(type == ToolType.SCREWDRIVER){
 			tooltip.add(I18nUtil.resolveKey("desc.screwdriver1"));
 			tooltip.add(I18nUtil.resolveKey("desc.screwdriver2"));

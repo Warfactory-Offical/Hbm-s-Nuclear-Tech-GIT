@@ -31,7 +31,7 @@ public class GunNPCFactory {
 
 	public static BulletConfiguration getMaskmanOrb() {
 
-		BulletConfiguration bullet = new BulletConfiguration();
+		final BulletConfiguration bullet = new BulletConfiguration();
 
 		bullet.ammo = ModItems.coin_maskman;
 		bullet.velocity = 0.25F;
@@ -57,7 +57,7 @@ public class GunNPCFactory {
 		bullet.bUpdate = new IBulletUpdateBehavior() {
 
 			@Override
-			public void behaveUpdate(EntityBulletBase bullet) {
+			public void behaveUpdate(final EntityBulletBase bullet) {
 
 				if(bullet.world.isRemote)
 					return;
@@ -65,14 +65,14 @@ public class GunNPCFactory {
 				if(bullet.ticksExisted % 10 != 5)
 					return;
 
-				List<EntityPlayer> players = bullet.world.getEntitiesWithinAABB(EntityPlayer.class, bullet.getEntityBoundingBox().grow(50, 50, 50));
+				final List<EntityPlayer> players = bullet.world.getEntitiesWithinAABB(EntityPlayer.class, bullet.getEntityBoundingBox().grow(50, 50, 50));
 
-				for(EntityPlayer player : players) {
+				for(final EntityPlayer player : players) {
 
 					Vec3 motion = Vec3.createVectorHelper(player.posX - bullet.posX, (player.posY + player.getEyeHeight()) - bullet.posY, player.posZ - bullet.posZ);
 					motion = motion.normalize();
 
-					EntityBulletBase bolt = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_BOLT);
+					final EntityBulletBase bolt = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_BOLT);
 					bolt.shooter = bullet.shooter;
 					bolt.setPosition(bullet.posX, bullet.posY, bullet.posZ);
 					bolt.shoot(motion.xCoord, motion.yCoord, motion.zCoord, 0.5F, 0.05F);
@@ -86,7 +86,7 @@ public class GunNPCFactory {
 
 	public static BulletConfiguration getMaskmanBolt() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.coin_maskman;
 		bullet.spread = 0.0F;
@@ -103,7 +103,7 @@ public class GunNPCFactory {
 
 	public static BulletConfiguration getMaskmanBullet() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.coin_maskman;
 		bullet.spread = 0.0F;
@@ -119,7 +119,7 @@ public class GunNPCFactory {
 
 	public static BulletConfiguration getMaskmanTracer() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.coin_maskman;
 		bullet.spread = 0.0F;
@@ -133,12 +133,12 @@ public class GunNPCFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
 
 				if(bullet.world.isRemote)
 					return;
 
-				EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
+				final EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
 				meteor.setPosition(bullet.posX, bullet.posY + 30 + meteor.world.rand.nextInt(10), bullet.posZ);
 				meteor.motionY = -1D;
 				meteor.shooter = bullet.shooter;
@@ -151,7 +151,7 @@ public class GunNPCFactory {
 
 	public static BulletConfiguration getMaskmanRocket() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 
 		bullet.ammo = ModItems.coin_maskman;
 		bullet.gravity = 0.1D;
@@ -167,7 +167,7 @@ public class GunNPCFactory {
 
 	public static BulletConfiguration getMaskmanMeteor() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardGrenadeConfig();
 
 		bullet.ammo = ModItems.coin_maskman;
 		bullet.gravity = 0.1D;
@@ -181,15 +181,15 @@ public class GunNPCFactory {
 		bullet.bUpdate = new IBulletUpdateBehavior() {
 
 			@Override
-			public void behaveUpdate(EntityBulletBase bullet) {
+			public void behaveUpdate(final EntityBulletBase bullet) {
 
 				if(!bullet.world.isRemote)
 					return;
 
-				Random rand = bullet.world.rand;
+				final Random rand = bullet.world.rand;
 
 				for(int i = 0; i < 5; i++) {
-					NBTTagCompound nbt = new NBTTagCompound();
+					final NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setString("type", "vanillaExt");
 					nbt.setString("mode", "flame");
 					nbt.setDouble("posX", bullet.posX + rand.nextDouble() * 0.5 - 0.25);
@@ -205,7 +205,7 @@ public class GunNPCFactory {
 	
 	public static BulletConfiguration getWormBolt() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.coin_worm;
 		bullet.spread = 0.0F;
@@ -221,7 +221,7 @@ public class GunNPCFactory {
 
 	public static BulletConfiguration getWormHeadBolt() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.coin_worm;
 		bullet.spread = 0.0F;
@@ -237,7 +237,7 @@ public class GunNPCFactory {
 	
 	public static BulletConfiguration getRocketUFOConfig() {
 		
-		BulletConfiguration bullet = GunRocketFactory.getRocketConfig();
+		final BulletConfiguration bullet = GunRocketFactory.getRocketConfig();
 		
 		bullet.vPFX = "reddust";
 		bullet.destroysBlocks = false;
@@ -245,11 +245,11 @@ public class GunNPCFactory {
 		
 		bullet.bUpdate = new IBulletUpdateBehavior() {
 			
-			double angle = 90;
-			double range = 100;
+			final double angle = 90;
+			final double range = 100;
 
 			@Override
-			public void behaveUpdate(EntityBulletBase bullet) {
+			public void behaveUpdate(final EntityBulletBase bullet) {
 				
 				if(bullet.world.isRemote)
 					return;
@@ -258,7 +258,7 @@ public class GunNPCFactory {
 					chooseTarget(bullet);
 				}
 				
-				Entity target = bullet.world.getEntityByID(bullet.getEntityData().getInteger("homingTarget"));
+				final Entity target = bullet.world.getEntityByID(bullet.getEntityData().getInteger("homingTarget"));
 				
 				if(target != null) {
 					
@@ -271,7 +271,7 @@ public class GunNPCFactory {
 					Vec3 delta = Vec3.createVectorHelper(target.posX - bullet.posX, target.posY + target.height / 2 - bullet.posY, target.posZ - bullet.posZ);
 					delta = delta.normalize();
 					
-					double vel = Vec3.createVectorHelper(bullet.motionX, bullet.motionY, bullet.motionZ).length();
+					final double vel = Vec3.createVectorHelper(bullet.motionX, bullet.motionY, bullet.motionZ).length();
 
 					bullet.motionX = delta.xCoord * vel;
 					bullet.motionY = delta.yCoord * vel;
@@ -279,30 +279,30 @@ public class GunNPCFactory {
 				}
 			}
 			
-			private void chooseTarget(EntityBulletBase bullet) {
+			private void chooseTarget(final EntityBulletBase bullet) {
 				
-				List<EntityLivingBase> entities = bullet.world.getEntitiesWithinAABB(EntityLivingBase.class, bullet.getEntityBoundingBox().grow(range, range, range));
+				final List<EntityLivingBase> entities = bullet.world.getEntitiesWithinAABB(EntityLivingBase.class, bullet.getEntityBoundingBox().grow(range, range, range));
 				
-				Vec3 mot = Vec3.createVectorHelper(bullet.motionX, bullet.motionY, bullet.motionZ);
+				final Vec3 mot = Vec3.createVectorHelper(bullet.motionX, bullet.motionY, bullet.motionZ);
 				
 				EntityLivingBase target = null;
 				double targetAngle = angle;
 				
-				for(EntityLivingBase e : entities) {
+				for(final EntityLivingBase e : entities) {
 					
 					if(!e.isEntityAlive() || e == bullet.shooter)
 						continue;
 					
-					Vec3 delta = Vec3.createVectorHelper(e.posX - bullet.posX, e.posY + e.height / 2 - bullet.posY, e.posZ - bullet.posZ);
-					RayTraceResult r = bullet.world.rayTraceBlocks(Vec3.createVectorHelper(bullet.posX, bullet.posY, bullet.posZ).toVec3d(), Vec3.createVectorHelper(e.posX, e.posY + e.height / 2, e.posZ).toVec3d(), false, true, false);
+					final Vec3 delta = Vec3.createVectorHelper(e.posX - bullet.posX, e.posY + e.height / 2 - bullet.posY, e.posZ - bullet.posZ);
+					final RayTraceResult r = bullet.world.rayTraceBlocks(Vec3.createVectorHelper(bullet.posX, bullet.posY, bullet.posZ).toVec3d(), Vec3.createVectorHelper(e.posX, e.posY + e.height / 2, e.posZ).toVec3d(), false, true, false);
 					if(r != null && r.typeOfHit != Type.MISS)
 						continue;
 					
-					double dist = e.getDistanceSq(bullet);
+					final double dist = e.getDistanceSq(bullet);
 					
 					if(dist < range * range) {
 						
-						double deltaAngle = BobMathUtil.getCrossAngle(mot, delta);
+						final double deltaAngle = BobMathUtil.getCrossAngle(mot, delta);
 					
 						if(deltaAngle < targetAngle) {
 							target = e;
@@ -320,14 +320,14 @@ public class GunNPCFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
+			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
 
 				bullet.world.playSound(null, bullet.posX, bullet.posY, bullet.posZ, HBMSoundHandler.ufoBlast, SoundCategory.HOSTILE, 5.0F, 0.9F + bullet.world.rand.nextFloat() * 0.2F);
 				bullet.world.playSound(null, bullet.posX, bullet.posY, bullet.posZ, SoundEvents.ENTITY_FIREWORK_BLAST, SoundCategory.HOSTILE, 5.0F, 0.5F);
 				ContaminationUtil.radiate(bullet.world, bullet.posX, bullet.posY, bullet.posZ, 50, 0, 0, 500);
 				
 				for(int i = 0; i < 3; i++) {
-					NBTTagCompound data = new NBTTagCompound();
+					final NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "plasmablast");
 					data.setFloat("r", 0.0F);
 					data.setFloat("g", 0.75F);

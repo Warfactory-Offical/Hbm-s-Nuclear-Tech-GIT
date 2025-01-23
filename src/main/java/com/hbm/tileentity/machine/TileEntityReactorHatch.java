@@ -16,41 +16,41 @@ public class TileEntityReactorHatch extends TileEntity implements IFluidHandler 
 
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
-		TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
+		final TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
 		if(fillable != null)
 			return fillable.getTankProperties();
 		return new IFluidTankProperties[]{};
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
-		TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
+	public int fill(final FluidStack resource, final boolean doFill) {
+		final TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
 		if(fillable != null)
 			return fillable.fill(resource, doFill);
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
-		TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+		final TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
 		if(fillable != null)
 			return fillable.drain(resource, doDrain);
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+		final TileEntityMachineReactorLarge fillable = this.getReactorTE(world, pos);
 		if(fillable != null)
 			return fillable.drain(maxDrain, doDrain);
 		return null;
 	}
 	
-	private TileEntityMachineReactorLarge getReactorTE(World world, BlockPos pos) {
-		EnumFacing e = world.getBlockState(pos).getValue(ReactorHatch.FACING);
+	private TileEntityMachineReactorLarge getReactorTE(final World world, final BlockPos pos) {
+		final EnumFacing e = world.getBlockState(pos).getValue(ReactorHatch.FACING);
 		if(e == EnumFacing.NORTH)
 		{
-			TileEntity reactor = world.getTileEntity(pos.add(0, 0, 2));
+			final TileEntity reactor = world.getTileEntity(pos.add(0, 0, 2));
 			if(reactor instanceof TileEntityMachineReactorLarge)
 			{
 				if(((TileEntityMachineReactorLarge)reactor).checkBody())
@@ -65,7 +65,7 @@ public class TileEntityReactorHatch extends TileEntity implements IFluidHandler 
 		}
 		if(e == EnumFacing.SOUTH)
 		{
-			TileEntity reactor = world.getTileEntity(pos.add(0, 0, -2));
+			final TileEntity reactor = world.getTileEntity(pos.add(0, 0, -2));
 			if(reactor instanceof TileEntityMachineReactorLarge)
 			{
 				if(((TileEntityMachineReactorLarge)reactor).checkBody())
@@ -80,7 +80,7 @@ public class TileEntityReactorHatch extends TileEntity implements IFluidHandler 
 		}
 		if(e == EnumFacing.WEST)
 		{
-			TileEntity reactor = world.getTileEntity(pos.add(2, 0, 0));
+			final TileEntity reactor = world.getTileEntity(pos.add(2, 0, 0));
 			if(reactor instanceof TileEntityMachineReactorLarge)
 			{
 				if(((TileEntityMachineReactorLarge)reactor).checkBody())
@@ -95,7 +95,7 @@ public class TileEntityReactorHatch extends TileEntity implements IFluidHandler 
 		}
 		if(e == EnumFacing.EAST)
 		{
-			TileEntity reactor = world.getTileEntity(pos.add(-2, 0, 0));
+			final TileEntity reactor = world.getTileEntity(pos.add(-2, 0, 0));
 			if(reactor instanceof TileEntityMachineReactorLarge)
 			{
 				if(((TileEntityMachineReactorLarge)reactor).checkBody())
@@ -110,12 +110,12 @@ public class TileEntityReactorHatch extends TileEntity implements IFluidHandler 
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this) : super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 

@@ -20,18 +20,18 @@ public class ChemTemplateBakedModel implements IBakedModel {
 	TransformType type;
 	
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
 		return type == TransformType.GUI ? Collections.emptyList() : ChemTemplateRender.INSTANCE.itemModel.getQuads(state, side, rand);
 	}
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return type == TransformType.GUI ? false : ChemTemplateRender.INSTANCE.itemModel.isAmbientOcclusion();
+		return type != TransformType.GUI && ChemTemplateRender.INSTANCE.itemModel.isAmbientOcclusion();
 	}
 
 	@Override
 	public boolean isGui3d() {
-		return type == TransformType.GUI ? false :ChemTemplateRender.INSTANCE.itemModel.isGui3d();
+		return type != TransformType.GUI && ChemTemplateRender.INSTANCE.itemModel.isGui3d();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class ChemTemplateBakedModel implements IBakedModel {
 	}
 	
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(final TransformType cameraTransformType) {
 		
 		ChemTemplateRender.INSTANCE.type = cameraTransformType;
 		this.type = cameraTransformType;

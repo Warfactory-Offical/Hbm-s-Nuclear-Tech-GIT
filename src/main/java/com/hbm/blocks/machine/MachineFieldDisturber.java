@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class MachineFieldDisturber extends Block {
 
-	public MachineFieldDisturber(Material materialIn, String s) {
+	public MachineFieldDisturber(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,24 +26,24 @@ public class MachineFieldDisturber extends Block {
 	}
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 		return 20;
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World world, final BlockPos pos, final IBlockState state) {
 		if(!world.isRemote)
 			world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		EntityNukeExplosionMK3.at.remove(new ATEntry(worldIn.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ()));
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 
 		if(!world.isRemote) {
 			world.scheduleUpdate(pos, this, this.tickRate(world));
@@ -52,7 +52,7 @@ public class MachineFieldDisturber extends Block {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("§3[Anti-Antischrabidium-Field]§r");
 		tooltip.add("§b Radius: 300m§r");
 	}

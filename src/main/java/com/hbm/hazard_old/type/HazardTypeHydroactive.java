@@ -16,11 +16,11 @@ import java.util.List;
 public class HazardTypeHydroactive extends HazardTypeBase {
 
 	@Override
-	public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
+	public void onUpdate(final EntityLivingBase target, final float level, final ItemStack stack) {
 
 		if(RadiationConfig.disableHydro) return;
 
-		boolean playerIsWet = target.isWet() || (target.world.isRaining() && target.world.canSeeSky(target.getPosition()));
+		final boolean playerIsWet = target.isWet() || (target.world.isRaining() && target.world.canSeeSky(target.getPosition()));
 		
 		if(playerIsWet && stack.getCount() > 0) {
 			stack.setCount(0);
@@ -29,7 +29,7 @@ public class HazardTypeHydroactive extends HazardTypeBase {
 	}
 
 	@Override
-	public void updateEntity(EntityItem item, float level) {
+	public void updateEntity(final EntityItem item, final float level) {
 		
 		if(RadiationConfig.disableHydro)
 			return;
@@ -42,7 +42,7 @@ public class HazardTypeHydroactive extends HazardTypeBase {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addHazardInformation(EntityPlayer player, List list, float level, ItemStack stack, List<HazardModifier> modifiers) {
+	public void addHazardInformation(final EntityPlayer player, final List list, final float level, final ItemStack stack, final List<HazardModifier> modifiers) {
 		list.add(TextFormatting.RED + "[" + I18nUtil.resolveKey("trait.hydro") + "]");
 	}
 }

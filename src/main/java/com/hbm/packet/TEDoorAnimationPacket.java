@@ -22,11 +22,11 @@ public class TEDoorAnimationPacket implements IMessage {
 	public TEDoorAnimationPacket() {
 	}
 	
-	public TEDoorAnimationPacket(BlockPos pos, byte state) {
+	public TEDoorAnimationPacket(final BlockPos pos, final byte state) {
 		this(pos, state, (byte) -1);
 	}
 	
-	public TEDoorAnimationPacket(BlockPos pos, byte state, byte tex) {
+	public TEDoorAnimationPacket(final BlockPos pos, final byte state, final byte tex) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
@@ -35,7 +35,7 @@ public class TEDoorAnimationPacket implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -46,7 +46,7 @@ public class TEDoorAnimationPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -60,11 +60,11 @@ public class TEDoorAnimationPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(TEDoorAnimationPacket m, MessageContext ctx) {
+		public IMessage onMessage(final TEDoorAnimationPacket m, final MessageContext ctx) {
 			
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				BlockPos pos = new BlockPos(m.x, m.y, m.z);
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 				if(te instanceof IAnimatedDoor){
 					((IAnimatedDoor) te).handleNewState(IDoor.DoorState.values()[m.state]);
 					((IAnimatedDoor) te).setTextureState(m.texture);

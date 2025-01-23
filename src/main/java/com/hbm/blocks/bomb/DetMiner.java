@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class DetMiner extends Block implements IBomb {
 
-	public DetMiner(Material m, String s) {
+	public DetMiner(final Material m, final String s) {
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -29,16 +29,16 @@ public class DetMiner extends Block implements IBomb {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(final World world, final BlockPos pos) {
 		if(!world.isRemote) {
 
 			world.destroyBlock(pos, false);
-			ExplosionMining explosion = new ExplosionMining(world, null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8);
+			final ExplosionMining explosion = new ExplosionMining(world, null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8);
 			explosion.explode();
 
 			ExplosionLarge.spawnParticles(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 30);
@@ -46,12 +46,12 @@ public class DetMiner extends Block implements IBomb {
 	}
 	
 	@Override
-	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn) {
+	public void onExplosionDestroy(final World worldIn, final BlockPos pos, final Explosion explosionIn) {
 		this.explode(worldIn, pos);
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if (world.isBlockPowered(pos))
         {
         	this.explode(world, pos);

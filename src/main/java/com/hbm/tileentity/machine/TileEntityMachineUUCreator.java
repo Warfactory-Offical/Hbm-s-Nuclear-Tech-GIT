@@ -74,9 +74,9 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 			this.log[this.log.length-1] = loggedProducedMB;
 
 			producedmb = getAvgUU();
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] { tank }), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
 
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isOn", isOn);
 			data.setLong("power", power);
 			data.setDouble("uuMB", producedmb);
@@ -89,25 +89,25 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 		for(int i = 0; i < this.log.length; i++) {
 			sum += this.log[i];
 		}
-		return (double)(sum / (double)this.log.length);
+		return sum / (double)this.log.length;
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		this.isOn = data.getBoolean("isOn");
 		this.power = data.getLong("power");
 		this.producedmb = data.getDouble("uuMB");
 	}
 
 	@Override
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 		if(meta == 0) {
 			this.isOn = !this.isOn;
 		}
 	}
 
-	public int getPowerScaled(int i) {
-		double powerScaled = (double)power / (double)maxPower;
+	public int getPowerScaled(final int i) {
+		final double powerScaled = (double)power / (double)maxPower;
 		return (int)(i * powerScaled);
 	}
 	
@@ -125,7 +125,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 		this.trySubscribe(world, pos.add(0, -1, -2), ForgeDirection.DOWN);
 	}
 
-	private void fillFluidInit(FluidTank tank) {
+	private void fillFluidInit(final FluidTank tank) {
 		boolean update =  false;
 		update = FFUtils.fillFluid(this, tank, world, pos.add(0, 3, 0), 1_000_000_000) || update;
 		update = FFUtils.fillFluid(this, tank, world, pos.add(2, 3, 0), 1_000_000_000) || update;
@@ -161,7 +161,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.isOn = nbt.getBoolean("isOn");
 		this.power = nbt.getLong("power");
@@ -169,7 +169,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setBoolean("isOn", isOn);
 		nbt.setLong("power", power);
@@ -178,7 +178,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 1)
 			tank.readFromNBT(tags[0]);
 	}
@@ -190,7 +190,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -198,12 +198,12 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-		public int fill(FluidStack resource, boolean doFill) {
+		public int fill(final FluidStack resource, final boolean doFill) {
 			return 0;
 		}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource == null)
 			return null;
 		if(resource.isFluidEqual(tank.getFluid())) {
@@ -213,7 +213,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		if(tank.getFluid() != null) {
 			return tank.drain(maxDrain, doDrain);
 		}
@@ -221,7 +221,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		}
@@ -235,7 +235,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

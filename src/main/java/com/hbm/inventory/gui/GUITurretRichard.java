@@ -8,9 +8,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUITurretRichard extends GUITurretBase {
 	
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/weapon/gui_turret_richard.png");
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/weapon/gui_turret_richard.png");
 
-	public GUITurretRichard(InventoryPlayer invPlayer, TileEntityTurretBaseNT tedf) {
+	public GUITurretRichard(final InventoryPlayer invPlayer, final TileEntityTurretBaseNT tedf) {
 		super(invPlayer, tedf);
 	}
 	

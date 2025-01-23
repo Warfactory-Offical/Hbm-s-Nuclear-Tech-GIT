@@ -26,25 +26,25 @@ public class KeybindPacket implements IMessage {
 
 	public KeybindPacket() { }
 
-	public KeybindPacket(EnumKeybind key, boolean pressed) {
+	public KeybindPacket(final EnumKeybind key, final boolean pressed) {
 		this.key = key.ordinal();
 		this.pressed = pressed;
 		this.id = 0;
 	}
 	
-	public KeybindPacket(int id) {
+	public KeybindPacket(final int id) {
 		this.id = id;
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		key = buf.readInt();
 		pressed = buf.readBoolean();
 		id = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(key);
 		buf.writeBoolean(pressed);
 		buf.writeInt(id);
@@ -53,21 +53,21 @@ public class KeybindPacket implements IMessage {
 	public static class Handler implements IMessageHandler<KeybindPacket, IMessage> {
 
 		@Override
-		public IMessage onMessage(KeybindPacket m, MessageContext ctx) {
+		public IMessage onMessage(final KeybindPacket m, final MessageContext ctx) {
 			if(ctx.side == Side.SERVER){
 				ctx.getServerHandler().player.getServer().addScheduledTask(() -> {
 					switch(m.id){
 					case 0:
-						EntityPlayer p = ctx.getServerHandler().player;
-						IHBMData props = HbmCapability.getData(p);
+						final EntityPlayer p = ctx.getServerHandler().player;
+						final IHBMData props = HbmCapability.getData(p);
 
 						props.setKeyPressed(EnumKeybind.values()[m.key], m.pressed);
 						break;
 					case 1:
-						EntityPlayer player = ctx.getServerHandler().player;
+						final EntityPlayer player = ctx.getServerHandler().player;
 						if(ArmorFSB.hasFSBArmor(player)){
-							ItemStack stack = player.inventory.armorInventory.get(2);
-							ArmorFSB fsbarmor = (ArmorFSB)stack.getItem();
+							final ItemStack stack = player.inventory.armorInventory.get(2);
+							final ArmorFSB fsbarmor = (ArmorFSB)stack.getItem();
 							if(fsbarmor.flashlightPosition != null){
 								if(!stack.hasTagCompound()){
 									stack.setTagCompound(new NBTTagCompound());
@@ -86,9 +86,9 @@ public class KeybindPacket implements IMessage {
 		}
 		
 		@SideOnly(Side.CLIENT)
-		public void handleClient(MessageContext ctx, KeybindPacket m){
+		public void handleClient(final MessageContext ctx, final KeybindPacket m){
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				IHBMData props = HbmCapability.getData(Minecraft.getMinecraft().player);
+				final IHBMData props = HbmCapability.getData(Minecraft.getMinecraft().player);
 				if(EnumKeybind.values()[m.key] == EnumKeybind.TOGGLE_JETPACK) {
 					props.setEnableBackpack(m.pressed);
 				}

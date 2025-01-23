@@ -1,11 +1,8 @@
 package com.hbm.items.armor;
 
-import java.util.List;
-
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.util.ContaminationUtil;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,18 +10,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class ItemModMedal extends ItemArmorMod {
-	private float minusRads;
-	private float decayRate;
+import java.util.List;
 
-	public ItemModMedal(String s, float minusRads) {
+public class ItemModMedal extends ItemArmorMod {
+	private final float minusRads;
+	private final float decayRate;
+
+	public ItemModMedal(final String s, final float minusRads) {
 		super(ArmorModHandler.extra, false, true, false, false, s);
 		this.minusRads = minusRads;
 		this.decayRate = (float)Math.pow(0.5, minusRads/6000);
 
 	}
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
 		list.add(TextFormatting.GOLD + "-"+minusRads*20+" RAD/s");
 		if(15/minusRads < 60)
 			list.add(TextFormatting.YELLOW + " "+15/minusRads+"s Item Decontamination Halflife");
@@ -34,12 +33,12 @@ public class ItemModMedal extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
+	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
 		list.add(TextFormatting.GOLD + "  " + stack.getDisplayName() + " (-"+minusRads*20+" RAD/s)"+TextFormatting.YELLOW + " ("+15/minusRads+"s Halflife)");
 	}
 	
 	@Override
-	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
+	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
 		if(!entity.world.isRemote) {
 			float rad = HbmLivingProps.getRadiation(entity);
 			rad -= minusRads;

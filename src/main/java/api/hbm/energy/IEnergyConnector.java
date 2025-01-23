@@ -1,15 +1,10 @@
 package api.hbm.energy;
 
-import com.hbm.packet.AuxParticlePacketNT;
-import com.hbm.packet.PacketDispatcher;
-import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.lib.ForgeDirection;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
+import com.hbm.render.amlfrom1710.Vec3;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 /**
  * For anything that connects to power and can be transferred power to, the bottom-level interface.
@@ -31,7 +26,7 @@ public interface IEnergyConnector extends ILoadedTile {
 	 * @param dir
 	 * @return
 	 */
-	public default boolean canConnect(ForgeDirection dir) {
+	public default boolean canConnect(final ForgeDirection dir) {
 		return dir != ForgeDirection.UNKNOWN;
 	}
 	
@@ -58,15 +53,14 @@ public interface IEnergyConnector extends ILoadedTile {
 	 * @param y
 	 * @param z
 	 */
-	public default void trySubscribe(World world, BlockPos pos, ForgeDirection dir) {
+	public default void trySubscribe(final World world, final BlockPos pos, final ForgeDirection dir) {
 
-		TileEntity te = world.getTileEntity(pos);
+		final TileEntity te = world.getTileEntity(pos);
 		boolean red = false;
 		
-		if(te instanceof IEnergyConductor) {
-			IEnergyConductor con = (IEnergyConductor) te;
-			
-			if(!con.canConnect(dir.getOpposite()))
+		if(te instanceof IEnergyConductor con) {
+
+            if(!con.canConnect(dir.getOpposite()))
 				return;
 			
 			if(con.getPowerNet() != null && !con.getPowerNet().isSubscribed(this))
@@ -90,14 +84,13 @@ public interface IEnergyConnector extends ILoadedTile {
 		// }
 	}
 	
-	public default void tryUnsubscribe(World world, BlockPos pos) {
+	public default void tryUnsubscribe(final World world, final BlockPos pos) {
 
-		TileEntity te = world.getTileEntity(pos);
+		final TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof IEnergyConductor) {
-			IEnergyConductor con = (IEnergyConductor) te;
-			
-			if(con.getPowerNet() != null && con.getPowerNet().isSubscribed(this))
+		if(te instanceof IEnergyConductor con) {
+
+            if(con.getPowerNet() != null && con.getPowerNet().isSubscribed(this))
 				con.getPowerNet().unsubscribe(this);
 		}
 	}
@@ -105,8 +98,8 @@ public interface IEnergyConnector extends ILoadedTile {
 	public static final boolean particleDebug = true;
 	
 	public default Vec3 getDebugParticlePos() {
-		BlockPos pos = ((TileEntity) this).getPos();
-		Vec3 vec = Vec3.createVectorHelper(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+		final BlockPos pos = ((TileEntity) this).getPos();
+		final Vec3 vec = Vec3.createVectorHelper(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 		return vec;
 	}
 	
@@ -124,20 +117,20 @@ public interface IEnergyConnector extends ILoadedTile {
 		return false;
 	}
 
-	public default void updateStandardConnections(World world, TileEntity te) {
+	public default void updateStandardConnections(final World world, final TileEntity te) {
 		updateStandardConnections(world, te.getPos());
 	}
 		
-	public default void updateStandardConnections(World world, BlockPos pos) {
+	public default void updateStandardConnections(final World world, final BlockPos pos) {
 		
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			this.trySubscribe(world, pos.add(dir.offsetX, dir.offsetY, dir.offsetZ), dir);
 		}
 	}
 
-	public default void updateConnectionsExcept(World world, BlockPos pos, ForgeDirection nogo) {
+	public default void updateConnectionsExcept(final World world, final BlockPos pos, final ForgeDirection nogo) {
 		
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if(dir != nogo)
 				this.trySubscribe(world, pos.add(dir.offsetX, dir.offsetY, dir.offsetZ), dir);
 		}

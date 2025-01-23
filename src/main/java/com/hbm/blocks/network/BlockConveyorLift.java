@@ -16,15 +16,15 @@ import net.minecraft.world.World;
 
 public class BlockConveyorLift extends BlockConveyorChute {
 
-    public BlockConveyorLift(Material materialIn, String s) {
+    public BlockConveyorLift(final Material materialIn, final String s) {
         super(materialIn, s);
     }
 
     @Override
-    public EnumFacing getTravelDirection(World world, BlockPos pos, Vec3d itemPos) {
+    public EnumFacing getTravelDirection(final World world, final BlockPos pos, final Vec3d itemPos) {
 
-        boolean bottom = !(world.getBlockState(pos.down()).getBlock() instanceof IConveyorBelt);
-        boolean top = !(world.getBlockState(pos.up()).getBlock() instanceof IConveyorBelt) && !bottom && !(world.getBlockState(pos.up()).getBlock() instanceof IEnterableBlock);
+        final boolean bottom = !(world.getBlockState(pos.down()).getBlock() instanceof IConveyorBelt);
+        final boolean top = !(world.getBlockState(pos.up()).getBlock() instanceof IConveyorBelt) && !bottom && !(world.getBlockState(pos.up()).getBlock() instanceof IEnterableBlock);
 
         if(!top) {
             return EnumFacing.DOWN;
@@ -34,20 +34,20 @@ public class BlockConveyorLift extends BlockConveyorChute {
     }
 
     @Override
-    public Vec3d getTravelLocation(World world, int x, int y, int z, Vec3d itemPos, double speed) {
-        BlockPos pos = new BlockPos(x, y, z);
-        EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
-        Vec3d snap = this.getClosestSnappingPosition(world, pos, itemPos);
-        Vec3d dest = new Vec3d(
+    public Vec3d getTravelLocation(final World world, final int x, final int y, final int z, final Vec3d itemPos, final double speed) {
+        final BlockPos pos = new BlockPos(x, y, z);
+        final EnumFacing dir = this.getTravelDirection(world, pos, itemPos);
+        final Vec3d snap = this.getClosestSnappingPosition(world, pos, itemPos);
+        final Vec3d dest = new Vec3d(
                 snap.x - dir.getXOffset() * speed,
                 snap.y - dir.getYOffset() * speed,
                 snap.z - dir.getZOffset() * speed);
-        Vec3d motion = new Vec3d(
+        final Vec3d motion = new Vec3d(
                 dest.x - itemPos.x,
                 dest.y - itemPos.y,
                 dest.z - itemPos.z);
-        double len = motion.length();
-        Vec3d ret = new Vec3d(
+        final double len = motion.length();
+        final Vec3d ret = new Vec3d(
                 itemPos.x + motion.x / len * speed,
                 itemPos.y + motion.y / len * speed,
                 itemPos.z + motion.z / len * speed);
@@ -55,15 +55,15 @@ public class BlockConveyorLift extends BlockConveyorChute {
     }
 
     @Override
-    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+    public void onEntityCollision(final World world, final BlockPos pos, final IBlockState state, final Entity entity) {
         if(!world.isRemote) {
 
             if(entity instanceof EntityItem && entity.ticksExisted > 10 && !entity.isDead) {
 
-                EntityMovingItem item = new EntityMovingItem(world);
+                final EntityMovingItem item = new EntityMovingItem(world);
                 item.setItemStack(((EntityItem)entity).getItem());
-                Vec3d entityPos = new Vec3d(entity.posX, entity.posY, entity.posZ);
-                Vec3d snap = this.getClosestSnappingPosition(world, pos, entityPos);
+                final Vec3d entityPos = new Vec3d(entity.posX, entity.posY, entity.posZ);
+                final Vec3d snap = this.getClosestSnappingPosition(world, pos, entityPos);
                 item.setPositionAndRotation(snap.x, snap.y, snap.z, 0, 0);
                 world.spawnEntity(item);
                 
@@ -73,10 +73,10 @@ public class BlockConveyorLift extends BlockConveyorChute {
     }
 
     @Override
-    public Vec3d getClosestSnappingPosition(World world, BlockPos pos, Vec3d itemPos) {
+    public Vec3d getClosestSnappingPosition(final World world, final BlockPos pos, final Vec3d itemPos) {
 
-        boolean bottom = !(world.getBlockState(pos.down()).getBlock() instanceof IConveyorBelt);
-        boolean top = !(world.getBlockState(pos.up()).getBlock() instanceof IConveyorBelt) && !bottom && !(world.getBlockState(pos.up()).getBlock() instanceof IEnterableBlock);
+        final boolean bottom = !(world.getBlockState(pos.down()).getBlock() instanceof IConveyorBelt);
+        final boolean top = !(world.getBlockState(pos.up()).getBlock() instanceof IConveyorBelt) && !bottom && !(world.getBlockState(pos.up()).getBlock() instanceof IEnterableBlock);
 
         if(!top) {
             return new Vec3d(pos.getX() + 0.5, itemPos.y, pos.getZ() + 0.5);
@@ -86,10 +86,10 @@ public class BlockConveyorLift extends BlockConveyorChute {
     }
 
     @Override
-    public int getUpdatedType(World world, BlockPos pos, EnumFacing side){
-        boolean hasChuteBelow = world.getBlockState(pos.down()).getBlock() instanceof BlockConveyorChute;
+    public int getUpdatedType(final World world, final BlockPos pos, final EnumFacing side){
+        final boolean hasChuteBelow = world.getBlockState(pos.down()).getBlock() instanceof BlockConveyorChute;
         boolean hasInputBelt = false;
-        Block inputBlock = world.getBlockState(pos.offset(side.getOpposite(), 1)).getBlock();
+        final Block inputBlock = world.getBlockState(pos.offset(side.getOpposite(), 1)).getBlock();
         if (inputBlock instanceof IConveyorBelt || inputBlock instanceof IEnterableBlock) {
             hasInputBelt = true;
         }

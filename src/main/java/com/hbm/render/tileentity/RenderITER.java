@@ -15,12 +15,12 @@ import net.minecraftforge.fluids.Fluid;
 public class RenderITER extends TileEntitySpecialRenderer<TileEntityITER> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityITER te) {
+	public boolean isGlobalRenderer(final TileEntityITER te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityITER iter, double x, double y, double z, float partialTicks, int destroyStage, float alpha2) {
+	public void render(final TileEntityITER iter, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha2) {
 		GL11.glPushMatrix();
 
 		GL11.glTranslatef((float)x + 0.5F, (float)y - 2, (float)z + 0.5F);
@@ -63,13 +63,13 @@ public class RenderITER extends TileEntitySpecialRenderer<TileEntityITER> {
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 	        GlStateManager.depthMask(false);
 
-	        int color = getColor(iter.plasma.getFluid().getFluid());
+	        final int color = getColor(iter.plasma.getFluid().getFluid());
 
 		    
-	        double alpha = (double)iter.plasma.getFluidAmount() / (double)iter.plasma.getCapacity();
-	        int r = (int) (((color & 0xFF0000) >> 16) / 2F * alpha);
-		    int g = (int) (((color & 0xFF00) >> 8) / 2F * alpha);
-		    int b = (int) ((color & 0xFF) / 2F * alpha);
+	        final double alpha = (double)iter.plasma.getFluidAmount() / (double)iter.plasma.getCapacity();
+	        final int r = (int) (((color & 0xFF0000) >> 16) / 2F * alpha);
+		    final int g = (int) (((color & 0xFF00) >> 8) / 2F * alpha);
+		    final int b = (int) ((color & 0xFF) / 2F * alpha);
 
 	        GlStateManager.color(r/255F, g/255F, b/255F);
 	        GL11.glTranslatef(0, 2.5F, 0);
@@ -92,7 +92,7 @@ public class RenderITER extends TileEntitySpecialRenderer<TileEntityITER> {
 		GL11.glPopMatrix();
 	}
 	
-	private int getColor(Fluid type){
+	private int getColor(final Fluid type){
 		if(type == ModForgeFluids.plasma_dt){
 			return 0xFF3FC2;
 		} else if(type == ModForgeFluids.plasma_hd){

@@ -9,12 +9,12 @@ import net.minecraft.world.World;
 
 public class PylonRedWire extends PylonBase {
 
-	public PylonRedWire(Material materialIn, String s) {
+	public PylonRedWire(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityPylon();
 	}
 }

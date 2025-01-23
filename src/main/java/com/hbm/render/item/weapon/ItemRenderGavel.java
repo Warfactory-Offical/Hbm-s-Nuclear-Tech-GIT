@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public class ItemRenderGavel extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		
 		if(item.getItem() == ModItems.wood_gavel)

@@ -25,7 +25,7 @@ public class StorageDrumRecipes {
 		//input, output
 
 		for(int i = 0; i < ItemWasteLong.WasteClass.values().length; i++){
-			ItemWasteLong.WasteClass waste = ItemWasteLong.WasteClass.values()[i];
+			final ItemWasteLong.WasteClass waste = ItemWasteLong.WasteClass.values()[i];
 			addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nuclear_waste_long, 1, i), 
 				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_depleted, 1, i), 
 				VersatileConfig.getLongDecayChance(), 
@@ -41,7 +41,7 @@ public class StorageDrumRecipes {
 		}
 
 		for(int i = 0; i < ItemWasteShort.WasteClass.values().length; i++){
-			ItemWasteShort.WasteClass waste = ItemWasteShort.WasteClass.values()[i];
+			final ItemWasteShort.WasteClass waste = ItemWasteShort.WasteClass.values()[i];
 			addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nuclear_waste_short, 1, i), 
 				ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_depleted, 1, i), 
 				VersatileConfig.getShortDecayChance(), 
@@ -60,25 +60,25 @@ public class StorageDrumRecipes {
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AU198), 1), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), 1), (int)(VersatileConfig.getShortDecayChance()*0.001), 50, 50);
 	}
 
-	public static void addRecipe(ComparableStack input, ItemStack output, int chance, int wasteLiquid, int wasteGas){
+	public static void addRecipe(final ComparableStack input, final ItemStack output, final int chance, final int wasteLiquid, final int wasteGas){
 		recipeOutputs.put(input, output);
 		recipeWastes.put(input, new int[]{chance, wasteLiquid, wasteGas});
 		outputs.add(output);
 	}
 	
-	public static ItemStack getOutput(ItemStack stack) {
+	public static ItemStack getOutput(final ItemStack stack) {
 		if(stack == null)
 			return null;
 		return recipeOutputs.get(ItemStackUtil.comparableStackFrom(stack));
 	}
 
-	public static int[] getWaste(ItemStack stack) {
+	public static int[] getWaste(final ItemStack stack) {
 		if(stack == null)
 			return null;
 		return recipeWastes.get(ItemStackUtil.comparableStackFrom(stack));
 	}
 
-	public static boolean isOutputItem(ItemStack stack){
+	public static boolean isOutputItem(final ItemStack stack){
 		return outputs.contains(ItemStackUtil.comparableStackFrom(stack));
 	}
 }

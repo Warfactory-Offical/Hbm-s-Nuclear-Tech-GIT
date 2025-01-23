@@ -27,7 +27,7 @@ public class TileEntityGeiger extends TileEntity implements ITickable {
 		
 		if(timer % 5 == 0) {
 			if(ticker > 0) {
-				List<Integer> list = new ArrayList<Integer>();
+				final List<Integer> list = new ArrayList<Integer>();
 
 				if(ticker < 1)
 					list.add(0);
@@ -46,7 +46,7 @@ public class TileEntityGeiger extends TileEntity implements ITickable {
 				if(ticker > 25)
 					list.add(6);
 			
-				int r = list.get(world.rand.nextInt(list.size()));
+				final int r = list.get(world.rand.nextInt(list.size()));
 				
 				if(r > 0)
 		        	world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.geigerSounds[r-1], SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -59,9 +59,9 @@ public class TileEntityGeiger extends TileEntity implements ITickable {
 	
 	public int check() {
 		
-		RadiationSavedData data = RadiationSavedData.getData(world);
+		final RadiationSavedData data = RadiationSavedData.getData(world);
 		
-		int rads = (int)Math.ceil(data.getRadNumFromCoord(pos));
+		final int rads = (int)Math.ceil(data.getRadNumFromCoord(pos));
 		
 		return rads;
 	}

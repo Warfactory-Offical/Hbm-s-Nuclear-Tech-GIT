@@ -44,14 +44,14 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 
 			beam = 0;
 			
-			EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
+			final EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
 			for(int i = 1; i <= range; i++) {
 
-				int x = pos.getX() + dir.getXOffset() * i;
-				int y = pos.getY() + dir.getYOffset() * i;
-				int z = pos.getZ() + dir.getZOffset() * i;
-				BlockPos pos1 = new BlockPos(x, y, z);
-				TileEntity te = world.getTileEntity(pos1);
+				final int x = pos.getX() + dir.getXOffset() * i;
+				final int y = pos.getY() + dir.getYOffset() * i;
+				final int z = pos.getZ() + dir.getZOffset() * i;
+				final BlockPos pos1 = new BlockPos(x, y, z);
+				final TileEntity te = world.getTileEntity(pos1);
 				
 				if(te instanceof TileEntityCore) {
 					
@@ -72,7 +72,7 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 		}
 	}
 
-	public void fillDFC(TileEntityCore core){
+	public void fillDFC(final TileEntityCore core){
 		Fluid tank0 = null;
 		Fluid tank1 = null;
 		Fluid dfcTank0 = null;
@@ -122,7 +122,7 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource == null)
 			return 0;
 		if(tanks[0].getFluid() == null || tanks[0].getFluid().getFluid() == resource.getFluid()){
@@ -135,17 +135,17 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 2){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -165,25 +165,25 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("tanks"))
 			FFUtils.deserializeTankArray(compound.getTagList("tanks", 10), tanks);
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}

@@ -15,7 +15,7 @@ public class BlockAbsorber extends Block {
 
 	float absorb = 0;
 	
-	public BlockAbsorber(Material materialIn, float ab, String s) {
+	public BlockAbsorber(final Material materialIn, final float ab, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,19 +26,19 @@ public class BlockAbsorber extends Block {
 	}
 	
 	@Override
-	public int tickRate(World worldIn) {
+	public int tickRate(final World worldIn) {
 		return 10;
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 		RadiationSavedData.decrementRad(world, pos, absorb);
 
     	world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 	
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
 		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
 	}

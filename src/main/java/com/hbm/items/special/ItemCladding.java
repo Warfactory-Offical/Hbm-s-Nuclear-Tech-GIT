@@ -21,7 +21,7 @@ public class ItemCladding extends Item {
 
 	float rad;
 
-	public ItemCladding(float rad, String s) {
+	public ItemCladding(final float rad, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.rad = rad;
@@ -30,13 +30,13 @@ public class ItemCladding extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
 		if(!world.isRemote) {
-			ItemStack stack = player.getHeldItem(hand);
+			final ItemStack stack = player.getHeldItem(hand);
 
 			boolean used = false;
 
-			for(ItemStack armor : player.inventory.armorInventory) {
+			for(final ItemStack armor : player.inventory.armorInventory) {
 
 				if(armor != null && HazmatRegistry.getCladding(armor) < rad) {
 
@@ -58,7 +58,7 @@ public class ItemCladding extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(TextFormatting.YELLOW + "Adds " + rad + " rad-resistance to all armor pieces.");
 	}
 }

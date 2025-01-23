@@ -21,7 +21,7 @@ public class Vertex_v4fc4f {
     public Vertex_v4fc4f() {
     }
 
-    public Vertex_v4fc4f(Vec4 position, Vec4 color) {
+    public Vertex_v4fc4f(final Vec4 position, final Vec4 color) {
         this.position = position;
         this.color = color;
     }

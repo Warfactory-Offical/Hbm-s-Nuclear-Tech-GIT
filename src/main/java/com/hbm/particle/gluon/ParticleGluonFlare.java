@@ -34,11 +34,11 @@ public class ParticleGluonFlare extends Particle {
 	float rot;
 	EntityPlayer player;
 	
-	public ParticleGluonFlare(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleGluonFlare(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		this(worldIn, posXIn, posYIn, posZIn, null);
 	}
 	
-	public ParticleGluonFlare(World worldIn, double posXIn, double posYIn, double posZIn, EntityPlayer player) {
+	public ParticleGluonFlare(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final EntityPlayer player) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = 7;
 		this.particleMaxAge = 3+worldIn.rand.nextInt(3);
@@ -58,8 +58,7 @@ public class ParticleGluonFlare extends Particle {
 		if(particleAge >= particleMaxAge){
 			setExpired();
 			LensVisibilityHandler.delete(visibilityId);
-			return;
-		}
+        }
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class ParticleGluonFlare extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GL11.glPushMatrix();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.flare2);
 		GlStateManager.disableDepth();
@@ -81,9 +80,9 @@ public class ParticleGluonFlare extends Particle {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		
-		double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-        double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-        double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+		final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+        final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+        final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
         
         interpPosX = entPosX;
         interpPosY = entPosY;
@@ -93,12 +92,12 @@ public class ParticleGluonFlare extends Particle {
         float f6 = (float)(this.posY - interpPosY);
         float f7 = (float)(this.posZ - interpPosZ);
         if(player != null){
-        	float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+partialTicks);
-			Vec3d look = Library.changeByAngle(player.getLook(partialTicks), angles[0], angles[1]);
-        	RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, partialTicks);
+        	final float[] angles = ItemGunEgon.getBeamDirectionOffset(player.world.getTotalWorldTime()+partialTicks);
+			final Vec3d look = Library.changeByAngle(player.getLook(partialTicks), angles[0], angles[1]);
+        	final RayTraceResult r = Library.rayTraceIncludeEntitiesCustomDirection(player, look, 50, partialTicks);
         	Vec3d pos = null;
 			if(r != null && r.hitVec != null && r.typeOfHit != Type.MISS && r.sideHit != null){
-				Vec3i norm = r.sideHit.getDirectionVec();
+				final Vec3i norm = r.sideHit.getDirectionVec();
 				pos = r.hitVec.add(norm.getX()*0.1F, norm.getY()*0.1F, norm.getZ()*0.1F);
 			} else {
 				pos = player.getPositionEyes(partialTicks).add(look.scale(50));
@@ -119,26 +118,26 @@ public class ParticleGluonFlare extends Particle {
 		float visibility = LensVisibilityHandler.getVisibility(visibilityId);
 		visibility *= visibility;
 		
-		float ageN = (float)(this.particleAge+partialTicks)/(float)this.particleMaxAge;
-		float scale = MathHelper.clamp(ageN*2, 0, 1)* MathHelper.clamp(2-ageN*2+0.1F, 0, 1);
+		final float ageN = (this.particleAge+partialTicks) /(float)this.particleMaxAge;
+		final float scale = MathHelper.clamp(ageN*2, 0, 1)* MathHelper.clamp(2-ageN*2+0.1F, 0, 1);
 		float f4 = 0.1F * this.particleScale * visibility*scale;
         
-        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
+        final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
         f4*=5;
-        Vec3d[] avec3d2 = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
+        final Vec3d[] avec3d2 = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
 
         if (this.particleAngle != 0.0F)
         {
-            float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
-            float f9 = MathHelper.cos(f8 * 0.5F);
-            float f10 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.x;
-            float f11 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.y;
-            float f12 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.z;
-            Vec3d vec3d = new Vec3d((double)f10, (double)f11, (double)f12);
+            final float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
+            final float f9 = MathHelper.cos(f8 * 0.5F);
+            final float f10 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.x;
+            final float f11 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.y;
+            final float f12 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.z;
+            final Vec3d vec3d = new Vec3d(f10, f11, f12);
 
             for (int l = 0; l < 4; ++l)
             {
-                avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double)(f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double)(2.0F * f9)));
+                avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double)(f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale(2.0F * f9));
             }
         }
 

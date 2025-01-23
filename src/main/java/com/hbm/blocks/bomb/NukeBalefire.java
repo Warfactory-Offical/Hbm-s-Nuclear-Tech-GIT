@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class NukeBalefire extends BlockMachineBase implements IBomb {
 
-	public NukeBalefire(Material materialIn, int guiID, String s) {
+	public NukeBalefire(final Material materialIn, final int guiID, final String s) {
 		super(materialIn, guiID, s);
 	}
 	
@@ -30,51 +30,51 @@ public class NukeBalefire extends BlockMachineBase implements IBomb {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityNukeBalefire();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if (world.isBlockPowered(pos)) {
 			explode(world, pos);
 		}
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(final World world, final BlockPos pos) {
 		if(!world.isRemote) {
-			TileEntityNukeBalefire bomb = (TileEntityNukeBalefire) world.getTileEntity(pos);
+			final TileEntityNukeBalefire bomb = (TileEntityNukeBalefire) world.getTileEntity(pos);
 
 			if(bomb.isLoaded())
 				bomb.explode();
@@ -82,7 +82,7 @@ public class NukeBalefire extends BlockMachineBase implements IBomb {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("§a["+ I18nUtil.resolveKey("trait.balefirebomb")+"]"+"§r");
 		tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", 250)+"§r");
 	}

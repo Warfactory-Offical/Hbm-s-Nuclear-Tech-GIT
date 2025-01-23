@@ -59,7 +59,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 		
 		if(!world.isRemote) {
 			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, gas), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50));
-			NBTTagCompound type = new NBTTagCompound();
+			final NBTTagCompound type = new NBTTagCompound();
 			type.setString("gasType", gasType.getName());
 			networkPack(type, 50);
 			
@@ -75,7 +75,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt){
+	public void networkUnpack(final NBTTagCompound nbt){
 		if(nbt.hasKey("steamType")){
 			this.gasType = FluidRegistry.getFluid(nbt.getString("gasType"));
 		} else {
@@ -84,7 +84,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	}
 
 	@Override
-	public void receiveFlux(NType type, double flux) {
+	public void receiveFlux(final NType type, double flux) {
 		
 		if(canProcess()) {
 			
@@ -113,12 +113,12 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 		if(inventory.getStackInSlot(0).isEmpty())
 			return false;
 		
-		int requiredFlux = RBMKOutgasserRecipes.getRequiredFlux(inventory.getStackInSlot(0));
+		final int requiredFlux = RBMKOutgasserRecipes.getRequiredFlux(inventory.getStackInSlot(0));
 		if (requiredFlux == -1)
 			return false;
 		duration = requiredFlux;
 
-		ItemStack output = RBMKOutgasserRecipes.getOutput(inventory.getStackInSlot(0));
+		final ItemStack output = RBMKOutgasserRecipes.getOutput(inventory.getStackInSlot(0));
 		if(output.getItem() == ModItems.fluid_icon) {
 			return ItemFluidIcon.getFluid(output) == gasType && gas.getFluidAmount() + ItemFluidIcon.getQuantity(output) <= gas.getCapacity();
 		}
@@ -132,7 +132,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	
 	private void process() {
 		
-		ItemStack output = RBMKOutgasserRecipes.getOutput(inventory.getStackInSlot(0));
+		final ItemStack output = RBMKOutgasserRecipes.getOutput(inventory.getStackInSlot(0));
 		inventory.getStackInSlot(0).shrink(1);
 		this.progress = 0;
 		
@@ -148,7 +148,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 		}
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		fillFluid(this.pos.getX(), this.pos.getY() + RBMKDials.getColumnHeight(world) + 1, this.pos.getZ(), tank);
 		
 		if(world.getBlockState(pos.down()) == ModBlocks.rbmk_loader) {
@@ -171,15 +171,15 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 		}
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank tank) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 	
 	
 	@Override
-	public void onMelt(int reduce) {
+	public void onMelt(final int reduce) {
 		
-		int count = 4 + world.rand.nextInt(2);
+		final int count = 4 + world.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.BLANK);
@@ -195,7 +195,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 
 	@Override
 	public NBTTagCompound getNBTForConsole() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setInteger("gas", this.gas.getFluidAmount());
 		data.setInteger("maxGas", this.gas.getCapacity());
 		data.setDouble("usedFlux", this.usedFlux);
@@ -205,7 +205,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
 		this.progress = nbt.getDouble("progress");
@@ -214,7 +214,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
 		nbt.setDouble("progress", this.progress);
@@ -225,17 +225,17 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
 		return RBMKOutgasserRecipes.getOutput(itemStack) != null && i == 0;
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
+	public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
 		return i == 1;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags){
+	public void recievePacket(final NBTTagCompound[] tags){
 		if(tags.length == 1){
 			gas.readFromNBT(tags[0]);
 		}
@@ -247,39 +247,39 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		return gas.drain(resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return gas.drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
 	}
 
 	@Override
-	public boolean canLoad(ItemStack toLoad) {
+	public boolean canLoad(final ItemStack toLoad) {
 		return toLoad != null && inventory.getStackInSlot(0).isEmpty();
 	}
 
 	@Override
-	public void load(ItemStack toLoad) {
+	public void load(final ItemStack toLoad) {
 		inventory.setStackInSlot(0, toLoad.copy());
 		this.markDirty();
 	}
@@ -303,7 +303,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	// control panel
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		Map<String, DataValue> data = super.getQueryData();
+		final Map<String, DataValue> data = super.getQueryData();
 
 		data.put("gas", new DataValueFloat(this.gas.getFluidAmount()));
 		data.put("progress", new DataValueFloat((float) this.progress));

@@ -1,16 +1,11 @@
 package com.hbm.items.food;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import com.hbm.capability.HbmLivingCapability.EntityHbmProps;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.VersatileConfig;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.potion.HbmPotion;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -21,11 +16,15 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class ItemPill extends ItemFood {
 
 	Random rand = new Random();
 	
-	public ItemPill(int hunger, String s) {
+	public ItemPill(final int hunger, final String s) {
 		super(hunger, false);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -35,7 +34,7 @@ public class ItemPill extends ItemFood {
 	}
 	
 	@Override
-	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
+	protected void onFoodEaten(final ItemStack stack, final World worldIn, final EntityPlayer player) {
 		if (!worldIn.isRemote)
         {
 			VersatileConfig.applyPotionSickness(player, 5);
@@ -74,18 +73,18 @@ public class ItemPill extends ItemFood {
 				player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 10 * 60 * 20, 2));
 				player.addPotionEffect(new PotionEffect(MobEffects.POISON, 5 * 20, 2));
 				
-				PotionEffect eff = new PotionEffect(HbmPotion.potionsickness, 10 * 60 * 20);
+				final PotionEffect eff = new PotionEffect(HbmPotion.potionsickness, 10 * 60 * 20);
 				eff.setCurativeItems(new ArrayList());
 				player.addPotionEffect(eff);
 			}
 
         	if(this == ModItems.xanax) {
-				float digamma = HbmLivingProps.getDigamma(player);
+				final float digamma = HbmLivingProps.getDigamma(player);
 				HbmLivingProps.setDigamma(player, Math.max(digamma - 0.5F, 0F));
 			}
 
 			if(this == ModItems.fmn) {
-				float digamma = HbmLivingProps.getDigamma(player);
+				final float digamma = HbmLivingProps.getDigamma(player);
 				HbmLivingProps.setDigamma(player, Math.min(digamma, 2F));
 				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 60, 0));
 			}
@@ -98,7 +97,7 @@ public class ItemPill extends ItemFood {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.pill_iodine) {
 			tooltip.add("Removes negative effects");
 		}
@@ -127,12 +126,12 @@ public class ItemPill extends ItemFood {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getMaxItemUseDuration(final ItemStack stack) {
 		return 10;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
 		if(!VersatileConfig.hasPotionSickness(playerIn))
 			playerIn.setActiveHand(handIn);
 		return super.onItemRightClick(worldIn, playerIn, handIn);

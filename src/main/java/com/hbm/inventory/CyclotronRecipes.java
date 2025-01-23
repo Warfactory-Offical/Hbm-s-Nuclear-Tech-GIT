@@ -21,21 +21,21 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class CyclotronRecipes {
 
-	private static LinkedHashMap<Object, ItemStack> lithium = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> beryllium = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> carbon = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> copper = new LinkedHashMap<>();
-	private static LinkedHashMap<Object, ItemStack> plutonium = new LinkedHashMap<>();
-	private static HashMap<Object, Integer> liAmat = new HashMap<>();
-	private static HashMap<Object, Integer> beAmat = new HashMap<>();
-	private static HashMap<Object, Integer> caAmat = new HashMap<>();
-	private static HashMap<Object, Integer> coAmat = new HashMap<>();
-	private static HashMap<Object, Integer> plAmat = new HashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> lithium = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> beryllium = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> carbon = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> copper = new LinkedHashMap<>();
+	private static final LinkedHashMap<Object, ItemStack> plutonium = new LinkedHashMap<>();
+	private static final HashMap<Object, Integer> liAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> beAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> caAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> coAmat = new HashMap<>();
+	private static final HashMap<Object, Integer> plAmat = new HashMap<>();
 
 	public static void register() {
 
 		/// LITHIUM START ///
-		int liA = 50;
+		final int liA = 50;
 
 		makeRecipe(lithium, liAmat, LI.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_beryllium), liA);
 		makeRecipe(lithium, liAmat, BE.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_boron), liA);
@@ -54,7 +54,7 @@ public class CyclotronRecipes {
 		/// LITHIUM END ///
 
 		/// BERYLLIUM START ///
-		int beA = 25;
+		final int beA = 25;
 
 		makeRecipe(beryllium, beAmat, LI.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_boron), beA);
 		makeRecipe(beryllium, beAmat, NETHERQUARTZ.dust(), ItemStackUtil.itemStackFrom(ModItems.sulfur), beA);
@@ -67,7 +67,7 @@ public class CyclotronRecipes {
 		/// BERYLLIUM END ///
 
 		/// CARBON START ///
-		int caA = 10;
+		final int caA = 10;
 
 		makeRecipe(carbon, caAmat, B.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_aluminium), caA);
 		makeRecipe(carbon, caAmat, S.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_titanium), caA);
@@ -80,7 +80,7 @@ public class CyclotronRecipes {
 		/// CARBON END ///
 
 		/// COPPER START ///
-		int coA = 15;
+		final int coA = 15;
 
 		makeRecipe(copper, coAmat, BE.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_quartz), coA);
 		makeRecipe(copper, coAmat, COAL.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_bromine), coA);
@@ -95,7 +95,7 @@ public class CyclotronRecipes {
 		/// COPPER END ///
 
 		/// PLUTONIUM START ///
-		int plA = 100;
+		final int plA = 100;
 
 		makeRecipe(plutonium, plAmat, PU.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_tennessine), plA);
 		makeRecipe(plutonium, plAmat, ItemStackUtil.comparableStackFrom(ModItems.powder_tennessine), ItemStackUtil.itemStackFrom(ModItems.powder_reiium), plA);
@@ -106,12 +106,12 @@ public class CyclotronRecipes {
 		///TODO: fictional elements
 	}
 	
-	private static void makeRecipe(HashMap<Object, ItemStack> map, HashMap<Object, Integer> aMap, Object in, ItemStack out, int amat) {
+	private static void makeRecipe(final HashMap<Object, ItemStack> map, final HashMap<Object, Integer> aMap, final Object in, final ItemStack out, final int amat) {
 		map.put(in, out);
 		aMap.put(in, amat);
 	}
 
-	public static Object[] getOutput(ItemStack stack, ItemStack box) {
+	public static Object[] getOutput(final ItemStack stack, final ItemStack box) {
 
 		if(stack == null || stack.getItem() == null || box == null || stack.isEmpty() || box.isEmpty())
 			return null;
@@ -139,14 +139,14 @@ public class CyclotronRecipes {
 		if(pool == null)
 			return null;
 
-		ComparableStack comp = stack.hasTagCompound() ? new NbtComparableStack(stack).makeSingular() : ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
+		final ComparableStack comp = stack.hasTagCompound() ? new NbtComparableStack(stack).makeSingular() : ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
 		
 		if(pool.containsKey(comp))
 			return new Object[] {pool.get(comp).copy(), aPool.get(comp)};
 
-		String[] dictKeys = comp.getDictKeys();
+		final String[] dictKeys = comp.getDictKeys();
 
-		for(String key : dictKeys) {
+		for(final String key : dictKeys) {
 
 			if(pool.containsKey(key))
 				return new Object[] {pool.get(key).copy(), aPool.get(key)};
@@ -157,7 +157,7 @@ public class CyclotronRecipes {
 	
 	public static Map<ItemStack[], ItemStack> getRecipes() {
 
-		Map<ItemStack[], ItemStack> recipes = new LinkedHashMap<>();
+		final Map<ItemStack[], ItemStack> recipes = new LinkedHashMap<>();
 
 		addRecipes(recipes, lithium, ModItems.part_lithium);
 		addRecipes(recipes, beryllium, ModItems.part_beryllium);
@@ -168,9 +168,9 @@ public class CyclotronRecipes {
 		return recipes;
 	}
 
-	private static void addRecipes(Map<ItemStack[], ItemStack> recipes, HashMap<Object, ItemStack> map, Item part) {
+	private static void addRecipes(final Map<ItemStack[], ItemStack> recipes, final HashMap<Object, ItemStack> map, final Item part) {
 
-		for(Entry<Object, ItemStack> entry : map.entrySet()) {
+		for(final Entry<Object, ItemStack> entry : map.entrySet()) {
 
 			if(entry.getKey() instanceof ComparableStack) {
 
@@ -178,9 +178,9 @@ public class CyclotronRecipes {
 
 			} else if(entry.getKey() instanceof String) {
 
-				List<ItemStack> ores = OreDictionary.getOres((String) entry.getKey());
+				final List<ItemStack> ores = OreDictionary.getOres((String) entry.getKey());
 
-				for(ItemStack ore : ores) {
+				for(final ItemStack ore : ores) {
 					recipes.put(new ItemStack[] { ItemStackUtil.itemStackFrom(part), ore }, entry.getValue());
 				}
 			}

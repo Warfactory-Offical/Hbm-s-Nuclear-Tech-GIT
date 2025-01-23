@@ -20,7 +20,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 
 	//NTM HE
 	@Override
-	public void setPower(long power) {
+	public void setPower(final long power) {
 		subBuffer = power;
 	}
 
@@ -36,22 +36,22 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 
 	//RF
 	@Override
-	public int getEnergyStored(EnumFacing from) {
+	public int getEnergyStored(final EnumFacing from) {
 		return 0;
 	}
 
 	@Override
-	public int getMaxEnergyStored(EnumFacing from) {
+	public int getMaxEnergyStored(final EnumFacing from) {
 		return Integer.MAX_VALUE;
 	}
 
 	@Override
-	public boolean canConnectEnergy(EnumFacing from) {
+	public boolean canConnectEnergy(final EnumFacing from) {
 		return true;
 	}
 
 	@Override
-	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(final EnumFacing from, final int maxReceive, final boolean simulate) {
 		if(recursionBrake)
 			return 0;
 		
@@ -60,7 +60,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 		
 		recursionBrake = true;
 		
-		long capacity = (long)(maxReceive / GeneralConfig.conversionRateHeToRF);
+		final long capacity = (long)(maxReceive / GeneralConfig.conversionRateHeToRF);
 		subBuffer = capacity;
 		
 		this.sendPower(world, pos);
@@ -92,12 +92,12 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	}
 
 	@Override
-	public int extractEnergy(int maxExtract, boolean simulate){
+	public int extractEnergy(final int maxExtract, final boolean simulate){
 		return 0;
 	}
 
 	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate){
+	public int receiveEnergy(final int maxReceive, final boolean simulate){
 		if(recursionBrake)
 			return 0;
 		
@@ -106,7 +106,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 		
 		recursionBrake = true;
 		
-		long capacity = (long)(maxReceive / GeneralConfig.conversionRateHeToRF);
+		final long capacity = (long)(maxReceive / GeneralConfig.conversionRateHeToRF);
 		subBuffer = capacity;
 		
 		this.sendPower(world, pos);
@@ -117,7 +117,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return true;
 		}
@@ -125,7 +125,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return (T) this;
 		}

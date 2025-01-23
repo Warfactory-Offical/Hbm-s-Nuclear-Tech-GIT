@@ -37,7 +37,7 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb, IR
 
 	public static boolean safeBreak = false;
 
-	public DummyBlockBlast(Material materialIn, String s) {
+	public DummyBlockBlast(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -45,13 +45,13 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb, IR
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
-	public boolean isSealed(World worldIn, BlockPos blockPos, EnumFacing direction){
+	public boolean isSealed(final World worldIn, final BlockPos blockPos, final EnumFacing direction){
 		if (worldIn != null)
 		{
-			TileEntity te = worldIn.getTileEntity(blockPos);
+			final TileEntity te = worldIn.getTileEntity(blockPos);
 			if(te != null && te instanceof TileEntityDummy && ((TileEntityDummy) te).target != null) {
 
-				TileEntity actualTileEntity = worldIn.getTileEntity(((TileEntityDummy) te).target);
+				final TileEntity actualTileEntity = worldIn.getTileEntity(((TileEntityDummy) te).target);
 				if (actualTileEntity != null) {
 					if (IDoor.class.isAssignableFrom(actualTileEntity.getClass())) {
 						// Doors should be sealed only when closed
@@ -64,14 +64,14 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb, IR
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityDummy();
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 		if(!safeBreak) {
-    		TileEntity te = world.getTileEntity(pos);
+    		final TileEntity te = world.getTileEntity(pos);
     		if(te != null && te instanceof TileEntityDummy) {
     		
     			if(!world.isRemote)
@@ -83,7 +83,7 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb, IR
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
@@ -92,10 +92,10 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb, IR
 			
 		} else if(!player.isSneaking())
 		{
-			TileEntity til = world.getTileEntity(pos);
+			final TileEntity til = world.getTileEntity(pos);
 			if(til != null && til instanceof TileEntityDummy) {
 						
-				TileEntityBlastDoor entity = (TileEntityBlastDoor) world.getTileEntity(((TileEntityDummy)til).target);
+				final TileEntityBlastDoor entity = (TileEntityBlastDoor) world.getTileEntity(((TileEntityDummy)til).target);
 				if(entity != null) {
 					if(entity.canAccess(player)){
 						entity.tryToggle();
@@ -109,11 +109,11 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb, IR
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
+	public void explode(final World world, final BlockPos pos) {
+		final TileEntity te = world.getTileEntity(pos);
 		if(te != null && te instanceof TileEntityDummy) {
 			
-			TileEntityBlastDoor entity = (TileEntityBlastDoor) world.getTileEntity(((TileEntityDummy)te).target);
+			final TileEntityBlastDoor entity = (TileEntityBlastDoor) world.getTileEntity(((TileEntityDummy)te).target);
 			if(entity != null && !entity.isLocked())
 			{
 				entity.tryToggle();
@@ -122,58 +122,58 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb, IR
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 	
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
 		return ItemStackUtil.itemStackFrom(ModBlocks.blast_door);
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		super.onBlockAdded(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean isRadResistant(World worldIn, BlockPos blockPos){
+	public boolean isRadResistant(final World worldIn, final BlockPos blockPos){
 		// Door should be rad resistant only when closed
 		if (worldIn != null) {
-			TileEntity te = worldIn.getTileEntity(blockPos);
+			final TileEntity te = worldIn.getTileEntity(blockPos);
 			if(te != null && te instanceof TileEntityDummy && ((TileEntityDummy) te).target != null) {
 
-				TileEntity actualTileEntity = worldIn.getTileEntity(((TileEntityDummy) te).target);
+				final TileEntity actualTileEntity = worldIn.getTileEntity(((TileEntityDummy) te).target);
 				if (actualTileEntity != null) {
 					if (IDoor.class.isAssignableFrom(actualTileEntity.getClass())) {
 						return ((IDoor) actualTileEntity).getState() == IDoor.DoorState.CLOSED;

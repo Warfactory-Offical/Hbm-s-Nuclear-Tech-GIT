@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public class FusionRecipes {
 
-	public static int getByproductChance(Fluid plasma) {
+	public static int getByproductChance(final Fluid plasma) {
 		if(plasma == ModForgeFluids.plasma_dt){
 			return 1200; 
 		} else if(plasma == ModForgeFluids.plasma_hd){
@@ -26,7 +26,7 @@ public class FusionRecipes {
 		return 0;
 	}
 
-	public static ItemStack getByproduct(Fluid plasma) {
+	public static ItemStack getByproduct(final Fluid plasma) {
 		if(plasma == ModForgeFluids.plasma_dt){
 			return ItemStackUtil.itemStackFrom(ModItems.pellet_charged); 
 		} else if(plasma == ModForgeFluids.plasma_hd){
@@ -43,7 +43,7 @@ public class FusionRecipes {
 		return ItemStack.EMPTY;
 	}
 	
-	public static int getBreedingLevel(Fluid plasma) {
+	public static int getBreedingLevel(final Fluid plasma) {
 		if(plasma == ModForgeFluids.plasma_dt){
 			return 2;
 		} else if(plasma == ModForgeFluids.plasma_hd){
@@ -60,7 +60,7 @@ public class FusionRecipes {
 		return 0;
 	}
 	
-	public static int getSteamProduction(Fluid plasma) {
+	public static int getSteamProduction(final Fluid plasma) {
 		if(plasma == ModForgeFluids.plasma_dt){
 			return 225;
 		} else if(plasma == ModForgeFluids.plasma_hd){

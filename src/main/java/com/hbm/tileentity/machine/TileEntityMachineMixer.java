@@ -81,9 +81,9 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 			this.power = Library.chargeTEFromItems(inventory, 0, power, getMaxPower());
 			
 			upgradeManager.eval(inventory, 3, 4);
-			int speedLevel = Math.min(upgradeManager.getLevel(UpgradeType.SPEED), 3);
-			int powerLevel = Math.min(upgradeManager.getLevel(UpgradeType.POWER), 3);
-			int overLevel = upgradeManager.getLevel(UpgradeType.OVERDRIVE);
+			final int speedLevel = Math.min(upgradeManager.getLevel(UpgradeType.SPEED), 3);
+			final int powerLevel = Math.min(upgradeManager.getLevel(UpgradeType.POWER), 3);
+			final int overLevel = upgradeManager.getLevel(UpgradeType.OVERDRIVE);
 			uuMixer = upgradeManager.getLevel(UpgradeType.SCREAM) > 0;
 
 			updateTankType();
@@ -100,7 +100,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 			this.consumption /= (powerLevel+1);
 			this.consumption *= (overLevel * 3 + 1);
 			
-			for(DirPos pos : getConPos()) {
+			for(final DirPos pos : getConPos()) {
 				this.trySubscribe(world, pos.getPos(), pos.getDir());
 			}
 			
@@ -124,12 +124,12 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 				this.progress = 0;
 			}
 			
-			for(DirPos pos : getConPos()) {
+			for(final DirPos pos : getConPos()) {
 				if(tanks[2].getFluidAmount() > 0)
 					FFUtils.fillFluid(this, tanks[2], world, pos.getPos(), tanks[2].getCapacity() >> 1);
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			if(outputFluid != null){
 				data.setString("f", outputFluid.getName());
 			} else {
@@ -169,10 +169,10 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 
 	private void updateTankType() {
-        ItemStack slotId = inventory.getStackInSlot(2);
-        Item itemId = slotId.getItem();
+        final ItemStack slotId = inventory.getStackInSlot(2);
+        final Item itemId = slotId.getItem();
         if(itemId == ModItems.forge_fluid_identifier) {
-            Fluid fluid = ItemForgeFluidIdentifier.getType(slotId);
+            final Fluid fluid = ItemForgeFluidIdentifier.getType(slotId);
 
             if(outputFluid != fluid && ((uuMixer && MachineConfig.isFluidAllowed(fluid)) || MixerRecipes.hasMixerRecipe(fluid))) {
                 outputFluid = fluid;
@@ -211,17 +211,17 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
     private void updateInputTankTypes() {
     	if(outputFluid == null) return;
     	
-    	Fluid[] f = MixerRecipes.getInputFluids(outputFluid);
+    	final Fluid[] f = MixerRecipes.getInputFluids(outputFluid);
     	if(f == null){
     		if(tanks[0].getFluid() != null) tanks[0].setFluid(null);
 	    	if(tanks[1].getFluid() != null) tanks[1].setFluid(null);
     	} else if(f.length > 0){
-    		FluidStack t1 = tanks[0].getFluid();
+    		final FluidStack t1 = tanks[0].getFluid();
     		if(t1 == null || t1.getFluid() != f[0]){
     			tanks[0].setFluid(new FluidStack(f[0], 0));
 	    	}
 	    	if(f.length == 2){
-		    	FluidStack t2 = tanks[1].getFluid();
+		    	final FluidStack t2 = tanks[1].getFluid();
 	    		if(t2 == null || t2.getFluid() != f[1]){
 	    			tanks[1].setFluid(new FluidStack(f[1], 0));
 		    	}
@@ -232,7 +232,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
     }
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		if(nbt.hasKey("f")) {
 			if(nbt.getString("f").equals("None"))
 				this.outputFluid = null;
@@ -256,11 +256,8 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 		//Mixing uu matter?
 		if(uuMixer){
 			this.processTime = 200;
-			if(outputFluid != null && tanks[2].getFluidAmount() < tanks[2].getCapacity() && FFUtils.hasEnoughFluid(tanks[0], new FluidStack(ModForgeFluids.uu_matter, MachineConfig.uuMixerFluidRatio))){
-				return true;
-			}
-			return false;
-		}
+            return outputFluid != null && tanks[2].getFluidAmount() < tanks[2].getCapacity() && FFUtils.hasEnoughFluid(tanks[0], new FluidStack(ModForgeFluids.uu_matter, MachineConfig.uuMixerFluidRatio));
+        }
 
 		//has recipe?
 		if(!MixerRecipes.hasMixerRecipe(outputFluid)) {
@@ -268,7 +265,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 			return false;
 		}
 		//has enough Fluid
-		FluidStack[] fluidInputs = MixerRecipes.getInputFluidStacks(outputFluid);
+		final FluidStack[] fluidInputs = MixerRecipes.getInputFluidStacks(outputFluid);
 		if(fluidInputs != null){
 			if(fluidInputs.length >= 1 && !FFUtils.hasEnoughFluid(tanks[0], fluidInputs[0])) return false;
 			if(fluidInputs.length == 2 && !FFUtils.hasEnoughFluid(tanks[1], fluidInputs[1])) return false;
@@ -288,14 +285,14 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	protected void process() {
 
 		if(uuMixer){
-			int mbProduction = Math.min(tanks[2].getCapacity()-tanks[2].getFluidAmount(), tanks[0].getFluidAmount()/MachineConfig.uuMixerFluidRatio);
+			final int mbProduction = Math.min(tanks[2].getCapacity()-tanks[2].getFluidAmount(), tanks[0].getFluidAmount()/MachineConfig.uuMixerFluidRatio);
 			tanks[0].drain(mbProduction * MachineConfig.uuMixerFluidRatio, true);
 			tanks[2].fill(new FluidStack(outputFluid, mbProduction), true);
 			this.markDirty();
 			return;
 		}
 		
-		FluidStack[] fluidInputs = MixerRecipes.getInputFluidStacks(outputFluid);
+		final FluidStack[] fluidInputs = MixerRecipes.getInputFluidStacks(outputFluid);
 		if(fluidInputs != null){
 			if(fluidInputs.length >= 1)
 				tanks[0].drain(fluidInputs[0].amount, true);
@@ -303,9 +300,9 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 				tanks[1].drain(fluidInputs[1].amount, true);
 		}
 
-		int itemuse = MixerRecipes.getInputItemCount(outputFluid);
+		final int itemuse = MixerRecipes.getInputItemCount(outputFluid);
 		if(itemuse > 0){
-			ItemStack stack = inventory.getStackInSlot(1);
+			final ItemStack stack = inventory.getStackInSlot(1);
 			stack.shrink(itemuse);
 			if(stack.getCount() == 0)
 				inventory.setStackInSlot(1, ItemStack.EMPTY);
@@ -331,18 +328,18 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
 		return new int[] { 1 };
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
 		if(i == 1) return MixerRecipes.matchesInputItem(outputFluid, itemStack);
 		return false;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		if(nbt.hasKey("f")) {
             if(nbt.getString("f").equals("None"))
@@ -360,7 +357,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		if(outputFluid != null){
 			nbt.setString("f", outputFluid.getName());
 		} else {
@@ -384,7 +381,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public void setPower(long power) {
+	public void setPower(final long power) {
 		this.power = power;
 	}
 
@@ -395,13 +392,13 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		return new ContainerMixer(player.inventory, this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		return new GUIMixer(player.inventory, this);
 	}
 	
@@ -424,10 +421,9 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 3) {
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 			tanks[2].readFromNBT(tags[2]);
@@ -440,7 +436,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource == null) return 0;
 
 		if(tanks[0].getFluid() != null && resource.isFluidEqual(tanks[0].getFluid())) {
@@ -455,7 +451,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource == null || resource.getFluid() != outputFluid) {
 			return null;
 		}
@@ -463,12 +459,12 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return tanks[2].drain(maxDrain, doDrain);
 	}
 
 	@Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
         } else {
@@ -477,7 +473,7 @@ public class TileEntityMachineMixer extends TileEntityMachineBase implements ITi
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return true;
         } else {

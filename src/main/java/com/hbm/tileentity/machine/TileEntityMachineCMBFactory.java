@@ -57,31 +57,30 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
+		final int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int amount){
+	public boolean canInsertItem(final int slot, final ItemStack stack, final int amount){
 		return this.isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemStack, int amount){
+	public boolean canExtractItem(final int i, final ItemStack itemStack, final int amount){
 		if(i == 4)
 			return true;
 		if(i == 0)
 			if (itemStack.getItem() instanceof IBatteryItem && ((IBatteryItem)itemStack.getItem()).getCharge(itemStack) == 0)
 				return true;
 		if(i == 2)
-			if(FFUtils.containsFluid(itemStack, ModForgeFluids.watz))
-				return true;
+            return FFUtils.containsFluid(itemStack, ModForgeFluids.watz);
 		return false;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack){
+	public boolean isItemValidForSlot(final int i, final ItemStack stack){
 		switch(i)
 		{
 		case 0:
@@ -105,7 +104,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 		return false;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -115,7 +114,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		tank.readFromNBT(compound);
 		process = compound.getShort("process");
@@ -123,18 +122,18 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		tank.writeToNBT(compound);
 		compound.setShort("process", (short) process);
 		return super.writeToNBT(compound);
 	}
 
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 
-	public int getProgressScaled(int i) {
+	public int getProgressScaled(final int i) {
 		return (process * i) / processSpeed;
 	}
 
@@ -144,8 +143,8 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 
 		if(tank.getFluidAmount() >= 1 && power >= 100000 && !inventory.getStackInSlot(1).isEmpty() && !inventory.getStackInSlot(3).isEmpty() && (inventory.getStackInSlot(4).isEmpty() || inventory.getStackInSlot(4).getCount() <= 60))
 		{
-			boolean flag0 = ItemStackUtil.isSameMetaItem(inventory.getStackInSlot(1), ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN)) || inventory.getStackInSlot(1).getItem() == ModItems.powder_magnetized_tungsten;
-			boolean flag1 = ItemStackUtil.isSameMetaItem(inventory.getStackInSlot(3), ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)) || inventory.getStackInSlot(3).getItem() == ModItems.powder_advanced_alloy;
+			final boolean flag0 = ItemStackUtil.isSameMetaItem(inventory.getStackInSlot(1), ModItems.ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN)) || inventory.getStackInSlot(1).getItem() == ModItems.powder_magnetized_tungsten;
+			final boolean flag1 = ItemStackUtil.isSameMetaItem(inventory.getStackInSlot(3), ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)) || inventory.getStackInSlot(3).getItem() == ModItems.powder_advanced_alloy;
 
 			b = flag0 && flag1;
 		}
@@ -194,8 +193,8 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 
 			this.updateStandardConnections(world, pos);
 
-			long prevPower = power;
-			int prevAmount = tank.getFluidAmount();
+			final long prevPower = power;
+			final int prevAmount = tank.getFluidAmount();
 			if (needsUpdate) {
 				needsUpdate = false;
 			}
@@ -218,30 +217,28 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 			}
 
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] {tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
 			if(prevPower != power || prevAmount != tank.getFluidAmount()){
 				markDirty();
 			}
 		}
 	}
 	
-	protected boolean inputValidForTank(int tank, int slot){
+	protected boolean inputValidForTank(final int tank, final int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty()){
-			if(isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
-				return true;	
-			}
+            return isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
 		}
 		return false;
 	}
 	
-	private boolean isValidFluid(FluidStack stack) {
+	private boolean isValidFluid(final FluidStack stack) {
 		if(stack == null)
 			return false;
 		return stack.getFluid() == ModForgeFluids.watz;
 	}
 	
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 		
 	}
@@ -263,7 +260,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if (isValidFluid(resource)) {
 			if(tank.fill(resource, false) > 0)
 				needsUpdate = true;
@@ -273,26 +270,25 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 1) {
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {
@@ -301,7 +297,7 @@ public class TileEntityMachineCMBFactory extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		} else {

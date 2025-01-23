@@ -18,243 +18,243 @@ abstract class ArithmeticOperators {
 
     public UInt x = new UInt(), y = new UInt(), z = new UInt();
 
-    public Vec3ui add_(UInt b) {
+    public Vec3ui add_(final UInt b) {
         return Glm.add(new Vec3ui(), (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui add_(int b) {
+    public Vec3ui add_(final int b) {
         return Glm.add(new Vec3ui(), (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui add_(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui add_(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.add(new Vec3ui(), (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui add_(int bX, int bY, int bZ) {
+    public Vec3ui add_(final int bX, final int bY, final int bZ) {
         return Glm.add(new Vec3ui(), (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui add_(Vec3ui b) {
+    public Vec3ui add_(final Vec3ui b) {
         return Glm.add(new Vec3ui(), (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui add(UInt b) {
+    public Vec3ui add(final UInt b) {
         return Glm.add((Vec3ui) this, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui add(int b) {
+    public Vec3ui add(final int b) {
         return Glm.add((Vec3ui) this, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui add(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui add(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.add((Vec3ui) this, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui add(int bX, int bY, int bZ) {
+    public Vec3ui add(final int bX, final int bY, final int bZ) {
         return Glm.add((Vec3ui) this, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui add(Vec3ui b) {
+    public Vec3ui add(final Vec3ui b) {
         return Glm.add((Vec3ui) this, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui add(UInt b, Vec3ui res) {
+    public Vec3ui add(final UInt b, final Vec3ui res) {
         return Glm.add(res, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui add(int b, Vec3ui res) {
+    public Vec3ui add(final int b, final Vec3ui res) {
         return Glm.add(res, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui add(UInt bX, UInt bY, UInt bZ, Vec3ui res) {
+    public Vec3ui add(final UInt bX, final UInt bY, final UInt bZ, final Vec3ui res) {
         return Glm.add(res, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui add(int bX, int bY, int bZ, Vec3ui res) {
+    public Vec3ui add(final int bX, final int bY, final int bZ, final Vec3ui res) {
         return Glm.add(res, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui add(Vec3ui b, Vec3ui res) {
+    public Vec3ui add(final Vec3ui b, final Vec3ui res) {
         return Glm.add(res, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui sub_(UInt b) {
+    public Vec3ui sub_(final UInt b) {
         return Glm.sub(new Vec3ui(), (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui sub_(int b) {
+    public Vec3ui sub_(final int b) {
         return Glm.sub(new Vec3ui(), (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui sub_(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui sub_(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.sub(new Vec3ui(), (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui sub_(int bX, int bY, int bZ) {
+    public Vec3ui sub_(final int bX, final int bY, final int bZ) {
         return Glm.sub(new Vec3ui(), (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui sub_(Vec3ui b) {
+    public Vec3ui sub_(final Vec3ui b) {
         return Glm.sub(new Vec3ui(), (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui sub(UInt b) {
+    public Vec3ui sub(final UInt b) {
         return Glm.sub((Vec3ui) this, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui sub(int b) {
+    public Vec3ui sub(final int b) {
         return Glm.sub((Vec3ui) this, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui sub(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui sub(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.sub((Vec3ui) this, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui sub(int bX, int bY, int bZ) {
+    public Vec3ui sub(final int bX, final int bY, final int bZ) {
         return Glm.sub((Vec3ui) this, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui sub(Vec3ui b) {
+    public Vec3ui sub(final Vec3ui b) {
         return Glm.sub((Vec3ui) this, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui sub(UInt b, Vec3ui res) {
+    public Vec3ui sub(final UInt b, final Vec3ui res) {
         return Glm.sub(res, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui sub(int b, Vec3ui res) {
+    public Vec3ui sub(final int b, final Vec3ui res) {
         return Glm.sub(res, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui sub(UInt bX, UInt bY, UInt bZ, Vec3ui res) {
+    public Vec3ui sub(final UInt bX, final UInt bY, final UInt bZ, final Vec3ui res) {
         return Glm.sub(res, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui sub(int bX, int bY, int bZ, Vec3ui res) {
+    public Vec3ui sub(final int bX, final int bY, final int bZ, final Vec3ui res) {
         return Glm.sub(res, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui sub(Vec3ui b, Vec3ui res) {
+    public Vec3ui sub(final Vec3ui b, final Vec3ui res) {
         return Glm.sub(res, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui mul_(UInt b) {
+    public Vec3ui mul_(final UInt b) {
         return Glm.mul(new Vec3ui(), (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui mul_(int b) {
+    public Vec3ui mul_(final int b) {
         return Glm.mul(new Vec3ui(), (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui mul_(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui mul_(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.mul(new Vec3ui(), (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui mul_(int bX, int bY, int bZ) {
+    public Vec3ui mul_(final int bX, final int bY, final int bZ) {
         return Glm.mul(new Vec3ui(), (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui mul_(Vec3ui b) {
+    public Vec3ui mul_(final Vec3ui b) {
         return Glm.mul(new Vec3ui(), (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui mul(UInt b) {
+    public Vec3ui mul(final UInt b) {
         return Glm.mul((Vec3ui) this, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui mul(int b) {
+    public Vec3ui mul(final int b) {
         return Glm.mul((Vec3ui) this, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui mul(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui mul(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.mul((Vec3ui) this, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui mul(int bX, int bY, int bZ) {
+    public Vec3ui mul(final int bX, final int bY, final int bZ) {
         return Glm.mul((Vec3ui) this, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui mul(Vec3ui b) {
+    public Vec3ui mul(final Vec3ui b) {
         return Glm.mul((Vec3ui) this, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui mul(UInt b, Vec3ui res) {
+    public Vec3ui mul(final UInt b, final Vec3ui res) {
         return Glm.mul(res, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui mul(int b, Vec3ui res) {
+    public Vec3ui mul(final int b, final Vec3ui res) {
         return Glm.mul(res, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui mul(UInt bX, UInt bY, UInt bZ, Vec3ui res) {
+    public Vec3ui mul(final UInt bX, final UInt bY, final UInt bZ, final Vec3ui res) {
         return Glm.mul(res, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui mul(int bX, int bY, int bZ, Vec3ui res) {
+    public Vec3ui mul(final int bX, final int bY, final int bZ, final Vec3ui res) {
         return Glm.mul(res, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui mul(Vec3ui b, Vec3ui res) {
+    public Vec3ui mul(final Vec3ui b, final Vec3ui res) {
         return Glm.mul(res, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui div_(UInt b) {
+    public Vec3ui div_(final UInt b) {
         return Glm.div(new Vec3ui(), (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui div_(int b) {
+    public Vec3ui div_(final int b) {
         return Glm.div(new Vec3ui(), (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui div_(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui div_(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.div(new Vec3ui(), (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui div_(int bX, int bY, int bZ) {
+    public Vec3ui div_(final int bX, final int bY, final int bZ) {
         return Glm.div(new Vec3ui(), (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui div_(Vec3ui b) {
+    public Vec3ui div_(final Vec3ui b) {
         return Glm.div(new Vec3ui(), (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui div(UInt b) {
+    public Vec3ui div(final UInt b) {
         return Glm.div((Vec3ui) this, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui div(int b) {
+    public Vec3ui div(final int b) {
         return Glm.div((Vec3ui) this, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui div(UInt bX, UInt bY, UInt bZ) {
+    public Vec3ui div(final UInt bX, final UInt bY, final UInt bZ) {
         return Glm.div((Vec3ui) this, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui div(int bX, int bY, int bZ) {
+    public Vec3ui div(final int bX, final int bY, final int bZ) {
         return Glm.div((Vec3ui) this, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui div(Vec3ui b) {
+    public Vec3ui div(final Vec3ui b) {
         return Glm.div((Vec3ui) this, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
-    public Vec3ui div(UInt b, Vec3ui res) {
+    public Vec3ui div(final UInt b, final Vec3ui res) {
         return Glm.div(res, (Vec3ui) this, b.value, b.value, b.value);
     }
 
-    public Vec3ui div(int b, Vec3ui res) {
+    public Vec3ui div(final int b, final Vec3ui res) {
         return Glm.div(res, (Vec3ui) this, b, b, b);
     }
 
-    public Vec3ui div(UInt bX, UInt bY, UInt bZ, Vec3ui res) {
+    public Vec3ui div(final UInt bX, final UInt bY, final UInt bZ, final Vec3ui res) {
         return Glm.div(res, (Vec3ui) this, bX.value, bY.value, bZ.value);
     }
 
-    public Vec3ui div(int bX, int bY, int bZ, Vec3ui res) {
+    public Vec3ui div(final int bX, final int bY, final int bZ, final Vec3ui res) {
         return Glm.div(res, (Vec3ui) this, bX, bY, bZ);
     }
 
-    public Vec3ui div(Vec3ui b, Vec3ui res) {
+    public Vec3ui div(final Vec3ui b, final Vec3ui res) {
         return Glm.div(res, (Vec3ui) this, b.x.value, b.y.value, b.z.value);
     }
 
@@ -266,7 +266,7 @@ abstract class ArithmeticOperators {
         return Glm.incr((Vec3ui) this);
     }
 
-    public Vec3ui incr(Vec3ui res) {
+    public Vec3ui incr(final Vec3ui res) {
         return Glm.incr(res, (Vec3ui) this);
     }
 
@@ -278,7 +278,7 @@ abstract class ArithmeticOperators {
         return Glm.decr((Vec3ui) this);
     }
 
-    public Vec3ui decr(Vec3ui res) {
+    public Vec3ui decr(final Vec3ui res) {
         return Glm.decr(res, (Vec3ui) this);
     }
 }

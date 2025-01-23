@@ -86,7 +86,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 				current = null;
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("fill", currentFill);
 			data.setInteger("progress", progress);
 			data.setString("mode", mode.toString());
@@ -103,7 +103,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 		}
 	}
 	
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		
 		this.currentFill = nbt.getInteger("fill");
 		this.progress = nbt.getInteger("progress");
@@ -117,21 +117,21 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 		}
 	}
 	
-	public void handleButtonPacket(int value, int meta) {
+	public void handleButtonPacket(final int value, final int meta) {
 		
 		this.currentFill = 0;
 		this.current = null;
 	}
 	
-	public int getProgressScaled(int i) {
+	public int getProgressScaled(final int i) {
 		return (progress * i) / processTime;
 	}
 	
-	public int getFluidScaled(int i) {
+	public int getFluidScaled(final int i) {
 		return (tank.getFluidAmount() * i) / tank.getCapacity();
 	}
 	
-	public int getFillScaled(int i) {
+	public int getFillScaled(final int i) {
 		return (currentFill * i) / maxFill;
 	}
 	
@@ -146,7 +146,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	
 	public void loadFluid() {
 		
-		ComparableStack conv = fluidConversion.get(getTankType());
+		final ComparableStack conv = fluidConversion.get(getTankType());
 		
 		if(conv != null) {
 			
@@ -156,7 +156,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 			
 			if(current != null && current.equals(conv)) {
 				
-				int toFill = Math.min(10, Math.min(maxFill - currentFill, tank.getFluidAmount()));
+				final int toFill = Math.min(10, Math.min(maxFill - currentFill, tank.getFluidAmount()));
 				currentFill += toFill;
 				tank.drain(toFill, true);
 			}
@@ -168,12 +168,12 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 			loadDelay = 0;
 		
 		if(loadDelay == 0 && !inventory.getStackInSlot(0).isEmpty() && getTankType() == ModForgeFluids.acid && (this.current == null || this.current.equals(ItemStackUtil.comparableStackFrom(inventory.getStackInSlot(0)).makeSingular()))) {
-			SILEXRecipe recipe = SILEXRecipes.getOutput(inventory.getStackInSlot(0));
+			final SILEXRecipe recipe = SILEXRecipes.getOutput(inventory.getStackInSlot(0));
 			
 			if(recipe == null)
 				return;
 			
-			int load = recipe.fluidProduced;
+			final int load = recipe.fluidProduced;
 			
 			if(load <= maxFill - this.currentFill && load <= tank.getFluidAmount()) {
 				this.currentFill += load;
@@ -189,7 +189,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 		if(current == null || currentFill <= 0)
 			return false;
 		
-		SILEXRecipe recipe = SILEXRecipes.getOutput(current.toStack());
+		final SILEXRecipe recipe = SILEXRecipes.getOutput(current.toStack());
 		
 		if(recipe == null)
 			return false;
@@ -209,7 +209,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 			
 			currentFill -= recipe.fluidConsumed;
 			
-			ItemStack out = ((WeightedRandomObject)WeightedRandom.getRandomItem(world.rand, recipe.outputs)).asStack();
+			final ItemStack out = WeightedRandom.getRandomItem(world.rand, recipe.outputs).asStack();
 			inventory.setStackInSlot(3, out.copy());
 			progress = 0;
 			this.markDirty();
@@ -243,12 +243,12 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing p_94128_1_) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing p_94128_1_) {
 		return new int[] { 0, 4, 5, 6, 7, 8, 9 };
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
 		
 		if(i == 0) return SILEXRecipes.getOutput(itemStack) != null;
 		
@@ -256,12 +256,12 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int side) {
 		return slot >= 4;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.tank.readFromNBT(nbt.getCompoundTag("tank"));
 		this.currentFill = nbt.getInteger("fill");
@@ -272,7 +272,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setTag("tank", this.tank.writeToNBT(new NBTTagCompound()));
 		nbt.setInteger("fill", this.currentFill);
@@ -310,7 +310,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && (resource.getFluid() == ModForgeFluids.acid || fluidConversion.containsKey(resource.getFluid()))){
 			return tank.fill(resource, doFill);
 		}
@@ -318,22 +318,22 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		return tank.drain(resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -341,7 +341,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags){
+	public void recievePacket(final NBTTagCompound[] tags){
 		if(tags.length == 1){
 			tank.readFromNBT(tags[0]);
 		}

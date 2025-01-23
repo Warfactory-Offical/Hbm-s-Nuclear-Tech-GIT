@@ -24,7 +24,7 @@ public class AuxElectricityPacket implements IMessage {
 		
 	}
 
-	public AuxElectricityPacket(BlockPos pos, long charge)
+	public AuxElectricityPacket(final BlockPos pos, final long charge)
 	{
 		this.x = pos.getX();
 		this.y = pos.getY();
@@ -32,7 +32,7 @@ public class AuxElectricityPacket implements IMessage {
 		this.charge = charge;
 	}
 
-	public AuxElectricityPacket(int x2, int y2, int z2, long power) {
+	public AuxElectricityPacket(final int x2, final int y2, final int z2, final long power) {
 		this.x = x2;
 		this.y = y2;
 		this.z = z2;
@@ -40,7 +40,7 @@ public class AuxElectricityPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -48,7 +48,7 @@ public class AuxElectricityPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -59,18 +59,17 @@ public class AuxElectricityPacket implements IMessage {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(AuxElectricityPacket m, MessageContext ctx) {
+		public IMessage onMessage(final AuxElectricityPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
 				try {
-					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+					final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 
-					if (te != null && te instanceof IEnergyUser) {
-						
-						IEnergyUser gen = (IEnergyUser) te;
-						gen.setPower(m.charge);
+					if (te != null && te instanceof IEnergyUser gen) {
+
+                        gen.setPower(m.charge);
 					}
-				} catch (Exception x) { }
+				} catch (final Exception x) { }
 			});
 			
 			return null;

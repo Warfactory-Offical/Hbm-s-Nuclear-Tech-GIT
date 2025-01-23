@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ItemPolaroid extends Item {
 
-	public ItemPolaroid(String s) {
+	public ItemPolaroid(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.consumableTab);
@@ -25,7 +25,7 @@ public class ItemPolaroid extends Item {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected) {
 		if(entity instanceof EntityPlayer)
     		if(((EntityPlayer)entity).getHealth() < 10F) {
     			((EntityPlayer) entity).addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 2));
@@ -33,7 +33,7 @@ public class ItemPolaroid extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add("Fate chosen");
 		list.add("");
 		switch(MainRegistry.polaroidID) {

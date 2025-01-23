@@ -17,10 +17,10 @@ import static com.hbm.lib.RefStrings.MODID;
 public class ItemTooltipHandler {
 
     @SubscribeEvent
-    public static void drawTooltip(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
-        EntityPlayer entityPlayer = event.getEntityPlayer();
-        List<String> list = event.getToolTip();
+    public static void drawTooltip(final ItemTooltipEvent event) {
+        final ItemStack stack = event.getItemStack();
+        final EntityPlayer entityPlayer = event.getEntityPlayer();
+        final List<String> list = event.getToolTip();
 
         // TODO: HAZMAT INFO
 

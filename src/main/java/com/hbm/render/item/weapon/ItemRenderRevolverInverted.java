@@ -18,13 +18,13 @@ public class ItemRenderRevolverInverted extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		if(type == null) return;
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
-		double s0 = 1.5D;
-		double s1 = 1.5D;
-		double s2 = 1.5D;
+		final double s0 = 1.5D;
+		final double s1 = 1.5D;
+		final double s2 = 1.5D;
 		switch(type) {
 		
 		case FIRST_PERSON_LEFT_HAND:

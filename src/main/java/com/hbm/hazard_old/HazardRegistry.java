@@ -647,8 +647,8 @@ public class HazardRegistry {
 		/*
 		 * Blacklist
 		 */
-		for(String ore : TH232.ores()) HazardSystem.blacklist(ore);
-		for(String ore : U.ores()) HazardSystem.blacklist(ore);
+		for(final String ore : TH232.ores()) HazardSystem.blacklist(ore);
+		for(final String ore : U.ores()) HazardSystem.blacklist(ore);
 
 		
 
@@ -680,9 +680,9 @@ public class HazardRegistry {
 	}
 	
 	private static HazardData makeData() { return new HazardData(); }
-	private static HazardData makeData(HazardTypeBase hazard) { return new HazardData().addEntry(hazard); }
-	private static HazardData makeData(HazardTypeBase hazard, float level) { return new HazardData().addEntry(hazard, level); }
-	private static HazardData makeData(HazardTypeBase hazard, float level, boolean override) { return new HazardData().addEntry(hazard, level, override); }
+	private static HazardData makeData(final HazardTypeBase hazard) { return new HazardData().addEntry(hazard); }
+	private static HazardData makeData(final HazardTypeBase hazard, final float level) { return new HazardData().addEntry(hazard, level); }
+	private static HazardData makeData(final HazardTypeBase hazard, final float level, final boolean override) { return new HazardData().addEntry(hazard, level, override); }
 
 
 //	private static void registerMaterial(String material, float rad, float hot, float cold, boolean blinding,
@@ -708,24 +708,24 @@ public class HazardRegistry {
 //		HazardSystem.register(DictFrame.fromOne(ModItems.pwr_fuel_depleted, fuel), makeData(RADIATION, baseRad * 10));
 //	}
 	
-	private static void registerRBMKPellet(Item pellet, float base, float dep) { registerRBMKPellet(pellet, base, dep, false, 0F, 0F); }
-	private static void registerRBMKPellet(Item pellet, float base, float dep, boolean linear) { registerRBMKPellet(pellet, base, dep, linear, 0F, 0F); }
-	private static void registerRBMKPellet(Item pellet, float base, float dep, boolean linear, float blinding, float digamma) {
+	private static void registerRBMKPellet(final Item pellet, final float base, final float dep) { registerRBMKPellet(pellet, base, dep, false, 0F, 0F); }
+	private static void registerRBMKPellet(final Item pellet, final float base, final float dep, final boolean linear) { registerRBMKPellet(pellet, base, dep, linear, 0F, 0F); }
+	private static void registerRBMKPellet(final Item pellet, final float base, final float dep, final boolean linear, final float blinding, final float digamma) {
 		
-		HazardData data = new HazardData();
+		final HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base).addMod(new HazardModifierRBMKRadiation(dep, linear)));
 		if(blinding > 0) data.addEntry(new HazardEntry(BLINDING, blinding));
 		if(digamma > 0) data.addEntry(new HazardEntry(DIGAMMA, digamma));
 		HazardSystem.register(pellet, data);
 	}
 	
-	private static void registerRBMKRod(Item rod, float base, float dep) { registerRBMK(rod, base, dep, true, false, 0F, 0F); }
-	private static void registerRBMKRod(Item rod, float base, float dep, float blinding) { registerRBMK(rod, base, dep, true, false, blinding, 0F); }
-	private static void registerRBMKRod(Item rod, float base, float dep, boolean linear) { registerRBMK(rod, base, dep, true, linear, 0F, 0F); }
+	private static void registerRBMKRod(final Item rod, final float base, final float dep) { registerRBMK(rod, base, dep, true, false, 0F, 0F); }
+	private static void registerRBMKRod(final Item rod, final float base, final float dep, final float blinding) { registerRBMK(rod, base, dep, true, false, blinding, 0F); }
+	private static void registerRBMKRod(final Item rod, final float base, final float dep, final boolean linear) { registerRBMK(rod, base, dep, true, linear, 0F, 0F); }
 	
-	private static void registerRBMK(Item rod, float base, float dep, boolean hot, boolean linear, float blinding, float digamma) {
+	private static void registerRBMK(final Item rod, final float base, final float dep, final boolean hot, final boolean linear, final float blinding, final float digamma) {
 		
-		HazardData data = new HazardData();
+		final HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base).addMod(new HazardModifierRBMKRadiation(dep, linear)));
 		if(hot) data.addEntry(new HazardEntry(HOT, 0).addMod(new HazardModifierRBMKHot()));
 		if(blinding > 0) data.addEntry(new HazardEntry(BLINDING, blinding));
@@ -733,55 +733,55 @@ public class HazardRegistry {
 		HazardSystem.register(rod, data);
 	}
 
-	private static void registerBreedingRodRadiation(String type, float base, boolean isBlinding ) {
+	private static void registerBreedingRodRadiation(final String type, final float base, final boolean isBlinding ) {
 		HazardSystem.register("rod_"+ type, makeData(RADIATION, base*rod));
 		HazardSystem.register("rod_dual_"+ type, makeData(RADIATION, base*rod_dual));
 		HazardSystem.register("rod_quad_"+ type, makeData(RADIATION, base*rod_quad));
 
 	}
 
-	private static void registerOtherFuel(Item fuel, float base, float target, boolean blinding) {
+	private static void registerOtherFuel(final Item fuel, final float base, final float target, final boolean blinding) {
 		
-		HazardData data = new HazardData();
+		final HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base).addMod(new HazardModifierFuelRadiation(target)));
 		if(blinding)
 			data.addEntry(BLINDING, 20F);
 		HazardSystem.register(fuel, data);
 	}
 	
-	private static void registerOtherFuel(Item fuel, int meta, float base, float target, boolean blinding) {
+	private static void registerOtherFuel(final Item fuel, final int meta, final float base, final float target, final boolean blinding) {
 		
-		HazardData data = new HazardData();
+		final HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base).addMod(new HazardModifierFuelRadiation(target)));
 		if(blinding)
 			data.addEntry(BLINDING, 20F);
 		HazardSystem.register(ItemStackUtil.itemStackFrom(fuel, 1, meta), data);
 	}
 	
-	private static void registerRTGPellet(Item pellet, float base, float target) { registerRTGPellet(pellet, base, target, 0, 0); }
-	private static void registerRTGPellet(Item pellet, float base, float target, float hot) { registerRTGPellet(pellet, base, target, hot, 0); }
+	private static void registerRTGPellet(final Item pellet, final float base, final float target) { registerRTGPellet(pellet, base, target, 0, 0); }
+	private static void registerRTGPellet(final Item pellet, final float base, final float target, final float hot) { registerRTGPellet(pellet, base, target, hot, 0); }
 	
-	private static void registerRTGPellet(Item pellet, float base, float target, float hot, float blinding) {
-		HazardData data = new HazardData();
+	private static void registerRTGPellet(final Item pellet, final float base, final float target, final float hot, final float blinding) {
+		final HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base).addMod(new HazardModifierRTGRadiation(target)));
 		if(hot > 0) data.addEntry(new HazardEntry(HOT, hot));
 		if(blinding > 0) data.addEntry(new HazardEntry(BLINDING, blinding));
 		HazardSystem.register(pellet, data);
 	}
 	
-	private static void registerOtherWaste(Item waste, float base) {
+	private static void registerOtherWaste(final Item waste, final float base) {
 		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 0), makeData(RADIATION, base * 0.075F));
 		
-		HazardData data = new HazardData();
+		final HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base));
 		data.addEntry(new HazardEntry(HOT, 5F));
 		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 1), data);
 	}
 	
-	private static void registerRadSourceWaste(Item waste, float base) {
+	private static void registerRadSourceWaste(final Item waste, final float base) {
 		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 0), makeData(RADIATION, base));
 		
-		HazardData data = new HazardData();
+		final HazardData data = new HazardData();
 		data.addEntry(new HazardEntry(RADIATION, base));
 		data.addEntry(new HazardEntry(HOT, 5F));
 		HazardSystem.register(ItemStackUtil.itemStackFrom(waste, 1, 1), data);

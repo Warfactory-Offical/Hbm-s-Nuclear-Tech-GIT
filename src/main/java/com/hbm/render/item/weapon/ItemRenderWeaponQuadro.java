@@ -18,10 +18,10 @@ import net.minecraft.util.EnumHand;
 public class ItemRenderWeaponQuadro extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		GlStateManager.disableCull();
 
-		EntityPlayer player = Minecraft.getMinecraft().player;
+		final EntityPlayer player = Minecraft.getMinecraft().player;
 
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
@@ -56,10 +56,10 @@ public class ItemRenderWeaponQuadro extends TEISRBase {
 					GL11.glRotated(-5, 0, 1, 0);
 				}
 
-				double[] recoil = HbmAnimations.getRelevantTransformation("QUADRO_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				final double[] recoil = HbmAnimations.getRelevantTransformation("QUADRO_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glTranslated(0, 0, recoil[2]);
 
-				double[] reload = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_ROTATE", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				final double[] reload = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_ROTATE", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glRotated(reload[2], 1, 0, 0);
 			}
 			break;
@@ -97,7 +97,7 @@ public class ItemRenderWeaponQuadro extends TEISRBase {
 
 				GL11.glTranslated(0, -1, 0);
 
-				double[] push = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_PUSH", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				final double[] push = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_PUSH", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glTranslated(0, 3, 0);
 				GL11.glRotated(push[1] * 30, 1, 0, 0);
 				GL11.glTranslated(0, -3, 0);

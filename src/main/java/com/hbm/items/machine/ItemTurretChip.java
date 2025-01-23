@@ -19,25 +19,25 @@ import net.minecraft.world.World;
 
 public class ItemTurretChip extends ItemTurretBiometry {
 
-	public ItemTurretChip(String s) {
+	public ItemTurretChip(final String s) {
 		super(s);
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if((world.getBlockState(pos).getBlock() instanceof TurretBase))
 		{
-			ItemStack stack = player.getHeldItem(hand);
+			final ItemStack stack = player.getHeldItem(hand);
 			if(getNames(stack) == null)
 				return EnumActionResult.FAIL;
 			
-			TileEntity te = world.getTileEntity(pos);
+			final TileEntity te = world.getTileEntity(pos);
 			if(te instanceof TileEntityTurretBase) {
 				((TileEntityTurretBase)te).isAI = true;
 				((TileEntityTurretBase)te).players.clear();
 				((TileEntityTurretBase)te).players.addAll(Arrays.asList(getNames(stack)));
 				((TileEntityTurretBase)te).playerListChanged = true;
-				((TileEntityTurretBase)te).markDirty();
+				te.markDirty();
 			}
 	        if(world.isRemote)
 			{

@@ -27,7 +27,7 @@ public class BlockGlyph extends Block {
 
 	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
 	
-	public BlockGlyph(Material materialIn, String s) {
+	public BlockGlyph(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -36,7 +36,7 @@ public class BlockGlyph extends Block {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubBlocks(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
 			for (int i = 0; i < 16; ++i){
 				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
@@ -45,12 +45,12 @@ public class BlockGlyph extends Block {
 	}
 	
 	@Override
-	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn){
+	public void onExplosionDestroy(final World worldIn, final BlockPos pos, final Explosion explosionIn){
 		super.onExplosionDestroy(worldIn, pos, explosionIn);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> list, final ITooltipFlag advanced) {
 		switch(stack.getItemDamage()) {
 		case 0: list.add("Hourglass"); break;
 		case 1: list.add("Eye"); break;
@@ -73,8 +73,8 @@ public class BlockGlyph extends Block {
 	
 	//Drillgon200: AAAAAAAAAAAAAAAAAAA 1.12.2 always places the block with metadata 0 by default!
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		ItemStack itemstack = placer.getHeldItem(hand);
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
+		final ItemStack itemstack = placer.getHeldItem(hand);
 		if(itemstack.getItem() == Item.getItemFromBlock(this)){
 			return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, itemstack.getMetadata(), placer, hand);
 		}
@@ -83,16 +83,16 @@ public class BlockGlyph extends Block {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{TYPE});
+		return new BlockStateContainer(this, TYPE);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(TYPE);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(TYPE, meta);
 	}
 }

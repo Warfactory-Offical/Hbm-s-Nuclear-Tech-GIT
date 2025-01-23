@@ -28,28 +28,28 @@ public class TileEntityDemonLamp extends TileEntity implements ITickable {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void radiate(World world, int x, int y, int z){
+	private void radiate(final World world, final int x, final int y, final int z){
 
-		float rads = 100000F;
-		double range = 25D;
+		final float rads = 100000F;
+		final double range = 25D;
 
-		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5).grow(range, range, range));
-		for(EntityLivingBase e : entities) {
+		final List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5).grow(range, range, range));
+		for(final EntityLivingBase e : entities) {
 
 			Vec3 vec = Vec3.createVectorHelper(e.posX - (x + 0.5), (e.posY + e.getEyeHeight()) - (y + 0.5), e.posZ - (z + 0.5));
-			double len = vec.length();
+			final double len = vec.length();
 			vec = vec.normalize();
 
 			float res = 0;
 
 			for(int i = 1; i < len; i++) {
 
-				int ix = (int)Math.floor(x + 0.5 + vec.xCoord * i);
-				int iy = (int)Math.floor(y + 0.5 + vec.yCoord * i);
-				int iz = (int)Math.floor(z + 0.5 + vec.zCoord * i);
+				final int ix = (int)Math.floor(x + 0.5 + vec.xCoord * i);
+				final int iy = (int)Math.floor(y + 0.5 + vec.yCoord * i);
+				final int iz = (int)Math.floor(z + 0.5 + vec.zCoord * i);
 				
-				BlockPos pos = new BlockPos(ix, iy, iz);
-				IBlockState state = world.getBlockState(pos);
+				final BlockPos pos = new BlockPos(ix, iy, iz);
+				final IBlockState state = world.getBlockState(pos);
 				res += state.getBlock().getExplosionResistance(null);
 			}
 
@@ -57,7 +57,7 @@ public class TileEntityDemonLamp extends TileEntity implements ITickable {
 				res = 1;
 
 			float eRads = rads;
-			eRads /= (float)res;
+			eRads /= res;
 			eRads /= (float)(len * len);
 
 			ContaminationUtil.contaminate(e, HazardType.RADIATION, ContaminationType.CREATIVE, eRads);

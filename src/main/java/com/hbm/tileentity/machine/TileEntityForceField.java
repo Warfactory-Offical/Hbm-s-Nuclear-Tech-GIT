@@ -52,7 +52,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	public TileEntityForceField() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -67,11 +67,11 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -81,7 +81,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		this.power = nbt.getLong("powerTime");
 		this.health = nbt.getInteger("health");
 		this.maxHealth = nbt.getInteger("maxHealth");
@@ -95,7 +95,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setLong("powerTime", power);
 		nbt.setInteger("health", health);
 		nbt.setInteger("maxHealth", maxHealth);
@@ -107,11 +107,11 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		return super.writeToNBT(nbt);
 	}
 	
-	public int getHealthScaled(int i) {
+	public int getHealthScaled(final int i) {
 		return (health * i) / Math.max(1, maxHealth);
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / Math.max(1, maxPower);
 	}
 	
@@ -178,14 +178,14 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		}
 	}
 	
-	private int impact(Entity e) {
+	private int impact(final Entity e) {
 		
-		double mass = e.height * e.width * e.width;
-		double speed = getMotionWithFallback(e);
+		final double mass = e.height * e.width * e.width;
+		final double speed = getMotionWithFallback(e);
 		return (int)(mass * speed * 50);
 	}
 	
-	private void damage(int ouch) {
+	private void damage(final int ouch) {
 		health -= ouch;
 		
 		if(ouch >= (this.maxHealth / 250))
@@ -200,23 +200,23 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	List<Entity> outside = new ArrayList<Entity>();
 	List<Entity> inside = new ArrayList<Entity>();
 	
-	private void doField(float rad) {
+	private void doField(final float rad) {
 
-		List<Entity> oLegacy = new ArrayList<Entity>(outside);
-		List<Entity> iLegacy = new ArrayList<Entity>(inside);
+		final List<Entity> oLegacy = new ArrayList<Entity>(outside);
+		final List<Entity> iLegacy = new ArrayList<Entity>(inside);
 
 		outside.clear();
 		inside.clear();
 		
-		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() + 0.5 - (rad + 25), pos.getY() + 0.5 - (rad + 25), pos.getZ() + 0.5 - (rad + 25), pos.getX() + 0.5 + (rad + 25), pos.getY() + 0.5 + (rad + 25), pos.getZ() + 0.5 + (rad + 25)));
+		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() + 0.5 - (rad + 25), pos.getY() + 0.5 - (rad + 25), pos.getZ() + 0.5 - (rad + 25), pos.getX() + 0.5 + (rad + 25), pos.getY() + 0.5 + (rad + 25), pos.getZ() + 0.5 + (rad + 25)));
 		
-		for(Entity entity : list) {
+		for(final Entity entity : list) {
 			
 			if(!(entity instanceof EntityPlayer) && !(entity instanceof EntityItem)) {
 				
-				double dist = Math.sqrt(Math.pow(pos.getX() + 0.5 - entity.posX, 2) + Math.pow(pos.getY() + 0.5 - entity.posY, 2) + Math.pow(pos.getZ() + 0.5 - entity.posZ, 2));
+				final double dist = Math.sqrt(Math.pow(pos.getX() + 0.5 - entity.posX, 2) + Math.pow(pos.getY() + 0.5 - entity.posY, 2) + Math.pow(pos.getZ() + 0.5 - entity.posZ, 2));
 				
-				boolean out = dist > rad;
+				final boolean out = dist > rad;
 				
 				//if the entity has not been registered yet
 				if(!oLegacy.contains(entity) && !iLegacy.contains(entity)) {
@@ -234,13 +234,13 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 						Vec3 vec = Vec3.createVectorHelper(pos.getX() + 0.5 - entity.posX, pos.getY() + 0.5 - entity.posY, pos.getZ() + 0.5 - entity.posZ);
 						vec = vec.normalize();
 						
-						double mx = -vec.xCoord * (rad + 1);
-						double my = -vec.yCoord * (rad + 1);
-						double mz = -vec.zCoord * (rad + 1);
+						final double mx = -vec.xCoord * (rad + 1);
+						final double my = -vec.yCoord * (rad + 1);
+						final double mz = -vec.zCoord * (rad + 1);
 						
 						entity.setLocationAndAngles(pos.getX() + 0.5 + mx, pos.getY() + 0.5 + my, pos.getZ() + 0.5 + mz, 0, 0);
 						
-						double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
+						final double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
 
 						entity.motionX = vec.xCoord * -mo;
 						entity.motionY = vec.yCoord * -mo;
@@ -264,13 +264,13 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 						Vec3 vec = Vec3.createVectorHelper(pos.getX() + 0.5 - entity.posX, pos.getY() + 0.5 - entity.posY, pos.getZ() + 0.5 - entity.posZ);
 						vec = vec.normalize();
 						
-						double mx = -vec.xCoord * (rad - 1);
-						double my = -vec.yCoord * (rad - 1);
-						double mz = -vec.zCoord * (rad - 1);
+						final double mx = -vec.xCoord * (rad - 1);
+						final double my = -vec.yCoord * (rad - 1);
+						final double mz = -vec.zCoord * (rad - 1);
 
 						entity.setLocationAndAngles(pos.getX() + 0.5 + mx, pos.getY() + 0.5 + my, pos.getZ() + 0.5 + mz, 0, 0);
 						
-						double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
+						final double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
 
 						entity.motionX = vec.xCoord * mo;
 						entity.motionY = vec.yCoord * mo;
@@ -300,13 +300,13 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		}
 	}
 	
-	private double getMotionWithFallback(Entity e) {
+	private double getMotionWithFallback(final Entity e) {
 
-		Vec3 v1 = Vec3.createVectorHelper(e.motionX, e.motionY, e.motionZ);
-		Vec3 v2 = Vec3.createVectorHelper(e.posX - e.prevPosY, e.posY - e.prevPosY, e.posZ - e.prevPosZ);
+		final Vec3 v1 = Vec3.createVectorHelper(e.motionX, e.motionY, e.motionZ);
+		final Vec3 v2 = Vec3.createVectorHelper(e.posX - e.prevPosY, e.posY - e.prevPosY, e.posZ - e.prevPosZ);
 
-		double s1 = v1.length();
-		double s2 = v2.length();
+		final double s1 = v1.length();
+		final double s2 = v2.length();
 		
 		if(s1 == 0)
 			return s2;
@@ -318,7 +318,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

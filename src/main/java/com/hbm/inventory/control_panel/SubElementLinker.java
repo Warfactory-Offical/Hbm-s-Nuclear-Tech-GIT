@@ -38,14 +38,14 @@ public class SubElementLinker extends SubElement {
 	public int numPages = 1;
 	public int currentPage = 1;
 	
-	public SubElementLinker(GuiControlEdit gui){
+	public SubElementLinker(final GuiControlEdit gui){
 		super(gui);
 	}
 	
 	@Override
 	protected void initGui() {
-		int cX = gui.width/2;
-		int cY = gui.height/2;
+		final int cX = gui.width/2;
+		final int cY = gui.height/2;
 		clear = gui.addButton(new GuiButton(gui.currentButtonId(), cX-121, cY-93, 40, 20, "Clear"));
 		accept = gui.addButton(new GuiButton(gui.currentButtonId(), cX-101, cY-116, 20, 20, ">"));
 		pageLeft = gui.addButton(new GuiButton(gui.currentButtonId(), cX-60, cY-16, 20, 20, "<"));
@@ -57,10 +57,10 @@ public class SubElementLinker extends SubElement {
 	
 	@Override
 	protected void drawScreen() {
-		int cX = gui.width / 2;
-		int cY = gui.height / 2;
+		final int cX = gui.width / 2;
+		final int cY = gui.height / 2;
 
-		ItemStack stack = gui.container.inventorySlots.get(0).getStack();
+		final ItemStack stack = gui.container.inventorySlots.get(0).getStack();
 		accept.enabled = !stack.isEmpty() && stack.getItem() instanceof ItemMultiDetonator;
 
 		String text = currentPage + "/" + numPages;
@@ -76,11 +76,11 @@ public class SubElementLinker extends SubElement {
 	}
 	
 	private void recalculateVisibleButtons(){
-		for(GuiButton b : linkedButtons){
+		for(final GuiButton b : linkedButtons){
 			b.visible = false;
 			b.enabled = false;
 		}
-		int idx = (currentPage-1)*3;
+		final int idx = (currentPage-1)*3;
 		for(int i = idx; i < idx+3; i ++) {
 			if(i >= linkedButtons.size() || i < 1) //TODO: when block gone, remove from linked
 				break;
@@ -90,27 +90,27 @@ public class SubElementLinker extends SubElement {
 	}
 	
 	@Override
-	protected void actionPerformed(GuiButton button){
-		World world = gui.control.getWorld();
+	protected void actionPerformed(final GuiButton button){
+		final World world = gui.control.getWorld();
 
 		if(button == accept){
-			ItemStack stack = gui.container.inventorySlots.get(0).getStack();
+			final ItemStack stack = gui.container.inventorySlots.get(0).getStack();
 			if(!stack.isEmpty()){
 				if(stack.getItem() instanceof ItemMultiDetonator){
-					int[][] locs = ItemMultiDetonator.getLocations(stack);
+					final int[][] locs = ItemMultiDetonator.getLocations(stack);
 					if (locs != null) {
 						for (int i = 0; i < locs[0].length; i++) {
 							BlockPos pos = new BlockPos(locs[0][i], locs[1][i], locs[2][i]);
-							Block b = world.getBlockState(pos).getBlock();
+							final Block b = world.getBlockState(pos).getBlock();
 							if (b instanceof BlockDummyable) {
-								int[] core = ((BlockDummyable) b).findCore(world, pos.getX(), pos.getY(), pos.getZ());
+								final int[] core = ((BlockDummyable) b).findCore(world, pos.getX(), pos.getY(), pos.getZ());
 								if (core != null) {
 									pos = new BlockPos(core[0], core[1], core[2]);
 								}
 							}
 							TileEntity te = world.getTileEntity(pos);
 							if (te instanceof TileEntityDummy) {
-								BlockPos bpos = ((TileEntityDummy) te).target;
+								final BlockPos bpos = ((TileEntityDummy) te).target;
 								if (bpos != null)
 									te = world.getTileEntity(((TileEntityDummy) te).target);
 							}
@@ -129,7 +129,7 @@ public class SubElementLinker extends SubElement {
 		} else if(button == cont){
 			gui.eventEditor.accumulateEventTypes(linked);
 			gui.eventEditor.populateDefaultNodes();
-			for(IControllable c : gui.linker.linked) {
+			for(final IControllable c : gui.linker.linked) {
 				if (!gui.currentEditControl.connectedSet.contains(c.getControlPos()))
 					gui.currentEditControl.connectedSet.add(c.getControlPos());
 			}
@@ -141,7 +141,7 @@ public class SubElementLinker extends SubElement {
 			currentPage = Math.min(numPages, currentPage + 1);
 			recalculateVisibleButtons();
 		} else if(linkedButtons.contains(button)){
-			int idx = linkedButtons.indexOf(button);
+			final int idx = linkedButtons.indexOf(button);
 			gui.currentEditControl.connectedSet.remove(linked.get(idx).getControlPos());
 			linked.remove(idx);
 			refreshButtons();
@@ -152,26 +152,26 @@ public class SubElementLinker extends SubElement {
 		gui.getButtons().removeAll(linkedButtons);
 		linkedButtons.clear();
 		int i = 0;
-		int cX = gui.width/2;
-		int cY = gui.height/2;
+		final int cX = gui.width/2;
+		final int cY = gui.height/2;
 
-		for(IControllable c : linked){
-			BlockPos pos = c.getControlPos();
+		for(final IControllable c : linked){
+			final BlockPos pos = c.getControlPos();
 			linkedButtons.add(new ButtonHoverText(gui.currentButtonId(), cX-73, cY-90 + i*22, 170, 20, "(" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")", "<Click to remove>"));
 			i = (i+1)%3;
 		}
-		for(GuiButton b : linkedButtons)
+		for(final GuiButton b : linkedButtons)
 			gui.addButton(b);
 		numPages = (linked.size()+2)/3;
 		currentPage = MathHelper.clamp(currentPage, 1, numPages);
 	}
 	
 	@Override
-	protected void enableButtons(boolean enable) {
+	protected void enableButtons(final boolean enable) {
 		if(enable){
 			recalculateVisibleButtons();
 		} else {
-			for(GuiButton b : linkedButtons){
+			for(final GuiButton b : linkedButtons){
 				b.visible = false;
 				b.enabled = false;
 			}
@@ -186,9 +186,9 @@ public class SubElementLinker extends SubElement {
 		pageRight.visible = enable;
 		cont.enabled = enable;
 		cont.visible = enable;
-		SlotItemHandlerDisableable s = (SlotItemHandlerDisableable)gui.container.inventorySlots.get(0);
+		final SlotItemHandlerDisableable s = (SlotItemHandlerDisableable)gui.container.inventorySlots.get(0);
 		s.isEnabled = enable;
-		for(SlotDisableable slot : gui.container.invSlots){
+		for(final SlotDisableable slot : gui.container.invSlots){
 			slot.isEnabled = enable;
 		}
 	}

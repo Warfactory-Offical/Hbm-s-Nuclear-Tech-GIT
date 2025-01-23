@@ -67,7 +67,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
     public int health = 50;
     MissileStruct template;
 	
-	public EntityMissileCustom(World worldIn) {
+	public EntityMissileCustom(final World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 		startX = (int) posX;
@@ -76,7 +76,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		targetZ = (int) posZ;
 	}
 	
-	public EntityMissileCustom(World world, float x, float y, float z, int a, int b, MissileStruct template) {
+	public EntityMissileCustom(final World world, final float x, final float y, final float z, final int a, final int b, final MissileStruct template) {
 		super(world);
 		this.ignoreFrustumCheck = true;
 		/*this.posX = x;
@@ -92,14 +92,14 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		this.template = template;
 		this.getDataManager().set(TEMPLATE, template);
 		
-        Vec3d vector = new Vec3d(targetX - startX, 0, targetZ - startZ);
+        final Vec3d vector = new Vec3d(targetX - startX, 0, targetZ - startZ);
 		accelXZ = decelY = 1/vector.length();
 		decelY *= 2;
 		
 		velocity = 0.0;
 
-		ItemMissile fuselage = (ItemMissile) template.fuselage;
-		ItemMissile thruster = (ItemMissile) template.thruster;
+		final ItemMissile fuselage = template.fuselage;
+		final ItemMissile thruster = template.thruster;
 
 		this.fuel = (Float)fuselage.attributes[1];
 		this.consumption = (Float)thruster.attributes[1];
@@ -113,7 +113,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean attackEntityFrom(final DamageSource source, final float amount) {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
 		} else {
@@ -136,7 +136,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
     }
 	
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -156,9 +156,9 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null) {
-            for(ChunkPos chunk : loadedChunks) {
+            for(final ChunkPos chunk : loadedChunks) {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
 
@@ -173,7 +173,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks) {
+            for(final ChunkPos chunk : loadedChunks) {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
         }
@@ -181,7 +181,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 
 	public void clearLoadedChunks() {
 		if(!world.isRemote && loaderTicket != null && loadedChunks != null) {
-			for(ChunkPos chunk : loadedChunks) {
+			for(final ChunkPos chunk : loadedChunks) {
 				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
 			}
 		}
@@ -190,7 +190,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	private ChunkPos mainChunk;
 	public void loadMainChunk() {
 		if(!world.isRemote && loaderTicket != null){
-			ChunkPos currentChunk = new ChunkPos((int) Math.floor(this.posX / 16D), (int) Math.floor(this.posZ / 16D));
+			final ChunkPos currentChunk = new ChunkPos((int) Math.floor(this.posX / 16D), (int) Math.floor(this.posZ / 16D));
 			if(mainChunk == null){
 				ForgeChunkManager.forceChunk(loaderTicket, currentChunk);
 				this.mainChunk = currentChunk;
@@ -215,7 +215,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(final NBTTagCompound nbt) {
 		motionX = nbt.getDouble("moX");
 		motionY = nbt.getDouble("moY");
 		motionZ = nbt.getDouble("moZ");
@@ -231,7 +231,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		velocity = nbt.getDouble("veloc");
 		fuel = nbt.getFloat("fuel");
 		consumption = nbt.getFloat("consumption");
-		int i = nbt.getInteger("fins");
+		final int i = nbt.getInteger("fins");
 		if(nbt.hasKey("noTemplate")){
 			template = null;
 			this.setDead();
@@ -242,7 +242,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setDouble("moX", motionX);
 		nbt.setDouble("moY", motionY);
 		nbt.setDouble("moZ", motionZ);
@@ -282,7 +282,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		
 		this.getDataManager().set(HEALTH, this.health);
 		
-		double oldPosY = this.posY;
+		final double oldPosY = this.posY;
 		this.setLocationAndAngles(posX + this.motionX * velocity, posY + this.motionY * velocity, posZ + this.motionZ * velocity, (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI), (float)(Math.atan2(this.motionY, MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ)) * 180.0D / Math.PI) - 90);
 		this.prevPosY = oldPosY;
 		
@@ -319,7 +319,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 				motionY -= 0.05;
 		}
 
-		Block b = this.world.getBlockState(new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ)).getBlock();
+		final Block b = this.world.getBlockState(new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ)).getBlock();
 		if((b != Blocks.AIR && b != Blocks.WATER && b != Blocks.FLOWING_WATER) || posY < 1) {
 			if(posY < 1){
 				this.setLocationAndAngles((int)this.posX, world.getHeight((int)this.posX, (int)this.posZ), (int)this.posZ, 0, 0);
@@ -345,7 +345,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 			spawnRocketExhaust();
 		}
 
-		WarheadType wType = (WarheadType)template.warhead.attributes[0];
+		final WarheadType wType = (WarheadType)template.warhead.attributes[0];
 
 		if(wType == WarheadType.MIRV){
 			mirvSplit();   		
@@ -362,7 +362,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 			double modx = 0;
 			double modz = 0;
 			for(int i = 0; i < 7; i++) {
-				EntityMIRV nuke3 = new EntityMIRV(this.world);
+				final EntityMIRV nuke3 = new EntityMIRV(this.world);
 				nuke3.setPosition(posX,posY,posZ);
 				if(i==0){ modx = 0; modz = 0;}
 				if(i==1){ modx = 0.45; modz = 0;}
@@ -381,7 +381,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	}
 
 	private void spawnRocketExhaust(){
-		FuelType type = (FuelType)template.fuselage.attributes[0];
+		final FuelType type = (FuelType)template.fuselage.attributes[0];
 		
 		String smoke = "exDark";
 		switch(type) {
@@ -400,7 +400,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		case XENON:
 			return;
 		}
-		Vec3 v = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ).normalize();
+		final Vec3 v = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ).normalize();
 		
 		for(int i = 0; i < 2; i++){
 			MainRegistry.proxy.spawnParticle(posX - v.xCoord * i, posY - v.yCoord * i, posZ - v.zCoord * i, smoke, new float[]{(float)(this.motionX * -particleSpeed), (float)(this.motionY * -particleSpeed), (float)(this.motionZ * -particleSpeed)});
@@ -409,15 +409,15 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance) {
+    public boolean isInRangeToRenderDist(final double distance) {
         return distance < 5000;
     }
 
 	public void onImpact() {
 		
-		WarheadType type = (WarheadType)template.warhead.attributes[0];
-		float strength = (Float)template.warhead.attributes[1];
-		int maxLifetime = (int)Math.max(100, 5 * 48 * (Math.pow(strength, 3)/Math.pow(48, 3)));
+		final WarheadType type = (WarheadType)template.warhead.attributes[0];
+		final float strength = (Float)template.warhead.attributes[1];
+		final int maxLifetime = (int)Math.max(100, 5 * 48 * (Math.pow(strength, 3)/Math.pow(48, 3)));
 		switch(type) {
 		case HE:
 			ExplosionLarge.explode(world, posX, posY, posZ, strength, true, false, true);
@@ -452,7 +452,7 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 			world.setBlockState(new BlockPos((int)Math.floor(posX), (int)Math.floor(posY), (int)Math.floor(posZ)), ModBlocks.volcano_core.getDefaultState());
 			break;
 		case BALEFIRE:
-			EntityBalefire bf = new EntityBalefire(world);
+			final EntityBalefire bf = new EntityBalefire(world);
 			bf.posX = this.posX;
 			bf.posY = this.posY;
 			bf.posZ = this.posZ;
@@ -470,12 +470,12 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 			}
 			break;
 		case TAINT:
-            int r = (int) strength;
-            MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+            final int r = (int) strength;
+            final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
 		    for(int i = 0; i < r * 10; i++) {
-		    	int a = rand.nextInt(r) + (int)posX - (r / 2 - 1);
-		    	int b = rand.nextInt(r) + (int)posY - (r / 2 - 1);
-		    	int c = rand.nextInt(r) + (int)posZ - (r / 2 - 1);
+		    	final int a = rand.nextInt(r) + (int)posX - (r / 2 - 1);
+		    	final int b = rand.nextInt(r) + (int)posY - (r / 2 - 1);
+		    	final int c = rand.nextInt(r) + (int)posZ - (r / 2 - 1);
 		           if(world.getBlockState(mPos.setPos(a, b, c)).getBlock().isReplaceable(world, mPos.setPos(a, b, c)) && BlockTaint.hasPosNeightbour(world, mPos.setPos(a, b, c))) {
 		        		   world.setBlockState(mPos.setPos(a, b, c), ModBlocks.taint.getDefaultState().withProperty(BlockTaint.TEXTURE, rand.nextInt(3) + 4), 2);
 		           }
@@ -493,10 +493,10 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 
 	@Override
 	public RadarTargetType getTargetType(){
-		ItemMissile part = this.dataManager.get(TEMPLATE).fuselage;
+		final ItemMissile part = this.dataManager.get(TEMPLATE).fuselage;
 
-		PartSize top = part.top;
-		PartSize bottom = part.bottom;
+		final PartSize top = part.top;
+		final PartSize bottom = part.bottom;
 
 		if(top == PartSize.SIZE_10 && bottom == PartSize.SIZE_10)
 			return RadarTargetType.MISSILE_10;

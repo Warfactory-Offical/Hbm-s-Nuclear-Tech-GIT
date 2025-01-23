@@ -20,7 +20,7 @@ public class TileEntityPlasmaStruct extends TileEntity implements ITickable {
 	
 	@Override
 	public void update() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
 
 		if(world.isRemote) {
 			world.spawnParticle(EnumParticleTypes.REDSTONE,
@@ -38,7 +38,7 @@ public class TileEntityPlasmaStruct extends TileEntity implements ITickable {
 
 		age = 0;
 
-		MachinePlasmaHeater plas = (MachinePlasmaHeater)ModBlocks.plasma_heater;
+		final MachinePlasmaHeater plas = (MachinePlasmaHeater)ModBlocks.plasma_heater;
 
 		int[] rot = MultiblockHandlerXR.rotate(plas.getDimensions(), dir.toEnumFacing());
 

@@ -28,7 +28,7 @@ public class RenderQuacc extends RenderChicken {
 	 /**
      *  BOW
      */
-	public RenderQuacc(RenderManager p_i47211_1_) {
+	public RenderQuacc(final RenderManager p_i47211_1_) {
 		super(p_i47211_1_);
 	}
 	
@@ -36,7 +36,7 @@ public class RenderQuacc extends RenderChicken {
      *  BOW
      */
 	@Override
-	protected ResourceLocation getEntityTexture(EntityChicken DUCC) {
+	protected ResourceLocation getEntityTexture(final EntityChicken DUCC) {
 		return ducc;
 	}
 	
@@ -44,7 +44,7 @@ public class RenderQuacc extends RenderChicken {
      *  BOW
      */
 	@Override
-	protected void preRenderCallback(EntityChicken DUCC, float partialTickTime) {
+	protected void preRenderCallback(final EntityChicken DUCC, final float partialTickTime) {
 		GL11.glScaled(25, 25, 25);
 	}
 }

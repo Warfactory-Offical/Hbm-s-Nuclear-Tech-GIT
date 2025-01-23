@@ -11,7 +11,7 @@ public class ModelCrab extends ModelBase {
 	int textureX = 64;
 	int textureY = 32;
 
-	public ModelRenderer modelcrabModel[];
+	public ModelRenderer[] modelcrabModel;
 
 	public ModelCrab() {
 		this.textureWidth = this.textureX;
@@ -126,13 +126,13 @@ public class ModelCrab extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		renderAll(f5);
 	}
 
-	public void renderAll(float f5) {
+	public void renderAll(final float f5) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0, 1.5F, 0);
 		GL11.glRotatef(-90, 0, 1, 0);
@@ -143,7 +143,7 @@ public class ModelCrab extends ModelBase {
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity) {
 		
 		modelcrabModel[10].rotateAngleY = 0.78539816F;
 		modelcrabModel[9].rotateAngleY = -0.78539816F;

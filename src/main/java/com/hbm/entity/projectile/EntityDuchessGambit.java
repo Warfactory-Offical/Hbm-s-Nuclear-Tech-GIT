@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityDuchessGambit extends EntityThrowable {
 
-	public EntityDuchessGambit(World p_i1582_1_) {
+	public EntityDuchessGambit(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
@@ -53,9 +53,9 @@ public class EntityDuchessGambit extends EntityThrowable {
             this.world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.alarmGambit, SoundCategory.BLOCKS, 10000.0F, 1F);
     		this.setDead();
     		if(!world.isRemote && CompatibilityConfig.isWarDim(world)){
-	    		List<Entity> list = (List<Entity>)world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(posX - 5, posY - 2, posZ - 9, posX + 5, posY + 2, posZ + 9));
+	    		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(posX - 5, posY - 2, posZ - 9, posX + 5, posY + 2, posZ + 9));
 	    			
-	    		for(Entity e : list) {
+	    		for(final Entity e : list) {
 	    			e.attackEntityFrom(ModDamageSource.boat, 1000);
 	    		}
 
@@ -76,13 +76,13 @@ public class EntityDuchessGambit extends EntityThrowable {
     }
 
 	@Override
-	protected void onImpact(RayTraceResult p_70184_1_) {
+	protected void onImpact(final RayTraceResult p_70184_1_) {
 		
 	}
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 25000;
     }

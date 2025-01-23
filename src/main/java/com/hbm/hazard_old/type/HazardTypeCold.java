@@ -22,14 +22,14 @@ public class HazardTypeCold extends HazardTypeBase {
 
 
     @Override
-    public void onUpdate(EntityLivingBase target, float level, ItemStack stack) {
-        boolean reacher = HazardHelper.isHoldingReacher(target);
+    public void onUpdate(final EntityLivingBase target, final float level, final ItemStack stack) {
+        final boolean reacher = HazardHelper.isHoldingReacher(target);
         if (RadiationConfig.disableCold || reacher) return;
 
         if (target instanceof EntityPlayer && ArmorUtil.checkForHazmat(target)) return; // Early return if protected
 
-        int baseLevel = (int) level - 1;
-        int witherLevel = (int) level - 3;
+        final int baseLevel = (int) level - 1;
+        final int witherLevel = (int) level - 3;
 
         applyPotionEffect(target, MobEffects.MINING_FATIGUE, 110, baseLevel);
         applyPotionEffect(target, MobEffects.SLOWNESS, 110, Math.min(4, baseLevel));
@@ -41,13 +41,13 @@ public class HazardTypeCold extends HazardTypeBase {
     }
 
     @Override
-    public void updateEntity(EntityItem item, float level) {
+    public void updateEntity(final EntityItem item, final float level) {
 
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addHazardInformation(EntityPlayer player, List list, float level, ItemStack stack, List<HazardModifier> modifiers) {
+    public void addHazardInformation(final EntityPlayer player, final List list, final float level, final ItemStack stack, final List<HazardModifier> modifiers) {
         list.add(TextFormatting.AQUA + "[" + I18nUtil.resolveKey("trait.cryogenic") + "]");
 
     }

@@ -26,12 +26,12 @@ public class RenderSlidingBlastDoor extends TileEntitySpecialRenderer<TileEntity
 	private static DoubleBuffer buf = null;
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntitySlidingBlastDoor te) {
+	public boolean isGlobalRenderer(final TileEntitySlidingBlastDoor te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntitySlidingBlastDoor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntitySlidingBlastDoor te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x+0.5, y, z+0.5);
         
@@ -67,10 +67,10 @@ public class RenderSlidingBlastDoor extends TileEntitySpecialRenderer<TileEntity
 		GL11.glClipPlane(GL11.GL_CLIP_PLANE1, buf);
 		GL11.glPopMatrix();
         
-        long time = System.currentTimeMillis();
-        long startTime = te.state.isMovingState() ? te.sysTime : time;
-        boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
-        AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.door0_open);
+        final long time = System.currentTimeMillis();
+        final long startTime = te.state.isMovingState() ? te.sysTime : time;
+        final boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
+        final AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.door0_open);
         if(reverse){
         	w.reverse();
         }

@@ -19,13 +19,13 @@ public class TileEntityBMPowerBox extends TileEntity implements IControllable {
 	public long ticksPlaced;
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound){
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound){
 		compound.setLong("ticksPlaced", ticksPlaced);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound){
+	public void readFromNBT(final NBTTagCompound compound){
 		ticksPlaced = compound.getLong("ticksPlaced");
 		super.readFromNBT(compound);
 	}
@@ -41,12 +41,12 @@ public class TileEntityBMPowerBox extends TileEntity implements IControllable {
 	}
 	
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt){
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt){
 		readFromNBT(pkt.getNbtCompound());
 	}
 	
 	@Override
-	public void receiveEvent(BlockPos from, ControlEvent e){
+	public void receiveEvent(final BlockPos from, final ControlEvent e){
 	}
 
 	@Override

@@ -14,10 +14,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUILaunchPadTier1 extends GuiInfoContainer {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_launch_pad.png");
-	private TileEntityLaunchPad diFurnace;
+	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_launch_pad.png");
+	private final TileEntityLaunchPad diFurnace;
 
-	public GUILaunchPadTier1(InventoryPlayer invPlayer, TileEntityLaunchPad tedf) {
+	public GUILaunchPadTier1(final InventoryPlayer invPlayer, final TileEntityLaunchPad tedf) {
 		super(new ContainerLaunchPadTier1(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -26,35 +26,35 @@ public class GUILaunchPadTier1 extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 53, 160, 16, diFurnace.power, diFurnace.maxPower);
 
-		String[] text = I18nUtil.resolveKeyArray("desc.guimachlaunchpadt11");
+		final String[] text = I18nUtil.resolveKeyArray("desc.guimachlaunchpadt11");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		
-		String[] text1 = I18nUtil.resolveKeyArray("desc.guimachlaunchpadt12");
+		final String[] text1 = I18nUtil.resolveKeyArray("desc.guimachlaunchpadt12");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		int j1 = (int)diFurnace.getPowerScaled(160);
+		final int j1 = (int)diFurnace.getPowerScaled(160);
 		drawTexturedModalRect(guiLeft + 8, guiTop + 53, 8, 166, j1, 16);
 
 		this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 2);

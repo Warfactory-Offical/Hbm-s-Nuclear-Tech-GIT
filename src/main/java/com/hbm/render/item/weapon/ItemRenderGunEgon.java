@@ -26,7 +26,7 @@ import net.minecraft.util.math.MathHelper;
 public class ItemRenderGunEgon extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GlStateManager.enableCull();
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
@@ -45,14 +45,14 @@ public class ItemRenderGunEgon extends TEISRBase {
 				GL11.glRotated(170, 0, 1, 0);
 				GL11.glRotated(180, 1, 0, 0);
 			}
-			float time = Minecraft.getMinecraft().world.getTotalWorldTime() + MainRegistry.proxy.partialTicks();
-			float fade = entity instanceof EntityPlayer ? ItemGunEgon.getFirstPersonAnimFade((EntityPlayer) entity) : 0;
-			float[] offset = getOffset(time);
-			float[] jitter = getJitter(time);
+			final float time = Minecraft.getMinecraft().world.getTotalWorldTime() + MainRegistry.proxy.partialTicks();
+			final float fade = entity instanceof EntityPlayer ? ItemGunEgon.getFirstPersonAnimFade((EntityPlayer) entity) : 0;
+			final float[] offset = getOffset(time);
+			final float[] jitter = getJitter(time);
 			GL11.glTranslated(offset[0]*fade-jitter[1]*fade*0.1F, offset[1]*fade*fade-jitter[0]*fade*0.05F, 0);
 			GL11.glRotated(jitter[0]*fade, 1, 0, 0);
 			GL11.glRotated(jitter[1]*fade, 0, 1, 0);
-			float rec = -MathHelper.sin(Math.min(fade*1.5F, 1));
+			final float rec = -MathHelper.sin(Math.min(fade*1.5F, 1));
 			GL11.glTranslated(0, 0, rec*1.5F);
 			GL11.glRotated(7*rec, 1, 0, 0);
 			break;
@@ -90,7 +90,7 @@ public class ItemRenderGunEgon extends TEISRBase {
 			Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.gluon_muzzle_smoke);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-			for(Particle p : ModEventHandlerClient.firstPersonAuxParticles){
+			for(final Particle p : ModEventHandlerClient.firstPersonAuxParticles){
 				if(p instanceof ParticleGluonMuzzleSmoke && ((ParticleGluonMuzzleSmoke) p).tex == ResourceManager.gluon_muzzle_smoke)
 					p.renderParticle(Tessellator.getInstance().getBuffer(), entity, MainRegistry.proxy.partialTicks(), 0, 0, 0, 0, 0);
 			}
@@ -98,7 +98,7 @@ public class ItemRenderGunEgon extends TEISRBase {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.gluon_muzzle_glow);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
-			for(Particle p : ModEventHandlerClient.firstPersonAuxParticles){
+			for(final Particle p : ModEventHandlerClient.firstPersonAuxParticles){
 				if(p instanceof ParticleGluonMuzzleSmoke && ((ParticleGluonMuzzleSmoke) p).tex == ResourceManager.gluon_muzzle_glow)
 					p.renderParticle(Tessellator.getInstance().getBuffer(), entity, MainRegistry.proxy.partialTicks(), 0, 0, 0, 0, 0);
 			}
@@ -110,18 +110,18 @@ public class ItemRenderGunEgon extends TEISRBase {
 		}
 	}
 	
-	public static float[] getOffset(float time){
+	public static float[] getOffset(final float time){
 		float sinval = MathHelper.sin(time*0.15F)+MathHelper.sin(time*0.25F-10)+MathHelper.sin(time*0.1F+10);
 		sinval/=3;
-		float sinval2 = MathHelper.sin(time*0.1F)+MathHelper.sin(time*0.05F+20)+MathHelper.sin(time*0.13F+20);
+		final float sinval2 = MathHelper.sin(time*0.1F)+MathHelper.sin(time*0.05F+20)+MathHelper.sin(time*0.13F+20);
 		sinval/=3;
-		return new float[]{BobMathUtil.remap((float) Library.smoothstep(sinval, -1, 1), 0, 1, -2, 1.5F), BobMathUtil.remap(sinval2, -1, 1, -0.03F, 0.05F)};
+		return new float[]{BobMathUtil.remap(Library.smoothstep(sinval, -1, 1), 0, 1, -2, 1.5F), BobMathUtil.remap(sinval2, -1, 1, -0.03F, 0.05F)};
 	}
 	
-	public static float[] getJitter(float time){
+	public static float[] getJitter(final float time){
 		float sinval = MathHelper.sin(time*0.8F)+MathHelper.sin(time*0.6F-10)+MathHelper.sin(time*0.9F+10);
 		sinval/=3;
-		float sinval2 = MathHelper.sin(time*0.3F)+MathHelper.sin(time*0.2F+20)+MathHelper.sin(time*0.1F+20);
+		final float sinval2 = MathHelper.sin(time*0.3F)+MathHelper.sin(time*0.2F+20)+MathHelper.sin(time*0.1F+20);
 		sinval/=3;
 		return new float[]{BobMathUtil.remap(sinval, -1, 1, -3, 3), BobMathUtil.remap(sinval2, -1, 1, -1F, 1F)};
 	}

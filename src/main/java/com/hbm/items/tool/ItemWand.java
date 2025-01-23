@@ -1,10 +1,7 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -19,12 +16,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ItemWand extends Item {
 
-	public ItemWand(String s) {
+	public ItemWand(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -32,7 +30,7 @@ public class ItemWand extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack itemstack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack itemstack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.creative"));
 		list.add(I18nUtil.resolveKey("desc.contructionwand.1"));
 		list.add(I18nUtil.resolveKey("desc.contructionwand.2"));
@@ -53,8 +51,8 @@ public class ItemWand extends Item {
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final ItemStack stack = player.getHeldItem(hand);
 		if(stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
@@ -62,7 +60,7 @@ public class ItemWand extends Item {
 		
 		if(player.isSneaking())
 		{
-			IBlockState state = world.getBlockState(pos);
+			final IBlockState state = world.getBlockState(pos);
 			stack.getTagCompound().setInteger("block", Block.getIdFromBlock(state.getBlock()));
 			stack.getTagCompound().setInteger("meta", state.getBlock().getMetaFromState(state));
 			if(world.isRemote)
@@ -79,9 +77,9 @@ public class ItemWand extends Item {
 					player.sendMessage(new TextComponentTranslation("chat.posset"));
 			} else {
 				
-				int x = stack.getTagCompound().getInteger("x");
-				int y = stack.getTagCompound().getInteger("y");
-				int z = stack.getTagCompound().getInteger("z");
+				final int x = stack.getTagCompound().getInteger("x");
+				final int y = stack.getTagCompound().getInteger("y");
+				final int z = stack.getTagCompound().getInteger("z");
 				
 				stack.getTagCompound().setInteger("x", 0);
 				stack.getTagCompound().setInteger("y", 0);
@@ -89,7 +87,7 @@ public class ItemWand extends Item {
 				
 				if(!world.isRemote)
 				{
-					MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+					final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
 					for(int i = Math.min(x, pos.getX()); i <= Math.max(x, pos.getX()); i++)
 					{
 						for(int j = Math.min(y, pos.getY()); j <= Math.max(y, pos.getY()); j++)
@@ -110,8 +108,8 @@ public class ItemWand extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		if(stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());

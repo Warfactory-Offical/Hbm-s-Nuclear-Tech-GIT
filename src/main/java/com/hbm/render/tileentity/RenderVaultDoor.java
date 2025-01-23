@@ -12,12 +12,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderVaultDoor extends TileEntitySpecialRenderer<TileEntityVaultDoor> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityVaultDoor te) {
+	public boolean isGlobalRenderer(final TileEntityVaultDoor te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityVaultDoor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityVaultDoor te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -46,7 +46,7 @@ public class RenderVaultDoor extends TileEntitySpecialRenderer<TileEntityVaultDo
 
         GL11.glTranslated(0.0D, -2.5D, 0.0D);
 
-        double[] timer;
+        final double[] timer;
         
         if(te.state == IDoor.DoorState.CLOSED)
         	timer = new double[] { 0, 0, 0, 0, 0 };
@@ -90,15 +90,15 @@ public class RenderVaultDoor extends TileEntitySpecialRenderer<TileEntityVaultDo
 	}
 	
 	//x, z, roll
-    private static double[] getAnimationFromSysTime(long time) {
+    private static double[] getAnimationFromSysTime(final long time) {
     	
-    	double pullOutDuration = 2000D;
-    	double slideDuration = 800D;
+    	final double pullOutDuration = 2000D;
+    	final double slideDuration = 800D;
     	
     	//dura total = pullout + slide * 5
     	
-    	double diameter = 4.5D;
-    	double circumference = diameter * Math.PI;
+    	final double diameter = 4.5D;
+    	final double circumference = diameter * Math.PI;
     	
     	double x = (time) / pullOutDuration;
 
@@ -117,7 +117,7 @@ public class RenderVaultDoor extends TileEntitySpecialRenderer<TileEntityVaultDo
     	if(z < 0)
     		z = 0;
     	
-    	double roll = z / circumference * 360;
+    	final double roll = z / circumference * 360;
     	
     	return new double[] { x + 0.0005D, z, roll };
     }

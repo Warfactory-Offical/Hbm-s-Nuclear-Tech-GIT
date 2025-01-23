@@ -18,9 +18,9 @@ public class ParticleCrucibleLightning extends ParticleFirstPerson {
 
 	public LightningNode node;
 	
-	public ParticleCrucibleLightning(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleCrucibleLightning(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
-		LightningGenInfo i = new LightningGenInfo();
+		final LightningGenInfo i = new LightningGenInfo();
 		i.randAmount = 0.03F;
 		i.forkRandAmount = 5F;
 		i.forkChance = 0.3F;
@@ -29,7 +29,7 @@ public class ParticleCrucibleLightning extends ParticleFirstPerson {
 		Vec3d start = new Vec3d(posXIn, posYIn, posZIn);
 		Vec3d end = start.add(0, 0, -1F);
 		if(worldIn.rand.nextBoolean()){
-			Vec3d tmp = start;
+			final Vec3d tmp = start;
 			start = end;
 			end = tmp;
 		}
@@ -41,7 +41,7 @@ public class ParticleCrucibleLightning extends ParticleFirstPerson {
 		return 3;
 	}
 	
-	public ParticleCrucibleLightning lifetime(int lifetime){
+	public ParticleCrucibleLightning lifetime(final int lifetime){
 		this.particleMaxAge = lifetime;
 		return this;
 	}
@@ -55,7 +55,7 @@ public class ParticleCrucibleLightning extends ParticleFirstPerson {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		ResourceManager.crucible_lightning.use();
 		//Purposefully low frame rate for an artistic feel
 		ResourceManager.crucible_lightning.uniform1f("time", (particleAge/2)*2);

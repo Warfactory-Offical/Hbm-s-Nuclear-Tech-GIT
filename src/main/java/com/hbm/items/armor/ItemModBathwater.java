@@ -1,11 +1,8 @@
 package com.hbm.items.armor;
 
-import java.util.List;
-
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
 import com.hbm.potion.HbmPotion;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,14 +14,16 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import java.util.List;
+
 public class ItemModBathwater extends ItemArmorMod {
 
-	public ItemModBathwater(String s) {
+	public ItemModBathwater(final String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
 		String color = "";
 		if(this == ModItems.bathwater){
 			color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.LIGHT_PURPLE);
@@ -43,7 +42,7 @@ public class ItemModBathwater extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
+	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
 		String color = "";
 		if(this == ModItems.bathwater){
 			color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.LIGHT_PURPLE);
@@ -60,13 +59,13 @@ public class ItemModBathwater extends ItemArmorMod {
 	}
 	
 	@Override
-	public void modDamage(LivingHurtEvent event, ItemStack armor) {
+	public void modDamage(final LivingHurtEvent event, final ItemStack armor) {
 		
 		if(!event.getEntityLiving().world.isRemote) {
 
 			if(event.getSource() instanceof EntityDamageSource) {
 				
-				Entity attacker = ((EntityDamageSource)event.getSource()).getTrueSource();
+				final Entity attacker = event.getSource().getTrueSource();
 				
 				if(attacker instanceof EntityLivingBase) {
 					

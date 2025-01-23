@@ -24,12 +24,12 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 public class MachineMiningLaser extends BlockDummyable {
 
-	public MachineMiningLaser(Material mat, String s) {
+	public MachineMiningLaser(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
+	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
 
 		if(meta >= 12)
 			return new TileEntityMachineMiningLaser();
@@ -57,12 +57,12 @@ public class MachineMiningLaser extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
 
-			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
 			if(pos == null)
 				return false;
@@ -75,7 +75,7 @@ public class MachineMiningLaser extends BlockDummyable {
 	}
 
 	@Override
-	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
 
 		super.fillSpace(world, x, y, z, dir, o);
 
@@ -91,7 +91,7 @@ public class MachineMiningLaser extends BlockDummyable {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("3x3x3 Multiblock");
 		tooltip.add("Only placeable on a ceiling.");
 	}

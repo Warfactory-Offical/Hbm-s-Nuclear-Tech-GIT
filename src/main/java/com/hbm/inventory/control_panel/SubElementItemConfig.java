@@ -26,14 +26,14 @@ public class SubElementItemConfig extends SubElement {
     SubElementBaseConfig config_gui;
     private Map<String, DataValue> configs;
 
-    public SubElementItemConfig(GuiControlEdit gui) {
+    public SubElementItemConfig(final GuiControlEdit gui) {
         super(gui);
     }
 
     @Override
     protected void initGui() {
-        int cX = gui.width/2;
-        int cY = gui.height/2;
+        final int cX = gui.width/2;
+        final int cY = gui.height/2;
         btn_prev = gui.addButton(new GuiButton(gui.currentButtonId(), cX-30, gui.getGuiTop()+24, 15, 20, "<"));
         btn_next = gui.addButton(new GuiButton(gui.currentButtonId(), cX+15, gui.getGuiTop()+24, 15, 20, ">"));
         btn_done = gui.addButton(new GuiButton(gui.currentButtonId(), cX-85, cY+92, 170, 20, "Done"));
@@ -49,8 +49,8 @@ public class SubElementItemConfig extends SubElement {
     //TODO: clean this up, make variants[] private
     @Override
     protected void drawScreen() {
-        int cX = gui.width/2;
-        int cY = gui.height/2;
+        final int cX = gui.width/2;
+        final int cY = gui.height/2;
 
         num_variants = variants.size()-1;
 
@@ -63,7 +63,7 @@ public class SubElementItemConfig extends SubElement {
 
         if (curr_variant > variants.size()-1)
             curr_variant = 0;
-        Control variant = ControlRegistry.getNew(variants.get(curr_variant), gui.control.panel);
+        final Control variant = ControlRegistry.getNew(variants.get(curr_variant), gui.control.panel);
 
         String text = variant.name;
         int text_width = gui.getFontRenderer().getStringWidth(text);
@@ -129,31 +129,31 @@ public class SubElementItemConfig extends SubElement {
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
+    protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
         config_gui.mouseReleased(mouseX, mouseY, state);
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int button) {
+    protected void mouseClicked(final int mouseX, final int mouseY, final int button) {
         config_gui.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) {
+    protected void keyTyped(final char typedChar, final int keyCode) {
         config_gui.keyTyped(typedChar, keyCode);
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected void actionPerformed(final GuiButton button) {
         if (button == btn_done) {
             configs = config_gui.getConfigs();
             gui.currentEditControl.applyConfigs(configs);
 
             if (gui.isEditMode) {
                 gui.linker.linked.clear();
-                World world = gui.control.getWorld();
-                for (BlockPos p : gui.currentEditControl.connectedSet) {
-                    TileEntity te = world.getTileEntity(p);
+                final World world = gui.control.getWorld();
+                for (final BlockPos p : gui.currentEditControl.connectedSet) {
+                    final TileEntity te = world.getTileEntity(p);
                     if (te instanceof IControllable)
                         gui.linker.linked.add((IControllable) te);
                     gui.linker.refreshButtons();
@@ -173,7 +173,7 @@ public class SubElementItemConfig extends SubElement {
     }
 
     @Override
-    protected void enableButtons(boolean enable) {
+    protected void enableButtons(final boolean enable) {
         btn_done.visible = enable;
         btn_done.enabled = enable;
         btn_next.visible = enable;

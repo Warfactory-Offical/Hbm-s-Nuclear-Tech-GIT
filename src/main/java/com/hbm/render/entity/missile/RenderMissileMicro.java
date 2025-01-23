@@ -16,16 +16,16 @@ public class RenderMissileMicro extends Render<EntityMissileMicro> {
 
 	public static final IRenderFactory<EntityMissileMicro> FACTORY = (RenderManager man) -> {return new RenderMissileMicro(man);};
 	
-	protected RenderMissileMicro(RenderManager renderManager) {
+	protected RenderMissileMicro(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityMissileMicro missile, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileMicro missile, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GlStateManager.enableLighting();
-		double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
+		final double[] renderPos = RenderHelper.getRenderPosFromMissile(missile, partialTicks);
 		x = renderPos[0];
 		y = renderPos[1];
 		z = renderPos[2];
@@ -43,7 +43,7 @@ public class RenderMissileMicro extends Render<EntityMissileMicro> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileMicro entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileMicro entity) {
 		return ResourceManager.missileMicro_tex;
 	}
 }

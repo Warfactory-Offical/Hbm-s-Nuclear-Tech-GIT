@@ -50,40 +50,40 @@ public abstract class Satellite {
 		registerSatellite(SatelliteHorizons.class, ModItems.sat_gerald);
 	}
 	
-	private static void registerSatellite(Class<? extends Satellite> sat, Item item) {
+	private static void registerSatellite(final Class<? extends Satellite> sat, final Item item) {
 
 		satellites.add(sat);
 		itemToClass.put(item, sat);
 	}
 	
-	public static void orbit(World world, int id, int freq, double x, double y, double z) {
+	public static void orbit(final World world, final int id, final int freq, final double x, final double y, final double z) {
 		
-		Satellite sat = create(id);
+		final Satellite sat = create(id);
 		if(sat != null && !world.isRemote) {
-			SatelliteSavedData data = SatelliteSavedData.getData(world);
+			final SatelliteSavedData data = SatelliteSavedData.getData(world);
 			data.sats.put(freq, sat);
 			sat.onOrbit(world, x, y, z);
 			data.markDirty();
 		}
 	}
 	
-	public static Satellite create(int id) {
+	public static Satellite create(final int id) {
 		
 		Satellite sat = null;
 		
 		try {
-			Class<? extends Satellite> c = satellites.get(id);
+			final Class<? extends Satellite> c = satellites.get(id);
 			sat = c.newInstance();
-		} catch(Exception ex) {
+		} catch(final Exception ex) {
 		}
 		
 		return sat;
 	}
 	
-	public static int getIDFromItem(Item item) {
+	public static int getIDFromItem(final Item item) {
 		
-		Class<? extends Satellite> sat = itemToClass.get(item);
-		int i = satellites.indexOf(sat);
+		final Class<? extends Satellite> sat = itemToClass.get(item);
+		final int i = satellites.indexOf(sat);
 		
 		return i;
 	}
@@ -92,9 +92,9 @@ public abstract class Satellite {
 		return satellites.indexOf(this.getClass());
 	}
 	
-	public void writeToNBT(NBTTagCompound nbt) { }
+	public void writeToNBT(final NBTTagCompound nbt) { }
 	
-	public void readFromNBT(NBTTagCompound nbt) { }
+	public void readFromNBT(final NBTTagCompound nbt) { }
 	
 	/**
 	 * Called when the satellite reaches space, used to trigger achievements and other funny stuff.
@@ -102,14 +102,14 @@ public abstract class Satellite {
 	 * @param y ditto
 	 * @param z ditto
 	 */
-	public void onOrbit(World world, double x, double y, double z) { }
+	public void onOrbit(final World world, final double x, final double y, final double z) { }
 	
 	/**
 	 * Called by the sat interface when clicking on the screen
 	 * @param x the x-coordinate translated from the on-screen coords to actual world coordinates
 	 * @param z ditto
 	 */
-	public void onClick(World world, int x, int z) { }
+	public void onClick(final World world, final int x, final int z) { }
 	
 	/**
 	 * Called by the coord sat interface
@@ -117,5 +117,5 @@ public abstract class Satellite {
 	 * @param y ditto
 	 * @param z ditto
 	 */
-	public void onCoordAction(World world, EntityPlayer player, int x, int y, int z) { }
+	public void onCoordAction(final World world, final EntityPlayer player, final int x, final int y, final int z) { }
 }

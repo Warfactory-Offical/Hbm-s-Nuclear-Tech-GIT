@@ -36,7 +36,7 @@ public class NodeConnection extends NodeElement {
 	
 	public NodeDropdown enumSelector = null;
 	
-	public NodeConnection(String name, Node p, int idx, boolean isInput, DataType type, @Nonnull DataValue defaultVal){
+	public NodeConnection(final String name, final Node p, final int idx, final boolean isInput, final DataType type, @Nonnull final DataValue defaultVal){
 		super(p, idx);
 		this.name = name;
 		this.connection = null;
@@ -46,7 +46,7 @@ public class NodeConnection extends NodeElement {
 		this.type = type;
 	}
 	
-	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
+	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
 		super.writeToNBT(tag, sys);
 //		tag.setString("eleType", "connection");
 		tag.setString("name", name);
@@ -59,11 +59,11 @@ public class NodeConnection extends NodeElement {
 		return tag;
 	}
 	
-	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
+	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
 		super.readFromNBT(tag, sys);
 		name = tag.getString("name");
 		connectionIndex = tag.getInteger("Ci");
-		int nodeIdx = tag.getInteger("Ni");
+		final int nodeIdx = tag.getInteger("Ni");
 		if(nodeIdx == -1){
 			connection = null;
 		} else {
@@ -82,13 +82,13 @@ public class NodeConnection extends NodeElement {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void setDefault(@Nonnull DataValue defaultVal){
+	public void setDefault(@Nonnull final DataValue defaultVal){
 		this.defaultValue = defaultVal;
 		type = defaultVal.getType();
 		if(type == DataType.ENUM){
 			enumSelector = new NodeDropdown(parent, this.index, s -> {
-				Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
-				for(Enum<?> e : vals){
+				final Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
+				for(final Enum<?> e : vals){
 					if(e.name().equals(s)){
 						defaultValue = new DataValueEnum(e);
 						return null;
@@ -96,8 +96,8 @@ public class NodeConnection extends NodeElement {
 				}
 				return null;
 			}, ()->defaultValue.toString());
-			Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
-			for(Enum<?> e : vals)
+			final Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
+			for(final Enum<?> e : vals)
 				enumSelector.list.addItems(e.name());
 			enumSelector.setOffset(offsetX, offsetY);
 		} else {
@@ -108,7 +108,7 @@ public class NodeConnection extends NodeElement {
 	public NodeConnection removeConnection(){
 		//Will only run for input nodes as well, since the output node doesn't maintain a connection
 		if(connection != null){
-			NodeConnection n = connection.outputs.get(connectionIndex);
+			final NodeConnection n = connection.outputs.get(connectionIndex);
 			drawsLine = false;
 			connection = null;
 			connectionIndex = -1;
@@ -117,7 +117,7 @@ public class NodeConnection extends NodeElement {
 		return null;
 	}
 
-	public NodeConnection setData(Node connection, int connectionIndex, boolean drawsLine) {
+	public NodeConnection setData(final Node connection, final int connectionIndex, final boolean drawsLine) {
 		this.connection = connection;
 		this.connectionIndex = connectionIndex;
 		this.drawsLine = drawsLine;
@@ -138,12 +138,12 @@ public class NodeConnection extends NodeElement {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void render(float mX, float mY){
+	public void render(final float mX, final float mY){
 		float[] color = type.getColor();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(NodeSystem.node_tex);
 		Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		float x = offsetX+38 + (isInput ? -40 : 0);
-		float y = offsetY+8;
+		final float x = offsetX+38 + (isInput ? -40 : 0);
+		final float y = offsetY+8;
 		RenderHelper.drawGuiRectBatchedColor(x, y, 0.625F, 0, 4, 4, 0.6875F, 0.0625F, color[0], color[1], color[2], 1);
 		color = RenderHelper.intersects2DBox(mX, mY, this.getValueBox()) && !isTyping ? new float[]{1, 1, 1} : new float[]{0.6F, 0.6F, 0.6F};
 		if(isInput){
@@ -158,16 +158,16 @@ public class NodeConnection extends NodeElement {
 		}
 		Tessellator.getInstance().draw();
 		
-		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, 0);
 		GL11.glScaled(0.4, 0.4, 0.4);
 		GL11.glTranslated(-x, -y, 0);
 		if(isTyping){
-			String s = builder.toString();
+			final String s = builder.toString();
 			font.drawString(s + (Minecraft.getMinecraft().world.getTotalWorldTime()%20 > 10 ? "_" : ""), x+(isInput ? 16 : -font.getStringWidth(name)-1), y+1F, 0xFFAFAFAF, false);
 		} else {
-			int hex = isInput ? 0xFFAFAFAF : 0xFF2F2F2F;
+			final int hex = isInput ? 0xFFAFAFAF : 0xFF2F2F2F;
 			font.drawString(name, x+(isInput ? 16 : -font.getStringWidth(name)-1), y+1F, hex, false);
 			if(isInput && connection == null){
 				String s = defaultValue.toString();
@@ -181,14 +181,14 @@ public class NodeConnection extends NodeElement {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void drawLine(float mouseX, float mouseY){
+	public void drawLine(final float mouseX, final float mouseY){
 		if(drawsLine){
-			BufferBuilder buf = Tessellator.getInstance().getBuffer();
+			final BufferBuilder buf = Tessellator.getInstance().getBuffer();
 			buf.pos(offsetX + (isInput ? 0 : 40), offsetY+10, 0).endVertex();
 			if(connectionIndex == -1 || !isInput){
 				buf.pos(mouseX, mouseY, 0).endVertex();
 			} else {
-				NodeConnection pair = (isInput ? connection.outputs : connection.inputs).get(connectionIndex);
+				final NodeConnection pair = (isInput ? connection.outputs : connection.inputs).get(connectionIndex);
 				buf.pos(pair.offsetX + (pair.isInput ? 0 : 40), pair.offsetY+10, 0).endVertex();
 			}
 		}
@@ -228,7 +228,7 @@ public class NodeConnection extends NodeElement {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	public void stopTyping(){
-		DataValue val = new DataValueString(builder.toString());
+		final DataValue val = new DataValueString(builder.toString());
 		builder = null;
 		isTyping = false;
 		switch(type){
@@ -237,15 +237,15 @@ public class NodeConnection extends NodeElement {
 			defaultValue = val;
 			break;
 		case ENUM:
-			DataValueEnum<?> def = (DataValueEnum<?>)defaultValue;
-			Enum<?>[] possibleVals = def.getPossibleValues();
-			for(Enum<?> e : possibleVals){
+			final DataValueEnum<?> def = (DataValueEnum<?>)defaultValue;
+			final Enum<?>[] possibleVals = def.getPossibleValues();
+			for(final Enum<?> e : possibleVals){
 				if(e.name().equalsIgnoreCase(val.toString())){
 					defaultValue = new DataValueEnum(e);
 					break;
 				}
 			}
-			int idx = Math.abs(((int)val.getNumber()))%possibleVals.length;
+			final int idx = Math.abs(((int)val.getNumber()))%possibleVals.length;
 			defaultValue = new DataValueEnum(possibleVals[idx]);
 			break;
 		case NUMBER:
@@ -254,7 +254,7 @@ public class NodeConnection extends NodeElement {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void keyTyped(char c, int key){
+	public void keyTyped(final char c, final int key){
 		if(key == Keyboard.KEY_BACK){
 			if(builder.length() > 0)
 				builder.deleteCharAt(builder.length()-1);

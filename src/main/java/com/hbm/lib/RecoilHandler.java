@@ -12,9 +12,9 @@ public class RecoilHandler {
 	public static float verticalVelocity;
 	public static float verticalRecoil;
 	
-	public static void modifiyCamera(EntityViewRenderEvent.CameraSetup e){
-		long currentTime = System.currentTimeMillis();
-		float scale = (currentTime-lastRenderTime)/1000F;
+	public static void modifiyCamera(final EntityViewRenderEvent.CameraSetup e){
+		final long currentTime = System.currentTimeMillis();
+		final float scale = (currentTime-lastRenderTime)/1000F;
 		final float settle = 20F*MathHelper.clamp(verticalRecoil/4, 0, 200);
 		
 		verticalRecoil = Math.max(0, verticalRecoil - scale*settle + verticalVelocity);

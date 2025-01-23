@@ -32,12 +32,12 @@ public class PressRecipes {
 		THREEFIFESEVEN,
 		FOURFOUR,
 		NINE,
-		FIVEZERO;
-	}
+		FIVEZERO
+    }
 
 	public static LinkedHashMap<Pair<PressType, AStack>, ItemStack> pressRecipes = new LinkedHashMap<Pair<PressType, AStack>, ItemStack>();
 
-	public static void addRecipe(PressType stamp, AStack input, ItemStack output){
+	public static void addRecipe(final PressType stamp, final AStack input, final ItemStack output){
 		if(!input.getStackList().isEmpty())
 			pressRecipes.put(new Pair(stamp, input), output);
 	}
@@ -107,7 +107,7 @@ public class PressRecipes {
 	}
 
 
-	public static PressType getStampType(Item stamp){
+	public static PressType getStampType(final Item stamp){
 		if (stamps_flat.contains(stamp)) {
 			return PressType.FLAT;
 		}
@@ -135,15 +135,15 @@ public class PressRecipes {
 		return PressType.NONE;
 	}
 
-	public static List<ItemStack> toStack(List<Item> iList){
-		List<ItemStack> i_stamps = new ArrayList<ItemStack>();
-		for(Item i : iList){
+	public static List<ItemStack> toStack(final List<Item> iList){
+		final List<ItemStack> i_stamps = new ArrayList<ItemStack>();
+		for(final Item i : iList){
 			i_stamps.add(ItemStackUtil.itemStackFrom(i));
 		}
 		return i_stamps;
 	}
 
-	public static List<ItemStack> getStampList(PressType pType){
+	public static List<ItemStack> getStampList(final PressType pType){
 		if (pType == PressType.FLAT) {
 			return toStack(stamps_flat);
 		}
@@ -172,25 +172,25 @@ public class PressRecipes {
 	}
 	
 	
-	public static ItemStack getPressResult(ItemStack input, ItemStack stamp) {
+	public static ItemStack getPressResult(final ItemStack input, final ItemStack stamp) {
 		if (input == null || stamp == null)
 			return null;
 
-		PressType pType = getStampType(stamp.getItem());
+		final PressType pType = getStampType(stamp.getItem());
 		if(pType == PressType.NONE) return null;
 
 		return getPressOutput(pType, input);
 	}
 
-	public static ItemStack getPressOutput(PressType pType, ItemStack input){
+	public static ItemStack getPressOutput(final PressType pType, final ItemStack input){
 		ItemStack outputItem = pressRecipes.get(new Pair(pType, ItemStackUtil.comparableStackFrom(input.getItem(), 1, input.getItemDamage())));
 		if(outputItem != null)
 			return outputItem;
 
-		int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(input.getItem(), 1, input.getItemDamage()));
-		for(int id : ids) {
+		final int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(input.getItem(), 1, input.getItemDamage()));
+		for(final int id : ids) {
 
-			OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(id));
+			final OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(id));
 			outputItem = pressRecipes.get(new Pair(pType, oreStack));
 			if(outputItem != null)
 				return outputItem;

@@ -7,7 +7,7 @@ import mezz.jei.api.IGuiHelper;
 
 public class SILEXVisibleRecipeHandler extends SILEXRecipeHandler {
 
-	public SILEXVisibleRecipeHandler(IGuiHelper help){
+	public SILEXVisibleRecipeHandler(final IGuiHelper help){
 		super(help);
 	}
 

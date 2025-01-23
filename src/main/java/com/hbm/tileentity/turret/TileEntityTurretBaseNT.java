@@ -51,12 +51,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase implements IEnergyUser, IControllable, IControlReceiver, ITickable {
 
 	@Override
-	public boolean hasPermission(EntityPlayer player){
+	public boolean hasPermission(final EntityPlayer player){
 		return this.isUseableByPlayer(player);
 	}
 	
 	@Override
-	public void receiveControl(NBTTagCompound data){
+	public void receiveControl(final NBTTagCompound data){
 		if(data.hasKey("del")) {
 			this.removeName(data.getInteger("del"));
 			
@@ -107,7 +107,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt){
+	public void readFromNBT(final NBTTagCompound nbt){
 		this.power = nbt.getLong("power");
 		this.isOn = nbt.getBoolean("isOn");
 		this.targetPlayers = nbt.getBoolean("targetPlayers");
@@ -119,7 +119,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt){
 		nbt.setLong("power", this.power);
 		nbt.setBoolean("isOn", this.isOn);
 		nbt.setBoolean("targetPlayers", this.targetPlayers);
@@ -225,7 +225,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 
 	public void networkPack(){
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		if(this.tPos != null) {
 			data.setDouble("tX", this.tPos.x);
 			data.setDouble("tY", this.tPos.y);
@@ -242,7 +242,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt){
+	public void networkUnpack(final NBTTagCompound nbt){
 		this.power = nbt.getLong("power");
 		this.isOn = nbt.getBoolean("isOn");
 		this.targetPlayers = nbt.getBoolean("targetPlayers");
@@ -259,7 +259,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	@Override
-	public void handleButtonPacket(int value, int meta){
+	public void handleButtonPacket(final int value, final int meta){
 		switch(meta) {
 		case 0:this.isOn = !this.isOn; break;
 		case 1:this.targetPlayers = !this.targetPlayers; break;
@@ -270,18 +270,18 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 
 	protected void updateConnections() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		//how did i even make this? what???
 		this.trySubscribe(world, pos.add(dir.offsetX * -1, 0, dir.offsetZ * -1), dir.getOpposite());
 		this.trySubscribe(world, pos.add(dir.offsetX * -1 + rot.offsetX * -1, 0, dir.offsetZ * -1 + rot.offsetZ * -1), dir.getOpposite());
 
 		this.trySubscribe(world, pos.add(rot.offsetX * -2, 0, rot.offsetZ * -2), rot.getOpposite());
-		this.trySubscribe(world, pos.add(dir.offsetX * 1 + rot.offsetX * -2, 0, dir.offsetZ * 1 + rot.offsetZ * -2), rot.getOpposite());
+		this.trySubscribe(world, pos.add(dir.offsetX + rot.offsetX * -2, 0, dir.offsetZ + rot.offsetZ * -2), rot.getOpposite());
 
-		this.trySubscribe(world, pos.add(rot.offsetX * 1, 0, rot.offsetZ * 1), rot);
-		this.trySubscribe(world, pos.add(dir.offsetX * 1 + rot.offsetX * 1, 0, dir.offsetZ * 1 + rot.offsetZ * 1), rot);
+		this.trySubscribe(world, pos.add(rot.offsetX, 0, rot.offsetZ), rot);
+		this.trySubscribe(world, pos.add(dir.offsetX + rot.offsetX, 0, dir.offsetZ + rot.offsetZ), rot);
 
 		this.trySubscribe(world, pos.add(dir.offsetX * 2, 0, dir.offsetZ * 2), dir);
 		this.trySubscribe(world, pos.add(dir.offsetX * 2 + rot.offsetX * -1, 0, dir.offsetZ * 2 + rot.offsetZ * -1), dir);
@@ -297,7 +297,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	
 	public BulletConfiguration getFirstConfigLoaded() {
 		
-		List<Integer> list = getAmmoList();
+		final List<Integer> list = getAmmoList();
 		
 		if(list == null || list.isEmpty())
 			return null;
@@ -308,9 +308,9 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 			
 			if(!inventory.getStackInSlot(i).isEmpty()) {
 				
-				for(Integer c : list) { //we can afford all this extra iteration trash on the count that a turret has at most like 4 bullet configs
+				for(final Integer c : list) { //we can afford all this extra iteration trash on the count that a turret has at most like 4 bullet configs
 					
-					BulletConfiguration conf = BulletConfigSyncingUtil.pullConfig(c);
+					final BulletConfiguration conf = BulletConfigSyncingUtil.pullConfig(c);
 					
 					if(conf.ammo == inventory.getStackInSlot(i).getItem())
 						return conf;
@@ -321,18 +321,18 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		return null;
 	}
 
-	public void spawnBullet(BulletConfiguration bullet) {
+	public void spawnBullet(final BulletConfiguration bullet) {
 		spawnBullet(bullet, 0);
 	}
 	
-	public void spawnBullet(BulletConfiguration bullet, float overrideDamage) {
+	public void spawnBullet(final BulletConfiguration bullet, final float overrideDamage) {
 		
-		Vec3 pos = new Vec3(this.getTurretPos());
-		Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+		final Vec3 pos = new Vec3(this.getTurretPos());
+		final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 		
-		EntityBulletBase proj = new EntityBulletBase(world, BulletConfigSyncingUtil.getKey(bullet));
+		final EntityBulletBase proj = new EntityBulletBase(world, BulletConfigSyncingUtil.getKey(bullet));
 		proj.setPositionAndRotation(pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord, 0.0F, 0.0F);
 		if(overrideDamage > 0)
 			proj.overrideDamage = overrideDamage;
@@ -341,7 +341,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		world.spawnEntity(proj);
 	}
 	
-	public void conusmeAmmo(Item ammo) {
+	public void conusmeAmmo(final Item ammo) {
 		
 		for(int i = 1; i < 10; i++) {
 			
@@ -365,7 +365,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		
 		if(inventory.getStackInSlot(0).getItem() == ModItems.turret_chip) {
 			
-			String[] array = ItemTurretBiometry.getNames(inventory.getStackInSlot(0));
+			final String[] array = ItemTurretBiometry.getNames(inventory.getStackInSlot(0));
 			
 			if(array == null)
 				return null;
@@ -380,7 +380,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * Appends a new name to the chip
 	 * @param name
 	 */
-	public void addName(String name) {
+	public void addName(final String name) {
 		
 		if(inventory.getStackInSlot(0).getItem() == ModItems.turret_chip) {
 			ItemTurretBiometry.addName(inventory.getStackInSlot(0), name);
@@ -391,21 +391,21 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * Removes the chip's entry at a given 
 	 * @param index
 	 */
-	public void removeName(int index) {
+	public void removeName(final int index) {
 		
 		if(inventory.getStackInSlot(0).getItem() == ModItems.turret_chip) {
 			
-			String[] array = ItemTurretBiometry.getNames(inventory.getStackInSlot(0));
+			final String[] array = ItemTurretBiometry.getNames(inventory.getStackInSlot(0));
 			
 			if(array == null)
 				return;
 			
-			List<String> names = new ArrayList<>(Arrays.asList(array));
+			final List<String> names = new ArrayList<>(Arrays.asList(array));
 			ItemTurretBiometry.clearNames(inventory.getStackInSlot(0));
 			
 			names.remove(index);
 			
-			for(String name : names)
+			for(final String name : names)
 				ItemTurretBiometry.addName(inventory.getStackInSlot(0), name);
 		}
 	}
@@ -415,19 +415,19 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 */
 	protected void seekNewTarget() {
 		
-		Vec3d pos = this.getTurretPos();
-		double range = this.getDecetorRange();
-		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z).grow(range, range, range));
+		final Vec3d pos = this.getTurretPos();
+		final double range = this.getDecetorRange();
+		final List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z).grow(range, range, range));
 		
 		Entity target = null;
 		double closest = range;
 		
-		for(Entity entity : entities) {
+		for(final Entity entity : entities) {
 
-			Vec3d ent = this.getEntityPos(entity);
-			Vec3d delta = new Vec3d(ent.x - pos.x, ent.y - pos.y, ent.z - pos.z);
+			final Vec3d ent = this.getEntityPos(entity);
+			final Vec3d delta = new Vec3d(ent.x - pos.x, ent.y - pos.y, ent.z - pos.z);
 			
-			double dist = delta.length();
+			final double dist = delta.length();
 			
 			//check if it's in range
 			if(dist > range)
@@ -465,17 +465,17 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	/**
 	 * Turns the turret towards the specified position
 	 */
-	public void turnTowards(Vec3d ent) {
+	public void turnTowards(final Vec3d ent) {
 		
-		double turnYaw = Math.toRadians(this.getTurretYawSpeed());
-		double turnPitch = Math.toRadians(this.getTurretPitchSpeed());
-		double pi2 = Math.PI * 2;
+		final double turnYaw = Math.toRadians(this.getTurretYawSpeed());
+		final double turnPitch = Math.toRadians(this.getTurretPitchSpeed());
+		final double pi2 = Math.PI * 2;
 
-		Vec3d pos = this.getTurretPos();
-		Vec3d delta = new Vec3d(ent.x - pos.x, ent.y - pos.y, ent.z - pos.z);
+		final Vec3d pos = this.getTurretPos();
+		final Vec3d delta = new Vec3d(ent.x - pos.x, ent.y - pos.y, ent.z - pos.z);
 		
-		double targetPitch = Math.asin(delta.y / delta.length());
-		double targetYaw = -Math.atan2(delta.x, delta.z);
+		final double targetPitch = Math.asin(delta.y / delta.length());
+		final double targetYaw = -Math.atan2(delta.x, delta.z);
 		
 		//if we are about to overshoot the target by turning, just snap to the correct rotation
 		if(Math.abs(this.rotationPitch - targetPitch) < turnPitch || Math.abs(this.rotationPitch - targetPitch) > pi2 - turnPitch) {
@@ -510,10 +510,10 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 			this.rotationYaw += turnYaw * dir;
 		}
 		
-		double deltaPitch = targetPitch - this.rotationPitch;
+		final double deltaPitch = targetPitch - this.rotationPitch;
 		deltaYaw = targetYaw - this.rotationYaw;
 		
-		double deltaAngle = Math.sqrt(deltaYaw * deltaYaw + deltaPitch * deltaPitch);
+		final double deltaAngle = Math.sqrt(deltaYaw * deltaYaw + deltaPitch * deltaPitch);
 
 		this.rotationYaw = this.rotationYaw % pi2;
 		this.rotationPitch = this.rotationPitch % pi2;
@@ -527,7 +527,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * Checks line of sight to the passed entity along with whether the angle falls within swivel range
 	 * @return
 	 */
-	public boolean entityInLOS(Entity e) {
+	public boolean entityInLOS(final Entity e) {
 		
 		if(e.isDead || !e.isEntityAlive())
 			return false;
@@ -535,17 +535,17 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		if(!hasThermalVision() && e instanceof EntityLivingBase && ((EntityLivingBase)e).isPotionActive(MobEffects.INVISIBILITY))
 			return false;
 		
-		Vec3d pos = this.getTurretPos();
-		Vec3d ent = this.getEntityPos(e);
+		final Vec3d pos = this.getTurretPos();
+		final Vec3d ent = this.getEntityPos(e);
 		Vec3d delta = new Vec3d(ent.x - pos.x, ent.y - pos.y, ent.z - pos.z);
-		double length = delta.length();
+		final double length = delta.length();
 		
 		if(length < this.getDecetorGrace() || length > this.getDecetorRange() * 1.1) //the latter statement is only relevant for entities that have already been detected
 			return false;
 		
 		delta = delta.normalize();
-		double pitch = Math.asin(delta.y / delta.length());
-		double pitchDeg = Math.toDegrees(pitch);
+		final double pitch = Math.asin(delta.y / delta.length());
+		final double pitchDeg = Math.toDegrees(pitch);
 		
 		//check if the entity is within swivel range
 		if(pitchDeg < -this.getTurretDepression() || pitchDeg > this.getTurretElevation())
@@ -558,7 +558,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * Returns true if the entity is considered for targeting
 	 * @return
 	 */
-	public boolean entityAcceptableTarget(Entity e) {
+	public boolean entityAcceptableTarget(final Entity e) {
 		
 		if(e.isDead || !e.isEntityAlive())
 			return false;
@@ -599,12 +599,12 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 			if(e instanceof FakePlayer)
 				return false;
 			
-			List<String> wl = getWhitelist();
+			final List<String> wl = getWhitelist();
 			
 			if(wl == null || wl.isEmpty())
 				return true;
 			
-			return !wl.contains(((EntityPlayer)e).getDisplayName().getUnformattedText());
+			return !wl.contains(e.getDisplayName().getUnformattedText());
 		}
 		
 		return false;
@@ -703,7 +703,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * @return
 	 */
 	public Vec3d getTurretPos() {
-		Vec3d offset = getHorizontalOffset();
+		final Vec3d offset = getHorizontalOffset();
 		return new Vec3d(pos.getX() + offset.x, pos.getY() + getHeightOffset(), pos.getZ() + offset.z);
 	}
 	
@@ -712,7 +712,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * @return
 	 */
 	public Vec3d getHorizontalOffset() {
-		int meta = this.getBlockMetadata() - BlockDummyable.offset;
+		final int meta = this.getBlockMetadata() - BlockDummyable.offset;
 
 		if(meta == 2)
 			return new Vec3d(1, 0, 1);
@@ -728,7 +728,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * The pivot point of the turret, this position is used for LOS calculation and more
 	 * @return
 	 */
-	public Vec3d getEntityPos(Entity e) {
+	public Vec3d getEntityPos(final Entity e) {
 		return new Vec3d(e.posX, e.posY + e.height * 0.5 - e.getYOffset(), e.posZ);
 	}
 	
@@ -749,8 +749,8 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		
 		ammoStacks = new ArrayList();
 		
-		for(Integer i : getAmmoList()) {
-			BulletConfiguration config = BulletConfigSyncingUtil.pullConfig(i);
+		for(final Integer i : getAmmoList()) {
+			final BulletConfiguration config = BulletConfigSyncingUtil.pullConfig(i);
 			
 			if(config != null && config.ammo != null) {
 				ammoStacks.add(ItemStackUtil.itemStackFrom(config.ammo));
@@ -761,12 +761,12 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
 		return new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack){
+	public boolean isItemValidForSlot(final int i, final ItemStack stack){
 		return true;
 	}
 	
@@ -779,7 +779,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		this.power = i;
 	}
 	
@@ -788,7 +788,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		return this.power;
 	}
 	
-	public int getPowerScaled(int scale) {
+	public int getPowerScaled(final int scale) {
 		return (int)(power * scale / this.getMaxPower());
 	}
 	
@@ -819,7 +819,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	@Override
-	public void receiveEvent(BlockPos from, ControlEvent e){
+	public void receiveEvent(final BlockPos from, final ControlEvent e){
 		if(e.name.equals("turret_set_target")){
 			this.targetPlayers = e.vars.get("players").getBoolean();
 			this.targetMobs = e.vars.get("hostile").getBoolean();

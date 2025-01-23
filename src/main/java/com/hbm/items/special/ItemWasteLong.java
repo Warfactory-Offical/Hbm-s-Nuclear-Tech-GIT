@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemWasteLong extends ItemContaminating {
 
-	public ItemWasteLong(float radiation, String s) {
+	public ItemWasteLong(final float radiation, final String s) {
 		super(radiation, s);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
@@ -25,7 +25,7 @@ public class ItemWasteLong extends ItemContaminating {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab())
 			for(int i = 0; i < WasteClass.values().length; ++i) {
 				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
@@ -33,12 +33,12 @@ public class ItemWasteLong extends ItemContaminating {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn){
 		list.add(TextFormatting.ITALIC + WasteClass.values()[rectify(stack.getItemDamage())].name);
 		super.addInformation(stack, world, list, flagIn);
 	}
 	
-	public static int rectify(int meta) {
+	public static int rectify(final int meta) {
 		return Math.abs(meta) % WasteClass.values().length;
 	}
 	
@@ -55,7 +55,7 @@ public class ItemWasteLong extends ItemContaminating {
 		public int liquid;
 		public int gas;
 		
-		private WasteClass(String name, int liquid, int gas) {
+		private WasteClass(final String name, final int liquid, final int gas) {
 			this.name = name;
 			this.liquid = liquid;
 			this.gas = gas;

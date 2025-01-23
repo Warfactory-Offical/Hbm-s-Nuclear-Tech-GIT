@@ -49,8 +49,8 @@ public class MachineConfig {
 
 	public static boolean chemplantKeepOilProcessing = false;
 	
-	public static boolean isFluidAllowed(Fluid f){
-		boolean isInList = blacklistedMixerFluids.contains(f.getName());
+	public static boolean isFluidAllowed(final Fluid f){
+		final boolean isInList = blacklistedMixerFluids.contains(f.getName());
 		if(uuMixerFluidListIsWhitelist) return isInList;
 		return !isInList;
 	}
@@ -59,7 +59,7 @@ public class MachineConfig {
 		return String.format("9.%02d_%s", idx, fieldName);
 	}
 
-	public static void loadFromConfig(Configuration config) {
+	public static void loadFromConfig(final Configuration config) {
 		final String CATEGORY_MACHINE = "09_machines";
 
 		// Oil derrick settings

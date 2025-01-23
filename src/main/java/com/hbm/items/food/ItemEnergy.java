@@ -1,7 +1,4 @@
 package com.hbm.items.food;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.config.VersatileConfig;
 import com.hbm.explosion.ExplosionLarge;
@@ -11,7 +8,7 @@ import com.hbm.main.MainRegistry;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,9 +23,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
+import java.util.List;
+
 public class ItemEnergy extends Item {
 
-	public ItemEnergy(String s) {
+	public ItemEnergy(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.consumableTab);
@@ -36,10 +35,9 @@ public class ItemEnergy extends Item {
 	}
 
 	@Override
-	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entity) {
-		if(!worldIn.isRemote && entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if(player instanceof FakePlayer) {
+	public ItemStack onItemUseFinish(final ItemStack stack, final World worldIn, final EntityLivingBase entity) {
+		if(!worldIn.isRemote && entity instanceof EntityPlayer player) {
+            if(player instanceof FakePlayer) {
         		worldIn.newExplosion(player, player.posX, player.posY, player.posZ, 5F, true, true);
         		return super.onItemUseFinish(stack, worldIn, entity);
         	}
@@ -281,39 +279,36 @@ public class ItemEnergy extends Item {
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getMaxItemUseDuration(final ItemStack stack) {
 		return 32;
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
+	public EnumAction getItemUseAction(final ItemStack stack) {
 		return EnumAction.DRINK;
 	}
 
-	public static boolean hasOpener(EntityPlayer player){
-		ItemStack stackR = player.getHeldItemMainhand();
-		ItemStack stackL = player.getHeldItemOffhand();
+	public static boolean hasOpener(final EntityPlayer player){
+		final ItemStack stackR = player.getHeldItemMainhand();
+		final ItemStack stackL = player.getHeldItemOffhand();
 		if(stackR == null || stackL == null) return false;
-		if(stackR.getItem() == ModItems.bottle_opener || stackL.getItem() == ModItems.bottle_opener){
-			return true;
-		}
-		return false;
-	}	
+        return stackR.getItem() == ModItems.bottle_opener || stackL.getItem() == ModItems.bottle_opener;
+    }
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer player, final EnumHand hand) {
 		if(!(this == ModItems.can_creature || this == ModItems.can_mrsugar || this == ModItems.can_overcharge || this == ModItems.can_redbomb || this == ModItems.can_smart || this == ModItems.chocolate_milk || 
 				this == ModItems.can_luna || this == ModItems.can_bepis || this == ModItems.can_breen))
 			
 			if(!hasOpener(player))
-				return ActionResult.<ItemStack> newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+				return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 
 		player.setActiveHand(hand);
-		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(this == ModItems.chocolate_milk)
     	{
             list.add("Regular chocolate milk. Safe to drink.");

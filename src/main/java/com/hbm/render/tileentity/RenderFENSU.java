@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderFENSU extends TileEntitySpecialRenderer<TileEntityMachineFENSU> {
 
 	@Override
-	public void render(TileEntityMachineFENSU te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineFENSU te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 
 		GL11.glTranslatef((float)x + 0.5F, (float)y, (float)z + 0.5F);
@@ -31,10 +31,10 @@ public class RenderFENSU extends TileEntitySpecialRenderer<TileEntityMachineFENS
 
         
 
-        TileEntityMachineFENSU fensu = (TileEntityMachineFENSU)te;
+        final TileEntityMachineFENSU fensu = te;
         bindTexture(ResourceManager.fensu_tex[fensu.color.getMetadata()]);
         ResourceManager.fensu.renderPart("Base");
-        float rot = fensu.prevRotation + (fensu.rotation - fensu.prevRotation) * partialTicks;
+        final float rot = fensu.prevRotation + (fensu.rotation - fensu.prevRotation) * partialTicks;
 
         GL11.glTranslated(0, 2.5, 0);
         GL11.glRotated(rot, 1, 0, 0);

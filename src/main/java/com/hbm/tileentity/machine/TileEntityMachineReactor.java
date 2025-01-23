@@ -37,12 +37,12 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 		return "container.reactor";
 	}
 
-	public boolean hasItemPower(ItemStack stack) {
+	public boolean hasItemPower(final ItemStack stack) {
 		return BreederRecipes.getFuelValue(stack) != null;
 	}
 
-	private static int getItemPower(ItemStack stack) {
-		int[] power = BreederRecipes.getFuelValue(stack);
+	private static int getItemPower(final ItemStack stack) {
+		final int[] power = BreederRecipes.getFuelValue(stack);
 		
 		if(power == null)
 			return 0;
@@ -50,9 +50,9 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 		return power[1];
 	}
 	
-	private static int getItemHeat(ItemStack stack) {
+	private static int getItemHeat(final ItemStack stack) {
 		
-		int[] power = BreederRecipes.getFuelValue(stack);
+		final int[] power = BreederRecipes.getFuelValue(stack);
 		
 		if(power == null)
 			return 0;
@@ -61,7 +61,7 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		charge = nbt.getShort("powerTime");
@@ -70,7 +70,7 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 
 		nbt.setShort("powerTime", (short) charge);
 		nbt.setShort("heat", (short) heat);
@@ -105,34 +105,30 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
-		int side = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+		final int side = e.ordinal();
 		return side == 0 ? slots_bottom : (side == 1 ? slots_top : slots_side);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		if(slot == 0) {
-			if(!hasItemPower(inventory.getStackInSlot(0))) {
-				return true;
-			}
-
-			return false;
-		}
+            return !hasItemPower(inventory.getStackInSlot(0));
+        }
 
 		return true;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
-		return i == 2 ? false : (i == 0 ? hasItemPower(stack) : true);
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
+		return i != 2 && (i != 0 || hasItemPower(stack));
 	}
 
-	public int getProgressScaled(int i) {
+	public int getProgressScaled(final int i) {
 		return (progress * i) / processingSpeed;
 	}
 
-	public int getHeatScaled(int i) {
+	public int getHeatScaled(final int i) {
 		return (heat * i) / 4;
 	}
 
@@ -149,7 +145,7 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 			return false;
 		}
 		
-		BreederRecipe recipe = BreederRecipes.getOutput(inventory.getStackInSlot(1));
+		final BreederRecipe recipe = BreederRecipes.getOutput(inventory.getStackInSlot(1));
 		
 		if(recipe == null)
 			return false;
@@ -172,12 +168,12 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 	private void processItem() {
 		if(canProcess()) {
 			
-			BreederRecipe rec = BreederRecipes.getOutput(inventory.getStackInSlot(1));
+			final BreederRecipe rec = BreederRecipes.getOutput(inventory.getStackInSlot(1));
 			
 			if(rec == null)
 				return;
 			
-			ItemStack itemStack = rec.output;
+			final ItemStack itemStack = rec.output;
 
 			if(inventory.getStackInSlot(2).isEmpty()) {
 				inventory.setStackInSlot(2, itemStack.copy());
@@ -199,15 +195,15 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 	}
 
 	public void updateReactorPower(){
-		int incomingflux = getReactorPower(pos.north()) + getReactorPower(pos.south()) + getReactorPower(pos.west()) + getReactorPower(pos.east());
+		final int incomingflux = getReactorPower(pos.north()) + getReactorPower(pos.south()) + getReactorPower(pos.west()) + getReactorPower(pos.east());
 		if(incomingflux > 0 && charge < 2){
 			charge = 1;
 			heat = (incomingflux * 5) / TileEntityMachineReactorSmall.maxCoreHeat;
 		}
 	}
 
-	public int getReactorPower(BlockPos rPos){
-		TileEntity r = world.getTileEntity(rPos);
+	public int getReactorPower(final BlockPos rPos){
+		final TileEntity r = world.getTileEntity(rPos);
 		if(r == null || !(r instanceof TileEntityMachineReactorSmall)) return 0;
 		return ((TileEntityMachineReactorSmall)r).coreHeat;
 	}
@@ -230,7 +226,7 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 				heat = getItemHeat(inventory.getStackInSlot(0));
 				
 				if(!inventory.getStackInSlot(0).isEmpty()) {
-					ItemStack container = inventory.getStackInSlot(0).getItem().getContainerItem(inventory.getStackInSlot(0));
+					final ItemStack container = inventory.getStackInSlot(0).getItem().getContainerItem(inventory.getStackInSlot(0));
 					inventory.getStackInSlot(0).shrink(1);
 					
 					if(inventory.getStackInSlot(0).isEmpty()) {
@@ -255,19 +251,16 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 				progress = 0;
 			}
 
-			boolean trigger = true;
+			boolean trigger = !hasPower() || !canProcess() || this.progress != 0;
 
-			if(hasPower() && canProcess() && this.progress == 0)
-				trigger = false;
-
-			if(trigger) {
+            if(trigger) {
 				markDirty = true;
 			}
 
 			if(markDirty)
 				this.markDirty();
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setShort("charge", (short)charge);
 			data.setShort("progress", (short)progress);
 			data.setByte("heat", (byte)heat);
@@ -276,7 +269,7 @@ public class TileEntityMachineReactor extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		charge = data.getShort("charge");
 		progress = data.getShort("progress");
 		heat = data.getByte("heat");

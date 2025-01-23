@@ -24,18 +24,18 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 
 	public static final DataParameter<ItemStack> STACK = EntityDataManager.createKey(EntityMovingItem.class, DataSerializers.ITEM_STACK);
 
-	public EntityMovingItem(World p_i1582_1_) {
+	public EntityMovingItem(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(0.375F, 0.375F);
 	}
 
-    public void setItemStack(ItemStack stack) {
+    public void setItemStack(final ItemStack stack) {
         this.getDataManager().set(STACK, stack);
     }
 
     public ItemStack getItemStack() {
 
-        ItemStack stack = this.getDataManager().get(STACK);
+        final ItemStack stack = this.getDataManager().get(STACK);
         return stack == null ? ItemStackUtil.itemStackFrom(Blocks.STONE) : stack;
     }
 
@@ -43,7 +43,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
         return true;
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean attackEntityFrom(final DamageSource source, final float amount) {
 
     	if(!world.isRemote) {
 			world.spawnEntity(new EntityItem(world, posX, posY, posZ, this.getItemStack()));
@@ -60,12 +60,12 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
     }
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(final NBTTagCompound nbt) {
 
-        NBTTagCompound compound = nbt.getCompoundTag("Item");
+        final NBTTagCompound compound = nbt.getCompoundTag("Item");
         this.setItemStack(ItemStackUtil.itemStackFrom(compound));
 
-        ItemStack stack = this.getDataManager().get(STACK);
+        final ItemStack stack = this.getDataManager().get(STACK);
 
         schedule = nbt.getInteger("schedule");
 
@@ -74,7 +74,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(final NBTTagCompound nbt) {
 
         if (this.getItemStack() != null)
         	nbt.setTag("Item", this.getItemStack().writeToNBT(new NBTTagCompound()));
@@ -83,7 +83,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	}
 
 	@Override
-	public void enterBlock(IEnterableBlock enterable, BlockPos pos, EnumFacing dir) {
+	public void enterBlock(final IEnterableBlock enterable, final BlockPos pos, final EnumFacing dir) {
 
 		if(enterable.canItemEnter(world, pos.getX(), pos.getY(), pos.getZ(), dir, this)) {
 			enterable.onItemEnter(world, pos.getX(), pos.getY(), pos.getZ(), dir, this);
@@ -95,7 +95,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	public boolean onLeaveConveyor() {
 
 		this.setDead();
-		EntityItem item = new EntityItem(world, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, this.getItemStack());
+		final EntityItem item = new EntityItem(world, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, this.getItemStack());
 		item.motionX = this.motionX * 2;
 		item.motionY = 0.1;
 		item.motionZ = this.motionZ * 2;
@@ -106,7 +106,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	}
 
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target){
+	public ItemStack getPickedResult(final RayTraceResult target){
 		if(target.entityHit != null && target.entityHit instanceof EntityMovingItem)
 			return ((EntityMovingItem)target.entityHit).getItemStack();
 		return null;

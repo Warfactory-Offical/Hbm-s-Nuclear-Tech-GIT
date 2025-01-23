@@ -13,7 +13,7 @@ public class SoundLoopChemplant extends SoundLoopMachine {
 	
 	public static List<SoundLoopChemplant> list = new ArrayList<SoundLoopChemplant>();
 
-	public SoundLoopChemplant(SoundEvent path, TileEntity te) {
+	public SoundLoopChemplant(final SoundEvent path, final TileEntity te) {
 		super(path, te);
 		list.add(this);
 	}
@@ -22,20 +22,18 @@ public class SoundLoopChemplant extends SoundLoopMachine {
 	public void update() {
 		super.update();
 		
-		if(te instanceof TileEntityMachineChemplant) {
-			TileEntityMachineChemplant plant = (TileEntityMachineChemplant)te;
-			
-			if(this.volume != 3)
+		if(te instanceof TileEntityMachineChemplant plant) {
+
+            if(this.volume != 3)
 				volume = 3;
 			
 			if(!plant.isProgressing)
 				this.donePlaying = true;
 		}
 
-		if(te instanceof TileEntityMachineChemfac) {
-			TileEntityMachineChemfac plant = (TileEntityMachineChemfac)te;
-			
-			if(this.volume != 3)
+		if(te instanceof TileEntityMachineChemfac plant) {
+
+            if(this.volume != 3)
 				volume = 3;
 			
 			if(!plant.isProgressing)

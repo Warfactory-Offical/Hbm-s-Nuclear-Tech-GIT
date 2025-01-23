@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFFFluidDuct extends Item {
 
-	public ItemFFFluidDuct(String s) {
+	public ItemFFFluidDuct(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -41,7 +41,7 @@ public class ItemFFFluidDuct extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(GeneralConfig.registerTanks){
 			if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
 				FluidRegistry.getRegisteredFluids().values().forEach(f -> {items.add(getStackFromFluid(f));});
@@ -51,12 +51,12 @@ public class ItemFFFluidDuct extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
-		String s = ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
-		Fluid f = getFluidFromStack(stack);
+	public String getItemStackDisplayName(final ItemStack stack) {
+		String s = (I18n.format(this.getTranslationKey() + ".name")).trim();
+		final Fluid f = getFluidFromStack(stack);
 		String s1 = null;
 		if(f != null)
-			s1  = ("" + f.getLocalizedName(new FluidStack(f, 1000)).trim());
+			s1  = (f.getLocalizedName(new FluidStack(f, 1000)).trim());
 
         if (s1 != null)
         {
@@ -67,7 +67,7 @@ public class ItemFFFluidDuct extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(!world.getBlockState(pos).getBlock().isReplaceable(world, pos)){
 			pos = pos.offset(facing);
 			if (!world.isAirBlock(pos))
@@ -75,7 +75,7 @@ public class ItemFFFluidDuct extends Item {
                 return EnumActionResult.FAIL;
             }
 		}
-		ItemStack stack = player.getHeldItem(hand);
+		final ItemStack stack = player.getHeldItem(hand);
 		if (!player.canPlayerEdit(pos, facing, stack))
         {
             return EnumActionResult.FAIL;
@@ -84,7 +84,7 @@ public class ItemFFFluidDuct extends Item {
         {
             world.setBlockState(pos, ModBlocks.fluid_duct_mk2.getDefaultState());
             if(world.getTileEntity(pos) instanceof TileEntityFFFluidDuctMk2) {
-            	((TileEntityFFFluidDuctMk2)world.getTileEntity(pos)).setType(getFluidFromStack(stack));;
+            	((TileEntityFFFluidDuctMk2)world.getTileEntity(pos)).setType(getFluidFromStack(stack));
             }
             stack.shrink(1);
             world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.PLAYERS, 1F, 0.8F + world.rand.nextFloat() * 0.2F);
@@ -94,19 +94,19 @@ public class ItemFFFluidDuct extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.extraction"));
 	}
 	
-	public static Fluid getFluidFromStack(ItemStack stack){
+	public static Fluid getFluidFromStack(final ItemStack stack){
 		if(stack == null || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("fluidType"))
 			return null;
-		Fluid f = FluidRegistry.getFluid(stack.getTagCompound().getString("fluidType"));
+		final Fluid f = FluidRegistry.getFluid(stack.getTagCompound().getString("fluidType"));
 		return f;
 	}
 	
-	public static ItemStack getStackFromFluid(Fluid f, int amount){
-		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.ff_fluid_duct, amount, 0);
+	public static ItemStack getStackFromFluid(final Fluid f, final int amount){
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.ff_fluid_duct, amount, 0);
 		if(f == null)
 			return stack;
 		stack.setTagCompound(new NBTTagCompound());
@@ -114,7 +114,7 @@ public class ItemFFFluidDuct extends Item {
 		return stack;
 	}
 	
-	public static ItemStack getStackFromFluid(Fluid f){
+	public static ItemStack getStackFromFluid(final Fluid f){
 		return getStackFromFluid(f, 1);
 	}
 }

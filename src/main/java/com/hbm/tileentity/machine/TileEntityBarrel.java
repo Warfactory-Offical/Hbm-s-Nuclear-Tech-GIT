@@ -43,7 +43,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 		tank = new FluidTank(-1);
 	}
 	
-	public TileEntityBarrel(int cap) {
+	public TileEntityBarrel(final int cap) {
 		super(4);
 		tank = new FluidTank(cap);
 	}
@@ -52,7 +52,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 	public void update() {
 		
 		if(!world.isRemote){
-			FluidTank compareTank = FFUtils.copyTank(tank);
+			final FluidTank compareTank = FFUtils.copyTank(tank);
 			FFUtils.fillFromFluidContainer(inventory, tank, 0, 1);
 			FFUtils.fillFluidContainer(inventory, tank, 2, 3);
 
@@ -67,15 +67,15 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 				checkFluidInteraction();
 			}
 			
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
 			if(!FFUtils.areTanksEqual(tank, compareTank))
 				markDirty();
 		}
 	}
 	
 	public void checkFluidInteraction(){
-		Block b = this.getBlockType();
-		Fluid f = tank.getFluid().getFluid();
+		final Block b = this.getBlockType();
+		final Fluid f = tank.getFluid().getFluid();
 		
 		//for when you fill antimatter into a matter tank
 		if(b != ModBlocks.barrel_antimatter && FluidTypeHandler.containsTrait(f, FluidTrait.AMAT)) {
@@ -95,7 +95,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			world.setBlockState(pos, ModBlocks.barrel_corroded.getDefaultState());
 			
-			TileEntityBarrel corroded_barrel = (TileEntityBarrel)world.getTileEntity(pos);
+			final TileEntityBarrel corroded_barrel = (TileEntityBarrel)world.getTileEntity(pos);
 			
 			corroded_barrel.tank.fill(tank.getFluid(), true);
 		}
@@ -105,7 +105,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 		}
 	}
 	
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		fillFluid(pos.east(), tank);
 		fillFluid(pos.west(), tank);
 		fillFluid(pos.up(), tank);
@@ -114,7 +114,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 		fillFluid(pos.north(), tank);
 	}
 
-	public void fillFluid(BlockPos pos1, FluidTank tank) {
+	public void fillFluid(final BlockPos pos1, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, pos1, 4000);
 	}
 	
@@ -124,21 +124,21 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(mode == 2 || mode == 3)
 			return 0;
 		return tank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(mode == 0 || mode == 3)
 			return null;
 		return tank.drain(resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		if(mode == 0 || mode == 3)
 			return null;
 		return tank.drain(maxDrain, doDrain);
@@ -150,7 +150,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setShort("mode", mode);
 		compound.setInteger("cap", tank.getCapacity());
 		tank.writeToNBT(compound);
@@ -158,7 +158,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		mode = compound.getShort("mode");
 		if(tank == null || tank.getCapacity() <= 0)
 			tank = new FluidTank(compound.getInteger("cap"));
@@ -167,7 +167,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -175,50 +175,42 @@ public class TileEntityBarrel extends TileEntityMachineBase implements ITickable
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length == 1)
 			tank.readFromNBT(tags[0]);
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
-		int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+		final int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(i == 0){
 			return true;
 		}
-		
-		if(i == 2){
-			return true;
-		}
-		
-		return false;
-	}
+
+        return i == 2;
+    }
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		if(slot == 1){
 			return true;
 		}
-		
-		if(slot == 3){
-			return true;
-		}
-		
-		return false;
-	}
+
+        return slot == 3;
+    }
 }

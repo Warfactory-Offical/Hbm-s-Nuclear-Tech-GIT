@@ -41,7 +41,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * Constructs the network with a fluid type, hbm pipes only work with a single fluid pipe.
 	 * @param fluid
 	 */
-	public FFPipeNetwork(Fluid fluid) {
+	public FFPipeNetwork(final Fluid fluid) {
 		//new Exception().printStackTrace();
 		this.type = fluid;
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
@@ -73,7 +73,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	}
 	
 	public World getNetworkWorld(){
-		for(IFluidPipe pipe : this.pipes){
+		for(final IFluidPipe pipe : this.pipes){
 			if(pipe != null && ((TileEntity)pipe).getWorld() != null){
 				return ((TileEntity)pipe).getWorld();
 			}
@@ -108,19 +108,19 @@ public class FFPipeNetwork implements IFluidHandler {
 		if(internalNetworkTank.getFluid() == null || internalNetworkTank.getFluidAmount() <= 0)
 			return;
 		
-		List<IFluidHandler> consumers = new ArrayList<IFluidHandler>();
-		for(ICapabilityProvider handle : this.fillables){
+		final List<IFluidHandler> consumers = new ArrayList<IFluidHandler>();
+		for(final ICapabilityProvider handle : this.fillables){
 			if(handle != null && handle.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && handle.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).fill(new FluidStack(this.type, 1), false) > 0 && !consumers.contains(handle));
 				consumers.add(handle.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null));
 		}
-		int size = consumers.size();
+		final int size = consumers.size();
 		if(size <= 0)
 			return;
-		int part = this.internalNetworkTank.getFluidAmount() / size;
-		int lastPart = part + this.internalNetworkTank.getFluidAmount() - part * size;
+		final int part = this.internalNetworkTank.getFluidAmount() / size;
+		final int lastPart = part + this.internalNetworkTank.getFluidAmount() - part * size;
 		int i = 1;
 		
-		for(IFluidHandler consume : consumers){
+		for(final IFluidHandler consume : consumers){
 			i++;
 			if(internalNetworkTank.getFluid() != null && consume != null){
 				internalNetworkTank.drain(consume.fill(new FluidStack(internalNetworkTank.getFluid().getFluid(), i<consumers.size()?part:lastPart), true), true);
@@ -147,26 +147,22 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * @param merge - the network that gets merged, then deleted
 	 * @return The newly merged network
 	 */
-	public static FFPipeNetwork mergeNetworks(FFPipeNetwork net, FFPipeNetwork merge) {
+	public static FFPipeNetwork mergeNetworks(final FFPipeNetwork net, final FFPipeNetwork merge) {
 		if (net != null && merge != null && net != merge) {
 			if(net.getType() == null || merge.getType() == null || net.getType() != merge.getType())
 				return net;
-			for (IFluidPipe pipe : merge.pipes) {
+			for (final IFluidPipe pipe : merge.pipes) {
 				net.addPipe(pipe);
 				pipe.setNetwork(net);
 			}
 			merge.pipes.clear();
-			for (ICapabilityProvider fill : merge.fillables) {
+			for (final ICapabilityProvider fill : merge.fillables) {
 				net.fillables.add(fill);
 
 			}
 			merge.Destroy();
 			return net;
-		} else if(net != null) {
-			return net;
-		} else {
-			return null;
-		}
+		} else return net;
 	}
 
 	/**
@@ -175,24 +171,23 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * @return The newly built network
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static FFPipeNetwork buildNewNetwork(TileEntity pipe) {
+	public static FFPipeNetwork buildNewNetwork(final TileEntity pipe) {
 		FFPipeNetwork net = null;
-		if (pipe instanceof IFluidPipe) {
+		if (pipe instanceof IFluidPipe fPipe) {
 //			if(!pipe.getWorldObj().isRemote)
 			//	return null;
-			IFluidPipe fPipe = (IFluidPipe) pipe;
-			fPipe.getNetwork().Destroy();
+            fPipe.getNetwork().Destroy();
 			//System.out.println("true net: " + fPipe.getNetworkTrue());
 			net = new FFPipeNetwork(fPipe.getType());
 			
-			List[] netVars = iteratePipes(null, null, null, pipe, net.getType());
+			final List[] netVars = iteratePipes(null, null, null, pipe, net.getType());
 		//	net.pipes = netVars[0];
 			net.pipes.clear();
 			net.pipes.addAll(netVars[0]);
 		//	System.out.println(netVars[0].size());
 			//System.out.println(netVars[1].size());
 			//System.out.println(netVars[2].size());
-			for(IFluidPipe setPipe : net.pipes){
+			for(final IFluidPipe setPipe : net.pipes){
 				setPipe.setNetwork(net);
 			}
 		//	net.fillables = netVars[1];
@@ -200,8 +195,8 @@ public class FFPipeNetwork implements IFluidHandler {
 			net.fillables.addAll(netVars[1]);
 			net.setType(fPipe.getType());
 			
-			List<FFPipeNetwork> mergeList = netVars[2];
-			for(FFPipeNetwork network : mergeList){
+			final List<FFPipeNetwork> mergeList = netVars[2];
+			for(final FFPipeNetwork network : mergeList){
 				mergeNetworks(net, network);
 			}
 			
@@ -219,7 +214,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * @return A list array containing the pipes connected to the network and the fluid handlers connected to the network.
 	 */
 	@SuppressWarnings("rawtypes")
-	public static List[] iteratePipes(List<IFluidPipe> pipes, List<ICapabilityProvider> consumers, List<FFPipeNetwork> networks, TileEntity te, Fluid type) {
+	public static List[] iteratePipes(List<IFluidPipe> pipes, List<ICapabilityProvider> consumers, List<FFPipeNetwork> networks, final TileEntity te, final Fluid type) {
 		
 		if(pipes == null)
 			pipes = new ArrayList<IFluidPipe>();
@@ -249,8 +244,8 @@ public class FFPipeNetwork implements IFluidHandler {
 					//consumers.addAll(nextPipe[1]);
 					//networks.addAll(nextPipe[2]);
 				} else if (next != null && next.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && !(next instanceof IFluidPipe)) {
-					if(!consumers.contains((ICapabilityProvider)next)){
-						consumers.add((ICapabilityProvider) next);
+					if(!consumers.contains(next)){
+						consumers.add(next);
 						
 					}
 					
@@ -269,7 +264,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * @param dir - the direction around the tile entity expressed as an integer
 	 * @return The tile entity around the given one. Null if doesn't exist.
 	 */
-	public static TileEntity getTileEntityAround(TileEntity te, int dir) {
+	public static TileEntity getTileEntityAround(final TileEntity te, final int dir) {
 		if (te == null)
 			return null;
 		switch (dir) {
@@ -295,7 +290,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	 */
 	public void Destroy() {
 		this.fillables.clear();
-		for(IFluidPipe pipe : pipes){
+		for(final IFluidPipe pipe : pipes){
 			pipe.setNetwork(null);
 		}
 		this.pipes.clear();
@@ -304,7 +299,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	
 	public void destroySoft() {
 		this.fillables.clear();
-		for(IFluidPipe pipe : pipes){
+		for(final IFluidPipe pipe : pipes){
 			pipe.setNetwork(null);
 		}
 		this.pipes.clear();
@@ -314,9 +309,9 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * Sets the network fluid type, because that's how HBM pipes work. Also sets every pipe in the network to be this type.
 	 * @param fluid - the fluid to set the network's fluid to
 	 */
-	public void setType(Fluid fluid) {
+	public void setType(final Fluid fluid) {
 		//System.out.println("here");
-		for(IFluidPipe pipe : this.pipes){
+		for(final IFluidPipe pipe : this.pipes){
 			pipe.setTypeTrue(fluid);
 		}
 		this.type = fluid;
@@ -335,7 +330,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * @param pipe - the pipe to be added
 	 * @return Whether it succeeded in adding the pipe.
 	 */
-	public boolean addPipe(IFluidPipe pipe) {
+	public boolean addPipe(final IFluidPipe pipe) {
 		if (pipe.getType() != null && pipe.getType() == this.getType()) {
 			pipes.add(pipe);
 			return pipes.add(pipe);
@@ -348,7 +343,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	 * @param pipe - the pipe to be removed
 	 * @return if it successfully removed the pipe
 	 */
-	public boolean removePipe(IFluidPipe pipe) {
+	public boolean removePipe(final IFluidPipe pipe) {
 		if (pipes.contains(pipe)) {
 			return pipes.remove(pipe);
 		}
@@ -361,7 +356,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource != null && resource.getFluid() == this.type){
 			return internalNetworkTank.fill(resource, doFill);
 			
@@ -371,7 +366,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource != null && resource.getFluid() == this.type)
 			return internalNetworkTank.drain(resource.amount, doDrain);
 		else
@@ -379,7 +374,7 @@ public class FFPipeNetwork implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return internalNetworkTank.drain(maxDrain, doDrain);
 	}
 

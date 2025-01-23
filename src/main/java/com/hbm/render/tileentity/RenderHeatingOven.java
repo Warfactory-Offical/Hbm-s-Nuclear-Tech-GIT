@@ -9,12 +9,12 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderHeatingOven extends TileEntitySpecialRenderer<TileEntityHeaterOven> {
     @Override
-    public boolean isGlobalRenderer(TileEntityHeaterOven te) {
+    public boolean isGlobalRenderer(final TileEntityHeaterOven te) {
         return true;
     }
 
     @Override
-    public void render(TileEntityHeaterOven tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(final TileEntityHeaterOven tile, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -28,13 +28,13 @@ public class RenderHeatingOven extends TileEntitySpecialRenderer<TileEntityHeate
         }
         GL11.glRotatef(-90, 0F, 1F, 0F);
 
-        TileEntityHeaterOven oven = (TileEntityHeaterOven) tile;
+        final TileEntityHeaterOven oven = tile;
 
         bindTexture(ResourceManager.heater_oven_tex);
         ResourceManager.heater_oven.renderPart("Main");
 
         GL11.glPushMatrix();
-        float door = oven.prevDoorAngle + (oven.doorAngle - oven.prevDoorAngle) * partialTicks;
+        final float door = oven.prevDoorAngle + (oven.doorAngle - oven.prevDoorAngle) * partialTicks;
         GL11.glTranslated(0, 0, door * 0.75D / 135D);
         ResourceManager.heater_oven.renderPart("Door");
         GL11.glPopMatrix();

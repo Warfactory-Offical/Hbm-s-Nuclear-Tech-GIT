@@ -1,11 +1,8 @@
 package com.hbm.items.tool;
 
 
-import com.hbm.inventory.material.Mats;
 import com.hbm.items.IAnimatedItem;
-import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
@@ -13,17 +10,15 @@ import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe;
 import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.util.EntityDamageUtil;
-
-import api.hbm.block.IToolable;
-import api.hbm.block.IToolable.ToolType;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -66,9 +61,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //            return false;
 //        }
 
-        private boolean consumeBolt(EntityPlayer player, ItemStack bolt) {
+        private boolean consumeBolt(final EntityPlayer player, final ItemStack bolt) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                ItemStack slot = player.inventory.getStackInSlot(i);
+                final ItemStack slot = player.inventory.getStackInSlot(i);
                 if (slot != null && slot.getItem() == bolt.getItem() && slot.getItemDamage() == bolt.getItemDamage()) {
                     player.inventory.decrStackSize(i, 1);
                     player.inventoryContainer.detectAndSendChanges();
@@ -78,7 +73,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
             return false;
         }
 
-        private void handleBoltAttack(EntityPlayer player, Entity entity, World world) {
+        private void handleBoltAttack(final EntityPlayer player, final Entity entity, final World world) {
             if (!world.isRemote) {
                 world.playSound(null, entity.posX, entity.posY, entity.posZ, HBMSoundHandler.boltGun, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 EntityDamageUtil.attackEntityFromIgnoreIFrame(entity, DamageSource.causePlayerDamage(player).setDamageBypassesArmor(), 10F);
@@ -88,7 +83,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //                    ((EntityPlayer) entity).addStat(MainRegistry.achGoFish);
 //                }
 
-                NBTTagCompound data = createExplosionPacketData();
+                final NBTTagCompound data = createExplosionPacketData();
                 sendExplosionPacket(world, entity, data);
             } else {
                 playClientAnimation();
@@ -96,7 +91,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
         }
 
         private NBTTagCompound createExplosionPacketData() {
-            NBTTagCompound data = new NBTTagCompound();
+            final NBTTagCompound data = new NBTTagCompound();
             data.setString("type", "vanillaExt");
             data.setString("mode", "largeexplode");
             data.setFloat("size", 1F);
@@ -104,7 +99,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
             return data;
         }
 
-        private void sendExplosionPacket(World world, Entity entity, NBTTagCompound data) {
+        private void sendExplosionPacket(final World world, final Entity entity, final NBTTagCompound data) {
             PacketDispatcher.wrapper.sendToAllAround(
                     new AuxParticlePacketNT(data, entity.posX, entity.posY + entity.height / 2 - entity.getYOffset(), entity.posZ),
                     new TargetPoint(world.provider.getDimension(), entity.posX, entity.posY, entity.posZ, 50)
@@ -112,7 +107,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
         }
 
         private void playClientAnimation() {
-            NBTTagCompound animationData = new NBTTagCompound();
+            final NBTTagCompound animationData = new NBTTagCompound();
             animationData.setString("type", "anim");
             animationData.setString("mode", "generic");
             MainRegistry.proxy.effectNT(animationData);
@@ -132,19 +127,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //            return false;
 //        }
 
-        private void handleBoltUse(World world, EntityPlayer player, BlockPos pos, EnumFacing side, float fX, float fY, float fZ) {
+        private void handleBoltUse(final World world, final EntityPlayer player, final BlockPos pos, final EnumFacing side, final float fX, final float fY, final float fZ) {
             world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.boltGun, SoundCategory.PLAYERS, 1.0F, 1.0F);
             player.inventoryContainer.detectAndSendChanges();
 
-            double offset = 0.25;
-            NBTTagCompound data = createExplosionPacketData();
+            final double offset = 0.25;
+            final NBTTagCompound data = createExplosionPacketData();
 
             PacketDispatcher.wrapper.sendToAllAround(
                     new AuxParticlePacketNT(data, pos.getX() + fX + side.getXOffset() * offset, pos.getY() + fY + side.getYOffset() * offset, pos.getZ() + fZ + side.getZOffset() * offset),
                     new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50)
             );
 
-            NBTTagCompound animationData = new NBTTagCompound();
+            final NBTTagCompound animationData = new NBTTagCompound();
             animationData.setString("type", "anim");
             animationData.setString("mode", "generic");
             PacketDispatcher.wrapper.sendTo(new AuxParticlePacketNT(animationData, 0, 0, 0), (EntityPlayerMP) player);
@@ -153,7 +148,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
         //TODO: Port the new animation class
         @Override
         @SideOnly(Side.CLIENT)
-        public BusAnimation getAnimation(NBTTagCompound data, ItemStack stack) {
+        public BusAnimation getAnimation(final NBTTagCompound data, final ItemStack stack) {
             return new BusAnimation()
                     .addBus("RECOIL", new BusAnimationSequence()
                             .addKeyframe(new BusAnimationKeyframe(1, 0, 1, 50))

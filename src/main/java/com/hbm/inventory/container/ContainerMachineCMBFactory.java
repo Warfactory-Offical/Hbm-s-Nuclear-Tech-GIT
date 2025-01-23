@@ -13,10 +13,10 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineCMBFactory extends Container {
 	
-	private TileEntityMachineCMBFactory diFurnace;
+	private final TileEntityMachineCMBFactory diFurnace;
 	private int progress;
 	
-	public ContainerMachineCMBFactory(InventoryPlayer invPlayer, TileEntityMachineCMBFactory tedf) {
+	public ContainerMachineCMBFactory(final InventoryPlayer invPlayer, final TileEntityMachineCMBFactory tedf) {
 		
 		diFurnace = tedf;
 		
@@ -42,20 +42,20 @@ public class ContainerMachineCMBFactory extends Container {
 	}
 	
 	@Override
-	public void addListener(IContainerListener crafting) {
+	public void addListener(final IContainerListener crafting) {
 		super.addListener(crafting);
 		crafting.sendWindowProperty(this, 1, this.diFurnace.process);
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 5) {
@@ -84,7 +84,7 @@ public class ContainerMachineCMBFactory extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 	
@@ -94,7 +94,7 @@ public class ContainerMachineCMBFactory extends Container {
 		
 		for(int i = 0; i < this.listeners.size(); i++)
 		{
-			IContainerListener par1 = (IContainerListener)this.listeners.get(i);
+			final IContainerListener par1 = this.listeners.get(i);
 			
 			if(this.progress != this.diFurnace.process)
 			{
@@ -106,7 +106,7 @@ public class ContainerMachineCMBFactory extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(int i, int j) {
+	public void updateProgressBar(final int i, final int j) {
 		if(i == 1)
 		{
 			diFurnace.process = j;

@@ -63,16 +63,16 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 		sub = sub.toLowerCase();
 
-		for(ItemStack stack : allStacks) {
+		for(final ItemStack stack : allStacks) {
 			if(stack.getDisplayName().toLowerCase().contains(sub)) {
 				stacks.add(stack);
 			} else if(stack.getItem() instanceof ItemForgeFluidIdentifier) {
-				Fluid fluid = ItemForgeFluidIdentifier.getType(stack);
+				final Fluid fluid = ItemForgeFluidIdentifier.getType(stack);
 				if(I18nUtil.resolveKey(fluid.getUnlocalizedName()).toLowerCase().contains(sub)) {
 					stacks.add(stack);
 				}
 			} else if (stack.getItem() instanceof ItemCassette) {
-				TrackType track = ItemCassette.getType(stack);
+				final TrackType track = ItemCassette.getType(stack);
 
 				if (I18nUtil.resolveKey(track.getTrackTitle()).toLowerCase().contains(sub)){
 					stacks.add(stack);
@@ -83,23 +83,23 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		updateButtons();
 	}
 
-    public GUIScreenTemplateFolder(EntityPlayer player) {
+    public GUIScreenTemplateFolder(final EntityPlayer player) {
     	
     	this.player = player;
 		this.allStacks = new ArrayList<>();
 
     	//Stamps
-		for(Item i : PressRecipes.stamps_plate)
+		for(final Item i : PressRecipes.stamps_plate)
 			allStacks.add(ItemStackUtil.itemStackFrom(i));
-		for(Item i : PressRecipes.stamps_wire)
+		for(final Item i : PressRecipes.stamps_wire)
 			allStacks.add(ItemStackUtil.itemStackFrom(i));
-		for(Item i : PressRecipes.stamps_circuit)
+		for(final Item i : PressRecipes.stamps_circuit)
 			allStacks.add(ItemStackUtil.itemStackFrom(i));
 		//Tracks
     	for(int i = 1; i < ItemCassette.TrackType.values().length; i++)
 			allStacks.add(ItemStackUtil.itemStackFrom(ModItems.siren_track, 1, i));
     	//Fluid IDs
-    	for(Fluid fluid : FluidRegistry.getRegisteredFluids().values()){
+    	for(final Fluid fluid : FluidRegistry.getRegisteredFluids().values()){
     		if(FluidTypeHandler.noID(fluid)) continue;
 			allStacks.add(ItemForgeFluidIdentifier.getStackFromFluid(fluid));
     	}
@@ -107,14 +107,14 @@ public class GUIScreenTemplateFolder extends GuiScreen {
     	//for(int i = 0; i < ItemAssemblyTemplate.recipes.size(); i++)
     	//	stacks.add(ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, i));
     	for (int i = 0; i < AssemblerRecipes.recipeList.size(); ++i) {
-			NBTTagCompound tag = new NBTTagCompound();
+			final NBTTagCompound tag = new NBTTagCompound();
 			tag.setInteger("type", i);
-			ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, 0);
+			final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, 0);
 			stack.setTagCompound(tag);
 			allStacks.add(stack);
 		}
     	//Chemistry Templates
-    	for (int i: ChemplantRecipes.recipeNames.keySet()){
+    	for (final int i: ChemplantRecipes.recipeNames.keySet()){
 			allStacks.add(ItemStackUtil.itemStackFrom(ModItems.chemistry_template, 1, i));
 		}
 		search(null);
@@ -131,7 +131,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
     		currentPage = getPageCount();
     }
     
-    public void drawScreen(int mouseX, int mouseY, float f)
+    public void drawScreen(final int mouseX, final int mouseY, final float f)
     {
         this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
@@ -176,33 +176,29 @@ public class GUIScreenTemplateFolder extends GuiScreen {
         	buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18, guiTop + 26 + (27 * 3), 2, "Next"));
     }
 
-    protected void mouseClicked(int i, int j, int k) {
-		if(i >= guiLeft + 45 && i < guiLeft + 117 && j >= guiTop + 211 && j < guiTop + 223) {
-			this.search.setFocused(true);
-		} else  {
-			this.search.setFocused(false);
-		}
+    protected void mouseClicked(final int i, final int j, final int k) {
+        this.search.setFocused(i >= guiLeft + 45 && i < guiLeft + 117 && j >= guiTop + 211 && j < guiTop + 223);
 
     	try {
-    		for(FolderButton b : buttons)
+    		for(final FolderButton b : buttons)
     			if(b.isMouseOnButton(i, j))
     				b.executeAction();
-    	} catch (Exception ex) {
+    	} catch (final Exception ex) {
     		updateButtons();
     	}
     }
 	
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
 
 		this.fontRenderer.drawString(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1)), 
 				guiLeft + this.xSize / 2 - this.fontRenderer.getStringWidth(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1))) / 2, guiTop + 10, 4210752);
 		
-		for(FolderButton b : buttons)
+		for(final FolderButton b : buttons)
 			if(b.isMouseOnButton(i, j))
 				b.drawString(i, j);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -210,16 +206,16 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		if(search.isFocused())
 			drawTexturedModalRect(guiLeft + 45, guiTop + 211, 176, 54, 72, 12);
 
-		for(FolderButton b : buttons)
+		for(final FolderButton b : buttons)
 			b.drawButton(b.isMouseOnButton(i, j));
-		for(FolderButton b : buttons)
+		for(final FolderButton b : buttons)
 			b.drawIcon(b.isMouseOnButton(i, j));
 
 		search.drawTextBox();
 	}
 
 	@Override
-    protected void keyTyped(char p_73869_1_, int p_73869_2_)
+    protected void keyTyped(final char p_73869_1_, final int p_73869_2_)
     {
 		if (this.search.textboxKeyTyped(p_73869_1_, p_73869_2_)) {
 			this.search(this.search.getText());
@@ -241,14 +237,14 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		String info;
 		ItemStack stack;
 		
-		public FolderButton(int x, int y, int t, String i) {
+		public FolderButton(final int x, final int y, final int t, final String i) {
 			xPos = x;
 			yPos = y;
 			type = t;
 			info = i;
 		}
 		
-		public FolderButton(int x, int y, ItemStack stack) {
+		public FolderButton(final int x, final int y, final ItemStack stack) {
 			xPos = x;
 			yPos = y;
 			type = 0;
@@ -256,19 +252,19 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 			this.stack = stack.copy();
 		}
 		
-		public void updateButton(int mouseX, int mouseY) {
+		public void updateButton(final int mouseX, final int mouseY) {
 		}
 		
-		public boolean isMouseOnButton(int mouseX, int mouseY) {
+		public boolean isMouseOnButton(final int mouseX, final int mouseY) {
 			return xPos <= mouseX && xPos + 18 > mouseX && yPos < mouseY && yPos + 18 >= mouseY;
 		}
 		
-		public void drawButton(boolean b) {
+		public void drawButton(final boolean b) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 			drawTexturedModalRect(xPos, yPos, b ? 176 + 18 : 176, type == 1 ? 18 : (type == 2 ? 36 : 0), 18, 18);
 		}
 		
-		public void drawIcon(boolean b) {
+		public void drawIcon(final boolean b) {
 			try {
 		        RenderHelper.enableGUIStandardItemLighting();
 				if(stack != null) {
@@ -280,10 +276,10 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 						itemRender.renderItemAndEffectIntoGUI(player, stack, xPos + 1, yPos + 1);
 				}
 				RenderHelper.disableStandardItemLighting();
-			} catch(Exception x) { }
+			} catch(final Exception x) { }
 		}
 		
-		public void drawString(int x, int y) {
+		public void drawString(final int x, final int y) {
 			if(info == null || info.isEmpty())
 				return;
 			
@@ -295,7 +291,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 					s = TrackType.getEnum(stack.getItemDamage()).getTrackTitle();
 			}
 
-			drawHoveringText(Arrays.asList(new String[] { s }), x, y);
+			drawHoveringText(Arrays.asList(s), x, y);
 		}
 		
 		public void executeAction() {

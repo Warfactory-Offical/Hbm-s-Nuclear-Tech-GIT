@@ -12,12 +12,12 @@ public enum ControlType {
     LABEL("Label");
 
     public String name;
-    ControlType(String name){
+    ControlType(final String name){
         this.name = name;
     }
 
-    public static ControlType getByName(String name){
-        for(ControlType o : values()){
+    public static ControlType getByName(final String name){
+        for(final ControlType o : values()){
             if(o.name.equals(name)){
                 return o;
             }

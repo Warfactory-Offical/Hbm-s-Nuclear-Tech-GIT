@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class ParticleContrail extends Particle {
 
-	private TextureManager theRenderEngine;
+	private final TextureManager theRenderEngine;
 	public boolean doFlames = false;
 	public float flameRed;
 	public float flameGreen;
@@ -24,9 +24,9 @@ public class ParticleContrail extends Particle {
 	public float lowGreen;
 	public float lowBlue;
 	private int age = 0;
-	private int maxAge;
+	private final int maxAge;
 
-	public ParticleContrail(TextureManager manage, World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleContrail(final TextureManager manage, final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		theRenderEngine = manage;
 		maxAge = 100 + rand.nextInt(20);
@@ -35,7 +35,7 @@ public class ParticleContrail extends Particle {
 		this.particleScale = 1F;
 	}
 
-	public ParticleContrail(TextureManager manage, World worldIn, double posXIn, double posYIn, double posZIn, float red, float green, float blue, float scale) {
+	public ParticleContrail(final TextureManager manage, final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float red, final float green, final float blue, final float scale) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		theRenderEngine = manage;
 		maxAge = 100 + rand.nextInt(20);
@@ -47,7 +47,7 @@ public class ParticleContrail extends Particle {
 		this.particleScale = scale;
 	}
 
-	public ParticleContrail(TextureManager manage, World worldIn, double posXIn, double posYIn, double posZIn, float flameRed, float flameGreen, float flameBlue, float red, float green, float blue, float scale) {
+	public ParticleContrail(final TextureManager manage, final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float flameRed, final float flameGreen, final float flameBlue, final float red, final float green, final float blue, final float scale) {
 		this(manage, worldIn, posXIn, posYIn, posZIn, red, green, blue, scale);
 		this.flameRed = flameRed;
 		this.flameGreen = flameGreen;
@@ -55,7 +55,7 @@ public class ParticleContrail extends Particle {
 		this.doFlames = true;
 	}
 
-	public void setMotion(double x, double y, double z){
+	public void setMotion(final double x, final double y, final double z){
 		this.motionX = x;
 		this.motionY = y;
 		this.motionZ = z;
@@ -80,16 +80,16 @@ public class ParticleContrail extends Particle {
         this.move(this.motionX, this.motionY, this.motionZ);
 	}
 
-	private float clampGood(float b, float a, float c){
+	private float clampGood(final float b, final float a, final float c){
 		if(c < a){
-			return (float)MathHelper.clamp(b, c, a);
+			return MathHelper.clamp(b, c, a);
 		}
 		else{
-			return (float)MathHelper.clamp(b, a, c);
+			return MathHelper.clamp(b, a, c);
 		}
 	}
 
-	private float getColor(int index){
+	private float getColor(final int index){
 		float pColor = 0;
 		if(index == 0){
 			if(doFlames){
@@ -110,11 +110,11 @@ public class ParticleContrail extends Particle {
 				pColor = this.lowBlue;
 			}
 		}
-		return (float)MathHelper.clamp(pColor, 0, 1);
+		return MathHelper.clamp(pColor, 0, 1);
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		
 		this.theRenderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		this.particleTexture = ModEventHandlerClient.contrail;
@@ -122,7 +122,7 @@ public class ParticleContrail extends Particle {
 		float f1 = f + 0.0624375F;
 		float f2 = (float) this.particleTextureIndexY / 16.0F;
 		float f3 = f2 + 0.0624375F;
-		float f4 = 0.25F + 3F * this.particleScale * (1-particleAlpha * particleAlpha);
+		final float f4 = 0.25F + 3F * this.particleScale * (1-particleAlpha * particleAlpha);
 
 		if (this.particleTexture != null) {
 			f = this.particleTexture.getMinU();
@@ -131,41 +131,41 @@ public class ParticleContrail extends Particle {
 			f3 = this.particleTexture.getMaxV();
 		}
 		this.setRBGColorF(getColor(0), getColor(1), getColor(2));
-		Random urandom = new Random(this.hashCode());
+		final Random urandom = new Random(this.hashCode());
 		for (int ii = 0; ii < 6; ii++) {
 			
-			float f5 = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX) + urandom.nextGaussian() * (0.2 + (1-particleAlpha)));
-			float f6 = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY) + urandom.nextGaussian() * (0.2 + (1-particleAlpha)));
-			float f7 = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ) + urandom.nextGaussian() * (0.2 + (1-particleAlpha)));
+			final float f5 = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX) + urandom.nextGaussian() * (0.2 + (1-particleAlpha)));
+			final float f6 = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY) + urandom.nextGaussian() * (0.2 + (1-particleAlpha)));
+			final float f7 = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ) + urandom.nextGaussian() * (0.2 + (1-particleAlpha)));
 			
-			int i = this.getBrightnessForRender(partialTicks);
-			int j = i >> 16 & 65535;
-			int k = i & 65535;
+			final int i = this.getBrightnessForRender(partialTicks);
+			final int j = i >> 16 & 65535;
+			final int k = i & 65535;
 			
-			Vec3d[] avec3d = new Vec3d[] { new Vec3d((double) (-rotationX * f4 - rotationXY * f4), (double) (-rotationZ * f4), (double) (-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double) (-rotationX * f4 + rotationXY * f4), (double) (rotationZ * f4), (double) (-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double) (rotationX * f4 + rotationXY * f4), (double) (rotationZ * f4), (double) (rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double) (rotationX * f4 - rotationXY * f4), (double) (-rotationZ * f4), (double) (rotationYZ * f4 - rotationXZ * f4)) };
+			final Vec3d[] avec3d = new Vec3d[] { new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4) };
 
 			if (this.particleAngle != 0.0F) {
-				float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
-				float f9 = MathHelper.cos(f8 * 0.5F);
-				float f10 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.x;
-				float f11 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.y;
-				float f12 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.z;
-				Vec3d vec3d = new Vec3d((double) f10, (double) f11, (double) f12);
+				final float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
+				final float f9 = MathHelper.cos(f8 * 0.5F);
+				final float f10 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.x;
+				final float f11 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.y;
+				final float f12 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.z;
+				final Vec3d vec3d = new Vec3d(f10, f11, f12);
 
 				for (int l = 0; l < 4; ++l) {
-					avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double) (2.0F * f9)));
+					avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale(2.0F * f9));
 				}
 			}
 			
-			buffer.pos((double) f5 + avec3d[0].x, (double) f6 + avec3d[0].y, (double) f7 + avec3d[0].z).tex((double) f1, (double) f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-			buffer.pos((double) f5 + avec3d[1].x, (double) f6 + avec3d[1].y, (double) f7 + avec3d[1].z).tex((double) f1, (double) f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-			buffer.pos((double) f5 + avec3d[2].x, (double) f6 + avec3d[2].y, (double) f7 + avec3d[2].z).tex((double) f, (double) f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-			buffer.pos((double) f5 + avec3d[3].x, (double) f6 + avec3d[3].y, (double) f7 + avec3d[3].z).tex((double) f, (double) f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+			buffer.pos((double) f5 + avec3d[0].x, (double) f6 + avec3d[0].y, (double) f7 + avec3d[0].z).tex(f1, f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+			buffer.pos((double) f5 + avec3d[1].x, (double) f6 + avec3d[1].y, (double) f7 + avec3d[1].z).tex(f1, f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+			buffer.pos((double) f5 + avec3d[2].x, (double) f6 + avec3d[2].y, (double) f7 + avec3d[2].z).tex(f, f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+			buffer.pos((double) f5 + avec3d[3].x, (double) f6 + avec3d[3].y, (double) f7 + avec3d[3].z).tex(f, f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
 		}
 	}
 
 	@Override
-	public int getBrightnessForRender(float p_189214_1_) {
+	public int getBrightnessForRender(final float p_189214_1_) {
 		return (int)(240 * particleAlpha);
 	}
 

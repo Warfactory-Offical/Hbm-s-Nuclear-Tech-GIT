@@ -51,7 +51,7 @@ public class HazardSystem {
 	 * @param o
 	 * @param data
 	 */
-	public static void register(Object o, HazardData data) {
+	public static void register(final Object o, final HazardData data) {
 
 		if(o instanceof String)
 			oreMap.put((String)o, data);
@@ -69,7 +69,7 @@ public class HazardSystem {
 	 * Prevents the stack from returning any HazardData
 	 * @param o
 	 */
-	public static void blacklist(Object o) {
+	public static void blacklist(final Object o) {
 		
 		if(o instanceof ItemStack) {
 			stackBlacklist.add(ItemStackUtil.comparableStackFrom((ItemStack) o).makeSingular());
@@ -78,14 +78,14 @@ public class HazardSystem {
 		}
 	}
 	
-	public static boolean isItemBlacklisted(ItemStack stack) {
+	public static boolean isItemBlacklisted(final ItemStack stack) {
 
 		if(stackBlacklist.contains(ItemStackUtil.comparableStackFrom(stack).makeSingular()))
 			return true;
 
-		int[] ids = OreDictionary.getOreIDs(stack);
-		for(int id : ids) {
-			String name = OreDictionary.getOreName(id);
+		final int[] ids = OreDictionary.getOreIDs(stack);
+		for(final int id : ids) {
+			final String name = OreDictionary.getOreName(id);
 			
 			if(dictBlacklist.contains(name))
 				return true;
@@ -110,49 +110,47 @@ public class HazardSystem {
 	 * @param stack
 	 * @return
 	 */
-	public static List<HazardEntry> getHazardsFromStack(ItemStack stack) {
+	public static List<HazardEntry> getHazardsFromStack(final ItemStack stack) {
 
 		if (stack.isEmpty() || isItemBlacklisted(stack)) {
 			return Collections.emptyList();
 		}
 
-		List<HazardData> chronological = new ArrayList<>();
+		final List<HazardData> chronological = new ArrayList<>();
 
 		// ORE DICT
-		int[] ids = OreDictionary.getOreIDs(stack);
-		if (ids.length > 0) {
-			for (int id : ids) {
-				String name = OreDictionary.getOreName(id);
-				HazardData hazardData = oreMap.get(name);
-				if (hazardData != null) {
-					chronological.add(hazardData);
-				}
-			}
-		}
+		final int[] ids = OreDictionary.getOreIDs(stack);
+        for (final int id : ids) {
+            final String name = OreDictionary.getOreName(id);
+            final HazardData hazardData = oreMap.get(name);
+            if (hazardData != null) {
+                chronological.add(hazardData);
+            }
+        }
 
-		// ITEM
-		HazardData itemHazardData = itemMap.get(stack.getItem());
+        // ITEM
+		final HazardData itemHazardData = itemMap.get(stack.getItem());
 		if (itemHazardData != null) {
 			chronological.add(itemHazardData);
 		}
 
 		// STACK
-		ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
-		HazardData stackHazardData = stackMap.get(comp);
+		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
+		final HazardData stackHazardData = stackMap.get(comp);
 		if (stackHazardData != null) {
 			chronological.add(stackHazardData);
 		}
 
-		List<HazardEntry> entries = new ArrayList<>();
+		final List<HazardEntry> entries = new ArrayList<>();
 
 		// Pre-transformations
-		for (HazardTransformerBase trafo : trafos) {
+		for (final HazardTransformerBase trafo : trafos) {
 			trafo.transformPre(stack, entries);
 		}
 
 		int mutex = 0;
 
-		for (HazardData data : chronological) {
+		for (final HazardData data : chronological) {
 			if (data.doesOverride) {
 				entries.clear();
 			}
@@ -163,17 +161,17 @@ public class HazardSystem {
 		}
 
 		// Post-transformations
-		for (HazardTransformerBase trafo : trafos) {
+		for (final HazardTransformerBase trafo : trafos) {
 			trafo.transformPost(stack, entries);
 		}
 
 		return entries;
 	}
 
-	public static float getHazardLevelFromStack(ItemStack stack, HazardTypeBase hazard) {
-		List<HazardEntry> entries = getHazardsFromStack(stack);
+	public static float getHazardLevelFromStack(final ItemStack stack, final HazardTypeBase hazard) {
+		final List<HazardEntry> entries = getHazardsFromStack(stack);
 
-		for (HazardEntry entry : entries) {
+		for (final HazardEntry entry : entries) {
 			if (entry.type == hazard) {
 				return HazardModifier.evalAllModifiers(stack, null, entry.baseLevel, entry.mods);
 			}
@@ -187,10 +185,10 @@ public class HazardSystem {
 	 * @param stack
 	 * @param entity
 	 */
-	public static void applyHazards(ItemStack stack, EntityLivingBase entity) {
-		List<HazardEntry> hazards = getHazardsFromStack(stack);
+	public static void applyHazards(final ItemStack stack, final EntityLivingBase entity) {
+		final List<HazardEntry> hazards = getHazardsFromStack(stack);
 		
-		for(HazardEntry hazard : hazards) {
+		for(final HazardEntry hazard : hazards) {
 			hazard.applyHazard(stack, entity);
 		}
 	}
@@ -199,13 +197,13 @@ public class HazardSystem {
 	 * Will apply the effects of all carried items, including the armor inventory.
 	 * @param player
 	 */
-	public static void updatePlayerInventory(EntityPlayer player) {
-		NonNullList<ItemStack> mainInventory = player.inventory.mainInventory;
-		NonNullList<ItemStack> armorInventory = player.inventory.armorInventory;
+	public static void updatePlayerInventory(final EntityPlayer player) {
+		final NonNullList<ItemStack> mainInventory = player.inventory.mainInventory;
+		final NonNullList<ItemStack> armorInventory = player.inventory.armorInventory;
 
 		// Iterate over main inventory
 		for (int i = 0; i < mainInventory.size(); i++) {
-			ItemStack stack = mainInventory.get(i);
+			final ItemStack stack = mainInventory.get(i);
 
 			// Check if stack is not empty
 			if (!stack.isEmpty()) {
@@ -219,17 +217,17 @@ public class HazardSystem {
 		}
 
 		// Iterate over armor inventory
-		for (ItemStack stack : armorInventory) {
+		for (final ItemStack stack : armorInventory) {
 			if (!stack.isEmpty()) {
 				applyHazards(stack, player);
 			}
 		}
 	}
 
-	public static void updateLivingInventory(EntityLivingBase entity) {
+	public static void updateLivingInventory(final EntityLivingBase entity) {
 		
 		for(int i = 0; i < 5; i++) {
-			ItemStack stack = entity.getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
+			final ItemStack stack = entity.getItemStackFromSlot(EntityEquipmentSlot.values()[i]);
 
 			if(stack != ItemStack.EMPTY) {
 				applyHazards(stack, entity);
@@ -237,24 +235,24 @@ public class HazardSystem {
 		}
 	}
 
-	public static void updateDroppedItem(EntityItem entity) {
+	public static void updateDroppedItem(final EntityItem entity) {
 		
-		ItemStack stack = entity.getItem();
+		final ItemStack stack = entity.getItem();
 		
 		if(entity.isDead || stack == ItemStack.EMPTY || stack.getCount() <= 0) return;
 		
-		List<HazardEntry> hazards = getHazardsFromStack(stack);
-		for(HazardEntry entry : hazards) {
+		final List<HazardEntry> hazards = getHazardsFromStack(stack);
+		for(final HazardEntry entry : hazards) {
 			entry.type.updateEntity(entity, HazardModifier.evalAllModifiers(stack, null, entry.baseLevel, entry.mods));
 		}
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void addFullTooltip(ItemStack stack, EntityPlayer player, List list) {
+	public static void addFullTooltip(final ItemStack stack, final EntityPlayer player, final List list) {
 		
-		List<HazardEntry> hazards = getHazardsFromStack(stack);
+		final List<HazardEntry> hazards = getHazardsFromStack(stack);
 		
-		for(HazardEntry hazard : hazards) {
+		for(final HazardEntry hazard : hazards) {
 			hazard.type.addHazardInformation(player, list, hazard.baseLevel, stack, hazard.mods);
 		}
 	}

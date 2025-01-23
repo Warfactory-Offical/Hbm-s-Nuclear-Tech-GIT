@@ -7,7 +7,6 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.SatPanelPacket;
 import com.hbm.saveddata.satellites.Satellite;
 import com.hbm.saveddata.satellites.SatelliteSavedData;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,12 +23,12 @@ public class ItemSatInterface extends ItemSatChip {
 	@SideOnly(Side.CLIENT)
 	public static Satellite currentSat;
 	
-	public ItemSatInterface(String s) {
+	public ItemSatInterface(final String s) {
 		super(s);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
 		if(world.isRemote) {
 
 			if(this == ModItems.sat_interface)
@@ -42,7 +41,7 @@ public class ItemSatInterface extends ItemSatChip {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected) {
 		//Drillgon200: what in the world
 		/*if(!world.isRemote) {
 		    SatelliteSavedData data = (SatelliteSavedData)entity.world.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
@@ -59,7 +58,7 @@ public class ItemSatInterface extends ItemSatChip {
     	if(((EntityPlayerMP)entity).getHeldItemMainhand() != stack)
     		return;
     	
-    	Satellite sat = SatelliteSavedData.getData(world).getSatFromFreq(getFreq(stack));
+    	final Satellite sat = SatelliteSavedData.getData(world).getSatFromFreq(getFreq(stack));
     	
     	if(sat != null && entity.ticksExisted % 2 == 0) {
     		PacketDispatcher.sendTo(new SatPanelPacket(sat), (EntityPlayerMP) entity);

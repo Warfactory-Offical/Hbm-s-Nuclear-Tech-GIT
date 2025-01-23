@@ -12,12 +12,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderPylonLarge extends TileEntitySpecialRenderer<TileEntityPylonLarge> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityPylonLarge te) {
+	public boolean isGlobalRenderer(final TileEntityPylonLarge te) {
 		return true;
 	}
 
 	@Override
-	public void render(TileEntityPylonLarge pyl, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityPylonLarge pyl, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 			switch(pyl.getBlockMetadata() - BlockDummyable.offset) {

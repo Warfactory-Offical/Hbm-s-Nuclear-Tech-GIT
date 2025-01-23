@@ -19,13 +19,13 @@ public class ParticleCrucibleSpark extends ParticleFirstPerson {
 	//Actual motion without the randomness
 	public float amx, amy, amz;
 	
-	public ParticleCrucibleSpark(World worldIn, float s, float scale, double posXIn, double posYIn, double posZIn, float mx, float my, float mz) {
+	public ParticleCrucibleSpark(final World worldIn, final float s, final float scale, final double posXIn, final double posYIn, final double posZIn, final float mx, final float my, final float mz) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.stretch = s;
 		this.particleScale = scale;
-		Vec3d am = new Vec3d(amx, amy, amz);
+		final Vec3d am = new Vec3d(amx, amy, amz);
 		if(am.lengthSquared() != 0){
-			Vec3d rand = BobMathUtil.randVecInCone(am.normalize(), 30).scale(am.length());
+			final Vec3d rand = BobMathUtil.randVecInCone(am.normalize(), 30).scale(am.length());
 			motionX = rand.x;
 			motionY = rand.y;
 			motionZ = rand.z;
@@ -40,7 +40,7 @@ public class ParticleCrucibleSpark extends ParticleFirstPerson {
 		this.amz = mz;
 	}
 	
-	public ParticleCrucibleSpark color(float r, float g, float b, float a){
+	public ParticleCrucibleSpark color(final float r, final float g, final float b, final float a){
 		this.particleRed = r;
 		this.particleGreen = g;
 		this.particleBlue = b;
@@ -48,7 +48,7 @@ public class ParticleCrucibleSpark extends ParticleFirstPerson {
 		return this;
 	}
 	
-	public ParticleCrucibleSpark lifetime(int lifetime){
+	public ParticleCrucibleSpark lifetime(final int lifetime){
 		this.particleMaxAge = lifetime;
 		return this;
 	}
@@ -68,9 +68,9 @@ public class ParticleCrucibleSpark extends ParticleFirstPerson {
 		this.posZ += this.motionZ + amz;
 		if(timeUntilChange == 0){
 			timeUntilChange = rand.nextInt(6)+1;
-			Vec3d am = new Vec3d(motionX, motionY, motionZ);
+			final Vec3d am = new Vec3d(motionX, motionY, motionZ);
 			if(am.lengthSquared() != 0){
-				Vec3d rand = BobMathUtil.randVecInCone(am.normalize(), 30).scale(am.length());
+				final Vec3d rand = BobMathUtil.randVecInCone(am.normalize(), 30).scale(am.length());
 				motionX = rand.x;
 				motionY = rand.y;
 				motionZ = rand.z;
@@ -93,18 +93,18 @@ public class ParticleCrucibleSpark extends ParticleFirstPerson {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		
 		
-        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
-        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
-        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
-        float mX = (float)(this.posX + (this.posX+this.motionX - this.posX) * (double)partialTicks);
-        float mY = (float)(this.posY + (this.posY+this.motionY - this.posY) * (double)partialTicks);
-        float mZ = (float)(this.posZ + (this.posZ+this.motionZ - this.posZ) * (double)partialTicks);
+        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
+        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
+        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
+        final float mX = (float)(this.posX + (this.posX+this.motionX - this.posX) * (double)partialTicks);
+        final float mY = (float)(this.posY + (this.posY+this.motionY - this.posY) * (double)partialTicks);
+        final float mZ = (float)(this.posZ + (this.posZ+this.motionZ - this.posZ) * (double)partialTicks);
         
         Vec3d particleAxis = new Vec3d(mX, mY, mZ).subtract(f5, f6, f7);
-        Vec3d toPlayer = new Vec3d(mX, mY, mZ).subtract(ItemRenderCrucible.playerPos);
+        final Vec3d toPlayer = new Vec3d(mX, mY, mZ).subtract(ItemRenderCrucible.playerPos);
         Vec3d point1 = particleAxis.crossProduct(toPlayer).normalize().scale(0.5*particleScale);
         Vec3d point2 = point1.scale(-1);
         point1 = point1.add(f5, f6, f7);

@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 public class AnimationWrapper {
 
 	public static final AnimationWrapper EMPTY = new AnimationWrapper(Animation.EMPTY){
-		public AnimationWrapper onEnd(EndResult res) {
+		public AnimationWrapper onEnd(final EndResult res) {
 			return this;
-		};
-	};
+		}
+    };
 	
 	public Animation anim;
 	
@@ -18,23 +18,23 @@ public class AnimationWrapper {
 	public EndResult endResult = EndResult.END;
 	public int prevFrame = 0;
 	
-	public AnimationWrapper(Animation a){
+	public AnimationWrapper(final Animation a){
 		this.anim = a;
 		this.startTime = System.currentTimeMillis();
 	}
 	
-	public AnimationWrapper(long startTime, Animation a){
+	public AnimationWrapper(final long startTime, final Animation a){
 		this.anim = a;
 		this.startTime = startTime;
 	}
 	
-	public AnimationWrapper(long startTime, float scale, Animation a){
+	public AnimationWrapper(final long startTime, final float scale, final Animation a){
 		this.anim = a;
 		this.speedScale = scale;
 		this.startTime = startTime;
 	}
 	
-	public AnimationWrapper onEnd(EndResult res){
+	public AnimationWrapper onEnd(final EndResult res){
 		this.endResult = res;
 		return this;
 	}
@@ -44,7 +44,7 @@ public class AnimationWrapper {
 		return this;
 	}
 	
-	public AnimationWrapper cloneStats(AnimationWrapper other){
+	public AnimationWrapper cloneStats(final AnimationWrapper other){
 		this.anim = other.anim;
 		this.startTime = other.startTime;
 		this.reverse = other.reverse;
@@ -52,7 +52,7 @@ public class AnimationWrapper {
 		return this;
 	}
 	
-	public AnimationWrapper cloneStatsWithoutTime(AnimationWrapper other){
+	public AnimationWrapper cloneStatsWithoutTime(final AnimationWrapper other){
 		this.anim = other.anim;
 		this.reverse = other.reverse;
 		this.endResult = other.endResult;
@@ -64,8 +64,8 @@ public class AnimationWrapper {
 		REPEAT,
 		REPEAT_REVERSE,
 		START_NEW,
-		STAY;
-	}
+		STAY
+    }
 	
 	public static class EndResult {
 		
@@ -74,11 +74,11 @@ public class AnimationWrapper {
 		EndType type;
 		AnimationWrapper next;
 		
-		public EndResult(EndType type) {
+		public EndResult(final EndType type) {
 			this(type, null);
 		}
 		
-		public EndResult(EndType type, @Nullable AnimationWrapper next) {
+		public EndResult(final EndType type, @Nullable final AnimationWrapper next) {
 			this.type = type;
 			this.next = next;
 		}

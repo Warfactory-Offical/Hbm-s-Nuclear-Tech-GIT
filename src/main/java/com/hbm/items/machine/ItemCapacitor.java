@@ -18,9 +18,9 @@ import net.minecraft.world.World;
 
 public class ItemCapacitor extends Item {
 
-	private int dura;
+	private final int dura;
 	
-	public ItemCapacitor(int dura, String s) {
+	public ItemCapacitor(final int dura, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.dura = dura;
@@ -28,8 +28,8 @@ public class ItemCapacitor extends Item {
 		ModItems.ALL_ITEMS.add(this);
 	}
 
-	public static String getColor(long a, long b){
-		float fraction = 100F * a/b;
+	public static String getColor(final long a, final long b){
+		final float fraction = 100F * a/b;
 		if(fraction > 75)
 			return "§a";
 		if(fraction > 25)
@@ -38,24 +38,24 @@ public class ItemCapacitor extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if (this == ModItems.redcoil_capacitor) {
 			tooltip.add("Right-click a block to negate positive charge.");
 			tooltip.add("§b[Needed for Schrabidium Synthesis]");
-			int itemDura = getDura(stack);
+			final int itemDura = getDura(stack);
 			tooltip.add(getColor(itemDura, dura) + itemDura + " §2/ " + dura);
 		}
 		if (this == ModItems.titanium_filter) {
 			tooltip.add("§e[Needed for Watz Reaction]");
-			int itemDura = getDura(stack);
+			final int itemDura = getDura(stack);
 			tooltip.add(getColor(itemDura, dura) + itemDura/20 + " §2/ " + dura/20);
 		}
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (this == ModItems.redcoil_capacitor) {
-			ItemStack stack = player.getHeldItem(hand);
+			final ItemStack stack = player.getHeldItem(hand);
 			if (!player.isSneaking()) {
 				if (getDura(stack) < dura) {
 
@@ -74,16 +74,16 @@ public class ItemCapacitor extends Item {
 	}
 	
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean showDurabilityBar(final ItemStack stack) {
 		return getDurabilityForDisplay(stack) > 0;
 	}
 	
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public double getDurabilityForDisplay(final ItemStack stack) {
 		return 1D - (double)getDura(stack) / (double)dura;
 	}
 	
-	public static int getDura(ItemStack stack) {
+	public static int getDura(final ItemStack stack) {
 
     	if(!stack.hasTagCompound())
     		return ((ItemCapacitor)stack.getItem()).dura;
@@ -91,7 +91,7 @@ public class ItemCapacitor extends Item {
     	return stack.getTagCompound().getInteger("dura");
     }
 
-    public static void setDura(ItemStack stack, int dura) {
+    public static void setDura(final ItemStack stack, final int dura) {
 
     	if(!stack.hasTagCompound())
     		stack.setTagCompound(new NBTTagCompound());

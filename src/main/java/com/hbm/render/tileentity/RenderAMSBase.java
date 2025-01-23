@@ -12,12 +12,12 @@ import net.minecraft.tileentity.TileEntity;
 public class RenderAMSBase extends TileEntitySpecialRenderer<TileEntityAMSBase> {
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityAMSBase te) {
+	public boolean isGlobalRenderer(final TileEntityAMSBase te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityAMSBase base, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityAMSBase base, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -34,7 +34,7 @@ public class RenderAMSBase extends TileEntitySpecialRenderer<TileEntityAMSBase> 
 		GlStateManager.enableCull();
 	}
 	
-	public void renderTileEntityAt2(TileEntity tileEntity, double x, double y, double z, float f)
+	public void renderTileEntityAt2(final TileEntity tileEntity, final double x, final double y, final double z, final float f)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y + 5.5, z + 0.5D);
@@ -43,12 +43,12 @@ public class RenderAMSBase extends TileEntitySpecialRenderer<TileEntityAMSBase> 
         GlStateManager.enableCull();
 		GL11.glRotatef(180, 0F, 1F, 0F);
 		
-		int rot = (int) ((System.nanoTime()/100000000)%360) * 3;
+		final int rot = (int) ((System.nanoTime()/100000000)%360) * 3;
 		
-		TileEntityAMSBase base = (TileEntityAMSBase)tileEntity;
+		final TileEntityAMSBase base = (TileEntityAMSBase)tileEntity;
 		
-		double maxSize = 5;
-		double minSize = 0.5;
+		final double maxSize = 5;
+		final double minSize = 0.5;
 		double scale = minSize;
 		scale += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
 		GL11.glScaled(scale, scale, scale);
@@ -70,7 +70,7 @@ public class RenderAMSBase extends TileEntitySpecialRenderer<TileEntityAMSBase> 
         renderTileEntityAt3(tileEntity, x, y, z, f);
     }
 
-	public void renderTileEntityAt3(TileEntity tileEntity, double x, double y, double z, float f)
+	public void renderTileEntityAt3(final TileEntity tileEntity, final double x, final double y, final double z, final float f)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y + 5.5, z + 0.5D);
@@ -79,10 +79,10 @@ public class RenderAMSBase extends TileEntitySpecialRenderer<TileEntityAMSBase> 
         GlStateManager.enableCull();
 		GL11.glRotatef(180, 0F, 1F, 0F);
 		
-		TileEntityAMSBase base = (TileEntityAMSBase)tileEntity;
+		final TileEntityAMSBase base = (TileEntityAMSBase)tileEntity;
 		
-		double maxSize = 5;
-		double minSize = 0.5;
+		final double maxSize = 5;
+		final double minSize = 0.5;
 		double scale = minSize;
 		scale += ((((double)base.tanks[2].getFluidAmount()) / ((double)base.tanks[2].getCapacity())) + (((double)base.tanks[3].getFluidAmount()) / ((double)base.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
 		GL11.glScaled(scale, scale, scale);
@@ -91,7 +91,7 @@ public class RenderAMSBase extends TileEntitySpecialRenderer<TileEntityAMSBase> 
         GlStateManager.color(((base.color & 0xFF0000) >> 16)/255F, ((base.color & 0x00FF00) >> 8)/255F, ((base.color & 0x0000FF) >> 0)/255F);
         GlStateManager.disableTexture2D();
 		
-		int rot = (int) ((System.nanoTime()/100000000)%360) * 3;
+		final int rot = (int) ((System.nanoTime()/100000000)%360) * 3;
 
 			GL11.glRotatef(rot, 0F, 1F, 0F);
 			GL11.glScalef(0.5F, 0.5F, 0.5F);

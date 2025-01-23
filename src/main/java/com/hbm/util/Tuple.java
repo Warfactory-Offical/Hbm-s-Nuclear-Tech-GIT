@@ -15,7 +15,7 @@ public class Tuple {
 		X key;
 		Y value;
 		
-		public Pair(X x, Y y) {
+		public Pair(final X x, final Y y) {
 			this.key = x;
 			this.value = y;
 		}
@@ -38,26 +38,23 @@ public class Tuple {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if(this == obj)
 				return true;
 			if(obj == null)
 				return false;
 			if(getClass() != obj.getClass())
 				return false;
-			Pair other = (Pair) obj;
+			final Pair other = (Pair) obj;
 			if(key == null) {
 				if(other.key != null)
 					return false;
 			} else if(!key.equals(other.key))
 				return false;
 			if(value == null) {
-				if(other.value != null)
-					return false;
-			} else if(!value.equals(other.value))
-				return false;
-			return true;
-		}
+                return other.value == null;
+			} else return value.equals(other.value);
+        }
 	}
 
 	public static class Triplet<X,Y,Z> {
@@ -66,7 +63,7 @@ public class Tuple {
 		Y y;
 		Z z;
 		
-		public Triplet(X x, Y y, Z z) {
+		public Triplet(final X x, final Y y, final Z z) {
 			this.x = x;
 			this.y = y;
 			this.z = z;
@@ -95,14 +92,14 @@ public class Tuple {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if(this == obj)
 				return true;
 			if(obj == null)
 				return false;
 			if(getClass() != obj.getClass())
 				return false;
-			Triplet other = (Triplet) obj;
+			final Triplet other = (Triplet) obj;
 			if(x == null) {
 				if(other.x != null)
 					return false;
@@ -114,12 +111,9 @@ public class Tuple {
 			} else if(!y.equals(other.y))
 				return false;
 			if(z == null) {
-				if(other.z != null)
-					return false;
-			} else if(!z.equals(other.z))
-				return false;
-			return true;
-		}
+                return other.z == null;
+			} else return z.equals(other.z);
+        }
 	}
 
 	public static class Quartet<W,X,Y,Z> {
@@ -136,14 +130,14 @@ public class Tuple {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if(this == obj)
 				return true;
 			if(obj == null)
 				return false;
 			if(getClass() != obj.getClass())
 				return false;
-			Quartet other = (Quartet) obj;
+			final Quartet other = (Quartet) obj;
 			if(w == null) {
 				if(other.w != null)
 					return false;
@@ -160,19 +154,16 @@ public class Tuple {
 			} else if(!y.equals(other.y))
 				return false;
 			if(z == null) {
-				if(other.z != null)
-					return false;
-			} else if(!z.equals(other.z))
-				return false;
-			return true;
-		}
+                return other.z == null;
+			} else return z.equals(other.z);
+        }
 
 		W w;
 		X x;
 		Y y;
 		Z z;
 		
-		public Quartet(W w, X x, Y y, Z z) {
+		public Quartet(final W w, final X x, final Y y, final Z z) {
 			this.w = w;
 			this.x = x;
 			this.y = y;

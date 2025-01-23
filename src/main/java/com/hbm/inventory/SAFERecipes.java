@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 public class SAFERecipes {
 
-	private static LinkedHashMap<ComparableStack, ItemStack> recipes = new LinkedHashMap<>();
+	private static final LinkedHashMap<ComparableStack, ItemStack> recipes = new LinkedHashMap<>();
 	
 	public static void registerRecipes() {
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity), ItemStackUtil.itemStackFrom(ModItems.singularity));
@@ -26,25 +26,25 @@ public class SAFERecipes {
 		addRecipe(ItemStackUtil.comparableStackFrom(ModItems.tiny_singularity_spark), ItemStackUtil.itemStackFrom(ModItems.singularity_spark));
 	}
 
-	public static void addRecipe(ComparableStack input, ItemStack output){
+	public static void addRecipe(final ComparableStack input, final ItemStack output){
 		recipes.put(input, output);
 	}
 
-	public static void removeRecipe(ComparableStack input){
+	public static void removeRecipe(final ComparableStack input){
 		recipes.remove(input);
 	}
 	
 	public static LinkedHashMap<ItemStack, ItemStack> getAllRecipes() {
 		
-		LinkedHashMap<ItemStack, ItemStack> map = new LinkedHashMap<>();
-		for(Map.Entry<ComparableStack, ItemStack> recipe : recipes.entrySet()) {
+		final LinkedHashMap<ItemStack, ItemStack> map = new LinkedHashMap<>();
+		for(final Map.Entry<ComparableStack, ItemStack> recipe : recipes.entrySet()) {
 			map.put(recipe.getKey().toStack(), recipe.getValue());
 		}
 		
 		return map;
 	}
 	
-	public static ItemStack getOutput(ItemStack stack) {
+	public static ItemStack getOutput(final ItemStack stack) {
 		if(stack == null)
 			return null;
 		return recipes.get(ItemStackUtil.comparableStackFrom(stack));

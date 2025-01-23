@@ -1,7 +1,5 @@
 package com.hbm.items.armor;
 
-import java.util.List;
-
 import com.hbm.capability.HbmCapability;
 import com.hbm.capability.HbmCapability.IHBMData;
 import com.hbm.handler.ArmorUtil;
@@ -11,7 +9,6 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.render.model.ModelArmorBJ;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,9 +23,11 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class ArmorBJJetpack extends ArmorBJ {
 
-	public ArmorBJJetpack(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
+	public ArmorBJJetpack(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
 		super(material, layer, slot, texture, maxPower, chargeRate, consumption, drain, s);
 	}
 
@@ -37,24 +36,24 @@ public class ArmorBJJetpack extends ArmorBJ {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
+	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
 		if(model == null) {
 			model = new ModelArmorBJ(5);
 		}
 		return model;
 	}
 
-	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
 		
 		super.onArmorTick(world, player, stack);
 		
-		IHBMData props = HbmCapability.getData(player);
+		final IHBMData props = HbmCapability.getData(player);
 		
 		if(!world.isRemote) {
 			
 			if(hasFSBArmor(player) && props.isJetpackActive()) {
 
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack_bj");
 				data.setInteger("player", player.getEntityId());
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, player.posX, player.posY, player.posZ), new TargetPoint(world.provider.getDimension(), player.posX, player.posY, player.posZ, 100));
@@ -78,10 +77,10 @@ public class ArmorBJJetpack extends ArmorBJ {
 				
 				if(player.motionY < -0.08) {
 					
-					double mo = player.motionY * -0.4;
+					final double mo = player.motionY * -0.4;
 					player.motionY += mo;
 					
-					Vec3 vec = new Vec3(player.getLookVec());
+					final Vec3 vec = new Vec3(player.getLookVec());
 					vec.xCoord *= mo;
 					vec.yCoord *= mo;
 					vec.zCoord *= mo;
@@ -95,7 +94,7 @@ public class ArmorBJJetpack extends ArmorBJ {
     }
     
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
 		super.addInformation(stack, worldIn, list, flagIn);
 		list.add(TextFormatting.RED + "  + " + I18nUtil.resolveKey("armor.electricJetpack"));
     	list.add(TextFormatting.GRAY + "  + " + I18nUtil.resolveKey("armor.glider"));

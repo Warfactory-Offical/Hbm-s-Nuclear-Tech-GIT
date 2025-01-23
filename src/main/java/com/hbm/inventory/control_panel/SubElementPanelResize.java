@@ -30,14 +30,14 @@ public class SubElementPanelResize extends SubElement {
     GuiSlider panel_height;
     GuiSlider panel_angle;
 
-    public SubElementPanelResize(GuiControlEdit gui){
+    public SubElementPanelResize(final GuiControlEdit gui){
         super(gui);
     }
 
     @Override
     protected void initGui(){
-        int cX = gui.width/2;
-        int cY = gui.height/2;
+        final int cX = gui.width/2;
+        final int cY = gui.height/2;
 
         back = gui.addButton(new GuiButton(gui.currentButtonId(), gui.getGuiLeft()+7, gui.getGuiTop()+13, 30, 20, "Back"));
         a_offset = gui.addButton(new GuiSlider(gui.currentButtonId(), cX+18, gui.getGuiTop()+47, 80, 15, "A ", "", 0, 100, gui.control.panel.a_off*100, false, true));
@@ -52,19 +52,19 @@ public class SubElementPanelResize extends SubElement {
 
     @Override
     protected void drawScreen(){
-        int cX = gui.width/2;
-        int cY = gui.height/2;
+        final int cX = gui.width/2;
+        final int cY = gui.height/2;
 
-        int minX = gui.getGuiLeft() + 38;
-        int maxX = gui.getGuiLeft() + 111;
-        int minY = gui.getGuiTop() + 56;
-        int maxY = gui.getGuiTop() + 129;
-        int minY_2 = gui.getGuiTop() + 146 - 1;
-        int maxY_2 = gui.getGuiTop() + 219;
+        final int minX = gui.getGuiLeft() + 38;
+        final int maxX = gui.getGuiLeft() + 111;
+        final int minY = gui.getGuiTop() + 56;
+        final int maxY = gui.getGuiTop() + 129;
+        final int minY_2 = gui.getGuiTop() + 146 - 1;
+        final int maxY_2 = gui.getGuiTop() + 219;
 
-        int box_len = maxX-minX;
-        int height0 = (int) (box_len*ControlPanel.getSlopeHeightFromZ(gui.control.panel.a_off, gui.control.panel.height, -gui.control.panel.angle)-1);
-        int height1 = (int) (box_len*ControlPanel.getSlopeHeightFromZ(1-gui.control.panel.c_off, gui.control.panel.height, -gui.control.panel.angle)-1);
+        final int box_len = maxX-minX;
+        final int height0 = (int) (box_len*ControlPanel.getSlopeHeightFromZ(gui.control.panel.a_off, gui.control.panel.height, -gui.control.panel.angle)-1);
+        final int height1 = (int) (box_len*ControlPanel.getSlopeHeightFromZ(1-gui.control.panel.c_off, gui.control.panel.height, -gui.control.panel.angle)-1);
 
         GlStateManager.disableLighting();
         gui.mc.getTextureManager().bindTexture(ResourceManager.white);
@@ -83,7 +83,7 @@ public class SubElementPanelResize extends SubElement {
         GlStateManager.glLineWidth(3);
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         Tessellator.getInstance().getBuffer().begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
-        BufferBuilder buf = Tessellator.getInstance().getBuffer();
+        final BufferBuilder buf = Tessellator.getInstance().getBuffer();
         buf.pos(minX+gui.control.panel.a_off*box_len, minY_2+(box_len-height0), 0).endVertex();
         buf.pos(maxX-gui.control.panel.c_off*box_len, minY_2+(box_len-height1), 0).endVertex();
         Tessellator.getInstance().draw();
@@ -95,23 +95,23 @@ public class SubElementPanelResize extends SubElement {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected void actionPerformed(final GuiButton button) {
         if (button == back) {
             gui.popElement();
         }
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
-        float a_off = (float) a_offset.sliderValue;
-        float b_off = (float) b_offset.sliderValue;
-        float c_off = (float) c_offset.sliderValue;
-        float d_off = (float) d_offset.sliderValue;
-        float height = (float) panel_height.sliderValue;
-        float angle = (float) Math.toRadians(panel_angle.getValueInt());
+    protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
+        final float a_off = (float) a_offset.sliderValue;
+        final float b_off = (float) b_offset.sliderValue;
+        final float c_off = (float) c_offset.sliderValue;
+        final float d_off = (float) d_offset.sliderValue;
+        final float height = (float) panel_height.sliderValue;
+        final float angle = (float) Math.toRadians(panel_angle.getValueInt());
 
-        float height0 = ControlPanel.getSlopeHeightFromZ(a_off, height, -angle);
-        float height1 = ControlPanel.getSlopeHeightFromZ(1-c_off, height, -angle);
+        final float height0 = ControlPanel.getSlopeHeightFromZ(a_off, height, -angle);
+        final float height1 = ControlPanel.getSlopeHeightFromZ(1-c_off, height, -angle);
 
         // lazy
         if (((1-c_off) > a_off) && ((1-b_off) > d_off) && ((Math.max(height0, height1) <= 1)) && ((Math.min(height0, height1) >= -0.01))) {
@@ -149,7 +149,7 @@ public class SubElementPanelResize extends SubElement {
     }
 
     @Override
-    protected void enableButtons(boolean enable){
+    protected void enableButtons(final boolean enable){
         back.visible = enable;
         back.enabled = enable;
         a_offset.visible = enable;

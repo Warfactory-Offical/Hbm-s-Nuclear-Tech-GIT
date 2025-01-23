@@ -3,7 +3,6 @@ package com.hbm.items.gear;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,7 @@ import net.minecraftforge.common.ISpecialArmor;
 
 public class ArmorEuphemium extends ItemArmor implements ISpecialArmor {
 
-	public ArmorEuphemium(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
+	public ArmorEuphemium(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -30,7 +29,7 @@ public class ArmorEuphemium extends ItemArmor implements ISpecialArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
 		if(stack.getItem().equals(ModItems.euphemium_helmet) || stack.getItem().equals(ModItems.euphemium_plate) || stack.getItem().equals(ModItems.euphemium_boots)) {
 			return (RefStrings.MODID + ":textures/armor/euphemium_1.png");
 		}
@@ -41,8 +40,8 @@ public class ArmorEuphemium extends ItemArmor implements ISpecialArmor {
 	}
 
 	@Override
-	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		if(player instanceof EntityPlayer && ArmorUtil.checkArmor((EntityPlayer)player, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots))
+	public ArmorProperties getProperties(final EntityLivingBase player, final ItemStack armor, final DamageSource source, final double damage, final int slot) {
+		if(player instanceof EntityPlayer && ArmorUtil.checkArmor(player, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots))
 		{
 			return new ArmorProperties(1, 1, MathHelper.floor(999999999));
 		}
@@ -50,7 +49,7 @@ public class ArmorEuphemium extends ItemArmor implements ISpecialArmor {
 	}
 
 	@Override
-	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+	public int getArmorDisplay(final EntityPlayer player, final ItemStack armor, final int slot) {
 		if(slot == 0)
 		{
 			return 3;
@@ -71,17 +70,17 @@ public class ArmorEuphemium extends ItemArmor implements ISpecialArmor {
 	}
 
 	@Override
-	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-		stack.damageItem(damage * 0, entity);
+	public void damageArmor(final EntityLivingBase entity, final ItemStack stack, final DamageSource source, final int damage, final int slot) {
+		stack.damageItem(0, entity);
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public EnumRarity getRarity(final ItemStack stack) {
 		return EnumRarity.EPIC;
 	}
 	
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack itemStack) {
 		if(player instanceof EntityPlayer && ArmorUtil.checkArmor(player, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots))
 		{
 			player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 5, 127, true, false));
@@ -99,10 +98,10 @@ public class ArmorEuphemium extends ItemArmor implements ISpecialArmor {
 	}
 	
 	@Override
-	public void setDamage(ItemStack stack, int damage) {}
+	public void setDamage(final ItemStack stack, final int damage) {}
 	
 	@Override
-	public int getDamage(ItemStack stack) {
+	public int getDamage(final ItemStack stack) {
 		return 0;
 	}
 	

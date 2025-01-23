@@ -188,11 +188,11 @@ public class HadronRecipes {
 	 * @param analysisOnly true == line accelerator mode
 	 * @return either null (no recipe) or an ItemStack array with 2 non-null instances
 	 */
-	public static ItemStack[] getOutput(ItemStack in1, ItemStack in2, int momentum, boolean analysisOnly) {
+	public static ItemStack[] getOutput(final ItemStack in1, final ItemStack in2, final int momentum, final boolean analysisOnly) {
 
 		returnCode = EnumHadronState.NORESULT_WRONG_INGREDIENT;
 
-		for(HadronRecipe r : recipes) {
+		for(final HadronRecipe r : recipes) {
 
 			if((r.in1.isApplicable(in1) && r.in2.isApplicable(in2)) ||
 					(r.in1.isApplicable(in2) && r.in2.isApplicable(in1))) {
@@ -221,7 +221,7 @@ public class HadronRecipes {
 		public ItemStack out2;
 		public boolean analysisOnly;
 
-		public HadronRecipe(ItemStack in1, ItemStack in2, int momentum, ItemStack out1, ItemStack out2, boolean analysisOnly) {
+		public HadronRecipe(final ItemStack in1, final ItemStack in2, final int momentum, final ItemStack out1, final ItemStack out2, final boolean analysisOnly) {
 			this.in1 = ItemStackUtil.comparableStackFrom(in1);
 			this.in2 = ItemStackUtil.comparableStackFrom(in2);
 			this.momentum = momentum;

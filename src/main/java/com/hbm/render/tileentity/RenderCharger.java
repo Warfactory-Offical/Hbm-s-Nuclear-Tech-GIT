@@ -15,12 +15,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderCharger extends TileEntitySpecialRenderer<TileEntityCharger> {
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityCharger te) {
+	public boolean isGlobalRenderer(final TileEntityCharger te) {
 		return te.isOn;
 	}
 
 	@Override
-	public void render(TileEntityCharger te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityCharger te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 
 		if(te.isOn){
@@ -31,7 +31,7 @@ public class RenderCharger extends TileEntitySpecialRenderer<TileEntityCharger> 
 			GlStateManager.color(1, 1, 1, 1);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 			 
-	        BeamPronter.prontBeam(Vec3.createVectorHelper(0, te.pointingUp ? te.range + 0.5 : -te.range - 0.5, 0), EnumWaveType.STRAIGHT, EnumBeamType.SOLID, 0x002038, 0x002038, 0, 1, 0F, 1, 0.499F);
+	        BeamPronter.prontBeam(Vec3.createVectorHelper(0, te.pointingUp ? TileEntityCharger.range + 0.5 : -TileEntityCharger.range - 0.5, 0), EnumWaveType.STRAIGHT, EnumBeamType.SOLID, 0x002038, 0x002038, 0, 1, 0F, 1, 0.499F);
 	        
 	        GL11.glPopMatrix();
        	}

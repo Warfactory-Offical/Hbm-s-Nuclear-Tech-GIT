@@ -20,15 +20,15 @@ public class ItemMachineUpgrade extends Item {
 	public UpgradeType type;
 	public int tier = 0;
 
-	public ItemMachineUpgrade(String s) {
+	public ItemMachineUpgrade(final String s) {
 		this(s, UpgradeType.SPECIAL, 0);
 	}
 
-	public ItemMachineUpgrade(String s, UpgradeType type) {
+	public ItemMachineUpgrade(final String s, final UpgradeType type) {
 		this(s, type, 0);
 	}
 
-	public ItemMachineUpgrade(String s, UpgradeType type, int tier) {
+	public ItemMachineUpgrade(final String s, final UpgradeType type, final int tier) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 
@@ -49,9 +49,9 @@ public class ItemMachineUpgrade extends Item {
 		return 0;
 	}
 
-	public static int getSpeed(ItemStack stack){
+	public static int getSpeed(final ItemStack stack){
 		if(stack == null || stack.isEmpty()) return 0;
-		Item upgrade = stack.getItem();
+		final Item upgrade = stack.getItem();
 		if(upgrade == ModItems.upgrade_speed_1) return 1;
 		if(upgrade == ModItems.upgrade_speed_2) return 2;
 		if(upgrade == ModItems.upgrade_speed_3) return 3;
@@ -63,7 +63,7 @@ public class ItemMachineUpgrade extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(this == ModItems.upgrade_speed_1)
 		{
 			list.add(TextFormatting.GOLD+I18nUtil.resolveKey("desc.upgrade1"));
@@ -320,22 +320,20 @@ public class ItemMachineUpgrade extends Item {
 		}
 	}
 
-	public static final Set<Item> scrapItems = Sets.newHashSet(new Item[] {
-			Item.getItemFromBlock(Blocks.GRASS),
-			Item.getItemFromBlock(Blocks.DIRT),
-			Item.getItemFromBlock(Blocks.STONE),
-			Item.getItemFromBlock(Blocks.COBBLESTONE),
-			Item.getItemFromBlock(Blocks.SAND),
-			Item.getItemFromBlock(Blocks.SANDSTONE),
-			Item.getItemFromBlock(Blocks.GRAVEL),
-			Item.getItemFromBlock(Blocks.NETHERRACK),
-			Item.getItemFromBlock(Blocks.END_STONE),
-			Item.getItemFromBlock(ModBlocks.stone_gneiss),
-			Items.FLINT,
-			Items.SNOWBALL,
-			Items.WHEAT_SEEDS,
-			Items.STICK
-			});
+	public static final Set<Item> scrapItems = Sets.newHashSet(Item.getItemFromBlock(Blocks.GRASS),
+            Item.getItemFromBlock(Blocks.DIRT),
+            Item.getItemFromBlock(Blocks.STONE),
+            Item.getItemFromBlock(Blocks.COBBLESTONE),
+            Item.getItemFromBlock(Blocks.SAND),
+            Item.getItemFromBlock(Blocks.SANDSTONE),
+            Item.getItemFromBlock(Blocks.GRAVEL),
+            Item.getItemFromBlock(Blocks.NETHERRACK),
+            Item.getItemFromBlock(Blocks.END_STONE),
+            Item.getItemFromBlock(ModBlocks.stone_gneiss),
+            Items.FLINT,
+            Items.SNOWBALL,
+            Items.WHEAT_SEEDS,
+            Items.STICK);
 
 	public enum UpgradeType {
 		SPEED,
@@ -352,7 +350,7 @@ public class ItemMachineUpgrade extends Item {
 
 		UpgradeType() { }
 
-		UpgradeType(boolean mutex) {
+		UpgradeType(final boolean mutex) {
 			this.mutex = mutex;
 		}
 	}

@@ -16,14 +16,14 @@ import net.minecraft.world.World;
 
 public class RailHighspeed extends BlockRailBase {
 
-	public static final PropertyEnum<BlockRailBase.EnumRailDirection> SHAPE = PropertyEnum.<BlockRailBase.EnumRailDirection>create("shape", BlockRailBase.EnumRailDirection.class, new Predicate<BlockRailBase.EnumRailDirection>()
+	public static final PropertyEnum<BlockRailBase.EnumRailDirection> SHAPE = PropertyEnum.create("shape", BlockRailBase.EnumRailDirection.class, new Predicate<BlockRailBase.EnumRailDirection>()
     {
-        public boolean apply(@Nullable BlockRailBase.EnumRailDirection p_apply_1_)
+        public boolean apply(@Nullable final BlockRailBase.EnumRailDirection p_apply_1_)
         {
             return p_apply_1_ != BlockRailBase.EnumRailDirection.NORTH_EAST && p_apply_1_ != BlockRailBase.EnumRailDirection.NORTH_WEST && p_apply_1_ != BlockRailBase.EnumRailDirection.SOUTH_EAST && p_apply_1_ != BlockRailBase.EnumRailDirection.SOUTH_WEST;
         }
     });
-	public RailHighspeed(String s) {
+	public RailHighspeed(final String s) {
 		super(true);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -38,26 +38,26 @@ public class RailHighspeed extends BlockRailBase {
 	}
 	
 	@Override
-	public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos pos) {
+	public float getRailMaxSpeed(final World world, final EntityMinecart cart, final BlockPos pos) {
 		return 1.0F;
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {SHAPE});
+        return new BlockStateContainer(this, SHAPE);
     }
 	
 	@Override
-    public IBlockState getStateFromMeta(int meta)
+    public IBlockState getStateFromMeta(final int meta)
     {
         return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta));
     }
 
 	@Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(final IBlockState state)
     {
-        return ((BlockRailBase.EnumRailDirection)state.getValue(SHAPE)).getMetadata();
+        return state.getValue(SHAPE).getMetadata();
     }
 
 }

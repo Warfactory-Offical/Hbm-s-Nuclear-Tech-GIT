@@ -12,17 +12,17 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class EntityWaterSplash extends EntityThrowable {
 
-	public EntityWaterSplash(World worldIn) {
+	public EntityWaterSplash(final World worldIn) {
 		super(worldIn);
 	}
 	
-	public EntityWaterSplash(World p_i1775_1_, double p_i1775_2_, double p_i1775_4_, double p_i1775_6_)
+	public EntityWaterSplash(final World p_i1775_1_, final double p_i1775_2_, final double p_i1775_4_, final double p_i1775_6_)
     {
         super(p_i1775_1_, p_i1775_2_, p_i1775_4_, p_i1775_6_);
     }
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
+	protected void onImpact(final RayTraceResult result) {
 		if(this.ticksExisted > 5) {
     		world.spawnParticle(EnumParticleTypes.WATER_SPLASH, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
         	this.setDead();
@@ -44,12 +44,12 @@ public class EntityWaterSplash extends EntityThrowable {
 	}
 
 	@Override
-	public boolean writeToNBTOptional(NBTTagCompound nbt) {
+	public boolean writeToNBTOptional(final NBTTagCompound nbt) {
 		return false;
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(final NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		this.setDead();
 	}

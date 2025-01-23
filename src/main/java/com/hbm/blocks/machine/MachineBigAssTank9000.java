@@ -20,12 +20,12 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 public class MachineBigAssTank9000 extends BlockDummyable {
 
-	public MachineBigAssTank9000(Material mat, String s) {
+	public MachineBigAssTank9000(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		
 		if(meta >= 12) return new TileEntityMachineBAT9000();
 		if(meta >= 6) return new TileEntityProxyCombo(false, false, true);
@@ -43,7 +43,7 @@ public class MachineBigAssTank9000 extends BlockDummyable {
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, 2, -2}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, -2, 2}, this, dir);
@@ -59,22 +59,20 @@ public class MachineBigAssTank9000 extends BlockDummyable {
 	}
 
 	@Override
-	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	protected boolean checkRequirement(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
 
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir)) return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, 2, -2}, x, y, z, dir)) return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, -2, 2}, x, y, z, dir)) return false;
-		
-		return true;
-	}
+        return MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{4, 0, 1, 1, -2, 2}, x, y, z, dir);
+    }
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 			
 			if(pos == null)
 				return false;

@@ -21,9 +21,9 @@ public class ItemLootCrate extends Item {
 	public static List<ItemMissile> list10 = new ArrayList<ItemMissile>();
 	public static List<ItemMissile> list15 = new ArrayList<ItemMissile>();
 	public static List<ItemMissile> listMisc = new ArrayList<ItemMissile>();
-	private static Random rand = new Random();
+	private static final Random rand = new Random();
 	
-	public ItemLootCrate(String s) {
+	public ItemLootCrate(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -31,8 +31,8 @@ public class ItemLootCrate extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack stack = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+		final ItemStack stack = playerIn.getHeldItem(handIn);
 		playerIn.inventoryContainer.detectAndSendChanges();
 
 		if(stack.getItem() == ModItems.loot_10)
@@ -46,7 +46,7 @@ public class ItemLootCrate extends Item {
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 	
-	private ItemMissile choose(List<ItemMissile> parts) {
+	private ItemMissile choose(final List<ItemMissile> parts) {
 		
 		boolean flag = true;
 		ItemMissile item = null;

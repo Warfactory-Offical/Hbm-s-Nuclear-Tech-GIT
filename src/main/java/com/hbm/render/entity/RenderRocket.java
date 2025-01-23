@@ -24,7 +24,7 @@ public class RenderRocket extends Render<EntityRocket> {
 	protected final Item item;
     private RenderItem itemRenderer = null;
 
-    public RenderRocket(RenderManager renderManagerIn, Item itemIn)
+    public RenderRocket(final RenderManager renderManagerIn, final Item itemIn)
     {
         super(renderManagerIn);
         this.item = itemIn;
@@ -33,7 +33,7 @@ public class RenderRocket extends Render<EntityRocket> {
     /**
      * Renders the desired {@code T} type Entity.
      */
-    public void doRender(EntityRocket entity, double x, double y, double z, float entityYaw, float partialTicks)
+    public void doRender(final EntityRocket entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks)
     {
     	if(itemRenderer == null)
     		itemRenderer = Minecraft.getMinecraft().getRenderItem();
@@ -65,9 +65,9 @@ public class RenderRocket extends Render<EntityRocket> {
     }
     
     @Override
-    public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
+    public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
 
-    public ItemStack getStackToRender(EntityRocket entityIn)
+    public ItemStack getStackToRender(final EntityRocket entityIn)
     {
         return ItemStackUtil.itemStackFrom(this.item);
     }
@@ -75,7 +75,7 @@ public class RenderRocket extends Render<EntityRocket> {
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityRocket entity)
+    protected ResourceLocation getEntityTexture(final EntityRocket entity)
     {
         return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }

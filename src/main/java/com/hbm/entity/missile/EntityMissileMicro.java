@@ -15,12 +15,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileMicro extends EntityMissileBaseAdvanced {
 
-	public EntityMissileMicro(World p_i1582_1_) {
+	public EntityMissileMicro(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 7F);
 	}
 
-	public EntityMissileMicro(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileMicro(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 7F);
 	}
@@ -42,7 +42,7 @@ public class EntityMissileMicro extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 4));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));

@@ -26,7 +26,7 @@ public class ChemplantRecipeHandler implements IRecipeCategory<ChemRecipe> {
 	protected final IDrawableStatic progressStatic;
 	protected final IDrawableAnimated progressAnimated;
 	
-	public ChemplantRecipeHandler(IGuiHelper help) {
+	public ChemplantRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 154, 55);
 		powerStatic = help.createDrawable(gui_rl, 0, 86, 16, 52);
 		powerAnimated = help.createAnimatedDrawable(powerStatic, 480, StartDirection.TOP, true);
@@ -55,14 +55,14 @@ public class ChemplantRecipeHandler implements IRecipeCategory<ChemRecipe> {
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		powerAnimated.draw(minecraft, 2, 2);
 		progressAnimated.draw(minecraft, 64, 19);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, ChemRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final ChemRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		//Input fluids
 		guiItemStacks.init(0, true, 28, 1);

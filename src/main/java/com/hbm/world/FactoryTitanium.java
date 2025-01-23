@@ -38,8 +38,8 @@ public class FactoryTitanium extends WorldGenerator {
 	Block Block4 = ModBlocks.factory_titanium_core;
 	
 	@Override
-	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		int i = rand.nextInt(1);
+	public boolean generate(final World worldIn, final Random rand, final BlockPos position) {
+		final int i = rand.nextInt(1);
 
 		if(i == 0)
 		{
@@ -49,37 +49,37 @@ public class FactoryTitanium extends WorldGenerator {
        return true;
 	}
 	
-	public boolean generate_r0(World world, Random rand, MutableBlockPos pos)
+	public boolean generate_r0(final World world, final Random rand, final MutableBlockPos pos)
 	{
-		int x = pos.getX() - 1;
-		int y = pos.getY();
-		int z = pos.getZ() - 1;
+		final int x = pos.getX() - 1;
+		final int y = pos.getY();
+		final int z = pos.getZ() - 1;
 		
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 1), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 1), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 1), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 0, z + 2), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 0, z + 2), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 0, z + 2), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 1, z + 0), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[2]), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 1, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 1), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[4]), 3);
+		world.setBlockState(pos.setPos(x, y, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y, z + 1), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 1), Block2.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 1), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y, z + 2), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 1, y, z + 2), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 2, y, z + 2), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 1, z), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[2]), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 1, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 1), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[4]), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 1), Block4.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 1), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[5]), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 1, z + 2), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y + 1, z + 2), Block1.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 1, z + 2), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 1, z + 2), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 1, y + 2, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 2, y + 2, z + 0), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 1), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 1, y + 2, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 2, y + 2, z), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 1), Block1.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 1), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 1), Block1.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 0, y + 2, z + 2), Block1.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x, y + 2, z + 2), Block1.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 2, z + 2), Block1.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 2, z + 2), Block1.getDefaultState(), 3);
 		return true;

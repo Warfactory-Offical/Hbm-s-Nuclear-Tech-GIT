@@ -38,9 +38,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune {
 	
-	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityTaintedCreeper.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> POWERED = EntityDataManager.<Boolean>createKey(EntityTaintedCreeper.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IGNITED = EntityDataManager.<Boolean>createKey(EntityTaintedCreeper.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> STATE = EntityDataManager.createKey(EntityTaintedCreeper.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(EntityTaintedCreeper.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(EntityTaintedCreeper.class, DataSerializers.BOOLEAN);
 	 /**
      * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
      * weird)
@@ -52,7 +52,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
     /** Explosion radius for this creeper. */
     private int explosionRadius = 20;
     private static final String __OBFID = "CL_00001684";
-	public EntityTaintedCreeper(World world) {
+	public EntityTaintedCreeper(final World world) {
 		super(world);
 			this.tasks.addTask(1, new EntityAISwimming(this));
 	        this.tasks.addTask(2, new EntityAITaintedCreeperSwell(this));
@@ -86,7 +86,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
 	        return this.getAttackTarget() == null ? 3 : 3 + (int)(this.getHealth() - 1.0F);
 	    }
 
-	    public void fall(float distance, float damageMultiplier)
+	    public void fall(final float distance, final float damageMultiplier)
 	    {
 	        super.fall(distance, damageMultiplier);
 	        this.timeSinceIgnited = (int)((float)this.timeSinceIgnited + distance * 1.5F);
@@ -105,11 +105,11 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound)
+	public void writeEntityToNBT(final NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
 
-        if ((Boolean) this.dataManager.get(POWERED))
+        if (this.dataManager.get(POWERED))
         {
             compound.setBoolean("powered", true);
         }
@@ -123,7 +123,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
 	@Override
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(final NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.dataManager.set(POWERED, compound.getBoolean("powered"));
@@ -159,7 +159,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
                 this.setCreeperState(1);
             }
 
-            int i = this.getCreeperState();
+            final int i = this.getCreeperState();
 
             if (i > 0 && this.timeSinceIgnited == 0)
             {
@@ -193,7 +193,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
      * Returns the sound this mob makes when it is hurt.
      */   
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+    protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
     	return SoundEvents.ENTITY_CREEPER_HURT;
     }
 
@@ -209,13 +209,13 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
      * Called when the mob's health reaches 0.
      */
     @Override
-	public void onDeath(DamageSource p_70645_1_)
+	public void onDeath(final DamageSource p_70645_1_)
     {
         super.onDeath(p_70645_1_);
     }
 
     @Override
-	public boolean attackEntityAsMob(Entity p_70652_1_)
+	public boolean attackEntityAsMob(final Entity p_70652_1_)
     {
         return true;
     }
@@ -232,7 +232,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
      * Params: (Float)Render tick. Returns the intensity of the creeper's flash when it is ignited.
      */
     @SideOnly(Side.CLIENT)
-    public float getCreeperFlashIntensity(float p_70831_1_)
+    public float getCreeperFlashIntensity(final float p_70831_1_)
     {
         return (this.lastActiveTime + (this.timeSinceIgnited - this.lastActiveTime) * p_70831_1_) / (this.fuseTime - 2);
     }
@@ -254,7 +254,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
     /**
      * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
      */
-    public void setCreeperState(int i)
+    public void setCreeperState(final int i)
     {
         this.dataManager.set(STATE, i);
     }
@@ -263,7 +263,7 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
      * Called when a lightning bolt hits the entity.
      */
     @Override
-	public void onStruckByLightning(EntityLightningBolt p_70077_1_)
+	public void onStruckByLightning(final EntityLightningBolt p_70077_1_)
     {
         super.onStruckByLightning(p_70077_1_);
         this.dataManager.set(POWERED, Boolean.TRUE);
@@ -273,9 +273,9 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
      * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
      */
     @Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand)
+	protected boolean processInteract(final EntityPlayer player, final EnumHand hand)
     {
-        ItemStack itemstack = player.inventory.getCurrentItem();
+        final ItemStack itemstack = player.inventory.getCurrentItem();
 
         if (itemstack != null && itemstack.getItem() == Items.FLINT_AND_STEEL)
         {
@@ -305,14 +305,14 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
             }
             
             world.newExplosion(this, posX, posY, posZ, 5.0F, false, false);
-            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+            final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
             if(this.getPowered())
             {
 	            
 			    for(int i = 0; i < 255; i++) {
-			    	int a = rand.nextInt(15) + (int)posX - 7;
-			    	int b = rand.nextInt(15) + (int)posY - 7;
-			    	int c = rand.nextInt(15) + (int)posZ - 7;
+			    	final int a = rand.nextInt(15) + (int)posX - 7;
+			    	final int b = rand.nextInt(15) + (int)posY - 7;
+			    	final int c = rand.nextInt(15) + (int)posZ - 7;
 			    	pos.setPos(a, b, c);
 			           if(world.getBlockState(pos).getBlock().isReplaceable(world, pos) && BlockTaint.hasPosNeightbour(world, pos)) {
 			        	   
@@ -326,9 +326,9 @@ public class EntityTaintedCreeper extends EntityMob implements IRadiationImmune 
             } else {
 	            
 			    for(int i = 0; i < 85; i++) {
-			    	int a = rand.nextInt(7) + (int)posX - 3;
-			    	int b = rand.nextInt(7) + (int)posY - 3;
-			    	int c = rand.nextInt(7) + (int)posZ - 3;
+			    	final int a = rand.nextInt(7) + (int)posX - 3;
+			    	final int b = rand.nextInt(7) + (int)posY - 3;
+			    	final int c = rand.nextInt(7) + (int)posZ - 3;
 			    	pos.setPos(a, b, c);
 			           if(world.getBlockState(pos).getBlock().isReplaceable(world, pos) && BlockTaint.hasPosNeightbour(world, pos)) {
 			        	   

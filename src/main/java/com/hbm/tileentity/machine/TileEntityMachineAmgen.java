@@ -19,13 +19,13 @@ public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITic
 	public long maxPower = 500;
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		return super.writeToNBT(compound);
 	}
@@ -33,7 +33,7 @@ public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITic
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			long prevPower = power;
+			final long prevPower = power;
 
 			if(this.getBlockType() == ModBlocks.machine_amgen) {
 				power += RadiationSavedData.getData(world).getRadNumFromCoord(pos);
@@ -82,7 +82,7 @@ public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITic
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

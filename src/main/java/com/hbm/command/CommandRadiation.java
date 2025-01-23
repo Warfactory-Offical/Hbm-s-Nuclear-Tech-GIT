@@ -1,6 +1,7 @@
 package com.hbm.command;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.hbm.capability.HbmLivingCapability;
@@ -24,13 +25,13 @@ public class CommandRadiation extends CommandBase {
 	}
 
 	@Override
-	public String getUsage(ICommandSender sender) {
+	public String getUsage(final ICommandSender sender) {
 		return "Usage: /hbmrad <block x> <block y>  <block z> <new rad> \n /hbmrad <clearall/reset> \n or /hbmrad player <player> <newRad>";
 	}
 
 	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
-		List<String> list = new ArrayList<String>();
+	public List<String> getTabCompletions(final MinecraftServer server, final ICommandSender sender, final String[] args, final BlockPos targetPos) {
+		final List<String> list = new ArrayList<String>();
 		if (args.length == 1) {
 			
 			list.add("set");
@@ -41,8 +42,7 @@ public class CommandRadiation extends CommandBase {
 		} else if (args.length == 2 && (args[0].equals("clearall") || args[0].equals("reset") || args[0].equals("resetplayers"))) {
 			
 		} else if(args.length == 2 && args[0].equals("player")){
-			for(String s : server.getOnlinePlayerNames())
-				list.add(s);
+            Collections.addAll(list, server.getOnlinePlayerNames());
 		} else if (args.length == 2 && args[0].equals("set")){
 			list.add(String.valueOf(sender.getPosition().getX()));
 		} else if (args.length == 3 && args[0].equals("set")){
@@ -64,12 +64,12 @@ public class CommandRadiation extends CommandBase {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+	public void execute(final MinecraftServer server, final ICommandSender sender, final String[] args) throws CommandException {
 		if (args.length == 5 && args[0].equals("set") && isInteger(args[1]) && isInteger(args[2]) && isInteger(args[3])) {
-			int blockX;
-			int blockY;
-			int blockZ;
-			int amount;
+			final int blockX;
+			final int blockY;
+			final int blockZ;
+			final int amount;
 			if (args[1].equals("~"))
 				blockX = sender.getPosition().getX();
 			else
@@ -93,7 +93,7 @@ public class CommandRadiation extends CommandBase {
 					sender.getEntityWorld().provider.getDimension()));
 			return;
 		} else if(args.length == 3 && args[0].equals("player")){
-			EntityPlayerMP player = getPlayer(server, args[1]);
+			final EntityPlayerMP player = getPlayer(server, args[1]);
 			if(player == null){
 				throw new CommandException("commands.hbmrad.not_found_player", args[1]);
 			}
@@ -109,8 +109,8 @@ public class CommandRadiation extends CommandBase {
 		} else if(args.length == 2 && args[0].equals("player")){
 			throw new CommandException("commands.hbmrad.not_rad");
 		} else if(args.length == 1 && args[0].equals("resetplayers")){
-			for(String s : server.getOnlinePlayerNames()){
-				EntityPlayerMP player = getPlayer(server, s);
+			for(final String s : server.getOnlinePlayerNames()){
+				final EntityPlayerMP player = getPlayer(server, s);
 				if(player != null){
 					if(player.hasCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null))
 						player.getCapability(HbmLivingCapability.EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null).setRads(0.0F);
@@ -122,27 +122,25 @@ public class CommandRadiation extends CommandBase {
 		throw new CommandException(this.getUsage(sender));
 	}
 
-	public boolean isInteger(String s) {
+	public boolean isInteger(final String s) {
 		try {
 			Integer.parseInt(s);
 			return true;
-		} catch (NumberFormatException e) {
-			if (s.equals("~"))
-				return true;
-			return false;
-		}
+		} catch (final NumberFormatException e) {
+            return s.equals("~");
+        }
 	}
 	
-	public boolean isFloat(String s){
+	public boolean isFloat(final String s){
 		try{
 			Float.parseFloat(s);
 			return true;
-		} catch (NumberFormatException e){
+		} catch (final NumberFormatException e){
 			return false;
 		}
 	}
 	
-	public EntityPlayerMP getPlayer(MinecraftServer server, String name){
+	public EntityPlayerMP getPlayer(final MinecraftServer server, final String name){
 		return server.getPlayerList().getPlayerByUsername(name);
 	}
 	

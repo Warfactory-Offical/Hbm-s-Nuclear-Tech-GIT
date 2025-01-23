@@ -14,14 +14,14 @@ import net.minecraft.util.math.MathHelper;
 public class RenderNuclearCreeper extends RenderLiving<EntityNuclearCreeper> {
     private static final ResourceLocation creeperTextures = new ResourceLocation(RefStrings.MODID + ":" + "textures/entity/creeper.png");
     /** The creeper model. */
-	public RenderNuclearCreeper(RenderManager rendermanagerIn) {
+	public RenderNuclearCreeper(final RenderManager rendermanagerIn) {
 		super(rendermanagerIn, new ModelCreeper(), 0.5F);
 	}
 	
 	@Override
-	protected void preRenderCallback(EntityNuclearCreeper entitylivingbaseIn, float partialTickTime) {
+	protected void preRenderCallback(final EntityNuclearCreeper entitylivingbaseIn, final float partialTickTime) {
 		float f1 = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
-        float f2 = 1.0F + MathHelper.sin(f1 * 100.0F) * f1 * 0.01F;
+        final float f2 = 1.0F + MathHelper.sin(f1 * 100.0F) * f1 * 0.01F;
 
         if (f1 < 0.0F)
         {
@@ -35,16 +35,16 @@ public class RenderNuclearCreeper extends RenderLiving<EntityNuclearCreeper> {
 
         f1 *= f1;
         f1 *= f1;
-        float f3 = (1.0F + f1 * 0.4F) * f2;
-        float f4 = (1.0F + f1 * 0.1F) / f2;
+        final float f3 = (1.0F + f1 * 0.4F) * f2;
+        final float f4 = (1.0F + f1 * 0.1F) / f2;
         GL11.glScalef(f3, f4, f3);
 	}
 	
 	
 	
 	@Override
-	protected int getColorMultiplier(EntityNuclearCreeper entitylivingbaseIn, float lightBrightness, float partialTickTime) {
-		float f2 = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
+	protected int getColorMultiplier(final EntityNuclearCreeper entitylivingbaseIn, final float lightBrightness, final float partialTickTime) {
+		final float f2 = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
 
         if ((int)(f2 * 10.0F) % 2 == 0)
         {
@@ -64,14 +64,14 @@ public class RenderNuclearCreeper extends RenderLiving<EntityNuclearCreeper> {
                 i = 255;
             }
 
-            short short1 = 255;
-            short short2 = 255;
-            short short3 = 255;
+            final short short1 = 255;
+            final short short2 = 255;
+            final short short3 = 255;
             return i << 24 | short1 << 16 | short2 << 8 | short3;
         }
 	}
 	@Override
-	protected ResourceLocation getEntityTexture(EntityNuclearCreeper entity) {
+	protected ResourceLocation getEntityTexture(final EntityNuclearCreeper entity) {
 		return creeperTextures;
 	}
 }

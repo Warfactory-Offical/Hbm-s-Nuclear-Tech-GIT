@@ -37,7 +37,7 @@ public class BlockPowder extends Block implements IItemHazard {
 	
 	ItemHazardModule module;
 
-	public BlockPowder(Material mat, SoundType soundType, String s) {
+	public BlockPowder(final Material mat, final SoundType soundType, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -49,32 +49,32 @@ public class BlockPowder extends Block implements IItemHazard {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
 		return new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullBlock(IBlockState state){
+	public boolean isFullBlock(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean canEntitySpawn(IBlockState state, Entity entityIn){
+	public boolean canEntitySpawn(final IBlockState state, final Entity entityIn){
 		return ContaminationUtil.isRadImmune(entityIn);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		if(this == ModBlocks.fallout){
 			return ModItems.fallout;
 		}
@@ -82,28 +82,28 @@ public class BlockPowder extends Block implements IItemHazard {
 	}
 	
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos){
-		IBlockState state = world.getBlockState(pos.down());
-		Block block = state.getBlock();
-		return block != Blocks.ICE && block != Blocks.PACKED_ICE ? (block.isLeaves(state, world, pos.down()) ? true : (block == this && (state.getValue(META) & 7) == 7 ? true : state.isOpaqueCube() && state.getMaterial().blocksMovement())) : false;
+	public boolean canPlaceBlockAt(final World world, final BlockPos pos){
+		final IBlockState state = world.getBlockState(pos.down());
+		final Block block = state.getBlock();
+		return block != Blocks.ICE && block != Blocks.PACKED_ICE && (block.isLeaves(state, world, pos.down()) || (block == this && (state.getValue(META) & 7) == 7 || state.isOpaqueCube() && state.getMaterial().blocksMovement()));
 	}
 	
 	@Override
-	public void onEntityWalk(World world, BlockPos pos, Entity entity){
+	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity){
 		if(!world.isRemote && entity instanceof EntityLivingBase) {
 			((EntityLivingBase) entity).addPotionEffect(new PotionEffect(HbmPotion.radiation, 2 * 60 * 20, 14));
 		}
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos){
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos){
 		if(!this.canPlaceBlockAt(world, pos)) {
 			world.setBlockToAir(pos);
 		}
 	}
 
 	@Override
-	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos){
+	public boolean isReplaceable(final IBlockAccess worldIn, final BlockPos pos){
 		return true;
 	}
 	
@@ -114,16 +114,16 @@ public class BlockPowder extends Block implements IItemHazard {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{META});
+		return new BlockStateContainer(this, META);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(META);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(META, meta);
 	}
 }

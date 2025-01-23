@@ -17,15 +17,15 @@ public class RenderMiniNuke extends Render<EntityMiniNuke> {
 	public static final IRenderFactory<EntityMiniNuke> FACTORY = (RenderManager man) -> {return new RenderMiniNuke(man);};
 	
 	protected static ResourceLocation nuke_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/MiniNuke.png");
-	private ModelMiniNuke miniNuke;
+	private final ModelMiniNuke miniNuke;
 	
-	protected RenderMiniNuke(RenderManager renderManager) {
+	protected RenderMiniNuke(final RenderManager renderManager) {
 		super(renderManager);
 		miniNuke = new ModelMiniNuke();
 	}
 	
 	@Override
-	public void doRender(EntityMiniNuke entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMiniNuke entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
         GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -37,10 +37,10 @@ public class RenderMiniNuke extends Render<EntityMiniNuke> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
+	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMiniNuke entity) {
+	protected ResourceLocation getEntityTexture(final EntityMiniNuke entity) {
 		return nuke_rl;
 	}
 

@@ -24,7 +24,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay {
 
-	public BlockBedrockOreTE(String s) {
+	public BlockBedrockOreTE(final String s) {
 		super(Material.ROCK);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,31 +33,29 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		return new TileEntityBedrockOre("oreIron");
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(final IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
 		entityIn.setFire(3);
 	}
 	
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 		
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityBedrockOre))
+		if(!(te instanceof TileEntityBedrockOre ore))
 			return;
-		
-		TileEntityBedrockOre ore = (TileEntityBedrockOre) te;
 
-		List<String> text = new ArrayList();
+        final List<String> text = new ArrayList();
 		text.add(I18nUtil.resolveKey("desc.ore", BedrockOreRegistry.getOreName(ore.oreName)));
 		text.add(I18nUtil.resolveKey("desc.tier", ore.tier));
 		
@@ -78,14 +76,14 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay {
 		public TileEntityBedrockOre() {
 		}
 
-		public TileEntityBedrockOre(String oreName) {
+		public TileEntityBedrockOre(final String oreName) {
 			this.oreName = oreName;
 			this.color = BedrockOreRegistry.getOreColor(oreName);
 			this.tier = BedrockOreRegistry.getOreTier(oreName);
 			this.acidRequirement = BedrockOreRegistry.getFluidRequirement(this.tier);
 		}
 
-		public TileEntityBedrockOre setOre(String oreName){
+		public TileEntityBedrockOre setOre(final String oreName){
 			this.oreName = oreName;
 			this.color = BedrockOreRegistry.getOreColor(oreName);
 			this.tier = BedrockOreRegistry.getOreTier(oreName);
@@ -95,7 +93,7 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay {
 		}
 		
 		@Override
-		public void readFromNBT(NBTTagCompound nbt) {
+		public void readFromNBT(final NBTTagCompound nbt) {
 			super.readFromNBT(nbt);
 			this.oreName = nbt.getString("ore");
 			this.tier = nbt.getInteger("tier");
@@ -104,7 +102,7 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay {
 		}
 		
 		@Override
-		public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
 			nbt.setString("ore", this.oreName);
 			nbt.setInteger("tier", this.tier);
@@ -125,7 +123,7 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay {
 		}
 
 		@Override
-		public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
 			this.readFromNBT(pkt.getNbtCompound());
 		}
 	}

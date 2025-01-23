@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderMicrowave extends TileEntitySpecialRenderer<TileEntityMicrowave> {
 
 	@Override
-	public void render(TileEntityMicrowave mic, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMicrowave mic, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y - 0.75, z + 0.5D);
         GlStateManager.enableLighting();
@@ -28,7 +28,7 @@ public class RenderMicrowave extends TileEntitySpecialRenderer<TileEntityMicrowa
         ResourceManager.microwave.renderPart("mainbody_Cube.001");
         ResourceManager.microwave.renderPart("window_Cube.002");
 
-        double rot = (System.currentTimeMillis() * mic.speed / 10D) % 360;
+        final double rot = (System.currentTimeMillis() * mic.speed / 10D) % 360;
 
         if(mic.time > 0) {
 	        GL11.glTranslated(0.575D, 0.0D, -0.45D);

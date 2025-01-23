@@ -29,14 +29,14 @@ public class EntityHitDataHandler {
 	public static void updateSystem(){
 		if(hitData.isEmpty())
 			return;
-		Iterator<Entry<EntityLivingBase, List<BulletHit>>> itr = hitData.entrySet().iterator();
+		final Iterator<Entry<EntityLivingBase, List<BulletHit>>> itr = hitData.entrySet().iterator();
 		while(itr.hasNext()){
-			Entry<EntityLivingBase, List<BulletHit>> entry = itr.next();
+			final Entry<EntityLivingBase, List<BulletHit>> entry = itr.next();
 			if(GeneralConfig.bloodFX && entry.getValue().size() > 8 && entry.getKey().getHealth() <= 0){
-				EntityLivingBase ent = entry.getKey();
-				List<BulletHit> val = entry.getValue();
-				BulletHit hit = val.get(val.size()-1);
-				DamageSource source = ModDamageSource.causeBulletGibDamage(hit.bullet, hit.bullet.shooter == null ? hit.bullet : hit.bullet.shooter);
+				final EntityLivingBase ent = entry.getKey();
+				final List<BulletHit> val = entry.getValue();
+				final BulletHit hit = val.get(val.size()-1);
+				final DamageSource source = ModDamageSource.causeBulletGibDamage(hit.bullet, hit.bullet.shooter == null ? hit.bullet : hit.bullet.shooter);
 				PacketDispatcher.wrapper.sendToAllTracking(new PacketSpecialDeath(ent, 4), ent);
 				ent.getCombatTracker().trackDamage(source, ent.getHealth(), ent.getHealth());
 				ent.setDead();
@@ -51,9 +51,9 @@ public class EntityHitDataHandler {
 				itr.remove();
 				continue;
 			}
-			Iterator<BulletHit> listItr = entry.getValue().iterator();
+			final Iterator<BulletHit> listItr = entry.getValue().iterator();
 			while(listItr.hasNext()){
-				BulletHit hit = listItr.next();
+				final BulletHit hit = listItr.next();
 				hit.age --;
 				if(hit.age <= 0){
 					listItr.remove();
@@ -65,7 +65,7 @@ public class EntityHitDataHandler {
 		}
 	}
 	
-	public static void addHit(EntityLivingBase ent, EntityBulletBase bullet, Vec3d pos, Vec3d dir){
+	public static void addHit(final EntityLivingBase ent, final EntityBulletBase bullet, final Vec3d pos, final Vec3d dir){
 		List<BulletHit> data = hitData.get(ent);
 		if(data == null){
 			data = new ArrayList<>();
@@ -73,22 +73,22 @@ public class EntityHitDataHandler {
 		}
 		if(data.size() > 35)
 			return;
-		BulletHit hit = new BulletHit();
+		final BulletHit hit = new BulletHit();
 		hit.pos = pos;
 		hit.direction = dir;
 		hit.bullet = bullet;
 		data.add(hit);
 	}
 	
-	public static void encodeData(Entity ent, ByteBuf buf){
-		List<BulletHit> data = hitData.get(ent);
+	public static void encodeData(final Entity ent, final ByteBuf buf){
+		final List<BulletHit> data = hitData.get(ent);
 		if(data == null){
 			buf.writeByte(0);
 			return;
 		}
 		buf.writeByte(data.size());
 		for(int i = 0; i < data.size(); i ++){
-			BulletHit hit = data.get(i);
+			final BulletHit hit = data.get(i);
 			buf.writeDouble(hit.pos.x);
 			buf.writeDouble(hit.pos.y);
 			buf.writeDouble(hit.pos.z);
@@ -98,11 +98,11 @@ public class EntityHitDataHandler {
 		}
 	}
 	
-	public static List<BulletHit> decodeData(ByteBuf buf){
-		List<BulletHit> list = new ArrayList<>();
-		byte size = buf.readByte();
+	public static List<BulletHit> decodeData(final ByteBuf buf){
+		final List<BulletHit> list = new ArrayList<>();
+		final byte size = buf.readByte();
 		for(int i = 0; i < size; i ++){
-			BulletHit hit = new BulletHit();
+			final BulletHit hit = new BulletHit();
 			hit.pos = new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 			hit.direction = new Vec3d(buf.readFloat(), buf.readFloat(), buf.readFloat());
 			list.add(hit);

@@ -2,6 +2,7 @@ package com.hbm.inventory;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.hbm.lib.Library;
@@ -16,12 +17,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipesCommon {
 	
-	public static ItemStack[] copyStackArray(ItemStack[] array) {
+	public static ItemStack[] copyStackArray(final ItemStack[] array) {
 		
 		if(array == null)
 			return null;
 		
-		ItemStack[] clone = new ItemStack[array.length];
+		final ItemStack[] clone = new ItemStack[array.length];
 		
 		for(int i = 0; i < array.length; i++) {
 			
@@ -32,12 +33,12 @@ public class RecipesCommon {
 		return clone;
 	}
 	
-	public static ItemStack[] objectToStackArray(Object[] array) {
+	public static ItemStack[] objectToStackArray(final Object[] array) {
 
 		if(array == null)
 			return null;
 		
-		ItemStack[] clone = new ItemStack[array.length];
+		final ItemStack[] clone = new ItemStack[array.length];
 		
 		for(int i = 0; i < array.length; i++) {
 			
@@ -52,7 +53,7 @@ public class RecipesCommon {
 
 		protected int stacksize;
 
-		public boolean isApplicable(ItemStack stack) {
+		public boolean isApplicable(final ItemStack stack) {
 			return isApplicable(new NbtComparableStack(stack));
 		}
 
@@ -65,24 +66,24 @@ public class RecipesCommon {
 			return stacksize;
 		}
 		
-		public void setCount(int c){
+		public void setCount(final int c){
 			stacksize = c;
 		}
 		
 		/*
 		 * Is it unprofessional to pool around in child classes from an abstract superclass? Do I look like I give a shit?
 		 */
-		public boolean isApplicable(ComparableStack comp) {
+		public boolean isApplicable(final ComparableStack comp) {
 			
 			if(this instanceof ComparableStack) {
-				return ((ComparableStack)this).equals(comp);
+				return this.equals(comp);
 			}
 
 			if(this instanceof OreDictStack) {
 
-				List<ItemStack> ores = OreDictionary.getOres(((OreDictStack)this).name);
+				final List<ItemStack> ores = OreDictionary.getOres(((OreDictStack)this).name);
 
-				for(ItemStack stack : ores) {
+				for(final ItemStack stack : ores) {
 					if(stack.getItem() == comp.item && stack.getItemDamage() == comp.meta)
 						return true;
 				}
@@ -114,7 +115,7 @@ public class RecipesCommon {
 		public Item item;
 		public int meta;
 		
-		public ComparableStack(ItemStack stack) {
+		public ComparableStack(final ItemStack stack) {
 			this.item = stack.getItem();
 			this.stacksize = stack.getCount();
 			this.meta = stack.getItemDamage();
@@ -131,35 +132,35 @@ public class RecipesCommon {
 			return this;
 		}
 		
-		public ComparableStack(Item item) {
+		public ComparableStack(final Item item) {
 			this.item = item;
 			this.stacksize = 1;
 			this.meta = 0;
 		}
 		
-		public ComparableStack(Block item) {
+		public ComparableStack(final Block item) {
 			this.item = Item.getItemFromBlock(item);
 			this.stacksize = 1;
 			this.meta = 0;
 		}
 		
-		public ComparableStack(Item item, int stacksize) {
+		public ComparableStack(final Item item, final int stacksize) {
 			this(item);
 			this.stacksize = stacksize;
 		}
 		
-		public ComparableStack(Item item, int stacksize, int meta) {
+		public ComparableStack(final Item item, final int stacksize, final int meta) {
 			this(item, stacksize);
 			this.meta = meta;
 		}
 		
-		public ComparableStack(Block item, int stacksize) {
+		public ComparableStack(final Block item, final int stacksize) {
 			this.item = Item.getItemFromBlock(item);
 			this.stacksize = stacksize;
 			this.meta = 0;
 		}
 
-		public ComparableStack(Block item, int stacksize, int meta) {
+		public ComparableStack(final Block item, final int stacksize, final int meta) {
 			this.item = Item.getItemFromBlock(item);
 			this.stacksize = stacksize;
 			this.meta = meta;
@@ -177,17 +178,17 @@ public class RecipesCommon {
 		
 		@Override
 		public List<ItemStack> getStackList(){
-			return Arrays.asList(getStack());
+			return Collections.singletonList(getStack());
 		}
 		
 		public String[] getDictKeys() {
 			
-			int[] ids = OreDictionary.getOreIDs(toStack());
+			final int[] ids = OreDictionary.getOreIDs(toStack());
 			
 			if(ids == null || ids.length == 0)
 				return new String[0];
 			
-			String[] entries = new String[ids.length];
+			final String[] entries = new String[ids.length];
 			
 			for(int i = 0; i < ids.length; i++) {
 				
@@ -207,7 +208,7 @@ public class RecipesCommon {
 				item = Items.STICK;
 			}
 			
-			ResourceLocation name = Item.REGISTRY.getNameForObject(item);
+			final ResourceLocation name = Item.REGISTRY.getNameForObject(item);
 			
 			if(name == null) {
 				MainRegistry.logger.error("ComparableStack holds an item that does not seem to be registered. How does that even happen?");
@@ -223,35 +224,30 @@ public class RecipesCommon {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (this == obj)
 				return true;
 			if (obj == null)
 				return false;
-			if (!(obj instanceof ComparableStack))
+			if (!(obj instanceof ComparableStack other))
 				return false;
-			ComparableStack other = (ComparableStack) obj;
-			if (item == null) {
+            if (item == null) {
 				if (other.item != null)
 					return false;
 			} else if (!item.equals(other.item))
 				return false;
 			if (meta != OreDictionary.WILDCARD_VALUE && other.meta != OreDictionary.WILDCARD_VALUE && meta != other.meta)
 				return false;
-			if (stacksize != other.stacksize)
-				return false;
-			return true;
-		}
+            return stacksize == other.stacksize;
+        }
 
 		@Override
-		public int compareTo(AStack stack) {
+		public int compareTo(final AStack stack) {
 
-			if(stack instanceof ComparableStack) {
+			if(stack instanceof ComparableStack comp) {
 
-				ComparableStack comp = (ComparableStack) stack;
-
-				int thisID = Item.getIdFromItem(item);
-				int thatID = Item.getIdFromItem(comp.item);
+                final int thisID = Item.getIdFromItem(item);
+				final int thatID = Item.getIdFromItem(comp.item);
 
 				if(thisID > thatID)
 					return 1;
@@ -274,7 +270,7 @@ public class RecipesCommon {
 		}
 		
 		@Override
-		public boolean matchesRecipe(ItemStack stack, boolean ignoreSize) {
+		public boolean matchesRecipe(final ItemStack stack, final boolean ignoreSize) {
 			
 			if(stack == null)
 				return false;
@@ -284,12 +280,9 @@ public class RecipesCommon {
 			
 			if(this.meta != OreDictionary.WILDCARD_VALUE && stack.getItemDamage() != this.meta)
 				return false;
-			
-			if(!ignoreSize && stack.getCount() < this.stacksize)
-				return false;
-			
-			return true;
-		}
+
+            return ignoreSize || stack.getCount() >= this.stacksize;
+        }
 		
 		@Override
 		public AStack copy() {
@@ -304,14 +297,14 @@ public class RecipesCommon {
 	
 	public static class NbtComparableStack extends ComparableStack {
 		ItemStack stack;
-		public NbtComparableStack(ItemStack stack) {
+		public NbtComparableStack(final ItemStack stack) {
 			super(stack);
 			this.stack = stack.copy();
 		}
 		
 		@Override
 		public ComparableStack makeSingular() {
-			ItemStack st = stack.copy();
+			final ItemStack st = stack.copy();
 			st.setCount(1);
 			return new NbtComparableStack(st);
 		}
@@ -347,7 +340,7 @@ public class RecipesCommon {
 		}
 		
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if(!stack.hasTagCompound() || !(obj instanceof NbtComparableStack)) {
 				return super.equals(obj);
 			} else {
@@ -356,7 +349,7 @@ public class RecipesCommon {
 		}
 		
 		@Override
-		public boolean matchesRecipe(ItemStack stack, boolean ignoreSize){
+		public boolean matchesRecipe(final ItemStack stack, final boolean ignoreSize){
 			return super.matchesRecipe(stack, ignoreSize) && Library.tagContainsOther(this.stack.getTagCompound(), stack.getTagCompound());
 		}
 		
@@ -371,12 +364,12 @@ public class RecipesCommon {
 
 		public String name;
 
-		public OreDictStack(String name) {
+		public OreDictStack(final String name) {
 			this.name = name;
 			this.stacksize = 1;
 		}
 
-		public OreDictStack(String name, int stacksize) {
+		public OreDictStack(final String name, final int stacksize) {
 			this(name);
 			this.stacksize = stacksize;
 		}
@@ -387,14 +380,14 @@ public class RecipesCommon {
 		
 		@Override
 		public ItemStack getStack() {
-			ItemStack stack = toStacks().get(0);
+			final ItemStack stack = toStacks().get(0);
 			return ItemStackUtil.itemStackFrom(stack.getItem(), stacksize, stack.getMetadata());
 		}
 		
 		@Override
 		public List<ItemStack> getStackList(){
-			List<ItemStack> list = Library.copyItemStackList(toStacks());
-			for(ItemStack stack : list){
+			final List<ItemStack> list = Library.copyItemStackList(toStacks());
+			for(final ItemStack stack : list){
 				stack.setCount(this.stacksize);
 			}
 			return list;
@@ -402,7 +395,7 @@ public class RecipesCommon {
 
 		@Override
 		public int hashCode() {
-			return (""+name+this.stacksize).hashCode();
+			return (name+this.stacksize).hashCode();
 		}
 		
 		@Override
@@ -412,12 +405,11 @@ public class RecipesCommon {
 		}
 
 		@Override
-		public int compareTo(AStack stack) {
+		public int compareTo(final AStack stack) {
 
-			if(stack instanceof OreDictStack) {
+			if(stack instanceof OreDictStack comp) {
 
-				OreDictStack comp = (OreDictStack) stack;
-				return name.compareTo(comp.name);
+                return name.compareTo(comp.name);
 			}
 
 			//if compared with a CStack, the ODStack will yield
@@ -428,7 +420,7 @@ public class RecipesCommon {
 		}
 		
 		@Override
-		public boolean matchesRecipe(ItemStack stack, boolean ignoreSize) {
+		public boolean matchesRecipe(final ItemStack stack, final boolean ignoreSize) {
 			
 			if(stack == null || stack.isEmpty())
 				return false;
@@ -436,7 +428,7 @@ public class RecipesCommon {
 			if(!ignoreSize && stack.getCount() < this.stacksize)
 				return false;
 			
-			int[] ids = OreDictionary.getOreIDs(stack);
+			final int[] ids = OreDictionary.getOreIDs(stack);
 			
 			if(ids == null || ids.length == 0)
 				return false;
@@ -450,23 +442,20 @@ public class RecipesCommon {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (this == obj)
 				return true;
 			if (obj == null)
 				return false;
-			if (!(obj instanceof OreDictStack))
+			if (!(obj instanceof OreDictStack other))
 				return false;
-			OreDictStack other = (OreDictStack) obj;
-			if (name == null) {
+            if (name == null) {
 				if (other.name != null)
 					return false;
 			} else if (!name.equals(other.name))
 				return false;
-			if (stacksize != other.stacksize)
-				return false;
-			return true;
-		}
+            return stacksize == other.stacksize;
+        }
 
 		@Override
 		public AStack copy() {

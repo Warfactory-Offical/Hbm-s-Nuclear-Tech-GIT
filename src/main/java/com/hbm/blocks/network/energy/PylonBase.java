@@ -20,47 +20,47 @@ import net.minecraft.block.BlockContainer;
 
 public abstract class PylonBase extends BlockContainer implements ITooltipProvider
 {
-    protected PylonBase(Material materialIn, String s) {
+    protected PylonBase(final Material materialIn, final String s) {
         super(materialIn);
         this.setTranslationKey(s);
         this.setRegistryName(s);
         ModBlocks.ALL_BLOCKS.add(this);
     }
     
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity te = world.getTileEntity(pos);
+    public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        final TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntityPylonBase) {
             ((TileEntityPylonBase)te).disconnectAll();
         }
         super.breakBlock(world, pos, state);
     }
     
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(final IBlockState state) {
         return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
     
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(final IBlockState state) {
         return false;
     }
     
-    public boolean isBlockNormalCube(IBlockState state) {
+    public boolean isBlockNormalCube(final IBlockState state) {
         return false;
     }
     
-    public boolean isNormalCube(IBlockState state) {
+    public boolean isNormalCube(final IBlockState state) {
         return false;
     }
     
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
         return false;
     }
     
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
         return false;
     }
     
-    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-        this.addStandardInfo((List)list);
-        super.addInformation(stack, worldIn, (List)list, flagIn);
+    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+        this.addStandardInfo(list);
+        super.addInformation(stack, worldIn, list, flagIn);
     }
 }

@@ -7,12 +7,12 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderRadioThermal extends TileEntitySpecialRenderer<TileEntityHeaterRadioThermal> {
     @Override
-    public boolean isGlobalRenderer(TileEntityHeaterRadioThermal te) {
+    public boolean isGlobalRenderer(final TileEntityHeaterRadioThermal te) {
         return true;
     }
 
     @Override
-    public void render(TileEntityHeaterRadioThermal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(final TileEntityHeaterRadioThermal te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_LIGHTING);

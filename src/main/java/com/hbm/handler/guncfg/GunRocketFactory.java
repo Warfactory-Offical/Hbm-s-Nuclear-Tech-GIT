@@ -24,7 +24,7 @@ public class GunRocketFactory {
 
 	public static GunConfiguration getGustavConfig() {
 		
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 30;
 		config.roundsPerCycle = 1;
@@ -65,7 +65,7 @@ public class GunRocketFactory {
 	
 	public static GunConfiguration getQuadroConfig() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 5;
 		config.roundsPerCycle = 1;
@@ -130,7 +130,7 @@ public class GunRocketFactory {
 	
 	public static GunConfiguration getKarlConfig() {
 		
-		GunConfiguration config = getGustavConfig();
+		final GunConfiguration config = getGustavConfig();
 		
 		config.reloadDuration = 20;
 		
@@ -153,7 +153,7 @@ public class GunRocketFactory {
 	
 	public static GunConfiguration getPanzConfig() {
 		
-		GunConfiguration config = getGustavConfig();
+		final GunConfiguration config = getGustavConfig();
 		
 		config.reloadDuration = 25;
 		config.hasSights = true;
@@ -170,7 +170,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket;
 		bullet.dmgMin = 10;
@@ -183,7 +183,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketHEConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_he;
 		bullet.dmgMin = 10;
@@ -197,7 +197,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketIncendiaryConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_incendiary;
 		bullet.dmgMin = 10;
@@ -212,7 +212,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketEMPConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_emp;
 		bullet.dmgMin = 10;
@@ -226,7 +226,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketSleekConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_sleek;
 		bullet.dmgMin = 10;
@@ -241,7 +241,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketShrapnelConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_shrapnel;
 		bullet.dmgMin = 10;
@@ -255,7 +255,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketGlareConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_glare;
 		bullet.velocity = 5.0F;
@@ -271,7 +271,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketNukeConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_nuclear;
 		bullet.velocity = 1.5F;
@@ -288,7 +288,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketChlorineConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_toxic;
 		bullet.velocity = 1.5F;
@@ -304,7 +304,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketRPCConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_rpc;
 		bullet.velocity = 3.0F;
@@ -321,9 +321,9 @@ public class GunRocketFactory {
 		
 		bullet.bRicochet = new IBulletRicochetBehavior() {
 			
-			public void behaveBlockRicochet(EntityBulletBase bullet, int bX, int bY, int bZ) {
-				BlockPos pos = new BlockPos(bX, bY, bZ);
-				World worldObj = bullet.world;
+			public void behaveBlockRicochet(final EntityBulletBase bullet, final int bX, final int bY, final int bZ) {
+				final BlockPos pos = new BlockPos(bX, bY, bZ);
+				final World worldObj = bullet.world;
 				if(!worldObj.isRemote && 
 						(worldObj.getBlockState(pos).getMaterial() == Material.WOOD ||
 						worldObj.getBlockState(pos).getMaterial() == Material.PLANTS ||
@@ -338,7 +338,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketPhosphorusConfig() {
 		
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 		
 		bullet.ammo = ModItems.ammo_rocket_phosphorus;
 		bullet.dmgMin = 10;
@@ -355,7 +355,7 @@ public class GunRocketFactory {
 	
 	public static BulletConfiguration getRocketCanisterConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 
 		bullet.ammo = ModItems.ammo_rocket_canister;
 		bullet.dmgMin = 10;
@@ -366,7 +366,7 @@ public class GunRocketFactory {
 		bullet.bUpdate = new IBulletUpdateBehavior() {
 
 			@Override
-			public void behaveUpdate(EntityBulletBase bullet) {
+			public void behaveUpdate(final EntityBulletBase bullet) {
 
 				if(!bullet.world.isRemote) {
 
@@ -375,7 +375,7 @@ public class GunRocketFactory {
 
 						for(int i = 0; i < 50; i++) {
 
-							EntityBulletBase bolt = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.M44_AP);
+							final EntityBulletBase bolt = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.M44_AP);
 							bolt.setPosition(bullet.posX, bullet.posY, bullet.posZ);
 							bolt.shoot(bullet.motionX, bullet.motionY, bullet.motionZ, 0.25F, 0.1F);
 							bullet.world.spawnEntity(bolt);

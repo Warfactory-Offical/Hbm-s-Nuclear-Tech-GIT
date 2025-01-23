@@ -1,14 +1,10 @@
 package com.hbm.items.armor;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.main.AdvancementManager;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,16 +20,19 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
+import java.util.List;
+import java.util.UUID;
+
 public class ItemModKnife extends ItemArmorMod {
 	
 	public static final UUID trigamma_UUID = UUID.fromString("86d44ca9-44f1-4ca6-bdbb-d9d33bead251");
 
-	public ItemModKnife(String s) {
+	public ItemModKnife(final String s) {
 		super(ArmorModHandler.extra, false, true, false, false, s);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
 		list.add(TextFormatting.RED + I18nUtil.resolveKey("desc.knifeinjector1"));
 		list.add("");
 		list.add(TextFormatting.RED + I18nUtil.resolveKey("desc.knifeinjector2"));
@@ -43,12 +42,12 @@ public class ItemModKnife extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
+	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
 		list.add(TextFormatting.RED + "  " + stack.getDisplayName());
 	}
 	
 	@Override
-	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
+	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
 		
 		if(!entity.world.isRemote) {
 			
@@ -56,23 +55,23 @@ public class ItemModKnife extends ItemArmorMod {
 
 				entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, HBMSoundHandler.slicer, SoundCategory.PLAYERS, 1.0F, 1.0F);
 				
-				NBTTagCompound nbt = new NBTTagCompound();
+				final NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "bloodvomit");
 				nbt.setInteger("entity", entity.getEntityId());
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(nbt, 0, 0, 0),  new TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 25));
 				
-				IAttributeInstance attributeinstance = entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH);
+				final IAttributeInstance attributeinstance = entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH);
 				
-				float health = entity.getMaxHealth();
+				final float health = entity.getMaxHealth();
 				
 				try {
 					attributeinstance.removeModifier(attributeinstance.getModifier(trigamma_UUID));
-				} catch(Exception ex) { }
+				} catch(final Exception ex) { }
 				
 				attributeinstance.applyModifier(new AttributeModifier(trigamma_UUID, "digamma", -(entity.getMaxHealth() - health + 2), 0));
 				
 				if(entity instanceof EntityPlayerMP) {
-					NBTTagCompound data = new NBTTagCompound();
+					final NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "properJolt");
 					
 					if(entity.getMaxHealth() > 2F) {

@@ -21,7 +21,7 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 	private static long lastSeed;
 
 	@Override
-	public boolean matches(InventoryCrafting inventory, World world) {
+	public boolean matches(final InventoryCrafting inventory, final World world) {
 		
 		if(world == null || world.provider == null || world.getWorldInfo() == null || HbmWorldUtility.getProviderWorld(world.provider) == null)
 			return false;
@@ -30,8 +30,8 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 			generateRecipe(world);
 		
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = inventory.getStackInRowAndColumn(i % 3, i / 3);
-			ItemStack recipe = MKURecipe[i];
+			final ItemStack stack = inventory.getStackInRowAndColumn(i % 3, i / 3);
+			final ItemStack recipe = MKURecipe[i];
 			
 			if(stack.isEmpty() && recipe == null)
 				continue;
@@ -45,25 +45,23 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 		return true;
 	}
 	
-	public static void generateRecipe(World world) {
-		Random rand = new Random(world.getSeed());
+	public static void generateRecipe(final World world) {
+		final Random rand = new Random(world.getSeed());
 		
 		if(lastSeed == world.getSeed() && MKURecipe != null || world.provider == null || world.getWorldInfo() == null || HbmWorldUtility.getProviderWorld(world.provider) == null)
 			return;
 		
 		lastSeed = world.getSeed();
 		
-		List<ItemStack> list = Arrays.asList(new ItemStack[] {
-				ItemStackUtil.itemStackFrom(ModItems.powder_iodine),
-				ItemStackUtil.itemStackFrom(ModItems.powder_fire),
-				ItemStackUtil.itemStackFrom(ModItems.dust),
-				ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY)),
-				ItemStackUtil.itemStackFrom(ModItems.morning_glory),
-				ItemStackUtil.itemStackFrom(ModItems.syringe_metal_empty),
-				null,
-				null,
-				null
-		});
+		final List<ItemStack> list = Arrays.asList(ItemStackUtil.itemStackFrom(ModItems.powder_iodine),
+                ItemStackUtil.itemStackFrom(ModItems.powder_fire),
+                ItemStackUtil.itemStackFrom(ModItems.dust),
+                ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.MERCURY)),
+                ItemStackUtil.itemStackFrom(ModItems.morning_glory),
+                ItemStackUtil.itemStackFrom(ModItems.syringe_metal_empty),
+                null,
+                null,
+                null);
 		
 		Collections.shuffle(list, rand);
 		
@@ -76,7 +74,7 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 	}
 
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting inventory) {
+	public ItemStack getCraftingResult(final InventoryCrafting inventory) {
 		return getRecipeOutput();
 	}
 
@@ -86,7 +84,7 @@ public class MKUCraftingHandler extends net.minecraftforge.registries.IForgeRegi
 	}
 
 	@Override
-	public boolean canFit(int width, int height){
+	public boolean canFit(final int width, final int height){
 		return width >= 3 && height >= 3;
 	}
 }

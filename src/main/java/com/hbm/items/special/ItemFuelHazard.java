@@ -12,21 +12,21 @@ import net.minecraft.world.World;
 
 public class ItemFuelHazard extends ItemHazard {
 
-	private int burntime;
+	private final int burntime;
 	
-	public ItemFuelHazard(String s, int burntime, boolean pythonic){
+	public ItemFuelHazard(final String s, final int burntime, final boolean pythonic){
 		super(0F, pythonic, s);
 		this.burntime = burntime;
 	}
 
 	
 	@Override
-	public int getItemBurnTime(ItemStack itemStack) {
+	public int getItemBurnTime(final ItemStack itemStack) {
 		return burntime;
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 	//	super.addInformation(stack, worldIn, list, flagIn);
 		if(this == ModItems.dust)
 		{

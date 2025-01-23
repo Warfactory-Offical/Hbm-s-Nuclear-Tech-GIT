@@ -28,19 +28,19 @@ public class DummyBlockAssembler extends DummyOldBase {
 
 	public static boolean safeBreak = false;
 	
-	public DummyBlockAssembler(Material materialIn, String s, boolean port) {
+	public DummyBlockAssembler(final Material materialIn, final String s, final boolean port) {
 		super(materialIn, s, port);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return this == ModBlocks.dummy_port_assembler ? new TileEntityDummyPort() : new TileEntityDummy();
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 		if(!safeBreak) {
-    		TileEntity te = world.getTileEntity(pos);
+    		final TileEntity te = world.getTileEntity(pos);
     		if(te != null && te instanceof TileEntityDummy) {
     			if(!world.isRemote)
     				world.destroyBlock(((TileEntityDummy)te).target, true);
@@ -49,52 +49,52 @@ public class DummyBlockAssembler extends DummyOldBase {
     	world.removeTileEntity(pos);
 	}
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return false;
 	}
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
 		return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.machine_assembler));
 	}
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking()) {
-    		TileEntity te = world.getTileEntity(pos);
+    		final TileEntity te = world.getTileEntity(pos);
     		if(te instanceof TileEntityDummy) {
     			
-    			TileEntityMachineAssembler entity = (TileEntityMachineAssembler) world.getTileEntity(((TileEntityDummy)te).target);
+    			final TileEntityMachineAssembler entity = (TileEntityMachineAssembler) world.getTileEntity(((TileEntityDummy)te).target);
     			if(entity != null)
     			{
     				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_assembler, world, ((TileEntityDummy)te).target.getX(), ((TileEntityDummy)te).target.getY(), ((TileEntityDummy)te).target.getZ());

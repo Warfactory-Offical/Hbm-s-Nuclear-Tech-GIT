@@ -174,7 +174,7 @@ public class ModelFolly extends ModelBase {
 		setRotation(SPointer, 0F, 0F, 0F);
 	}
 
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		SB1.render(f5);
@@ -201,11 +201,11 @@ public class ModelFolly extends ModelBase {
 		SPointer.render(f5);
 	}
 
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, int state, int timer) {
+	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final int state, final int timer) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
-		float rotate = (float) (Math.PI * -70D / 180D);
+		final float rotate = (float) (Math.PI * -70D / 180D);
 
 		if (state == 1 || state == 2) {
 			SB1.rotateAngleZ = rotate;
@@ -273,13 +273,11 @@ public class ModelFolly extends ModelBase {
 			GlStateManager.disableLighting();
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 			
-			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder buf = tessellator.getBuffer();
-			boolean red = false;
+			final Tessellator tessellator = Tessellator.getInstance();
+			final BufferBuilder buf = tessellator.getBuffer();
+			boolean red = timer == 0;
 
-			if (timer == 0)
-				red = true;
-			buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+            buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 			
 			buf.pos(-32F / 16F, 0 + 4F / 16F, 0).color(red ? 1.0F : 0.0F, red ? 0.0F : 1.0F, 0.0F, 1.0F).endVertex();
 			buf.pos(-150, timer, 0).color(red ? 1.0F : 0.0F, red ? 0.0F : 1.0F, 0.0F, 1.0F).endVertex();
@@ -302,13 +300,13 @@ public class ModelFolly extends ModelBase {
 		}
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 }

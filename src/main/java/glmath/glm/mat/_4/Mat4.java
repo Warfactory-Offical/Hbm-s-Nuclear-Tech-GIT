@@ -25,7 +25,7 @@ public class Mat4 extends matrixQuery {
         this(1.0f);
     }
 
-    public Mat4(float f) {
+    public Mat4(final float f) {
         this(
                 f, 0, 0, 0,
                 0, f, 0, 0,
@@ -33,7 +33,7 @@ public class Mat4 extends matrixQuery {
                 0, 0, 0, f);
     }
 
-    public Mat4(Vec4 v) {
+    public Mat4(final Vec4 v) {
         this(
                 v.x, 0, 0, 0,
                 0, v.y, 0, 0,
@@ -41,19 +41,19 @@ public class Mat4 extends matrixQuery {
                 0, 0, 0, v.w);
     }
 
-    public Mat4(float[] f) {
+    public Mat4(final float[] f) {
         this(f, 0);
     }
 
-    public Mat4(float[] f, int offset) {
+    public Mat4(final float[] f, final int offset) {
         this(
-                f[offset + 0], f[offset + 1], f[offset + 2], f[offset + 3],
+                f[offset], f[offset + 1], f[offset + 2], f[offset + 3],
                 f[offset + 4], f[offset + 5], f[offset + 6], f[offset + 7],
                 f[offset + 8], f[offset + 9], f[offset + 10], f[offset + 11],
                 f[offset + 12], f[offset + 13], f[offset + 14], f[offset + 15]);
     }
 
-    public Mat4(Mat3 mat) {
+    public Mat4(final Mat3 mat) {
         this(
                 mat.m00, mat.m01, mat.m02, 0,
                 mat.m10, mat.m11, mat.m12, 0,
@@ -61,7 +61,7 @@ public class Mat4 extends matrixQuery {
                 0, 0, 0, 1);
     }
 
-    public Mat4(Mat4 mat) {
+    public Mat4(final Mat4 mat) {
         this(
                 mat.m00, mat.m01, mat.m02, mat.m03,
                 mat.m10, mat.m11, mat.m12, mat.m13,
@@ -69,8 +69,8 @@ public class Mat4 extends matrixQuery {
                 mat.m30, mat.m31, mat.m32, mat.m33);
     }
 
-    public Mat4(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13,
-            double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) {
+    public Mat4(final double m00, final double m01, final double m02, final double m03, final double m10, final double m11, final double m12, final double m13,
+                final double m20, final double m21, final double m22, final double m23, final double m30, final double m31, final double m32, final double m33) {
         this(
                 (float) m00, (float) m01, (float) m02, (float) m03,
                 (float) m10, (float) m11, (float) m12, (float) m13,
@@ -78,8 +78,8 @@ public class Mat4 extends matrixQuery {
                 (float) m30, (float) m31, (float) m32, (float) m33);
     }
 
-    public Mat4(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13,
-            float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) {
+    public Mat4(final float m00, final float m01, final float m02, final float m03, final float m10, final float m11, final float m12, final float m13,
+                final float m20, final float m21, final float m22, final float m23, final float m30, final float m31, final float m32, final float m33) {
         this.m00 = m00;
         this.m01 = m01;
         this.m02 = m02;
@@ -102,7 +102,7 @@ public class Mat4 extends matrixQuery {
         return set(0);
     }
 
-    public Mat4 set(float f) {
+    public Mat4 set(final float f) {
         return set(
                 f, 0, 0, 0,
                 0, f, 0, 0,
@@ -110,7 +110,7 @@ public class Mat4 extends matrixQuery {
                 0, 0, 0, f);
     }
 
-    public Mat4 set(Vec4 v) {
+    public Mat4 set(final Vec4 v) {
         return set(
                 v.x, 0, 0, 0,
                 0, v.y, 0, 0,
@@ -118,7 +118,7 @@ public class Mat4 extends matrixQuery {
                 0, 0, 0, v.w);
     }
 
-    public Mat4 set(Vec3 v) {
+    public Mat4 set(final Vec3 v) {
         return set(
                 v.x, 0, 0, 0,
                 0, v.y, 0, 0,
@@ -126,7 +126,7 @@ public class Mat4 extends matrixQuery {
                 0, 0, 0, 1);
     }
 
-    public Mat4 set(Mat4 mat) {
+    public Mat4 set(final Mat4 mat) {
         return set(
                 mat.m00, mat.m01, mat.m02, mat.m03,
                 mat.m10, mat.m11, mat.m12, mat.m13,
@@ -134,8 +134,8 @@ public class Mat4 extends matrixQuery {
                 mat.m30, mat.m31, mat.m32, mat.m33);
     }
 
-    public Mat4 set(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13,
-            double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) {
+    public Mat4 set(final double m00, final double m01, final double m02, final double m03, final double m10, final double m11, final double m12, final double m13,
+                    final double m20, final double m21, final double m22, final double m23, final double m30, final double m31, final double m32, final double m33) {
 
         return set(
                 (float) m00, (float) m01, (float) m02, (float) m03,
@@ -144,8 +144,8 @@ public class Mat4 extends matrixQuery {
                 (float) m30, (float) m31, (float) m32, (float) m33);
     }
 
-    public Mat4 set(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13,
-            float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) {
+    public Mat4 set(final float m00, final float m01, final float m02, final float m03, final float m10, final float m11, final float m12, final float m13,
+                    final float m20, final float m21, final float m22, final float m23, final float m30, final float m31, final float m32, final float m33) {
 
         this.m00 = m00;
         this.m01 = m01;
@@ -166,11 +166,11 @@ public class Mat4 extends matrixQuery {
         return this;
     }
 
-    public Mat4 set(int column, int row, float value) {
+    public Mat4 set(final int column, final int row, final float value) {
 
         if (column >= 0 && column < 4 && row >= 0 && row < 4) {
 
-            float[] f = this.toFa_();
+            final float[] f = this.toFa_();
             f[(column * 4) + row] = value;
             this.set(f);
         }
@@ -178,13 +178,13 @@ public class Mat4 extends matrixQuery {
         return this;
     }
 
-    public Mat4 set(float[] f) {
+    public Mat4 set(final float[] f) {
         return set(f, 0);
     }
 
-    public Mat4 set(float[] f, int offset) {
+    public Mat4 set(final float[] f, final int offset) {
         set(
-                f[offset + 0], f[offset + 1], f[offset + 2], f[offset + 3],
+                f[offset], f[offset + 1], f[offset + 2], f[offset + 3],
                 f[offset + 4], f[offset + 5], f[offset + 6], f[offset + 7],
                 f[offset + 8], f[offset + 9], f[offset + 10], f[offset + 11],
                 f[offset + 12], f[offset + 13], f[offset + 14], f[offset + 15]);
@@ -192,51 +192,51 @@ public class Mat4 extends matrixQuery {
         return this;
     }
 
-    public Mat4 c0(Vec4 v) {
+    public Mat4 c0(final Vec4 v) {
         return set(v.x, v.y, v.z, v.w, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    public Mat4 c0(Vec3 v, float f) {
+    public Mat4 c0(final Vec3 v, final float f) {
         return set(v.x, v.y, v.z, f, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    public Mat4 c0(float x, float y, float z, float w) {
+    public Mat4 c0(final float x, final float y, final float z, final float w) {
         return set(x, y, z, w, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    public Mat4 c1(Vec4 v) {
+    public Mat4 c1(final Vec4 v) {
         return set(m00, m01, m02, m03, v.x, v.y, v.z, v.w, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    public Mat4 c1(Vec3 v, float f) {
+    public Mat4 c1(final Vec3 v, final float f) {
         return set(m00, m01, m02, m03, v.x, v.y, v.z, f, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    public Mat4 c1(float x, float y, float z, float w) {
+    public Mat4 c1(final float x, final float y, final float z, final float w) {
         return set(m00, m01, m02, m03, x, y, z, w, m20, m21, m22, m23, m30, m31, m32, m33);
     }
 
-    public Mat4 c2(Vec4 v) {
+    public Mat4 c2(final Vec4 v) {
         return set(m00, m01, m02, m03, m10, m11, m12, m13, v.x, v.y, v.z, v.w, m30, m31, m32, m33);
     }
 
-    public Mat4 c2(Vec3 v, float f) {
+    public Mat4 c2(final Vec3 v, final float f) {
         return set(m00, m01, m02, m03, m10, m11, m12, m13, v.x, v.y, v.z, f, m30, m31, m32, m33);
     }
 
-    public Mat4 c2(float x, float y, float z, float w) {
+    public Mat4 c2(final float x, final float y, final float z, final float w) {
         return set(m00, m01, m02, m03, m10, m11, m12, m13, x, y, z, w, m30, m31, m32, m33);
     }
 
-    public Mat4 c3(Vec4 v) {
+    public Mat4 c3(final Vec4 v) {
         return set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, v.x, v.y, v.z, v.w);
     }
 
-    public Mat4 c3(Vec3 v, float f) {
+    public Mat4 c3(final Vec3 v, final float f) {
         return set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, v.x, v.y, v.z, f);
     }
 
-    public Mat4 c3(float x, float y, float z, float w) {
+    public Mat4 c3(final float x, final float y, final float z, final float w) {
         return set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, x, y, z, w);
     }
 
@@ -255,15 +255,15 @@ public class Mat4 extends matrixQuery {
         return this;
     }
 
-    public Vec4 mul(Vec4 v) {
+    public Vec4 mul(final Vec4 v) {
         return mul(v, v);
     }
 
-    public Vec4 mul_(Vec4 v) {
+    public Vec4 mul_(final Vec4 v) {
         return mul(v, new Vec4());
     }
 
-    public Vec4 mul(Vec4 right, Vec4 res) {
+    public Vec4 mul(final Vec4 right, final Vec4 res) {
         res.set(m00 * right.x + m10 * right.y + m20 * right.z + m30 * right.w,
                 m01 * right.x + m11 * right.y + m21 * right.z + m31 * right.w,
                 m02 * right.x + m12 * right.y + m22 * right.z + m32 * right.w,
@@ -271,15 +271,15 @@ public class Mat4 extends matrixQuery {
         return res;
     }
 
-    public Mat4 mul_(Mat4 right) {
+    public Mat4 mul_(final Mat4 right) {
         return mul(right, new Mat4());
     }
 
-    public Mat4 mul(Mat4 right) {
+    public Mat4 mul(final Mat4 right) {
         return mul(right, this);
     }
 
-    public Mat4 mul(Mat4 right, Mat4 dest) {
+    public Mat4 mul(final Mat4 right, final Mat4 dest) {
         dest.set(
                 m00 * right.m00 + m10 * right.m01 + m20 * right.m02 + m30 * right.m03,
                 m01 * right.m00 + m11 * right.m01 + m21 * right.m02 + m31 * right.m03,
@@ -300,11 +300,11 @@ public class Mat4 extends matrixQuery {
         return dest;
     }
 
-    public static Mat4 cast_(Quat q) {
+    public static Mat4 cast_(final Quat q) {
         return cast(q, new Mat4());
     }
 
-    public static Mat4 cast(Quat q, Mat4 res) {
+    public static Mat4 cast(final Quat q, final Mat4 res) {
         res.m00 = 1 - 2 * q.y * q.y - 2 * q.z * q.z;
         res.m01 = 2 * q.x * q.y + 2 * q.w * q.z;
         res.m02 = 2 * q.x * q.z - 2 * q.w * q.y;
@@ -327,11 +327,11 @@ public class Mat4 extends matrixQuery {
         return res;
     }
 
-    public boolean equals3(Mat4 other) {
+    public boolean equals3(final Mat4 other) {
         return equals3(other, 2);
     }
 
-    public boolean equals3(Mat4 other, int maxUlps) {
+    public boolean equals3(final Mat4 other, final int maxUlps) {
         if (!Glm.compareFloatEquals(m00, other.m00, maxUlps)) {
             return false;
         }
@@ -359,11 +359,11 @@ public class Mat4 extends matrixQuery {
         return Glm.compareFloatEquals(m22, other.m22, maxUlps);
     }
 
-    public boolean equals(Mat4 other) {
+    public boolean equals(final Mat4 other) {
         return equals(other, 2);
     }
 
-    public boolean equals(Mat4 other, int maxUlps) {
+    public boolean equals(final Mat4 other, final int maxUlps) {
         if (!Glm.compareFloatEquals(m00, other.m00, maxUlps)) {
             return false;
         }
@@ -416,7 +416,7 @@ public class Mat4 extends matrixQuery {
         return toMat3(new Mat3());
     }
 
-    public Mat3 toMat3(Mat3 res) {
+    public Mat3 toMat3(final Mat3 res) {
         return res.set(
                 m00, m01, m02, 
                 m10, m11, m12, 
@@ -440,7 +440,7 @@ public class Mat4 extends matrixQuery {
      * @param res
      * @return
      */
-    public float[] toFa(float[] res) {
+    public float[] toFa(final float[] res) {
         return toFa(res, 0);
     }
 
@@ -452,8 +452,8 @@ public class Mat4 extends matrixQuery {
      * @param index
      * @return
      */
-    public float[] toFa(float[] res, int index) {
-        res[index + 0] = m00;
+    public float[] toFa(final float[] res, final int index) {
+        res[index] = m00;
         res[index + 1] = m01;
         res[index + 2] = m02;
         res[index + 3] = m03;
@@ -476,13 +476,13 @@ public class Mat4 extends matrixQuery {
         return Mat4.this.toDbb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()));
     }
 
-    public ByteBuffer toDbb(ByteBuffer res) {
+    public ByteBuffer toDbb(final ByteBuffer res) {
         return toDbb(res, 0);
     }
 
-    public ByteBuffer toDbb(ByteBuffer res, int index) {
-        res.putFloat(index + 0 * Float.BYTES, m00);
-        res.putFloat(index + 1 * Float.BYTES, m01);
+    public ByteBuffer toDbb(final ByteBuffer res, final int index) {
+        res.putFloat(index, m00);
+        res.putFloat(index + Float.BYTES, m01);
         res.putFloat(index + 2 * Float.BYTES, m02);
         res.putFloat(index + 3 * Float.BYTES, m03);
         res.putFloat(index + 4 * Float.BYTES, m10);
@@ -504,12 +504,12 @@ public class Mat4 extends matrixQuery {
         return toDfb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer());
     }
 
-    public FloatBuffer toDfb(FloatBuffer res) {
+    public FloatBuffer toDfb(final FloatBuffer res) {
         return toDfb(res, 0);
     }
 
-    public FloatBuffer toDfb(FloatBuffer res, int index) {
-        res.put(index + 0, m00);
+    public FloatBuffer toDfb(final FloatBuffer res, final int index) {
+        res.put(index, m00);
         res.put(index + 1, m01);
         res.put(index + 2, m02);
         res.put(index + 3, m03);
@@ -532,16 +532,16 @@ public class Mat4 extends matrixQuery {
         print("", true);
     }
 
-    public void print(String title) {
+    public void print(final String title) {
         print(title, true);
     }
 
-    public void print(boolean outStream) {
+    public void print(final boolean outStream) {
         print("", outStream);
     }
 
-    public void print(String title, boolean outStream) {
-        String res = title + "\n"
+    public void print(final String title, final boolean outStream) {
+        final String res = title + "\n"
                 + "| " + m00 + " " + m10 + " " + m20 + " " + m30 + " |\n"
                 + "| " + m01 + " " + m11 + " " + m21 + " " + m31 + " |\n"
                 + "| " + m02 + " " + m12 + " " + m22 + " " + m32 + " |\n"

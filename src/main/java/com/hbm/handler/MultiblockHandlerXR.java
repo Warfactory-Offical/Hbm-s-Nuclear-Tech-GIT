@@ -15,18 +15,18 @@ public class MultiblockHandlerXR {
 	//											U  D  N  S  W  E
 	public static int[] uni = 		new int[] { 3, 0, 4, 4, 4, 4 };
 	
-	public static boolean checkSpace(World world, int x, int y, int z, int[] dim, int ox, int oy, int oz, ForgeDirection dir) {
+	public static boolean checkSpace(final World world, final int x, final int y, final int z, final int[] dim, final int ox, final int oy, final int oz, final ForgeDirection dir) {
 		return checkSpace(world, x, y, z, dim, ox, oy, oz, dir.toEnumFacing());
 	}
 	
-	public static boolean checkSpace(World world, int x, int y, int z, int[] dim, int ox, int oy, int oz, EnumFacing dir) {
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	public static boolean checkSpace(final World world, final int x, final int y, final int z, final int[] dim, final int ox, final int oy, final int oz, final EnumFacing dir) {
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if(dim == null || dim.length != 6)
 			return false;
 		
 		int count = 0;
 		
-		int[] rot = rotate(dim, dir);
+		final int[] rot = rotate(dim, dir);
 
 		for(int a = x - rot[4]; a <= x + rot[5]; a++) {
 			for(int b = y - rot[1]; b <= y + rot[0]; b++) {
@@ -53,19 +53,19 @@ public class MultiblockHandlerXR {
 		return true;
 	}
 	
-	public static void fillSpace(World world, int x, int y, int z, int[] dim, Block block, ForgeDirection dir) {
+	public static void fillSpace(final World world, final int x, final int y, final int z, final int[] dim, final Block block, final ForgeDirection dir) {
 		fillSpace(world, x, y, z, dim, block, dir.toEnumFacing());
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static void fillSpace(World world, int x, int y, int z, int[] dim, Block block, EnumFacing dir) {
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	public static void fillSpace(final World world, final int x, final int y, final int z, final int[] dim, final Block block, final EnumFacing dir) {
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if(dim == null || dim.length != 6)
 			return;
 		
 		int count = 0;
 		
-		int[] rot = rotate(dim, dir);
+		final int[] rot = rotate(dim, dir);
 		
 		BlockDummyable.safeRem = true;
 
@@ -108,8 +108,8 @@ public class MultiblockHandlerXR {
 	}
 	
 	@Deprecated
-	public static void emptySpace(World world, int x, int y, int z, int[] dim, Block block, EnumFacing dir) {
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	public static void emptySpace(final World world, final int x, final int y, final int z, final int[] dim, final Block block, final EnumFacing dir) {
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if(dim == null || dim.length != 6)
 			return;
 
@@ -117,7 +117,7 @@ public class MultiblockHandlerXR {
 		
 		System.out.println("emptyspace is deprecated and shouldn't even be executed");
 		
-		int[] rot = rotate(dim, dir);
+		final int[] rot = rotate(dim, dir);
 
 		for(int a = x - rot[4]; a <= x + rot[5]; a++) {
 			for(int b = y - rot[1]; b <= y + rot[0]; b++) {
@@ -137,7 +137,7 @@ public class MultiblockHandlerXR {
 		}
 	}
 	
-	public static int[] rotate(int[] dim, EnumFacing dir) {
+	public static int[] rotate(final int[] dim, final EnumFacing dir) {
 		
 		if(dim == null)
 			return null;

@@ -13,30 +13,30 @@ import net.minecraft.world.World;
 
 public class TurretLight extends TurretBase {
 
-	public TurretLight(Material materialIn, String s) {
+	public TurretLight(final Material materialIn, final String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityTurretLight();
 	}
 
 	@Override
-	public boolean executeHoldAction(World world, int i, double yaw, double pitch, BlockPos pos) {
+	public boolean executeHoldAction(final World world, final int i, final double yaw, double pitch, final BlockPos pos) {
 
 		boolean flag = false;
 		
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
 		
 		if(pitch < -60)
 			pitch = -60;
 		if(pitch > 30)
 			pitch = 30;
 
-		TileEntityTurretLight te = (TileEntityTurretLight)world.getTileEntity(pos);
+		final TileEntityTurretLight te = (TileEntityTurretLight)world.getTileEntity(pos);
 		
 		if(i == 0 && te.spin < 10)
 			world.playSound(null, x + 0.5, y + 0.5, z + 0.5, HBMSoundHandler.ciwsSpinup, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -45,7 +45,7 @@ public class TurretLight extends TurretBase {
 			te.spin += 5;
 		
 		if(te.spin > 25 && i != 0 && i % 2 == 0) {
-			Vec3d vector = new Vec3d(
+			final Vec3d vector = new Vec3d(
 					-Math.sin(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI),
 					-Math.sin(pitch / 180.0F * (float) Math.PI),
 					Math.cos(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI));
@@ -53,7 +53,7 @@ public class TurretLight extends TurretBase {
 			vector.normalize();
 			
 			if(!world.isRemote) {
-				EntityBullet bullet = new EntityBullet(world);
+				final EntityBullet bullet = new EntityBullet(world);
 				bullet.posX = x + vector.x * 1.4 + 0.5;
 				bullet.posY = y + vector.y * 1.4 + 0.87;
 				bullet.posZ = z + vector.z * 1.4 + 0.5;
@@ -76,8 +76,8 @@ public class TurretLight extends TurretBase {
 	}
 
 	@Override
-	public void executeReleaseAction(World world, int i, double yaw, double pitch, BlockPos pos) {
-		TileEntityTurretLight te = (TileEntityTurretLight)world.getTileEntity(pos);
+	public void executeReleaseAction(final World world, final int i, final double yaw, final double pitch, final BlockPos pos) {
+		final TileEntityTurretLight te = (TileEntityTurretLight)world.getTileEntity(pos);
 		
 		if(te.spin > 10)
 			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, HBMSoundHandler.ciwsSpindown, SoundCategory.BLOCKS, 1.0F, 1.0F);

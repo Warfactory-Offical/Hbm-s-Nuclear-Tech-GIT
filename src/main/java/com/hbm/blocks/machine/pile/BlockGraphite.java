@@ -26,15 +26,15 @@ public class BlockGraphite extends BlockHazardFuel implements IToolable {
 
 	
 	
-	public BlockGraphite(Material mat, String s, int en, int flam, int burntime) {
+	public BlockGraphite(final Material mat, final String s, final int en, final int flam, final int burntime) {
 		super(mat, s, en, flam, burntime);
 	}
 
 	@Override
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool) {
+	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool) {
 		if(tool != ToolType.HAND_DRILL)
 			return false;
-		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+		final IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 		
 		if(!world.isRemote) {
 			world.setBlockState(new BlockPos(x, y, z), ModBlocks.block_graphite_drilled.getDefaultState().withProperty(BlockGraphiteDrilledBase.AXIS, side.getAxis()));

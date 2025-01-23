@@ -16,13 +16,13 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class MachineChemfac extends BlockDummyable {
-	public MachineChemfac(Material materialIn, String s) {
+	public MachineChemfac(final Material materialIn, final String s) {
 		super(Material.IRON, s);
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if (meta >= 12) return new TileEntityMachineChemfac();
 		if (meta >= 6) return new TileEntityProxyCombo(false, true, true);
 		return null;
@@ -39,14 +39,14 @@ public class MachineChemfac extends BlockDummyable {
 	}
 
 	@Override
-	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+	public void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
 		x += dir.offsetX * o;
 		z += dir.offsetZ * o;
-		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
-		this.safeRem = true;
+		safeRem = true;
 
 		for (int i = -3; i < 3; i++) {
 			this.makeExtra(world, x + rot.offsetX * 2 + dir.offsetX * i, y + 3, z + rot.offsetZ * 2 + dir.offsetZ * i);
@@ -59,11 +59,11 @@ public class MachineChemfac extends BlockDummyable {
 			this.makeExtra(world, x - rot.offsetX * 4 + dir.offsetX * i, y + 2, z - rot.offsetZ * 4 + dir.offsetZ * i);
 		}
 
-		this.safeRem = false;
+		safeRem = false;
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		return this.standardOpenBehavior(worldIn, pos.getX(), pos.getY(), pos.getZ(), playerIn, 0);
 	}
 }

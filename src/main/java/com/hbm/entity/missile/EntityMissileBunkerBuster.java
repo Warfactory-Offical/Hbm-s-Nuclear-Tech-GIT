@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileBunkerBuster extends EntityMissileBaseAdvanced {
 
-	public EntityMissileBunkerBuster(World p_i1582_1_) {
+	public EntityMissileBunkerBuster(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 6F);
 	}
 
-	public EntityMissileBunkerBuster(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileBunkerBuster(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 6F);
 	}
@@ -30,7 +30,7 @@ public class EntityMissileBunkerBuster extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.thruster_small, 1));

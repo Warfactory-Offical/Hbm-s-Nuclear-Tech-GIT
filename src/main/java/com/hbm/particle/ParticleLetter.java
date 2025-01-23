@@ -17,7 +17,7 @@ public class ParticleLetter extends Particle {
 	int color;
 	char c;
 	
-	public ParticleLetter(World worldIn, double posXIn, double posYIn, double posZIn, int color, char c) {
+	public ParticleLetter(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final int color, final char c) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleMaxAge = 30;
 		this.color = color;
@@ -30,7 +30,7 @@ public class ParticleLetter extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GL11.glPushMatrix();
 
 		GlStateManager.disableLighting();
@@ -41,21 +41,21 @@ public class ParticleLetter extends Particle {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
 		RenderHelper.disableStandardItemLighting();
 
-		Minecraft mc = Minecraft.getMinecraft();
-	    FontRenderer font = mc.fontRenderer;
+		final Minecraft mc = Minecraft.getMinecraft();
+	    final FontRenderer font = mc.fontRenderer;
 
-	    float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-	    float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-	    float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+	    final float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+	    final float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+	    final float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
 
 	    GL11.glTranslatef(pX, pY, pZ);
 	    GL11.glRotatef(-mc.player.rotationYaw, 0.0F, 1.0F, 0.0F);
 	    GL11.glRotatef(mc.player.rotationPitch, 1.0F, 0.0F, 0.0F);
 	    GL11.glScalef(-1.0F, -1.0F, 1.0F);
 
-	    float time = (this.particleAge + partialTicks) * 4F / this.particleMaxAge;
+	    final float time = (this.particleAge + partialTicks) * 4F / this.particleMaxAge;
 
-	    double scale = 1 - (1D / Math.pow(Math.E, time));
+	    final double scale = 1 - (1D / Math.pow(Math.E, time));
 
 		this.particleAlpha = 1 - (((float)this.particleAge + partialTicks) / (float)this.particleMaxAge);
 
@@ -70,7 +70,7 @@ public class ParticleLetter extends Particle {
 		if(alpha < 10)
 			alpha = 10;
 
-		int col = color + (alpha << 24);
+		final int col = color + (alpha << 24);
 
 	    GL11.glScaled(scale, scale, scale);
 

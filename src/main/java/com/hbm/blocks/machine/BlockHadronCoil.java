@@ -16,7 +16,7 @@ public class BlockHadronCoil extends Block {
 
 	public int factor;
 	
-	public BlockHadronCoil(Material materialIn, int factor, String s) {
+	public BlockHadronCoil(final Material materialIn, final int factor, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,12 +26,12 @@ public class BlockHadronCoil extends Block {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add(I18nUtil.resolveKey("info.coil") + ": " + factor);
 	}
 

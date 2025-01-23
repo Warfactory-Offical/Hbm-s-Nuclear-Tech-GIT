@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class EntityBallsOTronHead extends EntityBallsOTronBase {
 
-	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS));
+	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
 	
 	/*   ___   _   _    _    ___           ___           _____ ___  ___ _  _
 	 *  | _ ) /_\ | |  | |  / __|   ___   |   |   ___   |_   _| _ )|   | \| |
@@ -29,7 +29,7 @@ public class EntityBallsOTronHead extends EntityBallsOTronBase {
 	
 	private final WormMovementHead movement = new WormMovementHead(this);
 	
-	public EntityBallsOTronHead(World world) {
+	public EntityBallsOTronHead(final World world) {
 		super(world);
 		this.experienceValue = 1000;
 		this.wasNearGround = false;
@@ -54,7 +54,7 @@ public class EntityBallsOTronHead extends EntityBallsOTronBase {
 	}
 	
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean attackEntityFrom(final DamageSource source, final float amount) {
 		if(super.attackEntityFrom(source, amount)) {
 			this.dmgCooldown = 4;
 			return true;
@@ -64,7 +64,7 @@ public class EntityBallsOTronHead extends EntityBallsOTronBase {
 	}
 	
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+	public IEntityLivingData onInitialSpawn(final DifficultyInstance difficulty, final IEntityLivingData livingdata) {
 		/*setUniqueWormID(this.rand.nextInt(4096));
 
     	int x = MathHelper.floor(this.posX);
@@ -134,19 +134,19 @@ public class EntityBallsOTronHead extends EntityBallsOTronBase {
 	}
 
 	@Override
-	public void addTrackingPlayer(EntityPlayerMP player) {
+	public void addTrackingPlayer(final EntityPlayerMP player) {
 		super.addTrackingPlayer(player);
 		bossInfo.addPlayer(player);
 	}
 	
 	@Override
-	public void removeTrackingPlayer(EntityPlayerMP player) {
+	public void removeTrackingPlayer(final EntityPlayerMP player) {
 		super.removeTrackingPlayer(player);
 		bossInfo.removePlayer(player);
 	}
 	
 	@Override
-	public float getAttackStrength(Entity target) {
+	public float getAttackStrength(final Entity target) {
 		if(target instanceof EntityLivingBase) {
 			return ((EntityLivingBase) target).getHealth() * 0.75F;
 		}
@@ -155,7 +155,7 @@ public class EntityBallsOTronHead extends EntityBallsOTronBase {
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	public void writeEntityToNBT(final NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("AggroCD", this.aggroCooldown);
 		compound.setInteger("CenterX", this.spawnPoint.getX());
@@ -164,7 +164,7 @@ public class EntityBallsOTronHead extends EntityBallsOTronBase {
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	public void readEntityFromNBT(final NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 	    this.aggroCooldown = compound.getInteger("AggroCD");
 	    this.spawnPoint = new BlockPos(compound.getInteger("CenterX"), compound.getInteger("CenterY"), compound.getInteger("CenterZ"));

@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileClusterStrong extends EntityMissileBaseAdvanced {
 
-	public EntityMissileClusterStrong(World p_i1582_1_) {
+	public EntityMissileClusterStrong(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1.5F, 11F);
 	}
 
-	public EntityMissileClusterStrong(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileClusterStrong(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.isCluster = true;
 		this.setSize(1.5F, 11F);
@@ -35,7 +35,7 @@ public class EntityMissileClusterStrong extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 10));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 6));

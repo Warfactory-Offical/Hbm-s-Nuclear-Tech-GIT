@@ -22,7 +22,7 @@ public class TileEntityNukeMike extends TileEntity {
 	public TileEntityNukeMike() {
 		inventory = new ItemStackHandler(8){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -37,11 +37,11 @@ public class TileEntityNukeMike extends TileEntity {
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -51,48 +51,38 @@ public class TileEntityNukeMike extends TileEntity {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
 public boolean isReady() {
-		
-			if(inventory.getStackInSlot(0).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(1).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(2).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(3).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(4).getItem() == ModItems.man_core)
-			{
-				return true;
-			}
-		
-		return false;
-	}
+
+    return inventory.getStackInSlot(0).getItem() == ModItems.man_explosive8 &&
+            inventory.getStackInSlot(1).getItem() == ModItems.man_explosive8 &&
+            inventory.getStackInSlot(2).getItem() == ModItems.man_explosive8 &&
+            inventory.getStackInSlot(3).getItem() == ModItems.man_explosive8 &&
+            inventory.getStackInSlot(4).getItem() == ModItems.man_core;
+}
 	
 	public boolean isFilled() {
-		
-			if(inventory.getStackInSlot(0).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(1).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(2).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(3).getItem() == ModItems.man_explosive8 && 
-			inventory.getStackInSlot(4).getItem() == ModItems.man_core && 
-			inventory.getStackInSlot(5).getItem() == ModItems.mike_core && 
-			inventory.getStackInSlot(6).getItem() == ModItems.mike_deut && 
-			inventory.getStackInSlot(7).getItem() == ModItems.mike_cooling_unit)
-			{
-				return true;
-			}
-		
-		return false;
-	}
+
+        return inventory.getStackInSlot(0).getItem() == ModItems.man_explosive8 &&
+                inventory.getStackInSlot(1).getItem() == ModItems.man_explosive8 &&
+                inventory.getStackInSlot(2).getItem() == ModItems.man_explosive8 &&
+                inventory.getStackInSlot(3).getItem() == ModItems.man_explosive8 &&
+                inventory.getStackInSlot(4).getItem() == ModItems.man_core &&
+                inventory.getStackInSlot(5).getItem() == ModItems.mike_core &&
+                inventory.getStackInSlot(6).getItem() == ModItems.mike_deut &&
+                inventory.getStackInSlot(7).getItem() == ModItems.mike_cooling_unit;
+    }
 	
 	public void clearSlots() {
 		for(int i = 0; i < inventory.getSlots(); i++)
@@ -114,12 +104,12 @@ public boolean isReady() {
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

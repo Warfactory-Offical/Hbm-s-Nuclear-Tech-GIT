@@ -30,7 +30,7 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
 public class GunEMPRay extends Item {
 
-	public GunEMPRay(String s) {
+	public GunEMPRay(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -39,39 +39,38 @@ public class GunEMPRay extends Item {
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
+	public EnumAction getItemUseAction(final ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getMaxItemUseDuration(final ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
 		playerIn.setActiveHand(handIn);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer))
+	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
+		if(!(entityLiving instanceof EntityPlayer player))
 			return;
-		EntityPlayer player = (EntityPlayer)entityLiving;
-		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_emp){
+        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_emp){
 			player.getHeldItemOffhand().onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
-		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.gun_emp_ammo));
+		final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.gun_emp_ammo));
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.isCanceled()) {
 			return;
 		}
 		j = event.getCharge();
 
-		boolean flag = player.capabilities.isCreativeMode
+		final boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 		if (!player.isSneaking()) {
@@ -87,7 +86,7 @@ public class GunEMPRay extends Item {
 					f = 25.0F;
 				}
 
-				EntityDischarge entityarrow = new EntityDischarge(worldIn, player, 1.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+				final EntityDischarge entityarrow = new EntityDischarge(worldIn, player, 1.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
 				entityarrow.setIsCritical(true);
 
@@ -115,7 +114,7 @@ public class GunEMPRay extends Item {
 					Library.consumeInventoryItem(player.inventory, ModItems.gun_emp_ammo);
 				}
 	    		
-	    		EntityEMPBlast cloud = new EntityEMPBlast(player.world, 25);
+	    		final EntityEMPBlast cloud = new EntityEMPBlast(player.world, 25);
 	    		cloud.posX = player.posX;
 	    		cloud.posY = player.posY + 1.0F;
 	    		cloud.posZ = player.posZ;
@@ -129,7 +128,7 @@ public class GunEMPRay extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add("Hold right mouse button");
 		list.add("to shoot ball lightning,");
 		list.add("sneak to create EMP wave!");
@@ -139,8 +138,8 @@ public class GunEMPRay extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
-		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
+		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 4, 0));
 		}

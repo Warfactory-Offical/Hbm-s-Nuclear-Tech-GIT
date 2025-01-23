@@ -20,12 +20,12 @@ public class FlashlightFramebuffer extends Framebuffer {
 	public int positionTexture;
 	public int normalTexture;
 	
-	public FlashlightFramebuffer(int width, int height, boolean useDepthIn) {
+	public FlashlightFramebuffer(final int width, final int height, final boolean useDepthIn) {
 		super(width, height, useDepthIn);
 	}
 
 	@Override
-	public void createFramebuffer(int width, int height) {
+	public void createFramebuffer(final int width, final int height) {
 		this.framebufferWidth = width;
 		this.framebufferHeight = height;
 		this.framebufferTextureWidth = width;
@@ -43,7 +43,7 @@ public class FlashlightFramebuffer extends Framebuffer {
 
 			this.setFramebufferFilter(9728);
 			GlStateManager.bindTexture(this.framebufferTexture);
-			GlStateManager.glTexImage2D(3553, 0, 32856, this.framebufferTextureWidth, this.framebufferTextureHeight, 0, 6408, 5121, (IntBuffer) null);
+			GlStateManager.glTexImage2D(3553, 0, 32856, this.framebufferTextureWidth, this.framebufferTextureHeight, 0, 6408, 5121, null);
 			OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, this.framebufferObject);
 			OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, 3553, this.framebufferTexture, 0);
 
@@ -65,7 +65,7 @@ public class FlashlightFramebuffer extends Framebuffer {
 			
 			//Position and normal buffers end
 			
-			IntBuffer attachments = BufferUtils.createIntBuffer(3);
+			final IntBuffer attachments = BufferUtils.createIntBuffer(3);
 			attachments.put(new int[]{GL30.GL_COLOR_ATTACHMENT0, GL30.GL_COLOR_ATTACHMENT1, GL30.GL_COLOR_ATTACHMENT2});
 			GL20.glDrawBuffers(attachments);
 			

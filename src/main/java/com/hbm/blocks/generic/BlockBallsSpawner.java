@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class BlockBallsSpawner extends Block {
 
-	public BlockBallsSpawner(Material materialIn, String s) {
+	public BlockBallsSpawner(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -24,13 +24,13 @@ public class BlockBallsSpawner extends Block {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() == ModItems.mech_key) {
 			player.getHeldItem(hand).shrink(1);
 
 			if(!world.isRemote) {
 
-				EntityBOTPrimeHead bot = new EntityBOTPrimeHead(world);
+				final EntityBOTPrimeHead bot = new EntityBOTPrimeHead(world);
 				bot.setPositionAndRotation(pos.getX() + 0.5, 300, pos.getZ() + 0.5, 0, 0);
 				bot.motionY = -1.0;
 				bot.onInitialSpawn(world.getDifficultyForLocation(pos), null);

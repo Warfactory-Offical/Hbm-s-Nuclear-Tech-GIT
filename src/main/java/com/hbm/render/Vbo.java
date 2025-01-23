@@ -15,7 +15,7 @@ public class Vbo {
 	int numVertices;
 	int vboId;
 	
-	public Vbo(int vboId, int drawMode, int numVertices) {
+	public Vbo(final int vboId, final int drawMode, final int numVertices) {
 		this.vboId = vboId;
 		this.drawMode = drawMode;
 		this.numVertices = numVertices;
@@ -48,16 +48,16 @@ public class Vbo {
 	}
 	
 	public static Vbo setupTestVbo(){
-		Vertex bottomLeft = new Vertex(-0.5F, -0.5F, 0F, 0F, 0F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
-		Vertex bottomRight = new Vertex(0.5F, -0.5F, 0F, 1F, 0F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
-		Vertex topLeft = new Vertex(-0.5F, 0.5F, 0F, 0F, 1F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
-		Vertex topRight = new Vertex(0.5F, 0.5F, 0F, 1F, 1F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
-		Vertex[] vertices = new Vertex[]{bottomLeft, bottomRight, topRight, topLeft};
+		final Vertex bottomLeft = new Vertex(-0.5F, -0.5F, 0F, 0F, 0F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
+		final Vertex bottomRight = new Vertex(0.5F, -0.5F, 0F, 1F, 0F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
+		final Vertex topLeft = new Vertex(-0.5F, 0.5F, 0F, 0F, 1F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
+		final Vertex topRight = new Vertex(0.5F, 0.5F, 0F, 1F, 1F, 0F, 0F, 1F, 1F, 1F, 1F, 1F);
+		final Vertex[] vertices = new Vertex[]{bottomLeft, bottomRight, topRight, topLeft};
 		
 		
-		int vboId = GLCompat.genBuffers();
-		ByteBuffer data = GLAllocation.createDirectByteBuffer(vertices.length*BYTES_PER_VERTEX);
-		for(Vertex v : vertices){
+		final int vboId = GLCompat.genBuffers();
+		final ByteBuffer data = GLAllocation.createDirectByteBuffer(vertices.length*BYTES_PER_VERTEX);
+		for(final Vertex v : vertices){
 			data.putFloat(v.x);
 			data.putFloat(v.y);
 			data.putFloat(v.z);
@@ -78,7 +78,7 @@ public class Vbo {
 		GLCompat.bufferData(GLCompat.GL_ARRAY_BUFFER, data, GLCompat.GL_STATIC_DRAW);
 		GLCompat.bindBuffer(GLCompat.GL_ARRAY_BUFFER, 0);
 		
-		Vbo vbo = new Vbo(vboId, GL11.GL_QUADS, vertices.length);
+		final Vbo vbo = new Vbo(vboId, GL11.GL_QUADS, vertices.length);
 		return vbo;
 	}
 	
@@ -96,7 +96,7 @@ public class Vbo {
 		public float b;
 		public float a;
 		
-		public Vertex(float x, float y, float z, float u, float v, float nX, float nY, float nZ, float r, float g, float b, float a) {
+		public Vertex(final float x, final float y, final float z, final float u, final float v, final float nX, final float nY, final float nZ, final float r, final float g, final float b, final float a) {
 			this.x = x;
 			this.y = y;
 			this.z = z;

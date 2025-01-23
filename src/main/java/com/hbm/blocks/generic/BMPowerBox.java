@@ -34,7 +34,7 @@ public class BMPowerBox extends BlockContainer {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool IS_ON = PropertyBool.create("is_on");
 	
-	public BMPowerBox(Material materialIn, String s){
+	public BMPowerBox(final Material materialIn, final String s){
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -43,33 +43,33 @@ public class BMPowerBox extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta){
+	public TileEntity createNewTileEntity(final World worldIn, final int meta){
 		return new TileEntityBMPowerBox();
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(final IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
 		return Library.rotateAABB(new AxisAlignedBB(0.253, 0.17, 0, 0.747, 0.765, 0.12), state.getValue(FACING));
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		TileEntityBMPowerBox box = (TileEntityBMPowerBox)worldIn.getTileEntity(pos);
 		if(playerIn.isSneaking() || box == null || (worldIn.getTotalWorldTime()-box.ticksPlaced) < 12){
 			return false;
 		}
 		if(!worldIn.isRemote){
-			boolean oldIsOn = state.getValue(IS_ON);
+			final boolean oldIsOn = state.getValue(IS_ON);
 			worldIn.playSound(null, pos.getX(),  pos.getY(),  pos.getZ(), HBMSoundHandler.reactorStart, SoundCategory.BLOCKS, 1, oldIsOn ? 0.9F : 1);
 			worldIn.setBlockState(pos, state.withProperty(IS_ON, !oldIsOn));
 			worldIn.notifyNeighborsOfStateChange(pos, this, false);
@@ -85,40 +85,40 @@ public class BMPowerBox extends BlockContainer {
 	}
 	
 	@Override
-	public boolean canProvidePower(IBlockState state){
+	public boolean canProvidePower(final IBlockState state){
 		return true;
 	}
 	
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
+	public int getStrongPower(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side){
 		return blockState.getValue(IS_ON) ? 15 : 0;
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
+	public int getWeakPower(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side){
 		return blockState.getValue(IS_ON) ? 15 : 0;
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(IS_ON, false);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING, IS_ON });
+		return new BlockStateContainer(this, FACING, IS_ON);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		int meta = ((EnumFacing) state.getValue(FACING)).getIndex() << 1;
+	public int getMetaFromState(final IBlockState state) {
+		int meta = state.getValue(FACING).getIndex() << 1;
 		meta += state.getValue(IS_ON) ? 1 : 0;
 		return meta;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		boolean on = (meta & 1) == 1 ? true : false;
+		final boolean on = (meta & 1) == 1;
 		meta = meta >> 1;
 		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
@@ -130,13 +130,13 @@ public class BMPowerBox extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 	
 }

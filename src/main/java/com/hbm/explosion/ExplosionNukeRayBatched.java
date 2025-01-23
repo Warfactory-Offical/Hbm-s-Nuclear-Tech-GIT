@@ -27,7 +27,7 @@ public class ExplosionNukeRayBatched {
 
 	public HashMap<ChunkPos, BitSet> perChunk = new HashMap<ChunkPos, BitSet>();
 	public List<ChunkPos> orderedChunks = new ArrayList();
-	private CoordComparator comparator = new CoordComparator();
+	private final CoordComparator comparator = new CoordComparator();
 	public boolean isContained = true;
 	int posX;
 	int posY;
@@ -48,7 +48,7 @@ public class ExplosionNukeRayBatched {
 	public boolean isAusf3Complete = false;
 	public int rayCheckInterval = 100;
 
-	public ExplosionNukeRayBatched(World world, int x, int y, int z, int strength, int radius) {
+	public ExplosionNukeRayBatched(final World world, final int x, final int y, final int z, final int strength, final int radius) {
 		this.world = world;
 		this.posX = x;
 		this.posY = y;
@@ -68,12 +68,12 @@ public class ExplosionNukeRayBatched {
 
 	private void generateGspUp(){
 		if (this.gspNum < this.gspNumMax) {
-			int k = this.gspNum + 1;
-			double hk = -1.0 + 2.0 * (k - 1.0) / (this.gspNumMax - 1.0);
+			final int k = this.gspNum + 1;
+			final double hk = -1.0 + 2.0 * (k - 1.0) / (this.gspNumMax - 1.0);
 			this.gspX = Math.acos(hk);
 
-			double prev_lon = this.gspY;
-			double lon = prev_lon + 3.6 / Math.sqrt(this.gspNumMax) / Math.sqrt(1.0 - hk * hk);
+			final double prev_lon = this.gspY;
+			final double lon = prev_lon + 3.6 / Math.sqrt(this.gspNumMax) / Math.sqrt(1.0 - hk * hk);
 			this.gspY = lon % (Math.PI * 2);
 		} else {
 			this.gspX = 0.0;
@@ -85,13 +85,13 @@ public class ExplosionNukeRayBatched {
 	// Get Cartesian coordinates for spherical coordinates
 	// 90 X-Axis rotation for more efficient chunk scanning
 	private Vec3 getSpherical2cartesian(){
-		double dx = Math.sin(this.gspX) * Math.cos(this.gspY);
-		double dy = Math.sin(this.gspX) * Math.sin(this.gspY);
-		double dz = Math.cos(this.gspX);
+		final double dx = Math.sin(this.gspX) * Math.cos(this.gspY);
+		final double dy = Math.sin(this.gspX) * Math.sin(this.gspY);
+		final double dz = Math.cos(this.gspX);
 		return Vec3.createVectorHelper(dx, dy, dz);
 	}
 
-	public void addPos(int x, int y, int z){
+	public void addPos(final int x, final int y, final int z){
 		chunk = new ChunkPos(x >> 4, z >> 4);
 		BitSet hitPositions = perChunk.get(chunk);
 				
@@ -103,14 +103,14 @@ public class ExplosionNukeRayBatched {
 	}
 
 	int age = 0;
-	public void collectTip(int time) {
+	public void collectTip(final int time) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			isAusf3Complete = true;
 			return;
 		}
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		long raysProcessed = 0;
-		long start = System.currentTimeMillis();
+		final long start = System.currentTimeMillis();
 
 		IBlockState blockState;
 		Block b;
@@ -178,7 +178,7 @@ public class ExplosionNukeRayBatched {
 		isAusf3Complete = true;
 	}
 	
-	public static float getNukeResistance(IBlockState blockState, Block b) {
+	public static float getNukeResistance(final IBlockState blockState, final Block b) {
 		if(blockState.getMaterial().isLiquid()){
 			return 0.1F;
 		} else {
@@ -192,20 +192,20 @@ public class ExplosionNukeRayBatched {
 	public class CoordComparator implements Comparator<ChunkPos> {
 
 		@Override
-		public int compare(ChunkPos o1, ChunkPos o2) {
+		public int compare(final ChunkPos o1, final ChunkPos o2) {
 
-			int chunkX = ExplosionNukeRayBatched.this.posX >> 4;
-			int chunkZ = ExplosionNukeRayBatched.this.posZ >> 4;
+			final int chunkX = ExplosionNukeRayBatched.this.posX >> 4;
+			final int chunkZ = ExplosionNukeRayBatched.this.posZ >> 4;
 
-			int diff1 = Math.abs((chunkX - (int) (o1.getXStart() >> 4))) + Math.abs((chunkZ - (int) (o1.getZStart() >> 4)));
-			int diff2 = Math.abs((chunkX - (int) (o2.getXStart() >> 4))) + Math.abs((chunkZ - (int) (o2.getZStart() >> 4)));
+			final int diff1 = Math.abs((chunkX - (o1.getXStart() >> 4))) + Math.abs((chunkZ - (o1.getZStart() >> 4)));
+			final int diff2 = Math.abs((chunkX - (o2.getXStart() >> 4))) + Math.abs((chunkZ - (o2.getZStart() >> 4)));
 			
 			return diff1 > diff2 ? 1 : diff1 < diff2 ? -1 : 0;
 		}
 	}
 
-	public void processChunk(int time){
-		long start = System.currentTimeMillis();
+	public void processChunk(final int time){
+		final long start = System.currentTimeMillis();
 		while(System.currentTimeMillis() < start + time){
 			processChunkBlocks(start, time);
 		}
@@ -216,7 +216,7 @@ public class ExplosionNukeRayBatched {
 	boolean needsNewHitArray = true;
 	int index = 0;
 
-	public void processChunkBlocks(long start, int time){
+	public void processChunkBlocks(final long start, final int time){
 		if(!CompatibilityConfig.isWarDim(world)){
 			this.perChunk.clear();
 		}
@@ -228,10 +228,10 @@ public class ExplosionNukeRayBatched {
 			needsNewHitArray = false;
 		}
 		
-		int chunkX = chunk.getXStart();
-		int chunkZ = chunk.getZStart();
+		final int chunkX = chunk.getXStart();
+		final int chunkZ = chunk.getZStart();
 		
-		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		int blocksRemoved = 0;
 		while(index > -1) {
 			pos.setPos(((index >> 4) % 16) + chunkX, 255 - (index >> 8), (index % 16) + chunkZ);
@@ -250,7 +250,7 @@ public class ExplosionNukeRayBatched {
 		}
 	}
 	
-	public void readEntityFromNBT(NBTTagCompound nbt) {
+	public void readEntityFromNBT(final NBTTagCompound nbt) {
 		radius = nbt.getInteger("radius");
 		strength = nbt.getInteger("strength");
 		posX = nbt.getInteger("posX");
@@ -266,7 +266,7 @@ public class ExplosionNukeRayBatched {
 
 			int i = 0;
 			while(nbt.hasKey("chunks"+i)){
-				NBTTagCompound c = (NBTTagCompound)nbt.getTag("chunks"+i);
+				final NBTTagCompound c = (NBTTagCompound)nbt.getTag("chunks"+i);
 
 				perChunk.put(new ChunkPos(c.getInteger("cX"), c.getInteger("cZ")), BitSet.valueOf(getLongArray((NBTTagLongArray)c.getTag("cB"))));
 				i++;
@@ -278,7 +278,7 @@ public class ExplosionNukeRayBatched {
 		}
 	}
 
-	public void writeEntityToNBT(NBTTagCompound nbt) {
+	public void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("radius", radius);
 		nbt.setInteger("strength", strength);
 		nbt.setInteger("posX", posX);
@@ -291,8 +291,8 @@ public class ExplosionNukeRayBatched {
 			nbt.setBoolean("isContained", isContained);
 		
 			int i = 0;
-			for(Entry<ChunkPos, BitSet> e : perChunk.entrySet()){
-				NBTTagCompound c = new NBTTagCompound();
+			for(final Entry<ChunkPos, BitSet> e : perChunk.entrySet()){
+				final NBTTagCompound c = new NBTTagCompound();
 				c.setInteger("cX", e.getKey().x);
 				c.setInteger("cZ", e.getKey().z);
 				c.setTag("cB", new NBTTagLongArray(e.getValue().toLongArray()));
@@ -303,7 +303,7 @@ public class ExplosionNukeRayBatched {
 	}
 
 	// Who tf forgot to add a way to retrieve the long array from NBTTagLongArray??
-	public static long[] getLongArray(NBTTagLongArray nbt) {
+	public static long[] getLongArray(final NBTTagLongArray nbt) {
 		return ObfuscationReflectionHelper.getPrivateValue(NBTTagLongArray.class, nbt, 0);
 	}
 }

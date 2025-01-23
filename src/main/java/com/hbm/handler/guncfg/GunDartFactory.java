@@ -25,7 +25,7 @@ public class GunDartFactory {
 
 	public static GunConfiguration getDarterConfig() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 1;
 		config.roundsPerCycle = 1;
@@ -55,7 +55,7 @@ public class GunDartFactory {
 
 	public static BulletConfiguration getGPSConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_dart;
 		bullet.velocity = 5.0F;
@@ -72,7 +72,7 @@ public class GunDartFactory {
 		bullet.bHurt = new IBulletHurtBehavior() {
 
 			@Override
-			public void behaveEntityHurt(EntityBulletBase bullet, Entity hit) {
+			public void behaveEntityHurt(final EntityBulletBase bullet, final Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
@@ -82,11 +82,9 @@ public class GunDartFactory {
 					if(Library.hasInventoryItem(((EntityPlayer) hit).inventory, ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)))
 						return;
 
-					if(bullet.shooter instanceof EntityPlayer) {
+					if(bullet.shooter instanceof EntityPlayer shooter) {
 
-						EntityPlayer shooter = (EntityPlayer) bullet.shooter;
-
-						for(EnumHand hand : EnumHand.values())
+                        for(final EnumHand hand : EnumHand.values())
 							if(shooter.getHeldItem(hand) != null && shooter.getHeldItem(hand).getItem() == ModItems.gun_darter) {
 								ItemGunDart.writePlayer(shooter.getHeldItem(hand), (EntityPlayer)hit);
 								shooter.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);

@@ -23,7 +23,7 @@ public class AssemblyTemplateRender extends TileEntityItemStackRenderer {
 	public IBakedModel itemModel;
 
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		try{
 			if (stack.getItem() instanceof ItemAssemblyTemplate && type == TransformType.GUI) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -31,7 +31,7 @@ public class AssemblyTemplateRender extends TileEntityItemStackRenderer {
 					GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 					GL11.glTranslated(0.5, 0.5, 0);
 					GlStateManager.enableLighting();
-					ItemStack item = AssemblerRecipes.recipeList.get(ItemAssemblyTemplate.getRecipeIndex(stack)).toStack();
+					final ItemStack item = AssemblerRecipes.recipeList.get(ItemAssemblyTemplate.getRecipeIndex(stack)).toStack();
 					IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(item, Minecraft.getMinecraft().world, Minecraft.getMinecraft().player);
 					model = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GUI, false);
 					Minecraft.getMinecraft().getRenderItem().renderItem(item, model);
@@ -44,7 +44,7 @@ public class AssemblyTemplateRender extends TileEntityItemStackRenderer {
 			} else {
 				Minecraft.getMinecraft().getRenderItem().renderItem(stack, itemModel);
 			}
-		} catch(IndexOutOfBoundsException e){
+		} catch(final IndexOutOfBoundsException e){
 
 		}
 		super.renderByItem(stack);

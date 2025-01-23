@@ -28,12 +28,12 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 
 	private static final Predicate<EntityLiving> selector = new Predicate<EntityLiving>(){
 		@Override
-		public boolean apply(EntityLiving input) {
+		public boolean apply(final EntityLiving input) {
 			return !(input instanceof EntityCyberCrab || input instanceof EntityCreeper || input instanceof EntityNuclearCreeper);
 		}
 	};
 	
-	public EntityCyberCrab(World worldIn) {
+	public EntityCyberCrab(final World worldIn) {
 		super(worldIn);
 		this.setSize(0.75F, 0.35F);
 		if(!(this instanceof EntityTaintCrab))
@@ -62,7 +62,7 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 	
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean attackEntityFrom(final DamageSource source, final float amount) {
 		if(ModDamageSource.getIsTau(source))
     		return false;
 		return super.attackEntityFrom(source, amount);
@@ -86,7 +86,7 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
 		return HBMSoundHandler.cybercrab;
 	}
 	
@@ -96,7 +96,7 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 	
 	@Override
-	public boolean attackEntityAsMob(Entity entityIn) {
+	public boolean attackEntityAsMob(final Entity entityIn) {
 		return true;
 	}
 	
@@ -105,13 +105,13 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 		return ModItems.wire_gold;
 	}
 	
-	protected void dropRareDrop(int p_70600_1_) {
+	protected void dropRareDrop(final int p_70600_1_) {
     	this.dropItem(ModItems.wire_magnetized_tungsten, 1);
     }
 	
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-		EntityBullet bullet = new EntityBullet(world, this, target, 1.6F, 2);
+	public void attackEntityWithRangedAttack(final EntityLivingBase target, final float distanceFactor) {
+		final EntityBullet bullet = new EntityBullet(world, this, target, 1.6F, 2);
 		bullet.setIsCritical(true);
 		bullet.setTau(true);
 		bullet.damage = 2;
@@ -120,7 +120,7 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 
 	@Override
-	public void setSwingingArms(boolean swingingArms) {
+	public void setSwingingArms(final boolean swingingArms) {
 	}
 
 }

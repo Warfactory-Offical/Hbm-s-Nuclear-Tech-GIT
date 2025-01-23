@@ -30,7 +30,7 @@ public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 
 	public static final ModelResourceLocation chemModel = new ModelResourceLocation(RefStrings.MODID + ":chemistry_template", "inventory");
 	
-	public ItemChemistryTemplate(String s){
+	public ItemChemistryTemplate(final String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setHasSubtypes(true);
@@ -42,9 +42,9 @@ public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
-		String s = ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
-        String s1 = ("" + I18n.format("chem." + ChemplantRecipes.getName(stack))).trim();
+	public String getItemStackDisplayName(final ItemStack stack) {
+		String s = (I18n.format(this.getTranslationKey() + ".name")).trim();
+        final String s1 = (I18n.format("chem." + ChemplantRecipes.getName(stack))).trim();
 
         if (s1 != null) {
             s = s + " " + s1;
@@ -54,9 +54,9 @@ public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 	}
 	
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> list) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
-			for (int i: ChemplantRecipes.recipeNames.keySet()){
+			for (final int i: ChemplantRecipes.recipeNames.keySet()){
 	            list.add(ItemStackUtil.itemStackFrom(this, 1, i));
 	        }
 		}
@@ -64,15 +64,15 @@ public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 	
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if(!(stack.getItem() instanceof ItemChemistryTemplate))
     			return;
 
-	    	List<AStack> itemInputs = ChemplantRecipes.getChemInputFromTempate(stack);
-	    	FluidStack[] fluidInputs = ChemplantRecipes.getFluidInputFromTempate(stack);
-	    	ItemStack[] itemOutputs = ChemplantRecipes.getChemOutputFromTempate(stack);
-	    	FluidStack[] fluidOutputs = ChemplantRecipes.getFluidOutputFromTempate(stack);
-	    	int time = ChemplantRecipes.getProcessTime(stack);
+	    	final List<AStack> itemInputs = ChemplantRecipes.getChemInputFromTempate(stack);
+	    	final FluidStack[] fluidInputs = ChemplantRecipes.getFluidInputFromTempate(stack);
+	    	final ItemStack[] itemOutputs = ChemplantRecipes.getChemOutputFromTempate(stack);
+	    	final FluidStack[] fluidOutputs = ChemplantRecipes.getFluidOutputFromTempate(stack);
+	    	final int time = ChemplantRecipes.getProcessTime(stack);
 
 	    	list.add("§6" + I18nUtil.resolveKey("info.templatefolder"));
 			list.add("");
@@ -80,46 +80,45 @@ public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 	    	try {
 	    		list.add("§l" + I18nUtil.resolveKey("info.template_out_p"));
 	    		if(itemOutputs != null){
-	    			for(ItemStack ouputItem : itemOutputs){
+	    			for(final ItemStack ouputItem : itemOutputs){
 	    				list.add(" §a"+ ouputItem.getCount() + "x " + ouputItem.getDisplayName());
 	    			}
 	    		}
 	    		if(fluidOutputs != null){
-	    			for(FluidStack outputFluid : fluidOutputs){
+	    			for(final FluidStack outputFluid : fluidOutputs){
 	    				list.add(" §b"+ outputFluid.amount + "mB " + outputFluid.getFluid().getLocalizedName(outputFluid));
 	    			}
 	    		}
 	    		list.add("§l" + I18nUtil.resolveKey("info.template_in_p"));
 	    		
 	    		if(itemInputs != null){
-	    			for(AStack o : itemInputs){
+	    			for(final AStack o : itemInputs){
 		    			if(o instanceof ComparableStack)  {
-							ItemStack input = ((ComparableStack)o).toStack();
+							final ItemStack input = ((ComparableStack)o).toStack();
 				    		list.add(" §c"+ input.getCount() + "x " + input.getDisplayName());
 
-						} else if(o instanceof OreDictStack)  {
-							OreDictStack input = (OreDictStack) o;
-							NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+						} else if(o instanceof OreDictStack input)  {
+                            final NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
 
 							if(ores.size() > 0) {
-								ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
+								final ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
 					    		list.add(" §c"+ input.count() + "x " + inStack.getDisplayName());
 							} else {
-					    		list.add("I AM ERROR - No OrdDict match found for "+o.toString());
+					    		list.add("I AM ERROR - No OrdDict match found for "+ o);
 							}
 						}
 					}
 	    		}
 	    		
     			if(fluidInputs != null){
-    				for(FluidStack inputFluid : fluidInputs){
+    				for(final FluidStack inputFluid : fluidInputs){
     					list.add(" §e" + inputFluid.amount + "mB " + inputFluid.getFluid().getLocalizedName(inputFluid));
     				}
     			}
 	    		
 	    		list.add("§l" + I18nUtil.resolveKey("info.template_time"));
 	        	list.add(" §3"+ Math.floor((float)(time) / 20 * 100) / 100 + " " + I18nUtil.resolveKey("info.template_seconds"));
-	    	} catch(Exception e) {
+	    	} catch(final Exception e) {
 	    		list.add("###INVALID###");
 	    		list.add("0x334077-0x6A298F-0xDF3795-0x334077");
 	    	}

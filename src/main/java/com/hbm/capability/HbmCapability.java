@@ -34,18 +34,18 @@ public class HbmCapability {
 
 		public static final Callable<IHBMData> FACTORY = () -> {return new HBMData();};
 		
-		private boolean[] keysPressed = new boolean[EnumKeybind.values().length];
+		private final boolean[] keysPressed = new boolean[EnumKeybind.values().length];
 		
 		public boolean enableBackpack = true;
 		public boolean enableHUD = true;
 		
 		@Override
-		public boolean getKeyPressed(EnumKeybind key) {
+		public boolean getKeyPressed(final EnumKeybind key) {
 			return keysPressed[key.ordinal()];
 		}
 
 		@Override
-		public void setKeyPressed(EnumKeybind key, boolean pressed) {
+		public void setKeyPressed(final EnumKeybind key, final boolean pressed) {
 			if(!getKeyPressed(key) && pressed) {
 				
 				if(key == EnumKeybind.TOGGLE_JETPACK) {
@@ -79,12 +79,12 @@ public class HbmCapability {
 		}
 
 		@Override
-		public void setEnableBackpack(boolean b){
+		public void setEnableBackpack(final boolean b){
 			enableBackpack = b;
 		}
 
 		@Override
-		public void setEnableHUD(boolean b){
+		public void setEnableHUD(final boolean b){
 			enableHUD = b;
 		}
 		
@@ -93,9 +93,9 @@ public class HbmCapability {
 	public static class HBMDataStorage implements IStorage<IHBMData>{
 
 		@Override
-		public NBTBase writeNBT(Capability<IHBMData> capability, IHBMData instance, EnumFacing side) {
-			NBTTagCompound tag = new NBTTagCompound();
-			for(EnumKeybind key : EnumKeybind.values()){
+		public NBTBase writeNBT(final Capability<IHBMData> capability, final IHBMData instance, final EnumFacing side) {
+			final NBTTagCompound tag = new NBTTagCompound();
+			for(final EnumKeybind key : EnumKeybind.values()){
 				tag.setBoolean(key.name(), instance.getKeyPressed(key));
 			}
 			tag.setBoolean("enableBackpack", instance.getEnableBackpack());
@@ -104,10 +104,9 @@ public class HbmCapability {
 		}
 
 		@Override
-		public void readNBT(Capability<IHBMData> capability, IHBMData instance, EnumFacing side, NBTBase nbt) {
-			if(nbt instanceof NBTTagCompound){
-				NBTTagCompound tag = (NBTTagCompound)nbt;
-				for(EnumKeybind key : EnumKeybind.values()){
+		public void readNBT(final Capability<IHBMData> capability, final IHBMData instance, final EnumFacing side, final NBTBase nbt) {
+			if(nbt instanceof NBTTagCompound tag){
+                for(final EnumKeybind key : EnumKeybind.values()){
 					instance.setKeyPressed(key, tag.getBoolean(key.name()));
 				}
 				instance.setEnableBackpack(tag.getBoolean("enableBackpack"));
@@ -122,12 +121,12 @@ public class HbmCapability {
 		public static final IHBMData DUMMY = new IHBMData(){
 
 			@Override
-			public boolean getKeyPressed(EnumKeybind key) {
+			public boolean getKeyPressed(final EnumKeybind key) {
 				return false;
 			}
 
 			@Override
-			public void setKeyPressed(EnumKeybind key, boolean pressed) {
+			public void setKeyPressed(final EnumKeybind key, final boolean pressed) {
 			}
 
 			@Override
@@ -141,27 +140,27 @@ public class HbmCapability {
 			}
 
 			@Override
-			public void setEnableBackpack(boolean b){
+			public void setEnableBackpack(final boolean b){
 			}
 
 			@Override
-			public void setEnableHUD(boolean b){
+			public void setEnableHUD(final boolean b){
 			}
 		};
 		
 		@CapabilityInject(IHBMData.class)
 		public static final Capability<IHBMData> HBM_CAP = null;
 		
-		private IHBMData instance = HBM_CAP.getDefaultInstance();
+		private final IHBMData instance = HBM_CAP.getDefaultInstance();
 		
 		@Override
-		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 			return capability == HBM_CAP;
 		}
 
 		@Override
-		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-			return capability == HBM_CAP ? HBM_CAP.<T>cast(this.instance) : null;
+		public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+			return capability == HBM_CAP ? HBM_CAP.cast(this.instance) : null;
 		}
 
 		@Override
@@ -170,13 +169,13 @@ public class HbmCapability {
 		}
 
 		@Override
-		public void deserializeNBT(NBTBase nbt) {
+		public void deserializeNBT(final NBTBase nbt) {
 			HBM_CAP.getStorage().readNBT(HBM_CAP, instance, null, nbt);
 		}
 		
 	}
 	
-	public static IHBMData getData(Entity e){
+	public static IHBMData getData(final Entity e){
 		if(e.hasCapability(HBMDataProvider.HBM_CAP, null))
 			return e.getCapability(HBMDataProvider.HBM_CAP, null);
 		return HBMDataProvider.DUMMY;

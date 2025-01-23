@@ -17,7 +17,7 @@ public class Gun9mmFactory {
 
 	public static GunConfiguration getMP40Config() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 2;
 		config.roundsPerCycle = 1;
@@ -49,7 +49,7 @@ public class Gun9mmFactory {
 
 	public static GunConfiguration getThompsonConfig() {
 
-		GunConfiguration config = new GunConfiguration();
+		final GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 2;
 		config.roundsPerCycle = 1;
@@ -89,7 +89,7 @@ public class Gun9mmFactory {
 
 	public static BulletConfiguration get9mmConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_9mm;
 		bullet.spread *= inaccuracy;
@@ -101,7 +101,7 @@ public class Gun9mmFactory {
 
 	public static BulletConfiguration get9mmAPConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_9mm_ap;
 		bullet.spread *= inaccuracy;
@@ -115,7 +115,7 @@ public class Gun9mmFactory {
 
 	public static BulletConfiguration get9mmDUConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_9mm_du;
 		bullet.spread *= inaccuracy;
@@ -129,7 +129,7 @@ public class Gun9mmFactory {
 
 	public static BulletConfiguration get9mmRocketConfig() {
 
-		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 
 		bullet.ammo = ModItems.ammo_9mm_rocket;
 		bullet.velocity = 5;

@@ -23,12 +23,12 @@ public class RenderDemonLamp extends TileEntitySpecialRenderer<TileEntityDemonLa
 	public static final ResourceLocation tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/demon_lamp.png");
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityDemonLamp te){
+	public boolean isGlobalRenderer(final TileEntityDemonLamp te){
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityDemonLamp te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+	public void render(final TileEntityDemonLamp te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GlStateManager.enableLighting();
@@ -38,10 +38,10 @@ public class RenderDemonLamp extends TileEntitySpecialRenderer<TileEntityDemonLa
 		bindTexture(tex);
 		demon_lamp.renderAll();
 		
-		Tessellator tess = Tessellator.getInstance();
-		BufferBuilder buf = tess.getBuffer();
+		final Tessellator tess = Tessellator.getInstance();
+		final BufferBuilder buf = tess.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-		Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
+		final Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 
 		GlStateManager.depthMask(false);
 		GlStateManager.disableTexture2D();
@@ -51,14 +51,14 @@ public class RenderDemonLamp extends TileEntitySpecialRenderer<TileEntityDemonLa
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.0F);
 
-		double near = 0.375D;
-		double far = 15D;
+		final double near = 0.375D;
+		final double far = 15D;
 		//whereeeeeeever you are
 		
 		for(int j = 0; j < 2; j++) {
 			
-			double h = 0.5;
-			double height = j == 0 ? -h : h;
+			final double h = 0.5;
+			final double height = j == 0 ? -h : h;
 			
 			for(int i = 0; i < 16; i++) {
 				

@@ -31,13 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HeaterOilburner extends BlockDummyable implements ITooltipProvider, ILookOverlay, IToolable {
-    public HeaterOilburner(Material mat, String s) {
+    public HeaterOilburner(final Material mat, final String s) {
         super(mat, s);
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(final World worldIn, final int meta) {
         if (meta >= 12)
             return new TileEntityHeaterOilburner();
 
@@ -51,9 +51,8 @@ public class HeaterOilburner extends BlockDummyable implements ITooltipProvider,
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(playerIn.getHeldItem(hand).getItem() instanceof ItemTooling){
-            ItemTooling tool = (ItemTooling)playerIn.getHeldItem(hand).getItem();
+    public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+        if(playerIn.getHeldItem(hand).getItem() instanceof ItemTooling tool){
             if(tool.getType() == ToolType.SCREWDRIVER || tool.getType() == ToolType.HAND_DRILL)
                 return false;
         }
@@ -71,7 +70,7 @@ public class HeaterOilburner extends BlockDummyable implements ITooltipProvider,
     }
 
     @Override
-    protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
+    protected void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
         super.fillSpace(world, x, y, z, dir, o);
 
         x = x + dir.offsetX * o;
@@ -86,31 +85,29 @@ public class HeaterOilburner extends BlockDummyable implements ITooltipProvider,
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+    public void addInformation(final ItemStack stack, @Nullable final World player, final List<String> tooltip, final ITooltipFlag advanced) {
         this.addStandardInfo(tooltip);
     }
 
     @Override
-    public void printHook(Pre event, World world, int x, int y, int z) {
-        int[] pos = this.findCore(world, x, y, z);
+    public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+        final int[] pos = this.findCore(world, x, y, z);
 
         if (pos == null)
             return;
 
-        TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+        final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterOilburner))
+        if (!(te instanceof TileEntityHeaterOilburner heater))
             return;
 
-        TileEntityHeaterOilburner heater = (TileEntityHeaterOilburner) te;
-
-        List<String> text = new ArrayList();
+        final List<String> text = new ArrayList();
         text.add(String.format("%,d", heater.heatEnergy) + " TU");
         text.add("§a-> §r" + heater.setting + " mB/t");
-        Fluid type = heater.fluidType;
-        int energy = FluidCombustionRecipes.getFlameEnergy(type);
+        final Fluid type = heater.fluidType;
+        final int energy = FluidCombustionRecipes.getFlameEnergy(type);
         if (energy != 0) {
-            int heat = energy * heater.setting;
+            final int heat = energy * heater.setting;
             text.add("§c<- §r" + String.format("%,d", heat) + " TU/t");
         }
 
@@ -118,21 +115,20 @@ public class HeaterOilburner extends BlockDummyable implements ITooltipProvider,
     }
 
     @Override
-    public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool) {
+    public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool) {
         if (tool != ToolType.SCREWDRIVER && tool != ToolType.HAND_DRILL)
             return false;
 
         if (world.isRemote) return true;
 
-        int[] pos = this.findCore(world, x, y, z);
+        final int[] pos = this.findCore(world, x, y, z);
 
         if (pos == null) return false;
 
-        TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+        final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterOilburner)) return false;
+        if (!(te instanceof TileEntityHeaterOilburner tile)) return false;
 
-        TileEntityHeaterOilburner tile = (TileEntityHeaterOilburner) te;
         if(tool == ToolType.SCREWDRIVER)
             tile.toggleSettingUp();
         else

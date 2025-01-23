@@ -29,24 +29,24 @@ public class TileEntitySpinnyLight extends TileEntity implements IControllable {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		color = EnumDyeColor.values()[compound.getByte("color")];
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setByte("color", (byte) color.ordinal());
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 	
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
+	public void handleUpdateTag(final NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 
@@ -71,18 +71,18 @@ public class TileEntitySpinnyLight extends TileEntity implements IControllable {
 	}
 
 	@Override
-	public void receiveEvent(BlockPos from, ControlEvent e){
+	public void receiveEvent(final BlockPos from, final ControlEvent e){
 		if(e.name.equals("spinny_light_power")){
-			boolean on = e.vars.get("isOn").getBoolean();
-			IBlockState state = world.getBlockState(pos);
-			boolean power = state.getValue(BlockSpinnyLight.POWERED);
+			final boolean on = e.vars.get("isOn").getBoolean();
+			final IBlockState state = world.getBlockState(pos);
+			final boolean power = state.getValue(BlockSpinnyLight.POWERED);
 			if(on && !power){
 				world.setBlockState(pos, state.withProperty(BlockSpinnyLight.POWERED, true));
-				NBTTagCompound tag = writeToNBT(new NBTTagCompound());
+				final NBTTagCompound tag = writeToNBT(new NBTTagCompound());
 				world.getTileEntity(pos).readFromNBT(tag);
 			} else if(!on && power){
 				world.setBlockState(pos, state.withProperty(BlockSpinnyLight.POWERED, false));
-				NBTTagCompound tag = writeToNBT(new NBTTagCompound());
+				final NBTTagCompound tag = writeToNBT(new NBTTagCompound());
 				world.getTileEntity(pos).readFromNBT(tag);
 			}
 		}

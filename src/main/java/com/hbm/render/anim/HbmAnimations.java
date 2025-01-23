@@ -37,7 +37,7 @@ public class HbmAnimations {
 		//the animation bus
 		public BusAnimation animation;
 
-		public Animation(String key, long startMillis, BusAnimation animation) {
+		public Animation(final String key, final long startMillis, final BusAnimation animation) {
 			this.key = key;
 			this.startMillis = startMillis;
 			this.animation = animation;
@@ -49,28 +49,28 @@ public class HbmAnimations {
 
 		public AnimationWrapper wrapper;
 		
-		public BlenderAnimation(String key, long startMillis, float scale, com.hbm.animloader.Animation animation, EndResult end) {
+		public BlenderAnimation(final String key, final long startMillis, final float scale, final com.hbm.animloader.Animation animation, final EndResult end) {
 			super(key, startMillis, null);
 			wrapper = new AnimationWrapper(startMillis, scale, animation).onEnd(end);
 		}
 		
 	}
 
-	public static AnimationWrapper getRelevantBlenderAnim(EnumHand hand){
-		Animation anim = getRelevantAnim(hand);
+	public static AnimationWrapper getRelevantBlenderAnim(final EnumHand hand){
+		final Animation anim = getRelevantAnim(hand);
 		if(anim instanceof BlenderAnimation){
 			return ((BlenderAnimation) anim).wrapper;
 		}
 		return AnimationWrapper.EMPTY;
 	}
 	
-	public static Animation getRelevantAnim(EnumHand hand) {
+	public static Animation getRelevantAnim(final EnumHand hand) {
 
-		EntityPlayer player = Minecraft.getMinecraft().player;
+		final EntityPlayer player = Minecraft.getMinecraft().player;
 		int slot = player.inventory.currentItem;
 		if(hand == EnumHand.OFF_HAND)
 			slot = 9;
-		ItemStack stack = player.getHeldItem(hand);
+		final ItemStack stack = player.getHeldItem(hand);
 
 		if(stack == null || stack.isEmpty())
 			return null;
@@ -85,19 +85,19 @@ public class HbmAnimations {
 		return null;
 	}
 	
-	public static double[] getRelevantTransformation(String bus, EnumHand hand) {
+	public static double[] getRelevantTransformation(final String bus, final EnumHand hand) {
 
-		Animation anim = HbmAnimations.getRelevantAnim(hand);
+		final Animation anim = HbmAnimations.getRelevantAnim(hand);
 
 		if(anim != null && anim.animation != null) {
 
-			BusAnimation buses = anim.animation;
-			int millis = (int)(System.currentTimeMillis() - anim.startMillis);
+			final BusAnimation buses = anim.animation;
+			final int millis = (int)(System.currentTimeMillis() - anim.startMillis);
 
-			BusAnimationSequence seq = buses.getBus(bus);
+			final BusAnimationSequence seq = buses.getBus(bus);
 
 			if(seq != null) {
-				double[] trans = seq.getTransformation(millis);
+				final double[] trans = seq.getTransformation(millis);
 
 				if(trans != null)
 					return trans;
@@ -106,8 +106,8 @@ public class HbmAnimations {
 		return new double[] {0, 0, 0};
 	}
 	
-	public static float getTimeDifference(String bus, EnumHand hand){
-		Animation anim = HbmAnimations.getRelevantAnim(hand);
+	public static float getTimeDifference(final String bus, final EnumHand hand){
+		final Animation anim = HbmAnimations.getRelevantAnim(hand);
 		if(anim != null && anim.animation != null) {
 			return ((float)(System.currentTimeMillis() - anim.startMillis))/1000F;
 		}

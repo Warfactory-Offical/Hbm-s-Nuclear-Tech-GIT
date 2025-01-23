@@ -109,7 +109,7 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 		} else {
 
 			if(loaded <= 0) {
-				BulletConfiguration conf = this.getFirstConfigLoaded();
+				final BulletConfiguration conf = this.getFirstConfigLoaded();
 
 				if(conf != null) {
 					this.conusmeAmmo(conf.ammo);
@@ -136,12 +136,12 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 				if(world.rand.nextInt(100) + 1 <= WeaponConfig.ciwsHitrate)
 					EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.shrapnel, 2F + world.rand.nextInt(2));
 
-				Vec3 pos = new Vec3(this.getTurretPos());
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				final Vec3 pos = new Vec3(this.getTurretPos());
+				final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 
-				Vec3 hOff = Vec3.createVectorHelper(0, 0.25, 0);
+				final Vec3 hOff = Vec3.createVectorHelper(0, 0.25, 0);
 				hOff.rotateAroundZ((float) -this.rotationPitch);
 				hOff.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 
@@ -153,7 +153,7 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 						hOff.zCoord *= -1;
 					}
 
-					NBTTagCompound data = new NBTTagCompound();
+					final NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "vanillaExt");
 					data.setString("mode", "largeexplode");
 					data.setFloat("size", 1.5F);
@@ -165,13 +165,13 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt){
+	public void readFromNBT(final NBTTagCompound nbt){
 		this.loaded = nbt.getInteger("loaded");
 		super.readFromNBT(nbt);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt){
 		nbt.setInteger("loaded", loaded);
 		return super.writeToNBT(nbt);
 	}

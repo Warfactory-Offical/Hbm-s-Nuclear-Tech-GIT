@@ -24,7 +24,7 @@ public class CoriumBlock extends BlockFluidClassic {
 
 	public Random rand = new Random();
 
-	public CoriumBlock(Fluid fluid, Material material, String s) {
+	public CoriumBlock(final Fluid fluid, final Material material, final String s) {
 		super(fluid, material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -38,20 +38,19 @@ public class CoriumBlock extends BlockFluidClassic {
 	}
 
 	@Override
-	public boolean canDisplace(IBlockAccess world, BlockPos pos){
-		IBlockState b = world.getBlockState(pos);
-		@SuppressWarnings("deprecation")
-		float res = (float) (Math.sqrt(b.getBlock().getExplosionResistance(null)) * 2);
+	public boolean canDisplace(final IBlockAccess world, final BlockPos pos){
+		final IBlockState b = world.getBlockState(pos);
+		@SuppressWarnings("deprecation") final float res = (float) (Math.sqrt(b.getBlock().getExplosionResistance(null)) * 2);
 		
 		if(res < 1)
 			return true;
-		Random rand = new Random();
+		final Random rand = new Random();
 		
 		return b.getMaterial().isLiquid() || rand.nextInt((int) res) == 0;
 	}
 	
 	@Override
-	public boolean displaceIfPossible(World world, BlockPos pos){
+	public boolean displaceIfPossible(final World world, final BlockPos pos){
 		if(world.getBlockState(pos).getMaterial().isLiquid()) {
 			return false;
 		}
@@ -59,7 +58,7 @@ public class CoriumBlock extends BlockFluidClassic {
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
 		entity.setInWeb();
 		entity.setFire(3);
 		entity.attackEntityFrom(ModDamageSource.radiation, 200F);
@@ -69,7 +68,7 @@ public class CoriumBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		super.updateTick(world, pos, state, rand);
 		
 		if(!world.isRemote && rand.nextInt(10) == 0) {
@@ -82,7 +81,7 @@ public class CoriumBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos){
+	public boolean isReplaceable(final IBlockAccess worldIn, final BlockPos pos){
 		return false;
 	}
 }

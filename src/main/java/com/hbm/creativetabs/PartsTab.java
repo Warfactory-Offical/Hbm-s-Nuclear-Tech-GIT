@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 public class PartsTab extends CreativeTabs {
 
-	public PartsTab(int index, String label) {
+	public PartsTab(final int index, final String label) {
 		super(index, label);
 	}
 

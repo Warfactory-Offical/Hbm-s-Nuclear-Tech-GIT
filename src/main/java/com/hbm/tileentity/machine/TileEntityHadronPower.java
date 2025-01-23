@@ -15,7 +15,7 @@ public class TileEntityHadronPower extends TileEntityTickingBase implements IEne
 	public void update() {
 		if(!world.isRemote) {
 			this.updateStandardConnections(world, pos);
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			this.networkPack(data, 15);
 		}
@@ -27,12 +27,12 @@ public class TileEntityHadronPower extends TileEntityTickingBase implements IEne
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 	}
 	
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 		this.markDirty();
 	}
@@ -48,13 +48,13 @@ public class TileEntityHadronPower extends TileEntityTickingBase implements IEne
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound){
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound){
 		compound.setLong("power", power);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound){
+	public void readFromNBT(final NBTTagCompound compound){
 		power = compound.getLong("power");
 		super.readFromNBT(compound);
 	}

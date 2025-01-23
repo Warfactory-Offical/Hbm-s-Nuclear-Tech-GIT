@@ -25,7 +25,7 @@ public class ModelArmorBase extends ModelBiped {
 	ModelRendererObj leftFoot;
 	ModelRendererObj rightFoot;
 
-	public ModelArmorBase(int type) {
+	public ModelArmorBase(final int type) {
 		this.type = type;
 		
 		//generate null defaults to prevent major breakage from using incomplete models
@@ -40,12 +40,11 @@ public class ModelArmorBase extends ModelBiped {
 	}
 
     @Override
-    public void setRotationAngles(float walkCycle, float walkAmplitude, float idleCycle, float headYaw, float headPitch, float scale, Entity entity) {
+    public void setRotationAngles(final float walkCycle, final float walkAmplitude, final float idleCycle, final float headYaw, final float headPitch, final float scale, final Entity entity) {
 
         super.setRotationAngles(walkCycle, walkAmplitude, idleCycle, headYaw, headPitch, scale, entity);
 
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
+        if (entity instanceof EntityPlayer player) {
             this.isSneak = player.isSneaking();
         }
 

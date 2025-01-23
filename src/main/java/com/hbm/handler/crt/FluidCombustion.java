@@ -15,9 +15,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class FluidCombustion {
 	
 	private static class ActionAddBurnableFluid implements IAction {
-		private String inputFluid;
-		private int heatPerMiliBucket;
-		public ActionAddBurnableFluid(String inputFluid, int heatPerMiliBucket){
+		private final String inputFluid;
+		private final int heatPerMiliBucket;
+		public ActionAddBurnableFluid(final String inputFluid, final int heatPerMiliBucket){
 			this.inputFluid = inputFluid;
 			this.heatPerMiliBucket = heatPerMiliBucket;
 		}
@@ -48,13 +48,13 @@ public class FluidCombustion {
 	}
 
 	@ZenMethod
-	public static void addBurnableFluid(String inputFluid, int heatPerMiliBucket) {
+	public static void addBurnableFluid(final String inputFluid, final int heatPerMiliBucket) {
 		NTMCraftTweaker.postInitActions.add(new ActionAddBurnableFluid(inputFluid, heatPerMiliBucket));
 	}
 
 	private static class ActionRemoveBurnableFluid implements IAction{
-		private String inputFluid;
-		public ActionRemoveBurnableFluid(String inputFluid){
+		private final String inputFluid;
+		public ActionRemoveBurnableFluid(final String inputFluid){
 			this.inputFluid = inputFluid;
 		}
 		@Override
@@ -76,7 +76,7 @@ public class FluidCombustion {
 	}
 
 	@ZenMethod
-	public static void removeBurnableFluid(String inputFluid) {
+	public static void removeBurnableFluid(final String inputFluid) {
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveBurnableFluid(inputFluid));
 	}
 }

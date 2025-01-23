@@ -76,23 +76,23 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
                     }
                 }
 
-                EnumFacing inputSide = getInputSide();
+                final EnumFacing inputSide = getInputSide();
                 double reach = 1D;
-                Block b = world.getBlockState(pos.offset(inputSide)).getBlock();
+                final Block b = world.getBlockState(pos.offset(inputSide)).getBlock();
                 if(b == ModBlocks.conveyor_double) reach = 0.5D;
                 if(b == ModBlocks.conveyor_triple) reach = 0.33D;
-                double x = (pos.offset(inputSide).getX()-pos.getX()) * reach + pos.getX();
-                double y = (pos.offset(inputSide).getY()-pos.getY()) * reach + pos.getY();
-                double z = (pos.offset(inputSide).getZ()-pos.getZ()) * reach + pos.getZ();
-                List<EntityMovingItem> items = world.getEntitiesWithinAABB(EntityMovingItem.class, new AxisAlignedBB(x + 0.1875D, y + 0.1875D, z + 0.1875D, x + 0.8125D, y + 0.8125D, z + 0.8125D));
-                for(EntityMovingItem item : items){
-                    ItemStack stack = item.getItemStack().copy();
-                    boolean match = this.matchesFilter(stack);
+                final double x = (pos.offset(inputSide).getX()-pos.getX()) * reach + pos.getX();
+                final double y = (pos.offset(inputSide).getY()-pos.getY()) * reach + pos.getY();
+                final double z = (pos.offset(inputSide).getZ()-pos.getZ()) * reach + pos.getZ();
+                final List<EntityMovingItem> items = world.getEntitiesWithinAABB(EntityMovingItem.class, new AxisAlignedBB(x + 0.1875D, y + 0.1875D, z + 0.1875D, x + 0.8125D, y + 0.8125D, z + 0.8125D));
+                for(final EntityMovingItem item : items){
+                    final ItemStack stack = item.getItemStack().copy();
+                    final boolean match = this.matchesFilter(stack);
                     if(this.isWhitelist && !match || !this.isWhitelist && match){
                         continue;
                     }
-                    int count = stack.getCount();
-                    int toAdd = Math.min(count, amount);
+                    final int count = stack.getCount();
+                    final int toAdd = Math.min(count, amount);
                     stack.setCount(toAdd);
                     tryFillTe(stack);
                     if(count - toAdd + stack.getCount() <= 0){
@@ -105,20 +105,20 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
             }
 
 
-            NBTTagCompound data = new NBTTagCompound();
+            final NBTTagCompound data = new NBTTagCompound();
             data.setBoolean("isWhitelist", isWhitelist);
             this.matcher.writeToNBT(data);
             this.networkPack(data, 15);
         }
     }
 
-    public boolean tryFillTe(ItemStack stack){
-        EnumFacing outputSide = getOutputSide();
-        TileEntity te = world.getTileEntity(pos.offset(outputSide));
+    public boolean tryFillTe(final ItemStack stack){
+        final EnumFacing outputSide = getOutputSide();
+        final TileEntity te = world.getTileEntity(pos.offset(outputSide));
         if (te != null) {
-            ICapabilityProvider capte = te;
+            final ICapabilityProvider capte = te;
             if (capte.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide)) {
-                IItemHandler cap = capte.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide);
+                final IItemHandler cap = capte.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide);
 
                 return tryInsertItemCap(cap, stack);
             }
@@ -127,7 +127,7 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
     }
 
     //Unloads output into chests. Capability version.
-    public boolean tryInsertItemCap(IItemHandler chest, ItemStack stack) {
+    public boolean tryInsertItemCap(final IItemHandler chest, final ItemStack stack) {
         //Check if we have something to output
         if(stack.isEmpty()){
             return false;
@@ -135,17 +135,17 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 
         for(int i = 0; i < chest.getSlots(); i++) {
 
-            ItemStack outputStack = stack.copy();
+            final ItemStack outputStack = stack.copy();
             if(outputStack.isEmpty() || outputStack.getCount() == 0)
                 return true;
 
-            ItemStack chestItem = chest.getStackInSlot(i).copy();
+            final ItemStack chestItem = chest.getStackInSlot(i).copy();
             if(chestItem.isEmpty() || (Library.areItemStacksCompatible(outputStack, chestItem, false) && chestItem.getCount() < chestItem.getMaxStackSize())) {
-                int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
+                final int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
 
                 outputStack.setCount(fillAmount);
 
-                ItemStack rest = chest.insertItem(i, outputStack, true);
+                final ItemStack rest = chest.insertItem(i, outputStack, true);
                 if(rest.getItem() == Item.getItemFromBlock(Blocks.AIR)){
                     stack.shrink(outputStack.getCount());
                     chest.insertItem(i, outputStack, false);
@@ -156,16 +156,16 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
         return false;
     }
 
-    public void networkUnpack(NBTTagCompound nbt) {
+    public void networkUnpack(final NBTTagCompound nbt) {
         this.isWhitelist = nbt.getBoolean("isWhitelist");
         this.matcher.modes = new String[this.matcher.modes.length];
         this.matcher.readFromNBT(nbt);
     }
 
-    public boolean matchesFilter(ItemStack stack) {
+    public boolean matchesFilter(final ItemStack stack) {
 
         for(int i = 0; i < 9; i++) {
-            ItemStack filter = inventory.getStackInSlot(i);
+            final ItemStack filter = inventory.getStackInSlot(i);
 
             if(filter != null && this.matcher.isValidForFilter(filter, i, stack)) {
                 return true;
@@ -174,34 +174,34 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
         return false;
     }
 
-    public void nextMode(int i) {
+    public void nextMode(final int i) {
         this.matcher.nextMode(world, inventory.getStackInSlot(i), i);
     }
 
-    public void initPattern(ItemStack stack, int index) {
+    public void initPattern(final ItemStack stack, final int index) {
         this.matcher.initPatternSmart(world, stack, index);
     }
 
     @Override
-    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new ContainerCraneGrabber(player.inventory, this);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new GUICraneGrabber(player.inventory, this);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.isWhitelist = nbt.getBoolean("isWhitelist");
         this.matcher.readFromNBT(nbt);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("isWhitelist", this.isWhitelist);
         this.matcher.writeToNBT(nbt);
@@ -209,15 +209,15 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
     }
 
     @Override
-    public boolean hasPermission(EntityPlayer player) {
-        int xCoord = pos.getX();
-        int yCoord = pos.getY();
-        int zCoord = pos.getZ();
+    public boolean hasPermission(final EntityPlayer player) {
+        final int xCoord = pos.getX();
+        final int yCoord = pos.getY();
+        final int zCoord = pos.getZ();
         return new Vec3d(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).length() < 20;
     }
 
     @Override
-    public void receiveControl(NBTTagCompound data) {
+    public void receiveControl(final NBTTagCompound data) {
         if(data.hasKey("isWhitelist")) {
             this.isWhitelist = !this.isWhitelist;
         }

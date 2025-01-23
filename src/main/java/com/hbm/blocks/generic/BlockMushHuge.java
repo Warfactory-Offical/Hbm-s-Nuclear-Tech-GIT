@@ -23,7 +23,7 @@ public class BlockMushHuge extends Block implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public BlockMushHuge(Material mat, String s) {
+	public BlockMushHuge(final Material mat, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -39,7 +39,7 @@ public class BlockMushHuge extends Block implements IItemHazard {
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random rand) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random rand) {
 		int i = rand.nextInt(10) - 7;
 		if(i < 0) {
 			i = 0;
@@ -48,13 +48,13 @@ public class BlockMushHuge extends Block implements IItemHazard {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.mush);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(final World worldIn, final BlockPos pos, final IBlockState state) {
 		return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.mush), 1, 0);
 	}
 	

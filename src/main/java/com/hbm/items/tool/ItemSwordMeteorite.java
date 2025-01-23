@@ -1,23 +1,22 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemSwordMeteorite extends ItemSwordAbility {
 
-	public ItemSwordMeteorite(float damage, double movement, ToolMaterial material, String s) {
+	public ItemSwordMeteorite(final float damage, final double movement, final ToolMaterial material, final String s) {
 		super(damage, movement, material, s);
 		this.setMaxDamage(0);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, list, flagIn);
 		if(this == ModItems.meteorite_sword) {
     		list.add(TextFormatting.ITALIC + "Forged from a fallen star");

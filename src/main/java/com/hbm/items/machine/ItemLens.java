@@ -19,7 +19,7 @@ public class ItemLens extends Item {
 	public float fieldMod;
 	public float drainMod;
 	
-	public ItemLens(long maxDamage, float fieldMod, float drainMod, String s) {
+	public ItemLens(final long maxDamage, final float fieldMod, final float drainMod, final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxDamage = maxDamage;
@@ -30,9 +30,9 @@ public class ItemLens extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		long damage = getLensDamage(stack);
-		double percent = (int)((maxDamage - damage) * 100000000D / maxDamage) / 1000000D;
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+		final long damage = getLensDamage(stack);
+		final double percent = (int)((maxDamage - damage) * 100000000D / maxDamage) / 1000000D;
 
 
 		tooltip.add(TextFormatting.DARK_AQUA+I18nUtil.resolveKey("desc.durticks")+" " + (maxDamage - damage) + " / " + maxDamage);
@@ -43,16 +43,16 @@ public class ItemLens extends Item {
 	}
 	
 	@Override
-    public double getDurabilityForDisplay(ItemStack stack){
+    public double getDurabilityForDisplay(final ItemStack stack){
         return (double)getLensDamage(stack) / (double)maxDamage;
     }
     
     @Override
-    public boolean showDurabilityBar(ItemStack stack){
+    public boolean showDurabilityBar(final ItemStack stack){
         return getDurabilityForDisplay(stack) != 0;
     }
 	
-	public static long getLensDamage(ItemStack stack) {
+	public static long getLensDamage(final ItemStack stack) {
 		
 		if(!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
@@ -62,7 +62,7 @@ public class ItemLens extends Item {
 		return stack.getTagCompound().getLong("damage");
 	}
 	
-	public static void setLensDamage(ItemStack stack, long damage) {
+	public static void setLensDamage(final ItemStack stack, final long damage) {
 		
 		if(!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());

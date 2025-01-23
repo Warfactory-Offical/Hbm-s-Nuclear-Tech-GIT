@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ItemStamp extends Item {
 
-	public ItemStamp(String s, int dura) {
+	public ItemStamp(final String s, final int dura) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxDamage(dura);
@@ -24,7 +24,7 @@ public class ItemStamp extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(this == ModItems.stamp_iron_circuit ||
 				this == ModItems.stamp_iron_plate ||
 				this == ModItems.stamp_iron_wire ||

@@ -1,17 +1,17 @@
 package com.hbm.util;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class EnchantmentUtil {
 
-	public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level) {
+	public static void addEnchantment(final ItemStack stack, final Enchantment enchantment, final int level) {
 
 		stack.addEnchantment(enchantment, level);
 	}
 
-	public static void removeEnchantment(ItemStack stack, Enchantment enchantment) {
+	public static void removeEnchantment(final ItemStack stack, final Enchantment enchantment) {
 		if(stack.getEnchantmentTagList() == null || !stack.hasTagCompound())
 			return;
 		
@@ -33,7 +33,7 @@ public class EnchantmentUtil {
 	 * @param entityPlayer the player to remove experience from
 	 * @param amount the amount of experience to remove
 	 */
-	public static void removeExperience(EntityPlayer entityPlayer, float amount) {
+	public static void removeExperience(final EntityPlayer entityPlayer, float amount) {
 		if (entityPlayer.experienceTotal < amount) {
 			entityPlayer.experienceLevel = 0;
 			entityPlayer.experience = 0;

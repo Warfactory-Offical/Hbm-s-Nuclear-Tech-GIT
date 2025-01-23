@@ -18,8 +18,8 @@ public class PlayerTickHandler {
     public static final int HAZARD_POLL_RATE = RadiationConfig.hazardRate;
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        EntityPlayer player = event.player;
+    public static void onPlayerTick(final TickEvent.PlayerTickEvent event) {
+        final EntityPlayer player = event.player;
 
         if (player.world.isRemote) {
             if (event.phase == TickEvent.Phase.START && !player.isInvisible() && !player.isSneaking()) {

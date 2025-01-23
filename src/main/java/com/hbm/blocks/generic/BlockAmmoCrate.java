@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockAmmoCrate extends Block {
 
-	public BlockAmmoCrate(Material materialIn, String s) {
+	public BlockAmmoCrate(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -26,14 +26,14 @@ public class BlockAmmoCrate extends Block {
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	Random rand = new Random();
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> ret, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+	public void getDrops(final NonNullList<ItemStack> ret, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune) {
 		ret.add(ItemStackUtil.itemStackFrom(ModItems.cap_nuka, 12 + rand.nextInt(21)));
         ret.add(ItemStackUtil.itemStackFrom(ModItems.syringe_metal_stimpak, 1 + rand.nextInt(3)));
         

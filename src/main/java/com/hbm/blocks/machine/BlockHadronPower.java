@@ -22,7 +22,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class BlockHadronPower extends BlockContainer implements ILookOverlay {
 
-	public BlockHadronPower(Material materialIn, String s) {
+	public BlockHadronPower(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -31,31 +31,29 @@ public class BlockHadronPower extends BlockContainer implements ILookOverlay {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityHadronPower();
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 		
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityHadronPower))
+		if(!(te instanceof TileEntityHadronPower extractor))
 			return;
-		
-		TileEntityHadronPower extractor = (TileEntityHadronPower) te;
-		
-		List<String> text = new ArrayList();
+
+        final List<String> text = new ArrayList();
 		text.add(Library.getShortNumber(extractor.power) + "/" + Library.getShortNumber(extractor.getMaxPower()) + " HE");
 		text.add("&["+Library.getColorProgress((double)extractor.power/(double)extractor.getMaxPower())+"&]    "+Library.getPercentage((double)extractor.power/(double)extractor.getMaxPower())+"%");
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getTranslationKey() + ".name"), 0xffff00, 0x404000, text);

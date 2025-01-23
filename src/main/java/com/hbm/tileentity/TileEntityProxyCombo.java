@@ -24,14 +24,14 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	public TileEntityProxyCombo() {
 	}
 
-	public TileEntityProxyCombo(boolean inventory, boolean power, boolean fluid) {
+	public TileEntityProxyCombo(final boolean inventory, final boolean power, final boolean fluid) {
 		this.inventory = inventory;
 		this.power = power;
 		this.fluid = fluid;
 		this.heat = false;
 	}
 
-	public TileEntityProxyCombo(boolean inventory, boolean power, boolean fluid, boolean heat) {
+	public TileEntityProxyCombo(final boolean inventory, final boolean power, final boolean fluid, final boolean heat) {
 		this.inventory = inventory;
 		this.power = power;
 		this.fluid = fluid;
@@ -49,7 +49,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(tile == null) {
 			tile = this.getTE();
 			if(tile == null){
@@ -69,7 +69,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(tile == null) {
 			tile = this.getTE();
 			if(tile == null){
@@ -89,7 +89,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 
 		if(!power)
 			return;
@@ -126,7 +126,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		inventory = compound.getBoolean("inv");
 		fluid = compound.getBoolean("flu");
 		power = compound.getBoolean("pow");
@@ -136,7 +136,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setBoolean("inv", inventory);
 		compound.setBoolean("flu", fluid);
 		compound.setBoolean("pow", power);
@@ -155,7 +155,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
+	public void handleUpdateTag(final NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 
@@ -172,7 +172,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	}
 
 	@Override
-	public void useUpHeat(int heat) {
+	public void useUpHeat(final int heat) {
 		if (!this.heat) {
 			return;
 		}

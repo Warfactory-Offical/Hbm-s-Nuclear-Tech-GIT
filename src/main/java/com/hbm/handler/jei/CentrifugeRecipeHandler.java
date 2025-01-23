@@ -28,7 +28,7 @@ public class CentrifugeRecipeHandler implements IRecipeCategory<CentrifugeRecipe
 	protected final IDrawableStatic flameStatic;
 	protected final IDrawableAnimated flameAnimated;
 	
-	public CentrifugeRecipeHandler(IGuiHelper help) {
+	public CentrifugeRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 163, 55);
 		
 		progressStatic = help.createDrawable(gui_rl, 176, 0, 54, 54);
@@ -62,15 +62,15 @@ public class CentrifugeRecipeHandler implements IRecipeCategory<CentrifugeRecipe
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 55, 1);
 		flameAnimated.draw(minecraft, 19, 19);
 		powerAnimated.draw(minecraft, 1, 1);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, CentrifugeRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final CentrifugeRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 19, 1);
 		

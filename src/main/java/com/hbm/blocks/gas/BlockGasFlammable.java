@@ -17,12 +17,12 @@ import net.minecraft.world.World;
 
 public class BlockGasFlammable extends BlockGasBase {
 
-	public BlockGasFlammable(String s) {
+	public BlockGasFlammable(final String s) {
 		super(0.8F, 0.8F, 0.2F, s);
 	}
 
 	@Override
-	public ForgeDirection getFirstDirection(World world, int x, int y, int z) {
+	public ForgeDirection getFirstDirection(final World world, final int x, final int y, final int z) {
 		
 		if(world.rand.nextInt(3) == 0)
 			return ForgeDirection.getOrientation(world.rand.nextInt(2));
@@ -31,20 +31,20 @@ public class BlockGasFlammable extends BlockGasBase {
 	}
 
 	@Override
-	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
+	public ForgeDirection getSecondDirection(final World world, final int x, final int y, final int z) {
 		return this.randomHorizontal(world);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand){
 		super.updateTick(world, pos, state, rand);
 		if(!world.isRemote) {
 			if(!world.isChunkGeneratedAt(pos.getX() >> 4, pos.getZ() >> 4)) return;
-			MutableBlockPos posN = new BlockPos.MutableBlockPos();
-			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			final MutableBlockPos posN = new BlockPos.MutableBlockPos();
+			for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 				posN.setPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ);
 				if(!world.isBlockLoaded(posN)) return;
-				IBlockState b = world.getBlockState(posN);
+				final IBlockState b = world.getBlockState(posN);
 				
 				if(isFireSource(b)) {
 					combust(world, pos);
@@ -54,19 +54,18 @@ public class BlockGasFlammable extends BlockGasBase {
 
 			if(rand.nextInt(20) == 0 && world.isAirBlock(pos.down())) {
 				world.setBlockToAir(pos);
-				return;
-			}
+            }
 		}
 	}
 	
 	@Untested
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos){
-		MutableBlockPos posN = new BlockPos.MutableBlockPos();
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos){
+		final MutableBlockPos posN = new BlockPos.MutableBlockPos();
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			posN.setPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ);
 			if(!world.isBlockLoaded(posN)) return;
-			IBlockState b = world.getBlockState(posN);
+			final IBlockState b = world.getBlockState(posN);
 			
 			if(isFireSource(b)) {
 				world.scheduleUpdate(pos, this, 2);
@@ -75,21 +74,21 @@ public class BlockGasFlammable extends BlockGasBase {
 		}
 	}
 	
-	protected void combust(World world, BlockPos p) {
+	protected void combust(final World world, final BlockPos p) {
 		world.setBlockState(p, Blocks.FIRE.getDefaultState());
 	}
 	
-	public boolean isFireSource(IBlockState b) {
+	public boolean isFireSource(final IBlockState b) {
 		return b.getMaterial() == Material.FIRE || b.getMaterial() == Material.LAVA || b.getBlock() == Blocks.TORCH;
 	}
 
 	@Override
-	public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face){
+	public boolean isFlammable(final IBlockAccess world, final BlockPos pos, final EnumFacing face){
 		return true;
 	}
 	
 	@Override
-	public int getDelay(World world) {
+	public int getDelay(final World world) {
 		return world.rand.nextInt(5) + 16;
 	}
 }

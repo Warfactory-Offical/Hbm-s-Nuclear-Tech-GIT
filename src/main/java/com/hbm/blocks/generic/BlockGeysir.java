@@ -25,7 +25,7 @@ public class BlockGeysir extends BlockContainer {
 
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	
-	public BlockGeysir(Material materialIn, String s) {
+	public BlockGeysir(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -35,23 +35,23 @@ public class BlockGeysir extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityGeysir();
 	}
 	
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
-	public static void setState(IBlockState state, World worldIn, BlockPos pos)
+	public static void setState(final IBlockState state, final World worldIn, final BlockPos pos)
     {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+        final TileEntity tileentity = worldIn.getTileEntity(pos);
         
         worldIn.setBlockState(pos, state, 2);
             
@@ -64,13 +64,13 @@ public class BlockGeysir extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		boolean active = stateIn.getValue(ACTIVE);
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
+		final boolean active = stateIn.getValue(ACTIVE);
 		
 		if(this == ModBlocks.geysir_vapor && active) {
-			float f = pos.getX() + 0.5F;
-			float f1 = pos.getY() + 1.0F;
-			float f2 = pos.getZ() + 0.5F;
+			final float f = pos.getX() + 0.5F;
+			final float f1 = pos.getY() + 1.0F;
+			final float f2 = pos.getZ() + 0.5F;
 	
 			worldIn.spawnParticle(EnumParticleTypes.CLOUD, f, f1, f2, 0.0D, 0.1D, 0.0D);
 		}
@@ -81,17 +81,17 @@ public class BlockGeysir extends BlockContainer {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{ACTIVE});
+		return new BlockStateContainer(this, ACTIVE);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		boolean active = state.getValue(ACTIVE);
+	public int getMetaFromState(final IBlockState state) {
+		final boolean active = state.getValue(ACTIVE);
 		return active ? 1 : 0;
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return this.getDefaultState().withProperty(ACTIVE, meta > 0);
 	}
 

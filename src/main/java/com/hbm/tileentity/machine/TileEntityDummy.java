@@ -27,7 +27,7 @@ public class TileEntityDummy extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		if(target != null){
 			compound.setInteger("tx", target.getX());
@@ -38,12 +38,12 @@ public class TileEntityDummy extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if(compound.hasKey("tx")){
-			int x = compound.getInteger("tx");
-			int y = compound.getInteger("ty");
-			int z = compound.getInteger("tz");
+			final int x = compound.getInteger("tx");
+			final int y = compound.getInteger("ty");
+			final int z = compound.getInteger("tz");
 			this.target = new BlockPos(x, y, z);
 		} else {
 			this.target = null;

@@ -14,12 +14,12 @@ import net.minecraft.world.World;
 
 public class EntityMissileSchrabidium extends EntityMissileBaseAdvanced {
 
-	public EntityMissileSchrabidium(World p_i1582_1_) {
+	public EntityMissileSchrabidium(final World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(1F, 7F);
 	}
 
-	public EntityMissileSchrabidium(World world, float x, float y, float z, int a, int b) {
+	public EntityMissileSchrabidium(final World world, final float x, final float y, final float z, final int a, final int b) {
 		super(world, x, y, z, a, b);
 		this.setSize(1F, 7F);
 	}
@@ -28,7 +28,7 @@ public class EntityMissileSchrabidium extends EntityMissileBaseAdvanced {
 	public void onImpact() {
         if (!this.world.isRemote)
         {
-			EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
+			final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
 			entity.posX = this.posX;
 			entity.posY = this.posY;
 			entity.posZ = this.posZ;
@@ -40,7 +40,7 @@ public class EntityMissileSchrabidium extends EntityMissileBaseAdvanced {
 
 				this.world.spawnEntity(entity);
 
-				EntityCloudFleija cloud = new EntityCloudFleija(this.world, BombConfig.aSchrabRadius);
+				final EntityCloudFleija cloud = new EntityCloudFleija(this.world, BombConfig.aSchrabRadius);
 				cloud.posX = this.posX;
 				cloud.posY = this.posY;
 				cloud.posZ = this.posZ;
@@ -51,7 +51,7 @@ public class EntityMissileSchrabidium extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		final List<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 4));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));

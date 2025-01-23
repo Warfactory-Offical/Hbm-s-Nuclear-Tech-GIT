@@ -20,14 +20,14 @@ public class RenderRubble extends Render<EntityRubble> {
 	ModelRubble mine;
 	Random rand;
 	
-	public RenderRubble(RenderManager renderManager) {
+	public RenderRubble(final RenderManager renderManager) {
 		super(renderManager);
 		mine = new ModelRubble();
 		rand = new Random();
 	}
 	
 	@Override
-	public void doRender(EntityRubble rocket, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityRubble rocket, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
@@ -35,10 +35,10 @@ public class RenderRubble extends Render<EntityRubble> {
 		GL11.glRotatef((rocket.ticksExisted % 360) * 10, 1, 1, 1);
 
 		try {
-			int block = rocket.getDataManager().get(EntityRubble.BLOCKID);
-			int meta = rocket.getDataManager().get(EntityRubble.BLOCKMETA);
-			@SuppressWarnings("deprecation")
-			//Minecraft uses it to load blocks. Guess I will, too. I wonder what I'm supposed to use?
+			final int block = rocket.getDataManager().get(EntityRubble.BLOCKID);
+			final int meta = rocket.getDataManager().get(EntityRubble.BLOCKMETA);
+			@SuppressWarnings("deprecation") final
+            //Minecraft uses it to load blocks. Guess I will, too. I wonder what I'm supposed to use?
 			IBlockState state = Block.getBlockById(block).getStateFromMeta(meta);
 			String s = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getParticleTexture().toString();
 			s = s.substring(25, (s.indexOf("',")));
@@ -46,7 +46,7 @@ public class RenderRubble extends Render<EntityRubble> {
 			if(s == null || s.isEmpty() || s.equals("missingno") || s.equals("missing"))
 				s = "minecraft:blocks/stone";
 	
-			String[] split = s.split(":");
+			final String[] split = s.split(":");
 			
 			String prefix = "";
 			String suffix = "";
@@ -61,13 +61,13 @@ public class RenderRubble extends Render<EntityRubble> {
 			bindTexture(new ResourceLocation(prefix + ":textures/" + suffix + ".png"));
 			
 			mine.renderAll(0.0625F);
-		} catch(Exception ex) { }
+		} catch(final Exception ex) { }
 		
 		GL11.glPopMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityRubble entity) {
+	protected ResourceLocation getEntityTexture(final EntityRubble entity) {
 		return new ResourceLocation(RefStrings.MODID + ":textures/models/ModelRubbleScrap.png");
 	}
 

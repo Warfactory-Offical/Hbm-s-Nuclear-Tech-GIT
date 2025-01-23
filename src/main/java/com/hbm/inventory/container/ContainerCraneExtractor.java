@@ -16,7 +16,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerCraneExtractor extends Container  {
     protected TileEntityCraneExtractor extractor;
 
-    public ContainerCraneExtractor(InventoryPlayer invPlayer, TileEntityCraneExtractor extractor) {
+    public ContainerCraneExtractor(final InventoryPlayer invPlayer, final TileEntityCraneExtractor extractor) {
         this.extractor = extractor;
 
         //filter
@@ -49,15 +49,15 @@ public class ContainerCraneExtractor extends Container  {
     }
 
     @Override
-    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+    public ItemStack slotClick(final int slotId, final int dragType, final ClickType clickTypeIn, final EntityPlayer player) {
         if (slotId < 0 || slotId >= 9) {
             return super.slotClick(slotId, dragType, clickTypeIn, player);
         }
 
-        Slot slot = this.inventorySlots.get(slotId);
+        final Slot slot = this.inventorySlots.get(slotId);
 
         ItemStack ret = ItemStack.EMPTY;
-        ItemStack held = player.inventory.getItemStack();
+        final ItemStack held = player.inventory.getItemStack();
 
         if (slot.getHasStack()) {
             ret = slot.getStack().copy();
@@ -81,12 +81,12 @@ public class ContainerCraneExtractor extends Container  {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
+    public ItemStack transferStackInSlot(final EntityPlayer player, final int slot) {
         ItemStack var3 = ItemStack.EMPTY;
-        Slot var4 = (Slot) this.inventorySlots.get(slot);
+        final Slot var4 = this.inventorySlots.get(slot);
 
         if(var4 != null && var4.getHasStack()) {
-            ItemStack var5 = var4.getStack();
+            final ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
             if(slot < 9) { //filters
@@ -112,7 +112,7 @@ public class ContainerCraneExtractor extends Container  {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(final EntityPlayer player) {
         return extractor.isUseableByPlayer(player);
     }
 }

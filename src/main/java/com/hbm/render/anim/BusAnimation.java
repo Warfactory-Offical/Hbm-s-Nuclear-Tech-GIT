@@ -27,10 +27,10 @@ public class BusAnimation {
 	 * @param bus the bus in question
 	 * @return
 	 */
-	public BusAnimation addBus(String name, BusAnimationSequence bus) {
+	public BusAnimation addBus(final String name, final BusAnimationSequence bus) {
 		animationBuses.put(name, bus);
 
-		int duration = bus.getTotalTime();
+		final int duration = bus.getTotalTime();
 
 		if(duration > totalTime)
 			totalTime = duration;
@@ -43,9 +43,9 @@ public class BusAnimation {
 	 */
 	public void updateTime() {
 
-		for(Entry<String, BusAnimationSequence> sequence : animationBuses.entrySet()) {
+		for(final Entry<String, BusAnimationSequence> sequence : animationBuses.entrySet()) {
 
-			int time = sequence.getValue().getTotalTime();
+			final int time = sequence.getValue().getTotalTime();
 
 			if(time > totalTime)
 				totalTime = time;
@@ -58,7 +58,7 @@ public class BusAnimation {
 	 * @param bus
 	 * @return
 	 */
-	public BusAnimationSequence getBus(String name) {
+	public BusAnimationSequence getBus(final String name) {
 		return animationBuses.get(name);
 	}
 
@@ -68,7 +68,7 @@ public class BusAnimation {
 	 * @param millis the elapsed time since the animation started in milliseconds
 	 * @return
 	 */
-	public double[] getTimedTransformation(String name, int millis) {
+	public double[] getTimedTransformation(final String name, final int millis) {
 
 		if(this.animationBuses.containsKey(name))
 			return animationBuses.get(name).getTransformation(millis);
@@ -81,7 +81,7 @@ public class BusAnimation {
 	 * @param lastMillis the last time the bus was checked
 	 * @param millis the current time
 	 */
-	public void playPendingSounds(int lastMillis, int millis) {
+	public void playPendingSounds(final int lastMillis, final int millis) {
 		//TODO: pending
 	}
 	

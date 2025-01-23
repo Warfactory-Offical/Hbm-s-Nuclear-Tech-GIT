@@ -17,7 +17,7 @@ public class ParticleRadiationFog extends Particle {
 
 	private int maxAge;
 	
-	public ParticleRadiationFog(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleRadiationFog(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		maxAge = 100 + rand.nextInt(40);
 		
@@ -68,40 +68,40 @@ public class ParticleRadiationFog extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		float alpha = 0;
 		
 		alpha = (float) Math.sin(particleAge * Math.PI / (400F)) * 0.25F;
 
         this.particleAlpha = MathHelper.clamp(alpha, 0, 1);
 		
-		Random rand = new Random(50);
+		final Random rand = new Random(50);
 		
 		for(int i = 0; i < 25; i++) {
 
-			double dX = (rand.nextGaussian() - 1D) * 2.5D;
-			double dY = (rand.nextGaussian() - 1D) * 0.15D;
-			double dZ = (rand.nextGaussian() - 1D) * 2.5D;
-			double size = (0.75D+rand.nextDouble() * 0.5D) * particleScale;
+			final double dX = (rand.nextGaussian() - 1D) * 2.5D;
+			final double dY = (rand.nextGaussian() - 1D) * 0.15D;
+			final double dZ = (rand.nextGaussian() - 1D) * 2.5D;
+			final double size = (0.75D+rand.nextDouble() * 0.5D) * particleScale;
 			
-			int j = this.getBrightnessForRender(partialTicks);
-			int k = j >> 16 & 65535;
-			int l = j & 65535;
+			final int j = this.getBrightnessForRender(partialTicks);
+			final int k = j >> 16 & 65535;
+			final int l = j & 65535;
 	        
-	        float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX) + rand.nextGaussian() * 0.5);
-	        float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY) + rand.nextGaussian() * 0.5);
-	        float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ) + rand.nextGaussian() * 0.5);
+	        final float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX) + rand.nextGaussian() * 0.5);
+	        final float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY) + rand.nextGaussian() * 0.5);
+	        final float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ) + rand.nextGaussian() * 0.5);
 			
-	        buffer.pos((double)(pX - rotationX * size - rotationXY * size) + dX, (double)(pY - rotationZ * size) + dY, (double)(pZ - rotationYZ * size - rotationXZ * size) + dZ).tex(particleTexture.getMaxU(), particleTexture.getMaxV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
-	        buffer.pos((double)(pX - rotationX * size + rotationXY * size) + dX, (double)(pY + rotationZ * size) + dY, (double)(pZ - rotationYZ * size + rotationXZ * size) + dZ).tex(particleTexture.getMaxU(), particleTexture.getMinV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
-	        buffer.pos((double)(pX + rotationX * size + rotationXY * size) + dX, (double)(pY + rotationZ * size) + dY, (double)(pZ + rotationYZ * size + rotationXZ * size) + dZ).tex(particleTexture.getMinU(), particleTexture.getMinV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
-	        buffer.pos((double)(pX + rotationX * size - rotationXY * size) + dX, (double)(pY - rotationZ * size) + dY, (double)(pZ + rotationYZ * size - rotationXZ * size) + dZ).tex(particleTexture.getMinU(), particleTexture.getMaxV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
+	        buffer.pos((pX - rotationX * size - rotationXY * size) + dX, (pY - rotationZ * size) + dY, (pZ - rotationYZ * size - rotationXZ * size) + dZ).tex(particleTexture.getMaxU(), particleTexture.getMaxV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
+	        buffer.pos(pX - rotationX * size + rotationXY * size + dX, pY + rotationZ * size + dY, pZ - rotationYZ * size + rotationXZ * size + dZ).tex(particleTexture.getMaxU(), particleTexture.getMinV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
+	        buffer.pos(pX + rotationX * size + rotationXY * size + dX, pY + rotationZ * size + dY, pZ + rotationYZ * size + rotationXZ * size + dZ).tex(particleTexture.getMinU(), particleTexture.getMinV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
+	        buffer.pos((pX + rotationX * size - rotationXY * size) + dX, (pY - rotationZ * size) + dY, (pZ + rotationYZ * size - rotationXZ * size) + dZ).tex(particleTexture.getMinU(), particleTexture.getMaxV()).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(k, l).endVertex();
 		}
 		
 	}
 	
 	@Override
-	public int getBrightnessForRender(float p_189214_1_) {
+	public int getBrightnessForRender(final float p_189214_1_) {
 		return 70;
 	}
 }

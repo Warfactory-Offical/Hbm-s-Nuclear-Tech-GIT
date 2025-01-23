@@ -25,76 +25,76 @@ public class Vec3i extends FuncRelational {
         z = 0;
     }
 
-    public Vec3i(Vec3i v) {
+    public Vec3i(final Vec3i v) {
         x = v.x;
         y = v.y;
         z = v.z;
     }
 
-    public Vec3i(Vec4i v) {
+    public Vec3i(final Vec4i v) {
         x = v.x;
         y = v.y;
         z = v.z;
     }
 
-    public Vec3i(int i) {
+    public Vec3i(final int i) {
         x = i;
         y = i;
         z = i;
     }
 
-    public Vec3i(int x, int y, int z) {
+    public Vec3i(final int x, final int y, final int z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3i(int[] fa) {
+    public Vec3i(final int[] fa) {
         this(fa, 0);
     }
 
-    public Vec3i(int[] fa, int i) {
-        x = fa[i + 0];
+    public Vec3i(final int[] fa, final int i) {
+        x = fa[i];
         y = fa[i + 1];
         z = fa[i + 2];
     }
 
-    public Vec3i(long x, long y, long z) {
+    public Vec3i(final long x, final long y, final long z) {
         this.x = (int) x;
         this.y = (int) y;
         this.z = (int) z;
     }
 
-    public Vec3i set(int i) {
+    public Vec3i set(final int i) {
         x = i;
         y = i;
         z = i;
         return this;
     }
 
-    public Vec3i set(long x, long y, long z) {
+    public Vec3i set(final long x, final long y, final long z) {
         return set((int) x, (int) y, (int) z);
     }
 
-    public Vec3i set(int x, int y, int z) {
+    public Vec3i set(final int x, final int y, final int z) {
         this.x = x;
         this.y = y;
         this.z = z;
         return this;
     }
 
-    public Vec3i set(int[] fa) {
+    public Vec3i set(final int[] fa) {
         x = fa[0];
         y = fa[1];
         z = fa[2];
         return this;
     }
 
-    public static Vec3i linearRand_(Vec3i min, Vec3i max) {
+    public static Vec3i linearRand_(final Vec3i min, final Vec3i max) {
         return linearRand(min, max, new Vec3i());
     }
 
-    public static Vec3i linearRand(Vec3i min, Vec3i max, Vec3i res) {
+    public static Vec3i linearRand(final Vec3i min, final Vec3i max, final Vec3i res) {
         res.x = Glm.linearRand(min.x, max.x);
         res.y = Glm.linearRand(min.y, max.y);
         res.z = Glm.linearRand(min.z, max.z);
@@ -109,7 +109,7 @@ public class Vec3i extends FuncRelational {
         return negate(new Vec3i());
     }
 
-    public Vec3i negate(Vec3i res) {
+    public Vec3i negate(final Vec3i res) {
         res.x = -x;
         res.y = -y;
         res.z = -z;
@@ -124,7 +124,7 @@ public class Vec3i extends FuncRelational {
         return toIA(new int[3]);
     }
 
-    public int[] toIA(int[] ia) {
+    public int[] toIA(final int[] ia) {
         ia[0] = x;
         ia[1] = y;
         ia[2] = z;
@@ -135,13 +135,13 @@ public class Vec3i extends FuncRelational {
         return Vec3i.this.toDib(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asIntBuffer());
     }
 
-    public IntBuffer toDib(IntBuffer ib) {
+    public IntBuffer toDib(final IntBuffer ib) {
         return toDib(ib, 0);
     }
 
-    public IntBuffer toDib(IntBuffer ib, int index) {
+    public IntBuffer toDib(final IntBuffer ib, final int index) {
         return ib
-                .put(index + 0, x)
+                .put(index, x)
                 .put(index + 1, y)
                 .put(index + 2, z);
     }
@@ -150,14 +150,14 @@ public class Vec3i extends FuncRelational {
         return toDbb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()));
     }
 
-    public ByteBuffer toDbb(ByteBuffer bb) {
+    public ByteBuffer toDbb(final ByteBuffer bb) {
         return toDbb(bb, 0);
     }
 
-    public ByteBuffer toDbb(ByteBuffer bb, int index) {
+    public ByteBuffer toDbb(final ByteBuffer bb, final int index) {
         return bb
-                .putInt(index + 0 * Integer.BYTES, x)
-                .putInt(index + 1 * Integer.BYTES, y)
+                .putInt(index, x)
+                .putInt(index + Integer.BYTES, y)
                 .putInt(index + 2 * Integer.BYTES, z);
     }
 
@@ -165,11 +165,11 @@ public class Vec3i extends FuncRelational {
         print("", System.out);
     }
 
-    public void print(String title) {
+    public void print(final String title) {
         print(title, System.out);
     }
 
-    public void print(String title, PrintStream printStream) {
+    public void print(final String title, final PrintStream printStream) {
         printStream.println( title + "\n(" + x + ", " + y + ", " + z + ")");
     }
 }

@@ -23,11 +23,11 @@ public class MagicRecipes {
 	//Drillgon200: I hate these warnings. 
 	//All it takes are these two characters                 ||
 	//But bob evidently just hates not having warnings      VV
-	private static List<MagicRecipe> recipes = new ArrayList<>();
+	private static final List<MagicRecipe> recipes = new ArrayList<>();
 
-	public static ItemStack getRecipe(InventoryCrafting matrix) {
+	public static ItemStack getRecipe(final InventoryCrafting matrix) {
 
-		List<ComparableStack> comps = new ArrayList<>();
+		final List<ComparableStack> comps = new ArrayList<>();
 
 		for(int i = 0; i < 4; i++) {
 			if(!matrix.getStackInSlot(i).isEmpty())
@@ -36,7 +36,7 @@ public class MagicRecipes {
 
 		//Collections.sort(comps);
 
-		for(MagicRecipe recipe : recipes) {
+		for(final MagicRecipe recipe : recipes) {
 			if(recipe.matches(comps))
 				return recipe.getResult();
 		}
@@ -102,13 +102,13 @@ public class MagicRecipes {
 		public List<AStack> in;
 		public ItemStack out;
 
-		public MagicRecipe(ItemStack out, AStack... in) {
+		public MagicRecipe(final ItemStack out, final AStack... in) {
 			this.out = out;
 			this.in = Arrays.asList(in);
 			//Collections.sort(this.in);
 		}
 
-		public boolean matches(List<ComparableStack> comps) {
+		public boolean matches(final List<ComparableStack> comps) {
 			if(comps.size() != in.size())
 				return false;
 

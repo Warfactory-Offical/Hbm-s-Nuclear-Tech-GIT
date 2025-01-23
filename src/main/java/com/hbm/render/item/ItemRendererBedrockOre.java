@@ -21,19 +21,18 @@ public class ItemRendererBedrockOre extends TEISRBase {
 	private int dirtyColor = 0;
 	private float cleanliness = 0F;
 
-	public ItemRendererBedrockOre(int dirtyColor, float cleanliness){
+	public ItemRendererBedrockOre(final int dirtyColor, final float cleanliness){
 		this.dirtyColor = dirtyColor;
 		this.cleanliness = cleanliness;
 	}
 
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, itemModel);
-		if(stack.getItem() instanceof ItemBedrockOre){
-			ItemBedrockOre oreItem = (ItemBedrockOre)stack.getItem();
-			int color = BobMathUtil.interpolateColor(this.dirtyColor, ItemBedrockOre.getColor(stack), this.cleanliness);
+		if(stack.getItem() instanceof ItemBedrockOre oreItem){
+            final int color = BobMathUtil.interpolateColor(this.dirtyColor, ItemBedrockOre.getColor(stack), this.cleanliness);
 			
 			if(layerTex == null){
 				layerTex = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("hbm:items/ore_bedrock_layer");

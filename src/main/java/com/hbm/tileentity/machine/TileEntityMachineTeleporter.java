@@ -32,12 +32,12 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	public static final int maxPower = 1000000000;
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("power");
 		if(compound.getBoolean("hastarget")) {
-			int x = compound.getInteger("x1");
-			int y = compound.getInteger("y1");
-			int z = compound.getInteger("z1");
+			final int x = compound.getInteger("x1");
+			final int y = compound.getInteger("y1");
+			final int z = compound.getInteger("z1");
 			target = new BlockPos(x, y, z);
 		}
 		linked = compound.getBoolean("linked");
@@ -45,7 +45,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("power", power);
 		if(target != null) {
 			compound.setBoolean("hastarget", true);
@@ -65,9 +65,9 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 		packageTimer++;
 		if(!this.world.isRemote) {
 			this.updateStandardConnections(world, pos);
-			List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.25, pos.getY(), pos.getZ() - 0.25, pos.getX() + 0.75, pos.getY() + 2, pos.getZ() + 0.75));
+			final List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.25, pos.getY(), pos.getZ() - 0.25, pos.getX() + 0.75, pos.getY() + 2, pos.getZ() + 0.75));
 			if(!entities.isEmpty())
-				for(Entity e : entities) {
+				for(final Entity e : entities) {
 					if(e.ticksExisted >= 10) {
 						teleport(e);
 						b0 = true;
@@ -85,7 +85,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 
 	public void networkPack() {
 		if(linked != prevLinked || packageTimer == 0){
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			if(this.target != null){
 				data.setInteger("targetX", this.target.getX());
 				data.setInteger("targetY", this.target.getY());
@@ -98,7 +98,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		if(data.hasKey("targetX")){
 			this.target = new BlockPos(data.getInteger("targetX"), data.getInteger("targetY"), data.getInteger("targetZ"));
 		}
@@ -107,7 +107,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 		}
 	}
 	
-	public void teleport(Entity entity) {
+	public void teleport(final Entity entity) {
 
 		if (this.power < consumption)
 			return;
@@ -117,7 +117,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 			entity.attackEntityFrom(ModDamageSource.teleporter, 10000);
 		} else {
 			if ((entity instanceof EntityPlayerMP)) {
-				((EntityPlayerMP) entity).setPositionAndUpdate(target.getX() + 0.5D, target.getY() + 1.6D + entity.getYOffset(), target.getZ() + 0.5D);
+				entity.setPositionAndUpdate(target.getX() + 0.5D, target.getY() + 1.6D + entity.getYOffset(), target.getZ() + 0.5D);
 			} else {
 				entity.setPositionAndRotation(target.getX() + 0.5D, target.getY() + 1.6D + entity.getYOffset(), target.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
 			}
@@ -128,7 +128,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

@@ -5,7 +5,7 @@ public class HmfController {
 	public static double modoloMod = 100000D;
 	public static double quotientMod = 5000D;
 	
-	public static void setMod(double modolo, double quotient) {
+	public static void setMod(final double modolo, final double quotient) {
 		modoloMod = modolo;
 		quotientMod = quotient;
 	}

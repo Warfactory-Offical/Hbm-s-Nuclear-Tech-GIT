@@ -12,7 +12,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class MissileTab extends CreativeTabs {
 
-	public MissileTab(int index, String label) {
+	public MissileTab(final int index, final String label) {
 		super(index, label);
 	}
 
@@ -25,7 +25,7 @@ public class MissileTab extends CreativeTabs {
 	}
 
 	@Override
-	public void displayAllRelevantItems(NonNullList<ItemStack> list) {
+	public void displayAllRelevantItems(final NonNullList<ItemStack> list) {
 		super.displayAllRelevantItems(list);
 		
 		list.add(ItemCustomMissile.buildMissile(

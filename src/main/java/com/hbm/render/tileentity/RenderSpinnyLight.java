@@ -21,12 +21,12 @@ public class RenderSpinnyLight extends TileEntitySpecialRenderer<TileEntitySpinn
 	public static int[] coneMeshes = null;
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntitySpinnyLight te) {
+	public boolean isGlobalRenderer(final TileEntitySpinnyLight te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntitySpinnyLight te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntitySpinnyLight te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		if(coneMeshes == null){
 			coneMeshes = new int[EnumDyeColor.values().length];
 			for(int i = 0; i < coneMeshes.length; i ++){
@@ -37,8 +37,8 @@ public class RenderSpinnyLight extends TileEntitySpecialRenderer<TileEntitySpinn
 				coneMeshes[i] = generateConeMesh(5, 3, 12, color[0], color[1], color[2]);
 			}
 		}
-		boolean powered = (te.getBlockMetadata() & 8) > 0;
-		float time = powered ? (te.getWorld().getTotalWorldTime()-te.timeAdded)%10000+partialTicks : 0;
+		final boolean powered = (te.getBlockMetadata() & 8) > 0;
+		final float time = powered ? (te.getWorld().getTotalWorldTime()-te.timeAdded)%10000+partialTicks : 0;
 		GL11.glPushMatrix();
 		GL11.glTranslated(x+0.5, y+0.5, z+0.5);
 		switch(te.getBlockMetadata()&7){
@@ -95,20 +95,20 @@ public class RenderSpinnyLight extends TileEntitySpecialRenderer<TileEntitySpinn
 		GL11.glPopMatrix();
 	}
 	
-	private static int generateConeMesh(float length, float radius, int sides, float r, float g, float b){
-		int list = GL11.glGenLists(1);
+	private static int generateConeMesh(final float length, final float radius, final int sides, final float r, final float g, final float b){
+		final int list = GL11.glGenLists(1);
 		GL11.glNewList(list, GL11.GL_COMPILE);
 		
-		float oX = 0F;
-		float oY = 0.1708F;
-		float oZ = 0F;
+		final float oX = 0F;
+		final float oY = 0.1708F;
+		final float oZ = 0F;
 		
-		float[] vertices = new float[(1+sides)*3];
+		final float[] vertices = new float[(1+sides)*3];
 		vertices[0] = oX;
 		vertices[1] = oY;
 		vertices[2] = oZ;
 		
-		Vec3 vertex = new Vec3(0, radius, 0);
+		final Vec3 vertex = new Vec3(0, radius, 0);
 		for(int i = 0; i < sides; i ++){
 			vertex.rotateAroundX((float) (2*Math.PI*(1F/(float)sides)));
 			vertices[(i+1)*3] = (float) vertex.xCoord+oX + length;
@@ -116,10 +116,10 @@ public class RenderSpinnyLight extends TileEntitySpecialRenderer<TileEntitySpinn
 			vertices[(i+1)*3+2] = (float) vertex.zCoord+oZ;
 		}
 		
-	        Tessellator tes = Tessellator.getInstance();
-	        BufferBuilder buf = tes.getBuffer();
+	        final Tessellator tes = Tessellator.getInstance();
+	        final BufferBuilder buf = tes.getBuffer();
 	        buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR);
-	        float alpha = 0.65F;
+	        final float alpha = 0.65F;
 	        for(int m = -1; m <= 1; m += 2){
 	        	for(int i = 2; i <= sides; i ++){
 	            	buf.pos(vertices[0], vertices[1], vertices[2]).color(r, g, b, alpha).endVertex();
@@ -128,7 +128,7 @@ public class RenderSpinnyLight extends TileEntitySpecialRenderer<TileEntitySpinn
 	            }
 	            buf.pos(vertices[0], vertices[1], vertices[2]).color(r, g, b, alpha).endVertex();
 	            buf.pos(vertices[sides*3]*m, vertices[sides*3+1], vertices[sides*3+2]).color(r, g, b, 0).endVertex();
-	            buf.pos(vertices[1*3]*m, vertices[1*3+1], vertices[1*3+2]).color(r, g, b, 0).endVertex();
+	            buf.pos(vertices[3]*m, vertices[3 +1], vertices[3 +2]).color(r, g, b, 0).endVertex();
 	        }
 	        tes.draw();
 	        

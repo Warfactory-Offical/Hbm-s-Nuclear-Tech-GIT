@@ -66,12 +66,12 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 		};
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityStructureMarker te) {
+	public boolean isGlobalRenderer(final TileEntityStructureMarker te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityStructureMarker te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityStructureMarker te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		GL11.glRotatef(180, 0F, 0F, 1F);
@@ -90,7 +90,7 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 		GL11.glPopMatrix();
 	}
 
-	public void renderBlocks(int x, int y, int z, int type, int meta) {
+	public void renderBlocks(final int x, final int y, final int z, final int type, final int meta) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		int offsetX = 0;
 		int offsetZ = 0;
@@ -120,11 +120,11 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 					for(int c = 0; c < 3; c++) {
 
 						int texture = -1;
-						if(FactoryTitanium.array[b][a].substring(c, c + 1).equals("H")) {
+						if(FactoryTitanium.array[b][a].charAt(c) == 'H') {
 							texture = 0;
-						} else if(FactoryTitanium.array[b][a].substring(c, c + 1).equals("F")) {
+						} else if(FactoryTitanium.array[b][a].charAt(c) == 'F') {
 							texture = 1;
-						} else if(FactoryTitanium.array[b][a].substring(c, c + 1).equals("C")) {
+						} else if(FactoryTitanium.array[b][a].charAt(c) == 'C') {
 							texture = 2;
 						}
 						if(texture >= 0) {
@@ -158,15 +158,15 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 					for(int c = 0; c < 5; c++) {
 				
 						int texture = -1;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("R"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'R')
 							texture = 0;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("#"))
+						if(NuclearReactor.array2[b][a].charAt(c) == '#')
 							texture = 1;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("C"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'C')
 							texture = 2;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("A"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'A')
 							texture = 3;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("I"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'I')
 							texture = 4;
 						if(texture >= 0) {
 							renderSmolBlockAt(reactor[texture][0], reactor[texture][1], a, b, c);
@@ -200,17 +200,17 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 					for(int c = 0; c < 5; c++) {
 				
 						int texture = -1;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("R"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'R')
 							texture = 0;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("#"))
+						if(NuclearReactor.array2[b][a].charAt(c) == '#')
 							texture = 1;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("C"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'C')
 							texture = 2;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("A"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'A')
 							texture = 3;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("I"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'I')
 							texture = 4;
-						if(NuclearReactor.array2[b][a].substring(c, c + 1).equals("B"))
+						if(NuclearReactor.array2[b][a].charAt(c) == 'B')
 							texture = 5;
 						if(texture >= 0) {
 							renderSmolBlockAt(reactor[texture][0], reactor[texture][1], a, b, c);
@@ -244,21 +244,21 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 					for(int c = 0; c < 7; c++) {
 				
 						int texture = -1;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("C"))
+						if(Watz.watz[b][a].charAt(c) == 'C')
 							texture = 0;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("A"))
+						if(Watz.watz[b][a].charAt(c) == 'A')
 							texture = 1;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("R"))
+						if(Watz.watz[b][a].charAt(c) == 'R')
 							texture = 2;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("S"))
+						if(Watz.watz[b][a].charAt(c) == 'S')
 							texture = 3;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("I"))
+						if(Watz.watz[b][a].charAt(c) == 'I')
 							texture = 4;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("#"))
+						if(Watz.watz[b][a].charAt(c) == '#')
 							texture = 5;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("K"))
+						if(Watz.watz[b][a].charAt(c) == 'K')
 							texture = 6;
-						if(Watz.watz[b][a].substring(c, c + 1).equals("W"))
+						if(Watz.watz[b][a].charAt(c) == 'W')
 							texture = 7;
 						if(texture >= 0) {
 							renderSmolBlockAt(watz[texture][0], watz[texture][1], a, b, c);
@@ -291,19 +291,19 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 					for(int c = 0; c < 19; c++) {
 				
 						int texture = -1;
-						if(FWatz.fwatz[b][a].substring(c, c + 1).equals("X"))
+						if(FWatz.fwatz[b][a].charAt(c) == 'X')
 							texture = 0;
-						if(FWatz.fwatz[b][a].substring(c, c + 1).equals("H"))
+						if(FWatz.fwatz[b][a].charAt(c) == 'H')
 							texture = 1;
-						if(FWatz.fwatz[b][a].substring(c, c + 1).equals("S"))
+						if(FWatz.fwatz[b][a].charAt(c) == 'S')
 							texture = 2;
-						if(FWatz.fwatz[b][a].substring(c, c + 1).equals("T"))
+						if(FWatz.fwatz[b][a].charAt(c) == 'T')
 							texture = 3;
-						if(FWatz.fwatz[b][a].substring(c, c + 1).equals("M"))
+						if(FWatz.fwatz[b][a].charAt(c) == 'M')
 							texture = 4;
-						if(FWatz.fwatz[b][a].substring(c, c + 1).equals("C"))
+						if(FWatz.fwatz[b][a].charAt(c) == 'C')
 							texture = 5;
-						if(FWatz.fwatz[b][a].substring(c, c + 1).equals("#"))
+						if(FWatz.fwatz[b][a].charAt(c) == '#')
 							texture = 6;
 						if(texture >= 0) {
 							renderSmolBlockAt(fwatz[texture][0], fwatz[texture][1], a, b, c);
@@ -314,7 +314,7 @@ public class RenderStructureMarker extends TileEntitySpecialRenderer<TileEntityS
 		}
 	}
 
-	public void renderSmolBlockAt(TextureAtlasSprite loc1, TextureAtlasSprite loc2, int x, int y, int z) {
+	public void renderSmolBlockAt(final TextureAtlasSprite loc1, final TextureAtlasSprite loc2, final int x, final int y, final int z) {
 		// GL11.glTranslatef(x, y, z);
 		GL11.glRotatef(180, 0F, 0F, 1F);
 		RenderHelper.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, loc2.getMaxU(), loc2.getMinV());

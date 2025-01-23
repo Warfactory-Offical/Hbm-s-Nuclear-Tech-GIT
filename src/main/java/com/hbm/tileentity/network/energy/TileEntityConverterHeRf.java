@@ -34,41 +34,40 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	}
 	//RF
 	@Override
-	public boolean canConnectEnergy(EnumFacing from) {
+	public boolean canConnectEnergy(final EnumFacing from) {
 		return true;
 	}
 
 	@Override
-	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
+	public int extractEnergy(final EnumFacing from, final int maxExtract, final boolean simulate) {
 		return 0;
 	}
 
 	@Override
-	public int getEnergyStored(EnumFacing from) {
+	public int getEnergyStored(final EnumFacing from) {
 		return 0;
 	}
 
 	@Override
-	public int getMaxEnergyStored(EnumFacing from) {
+	public int getMaxEnergyStored(final EnumFacing from) {
 		return 0;
 	}
 
 	private boolean recursionBrake = false;
 
 	@Optional.Method(modid="redstoneflux")
-	public int transferToRFMachine(TileEntity entity, int rf, EnumFacing dir){
-		if(entity != null && entity instanceof IEnergyReceiver) {
-				
-			IEnergyReceiver receiver = (IEnergyReceiver) entity;
-			return receiver.receiveEnergy(dir, rf, false);
+	public int transferToRFMachine(final TileEntity entity, final int rf, final EnumFacing dir){
+		if(entity != null && entity instanceof IEnergyReceiver receiver) {
+
+            return receiver.receiveEnergy(dir, rf, false);
 		}
 		return 0;
 	}
 
-	public int transferToFEMachine(TileEntity entity, int fe, EnumFacing dir){
+	public int transferToFEMachine(final TileEntity entity, final int fe, final EnumFacing dir){
 		if(entity != null && entity.hasCapability(CapabilityEnergy.ENERGY, dir)) {
 			
-			IEnergyStorage storage = entity.getCapability(CapabilityEnergy.ENERGY, dir);
+			final IEnergyStorage storage = entity.getCapability(CapabilityEnergy.ENERGY, dir);
 			if(storage.canReceive()){
 				return storage.receiveEnergy(fe, false);
 			}
@@ -78,7 +77,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 
 	//NTM
 	@Override
-	public long transferPower(long power) {
+	public long transferPower(final long power) {
 		
 		if(recursionBrake)
 			return power;
@@ -90,15 +89,15 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 		int transfer = 0;
 		int totalTransferred = 0;
 		boolean skipRF = false;
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
-			TileEntity entity = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
+			final TileEntity entity = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
 			if(!skipRF){
 				try{
 					transfer = transferToRFMachine(entity, toRF, dir.getOpposite().toEnumFacing());
 					totalTransferred += transfer;
 					toRF -= transfer; //to prevent energy duping
-				} catch(NoSuchMethodError e){
+				} catch(final NoSuchMethodError e){
 					skipRF = true;
 				} //RF not
 			}
@@ -158,17 +157,17 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	}
 
 	@Override
-	public int extractEnergy(int maxExtract, boolean simulate){
+	public int extractEnergy(final int maxExtract, final boolean simulate){
 		return 0;
 	}
 
 	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate){
+	public int receiveEnergy(final int maxReceive, final boolean simulate){
 		return 0;
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return true;
 		}
@@ -176,7 +175,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return (T) this;
 		}

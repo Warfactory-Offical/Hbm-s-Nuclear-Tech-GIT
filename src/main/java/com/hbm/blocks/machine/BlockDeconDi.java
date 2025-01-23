@@ -21,28 +21,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockDeconDi extends BlockContainer {
 
 	public static float digammaRemove;
-	public BlockDeconDi(Material materialIn, String s, float digamma) {
+	public BlockDeconDi(final Material materialIn, final String s, final float digamma) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		this.digammaRemove = digamma;
+		digammaRemove = digamma;
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityDeconDi(this.digammaRemove);
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+		return new TileEntityDeconDi(digammaRemove);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		float f = pos.getX() + 0.5F;
-		float f1 = pos.getY() + 1.0F;
-		float f2 = pos.getZ() + 0.5F;
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
+		final float f = pos.getX() + 0.5F;
+		final float f1 = pos.getY() + 1.0F;
+		final float f2 = pos.getZ() + 0.5F;
 
 		//worldIn.spawnParticle(EnumParticleTypes.CLOUD, f, f1, f2, 0.0D, 0.1D, 0.0D);
-		Particle p = new ParticleCloud(worldIn, f, f1, f2, 0.0D, 0.1D, 0.0D){
+		final Particle p = new ParticleCloud(worldIn, f, f1, f2, 0.0D, 0.1D, 0.0D){
 			@Override
 			public void onUpdate() {
 				this.prevPosX = this.posX;
@@ -72,7 +72,7 @@ public class BlockDeconDi extends BlockContainer {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

@@ -499,15 +499,15 @@ public final class HBMSoundHandler {
         voiceSounds = new SoundEvent[]{voices1, voices2, voices3, voices4, voices5, voices6, voices7, voices8};
     }
 
-    public static SoundEvent register(String name) {
-        SoundEvent e = new SoundEvent(new ResourceLocation(RefStrings.MODID, name));
+    public static SoundEvent register(final String name) {
+        final SoundEvent e = new SoundEvent(new ResourceLocation(RefStrings.MODID, name));
         e.setRegistryName(name);
         ALL_SOUNDS.add(e);
         return e;
     }
 
-    public static SoundEvent registerBypass(String name) {
-        SoundEvent e = new SoundEvent(new ResourceLocation(RefStrings.MODID, name));
+    public static SoundEvent registerBypass(final String name) {
+        final SoundEvent e = new SoundEvent(new ResourceLocation(RefStrings.MODID, name));
         e.setRegistryName(name);
         ForgeRegistries.SOUND_EVENTS.register(e);
         return e;

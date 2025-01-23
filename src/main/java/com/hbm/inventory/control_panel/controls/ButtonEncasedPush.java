@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class ButtonEncasedPush extends Control {
 
-    public ButtonEncasedPush(String name, ControlPanel panel) {
+    public ButtonEncasedPush(final String name, final ControlPanel panel) {
         super(name, panel);
         vars.put("isPushed", new DataValueFloat(0));
         vars.put("isLit", new DataValueFloat(0));
@@ -47,15 +47,15 @@ public class ButtonEncasedPush extends Control {
     public void render() {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.ctrl_button_encased_push_tex);
-        Tessellator tes = Tessellator.instance;
-        IModelCustom model = getModel();
+        final Tessellator tes = Tessellator.instance;
+        final IModelCustom model = getModel();
 
-        boolean isPushed = getVar("isPushed").getBoolean();
-        boolean isLit = getVar("isLit").getBoolean();
-        boolean isCoverOpen = getVar("isCoverOpen").getBoolean();
+        final boolean isPushed = getVar("isPushed").getBoolean();
+        final boolean isLit = getVar("isLit").getBoolean();
+        final boolean isCoverOpen = getVar("isCoverOpen").getBoolean();
 
-        float lX = OpenGlHelper.lastBrightnessX;
-        float lY = OpenGlHelper.lastBrightnessY;
+        final float lX = OpenGlHelper.lastBrightnessX;
+        final float lY = OpenGlHelper.lastBrightnessY;
 
         tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         tes.setTranslation(posX, 0, posY);
@@ -67,7 +67,7 @@ public class ButtonEncasedPush extends Control {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         }
 
-        float[] color = EnumDyeColor.RED.getColorComponentValues();
+        final float[] color = EnumDyeColor.RED.getColorComponentValues();
         float cMul = 0.6F;
         if (isLit) {
             cMul = 1;
@@ -92,9 +92,9 @@ public class ButtonEncasedPush extends Control {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-        Matrix4f rot_mat = new Matrix4f().rotate((float) ((isCoverOpen) ? Math.toRadians(-75) : 0), new Vector3f(1, 0, 0));
-        Matrix4f trans_mat = new Matrix4f().translate(new Vector3f(posX, .625F, posY-.75F));
-        Matrix4f transform_mat = new Matrix4f();
+        final Matrix4f rot_mat = new Matrix4f().rotate((float) ((isCoverOpen) ? Math.toRadians(-75) : 0), new Vector3f(1, 0, 0));
+        final Matrix4f trans_mat = new Matrix4f().translate(new Vector3f(posX, .625F, posY-.75F));
+        final Matrix4f transform_mat = new Matrix4f();
         Matrix4f.mul(trans_mat, rot_mat, transform_mat);
         transform_mat.store(ClientProxy.AUX_GL_BUFFER);
         ClientProxy.AUX_GL_BUFFER.rewind();
@@ -132,49 +132,49 @@ public class ButtonEncasedPush extends Control {
 	}
 
     @Override
-    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
-        NodeSystem ctrl_press = new NodeSystem(this);
+    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
+        final NodeSystem ctrl_press = new NodeSystem(this);
         {
-            Map<String, DataValue> vars = new HashMap<>(receiveEvents.get(0).vars);
+            final Map<String, DataValue> vars = new HashMap<>(receiveEvents.get(0).vars);
             vars.put("from index", new DataValueFloat(0));
-            NodeInput node0 = new NodeInput(170, 100, "Event Data").setVars(vars);
+            final NodeInput node0 = new NodeInput(170, 100, "Event Data").setVars(vars);
             ctrl_press.addNode(node0);
-            NodeFunction node1 = new NodeFunction(230, 80);
-            NodeSystem node1_subsystem = new NodeSystem(this);
+            final NodeFunction node1 = new NodeFunction(230, 80);
+            final NodeSystem node1_subsystem = new NodeSystem(this);
             {
-                NodeGetVar node1_0 = new NodeGetVar(170, 100, this).setData("isCoverOpen", false);
+                final NodeGetVar node1_0 = new NodeGetVar(170, 100, this).setData("isCoverOpen", false);
                 node1_subsystem.addNode(node1_0);
-                NodeBoolean node1_1 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
+                final NodeBoolean node1_1 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
                 node1_1.inputs.get(0).setData(node1_0, 0, true);
                 node1_subsystem.addNode(node1_1);
-                NodeSetVar node1_2 = new NodeSetVar(290, 140, this).setData("isCoverOpen", false);
+                final NodeSetVar node1_2 = new NodeSetVar(290, 140, this).setData("isCoverOpen", false);
                 node1_2.inputs.get(0).setData(node1_1, 0, true);
                 node1_subsystem.addNode(node1_2);
             }
             node1.inputs.get(0).setData(node0, 1, true);
             ctrl_press.subSystems.put(node1, node1_subsystem);
             ctrl_press.addNode(node1);
-            NodeBoolean node2 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
+            final NodeBoolean node2 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
             node2.inputs.get(0).setData(node0, 1, true);
             ctrl_press.addNode(node2);
-            NodeGetVar node3 = new NodeGetVar(170, 160, this).setData("isCoverOpen", false);
+            final NodeGetVar node3 = new NodeGetVar(170, 160, this).setData("isCoverOpen", false);
             ctrl_press.addNode(node3);
-            NodeBoolean node4 = new NodeBoolean(290, 130).setData(NodeBoolean.BoolOperation.AND);
+            final NodeBoolean node4 = new NodeBoolean(290, 130).setData(NodeBoolean.BoolOperation.AND);
             node4.inputs.get(0).setData(node2, 0, true);
             node4.inputs.get(1).setData(node3, 0, true);
             ctrl_press.addNode(node4);
-            NodeFunction node5 = new NodeFunction(350, 140);
-            NodeSystem node5_subsystem = new NodeSystem(this);
+            final NodeFunction node5 = new NodeFunction(350, 140);
+            final NodeSystem node5_subsystem = new NodeSystem(this);
             {
-                NodeGetVar node5_0 = new NodeGetVar(170, 100, this).setData("isPushed", false);
+                final NodeGetVar node5_0 = new NodeGetVar(170, 100, this).setData("isPushed", false);
                 node5_subsystem.addNode(node5_0);
-                NodeBoolean node5_1 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
+                final NodeBoolean node5_1 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
                 node5_1.inputs.get(0).setData(node5_0, 0, true);
                 node5_subsystem.addNode(node5_1);
-                NodeSetVar node5_2 = new NodeSetVar(290, 140, this).setData("isPushed", false);
+                final NodeSetVar node5_2 = new NodeSetVar(290, 140, this).setData("isPushed", false);
                 node5_2.inputs.get(0).setData(node5_1, 0, true);
                 node5_subsystem.addNode(node5_2);
-                NodeSetVar node5_3 = new NodeSetVar(290, 100, this).setData("isLit", false);
+                final NodeSetVar node5_3 = new NodeSetVar(290, 100, this).setData("isLit", false);
                 node5_3.inputs.get(0).setDefault(new DataValueFloat(1));
                 node5_subsystem.addNode(node5_3);
             }
@@ -183,20 +183,20 @@ public class ButtonEncasedPush extends Control {
             ctrl_press.addNode(node5);
         }
         receiveNodeMap.put("ctrl_press", ctrl_press);
-        NodeSystem tick = new NodeSystem(this);
+        final NodeSystem tick = new NodeSystem(this);
         {
-            NodeGetVar node0 = new NodeGetVar(170, 100, this).setData("isPushed", false);
+            final NodeGetVar node0 = new NodeGetVar(170, 100, this).setData("isPushed", false);
             tick.addNode(node0);
-            NodeBuffer node1 = new NodeBuffer(230, 120);
+            final NodeBuffer node1 = new NodeBuffer(230, 120);
             node1.inputs.get(0).setData(node0, 0, true);
             node1.inputs.get(1).setDefault(new DataValueFloat(15));
             tick.addNode(node1);
-            NodeFunction node2 = new NodeFunction(290, 140);
-            NodeSystem node2_subsystem = new NodeSystem(this);
+            final NodeFunction node2 = new NodeFunction(290, 140);
+            final NodeSystem node2_subsystem = new NodeSystem(this);
             {
-                NodeSetVar node2_0 = new NodeSetVar(290, 100, this).setData("isPushed", false);
+                final NodeSetVar node2_0 = new NodeSetVar(290, 100, this).setData("isPushed", false);
                 node2_subsystem.addNode(node2_0);
-                NodeSetVar node2_1 = new NodeSetVar(290, 140, this).setData("isLit", false);
+                final NodeSetVar node2_1 = new NodeSetVar(290, 140, this).setData("isLit", false);
                 node2_subsystem.addNode(node2_1);
             }
             node2.inputs.get(0).setData(node1, 0, true);
@@ -207,7 +207,7 @@ public class ButtonEncasedPush extends Control {
     }
 
     @Override
-    public Control newControl(ControlPanel panel) {
+    public Control newControl(final ControlPanel panel) {
         return new ButtonEncasedPush(name, panel);
     }
 }

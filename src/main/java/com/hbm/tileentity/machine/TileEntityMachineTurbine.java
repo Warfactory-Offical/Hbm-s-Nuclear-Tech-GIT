@@ -53,13 +53,13 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	public TileEntityMachineTurbine() {
 		inventory = new ItemStackHandler(7) {
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				super.onContentsChanged(slot);
 				markDirty();
 			}
 
 			@Override
-			public boolean isItemValid(int slot, ItemStack stack) {
+			public boolean isItemValid(final int slot, final ItemStack stack) {
 				if(slot == 0)
 					return stack != null && stack.getItem() == ModItems.forge_fluid_identifier;
 				if(slot == 4)
@@ -70,7 +70,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 			}
 
 			@Override
-			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(final int slot, final ItemStack stack, final boolean simulate) {
 				if(this.isItemValid(slot, stack))
 					return super.insertItem(slot, stack, simulate);
 				return ItemStack.EMPTY;
@@ -90,7 +90,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 		if(!world.isRemote) {
 			
 			if(inventory.getStackInSlot(0).getItem() == ModItems.forge_fluid_identifier && inventory.getStackInSlot(1).isEmpty()){
-				Fluid f = ItemForgeFluidIdentifier.getType(inventory.getStackInSlot(0));
+				final Fluid f = ItemForgeFluidIdentifier.getType(inventory.getStackInSlot(0));
 				if(isValidFluidForTank(0, new FluidStack(f, 1000))){
 					if(tankTypes[0] != f){
 						tankTypes[0] = f;
@@ -117,18 +117,18 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 					}
 				}
 
-			Object[] outs = MachineRecipes.getTurbineOutput(tanks[0].getFluid() == null ? null : tanks[0].getFluid().getFluid());
+			final Object[] outs = MachineRecipes.getTurbineOutput(tanks[0].getFluid() == null ? null : tanks[0].getFluid().getFluid());
 
 			if(outs == null) {
 
 			} else {
 				tankTypes[1] = ((Fluid) outs[0]);
 
-				int processMax = 1200;																//the maximum amount of cycles based on the 1.2k cycle cap (subject to change)
-				int processSteam = tanks[0].getFluidAmount() / (Integer)outs[2];							//the maximum amount of cycles depending on steam
-				int processWater = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / (Integer)outs[1];	//the maximum amount of cycles depending on water
+				final int processMax = 1200;																//the maximum amount of cycles based on the 1.2k cycle cap (subject to change)
+				final int processSteam = tanks[0].getFluidAmount() / (Integer)outs[2];							//the maximum amount of cycles depending on steam
+				final int processWater = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / (Integer)outs[1];	//the maximum amount of cycles depending on water
 
-				int cycles = Math.min(processMax, Math.min(processSteam, processWater));
+				final int cycles = Math.min(processMax, Math.min(processSteam, processWater));
 
 				tanks[0].drain((Integer)outs[2] * cycles, true);
 				tanks[1].fill(new FluidStack(tankTypes[1], (Integer)outs[1] * cycles), true);
@@ -146,7 +146,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		if(nbt.hasKey("tankType0"))
 			tankTypes[0] = FluidRegistry.getFluid(nbt.getString("tankType0"));
 		else
@@ -167,7 +167,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		nbt.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		nbt.setTag("inventory", inventory.serializeNBT());
 		if(tankTypes[0] != null)
@@ -178,14 +178,14 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 		return super.writeToNBT(nbt);
 	}
 
-	protected boolean inputValidForTank(int tank, int slot) {
+	protected boolean inputValidForTank(final int tank, final int slot) {
 		if(inventory.getStackInSlot(slot) != ItemStack.EMPTY && tanks[tank] != null) {
 			return FFUtils.checkRestrictions(inventory.getStackInSlot(slot), f -> f.getFluid() == tankTypes[tank]);
 		}
 		return false;
 	}
 
-	private boolean isValidFluidForTank(int tank, FluidStack stack) {
+	private boolean isValidFluidForTank(final int tank, final FluidStack stack) {
 		if(stack == null || tanks[tank] == null)
 			return false;
 		return stack.getFluid() == ModForgeFluids.steam || stack.getFluid() == ModForgeFluids.hotsteam || stack.getFluid() == ModForgeFluids.superhotsteam || stack.getFluid() == ModForgeFluids.ultrahotsteam;
@@ -199,11 +199,11 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -211,15 +211,14 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 		}
 	}
 
-	public long getPowerScaled(int i) {
+	public long getPowerScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 2) {
-			return;
-		} else {
+        } else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 		}
@@ -232,7 +231,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if(resource != null && resource.getFluid() == tankTypes[0] && resource.amount > 0) {
 			return tanks[0].fill(resource, doFill);
 		} else {
@@ -240,7 +239,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 		}
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 
 		FFUtils.fillFluid(this, tank, world, pos.east(), 64000);
 		FFUtils.fillFluid(this, tank, world, pos.west(), 64000);
@@ -251,7 +250,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		if(resource != null && resource.getFluid() == tankTypes[1] && resource.amount > 0) {
 			return tanks[1].drain(resource.amount, doDrain);
 		} else {
@@ -260,7 +259,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		if(maxDrain > 0) {
 			return tanks[1].drain(maxDrain, doDrain);
 		} else {
@@ -269,18 +268,18 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> cap, final EnumFacing facing) {
 		return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(cap, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this) : super.getCapability(capability, facing);
 	}
 
 	private long detectPower;
-	private FluidTank[] detectTanks = new FluidTank[] { null, null };
-	private Fluid[] detectFluids = new Fluid[] { null, null };
+	private final FluidTank[] detectTanks = new FluidTank[] { null, null };
+	private final Fluid[] detectFluids = new Fluid[] { null, null };
 
 	private void detectAndSendChanges() {
 
@@ -318,7 +317,7 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IT
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

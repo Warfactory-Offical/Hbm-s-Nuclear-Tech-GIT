@@ -15,12 +15,12 @@ public class RenderMinerRocket extends Render<EntityMinerRocket> {
 
 	public static final IRenderFactory<EntityMinerRocket> FACTORY = (RenderManager man) -> {return new RenderMinerRocket(man);};
 	
-	protected RenderMinerRocket(RenderManager renderManager) {
+	protected RenderMinerRocket(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMinerRocket entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMinerRocket entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         //GL11.glRotated(180, 0, 0, 1);
@@ -39,7 +39,7 @@ public class RenderMinerRocket extends Render<EntityMinerRocket> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMinerRocket entity) {
+	protected ResourceLocation getEntityTexture(final EntityMinerRocket entity) {
 		if(entity.getRocketType() == 1)
 			return ResourceManager.minerRocketGerald_tex;
 		else

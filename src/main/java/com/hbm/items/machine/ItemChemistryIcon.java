@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemChemistryIcon extends Item {
 
-	public ItemChemistryIcon(String s){
+	public ItemChemistryIcon(final String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(null);
@@ -25,9 +25,9 @@ public class ItemChemistryIcon extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
-		String s = ("" + I18n.format(ModItems.chemistry_template.getTranslationKey() + ".name")).trim();
-        String s1 = ("" + I18n.format("chem." + ChemplantRecipes.getName(stack))).trim();
+	public String getItemStackDisplayName(final ItemStack stack) {
+		String s = (I18n.format(ModItems.chemistry_template.getTranslationKey() + ".name")).trim();
+        final String s1 = (I18n.format("chem." + ChemplantRecipes.getName(stack))).trim();
 
         if (s1 != null)
         {
@@ -38,9 +38,9 @@ public class ItemChemistryIcon extends Item {
 	}
 	
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> list) {
 		if(tab == this.getCreativeTab()){
-		for (int i: ChemplantRecipes.recipeNames.keySet()){
+		for (final int i: ChemplantRecipes.recipeNames.keySet()){
 				list.add(ItemStackUtil.itemStackFrom(this, 1, i));
         	}
 		}

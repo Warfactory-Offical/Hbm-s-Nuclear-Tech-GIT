@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 
 public class ItemGlitch extends Item {
 
-	public ItemGlitch(String s) {
+	public ItemGlitch(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -40,8 +40,8 @@ public class ItemGlitch extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
 		stack.damageItem(5, player);
 		
 		if(!world.isRemote)
@@ -83,7 +83,7 @@ public class ItemGlitch extends Item {
 				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.nuke_starter_kit, 1));
 				break;
 			case 11:
-				EntityBoxcar pip = new EntityBoxcar(world);
+				final EntityBoxcar pip = new EntityBoxcar(world);
 				pip.posX = player.posX;
 				pip.posY = player.posY + 50;
 				pip.posZ = player.posZ;
@@ -91,7 +91,7 @@ public class ItemGlitch extends Item {
 				break;
 			case 12:
 				for(int i = 0; i < 10; i++) {
-					EntityBoxcar pippo = new EntityBoxcar(world);
+					final EntityBoxcar pippo = new EntityBoxcar(world);
 					pippo.posX = player.posX + itemRand.nextGaussian() * 25;
 					pippo.posY = player.posY + 50;
 					pippo.posZ = player.posZ + itemRand.nextGaussian() * 25;
@@ -153,14 +153,14 @@ public class ItemGlitch extends Item {
 				player.sendMessage(new TextComponentTranslation("chat.glitch.26"));
 				break;
 			case 27:
-				EntityVortex vortex = new EntityVortex(world, 2.5F);
+				final EntityVortex vortex = new EntityVortex(world, 2.5F);
 				vortex.posX = player.posX;
 				vortex.posY = player.posY - 15;
 				vortex.posZ = player.posZ;
 				world.spawnEntity(vortex);
 				break;
 			case 28:
-				EntityMIRV mirv = new EntityMIRV(world);
+				final EntityMIRV mirv = new EntityMIRV(world);
 				mirv.posX = player.posX;
 				mirv.posY = player.posY + 100;
 				mirv.posZ = player.posZ;
@@ -183,7 +183,7 @@ public class ItemGlitch extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.glitch"));
 		list.add("");
 		if(MainRegistry.polaroidID > 0 && MainRegistry.polaroidID < 19)

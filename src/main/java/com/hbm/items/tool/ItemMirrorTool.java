@@ -1,14 +1,11 @@
 package com.hbm.items.tool;
 
-import java.util.List;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.machine.TileEntitySolarMirror;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,9 +21,11 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemMirrorTool extends Item {
 
-	public ItemMirrorTool(String s) {
+	public ItemMirrorTool(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -34,13 +33,13 @@ public class ItemMirrorTool extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos1, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
-		Block b = world.getBlockState(pos1).getBlock();
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos1, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final ItemStack stack = player.getHeldItem(hand);
+		final Block b = world.getBlockState(pos1).getBlock();
 
 		if(b == ModBlocks.machine_solar_boiler) {
 
-			int[] pos = ((BlockDummyable)b).findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			final int[] pos = ((BlockDummyable)b).findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
 			if(pos != null && !world.isRemote) {
 
@@ -60,10 +59,10 @@ public class ItemMirrorTool extends Item {
 		if(b == ModBlocks.solar_mirror && stack.hasTagCompound()) {
 
 			if(!world.isRemote) {
-				TileEntitySolarMirror mirror = (TileEntitySolarMirror)world.getTileEntity(pos1);
-				int tx = stack.getTagCompound().getInteger("posX");
-				int ty = stack.getTagCompound().getInteger("posY");
-				int tz = stack.getTagCompound().getInteger("posZ");
+				final TileEntitySolarMirror mirror = (TileEntitySolarMirror)world.getTileEntity(pos1);
+				final int tx = stack.getTagCompound().getInteger("posX");
+				final int ty = stack.getTagCompound().getInteger("posY");
+				final int tz = stack.getTagCompound().getInteger("posZ");
 
 				if(Vec3.createVectorHelper(pos1.getX()- tx, pos1.getY() - ty, pos1.getZ() - tz).length() < 25)
 					mirror.setTarget(tx, ty, tz);
@@ -76,8 +75,8 @@ public class ItemMirrorTool extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		for(String s : I18nUtil.resolveKeyArray(this.getTranslationKey() + ".desc"))
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+		for(final String s : I18nUtil.resolveKeyArray(this.getTranslationKey() + ".desc"))
 			tooltip.add(TextFormatting.YELLOW + s);
 	}
 }

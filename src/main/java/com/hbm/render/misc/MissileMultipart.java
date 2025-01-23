@@ -28,12 +28,12 @@ public class MissileMultipart {
 		return height;
 	}
 	
-	public static MissileMultipart loadFromStruct(MissileStruct struct) {
+	public static MissileMultipart loadFromStruct(final MissileStruct struct) {
 		
 		if(struct == null)
 			return null;
 		
-		MissileMultipart multipart = new MissileMultipart();
+		final MissileMultipart multipart = new MissileMultipart();
 
 		multipart.warhead = MissilePart.getPart(struct.warhead);
 		multipart.fuselage = MissilePart.getPart(struct.fuselage);

@@ -11,8 +11,8 @@ import net.minecraft.util.math.Vec3d;
 public class RenderTurretJeremy extends RenderTurretBase<TileEntityTurretJeremy> {
 
 	@Override
-	public void render(TileEntityTurretJeremy turret, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
-		Vec3d pos = turret.getHorizontalOffset();
+	public void render(final TileEntityTurretJeremy turret, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
+		final Vec3d pos = turret.getHorizontalOffset();
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + pos.x, y, z + pos.z);
@@ -24,8 +24,8 @@ public class RenderTurretJeremy extends RenderTurretBase<TileEntityTurretJeremy>
 
 		bindTexture(ResourceManager.turret_base_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");
-		double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
-		double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
+		final double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
+		final double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
 		
 		GL11.glRotated(yaw, 0, 1, 0);
 		bindTexture(ResourceManager.turret_carriage_tex);

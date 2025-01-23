@@ -40,7 +40,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		return "container.centrifuge";
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -49,16 +49,16 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		}
 	}
 	
-	public int getCentrifugeProgressScaled(int i) {
+	public int getCentrifugeProgressScaled(final int i) {
 		return (progress * i) / processingSpeed;
 	}
 	
-	public long getPowerRemainingScaled(int i) {
+	public long getPowerRemainingScaled(final int i) {
 		return (power * i) / maxPower;
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
 		if(i == 2 || i == 3 || i == 4 || i == 5)
 		{
 			return false;
@@ -72,29 +72,29 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return new int[]{ 0, 1, 2, 3, 4, 5, 6, 7};
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
 		return slot > 1 && slot < 6;
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setShort("progressTime", (short) progress);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		power = compound.getLong("powerTime");
 		progress = compound.getShort("progressTime");
 		super.readFromNBT(compound);
@@ -106,7 +106,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		{
 			return false;
 		}
-		ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
+		final ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
 		if(itemStack == null)
 		{
 			return false;
@@ -116,21 +116,16 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		{
 			return true;
 		}
-		
-		if((inventory.getStackInSlot(2).isEmpty() || (itemStack.length > 0 && itemStack[0] != null && inventory.getStackInSlot(2).isItemEqual(itemStack[0]) && inventory.getStackInSlot(2).getCount() + itemStack[0].getCount() <= itemStack[0].getMaxStackSize())) && 
-				(inventory.getStackInSlot(3).isEmpty() || itemStack.length < 2 || (itemStack.length > 1 && itemStack[1] != null && inventory.getStackInSlot(3).isItemEqual(itemStack[1]) && inventory.getStackInSlot(3).getCount() + itemStack[1].getCount() <= itemStack[1].getMaxStackSize())) && 
-				(inventory.getStackInSlot(4).isEmpty() || itemStack.length < 3 || (itemStack.length > 2 && itemStack[2] != null && inventory.getStackInSlot(4).isItemEqual(itemStack[2]) && inventory.getStackInSlot(4).getCount() + itemStack[2].getCount() <= itemStack[2].getMaxStackSize())) && 
-				(inventory.getStackInSlot(5).isEmpty() || itemStack.length < 4 || (itemStack.length > 3 && itemStack[3] != null && inventory.getStackInSlot(5).isItemEqual(itemStack[3]) && inventory.getStackInSlot(5).getCount() + itemStack[3].getCount() <= itemStack[3].getMaxStackSize())))
-		{
-			return true;
-		}
-		
-		return false;
-	}
+
+        return (inventory.getStackInSlot(2).isEmpty() || (itemStack.length > 0 && itemStack[0] != null && inventory.getStackInSlot(2).isItemEqual(itemStack[0]) && inventory.getStackInSlot(2).getCount() + itemStack[0].getCount() <= itemStack[0].getMaxStackSize())) &&
+                (inventory.getStackInSlot(3).isEmpty() || itemStack.length < 2 || (itemStack.length > 1 && itemStack[1] != null && inventory.getStackInSlot(3).isItemEqual(itemStack[1]) && inventory.getStackInSlot(3).getCount() + itemStack[1].getCount() <= itemStack[1].getMaxStackSize())) &&
+                (inventory.getStackInSlot(4).isEmpty() || itemStack.length < 3 || (itemStack.length > 2 && itemStack[2] != null && inventory.getStackInSlot(4).isItemEqual(itemStack[2]) && inventory.getStackInSlot(4).getCount() + itemStack[2].getCount() <= itemStack[2].getMaxStackSize())) &&
+                (inventory.getStackInSlot(5).isEmpty() || itemStack.length < 4 || (itemStack.length > 3 && itemStack[3] != null && inventory.getStackInSlot(5).isItemEqual(itemStack[3]) && inventory.getStackInSlot(5).getCount() + itemStack[3].getCount() <= itemStack[3].getMaxStackSize()));
+    }
 	
 	private void processItem() {
 		if(canProcess()) {
-			ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
+			final ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
 			
 			if(inventory.getStackInSlot(2).isEmpty() && itemStack[0] != null)
 			{
@@ -249,9 +244,9 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 			int speed = 1;
 			int consumption = 200;
 			
-			int speedLvl = getSpeedLvl();
-			int powerLvl = getPowerLvl();
-			int overdriveLvl = getOverdriveLvl();
+			final int speedLvl = getSpeedLvl();
+			final int powerLvl = getPowerLvl();
+			final int overdriveLvl = getOverdriveLvl();
 
 			speed += speedLvl;
 			consumption += speedLvl * 200;
@@ -268,12 +263,8 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 					this.power = 0;
 				}
 			}
-			
-			if(hasPower() && canProcess()){
-				isProgressing = true;
-			} else {
-				isProgressing = false;
-			}
+
+            isProgressing = hasPower() && canProcess();
 			
 			if(isProgressing){
 				progress += speed;
@@ -333,7 +324,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

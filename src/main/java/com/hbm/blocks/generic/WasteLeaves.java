@@ -35,7 +35,7 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public WasteLeaves(String s) {
+	public WasteLeaves(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.OAK).withProperty(CHECK_DECAY, Boolean.valueOf(false)).withProperty(DECAYABLE, Boolean.valueOf(false)));
@@ -50,7 +50,7 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		int i = 0;
 
 		if (!state.getValue(DECAYABLE)) {
@@ -65,18 +65,16 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 	}
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(final int meta) {
         return this.getDefaultState().withProperty(DECAYABLE, (meta & 4) == 0).withProperty(CHECK_DECAY, (meta & 8) > 0);
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand){
-    	return;
+    public void updateTick(final World worldIn, final BlockPos pos, final IBlockState state, final Random rand){
     }
 
     @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random){
-    	return;
+    public void randomTick(final World worldIn, final BlockPos pos, final IBlockState state, final Random random){
     }
 
 	@Override
@@ -85,7 +83,7 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 	}
 
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune){
 		if(RANDOM.nextInt(4) == 0)
 			drops.add(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(Blocks.DEADBUSH)));
 		if(RANDOM.nextInt(3) == 0)
@@ -93,35 +91,33 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
 		if(rand.nextInt(4) == 0)
 			return Item.getItemFromBlock(Blocks.DEADBUSH);
 		return null;
 	}
 
-	public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune){
-		NonNullList<ItemStack> output = NonNullList.create();
+	public NonNullList<ItemStack> onSheared(final ItemStack item, final IBlockAccess world, final BlockPos pos, final int fortune){
+		final NonNullList<ItemStack> output = NonNullList.create();
 		output.add(ItemStackUtil.itemStackFrom(ModBlocks.waste_leaves, fortune+1));
 		return output;
 	}
 
 	@Override
-	protected int getSaplingDropChance(IBlockState state){
+	protected int getSaplingDropChance(final IBlockState state){
 		return 0;
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune){
-		return;
-	}
+	public void dropBlockAsItemWithChance(final World worldIn, final BlockPos pos, final IBlockState state, final float chance, final int fortune){
+    }
 
 	@Override
-	protected void dropApple(World worldIn, BlockPos pos, IBlockState state, int chance){
-		return;
-	}
+	protected void dropApple(final World worldIn, final BlockPos pos, final IBlockState state, final int chance){
+    }
 
 	@Override
-	public BlockPlanks.EnumType getWoodType(int meta){
+	public BlockPlanks.EnumType getWoodType(final int meta){
 		return BlockPlanks.EnumType.OAK;
 	}
 
@@ -132,18 +128,17 @@ public class WasteLeaves extends BlockOldLeaf implements IItemHazard {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return Blocks.LEAVES.isOpaqueCube(state);
 	}
 
 	@Override
-  	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+  	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		this.leavesFancy = !Blocks.LEAVES.isOpaqueCube(blockState);
 		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items){
-		return;
-	}
+	public void getSubBlocks(final CreativeTabs itemIn, final NonNullList<ItemStack> items){
+    }
 }

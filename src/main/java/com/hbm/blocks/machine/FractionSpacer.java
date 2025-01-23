@@ -9,12 +9,12 @@ import net.minecraft.world.World;
 
 public class FractionSpacer extends BlockDummyable {
 
-	public FractionSpacer(Material mat, String s) {
+	public FractionSpacer(final Material mat, final String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
+	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
 		if(meta >= 12)
 			return new TileEntitySpacer();
 		return null;

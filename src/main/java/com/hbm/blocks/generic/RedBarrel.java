@@ -27,7 +27,7 @@ public class RedBarrel extends Block {
 
 	public static final AxisAlignedBB BARREL_BB = new AxisAlignedBB(2 * 0.0625F, 0.0F, 2 * 0.0625F, 14 * 0.0625F, 1.0F, 14 * 0.0625F);
 	
-	public RedBarrel(Material materialIn, String s) {
+	public RedBarrel(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -36,12 +36,12 @@ public class RedBarrel extends Block {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add("Static fluid barrel");
 	}
 	
 	@Override
-	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn) {
+	public void onExplosionDestroy(final World worldIn, final BlockPos pos, final Explosion explosionIn) {
 		if(!worldIn.isRemote && worldIn instanceof WorldServer) {
 			((WorldServer)worldIn).addScheduledTask(() -> {
         		explode(worldIn, pos.getX(), pos.getY(), pos.getZ());
@@ -50,7 +50,7 @@ public class RedBarrel extends Block {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
 		if ((this == ModBlocks.red_barrel || this == ModBlocks.pink_barrel) && worldIn.getBlockState(pos.east()).getBlock() == Blocks.FIRE || worldIn.getBlockState(pos.west()).getBlock() == Blocks.FIRE || worldIn.getBlockState(pos.up()).getBlock() == Blocks.FIRE || worldIn.getBlockState(pos.down()).getBlock() == Blocks.FIRE || worldIn.getBlockState(pos.south()).getBlock() == Blocks.FIRE || worldIn.getBlockState(pos.north()).getBlock() == Blocks.FIRE)
         {
         	if(!worldIn.isRemote && worldIn instanceof WorldServer) {
@@ -62,10 +62,10 @@ public class RedBarrel extends Block {
         }
 	}
 	
-	public void explode(World p_149695_1_, int x, int y, int z) {
+	public void explode(final World p_149695_1_, final int x, final int y, final int z) {
 
 		if(this == ModBlocks.red_barrel || this == ModBlocks.pink_barrel)
-			p_149695_1_.newExplosion((Entity)null, x + 0.5F, y + 0.5F, z + 0.5F, 2.5F, true, true);
+			p_149695_1_.newExplosion(null, x + 0.5F, y + 0.5F, z + 0.5F, 2.5F, true, true);
 		
 		if(this == ModBlocks.lox_barrel) {
 
@@ -78,12 +78,12 @@ public class RedBarrel extends Block {
 
 			p_149695_1_.newExplosion(null, x + 0.5F, y + 0.5F, z + 0.5F, 1F, false, false);
 			
-			Random rand = p_149695_1_.rand;
-			MutableBlockPos pos = new BlockPos.MutableBlockPos();
+			final Random rand = p_149695_1_.rand;
+			final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		    for(int i = 0; i < 100; i++) {
-		    	int a = rand.nextInt(9) - 4 + x;
-		    	int b = rand.nextInt(9) - 4 + y;
-		    	int c = rand.nextInt(9) - 4 + z;
+		    	final int a = rand.nextInt(9) - 4 + x;
+		    	final int b = rand.nextInt(9) - 4 + y;
+		    	final int c = rand.nextInt(9) - 4 + z;
 		           if(p_149695_1_.getBlockState(pos.setPos(a, b, c)).getBlock().isReplaceable(p_149695_1_, pos.setPos(a, b, c)) && BlockTaint.hasPosNeightbour(p_149695_1_, pos.setPos(a, b, c))) {
 		        	   p_149695_1_.setBlockState(pos.setPos(a, b, c), ModBlocks.taint.getDefaultState().withProperty(BlockTaint.TEXTURE, rand.nextInt(3) + 4), 2);
 		           }
@@ -92,27 +92,27 @@ public class RedBarrel extends Block {
 	}
 	
 	@Override
-	public boolean canDropFromExplosion(Explosion explosionIn) {
+	public boolean canDropFromExplosion(final Explosion explosionIn) {
 		return false;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		return BARREL_BB;
 	}
 

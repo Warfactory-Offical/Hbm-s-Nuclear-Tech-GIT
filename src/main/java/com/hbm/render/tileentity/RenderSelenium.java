@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderSelenium extends TileEntitySpecialRenderer<TileEntityMachineSeleniumEngine> {
 
 	@Override
-	public void render(TileEntityMachineSeleniumEngine te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineSeleniumEngine te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -37,9 +37,9 @@ public class RenderSelenium extends TileEntitySpecialRenderer<TileEntityMachineS
         
         GL11.glTranslated(0.0D, 1.0D, 0.0D);
         
-        int count = ((TileEntityMachineSeleniumEngine)te).pistonCount;
+        final int count = te.pistonCount;
         
-        float rot = 360F / count;
+        final float rot = 360F / count;
 
         bindTexture(ResourceManager.selenium_piston_tex);
         for(int i = 0; i < count; i++) {
@@ -47,7 +47,7 @@ public class RenderSelenium extends TileEntitySpecialRenderer<TileEntityMachineS
     		GL11.glRotatef(rot, 0, 0, 1);
         }
 		
-        if(count > 2 && ((TileEntityMachineSeleniumEngine)te).hasAcceptableFuel() && ((TileEntityMachineSeleniumEngine)te).tank.getFluidAmount() > 0)
+        if(count > 2 && te.hasAcceptableFuel() && te.tank.getFluidAmount() > 0)
         	GL11.glRotatef((System.currentTimeMillis() / 2) % 360, 0F, 0F, -1F);
 
         bindTexture(ResourceManager.selenium_rotor_tex);

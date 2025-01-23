@@ -10,11 +10,11 @@ import net.minecraft.client.renderer.texture.TextureManager;
 
 public class SoyuzLauncherPronter {
 
-	public static void prontLauncher(double rot) {
+	public static void prontLauncher(final double rot) {
 
 		GL11.glPushMatrix();
 		GlStateManager.disableCull();
-		TextureManager tex = Minecraft.getMinecraft().getTextureManager();
+		final TextureManager tex = Minecraft.getMinecraft().getTextureManager();
 
 		tex.bindTexture(ResourceManager.soyuz_launcher_legs_tex);
 		ResourceManager.soyuz_launcher_legs.renderAll();

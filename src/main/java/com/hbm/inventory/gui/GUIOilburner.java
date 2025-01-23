@@ -20,9 +20,9 @@ import java.io.IOException;
 public class GUIOilburner extends GuiInfoContainer {
     private final ResourceLocation texture;
 
-    private TileEntityHeaterOilburner heater;
+    private final TileEntityHeaterOilburner heater;
 
-    public GUIOilburner(InventoryPlayer player, TileEntityHeaterOilburner heater, ResourceLocation texture) {
+    public GUIOilburner(final InventoryPlayer player, final TileEntityHeaterOilburner heater, final ResourceLocation texture) {
         super(new ContainerOilburner(player, heater));
 
         this.heater = heater;
@@ -33,12 +33,12 @@ public class GUIOilburner extends GuiInfoContainer {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 116, guiTop + 17, 16, 52, mouseX, mouseY, new String[]{String.format("%,d", Math.min(heater.heatEnergy, TileEntityHeaterOilburner.maxHeatEnergy)) + " / " + String.format("%,d", TileEntityHeaterOilburner.maxHeatEnergy) + " TU"});
 
-        int energy = FluidCombustionRecipes.getFlameEnergy(heater.fluidType);
+        final int energy = FluidCombustionRecipes.getFlameEnergy(heater.fluidType);
 
         if (energy != 0) {
             this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 34, 18, 18, mouseX, mouseY, new String[]{heater.setting + " mB/t", String.format("%,d", energy * heater.setting) + " TU/t"});
@@ -50,20 +50,20 @@ public class GUIOilburner extends GuiInfoContainer {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
         if (guiLeft + 80 <= mouseX && guiLeft + 80 + 16 > mouseX && guiTop + 54 < mouseY && guiTop + 54 + 14 >= mouseY) {
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            NBTTagCompound data = new NBTTagCompound();
+            final NBTTagCompound data = new NBTTagCompound();
             data.setBoolean("toggle", true);
             PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, heater.getPos()));
         }
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String name = this.heater.hasCustomInventoryName() ? this.heater.getInventoryName() : I18n.format(this.heater.getInventoryName());
+    protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
+        final String name = this.heater.hasCustomInventoryName() ? this.heater.getInventoryName() : I18n.format(this.heater.getInventoryName());
 
         this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -71,13 +71,13 @@ public class GUIOilburner extends GuiInfoContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY) {
         super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-        int i = heater.heatEnergy * 52 / TileEntityHeaterOilburner.maxHeatEnergy;
+        final int i = heater.heatEnergy * 52 / TileEntityHeaterOilburner.maxHeatEnergy;
         drawTexturedModalRect(guiLeft + 116, guiTop + 69 - i, 194, 52 - i, 16, i);
 
         if (heater.isOn) {

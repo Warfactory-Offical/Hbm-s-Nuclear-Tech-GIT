@@ -26,15 +26,15 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 	@Override
 	protected void updateConnections() {
 
-		for(DirPos pos : getConPos()) {
+		for(final DirPos pos : getConPos()) {
 			this.trySubscribe(world, pos.getPos(), pos.getDir());
 		}
 	}
 	
 	@Override
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 
-		for(DirPos pos : getConPos()) {
+		for(final DirPos pos : getConPos()) {
 			FFUtils.fillFluid(this, tank, world, pos.getPos(), 5000);
 		}
 	}
@@ -42,8 +42,8 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 	
 	private DirPos[] getConPos() {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
 		return new DirPos[] {
 				new DirPos(pos.add(-dir.offsetX * 2, 0, -dir.offsetZ * 2), dir.getOpposite()),

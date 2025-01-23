@@ -82,8 +82,8 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
 
             boolean shouldCool = true;
             if(this.isOn && cacheHeat > 0 && this.heatEnergy < maxHeatEnergy) {
-                int burnRate = setting;
-                int toBurn = Math.min(burnRate, tank.getFluidAmount());
+                final int burnRate = setting;
+                final int toBurn = Math.min(burnRate, tank.getFluidAmount());
 
                 tank.drain(toBurn, true);
 
@@ -102,7 +102,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
                 this.markDirty();
             }
 
-            NBTTagCompound data = new NBTTagCompound();
+            final NBTTagCompound data = new NBTTagCompound();
             tank.writeToNBT(data);
             data.setString("fluidType", fluidType.getName());
             data.setBoolean("isOn", isOn);
@@ -115,11 +115,11 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     private void updateTankType() {
-        ItemStack slotId = inventory.getStackInSlot(2);
-        Item itemId = slotId.getItem();
+        final ItemStack slotId = inventory.getStackInSlot(2);
+        final Item itemId = slotId.getItem();
         if(itemId == ModItems.forge_fluid_identifier) {
-            Fluid fluid = ItemForgeFluidIdentifier.getType(slotId);
-            int energy = FluidCombustionRecipes.getFlameEnergy(fluid);
+            final Fluid fluid = ItemForgeFluidIdentifier.getType(slotId);
+            final int energy = FluidCombustionRecipes.getFlameEnergy(fluid);
 
             if(fluidType != fluid) {
                 fluidType = fluid;
@@ -132,7 +132,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     private boolean inputValidForTank() {
-        ItemStack slotInput = inventory.getStackInSlot(0);
+        final ItemStack slotInput = inventory.getStackInSlot(0);
         if(slotInput != ItemStack.EMPTY && tank != null) {
             return FFUtils.checkRestrictions(slotInput, f -> f.getFluid() == fluidType);
         }
@@ -141,7 +141,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public void recievePacket(NBTTagCompound[] tags) {
+    public void recievePacket(final NBTTagCompound[] tags) {
         if(tags.length != 1) {
             return;
 
@@ -155,7 +155,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public void networkUnpack(NBTTagCompound nbt) {
+    public void networkUnpack(final NBTTagCompound nbt) {
         tank.readFromNBT(nbt);
         if(nbt.hasKey("fluidType")) {
             fluidType = FluidRegistry.getFluid(nbt.getString("fluidType"));
@@ -168,7 +168,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 
         tank.readFromNBT(nbt);
@@ -183,7 +183,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
         tank.writeToNBT(nbt);
         if(fluidType != null) {
             nbt.setString("fluidType", fluidType.getName());
@@ -219,7 +219,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public int fill(FluidStack resource, boolean doFill) {
+    public int fill(final FluidStack resource, final boolean doFill) {
         if(resource != null && resource.getFluid() == fluidType && resource.amount > 0) {
             return tank.fill(resource, doFill);
         } else {
@@ -229,18 +229,18 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
 
     @Nullable
     @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
+    public FluidStack drain(final FluidStack resource, final boolean doDrain) {
         return null;
     }
 
     @Nullable
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
+    public FluidStack drain(final int maxDrain, final boolean doDrain) {
         return null;
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
         } else {
@@ -249,7 +249,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return true;
         } else {
@@ -258,7 +258,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new ContainerOilburner(player.inventory, this);
     }
 
@@ -267,7 +267,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         if(texture == null) {
             texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_oilburner.png");
         }
@@ -281,17 +281,17 @@ public class TileEntityHeaterOilburner extends TileEntityMachineBase implements 
     }
 
     @Override
-    public void useUpHeat(int heat) {
+    public void useUpHeat(final int heat) {
         this.heatEnergy = Math.max(0, this.heatEnergy - heat);
     }
 
     @Override
-    public boolean hasPermission(EntityPlayer player) {
+    public boolean hasPermission(final EntityPlayer player) {
         return player.getDistanceSq(pos) <= 256;
     }
 
     @Override
-    public void receiveControl(NBTTagCompound data) {
+    public void receiveControl(final NBTTagCompound data) {
         if(data.hasKey("toggle")) {
             this.isOn = !this.isOn;
         }

@@ -49,7 +49,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCell extends Item {
 
-	public ItemCell(String s) {
+	public ItemCell(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxDamage(1000);
@@ -59,13 +59,13 @@ public class ItemCell extends Item {
 	}
 
 	@Override
-	public boolean onEntityItemUpdate(EntityItem entityItem) {
+	public boolean onEntityItemUpdate(final EntityItem entityItem) {
 		if(entityItem.onGround || entityItem.isBurning()) {
 			if(hasFluid(entityItem.getItem(), ModForgeFluids.aschrab) && WeaponConfig.dropCell) {
 				if(!entityItem.world.isRemote) {
 					entityItem.setDead();
 					entityItem.world.playSound(null, entityItem.posX, entityItem.posY, entityItem.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 100.0f, entityItem.world.rand.nextFloat() * 0.1F + 0.9F);
-					EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(entityItem.world);
+					final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(entityItem.world);
 					entity.posX = entityItem.posX;
 					entity.posY = entityItem.posY;
 					entity.posZ = entityItem.posZ;
@@ -78,7 +78,7 @@ public class ItemCell extends Item {
 
 						entityItem.world.spawnEntity(entity);
 
-						EntityCloudFleija cloud = new EntityCloudFleija(entityItem.world, (int) (BombConfig.aSchrabRadius * (FluidUtil.getFluidContained(entityItem.getItem()).amount / 1000.0F)));
+						final EntityCloudFleija cloud = new EntityCloudFleija(entityItem.world, (int) (BombConfig.aSchrabRadius * (FluidUtil.getFluidContained(entityItem.getItem()).amount / 1000.0F)));
 						cloud.posX = entityItem.posX;
 						cloud.posY = entityItem.posY;
 						cloud.posZ = entityItem.posZ;
@@ -100,19 +100,19 @@ public class ItemCell extends Item {
 	}
 
 	@Override
-	public int getItemStackLimit(ItemStack stack) {
+	public int getItemStackLimit(final ItemStack stack) {
 		return isFullOrEmpty(stack) ? 64 : 1;
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entityIn, final int itemSlot, final boolean isSelected) {
 		if(!(entityIn instanceof EntityLivingBase))
 			return;
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 		if(hasFluid(stack, ModForgeFluids.tritium)){
 			ContaminationUtil.contaminate((EntityLivingBase)entityIn, HazardType.RADIATION, ContaminationType.CREATIVE, 0.5F / 20F);
 		} else if(hasFluid(stack, ModForgeFluids.sas3)){
-			ContaminationUtil.contaminate((EntityLivingBase)entityIn, HazardType.RADIATION, ContaminationType.CREATIVE, 20F / 20F);
+			ContaminationUtil.contaminate((EntityLivingBase)entityIn, HazardType.RADIATION, ContaminationType.CREATIVE, 1.0f);
 			((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0));
 		} else if(hasFluid(stack, ModForgeFluids.uf6)){
 			ContaminationUtil.contaminate((EntityLivingBase)entityIn, HazardType.RADIATION, ContaminationType.CREATIVE, 2F / 20F);
@@ -123,22 +123,22 @@ public class ItemCell extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
-		FluidStack f = FluidUtil.getFluidContained(stack);
+	public String getItemStackDisplayName(final ItemStack stack) {
+		final FluidStack f = FluidUtil.getFluidContained(stack);
 		if(f != null){
 			//Why is there a npe here? I have no idea, and I can't replicate it. Stupid try/catch it is.
 			try {
 				return I18n.format(EnumCell.getEnumFromFluid(f.getFluid()).getTranslateKey());
-			} catch(NullPointerException e){ }
+			} catch(final NullPointerException e){ }
 		}
 		return I18n.format("item.cell_empty.name");
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
-			for(Fluid f : EnumCell.getFluids()) {
-				ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
+			for(final Fluid f : EnumCell.getFluids()) {
+				final ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 				stack.setTagCompound(new NBTTagCompound());
 				if(f != null)
 					stack.getTagCompound().setTag(HbmFluidHandlerCell.FLUID_NBT_KEY, new FluidStack(f, 1000).writeToNBT(new NBTTagCompound()));
@@ -148,7 +148,7 @@ public class ItemCell extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World world, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(ItemCell.hasFluid(stack, ModForgeFluids.amat)){
 			tooltip.add("§eExposure to matter will lead to violent annihilation!§r");
 			tooltip.add("§c[Dangerous Drop]§r");
@@ -172,44 +172,39 @@ public class ItemCell extends Item {
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+	public ICapabilityProvider initCapabilities(final ItemStack stack, final NBTTagCompound nbt) {
 		if(stack.getTagCompound() == null)
 			stack.setTagCompound(new NBTTagCompound());
 		return new HbmFluidHandlerCell(stack, 1000);
 	}
 
-	public static boolean isFullCell(ItemStack stack, Fluid fluid) {
+	public static boolean isFullCell(final ItemStack stack, final Fluid fluid) {
 		if(stack != null) {
-			if(stack.getItem() instanceof ItemCell && FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == fluid && FluidUtil.getFluidContained(stack).amount == 1000)
-				return true;
+            return stack.getItem() instanceof ItemCell && FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == fluid && FluidUtil.getFluidContained(stack).amount == 1000;
 		}
 		return false;
 	}
 
-	public static boolean isEmptyCell(ItemStack stack) {
+	public static boolean isEmptyCell(final ItemStack stack) {
 		if(stack != null) {
 			if(stack.getItem() == ModItems.cell && stack.getTagCompound() != null) {
-				FluidStack s = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(HbmFluidHandlerCell.FLUID_NBT_KEY));
-				if(s == null || s.amount <= 0)
-					return true;
-			} else if (stack.getItem() == ModItems.cell && stack.getTagCompound() == null){
-				return true;
-			}
+				final FluidStack s = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(HbmFluidHandlerCell.FLUID_NBT_KEY));
+                return s == null || s.amount <= 0;
+			} else return stack.getItem() == ModItems.cell && stack.getTagCompound() == null;
 		}
 		return false;
 	}
 
-	public static boolean hasFluid(ItemStack stack, Fluid f) {
+	public static boolean hasFluid(final ItemStack stack, final Fluid f) {
 		if(stack != null) {
-			if(stack.getItem() == ModItems.cell && FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == f)
-				return true;
+            return stack.getItem() == ModItems.cell && FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == f;
 		}
 		return false;
 	}
 
-	public static ItemStack getFullCell(Fluid fluid, int amount) {
+	public static ItemStack getFullCell(final Fluid fluid, final int amount) {
 		if(EnumCell.contains(fluid)) {
-			ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.cell, amount, 0);
+			final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.cell, amount, 0);
 			stack.setTagCompound(new NBTTagCompound());
 			stack.getTagCompound().setTag(HbmFluidHandlerCell.FLUID_NBT_KEY, new FluidStack(fluid, 1000).writeToNBT(new NBTTagCompound()));
 			return stack;
@@ -217,25 +212,22 @@ public class ItemCell extends Item {
 		return ItemStack.EMPTY;
 	}
 	
-	public static ItemStack getFullCell(Fluid fluid) {
+	public static ItemStack getFullCell(final Fluid fluid) {
 		return getFullCell(fluid, 1);
 	}
 	
-	public static boolean isFullOrEmpty(ItemStack stack){
+	public static boolean isFullOrEmpty(final ItemStack stack){
 		if(stack.hasTagCompound() && stack.getItem() == ModItems.cell){
-			FluidStack f = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(HbmFluidHandlerItemStack.FLUID_NBT_KEY));
+			final FluidStack f = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(HbmFluidHandlerItemStack.FLUID_NBT_KEY));
 			if(f == null)
 				return true;
 			return f.amount == 1000 || f.amount == 0;
 			
-		} else if(stack.getItem() == ModItems.cell){
-			return true;
-		}
-		return false;
-	}
+		} else return stack.getItem() == ModItems.cell;
+    }
 
-	public static boolean hasEmptyCell(EntityPlayer player){
-		InventoryPlayer inv = player.inventory;
+	public static boolean hasEmptyCell(final EntityPlayer player){
+		final InventoryPlayer inv = player.inventory;
 		for(int i = 0; i < inv.getSizeInventory(); i ++){
 			if(isEmptyCell(inv.getStackInSlot(i))){
 				return true;
@@ -244,8 +236,8 @@ public class ItemCell extends Item {
 		return false;
 	}
 	
-	public static void consumeEmptyCell(EntityPlayer player){
-		InventoryPlayer inv = player.inventory;
+	public static void consumeEmptyCell(final EntityPlayer player){
+		final InventoryPlayer inv = player.inventory;
 		for(int i = 0; i < inv.getSizeInventory(); i ++){
 			if(isEmptyCell(inv.getStackInSlot(i))){
 				inv.getStackInSlot(i).shrink(1);

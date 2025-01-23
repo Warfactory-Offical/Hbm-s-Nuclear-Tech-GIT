@@ -20,7 +20,7 @@ public class RailgunFirePacket implements IMessage {
 
 	public RailgunFirePacket() { }
 
-	public RailgunFirePacket(int x, int y, int z)
+	public RailgunFirePacket(final int x, final int y, final int z)
 	{
 		this.x = x;
 		this.y = y;
@@ -28,14 +28,14 @@ public class RailgunFirePacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -45,19 +45,17 @@ public class RailgunFirePacket implements IMessage {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(RailgunFirePacket m, MessageContext ctx) {
+		public IMessage onMessage(final RailgunFirePacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				try {
-					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+					final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 		
-					if (te != null && te instanceof TileEntityRailgun) {
-							
-						TileEntityRailgun gun = (TileEntityRailgun) te;
-						
-						gun.fireTime = System.currentTimeMillis();
+					if (te != null && te instanceof TileEntityRailgun gun) {
+
+                        gun.fireTime = System.currentTimeMillis();
 					}
 					
-				} catch (Exception x) { }
+				} catch (final Exception x) { }
 			});
 			
 			return null;

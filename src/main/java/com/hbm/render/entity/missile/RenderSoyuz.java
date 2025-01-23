@@ -16,24 +16,24 @@ public class RenderSoyuz extends Render<EntitySoyuz> {
 
 	public static final IRenderFactory<EntitySoyuz> FACTORY = (RenderManager man) -> {return new RenderSoyuz(man);};
 	
-	protected RenderSoyuz(RenderManager renderManager) {
+	protected RenderSoyuz(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntitySoyuz entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntitySoyuz entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         GlStateManager.enableCull();
         
-        int type = entity.getDataManager().get(EntitySoyuz.SKIN);
+        final int type = entity.getDataManager().get(EntitySoyuz.SKIN);
         SoyuzPronter.prontSoyuz(type);
 		
 		GL11.glPopMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySoyuz entity) {
+	protected ResourceLocation getEntityTexture(final EntitySoyuz entity) {
 		//just so if there's a mod that is trying to pull a funny
 		return ResourceManager.soyuz_payload;
 	}

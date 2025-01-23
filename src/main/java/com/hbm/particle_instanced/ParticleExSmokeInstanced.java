@@ -10,18 +10,18 @@ import net.minecraft.world.World;
 public class ParticleExSmokeInstanced extends ParticleInstanced {
 
 	private int age;
-	private int maxAge;
-	private float[] vals = new float[6*5];
+	private final int maxAge;
+	private final float[] vals = new float[6*5];
 	
-	public ParticleExSmokeInstanced(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleExSmokeInstanced(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		maxAge = 100 + rand.nextInt(40);
 		this.particleTexture = ModEventHandlerClient.contrail;
 		initVals(worldIn.rand.nextInt());
 	}
 	
-	private void initVals(int seed){
-		Random urandom = new Random(seed);
+	private void initVals(final int seed){
+		final Random urandom = new Random(seed);
 		for(int i = 0; i < 6; i ++){
 			//The three random values that are added to the position when rendering
 			vals[i*5] = (float) (urandom.nextGaussian() - 1D) * 0.75F;
@@ -34,7 +34,7 @@ public class ParticleExSmokeInstanced extends ParticleInstanced {
 		}
 	}
 	
-	public void setMotion(double x, double y, double z){
+	public void setMotion(final double x, final double y, final double z){
 		this.motionX = x;
 		this.motionY = y;
 		this.motionZ = z;
@@ -62,10 +62,10 @@ public class ParticleExSmokeInstanced extends ParticleInstanced {
 	}
 	
 	@Override
-	public void addDataToBuffer(ByteBuffer buf, float partialTicks) {
-		float x = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX));
-		float y = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY));
-		float z = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ));
+	public void addDataToBuffer(final ByteBuffer buf, final float partialTicks) {
+		final float x = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX));
+		final float y = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY));
+		final float z = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ));
 		
 		for(int ii = 0; ii < 6; ii ++){
 			buf.putFloat(x+vals[ii*5]);

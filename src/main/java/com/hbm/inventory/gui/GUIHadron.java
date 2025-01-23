@@ -23,9 +23,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIHadron extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_hadron.png");
-	private TileEntityHadron hadron;
+	private final TileEntityHadron hadron;
 
-	public GUIHadron(InventoryPlayer invPlayer, TileEntityHadron laser) {
+	public GUIHadron(final InventoryPlayer invPlayer, final TileEntityHadron laser) {
 		super(new ContainerHadron(invPlayer, laser));
 		this.hadron = laser;
 
@@ -34,10 +34,10 @@ public class GUIHadron extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 62, guiTop + 108, 70, 16, hadron.power, hadron.maxPower);
+		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 62, guiTop + 108, 70, 16, hadron.power, TileEntityHadron.maxPower);
 
 		if(hadron.hopperMode)
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 142, guiTop + 89, 18, 18, mouseX, mouseY, I18nUtil.resolveKeyArray("hadron.hopper1"));
@@ -49,7 +49,7 @@ public class GUIHadron extends GuiInfoContainer {
 		else
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 142, guiTop + 107, 18, 18, mouseX, mouseY, I18nUtil.resolveKeyArray("hadron.modeCircular"));
 
-		List<String> stats = new ArrayList();
+		final List<String> stats = new ArrayList();
 		stats.add("§e" + I18nUtil.resolveKey("hadron.stats"));
 		stats.add((hadron.stat_success ? "§a" : "§c") + I18n.format("hadron." + this.hadron.stat_state.name().toLowerCase()));
 		if(this.hadron.state.showCoord){
@@ -62,7 +62,7 @@ public class GUIHadron extends GuiInfoContainer {
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(int x, int y, int i) throws IOException {
+	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
     	super.mouseClicked(x, y, i);
 
     	//Toggle hadron
@@ -84,18 +84,18 @@ public class GUIHadron extends GuiInfoContainer {
     }
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.hadron.hasCustomInventoryName() ? this.hadron.getInventoryName() : I18n.format(this.hadron.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.hadron.hasCustomInventoryName() ? this.hadron.getInventoryName() : I18n.format(this.hadron.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 		
-		String state = I18n.format("hadron." + this.hadron.state.name().toLowerCase());
+		final String state = I18n.format("hadron." + this.hadron.state.name().toLowerCase());
 		this.fontRenderer.drawString(state, this.xSize / 2 - this.fontRenderer.getStringWidth(state) / 2, 76, this.hadron.state.color);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -120,13 +120,13 @@ public class GUIHadron extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft + 73, guiTop + 29, 176, 106, 30, 30);
 		}
 		
-		int i = hadron.getPowerScaled(70);
+		final int i = hadron.getPowerScaled(70);
 		drawTexturedModalRect(guiLeft + 62, guiTop + 108, 176, 60, i, 16);
 		
-		int color = hadron.state.color;
-		float red = (color & 0xff0000) >> 16;
-		float green = (color & 0x00ff00) >> 8;
-		float blue = (color & 0x0000ff);
+		final int color = hadron.state.color;
+		final float red = (color & 0xff0000) >> 16;
+		final float green = (color & 0x00ff00) >> 8;
+		final float blue = (color & 0x0000ff);
 
 		GlStateManager.color(red, green, blue, 1.0F);
 		drawTexturedModalRect(guiLeft + 45, guiTop + 73, 0, 222, 86, 14);

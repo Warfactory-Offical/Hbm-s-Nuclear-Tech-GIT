@@ -18,7 +18,7 @@ public class SoundLoopSiren extends SoundLoopMachine {
 	public float intendedVolume;
 	public SoundType type;
 
-	public SoundLoopSiren(SoundEvent path, TileEntity te, SoundType type) {
+	public SoundLoopSiren(final SoundEvent path, final TileEntity te, final SoundType type) {
 		super(path, te);
 		list.add(this);
 		intendedVolume = 10.0F;
@@ -30,7 +30,7 @@ public class SoundLoopSiren extends SoundLoopMachine {
 	public void update() {
 		super.update();
 		
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		final EntityPlayerSP player = Minecraft.getMinecraft().player;
 		float f = 0;
 		
 		if(player != null) {
@@ -59,15 +59,15 @@ public class SoundLoopSiren extends SoundLoopMachine {
 		return this.positionedSoundLocation.getNamespace() + ":" + this.positionedSoundLocation.getPath();
 	}
 	
-	public void setRepeat(boolean b) {
+	public void setRepeat(final boolean b) {
 		this.repeat = b;
 	}
 	
-	public void setRepeatDelay(int i) {
+	public void setRepeatDelay(final int i) {
 		this.repeatDelay = i;
 	}
 	
-	public float func(float f, float v) {
+	public float func(final float f, final float v) {
 		return (f / v) * -2 + 2;
 	}
 }

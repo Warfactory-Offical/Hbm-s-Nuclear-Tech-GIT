@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderTaintedCreeperFactory implements IRenderFactory<EntityTaintedCreeper> {
 
 	@Override
-	public Render<EntityTaintedCreeper> createRenderFor(RenderManager manager) {
+	public Render<EntityTaintedCreeper> createRenderFor(final RenderManager manager) {
 		return new RenderTaintedCreeper(manager);
 	}
 

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class BlockRadResistant extends Block implements IRadResistantBlock {
 
-	public BlockRadResistant(Material materialIn, String s) {
+	public BlockRadResistant(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setRegistryName(s);
 		this.setTranslationKey(s);
@@ -27,32 +27,32 @@ public class BlockRadResistant extends Block implements IRadResistantBlock {
 	}
 	
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state) {
 		RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		super.onBlockAdded(worldIn, pos, state);
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
 		RadiationSystemNT.markChunkForRebuild(worldIn, pos);
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public boolean isRadResistant(World worldIn, BlockPos blockPos){
+	public boolean isRadResistant(final World worldIn, final BlockPos blockPos){
 		return true;
 	}
 
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add("§2[" + I18nUtil.resolveKey("trait.radshield") + "]");
-		float hardness = this.getExplosionResistance(null);
+		final float hardness = this.getExplosionResistance(null);
 		if(hardness > 50){
 			tooltip.add("§6" + I18nUtil.resolveKey("trait.blastres", hardness));
 		}

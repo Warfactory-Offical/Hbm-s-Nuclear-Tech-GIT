@@ -15,16 +15,16 @@ public class ItemRendererMachine extends TEISRBase {
 
 	///// THIS IS A TEST CLASS. CARVE THIS INTO A BASE CLASS FOR LESS CRAPPY BLOCK ITEM RENDERERS IN THE FUTURE ////
 	double scale = 1.0D;
-	private ModelBroadcaster broadcaster;
+	private final ModelBroadcaster broadcaster;
 	private static final ResourceLocation broadcasterTex = new ResourceLocation(RefStrings.MODID + ":" + "textures/models/deco/ModelRadioReceiver.png");
 	
-	public ItemRendererMachine(double scale) {
+	public ItemRendererMachine(final double scale) {
 		this.scale = scale;
 		this.broadcaster = new ModelBroadcaster();
 	}
 	
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GL11.glTranslated(0.5, 0, 0.5);
 		GL11.glScaled(0.55, 0.55, 0.55);
 		switch(type){

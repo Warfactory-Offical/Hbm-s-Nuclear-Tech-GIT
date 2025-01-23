@@ -1,7 +1,6 @@
 package com.hbm.items.tool;
 
 import com.hbm.items.ModItems;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -16,7 +15,7 @@ import net.minecraft.world.World;
 
 public class ItemMatch extends Item {
 
-	public ItemMatch(String s) {
+	public ItemMatch(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -24,11 +23,11 @@ public class ItemMatch extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(worldIn.isRemote)
 			return EnumActionResult.PASS;
 		pos = pos.offset(facing);
-        ItemStack itemstack = player.getHeldItem(hand);
+        final ItemStack itemstack = player.getHeldItem(hand);
 
         if (!player.canPlayerEdit(pos, facing, itemstack))
         {

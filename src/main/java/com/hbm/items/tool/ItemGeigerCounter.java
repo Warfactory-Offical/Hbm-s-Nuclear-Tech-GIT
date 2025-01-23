@@ -1,43 +1,31 @@
 package com.hbm.items.tool;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import com.hbm.blocks.ModBlocks;
-import com.hbm.lib.Library;
-import com.hbm.items.ModItems;
-import com.hbm.items.gear.ArmorFSB;
-import com.hbm.items.weapon.ItemGunEgon;
-import com.hbm.render.misc.RenderScreenOverlay;
-import com.hbm.lib.HBMSoundHandler;
-import com.hbm.lib.Library;
-import com.hbm.saveddata.RadiationSavedData;
-import com.hbm.util.ContaminationUtil;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import com.hbm.blocks.ModBlocks;
+import com.hbm.items.ModItems;
+import com.hbm.items.gear.ArmorFSB;
+import com.hbm.lib.HBMSoundHandler;
+import com.hbm.lib.Library;
+import com.hbm.util.ContaminationUtil;
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Optional.InterfaceList({@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles")})
 public class ItemGeigerCounter extends Item implements IBauble {
 	
-	public ItemGeigerCounter(String s) {
+	public ItemGeigerCounter(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -45,7 +33,7 @@ public class ItemGeigerCounter extends Item implements IBauble {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected) {
 
 		if(!(entity instanceof EntityLivingBase) || world.isRemote)
 			return;
@@ -59,13 +47,13 @@ public class ItemGeigerCounter extends Item implements IBauble {
 		}
 	}
 
-	public static void playGeiger(World world, EntityPlayer player){
-		double x = ContaminationUtil.getActualPlayerRads(player);
+	public static void playGeiger(final World world, final EntityPlayer player){
+		final double x = ContaminationUtil.getActualPlayerRads(player);
 		
 		if(world.getTotalWorldTime() % 5 == 0) {
 
 			if(x > 0.001) {
-				List<Integer> list = new ArrayList<Integer>();
+				final List<Integer> list = new ArrayList<Integer>();
 
 				if(x < 1){
 					list.add(0);
@@ -98,7 +86,7 @@ public class ItemGeigerCounter extends Item implements IBauble {
 					list.add(8);
 				}
 				if(list.size() > 0){
-					int r = list.get(world.rand.nextInt(list.size()));
+					final int r = list.get(world.rand.nextInt(list.size()));
 					
 					if(r > 0){
 						world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.geigerSounds[r-1], SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -111,7 +99,7 @@ public class ItemGeigerCounter extends Item implements IBauble {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.getBlockState(pos).getBlock() == ModBlocks.block_red_copper) {
     		Library.consumeInventoryItem(player.inventory, ModItems.geiger_counter);
     		player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.survey_scanner));
@@ -122,7 +110,7 @@ public class ItemGeigerCounter extends Item implements IBauble {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
 		if(!world.isRemote) {
 	    	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
@@ -133,17 +121,17 @@ public class ItemGeigerCounter extends Item implements IBauble {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
 		return !ItemStack.areItemsEqual(oldStack, newStack);
 	}
 
 	@Override
-	public BaubleType getBaubleType(ItemStack itemstack){
+	public BaubleType getBaubleType(final ItemStack itemstack){
 		return BaubleType.TRINKET;
 	}
 
 	@Override
-	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+	public void onWornTick(final ItemStack itemstack, final EntityLivingBase player) {
 		onUpdate(itemstack, player.world, player, 0, true);
 	}
 }

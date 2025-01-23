@@ -30,17 +30,17 @@ public class BlockGraphiteRod extends BlockGraphiteDrilledBase implements IToola
 
 	public static final PropertyBool OUT = PropertyBool.create("out");
 	
-	public BlockGraphiteRod(String s){
+	public BlockGraphiteRod(final String s){
 		super(s);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
 		if(player.isSneaking())
 			return false;
 		
-		EnumFacing.Axis axis = state.getValue(AXIS);
-		boolean out = state.getValue(OUT);
+		final EnumFacing.Axis axis = state.getValue(AXIS);
+		final boolean out = state.getValue(OUT);
 
 		if(facing.getAxis() == axis) {
 			
@@ -51,16 +51,16 @@ public class BlockGraphiteRod extends BlockGraphiteDrilledBase implements IToola
 			
 			world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, !out ? 0.75F : 0.65F);
 			
-			int oX = axis == EnumFacing.Axis.X ? 1 : 0;
-			int oY = axis == EnumFacing.Axis.Y ? 1 : 0;
-			int oZ = axis == EnumFacing.Axis.Z ? 1 : 0;
+			final int oX = axis == EnumFacing.Axis.X ? 1 : 0;
+			final int oY = axis == EnumFacing.Axis.Y ? 1 : 0;
+			final int oZ = axis == EnumFacing.Axis.Z ? 1 : 0;
 			for(int i = -1; i <= 1; i += 1) {
 				
 				int ix = pos.getX() + oX * i;
 				int iy = pos.getY() + oY * i;
 				int iz = pos.getZ() + oZ * i;
 				
-				IBlockState state2 = world.getBlockState(new BlockPos(ix, iy, iz));
+				final IBlockState state2 = world.getBlockState(new BlockPos(ix, iy, iz));
 				while(state2.getBlock() == this && state2.getValue(AXIS) == axis && state2.getValue(OUT) == out) {
 					
 					world.setBlockState(new BlockPos(ix, iy, iz), state2.withProperty(OUT, !out));
@@ -78,14 +78,14 @@ public class BlockGraphiteRod extends BlockGraphiteDrilledBase implements IToola
 	}
 	
 	@Override
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand e, ToolType tool) {
+	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand e, final ToolType tool) {
 		
 		if(tool != ToolType.SCREWDRIVER)
 			return false;
 		
 		if(!world.isRemote) {
 
-			EnumFacing.Axis axis = world.getBlockState(new BlockPos(x, y, z)).getValue(AXIS);
+			final EnumFacing.Axis axis = world.getBlockState(new BlockPos(x, y, z)).getValue(AXIS);
 			
 			if(side.getAxis() == axis) {
 				world.setBlockState(new BlockPos(x, y, z), ModBlocks.block_graphite_drilled.getDefaultState().withProperty(AXIS, axis), 3);
@@ -97,7 +97,7 @@ public class BlockGraphiteRod extends BlockGraphiteDrilledBase implements IToola
 	}
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune){
 		super.getDrops(drops, world, pos, state, fortune);
 		drops.add(ItemStackUtil.itemStackFrom(ModItems.pile_rod_boron));
 	}
@@ -108,12 +108,12 @@ public class BlockGraphiteRod extends BlockGraphiteDrilledBase implements IToola
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(final IBlockState state){
 		return super.getMetaFromState(state) | (state.getValue(OUT) ? 4 : 0);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(final int meta){
 		return this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.values()[meta&3]).withProperty(OUT, (meta&4) > 0);
 	}
 }

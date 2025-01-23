@@ -29,9 +29,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class SILEXRecipes {
 
-	private static LinkedHashMap<Object, SILEXRecipe> recipes = new LinkedHashMap<>();
-	private static HashMap<ComparableStack, ComparableStack> itemTranslation = new HashMap<>();
-	private static HashMap<String, String> dictTranslation = new HashMap<>();
+	private static final LinkedHashMap<Object, SILEXRecipe> recipes = new LinkedHashMap<>();
+	private static final HashMap<ComparableStack, ComparableStack> itemTranslation = new HashMap<>();
+	private static final HashMap<String, String> dictTranslation = new HashMap<>();
 	
 	public static void register() {
 
@@ -410,7 +410,7 @@ public class SILEXRecipes {
 			recipes.put(ItemStackUtil.comparableStackFrom(ModItems.rbmk_pellet_hea241, 1, i), new SILEXRecipe(600, 100, EnumWavelengths.UV)
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AM241)), 85 - 15 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 6 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 4 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_coal_tiny), 2 + 2 * i)) );
@@ -419,7 +419,7 @@ public class SILEXRecipes {
 			recipes.put(ItemStackUtil.comparableStackFrom(ModItems.rbmk_pellet_hea241, 1, i + 5), new SILEXRecipe(600, 100, EnumWavelengths.UV)
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AM241)), 85 - 15 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 6 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 4 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 4 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_xe135_tiny), 2 + 2 * i)) );
@@ -430,7 +430,7 @@ public class SILEXRecipes {
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AM241)), 91 - 16 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 2 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 2 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_coal_tiny), 2 + 2 * i)) );
 		}
@@ -439,7 +439,7 @@ public class SILEXRecipes {
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AM241)), 91 - 16 * i)) //ditto
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.PLUTONIUM241.ordinal()), 2 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.NEPTUNIUM.ordinal()), 2 + 3 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.NEPTUNIUM.ordinal()), 2 + i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_short_tiny, 1, ItemWasteShort.WasteClass.AMERICIUM242.ordinal()), 1 + 5 * i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_xe135_tiny), 2 + 2 * i)) );
 		}
@@ -481,8 +481,8 @@ public class SILEXRecipes {
 		for(int i = 0; i < 5; i++) {
 			recipes.put(ItemStackUtil.comparableStackFrom(ModItems.rbmk_pellet_flashlead, 1, i + 5), new SILEXRecipe(600, 100, EnumWavelengths.XRAY)
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_xe135_tiny), 1))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PB209)), 8 - 1 * i))
-					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AU198)), 8 - 1 * i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PB209)), 8 - i))
+					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AU198)), 8 - i))
 					.addOut(new WeightedRandomObject(ItemStackUtil.itemStackFrom(ModItems.powder_balefire), 1 + 2 * i)) );
 		}
 		for(int i = 0; i < 5; i++) {	
@@ -1045,7 +1045,7 @@ public class SILEXRecipes {
 		//crystals minerals
 	}
 
-	public static void addRecipe(int wavelength, int solution, int consumption, ItemStack input, ItemStack[] outputItems, int[] outputWeights){
+	public static void addRecipe(final int wavelength, final int solution, final int consumption, final ItemStack input, final ItemStack[] outputItems, final int[] outputWeights){
 		SILEXRecipe newRecipe = new SILEXRecipe(solution, consumption, EnumWavelengths.values()[wavelength]);
 		for(int i = 0; i < outputItems.length; i++){
 			newRecipe = newRecipe.addOut(new WeightedRandomObject(outputItems[i], outputWeights[i]));
@@ -1053,25 +1053,25 @@ public class SILEXRecipes {
 		recipes.put(ItemStackUtil.comparableStackFrom(input), newRecipe);
 	}
 
-	public static void removeRecipe(ItemStack input){
+	public static void removeRecipe(final ItemStack input){
 		recipes.remove(ItemStackUtil.comparableStackFrom(input));
 	}
 	
-	public static SILEXRecipe getOutput(ItemStack stack) {
+	public static SILEXRecipe getOutput(final ItemStack stack) {
 		
 		if(stack == null || stack.getItem() == null)
 			return null;
 		
-		ComparableStack comp = translateItem(stack);
+		final ComparableStack comp = translateItem(stack);
 		
 		if(recipes.containsKey(comp))
 			return recipes.get(comp);
 		
-		String[] dictKeys = comp.getDictKeys();
+		final String[] dictKeys = comp.getDictKeys();
 		
-		for(String key : dictKeys) {
+		for(final String key : dictKeys) {
 			
-			String translation = translateDict(key);
+			final String translation = translateDict(key);
 			if(recipes.containsKey(translation))
 				return recipes.get(translation);
 		}
@@ -1079,9 +1079,9 @@ public class SILEXRecipes {
 		return null;
 	}
 	
-	public static ComparableStack translateItem(ItemStack stack) {
-		ComparableStack orig = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
-		ComparableStack translation = itemTranslation.get(orig);
+	public static ComparableStack translateItem(final ItemStack stack) {
+		final ComparableStack orig = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
+		final ComparableStack translation = itemTranslation.get(orig);
 		
 		if(translation != null)
 			return translation;
@@ -1089,9 +1089,9 @@ public class SILEXRecipes {
 		return orig;
 	}
 	
-	public static String translateDict(String key) {
+	public static String translateDict(final String key) {
 		
-		String translation = dictTranslation.get(key);
+		final String translation = dictTranslation.get(key);
 		
 		if(translation != null)
 			return translation;
@@ -1100,15 +1100,15 @@ public class SILEXRecipes {
 	}
 	
 	public static List<Object> getAllIngredients() {
-		List<Object> ing = new ArrayList<>();
+		final List<Object> ing = new ArrayList<>();
 		
-		for(Entry<Object, SILEXRecipe> entry : SILEXRecipes.recipes.entrySet()) {
+		for(final Entry<Object, SILEXRecipe> entry : SILEXRecipes.recipes.entrySet()) {
 			ing.add(entry.getKey());
 		}
-		for(Entry<ComparableStack, ComparableStack> entry : SILEXRecipes.itemTranslation.entrySet()) {
+		for(final Entry<ComparableStack, ComparableStack> entry : SILEXRecipes.itemTranslation.entrySet()) {
 			ing.add(entry.getKey());
 		}
-		for(Entry<String, String> entry : SILEXRecipes.dictTranslation.entrySet()) {
+		for(final Entry<String, String> entry : SILEXRecipes.dictTranslation.entrySet()) {
 			ing.add(entry.getKey());
 		}
 		
@@ -1117,22 +1117,22 @@ public class SILEXRecipes {
 
 	public static Map<List<ItemStack>, SILEXRecipe> getRecipes() {
 		
-		Map<List<ItemStack>, SILEXRecipe> recipes = new LinkedHashMap<>();
-		List<Object> ing = getAllIngredients();
+		final Map<List<ItemStack>, SILEXRecipe> recipes = new LinkedHashMap<>();
+		final List<Object> ing = getAllIngredients();
 		
-		for(Object ingredient : ing) {
+		for(final Object ingredient : ing) {
 			
 			if(ingredient instanceof String) {
-				List<ItemStack> ingredients = OreDictionary.getOres((String)ingredient);
+				final List<ItemStack> ingredients = OreDictionary.getOres((String)ingredient);
 				if(ingredients.size() > 0) {
-					SILEXRecipe output = getOutput(ingredients.get(0));
+					final SILEXRecipe output = getOutput(ingredients.get(0));
 					if(output != null)
 						recipes.put(ingredients, output);
 				}
 				
 			} else if(ingredient instanceof ComparableStack) {
-				SILEXRecipe output = getOutput(((ComparableStack) ingredient).toStack());
-				List<ItemStack> ingredients = new ArrayList<>(1);
+				final SILEXRecipe output = getOutput(((ComparableStack) ingredient).toStack());
+				final List<ItemStack> ingredients = new ArrayList<>(1);
 				if(output != null){
 					ingredients.add(((ComparableStack)ingredient).toStack());
 					recipes.put(ingredients, output);
@@ -1150,13 +1150,13 @@ public class SILEXRecipes {
 		public EnumWavelengths laserStrength;
 		public List<WeightedRandomObject> outputs = new ArrayList<>();
 		
-		public SILEXRecipe(int fluidProduced, int fluidConsumed, EnumWavelengths laserStrength) {
+		public SILEXRecipe(final int fluidProduced, final int fluidConsumed, final EnumWavelengths laserStrength) {
 			this.fluidProduced = fluidProduced;
 			this.fluidConsumed = fluidConsumed;
 			this.laserStrength = laserStrength;
 		}
 		
-		public SILEXRecipe addOut(WeightedRandomObject entry) {
+		public SILEXRecipe addOut(final WeightedRandomObject entry) {
 			outputs.add(entry);
 			return this;
 		}

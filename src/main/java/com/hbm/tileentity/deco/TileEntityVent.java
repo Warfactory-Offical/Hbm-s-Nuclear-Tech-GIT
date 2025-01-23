@@ -19,13 +19,13 @@ public class TileEntityVent extends TileEntity implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote && world.isBlockPowered(pos)) {
-			Block b = world.getBlockState(pos).getBlock();
+			final Block b = world.getBlockState(pos).getBlock();
 
 			if(b == ModBlocks.vent_chlorine) {
 				//if(rand.nextInt(1) == 0) {
-					double x = rand.nextGaussian() * 1.5;
-					double y = rand.nextGaussian() * 1.5;
-					double z = rand.nextGaussian() * 1.5;
+					final double x = rand.nextGaussian() * 1.5;
+					final double y = rand.nextGaussian() * 1.5;
+					final double z = rand.nextGaussian() * 1.5;
 					
 					if(!world.getBlockState(new BlockPos(pos.getX() + (int)x, pos.getY() + (int)y, pos.getZ() + (int)z)).isNormalCube()) {
 						world.spawnEntity(new EntityChlorineFX(world, pos.getX() + (int)x, pos.getY() + (int)y, pos.getZ() + (int)z, x/2, y/2, z/2));
@@ -34,9 +34,9 @@ public class TileEntityVent extends TileEntity implements ITickable {
 			}
 			if(b == ModBlocks.vent_cloud) {
 				//if(rand.nextInt(50) == 0) {
-				double x = rand.nextGaussian() * 1.75;
-				double y = rand.nextGaussian() * 1.75;
-				double z = rand.nextGaussian() * 1.75;
+				final double x = rand.nextGaussian() * 1.75;
+				final double y = rand.nextGaussian() * 1.75;
+				final double z = rand.nextGaussian() * 1.75;
 				
 				if(!world.getBlockState(new BlockPos(pos.getX() + (int)x, pos.getY() + (int)y, pos.getZ() + (int)z)).isNormalCube()) {
 					world.spawnEntity(new EntityCloudFX(world, pos.getX() + (int)x, pos.getY() + (int)y, pos.getZ() + (int)z, x/2, y/2, z/2));
@@ -45,9 +45,9 @@ public class TileEntityVent extends TileEntity implements ITickable {
 			}
 			if(b == ModBlocks.vent_pink_cloud) {
 				//if(rand.nextInt(65) == 0) {
-				double x = rand.nextGaussian() * 2;
-				double y = rand.nextGaussian() * 2;
-				double z = rand.nextGaussian() * 2;
+				final double x = rand.nextGaussian() * 2;
+				final double y = rand.nextGaussian() * 2;
+				final double z = rand.nextGaussian() * 2;
 				
 				if(!world.getBlockState(new BlockPos(pos.getX() + (int)x, pos.getY() + (int)y, pos.getZ() + (int)z)).isNormalCube()) {
 					world.spawnEntity(new EntityPinkCloudFX(world, pos.getX() + (int)x, pos.getY() + (int)y, pos.getZ() + (int)z, x/2, y/2, z/2));

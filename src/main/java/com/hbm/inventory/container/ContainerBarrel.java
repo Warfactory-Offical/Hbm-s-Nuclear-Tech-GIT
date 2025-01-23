@@ -13,10 +13,10 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBarrel extends Container {
 
-	private TileEntityBarrel diFurnace;
+	private final TileEntityBarrel diFurnace;
 	private int mode;
 
-	public ContainerBarrel(InventoryPlayer invPlayer, TileEntityBarrel tedf) {
+	public ContainerBarrel(final InventoryPlayer invPlayer, final TileEntityBarrel tedf) {
 		mode = 0;
 
 		diFurnace = tedf;
@@ -38,18 +38,18 @@ public class ContainerBarrel extends Container {
 	}
 
 	@Override
-	public void addListener(IContainerListener listener) {
+	public void addListener(final IContainerListener listener) {
 		super.addListener(listener);
 		listener.sendWindowProperty(this, 0, diFurnace.mode);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2) {
+	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2) {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 
 		if(var4 != null && var4.getHasStack()) {
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
 			if(par2 <= 5) {
@@ -72,7 +72,7 @@ public class ContainerBarrel extends Container {
 
 	@Override
 	public void detectAndSendChanges() {
-		for(IContainerListener listener : this.listeners) {
+		for(final IContainerListener listener : this.listeners) {
 			if(this.mode != diFurnace.mode) {
 				listener.sendWindowProperty(this, 0, diFurnace.mode);
 				this.mode = diFurnace.mode;
@@ -82,14 +82,14 @@ public class ContainerBarrel extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(int id, int data) {
+	public void updateProgressBar(final int id, final int data) {
 		if(id == 0)
 			diFurnace.mode = (short) data;
 		super.updateProgressBar(id, data);
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 }

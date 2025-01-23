@@ -59,9 +59,9 @@ public class EngineRecipes {
 		AERO("trait.fuelgrade.aero"),	//kerosene and other light aviation fuels	< turbofan
 		GAS("trait.fuelgrade.gas");		//fuel gasses like NG, PG and syngas		< gas turbine
 		
-		private String grade;
+		private final String grade;
 		
-		private FuelGrade(String grade) {
+		private FuelGrade(final String grade) {
 			this.grade = grade;
 		}
 		
@@ -70,48 +70,48 @@ public class EngineRecipes {
 		}
 	}
 
-	public static long getEnergy(Fluid f){
+	public static long getEnergy(final Fluid f){
 		if(f != null)
 			return combustionEnergies.get(f);
 		return 0;
 	}
 
-	public static FuelGrade getFuelGrade(Fluid f){
+	public static FuelGrade getFuelGrade(final Fluid f){
 		if(f != null)
 			return fuelGrades.get(f);
 		return null;
 	}
 
-	public static boolean isAero(Fluid f){
+	public static boolean isAero(final Fluid f){
 		return getFuelGrade(f) == FuelGrade.AERO;
 	}
 
-	public static void addFuel(Fluid f, FuelGrade g, long power){
+	public static void addFuel(final Fluid f, final FuelGrade g, final long power){
 		if(f != null && power > 0){
 			combustionEnergies.put(f, power);
 			fuelGrades.put(f, g);
 		}
 	}
 
-	public static boolean hasFuelRecipe(Fluid f){
+	public static boolean hasFuelRecipe(final Fluid f){
 		if(f == null) return false;
 		return combustionEnergies.containsKey(f);
 	}
 
-	public static void addFuel(String f, FuelGrade g, long power){
+	public static void addFuel(final String f, final FuelGrade g, final long power){
 		if(FluidRegistry.isFluidRegistered(f)){
 			addFuel(FluidRegistry.getFluid(f), g, power);
 		}
 	}
 
-	public static void removeFuel(Fluid f){
+	public static void removeFuel(final Fluid f){
 		if(f != null){
 			combustionEnergies.remove(f);
 			fuelGrades.remove(f);
 		}
 	}
 
-	public static void removeFuel(String f){
+	public static void removeFuel(final String f){
 		if(FluidRegistry.isFluidRegistered(f)){
 			removeFuel(FluidRegistry.getFluid(f));
 		}

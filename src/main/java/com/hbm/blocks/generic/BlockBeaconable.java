@@ -10,12 +10,12 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockBeaconable extends BlockBase {
 
-	public BlockBeaconable(Material m, String s){
+	public BlockBeaconable(final Material m, final String s){
 		super(m, s);
 	}
 	
 	@Override
-	public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon){
+	public boolean isBeaconBase(final IBlockAccess worldObj, final BlockPos pos, final BlockPos beacon){
 		return true;
 	}
 

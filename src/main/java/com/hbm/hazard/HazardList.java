@@ -33,28 +33,28 @@ public class HazardList {
 
     private final List<Hazard> hazards;
 
-    public HazardList(Hazard... hazards) {
+    public HazardList(final Hazard... hazards) {
         this.hazards = Arrays.asList(hazards);
     }
 
-    public HazardList(List<Hazard> hazards) {
+    public HazardList(final List<Hazard> hazards) {
         this.hazards = hazards;
     }
 
-    public static boolean isHoldingReacher(EntityLivingBase target) {
-        if (target instanceof EntityPlayer player && !GeneralConfig.enable528) {
+    public static boolean isHoldingReacher(final EntityLivingBase target) {
+        if (target instanceof final EntityPlayer player && !GeneralConfig.enable528) {
             return Library.checkForHeld(player, ModItems.reacher);
         }
 
         return false;
     }
 
-    public static void applyPotionEffect(EntityLivingBase target, Potion potion, int duration, int amplifier) {
+    public static void applyPotionEffect(final EntityLivingBase target, final Potion potion, final int duration, final int amplifier) {
         target.addPotionEffect(new PotionEffect(potion, duration, amplifier));
     }
 
-    public void onUpdate(EntityLivingBase target, ItemStack stack) {
-        for (Hazard hazard : hazards) {
+    public void onUpdate(final EntityLivingBase target, final ItemStack stack) {
+        for (final Hazard hazard : hazards) {
             float level = hazard.getStrength();
 
             switch (hazard.getType()) {
@@ -79,14 +79,14 @@ public class HazardList {
                     }
                 }
                 case COLD -> {
-                    boolean reacher = isHoldingReacher(target);
+                    final boolean reacher = isHoldingReacher(target);
 
                     if (reacher) return;
 
                     if (target instanceof EntityPlayer && ArmorUtil.checkForHazmat(target)) return; // Early return if protected
 
-                    int baseLevel = (int) level - 1;
-                    int witherLevel = (int) level - 3;
+                    final int baseLevel = (int) level - 1;
+                    final int witherLevel = (int) level - 3;
 
                     applyPotionEffect(target, MobEffects.MINING_FATIGUE, 110, baseLevel);
                     applyPotionEffect(target, MobEffects.SLOWNESS, 110, Math.min(4, baseLevel));
@@ -106,13 +106,13 @@ public class HazardList {
                     }
                 }
                 case HOT -> {
-                    boolean wetOrReacher = isHoldingReacher(target) || target.isWet() ;
+                    final boolean wetOrReacher = isHoldingReacher(target) || target.isWet() ;
                     if(!wetOrReacher) return;
 
                     target.setFire((int) Math.ceil(level));
                 }
                 case HYDROACTIVE -> {
-                    boolean playerIsWet = target.isWet() || (target.world.isRaining() && target.world.canSeeSky(target.getPosition()));
+                    final boolean playerIsWet = target.isWet() || (target.world.isRaining() && target.world.canSeeSky(target.getPosition()));
 
                     if(playerIsWet && stack.getCount() > 0) {
                         stack.setCount(0);
@@ -120,7 +120,7 @@ public class HazardList {
                     }
                 }
                 case RADIATION -> {
-                    boolean reacher = isHoldingReacher(target);
+                    final boolean reacher = isHoldingReacher(target);
 
                     level *= stack.getCount();
 
@@ -128,7 +128,7 @@ public class HazardList {
                         float rad = (level / 20F)/2;
 
                         if(GeneralConfig.enable528 && reacher) {
-                            rad = (float) (rad / 49F);	//More realistic function for 528: x / distance^2
+                            rad = rad / 49F;	//More realistic function for 528: x / distance^2
                         } else if(reacher) {
                             rad = (float) BobMathUtil.squirt(rad); //Reworked radiation function: sqrt(x+1/(x+2)^2)-1/(x+2)
                         }
@@ -137,12 +137,11 @@ public class HazardList {
                     }
                 }
                 case TOXIC -> {
-                    boolean reacher = isHoldingReacher(target);
+                    final boolean reacher = isHoldingReacher(target);
                     boolean hasToxFilter = false;
                     boolean hasHazmat = false;
 
-                    if (target instanceof EntityPlayer) {
-                        EntityPlayer player = (EntityPlayer) target;
+                    if (target instanceof EntityPlayer player) {
                         hasToxFilter = ArmorRegistry.hasProtection(player, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.NERVE_AGENT);
 
                         if (hasToxFilter) {
@@ -152,7 +151,7 @@ public class HazardList {
                         hasHazmat = ArmorUtil.checkForHazmat(player);
                     }
 
-                    boolean isUnprotected = !(hasToxFilter || hasHazmat || reacher);
+                    final boolean isUnprotected = !(hasToxFilter || hasHazmat || reacher);
 
                     if (isUnprotected) {
                         applyPotionEffect(target, MobEffects.WEAKNESS, 110, (int) (level - 1));
@@ -184,13 +183,13 @@ public class HazardList {
         }
     }
 
-    public void updateEntity(EntityItem item, float level) {
+    public void updateEntity(final EntityItem item, final float level) {
 
     }
 
     @SideOnly(Side.CLIENT)
-    public void addHazardInformation(EntityPlayer player, List<String> list, ItemStack stack) {
-        for (Hazard hazard : hazards) {
+    public void addHazardInformation(final EntityPlayer player, final List<String> list, final ItemStack stack) {
+        for (final Hazard hazard : hazards) {
             switch (hazard.getType()) {
                 case ASBESTOS -> {
                     list.add(TextFormatting.WHITE + "[" + I18nUtil.resolveKey("trait.asbestos") + "]");
@@ -205,17 +204,17 @@ public class HazardList {
                     list.add(TextFormatting.AQUA + "[" + I18nUtil.resolveKey("trait.cryogenic") + "]");
                 }
                 case DIGAMMA -> {
-                    float level = hazard.getStrength();
+                    final float level = hazard.getStrength();
 
                     // TODO
                     // level = HazardModifier.evalAllModifiers(stack, player, level, modifiers);
 
-                    float displayLevel = Math.round(level * 10000F) / 10F;
+                    final float displayLevel = Math.round(level * 10000F) / 10F;
                     list.add(TextFormatting.RED + "[" + I18nUtil.resolveKey("trait.digamma") + "]");
                     list.add(TextFormatting.DARK_RED + "" + displayLevel + "mDRX/s");
 
                     if (stack.getCount() > 1) {
-                        float stackLevel = displayLevel * stack.getCount();
+                        final float stackLevel = displayLevel * stack.getCount();
                         list.add(TextFormatting.DARK_RED + "Stack: " + stackLevel + "mDRX/s");
                     }
                 }
@@ -223,7 +222,7 @@ public class HazardList {
                     list.add(TextFormatting.RED + "[" + I18nUtil.resolveKey("trait.explosive") + "]");
                 }
                 case HOT -> {
-                    float level = hazard.getStrength();
+                    final float level = hazard.getStrength();
 
                     // TODO
                     // level = HazardModifier.evalAllModifiers(stack, player, level, modifiers);
@@ -234,7 +233,7 @@ public class HazardList {
                     list.add(TextFormatting.RED + "[" + I18nUtil.resolveKey("trait.hydro") + "]");
                 }
                 case RADIATION -> {
-                    float level = hazard.getStrength();
+                    final float level = hazard.getStrength();
 
 //                     level = HazardModifier.evalAllModifiers(stack, player, level, modifiers);
 
@@ -242,7 +241,7 @@ public class HazardList {
                         return;
 
                     list.add(TextFormatting.GREEN + "[" + I18nUtil.resolveKey("trait.radioactive") + "]");
-                    String rad = "" + (Math.floor(level* 1000) / 1000);
+                    final String rad = "" + (Math.floor(level* 1000) / 1000);
                     list.add(TextFormatting.YELLOW + (rad + "RAD/s"));
 
                     if(stack.getCount() > 1) {
@@ -250,9 +249,9 @@ public class HazardList {
                     }
                 }
                 case TOXIC -> {
-                    float level = hazard.getStrength();
+                    final float level = hazard.getStrength();
 
-                    String adjectiveKey;
+                    final String adjectiveKey;
 
                     if (level > 16) {
                         adjectiveKey = "adjective.extreme";

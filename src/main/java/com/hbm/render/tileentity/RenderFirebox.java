@@ -13,11 +13,11 @@ import net.minecraft.tileentity.TileEntity;
 
 public class RenderFirebox extends TileEntitySpecialRenderer<TileEntityHeaterFirebox>{
 	@Override
-	public boolean isGlobalRenderer(TileEntityHeaterFirebox te) {
+	public boolean isGlobalRenderer(final TileEntityHeaterFirebox te) {
 		return true;
 	}
 	@Override
-	public void render(TileEntityHeaterFirebox tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityHeaterFirebox tile, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GL11.glEnable(GL11.GL_LIGHTING);
@@ -31,13 +31,13 @@ public class RenderFirebox extends TileEntitySpecialRenderer<TileEntityHeaterFir
 		}
 		GL11.glRotatef(-90, 0F, 1F, 0F);
 		
-		TileEntityHeaterFirebox firebox = (TileEntityHeaterFirebox) tile;
+		final TileEntityHeaterFirebox firebox = tile;
 		
 		bindTexture(ResourceManager.heater_firebox_tex);
 		ResourceManager.heater_firebox.renderPart("Main");
 		
 		GL11.glPushMatrix();
-		float door = firebox.prevDoorAngle + (firebox.doorAngle - firebox.prevDoorAngle) * partialTicks;
+		final float door = firebox.prevDoorAngle + (firebox.doorAngle - firebox.prevDoorAngle) * partialTicks;
 		GL11.glTranslated(1.375, 0, 0.375);
 		GL11.glRotatef(door, 0F, -1F, 0F);
 		GL11.glTranslated(-1.375, 0, -0.375);

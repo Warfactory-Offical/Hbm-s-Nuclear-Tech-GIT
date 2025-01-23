@@ -29,7 +29,7 @@ public class TileEntityWasteDrum extends TileEntityMachineBase implements ITicka
 		return "container.wasteDrum";
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -39,8 +39,8 @@ public class TileEntityWasteDrum extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
-		Item item = stack.getItem();
+	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
+		final Item item = stack.getItem();
 		
 		if(item instanceof ItemRBMKRod)
 			return true;
@@ -49,18 +49,18 @@ public class TileEntityWasteDrum extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
 		return slots_arr;
 	}
 	
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
-		Item item = itemStack.getItem();
+	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+		final Item item = itemStack.getItem();
 		
 		if(item instanceof ItemRBMKRod) {
 			return ItemRBMKRod.getCoreHeat(itemStack) < 50 && ItemRBMKRod.getHullHeat(itemStack) < 50;
@@ -70,13 +70,13 @@ public class TileEntityWasteDrum extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound){
+	public void readFromNBT(final NBTTagCompound compound){
 		water = compound.getInteger("water");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound){
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound){
 		compound.setInteger("water", water);
 		return super.writeToNBT(compound);
 	}
@@ -114,22 +114,21 @@ public class TileEntityWasteDrum extends TileEntityMachineBase implements ITicka
 		if(!world.isRemote) {
 			if(water > 0) {
 				
-				int r = 60 * 60 * 20 / water;
+				final int r = 60 * 60 * 20 / water;
 				
 				for(int i = 0; i < 12; i++) {
 					
-					if(inventory.getStackInSlot(i).getItem() instanceof ItemRBMKRod) {
-						
-						ItemRBMKRod rod = (ItemRBMKRod) inventory.getStackInSlot(i).getItem();
-						rod.updateHeat(world, inventory.getStackInSlot(i), 0.025D);
+					if(inventory.getStackInSlot(i).getItem() instanceof ItemRBMKRod rod) {
+
+                        rod.updateHeat(world, inventory.getStackInSlot(i), 0.025D);
 						rod.provideHeat(world, inventory.getStackInSlot(i), 20D, 0.025D);
 						
 					} else if(world.rand.nextInt(r) == 0) {
 						
 						if(!inventory.getStackInSlot(i).isEmpty()) {
 							
-							Item waste_hot = inventory.getStackInSlot(i).getItem();
-							ItemStack waste_cold = WasteDrumRecipes.getOutput(waste_hot);
+							final Item waste_hot = inventory.getStackInSlot(i).getItem();
+							final ItemStack waste_cold = WasteDrumRecipes.getOutput(waste_hot);
 							if(waste_cold != null){
 								inventory.setStackInSlot(i, waste_cold.copy());
 							}

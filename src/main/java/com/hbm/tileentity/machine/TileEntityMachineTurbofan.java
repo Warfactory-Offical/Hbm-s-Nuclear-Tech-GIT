@@ -74,7 +74,7 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 	public TileEntityMachineTurbofan() {
 		inventory = new ItemStackHandler(4){
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -90,11 +90,11 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(String name) {
+	public void setCustomName(final String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUseableByPlayer(final EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -103,7 +103,7 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		tank.readFromNBT(compound);
 		if(compound.hasKey("inventory"))
@@ -112,14 +112,14 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		tank.writeToNBT(compound);
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
-	public long getPowerScaled(long i) {
+	public long getPowerScaled(final long i) {
 		return (power * i) / maxPower;
 	}
 	
@@ -140,20 +140,20 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 				}
 			}
 
-			int prevFluidAmount = tank.getFluidAmount();
-			long prevPower = power;
+			final int prevFluidAmount = tank.getFluidAmount();
+			final long prevPower = power;
 			if (needsUpdate) {
 				needsUpdate = false;
 			}
 
 			long burnValue = 0;
-			int amount = 1 + this.afterburner;
+			final int amount = 1 + this.afterburner;
 			
 			if(tank.getFluid() != null && EngineRecipes.isAero(tank.getFluid().getFluid())) {
 				burnValue = EngineRecipes.getEnergy(tank.getFluid().getFluid()) / 1_000;
 			}
 			
-			int amountToBurn = Math.min(amount, tank.getFluidAmount());
+			final int amountToBurn = Math.min(amount, tank.getFluidAmount());
 			
 			this.sendTurboPower();
 
@@ -177,15 +177,15 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 				if(power > maxPower)
 					power = maxPower;
 				
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
-				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+				final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
+				final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				
 				if(this.afterburner > 0){
 					for(int i = 0; i < afterburner * 2; i++){
 						if(afterburner > 0 && world.rand.nextInt(2) == 0) {
-							double speed = 2 + world.rand.nextDouble() * 3;
-							double deviation = world.rand.nextGaussian() * 0.2;
-							EntitySSmokeFX smoke = new EntitySSmokeFX(world);
+							final double speed = 2 + world.rand.nextDouble() * 3;
+							final double deviation = world.rand.nextGaussian() * 0.2;
+							final EntitySSmokeFX smoke = new EntitySSmokeFX(world);
 							smoke.posX = pos.getX() + 0.5;
 							smoke.posY = pos.getY() + 1.25;
 							smoke.posZ = pos.getZ() + 0.5;
@@ -205,9 +205,9 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 				double minZ = pos.getZ() + 0.5 + dir.offsetZ * 3.5 - rot.offsetZ * 1.5;
 				double maxZ = pos.getZ() + 0.5 + dir.offsetZ * 12.5 + rot.offsetZ * 1.5;
 				
-				List<Entity> listIntake = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
+				final List<Entity> listIntake = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
 				
-				for(Entity e : listIntake) {
+				for(final Entity e : listIntake) {
 					e.addVelocity(-dir.offsetX * 0.3 * (afterburner+1), 0, -dir.offsetZ * 0.3 * (afterburner+1));
 				}
 				
@@ -217,13 +217,13 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 				minZ = pos.getZ() + 0.5 + dir.offsetZ * 3.5 - rot.offsetZ * 1.5;
 				maxZ = pos.getZ() + 0.5 + dir.offsetZ * 3.75 + rot.offsetZ * 1.5;
 				
-				List<Entity> listKill = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
+				final List<Entity> listKill = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
 			
-				for(Entity e : listKill) {
+				for(final Entity e : listKill) {
 					e.attackEntityFrom(ModDamageSource.turbofan, 1000);
 					e.setInWeb();
 					if(!e.isEntityAlive() && e instanceof EntityLivingBase) {
-						NBTTagCompound vdat = new NBTTagCompound();
+						final NBTTagCompound vdat = new NBTTagCompound();
 						vdat.setString("type", "giblets");
 						vdat.setInteger("ent", e.getEntityId());
 						PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(vdat, e.posX, e.posY + e.height * 0.5, e.posZ), new TargetPoint(e.dimension, e.posX, e.posY + e.height * 0.5, e.posZ, 150));
@@ -239,9 +239,9 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 				minZ = pos.getZ() + 0.5 - dir.offsetZ * 3.5 - rot.offsetZ * 1.5;
 				maxZ = pos.getZ() + 0.5 - dir.offsetZ * 19.5 + rot.offsetZ * 1.5;
 				
-				List<Entity> listExhaust = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
+				final List<Entity> listExhaust = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
 				
-				for(Entity e : listExhaust) {
+				for(final Entity e : listExhaust) {
 					
 					if(this.afterburner > 0) {
 						e.setFire(5);
@@ -269,17 +269,17 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 				*/
 
 				//Intake pull
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
-				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+				final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
+				final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				
 				double minX = pos.getX() + 0.5 + dir.offsetX * 3.5 - rot.offsetX * 1.5;
 				double maxX = pos.getX() + 0.5 + dir.offsetX * 12.5 + rot.offsetX * 1.5;
 				double minZ = pos.getZ() + 0.5 + dir.offsetZ * 3.5 - rot.offsetZ * 1.5;
 				double maxZ = pos.getZ() + 0.5 + dir.offsetZ * 12.5 + rot.offsetZ * 1.5;
 				
-				List<EntityPlayer> listIntake = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
+				final List<EntityPlayer> listIntake = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
 				
-				for(EntityPlayer e : listIntake) {
+				for(final EntityPlayer e : listIntake) {
 					if(e == MainRegistry.proxy.me()) {
 						e.addVelocity(-dir.offsetX * 0.3 * (afterburner+1), 0, -dir.offsetZ * 0.3 * (afterburner+1));
 					}
@@ -291,9 +291,9 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 				minZ = pos.getZ() + 0.5 - dir.offsetZ * 3.5 - rot.offsetZ * 1.5;
 				maxZ = pos.getZ() + 0.5 - dir.offsetZ * 19.5 + rot.offsetZ * 1.5;
 				
-				List<EntityPlayer> listExhaust = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
+				final List<EntityPlayer> listExhaust = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(Math.min(minX, maxX), pos.getY(), Math.min(minZ, maxZ), Math.max(minX, maxX), pos.getY() + 3, Math.max(minZ, maxZ)));
 				
-				for(EntityPlayer e : listExhaust) {
+				for(final EntityPlayer e : listExhaust) {
 					if(e == MainRegistry.proxy.me()) {
 						e.addVelocity(-dir.offsetX * 0.5 * (afterburner+1), 0, -dir.offsetZ * 0.5 * (afterburner+1));
 					}
@@ -333,7 +333,7 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 		if(!world.isRemote) {
 			PacketDispatcher.wrapper.sendToAllAround(new TETurbofanPacket(pos.getX(), pos.getY(), pos.getZ(), isRunning), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] {tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
 		}
 	}
 
@@ -361,24 +361,22 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 		}
 	}
 	
-	protected boolean inputValidForTank(int tank, int slot){
+	protected boolean inputValidForTank(final int tank, final int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty()){
-			if(isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
-				return true;	
-			}
+            return isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
 		}
 		return false;
 	}
 	
-	private boolean isValidFluid(FluidStack stack) {
+	private boolean isValidFluid(final FluidStack stack) {
 		if(stack == null)
 			return false;
 		return EngineRecipes.isAero(stack.getFluid());
 	}
 
 	protected void sendTurboPower() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
-		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
+		final ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 		
 		this.sendPower(world, pos.add(rot.offsetX * 2, 0, rot.offsetZ * 2), rot);
 		this.sendPower(world, pos.add(rot.offsetX * 2 - dir.offsetX, 0, rot.offsetZ * 2 - dir.offsetZ), rot);
@@ -404,7 +402,7 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill) {
+	public int fill(final FluidStack resource, final boolean doFill) {
 		if (isValidFluid(resource)) {
 			if(tank.fill(resource, false) > 0)
 				needsUpdate = true;
@@ -414,26 +412,25 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags) {
+	public void recievePacket(final NBTTagCompound[] tags) {
 		if(tags.length != 1){
-			return;
-		} else {
+        } else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return true;
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -444,7 +441,7 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -460,7 +457,7 @@ public class TileEntityMachineTurbofan extends TileEntityLoadedBase implements I
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

@@ -33,7 +33,7 @@ public class ParticlePhysicsBlocks extends Particle {
 	public boolean didInit = false;
 	int callListId;
 
-	public ParticlePhysicsBlocks(World world, double posXIn, double posYIn, double posZIn, BlockPos createPos, BlockPos[] blocks) {
+	public ParticlePhysicsBlocks(final World world, final double posXIn, final double posYIn, final double posZIn, final BlockPos createPos, final BlockPos[] blocks) {
 		super(world, posXIn, posYIn, posZIn);
 		this.blocks = blocks;
 		this.createPos = createPos;
@@ -41,16 +41,16 @@ public class ParticlePhysicsBlocks extends Particle {
 	}
 	
 	public void init(){
-		int offsetY = 0;
+		final int offsetY = 0;
 		body = new RigidBody(world, posX, posY, posZ);
-		ArrayList<AABBCollider> boxs = new ArrayList<>();
-		for(BlockPos pos : blocks){
-			ArrayList<AxisAlignedBB> boxes2 = new ArrayList<>();
-			IBlockState state = world.getBlockState(pos);
+		final ArrayList<AABBCollider> boxs = new ArrayList<>();
+		for(final BlockPos pos : blocks){
+			final ArrayList<AxisAlignedBB> boxes2 = new ArrayList<>();
+			final IBlockState state = world.getBlockState(pos);
 			state.addCollisionBoxToList(world, pos, TileEntity.INFINITE_EXTENT_AABB, boxes2, null, false);
-			for(AxisAlignedBB box : boxes2){
-				boolean light = state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2;
-				float mass = light ? 0.25F : 1F;
+			for(final AxisAlignedBB box : boxes2){
+				final boolean light = state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2;
+				final float mass = light ? 0.25F : 1F;
 				boxs.add(new AABBCollider(box.offset(-posX, -posY + offsetY, -posZ), mass));
 			}
 		}
@@ -59,7 +59,7 @@ public class ParticlePhysicsBlocks extends Particle {
 			boxes[i] = boxs.get(i).box;
 		}
 		body.addColliders(boxs.toArray(new AABBCollider[0]));
-		Vec3d impulse = Minecraft.getMinecraft().player.getLookVec().scale(0.6*body.mass);
+		final Vec3d impulse = Minecraft.getMinecraft().player.getLookVec().scale(0.6*body.mass);
 		body.impulseVelocity(new Vec3(impulse.x, 0, impulse.z), new Vec3(posX + 0.5, posY, posZ + 0.5));
 		body.friction = 0.8F;
 		particleMaxAge = 1000;
@@ -67,12 +67,12 @@ public class ParticlePhysicsBlocks extends Particle {
 		
 		callListId = GL11.glGenLists(1);
 		GL11.glNewList(callListId, GL11.GL_COMPILE);
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = tes.getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = tes.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-		for(BlockPos pos : blocks){
-			IBlockState state = world.getBlockState(pos);
-			IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+		for(final BlockPos pos : blocks){
+			final IBlockState state = world.getBlockState(pos);
+			final IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelSmooth(world, model, state, pos.add(0, offsetY, 0), buf, true, MathHelper.getPositionRandom(pos));
 		}
 		tes.draw();
@@ -95,11 +95,11 @@ public class ParticlePhysicsBlocks extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
 		GL11.glPushMatrix();
-		double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-        double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-        double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+		final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+        final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+        final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
         
         interpPosX = entPosX;
         interpPosY = entPosY;
@@ -112,14 +112,14 @@ public class ParticlePhysicsBlocks extends Particle {
 		//RenderGlobal.drawSelectionBoundingBox(body.boundingBox.offset(-interpPosX, -interpPosY, -interpPosZ), 0, 1, 0, 1);
 		GlStateManager.enableTexture2D();
         GL11.glPopMatrix();
-        for(Contact c : body.contacts.contacts){
-			if(c != null && false){
-				Tessellator tes = Tessellator.getInstance();
-				BufferBuilder buf = tes.getBuffer();
+        for(final Contact c : body.contacts.contacts){
+			if(false){
+				final Tessellator tes = Tessellator.getInstance();
+				final BufferBuilder buf = tes.getBuffer();
 				buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-				Vec3 normal = c.normal.mult(0.5F);
-				Vec3 globalA = c.globalA.subtract(interpPosX, interpPosY, interpPosZ);
-				Vec3 globalB = c.globalB.subtract(interpPosX, interpPosY, interpPosZ);
+				final Vec3 normal = c.normal.mult(0.5F);
+				final Vec3 globalA = c.globalA.subtract(interpPosX, interpPosY, interpPosZ);
+				final Vec3 globalB = c.globalB.subtract(interpPosX, interpPosY, interpPosZ);
 				buf.pos(globalA.xCoord, globalA.yCoord, globalA.zCoord).color(0F, 0F, 1F, 1F).endVertex();
 				buf.pos(globalA.xCoord-normal.xCoord, globalA.yCoord-normal.yCoord, globalA.zCoord-normal.xCoord).color(0F, 0F, 1F, 1F).endVertex();
 				
@@ -140,7 +140,7 @@ public class ParticlePhysicsBlocks extends Particle {
 		
 		GlStateManager.disableTexture2D();
 		GlStateManager.glLineWidth(4);
-		for(AxisAlignedBB box : boxes){
+		for(final AxisAlignedBB box : boxes){
 			//RenderGlobal.drawSelectionBoundingBox(box, 1, collided ? 0 : 1, collided ? 0 : 1, 1);
 		}
 		GlStateManager.enableTexture2D();

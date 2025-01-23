@@ -33,30 +33,30 @@ public class ExplosionLarge {
 
 	static Random rand = new Random();
 
-	public static void spawnParticlesRadial(World world, double x, double y, double z, int count) {
+	public static void spawnParticlesRadial(final World world, final double x, final double y, final double z, final int count) {
 
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "smoke");
 		data.setString("mode", "radial");
 		data.setInteger("count", count);
 		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x, y, z),  new TargetPoint(world.provider.getDimension(), x, y, z, 250));
 	}
 
-	public static void spawnParticles(World world, double x, double y, double z, int count) {
-		NBTTagCompound data = new NBTTagCompound();
+	public static void spawnParticles(final World world, final double x, final double y, final double z, final int count) {
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "smoke");
 		data.setString("mode", "cloud");
 		data.setInteger("count", count);
 		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x, y, z),  new TargetPoint(world.provider.getDimension(), x, y, z, 250));
 	}
 	
-	public static void spawnBurst(World world, double x, double y, double z, int count, double strength) {
+	public static void spawnBurst(final World world, final double x, final double y, final double z, final int count, final double strength) {
 		
 		Vec3d vec = new Vec3d(strength, 0, 0);
 		vec = vec.rotateYaw(rand.nextInt(360));
 		
 		for(int i = 0; i < count; i++) {
-			EntityGasFlameFX fx = new EntityGasFlameFX(world, x, y, z, 0.0, 0.0, 0.0);
+			final EntityGasFlameFX fx = new EntityGasFlameFX(world, x, y, z, 0.0, 0.0, 0.0);
 			fx.motionY = 0;
 			fx.motionX = vec.x;
 			fx.motionZ = vec.z;
@@ -66,9 +66,9 @@ public class ExplosionLarge {
 		}
 	}
 	
-	public static void spawnShock(World world, double x, double y, double z, int count, double strength) {
+	public static void spawnShock(final World world, final double x, final double y, final double z, final int count, final double strength) {
 		
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "smoke");
 		data.setString("mode", "shock");
 		data.setInteger("count", count);
@@ -76,10 +76,10 @@ public class ExplosionLarge {
 		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x, y + 0.5, z),  new TargetPoint(world.provider.getDimension(), x, y, z, 250));
 	}
 
-	public static void spawnRubble(World world, double x, double y, double z, int count) {
+	public static void spawnRubble(final World world, final double x, final double y, final double z, final int count) {
 
 		for (int i = 0; i < count; i++) {
-			EntityRubble rubble = new EntityRubble(world);
+			final EntityRubble rubble = new EntityRubble(world);
 			rubble.posX = x;
 			rubble.posY = y;
 			rubble.posZ = z;
@@ -91,10 +91,10 @@ public class ExplosionLarge {
 		}
 	}
 
-	public static void spawnShrapnels(World world, double x, double y, double z, int count) {
+	public static void spawnShrapnels(final World world, final double x, final double y, final double z, final int count) {
 
 		for (int i = 0; i < count; i++) {
-			EntityShrapnel shrapnel = new EntityShrapnel(world);
+			final EntityShrapnel shrapnel = new EntityShrapnel(world);
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
@@ -107,31 +107,31 @@ public class ExplosionLarge {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static void jolt(World world, double posX, double posY, double posZ, double strength, int count, double vel) {
+	public static void jolt(final World world, final double posX, final double posY, final double posZ, final double strength, final int count, final double vel) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
 		for(int j = 0; j < count; j++) {
 			
-			double phi = rand.nextDouble() * (Math.PI * 2);
-			double costheta = rand.nextDouble() * 2 - 1;
-			double theta = Math.acos(costheta);
-			double x = Math.sin( theta) * Math.cos( phi );
-			double y = Math.sin( theta) * Math.sin( phi );
-			double z = Math.cos( theta );
+			final double phi = rand.nextDouble() * (Math.PI * 2);
+			final double costheta = rand.nextDouble() * 2 - 1;
+			final double theta = Math.acos(costheta);
+			final double x = Math.sin( theta) * Math.cos( phi );
+			final double y = Math.sin( theta) * Math.sin( phi );
+			final double z = Math.cos( theta );
 				
-			Vec3d vec = new Vec3d(x, y, z);
-			MutableBlockPos pos = new BlockPos.MutableBlockPos();
+			final Vec3d vec = new Vec3d(x, y, z);
+			final MutableBlockPos pos = new BlockPos.MutableBlockPos();
 			
 			for(int i = 0; i < strength; i ++) {
-				double x0 = posX + (vec.x * i);
-				double y0 = posY + (vec.y * i);
-				double z0 = posZ + (vec.z * i);
+				final double x0 = posX + (vec.x * i);
+				final double y0 = posY + (vec.y * i);
+				final double z0 = posZ + (vec.z * i);
 				pos.setPos((int)x0, (int)y0, (int)z0);
 				
 				if(!world.isRemote) {
-					IBlockState blockstate = world.getBlockState(pos);
-					Block block = blockstate.getBlock();
+					final IBlockState blockstate = world.getBlockState(pos);
+					final Block block = blockstate.getBlock();
 					if(blockstate.getMaterial().isLiquid()) {
 						world.setBlockToAir(pos);
 					}
@@ -141,13 +141,13 @@ public class ExplosionLarge {
 						if(block.getExplosionResistance(null) > 70)
 							continue;
 			            
-			            EntityRubble rubble = new EntityRubble(world);
+			            final EntityRubble rubble = new EntityRubble(world);
 						rubble.posX = x0 + 0.5F;
 						rubble.posY = y0 + 0.5F;
 						rubble.posZ = z0 + 0.5F;
 						rubble.setMetaBasedOnBlock(block, block.getMetaFromState(blockstate));
 						
-						Vec3d vec4 = new Vec3d(posX - rubble.posX, posY - rubble.posY, posZ - rubble.posZ);
+						final Vec3d vec4 = new Vec3d(posX - rubble.posX, posY - rubble.posY, posZ - rubble.posZ);
 						vec4.normalize();
 
 						rubble.motionX = vec4.x * vel;
@@ -164,10 +164,10 @@ public class ExplosionLarge {
 		}
 	}
 	
-	public static void spawnTracers(World world, double x, double y, double z, int count) {
+	public static void spawnTracers(final World world, final double x, final double y, final double z, final int count) {
 		
 		for(int i = 0; i < count; i++) {
-			EntityShrapnel shrapnel = new EntityShrapnel(world);
+			final EntityShrapnel shrapnel = new EntityShrapnel(world);
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
@@ -179,10 +179,10 @@ public class ExplosionLarge {
 		}
 	}
 	
-	public static void spawnShrapnelShower(World world, double x, double y, double z, double motionX, double motionY, double motionZ, int count, double deviation) {
+	public static void spawnShrapnelShower(final World world, final double x, final double y, final double z, final double motionX, final double motionY, final double motionZ, final int count, final double deviation) {
 		
 		for(int i = 0; i < count; i++) {
-			EntityShrapnel shrapnel = new EntityShrapnel(world);
+			final EntityShrapnel shrapnel = new EntityShrapnel(world);
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
@@ -194,14 +194,14 @@ public class ExplosionLarge {
 		}
 	}
 	
-	public static void spawnMissileDebris(World world, double x, double y, double z, double motionX, double motionY, double motionZ, double deviation, List<ItemStack> debris, ItemStack rareDrop) {
+	public static void spawnMissileDebris(final World world, final double x, final double y, final double z, final double motionX, final double motionY, final double motionZ, final double deviation, final List<ItemStack> debris, final ItemStack rareDrop) {
 		
 		if(debris != null) {
 			for(int i = 0; i < debris.size(); i++) {
 				if(debris.get(i) != null) {
-					int k = rand.nextInt(debris.get(i).getCount() + 1);
+					final int k = rand.nextInt(debris.get(i).getCount() + 1);
 					for(int j = 0; j < k; j++) {
-						EntityItem item = new EntityItem(world, x, y, z, ItemStackUtil.itemStackFrom(debris.get(i).getItem()));
+						final EntityItem item = new EntityItem(world, x, y, z, ItemStackUtil.itemStackFrom(debris.get(i).getItem()));
 						item.motionX = (motionX + rand.nextGaussian() * deviation) * 0.85;
 						item.motionY = (motionY + rand.nextGaussian() * deviation) * 0.85;
 						item.motionZ = (motionZ + rand.nextGaussian() * deviation) * 0.85;
@@ -216,7 +216,7 @@ public class ExplosionLarge {
 		}
 	}
 
-	public static void explode(World world, double x, double y, double z, float strength, boolean cloud, boolean rubble, boolean shrapnel) {
+	public static void explode(final World world, final double x, final double y, final double z, final float strength, final boolean cloud, final boolean rubble, final boolean shrapnel) {
 		if(CompatibilityConfig.isWarDim(world)){
 			world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, (int)strength, x, y, z));
 		
@@ -230,20 +230,20 @@ public class ExplosionLarge {
 			spawnShrapnels(world, x, y+2, z, shrapnelFunction((int) strength));
 	}
 
-	public static int cloudFunction(int i) {
+	public static int cloudFunction(final int i) {
 		// return (int)(345 * (1 - Math.pow(Math.E, -i/15)) + 15);
 		return (int) (545 * (1 - Math.pow(Math.E, -i / 15)) + 15);
 	}
 
-	public static int rubbleFunction(int i) {
+	public static int rubbleFunction(final int i) {
 		return i / 10;
 	}
 
-	public static int shrapnelFunction(int i) {
+	public static int shrapnelFunction(final int i) {
 		return i / 3;
 	}
 	
-	public static void explodeFire(World world, double x, double y, double z, float strength, boolean cloud, boolean rubble, boolean shrapnel) {
+	public static void explodeFire(final World world, final double x, final double y, final double z, final float strength, final boolean cloud, final boolean rubble, final boolean shrapnel) {
 		if(CompatibilityConfig.isWarDim(world)){
 			world.spawnEntity(EntityNukeExplosionMK5.statFacNoRadFire(world, (int)strength, x, y, z));
 			
@@ -257,10 +257,10 @@ public class ExplosionLarge {
 			spawnShrapnels(world, x, y+2, z, shrapnelFunction((int)strength));
 	}
 	
-	public static void spawnOilSpills(World world, double x, double y, double z, int count) {
+	public static void spawnOilSpills(final World world, final double x, final double y, final double z, final int count) {
 		
 		for(int i = 0; i < count; i++) {
-			EntityOilSpill shrapnel = new EntityOilSpill(world);
+			final EntityOilSpill shrapnel = new EntityOilSpill(world);
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
@@ -271,7 +271,7 @@ public class ExplosionLarge {
 		}
 	}
 	
-	public static void buster(World world, double x, double y, double z, Vec3 vector, float strength, float depth) {
+	public static void buster(final World world, final double x, final double y, final double z, Vec3 vector, final float strength, final float depth) {
 		
 		vector = vector.normalize();
 		if(CompatibilityConfig.isWarDim(world)){

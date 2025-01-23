@@ -17,17 +17,17 @@ public class RenderBombletZeta extends Render<EntityBombletZeta> {
 	public static final IRenderFactory<EntityBombletZeta> FACTORY = (RenderManager man) -> {return new RenderBombletZeta(man);};
 	
 	private static final ResourceLocation objTesterModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/bombletTheta.obj");
-	private IModelCustom boyModel;
-    private ResourceLocation boyTexture;
+	private final IModelCustom boyModel;
+    private final ResourceLocation boyTexture;
 	
-	protected RenderBombletZeta(RenderManager renderManager) {
+	protected RenderBombletZeta(final RenderManager renderManager) {
 		super(renderManager);
 		boyModel = AdvancedModelLoader.loadModel(objTesterModelRL);
 		boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/projectiles/bombletZetaTexture.png");
 	}
 	
 	@Override
-	public void doRender(EntityBombletZeta entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityBombletZeta entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y, (float)z);
         GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -41,7 +41,7 @@ public class RenderBombletZeta extends Render<EntityBombletZeta> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBombletZeta entity) {
+	protected ResourceLocation getEntityTexture(final EntityBombletZeta entity) {
 		return boyTexture;
 	}
     

@@ -29,13 +29,13 @@ public class FluidTankRender extends TileEntityItemStackRenderer {
 	}
 
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		RenderHelper.bindBlockTexture();
 
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = Tessellator.getInstance().getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = Tessellator.getInstance().getBuffer();
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, itemModel);
@@ -43,7 +43,7 @@ public class FluidTankRender extends TileEntityItemStackRenderer {
 
 		final double HALF_A_PIXEL = 0.03125;
 		final double PIX = 0.0625;
-		FluidStack f = FluidUtil.getFluidContained(stack);
+		final FluidStack f = FluidUtil.getFluidContained(stack);
 		TextureAtlasSprite lava = null;
 		if (f != null)
 			lava = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(f.getFluid().getStill().toString());
@@ -51,10 +51,10 @@ public class FluidTankRender extends TileEntityItemStackRenderer {
 		if (lava != null) {
 			RenderHelper.setColor(f.getFluid().getColor(f));
 			GlStateManager.disableLighting();
-			float maxU = lava.getInterpolatedU(9);
-			float minU = lava.getInterpolatedU(7);
-			float maxV = lava.getInterpolatedV(11);
-			float minV = lava.getInterpolatedV(5);
+			final float maxU = lava.getInterpolatedU(9);
+			final float minU = lava.getInterpolatedU(7);
+			final float maxV = lava.getInterpolatedV(11);
+			final float minV = lava.getInterpolatedV(5);
 
 			GL11.glTranslated(0, 0, 0.5 + HALF_A_PIXEL);
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

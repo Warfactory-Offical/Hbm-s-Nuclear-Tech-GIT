@@ -32,7 +32,7 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 
 	public static final PropertyInteger FACING = PropertyInteger.create("facing", 2, 5);
 	
-	public MachineChemplant(Material materialIn, String s) {
+	public MachineChemplant(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -43,58 +43,58 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityMachineChemplant();
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(ModBlocks.machine_chemplant);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
-			EnumFacing side) {
+	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos,
+                                        final EnumFacing side) {
 		return false;
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, FACING);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(FACING);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		if(meta >= 2 && meta <=5)
 			return this.getDefaultState().withProperty(FACING, meta);
 		return this.getDefaultState().withProperty(FACING, 2);
@@ -103,9 +103,9 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 	
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		int i = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		MutableBlockPos mbp = new BlockPos.MutableBlockPos();
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+		final int i = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		final MutableBlockPos mbp = new BlockPos.MutableBlockPos();
 		if (i == 0) {
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(FACING, 5), 2);
 			if(MultiblockHandler.checkSpace(world, pos, MultiblockHandler.chemplantDimensionEast)) {
@@ -114,31 +114,27 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 				mbp.setPos(pos.getX()-1, pos.getY(), pos.getZ());
 				DummyBlockChemplant.safeBreak = true;
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te = world.getTileEntity(mbp);
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(mbp);
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()-1, pos.getY(), pos.getZ()+1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te2 = world.getTileEntity(mbp);
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(mbp);
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()+2, pos.getY(), pos.getZ());
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te3 = world.getTileEntity(mbp);
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(mbp);
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()+2, pos.getY(), pos.getZ()+1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te4 = world.getTileEntity(mbp);
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(mbp);
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockChemplant.safeBreak = false;
 				//
@@ -155,31 +151,27 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 				DummyBlockChemplant.safeBreak = true;
 				mbp.setPos(pos.getX(), pos.getY(), pos.getZ()-1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te = world.getTileEntity(mbp);
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(mbp);
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()-1, pos.getY(), pos.getZ()-1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te2 = world.getTileEntity(mbp);
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(mbp);
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX(), pos.getY(), pos.getZ()+2);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te3 = world.getTileEntity(mbp);
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(mbp);
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()-1, pos.getY(), pos.getZ()+2);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te4 = world.getTileEntity(mbp);
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(mbp);
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockChemplant.safeBreak = false;
 				//
@@ -196,31 +188,27 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 				DummyBlockChemplant.safeBreak = true;
 				mbp.setPos(pos.getX()+1, pos.getY(), pos.getZ());
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te = world.getTileEntity(mbp);
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(mbp);
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()+1, pos.getY(), pos.getZ()-1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te2 = world.getTileEntity(mbp);
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(mbp);
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()-2, pos.getY(), pos.getZ());
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te3 = world.getTileEntity(mbp);
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(mbp);
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()-2, pos.getY(), pos.getZ()-1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te4 = world.getTileEntity(mbp);
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(mbp);
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockChemplant.safeBreak = false;
 				//
@@ -237,31 +225,27 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 				DummyBlockChemplant.safeBreak = true;
 				mbp.setPos(pos.getX(), pos.getY(), pos.getZ()+1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te = world.getTileEntity(mbp);
-				if(te instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te;
-					dummy.target = pos;
+				final TileEntity te = world.getTileEntity(mbp);
+				if(te instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()+1, pos.getY(), pos.getZ()+1);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te2 = world.getTileEntity(mbp);
-				if(te2 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te2;
-					dummy.target = pos;
+				final TileEntity te2 = world.getTileEntity(mbp);
+				if(te2 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX(), pos.getY(), pos.getZ()-2);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te3 = world.getTileEntity(mbp);
-				if(te3 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te3;
-					dummy.target = pos;
+				final TileEntity te3 = world.getTileEntity(mbp);
+				if(te3 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				mbp.setPos(pos.getX()+1, pos.getY(), pos.getZ()-2);
 				world.setBlockState(mbp, ModBlocks.dummy_port_chemplant.getDefaultState());
-				TileEntity te4 = world.getTileEntity(mbp);
-				if(te4 instanceof TileEntityDummy) {
-					TileEntityDummy dummy = (TileEntityDummy)te4;
-					dummy.target = pos;
+				final TileEntity te4 = world.getTileEntity(mbp);
+				if(te4 instanceof TileEntityDummy dummy) {
+                    dummy.target = pos;
 				}
 				DummyBlockChemplant.safeBreak = false;
 				//
@@ -272,13 +256,13 @@ public class MachineChemplant extends BlockContainer implements IMultiBlock {
 	}
 	private static boolean keepInventory;
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 		if (!keepInventory) {
-			TileEntity tileentity = world.getTileEntity(pos);
+			final TileEntity tileentity = world.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityMachineChemplant)
             {
-                InventoryHelper.dropInventoryItems(world, pos, (TileEntityMachineChemplant)tileentity);
+                InventoryHelper.dropInventoryItems(world, pos, tileentity);
                 
                 world.updateComparatorOutputLevel(pos, this);
             }

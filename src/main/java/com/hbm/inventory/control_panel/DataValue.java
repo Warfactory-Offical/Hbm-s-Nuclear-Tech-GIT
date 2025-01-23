@@ -14,7 +14,7 @@ public abstract class DataValue {
 	public abstract NBTBase writeToNBT();
 	public abstract void readFromNBT(NBTBase nbt);
 	
-	public static DataValue newFromNBT(NBTBase base){
+	public static DataValue newFromNBT(final NBTBase base){
 		DataValue val = null;
 		try {
 			if(base instanceof NBTTagCompound) {
@@ -27,7 +27,7 @@ public abstract class DataValue {
 				val = new DataValueString("");
 				val.readFromNBT(base);
 			}
-		} catch(Exception x) {
+		} catch(final Exception x) {
 			x.printStackTrace();
 			return null;
 		}
@@ -40,9 +40,9 @@ public abstract class DataValue {
 		STRING(new float[]{0, 1, 1}),
 		ENUM(new float[]{0.29F, 0, 0.5F});
 		
-		private float[] color;
+		private final float[] color;
 		
-		private DataType(float[] color){
+		private DataType(final float[] color){
 			this.color = color;
 		}
 		

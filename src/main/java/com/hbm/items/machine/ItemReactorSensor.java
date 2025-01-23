@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class ItemReactorSensor extends Item {
 
-	public ItemReactorSensor(String s) {
+	public ItemReactorSensor(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 
@@ -30,8 +30,8 @@ public class ItemReactorSensor extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		final ItemStack stack = player.getHeldItem(hand);
 		Block b = world.getBlockState(pos).getBlock();
 
 		if(b == ModBlocks.machine_reactor_small || b == ModBlocks.dummy_block_reactor_small || b == ModBlocks.dummy_port_reactor_small) {
@@ -51,10 +51,10 @@ public class ItemReactorSensor extends Item {
 		}
 		if(b == ModBlocks.reactor_hatch || b == ModBlocks.reactor_ejector || b == ModBlocks.reactor_inserter) {
 
-			EnumFacing meta = world.getBlockState(pos).getValue(BlockHorizontal.FACING);
+			final EnumFacing meta = world.getBlockState(pos).getValue(BlockHorizontal.FACING);
 
 			int x = pos.getX();
-			int y = pos.getY();
+			final int y = pos.getY();
 			int z = pos.getZ();
 			switch(meta) {
 			case NORTH:
@@ -94,7 +94,7 @@ public class ItemReactorSensor extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		if(stack.getTagCompound() != null) {
 			tooltip.add("x: " + stack.getTagCompound().getInteger("x"));
 			tooltip.add("y: " + stack.getTagCompound().getInteger("y"));

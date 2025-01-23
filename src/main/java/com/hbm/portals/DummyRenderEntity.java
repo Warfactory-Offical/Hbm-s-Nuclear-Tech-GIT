@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 public class DummyRenderEntity extends Entity {
 
-	public DummyRenderEntity(World worldIn) {
+	public DummyRenderEntity(final World worldIn) {
 		super(worldIn);
 	}
 
@@ -15,11 +15,11 @@ public class DummyRenderEntity extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
 	}
 
 }

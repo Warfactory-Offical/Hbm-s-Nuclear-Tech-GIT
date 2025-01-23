@@ -13,7 +13,7 @@ public enum EnumSymbol {
 	public int x;
 	public int y;
 	
-	private EnumSymbol(int x, int y) {
+	private EnumSymbol(final int x, final int y) {
 		this.x = x;
 		this.y = y;
 	}

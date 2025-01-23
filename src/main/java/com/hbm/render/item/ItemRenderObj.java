@@ -13,7 +13,7 @@ public class ItemRenderObj extends TEISRBase {
 
 	
 	@Override
-	public void renderByItem(ItemStack item) {
+	public void renderByItem(final ItemStack item) {
 		if(item.getItem() == ModItems.gun_brimstone)
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.brimstone_tex);
 		switch(type) {

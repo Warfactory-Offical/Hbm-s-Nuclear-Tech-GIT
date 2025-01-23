@@ -66,7 +66,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	public static boolean oldClickRight;
 	public static boolean oldClickLeft;
 
-	public ItemGunBase(GunConfiguration config, String s) {
+	public ItemGunBase(final GunConfiguration config, final String s) {
 		mainConfig = config;
 		this.setMaxStackSize(1);
 		this.setTranslationKey(s);
@@ -75,13 +75,13 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		ModItems.ALL_ITEMS.add(this);
 	}
 
-	public ItemGunBase(GunConfiguration config, GunConfiguration alt, String s) {
+	public ItemGunBase(final GunConfiguration config, final GunConfiguration alt, final String s) {
 		this(config, s);
 		altConfig = alt;
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected) {
 		EnumHand hand = null;
 		if(entity instanceof EntityPlayer) {
 			if(((EntityPlayer) entity).getHeldItem(EnumHand.MAIN_HAND) == stack) {
@@ -100,17 +100,17 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
 		return oldStack.getItem() != newStack.getItem();
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected void updateClient(ItemStack stack, World world, EntityPlayer entity, int slot, EnumHand hand) {
+	protected void updateClient(final ItemStack stack, final World world, final EntityPlayer entity, final int slot, final EnumHand hand) {
 
-		boolean clickLeft = Mouse.isButtonDown(0);
-		boolean clickRight = Mouse.isButtonDown(1);
-		boolean left = m1;
-		boolean right = m2;
+		final boolean clickLeft = Mouse.isButtonDown(0);
+		final boolean clickRight = Mouse.isButtonDown(1);
+		final boolean left = m1;
+		final boolean right = m2;
 		
 		if(hand != null) {
 			if(left && right) {
@@ -145,7 +145,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		oldClickRight = m2;
 	}
 
-	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand hand) {
+	protected void updateServer(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand hand) {
 		if(getDelay(stack) > 0 && hand != null)
 			setDelay(stack, getDelay(stack) - 1);
 		
@@ -169,7 +169,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	}
 
 	// tries to shoot, bullet checks are done here
-	protected boolean tryShoot(ItemStack stack, World world, EntityPlayer player, boolean main) {
+	protected boolean tryShoot(final ItemStack stack, final World world, final EntityPlayer player, final boolean main) {
 
 		if(main && getDelay(stack) == 0 && !getIsReloading(stack) && getItemWear(stack) < mainConfig.durability) {
 
@@ -194,7 +194,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		return false;
 	}
 
-	public boolean hasAmmo(ItemStack stack, EntityPlayer player, boolean main) {
+	public boolean hasAmmo(final ItemStack stack, final EntityPlayer player, final boolean main) {
 		
 		if(mainConfig.reloadType == GunConfiguration.RELOAD_NONE || !main) {
 			return getBeltSize(player, getBeltType(player, stack, main)) > 0;
@@ -206,7 +206,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	
 	// called every time the gun shoots, overridden to change bullet
 	// entity/special additions
-	private void fire(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	private void fire(final ItemStack stack, final World world, final EntityPlayer player, final EnumHand hand) {
 		BulletConfiguration config = null;
 		
 		if(mainConfig.reloadType == GunConfiguration.RELOAD_NONE) {
@@ -215,7 +215,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 			config = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack)));
 		}
 		
-		int bullets = getBullets(world, player, hand, config);
+		final int bullets = getBullets(world, player, hand, config);
 		
 		for(int k = 0; k < mainConfig.roundsPerCycle; k++) {
 			
@@ -229,21 +229,21 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 			useUpAmmo(player, stack, true);
 			player.inventoryContainer.detectAndSendChanges();
 			
-			int wear = (int) Math.ceil(config.wear / (1F + EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, stack)));
+			final int wear = (int) Math.ceil(config.wear / (1F + EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, stack)));
 			setItemWear(stack, getItemWear(stack) + wear);
 		}
 		
 		world.playSound(null, player.posX, player.posY, player.posZ, mainConfig.firingSound, SoundCategory.PLAYERS, 1.0F, mainConfig.firingPitch);
 
 		if(player.getDisplayName().equals("Vic4Games")) {
-			NBTTagCompound nbt = new NBTTagCompound();
+			final NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setString("type", "justTilt");
 			nbt.setInteger("time", mainConfig.rateOfFire + 1);
 			PacketDispatcher.wrapper.sendTo(new AuxParticlePacketNT(nbt, player.posX, player.posY, player.posZ), (EntityPlayerMP) player);
 		}
 	}
 	
-	protected int getBullets(World world, EntityPlayer player, EnumHand hand, BulletConfiguration config){
+	protected int getBullets(final World world, final EntityPlayer player, final EnumHand hand, final BulletConfiguration config){
 		int bullets = config.bulletsMin;
 		if(config.bulletsMax > config.bulletsMin)
 			bullets += world.rand.nextInt(config.bulletsMax - config.bulletsMin);
@@ -252,11 +252,11 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 
 	// unlike fire(), being called does not automatically imply success, some
 	// things may still have to be handled before spawning the projectile
-	protected void altFire(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	protected void altFire(final ItemStack stack, final World world, final EntityPlayer player, final EnumHand hand) {
 		if(altConfig == null)
 			return;
 
-		BulletConfiguration config = getBeltCfg(player, stack, false);
+		final BulletConfiguration config = getBeltCfg(player, stack, false);
 		
 		int bullets = config.bulletsMin;
 		
@@ -280,12 +280,12 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		world.playSound(null, player.posX, player.posY, player.posZ, altConfig.firingSound, SoundCategory.PLAYERS, 1.0F, altConfig.firingPitch);
 	}
 
-	protected EntityBulletBase getBulletEntity(World world, EntityPlayer player, ItemStack stack, int config, EnumHand hand){
-		EntityBulletBase bullet = new EntityBulletBase(world, config, player, hand);
+	protected EntityBulletBase getBulletEntity(final World world, final EntityPlayer player, final ItemStack stack, final int config, final EnumHand hand){
+		final EntityBulletBase bullet = new EntityBulletBase(world, config, player, hand);
 		return bullet;
 	}
 	
-	protected void spawnProjectile(World world, EntityPlayer player, ItemStack stack, int config, EnumHand hand) {
+	protected void spawnProjectile(final World world, final EntityPlayer player, final ItemStack stack, final int config, final EnumHand hand) {
 		world.spawnEntity(getBulletEntity(world, player, stack, config, hand));
 		
 		if(this.mainConfig.animations.containsKey(AnimType.CYCLE) && player instanceof EntityPlayerMP)
@@ -294,7 +294,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	}
 	
 	// called on click (server side, called by mouse packet)
-	public void startAction(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void startAction(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 		if(mainConfig.firingMode == GunConfiguration.FIRE_MANUAL && getIsMouseDown(stack) && tryShoot(stack, world, player, main)) {
 			fire(stack, world, player, hand);
 			setDelay(stack, mainConfig.rateOfFire);
@@ -309,22 +309,22 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	}
 
 	// called on click (client side, called by update cylce)
-	public void startActionClient(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void startActionClient(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 	}
 
 	// called on click release (server side, called by mouse packet) for release
 	// actions like charged shots
-	public void endAction(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void endAction(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 	}
 
 	// called on click release (client side, called by update cylce)
-	public void endActionClient(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
+	public void endActionClient(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
 	}
 
 	// martin 2 reload algorithm
 	// now with less WET and more DRY
 	// compact, readable and most importantly, FUNCTIONAL
-	protected void reload2(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	protected void reload2(final ItemStack stack, final World world, final EntityPlayer player, final EnumHand hand) {
 
 		if(getMag(stack) >= mainConfig.ammoCap) {
 			setIsReloading(stack, false);
@@ -343,8 +343,8 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 				count = mainConfig.ammoCap - getMag(stack);
 			}	
 
-			BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack)));
-			Item ammo = cfg.ammo;
+			final BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack)));
+			final Item ammo = cfg.ammo;
 
 			int loadCount = 0;
 			
@@ -383,11 +383,11 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		}
 	}
 	
-	public void onAmmoLoad(World world, EntityPlayer player, ItemStack stack, int loadCount, EnumHand hand){
+	public void onAmmoLoad(final World world, final EntityPlayer player, final ItemStack stack, final int loadCount, final EnumHand hand){
 	}
 
 	// initiates a reload
-	public void startReloadAction(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public void startReloadAction(final ItemStack stack, final World world, final EntityPlayer player, final EnumHand hand) {
 
 		if(player.isSneaking() && mainConfig.allowsInfinity && EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0) {
 			
@@ -415,13 +415,13 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		resetReloadCycle(stack);
 	}
 
-	public boolean canReload(ItemStack stack, World world, EntityPlayer player) {
+	public boolean canReload(final ItemStack stack, final World world, final EntityPlayer player) {
 
 		if(getMag(stack) == 0) {
 
-			for(Integer config : mainConfig.config) {
+			for(final Integer config : mainConfig.config) {
 
-				BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
+				final BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
 
 				if(Library.hasInventoryItem(player.inventory, cfg.ammo)) {
 					return true;
@@ -430,9 +430,8 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 
 		} else {
 
-			Item ammo = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack))).ammo;
-			if(Library.hasInventoryItem(player.inventory, ammo))
-				return true;
+			final Item ammo = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack))).ammo;
+            return Library.hasInventoryItem(player.inventory, ammo);
 		}
 
 		return false;
@@ -440,11 +439,11 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 
 	// searches the player's inv for next fitting ammo type and changes the
 	// gun's mag
-	protected void resetAmmoType(ItemStack stack, World world, EntityPlayer player) {
+	protected void resetAmmoType(final ItemStack stack, final World world, final EntityPlayer player) {
 
-		for(Integer config : mainConfig.config) {
+		for(final Integer config : mainConfig.config) {
 
-			BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
+			final BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
 
 			if(Library.hasInventoryItem(player.inventory, cfg.ammo)) {
 				setMagType(stack, mainConfig.config.indexOf(config));
@@ -453,8 +452,8 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		}
 	}
 
-	public static String getColor(int a, int b){
-		float fraction = 100F * a/b;
+	public static String getColor(final int a, final int b){
+		final float fraction = 100F * a/b;
 		if(fraction > 75)
 			return "§a";
 		if(fraction > 25)
@@ -464,11 +463,11 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 
 	// item mouseover text
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-		Item ammo = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack))).ammo;
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+		final Item ammo = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack))).ammo;
 
 		if(mainConfig.ammoCap > 0){
-			int mag = getMag(stack);
+			final int mag = getMag(stack);
 			list.add("Ammo: "+ getColor(mag, mainConfig.ammoCap) + mag + " §2/ " + mainConfig.ammoCap);
 		}
 		else{
@@ -492,7 +491,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 
 		if(!mainConfig.comment.isEmpty()) {
 			list.add("");
-			for(String s : mainConfig.comment)
+			for(final String s : mainConfig.comment)
 				list.add("§6"+TextFormatting.ITALIC + s);
 		}
 
@@ -505,16 +504,15 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		}
 	}
 
-	public static Item getBeltType(EntityPlayer player, ItemStack stack, boolean main) {
-		if(!(stack.getItem() instanceof ItemGunBase))
+	public static Item getBeltType(final EntityPlayer player, final ItemStack stack, final boolean main) {
+		if(!(stack.getItem() instanceof ItemGunBase gun))
 			return null;
-		ItemGunBase gun = (ItemGunBase)stack.getItem();
-		GunConfiguration guncfg = main ? gun.mainConfig : (gun.altConfig != null ? gun.altConfig : gun.mainConfig);
+        final GunConfiguration guncfg = main ? gun.mainConfig : (gun.altConfig != null ? gun.altConfig : gun.mainConfig);
 		Item ammo = BulletConfigSyncingUtil.pullConfig(guncfg.config.get(0)).ammo;
 
-		for(Integer config : guncfg.config) {
+		for(final Integer config : guncfg.config) {
 			
-			BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
+			final BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
 			
 			if(Library.hasInventoryItem(player.inventory, cfg.ammo)) {
 				ammo = cfg.ammo;
@@ -525,14 +523,14 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		return ammo;
 	}
 
-	public static BulletConfiguration getBeltCfg(EntityPlayer player, ItemStack stack, boolean main) {
-		ItemGunBase gun = (ItemGunBase)stack.getItem();
-		GunConfiguration guncfg = main ? gun.mainConfig : (gun.altConfig != null ? gun.altConfig : gun.mainConfig);
+	public static BulletConfiguration getBeltCfg(final EntityPlayer player, final ItemStack stack, final boolean main) {
+		final ItemGunBase gun = (ItemGunBase)stack.getItem();
+		final GunConfiguration guncfg = main ? gun.mainConfig : (gun.altConfig != null ? gun.altConfig : gun.mainConfig);
 		getBeltType(player, stack, main);
 
-		for(Integer config : guncfg.config) {
+		for(final Integer config : guncfg.config) {
 			
-			BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
+			final BulletConfiguration cfg = BulletConfigSyncingUtil.pullConfig(config);
 			
 			if(Library.hasInventoryItem(player.inventory, cfg.ammo)) {
 				return cfg;
@@ -543,11 +541,11 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	}
 
 	// returns ammo capacity of belt-weapons for current ammo
-	public static int getBeltSize(EntityPlayer player, Item ammo) {
+	public static int getBeltSize(final EntityPlayer player, final Item ammo) {
 
 		int amount = 0;
 
-		for(ItemStack stack : player.inventory.mainInventory) {
+		for(final ItemStack stack : player.inventory.mainInventory) {
 			if(stack != null && stack.getItem() == ammo)
 				amount += stack.getCount();
 		}
@@ -557,7 +555,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 
 	// reduces ammo count for mag and belt-based weapons, should be called AFTER
 	// firing
-	public void useUpAmmo(EntityPlayer player, ItemStack stack, boolean main) {
+	public void useUpAmmo(final EntityPlayer player, final ItemStack stack, final boolean main) {
 
 		if(!main && altConfig == null)
 			return;
@@ -578,105 +576,105 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onFireClient(ItemStack stack, EntityPlayer player, boolean shouldDoThirdPerson){
+	public void onFireClient(final ItemStack stack, final EntityPlayer player, final boolean shouldDoThirdPerson){
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void playerWorldRender(EntityPlayer player, RenderWorldLastEvent e, EnumHand hand){
+	public void playerWorldRender(final EntityPlayer player, final RenderWorldLastEvent e, final EnumHand hand){
 	}
 
 	/// sets reload cycle to config defult ///
-	public void resetReloadCycle(ItemStack stack) {
+	public void resetReloadCycle(final ItemStack stack) {
 		writeNBT(stack, "reload", getReloadDuration(stack));
 	}
 
-	public int getReloadDuration(ItemStack stack){
+	public int getReloadDuration(final ItemStack stack){
 		return ((ItemGunBase) stack.getItem()).mainConfig.reloadDuration;
 	}
 	
 	/// if reloading routine is active ///
-	public static void setIsReloading(ItemStack stack, boolean b) {
+	public static void setIsReloading(final ItemStack stack, final boolean b) {
 		writeNBT(stack, "isReloading", b ? 1 : 0);
 	}
 
-	public static boolean getIsReloading(ItemStack stack) {
+	public static boolean getIsReloading(final ItemStack stack) {
 		return readNBT(stack, "isReloading") == 1;
 	}
 
 	/// if left mouse button is down ///
-	public static void setIsMouseDown(ItemStack stack, boolean b) {
+	public static void setIsMouseDown(final ItemStack stack, final boolean b) {
 		writeNBT(stack, "isMouseDown", b ? 1 : 0);
 	}
 
-	public static boolean getIsMouseDown(ItemStack stack) {
+	public static boolean getIsMouseDown(final ItemStack stack) {
 		return readNBT(stack, "isMouseDown") == 1;
 	}
 
 	/// if alt mouse button is down ///
-	public static void setIsAltDown(ItemStack stack, boolean b) {
+	public static void setIsAltDown(final ItemStack stack, final boolean b) {
 		writeNBT(stack, "isAltDown", b ? 1 : 0);
 	}
 
-	public static boolean getIsAltDown(ItemStack stack) {
+	public static boolean getIsAltDown(final ItemStack stack) {
 		return readNBT(stack, "isAltDown") == 1;
 	}
 
 	/// RoF cooldown ///
-	public static void setDelay(ItemStack stack, int i) {
+	public static void setDelay(final ItemStack stack, final int i) {
 		writeNBT(stack, "dlay", i);
 	}
 
-	public static int getDelay(ItemStack stack) {
+	public static int getDelay(final ItemStack stack) {
 		return readNBT(stack, "dlay");
 	}
 
 	/// Gun wear ///
-	public static void setItemWear(ItemStack stack, int i) {
+	public static void setItemWear(final ItemStack stack, final int i) {
 		writeNBT(stack, "wear", i);
 	}
 
-	public static int getItemWear(ItemStack stack) {
+	public static int getItemWear(final ItemStack stack) {
 		return readNBT(stack, "wear");
 	}
 
 	/// R/W cycle animation timer ///
-	public static void setCycleAnim(ItemStack stack, int i) {
+	public static void setCycleAnim(final ItemStack stack, final int i) {
 		writeNBT(stack, "cycle", i);
 	}
 
-	public static int getCycleAnim(ItemStack stack) {
+	public static int getCycleAnim(final ItemStack stack) {
 		return readNBT(stack, "cycle");
 	}
 
 	/// R/W reload animation timer ///
-	public static void setReloadCycle(ItemStack stack, int i) {
+	public static void setReloadCycle(final ItemStack stack, final int i) {
 		writeNBT(stack, "reload", i);
 	}
 
-	public static int getReloadCycle(ItemStack stack) {
+	public static int getReloadCycle(final ItemStack stack) {
 		return readNBT(stack, "reload");
 	}
 
 	/// magazine capacity ///
-	public static void setMag(ItemStack stack, int i) {
+	public static void setMag(final ItemStack stack, final int i) {
 		writeNBT(stack, "magazine", i);
 	}
 
-	public static int getMag(ItemStack stack) {
+	public static int getMag(final ItemStack stack) {
 		return readNBT(stack, "magazine");
 	}
 
 	/// magazine type (int specified by index in bullet config list) ///
-	public static void setMagType(ItemStack stack, int i) {
+	public static void setMagType(final ItemStack stack, final int i) {
 		writeNBT(stack, "magazineType", i);
 	}
 
-	public static int getMagType(ItemStack stack) {
+	public static int getMagType(final ItemStack stack) {
 		return readNBT(stack, "magazineType");
 	}
 
 	/// NBT utility ///
-	protected static void writeNBT(ItemStack stack, String key, int value) {
+	protected static void writeNBT(final ItemStack stack, final String key, final int value) {
 
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
@@ -684,7 +682,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 		stack.getTagCompound().setInteger(key, value);
 	}
 
-	public static int readNBT(ItemStack stack, String key) {
+	public static int readNBT(final ItemStack stack, final String key) {
 
 		if(!stack.hasTagCompound())
 			return 0;
@@ -698,9 +696,9 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void startAnim(EntityPlayer player, ItemStack stack, int slot, AnimType type){
-		GunConfiguration config = ((ItemGunBase) stack.getItem()).mainConfig;
-		BusAnimation animation = config.animations.get(type);
+	public void startAnim(final EntityPlayer player, final ItemStack stack, final int slot, final AnimType type){
+		final GunConfiguration config = ((ItemGunBase) stack.getItem()).mainConfig;
+		final BusAnimation animation = config.animations.get(type);
 
 		if(animation != null) {
 			HbmAnimations.hotbar[slot] = new Animation(stack.getItem().getTranslationKey(), System.currentTimeMillis(), animation);
@@ -709,16 +707,16 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHUD(Pre event, ElementType type, EntityPlayer player, ItemStack stack, EnumHand hand) {
-		ItemGunBase gun = ((ItemGunBase) player.getHeldItem(hand).getItem());
-		GunConfiguration gcfg = gun.mainConfig;
+	public void renderHUD(final Pre event, final ElementType type, final EntityPlayer player, final ItemStack stack, final EnumHand hand) {
+		final ItemGunBase gun = ((ItemGunBase) player.getHeldItem(hand).getItem());
+		final GunConfiguration gcfg = gun.mainConfig;
 		if(event.getType() == ElementType.HOTBAR){
-			BulletConfiguration bcfg = BulletConfigSyncingUtil.pullConfig(gun.mainConfig.config.get(ItemGunBase.getMagType(player.getHeldItem(hand))));
+			final BulletConfiguration bcfg = BulletConfigSyncingUtil.pullConfig(gun.mainConfig.config.get(ItemGunBase.getMagType(player.getHeldItem(hand))));
 	
 			Item ammo = bcfg.ammo;
 			int count = ItemGunBase.getMag(player.getHeldItem(hand));
 			int max = gcfg.ammoCap;
-			boolean showammo = gcfg.showAmmo;
+			final boolean showammo = gcfg.showAmmo;
 	
 			if(gcfg.reloadType == GunConfiguration.RELOAD_NONE) {
 				ammo = ItemGunBase.getBeltType(player, player.getHeldItem(hand), true);
@@ -726,12 +724,12 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD {
 				max = -1;
 			}
 	
-			int dura = ItemGunBase.getItemWear(player.getHeldItem(hand)) * 50 / gcfg.durability;
+			final int dura = ItemGunBase.getItemWear(player.getHeldItem(hand)) * 50 / gcfg.durability;
 	
 			RenderScreenOverlay.renderAmmo(event.getResolution(), Minecraft.getMinecraft().ingameGUI, ammo, count, max, dura, hand, showammo);
 	
 			if(gun.altConfig != null && gun.altConfig.reloadType == GunConfiguration.RELOAD_NONE) {
-				Item oldAmmo = ammo;
+				final Item oldAmmo = ammo;
 				ammo = ItemGunBase.getBeltType(player, player.getHeldItem(hand), false);
 	
 				if(ammo != oldAmmo) {

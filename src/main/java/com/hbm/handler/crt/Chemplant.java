@@ -24,25 +24,25 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class Chemplant {
 	
 	private static class ActionAddChemplantRecipe implements IAction{
-		private int index;
-		private String name;
-		private ItemStack[] inputItems;
-		private String[] inputFluids;
-		private Integer[] inputAmounts; 
-		private String[] outputFluids; 
-		private Integer[] outputAmounts; 
-		private ItemStack[] outputItems;
-		private int duration;
+		private final int index;
+		private final String name;
+		private final ItemStack[] inputItems;
+		private final String[] inputFluids;
+		private final Integer[] inputAmounts;
+		private final String[] outputFluids;
+		private final Integer[] outputAmounts;
+		private final ItemStack[] outputItems;
+		private final int duration;
 		public ActionAddChemplantRecipe(
-			int index,
-			String name,
-			IItemStack[] inputItems, 
-			String[] inputFluids, 
-			Integer[] inputAmounts, 
-			IItemStack[] outputItems, 
-			String[] outputFluids, 
-			Integer[] outputAmounts, 
-			int duration){
+                final int index,
+                final String name,
+                final IItemStack[] inputItems,
+                final String[] inputFluids,
+                final Integer[] inputAmounts,
+                final IItemStack[] outputItems,
+                final String[] outputFluids,
+                final Integer[] outputAmounts,
+                final int duration){
 
 			this.index = index;
 			this.name = name;
@@ -72,7 +72,7 @@ public class Chemplant {
 			this.duration = duration;
 		}
 
-		private boolean checkFluidArray(String[] fluids, Integer[] amounts){
+		private boolean checkFluidArray(final String[] fluids, final Integer[] amounts){
 			if(fluids == null || amounts == null){
 				CraftTweakerAPI.logInfo("ERROR Fluid arrays can not be null/empty!");
 				return false;
@@ -91,7 +91,7 @@ public class Chemplant {
 			return true;
 		}
 
-		private boolean checkFluid(String fluid, Integer amount){
+		private boolean checkFluid(final String fluid, final Integer amount){
 			if(fluid == null || fluid.trim().isEmpty()){
 				CraftTweakerAPI.logInfo("ERROR Fluid can not be null/empty!");
 				return false;
@@ -158,19 +158,19 @@ public class Chemplant {
 			);
 		}
 
-		public FluidStack[] convertToFlu(String[] fluids, Integer[] amounts){
+		public FluidStack[] convertToFlu(final String[] fluids, final Integer[] amounts){
 			if(fluids == null || fluids.length == 0 || amounts == null || amounts.length == 0 || fluids.length != amounts.length) return null;
 			
-			FluidStack[] flu = new FluidStack[Math.min(2, fluids.length)];
+			final FluidStack[] flu = new FluidStack[Math.min(2, fluids.length)];
 			for(int i = 0; i < Math.min(2, fluids.length); i++)
 				flu[i] = new FluidStack(FluidRegistry.getFluid(fluids[i]), amounts[i]);
 			return flu;
 		}
 
-		public ComparableStack[] convertToCom(ItemStack[] inputs){
+		public ComparableStack[] convertToCom(final ItemStack[] inputs){
 			if(inputs == null || inputs.length == 0) return null;
 
-			ComparableStack[] compInputs = new ComparableStack[Math.min(4, inputs.length)];
+			final ComparableStack[] compInputs = new ComparableStack[Math.min(4, inputs.length)];
 			for(int i = 0; i < Math.min(4, inputs.length); i++)
 				compInputs[i] = ItemStackUtil.comparableStackFrom(inputs[i]);
 			return compInputs;
@@ -186,14 +186,14 @@ public class Chemplant {
 	}
 
 	@ZenMethod
-	public static void addChemplantRecipe(int index, String name, IItemStack[] inputItems, String[] inputFluids, Integer[] inputAmounts, IItemStack[] outputItems, String[] outputFluids, Integer[] outputAmounts, int duration){
+	public static void addChemplantRecipe(final int index, final String name, final IItemStack[] inputItems, final String[] inputFluids, final Integer[] inputAmounts, final IItemStack[] outputItems, final String[] outputFluids, final Integer[] outputAmounts, final int duration){
 		CraftTweakerAPI.apply(new ActionAddChemplantRecipe(index, name, inputItems, inputFluids, inputAmounts, outputItems, outputFluids, outputAmounts, duration));
 	}
 
 	//
 	private static class ActionRemoveChemplantRecipe implements IAction{
-		private int index;
-		public ActionRemoveChemplantRecipe(int index){
+		private final int index;
+		public ActionRemoveChemplantRecipe(final int index){
 			this.index = index;
 		}
 
@@ -209,7 +209,7 @@ public class Chemplant {
 	}
 
 	@ZenMethod
-	public static void removeChemplantRecipe(int index){
+	public static void removeChemplantRecipe(final int index){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveChemplantRecipe(index));
 	}
 }

@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 
 public class BlockAMSBase extends BlockContainer implements IMultiBlock {
 
-	public BlockAMSBase(Material materialIn, String s) {
+	public BlockAMSBase(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,18 +32,18 @@ public class BlockAMSBase extends BlockContainer implements IMultiBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityAMSBase();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			TileEntityAMSBase entity = (TileEntityAMSBase) world.getTileEntity(pos);
+			final TileEntityAMSBase entity = (TileEntityAMSBase) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_ams_base, world, pos.getX(), pos.getY(), pos.getZ());
@@ -55,34 +55,31 @@ public class BlockAMSBase extends BlockContainer implements IMultiBlock {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
 		if(MultiblockHandler.checkSpace(world, pos, MultiblockHandler.AMSBaseDimension)) {
 			MultiblockHandler.fillUp(world, pos, MultiblockHandler.AMSBaseDimension, ModBlocks.dummy_block_ams_base);
 
 			DummyBlockAMSBase.safeBreak = true;
 			world.setBlockState(pos.add(1, 0, 0), ModBlocks.dummy_port_ams_base.getDefaultState());
-			TileEntity te = world.getTileEntity(pos.add(1, 0, 0));
-			if(te instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te;
-				dummy.target = pos;
+			final TileEntity te = world.getTileEntity(pos.add(1, 0, 0));
+			if(te instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			world.setBlockState(pos.add(0, 0, -1), ModBlocks.dummy_port_ams_base.getDefaultState());
-			TileEntity te2 = world.getTileEntity(pos.add(0, 0, -1));
+			final TileEntity te2 = world.getTileEntity(pos.add(0, 0, -1));
 			if(te instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te2;
+				final TileEntityDummy dummy = (TileEntityDummy)te2;
 				dummy.target = pos;
 			}
 			world.setBlockState(pos.add(-1, 0, 0), ModBlocks.dummy_port_ams_base.getDefaultState());
-			TileEntity te3 = world.getTileEntity(pos.add(-1, 0, 0));
-			if(te3 instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te3;
-				dummy.target = pos;
+			final TileEntity te3 = world.getTileEntity(pos.add(-1, 0, 0));
+			if(te3 instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			world.setBlockState(pos.add(0, 0, 1), ModBlocks.dummy_port_ams_base.getDefaultState());
-			TileEntity te4 = world.getTileEntity(pos.add(0, 0, 1));
-			if(te4 instanceof TileEntityDummy) {
-				TileEntityDummy dummy = (TileEntityDummy)te4;
-				dummy.target = pos;
+			final TileEntity te4 = world.getTileEntity(pos.add(0, 0, 1));
+			if(te4 instanceof TileEntityDummy dummy) {
+                dummy.target = pos;
 			}
 			DummyBlockAMSBase.safeBreak = false;
 			
@@ -91,32 +88,32 @@ public class BlockAMSBase extends BlockContainer implements IMultiBlock {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
+	public boolean isBlockNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state) {
+	public boolean isNormalCube(final IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(final IBlockState state) {
 		return false;
 	}
 

@@ -20,18 +20,18 @@ import net.minecraft.world.World;
 
 public class FurnaceSteel extends BlockDummyable implements ITooltipProvider {
 
-	public FurnaceSteel(Material mat, String s) {
+	public FurnaceSteel(final Material mat, final String s) {
 		super(Material.IRON, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(final World world, final int meta) {
 		if(meta >= 12) return new TileEntityFurnaceSteel();
 		return new TileEntityProxyCombo(true, false, false);
 	}
 	
     @Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 	    return standardOpenBehavior(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
 	}
 
@@ -46,7 +46,7 @@ public class FurnaceSteel extends BlockDummyable implements ITooltipProvider {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		this.addStandardInfo(list);
 		super.addInformation(stack, worldIn, list, flagIn);
 	}

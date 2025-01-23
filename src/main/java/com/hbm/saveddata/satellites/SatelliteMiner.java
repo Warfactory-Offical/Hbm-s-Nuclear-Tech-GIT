@@ -10,11 +10,11 @@ public class SatelliteMiner extends Satellite {
 		this.satIface = Interfaces.NONE;
 	}
 	
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(final NBTTagCompound nbt) {
 		nbt.setLong("lastOp", lastOp);
 	}
 	
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		lastOp = nbt.getLong("lastOp");
 	}
 }

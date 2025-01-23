@@ -1115,7 +1115,7 @@ public class ItemRenderLibrary {
 			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.jetpack_tex);
-				 AnimationWrapper w = new AnimationWrapper(0, ResourceManager.jetpack_activate);
+				 final AnimationWrapper w = new AnimationWrapper(0, ResourceManager.jetpack_activate);
 			     ResourceManager.jetpack.controller.setAnim(w);
 				 ResourceManager.jetpack.renderAnimated(ResourceManager.jetpack_activate.length);
 			}
@@ -1366,14 +1366,14 @@ public class ItemRenderLibrary {
 				bindTexture(ResourceManager.mini_nuke_tex); ResourceManager.rbmk_crane_console.renderPart("MiniNuke");
 				GlStateManager.shadeModel(GL11.GL_FLAT);
 			}});
-		ItemRenderBase rbmkRod = new ItemRenderBase(){
-			public void renderInventory(ItemStack stack){
+		final ItemRenderBase rbmkRod = new ItemRenderBase(){
+			public void renderInventory(final ItemStack stack){
 				GL11.glTranslated(0, -5.5, 0);
 				GL11.glScaled(3.65, 3.65, 3.65);
 			}
-			public void renderCommon(ItemStack stack){
+			public void renderCommon(final ItemStack stack){
 				bindTexture(((RBMKBase)Block.getBlockFromItem(stack.getItem())).columnTexture);
-				Tessellator tes = Tessellator.instance;
+				final Tessellator tes = Tessellator.instance;
 				tes.startDrawing(GL11.GL_TRIANGLES);
 				ResourceManager.rbmk_element.tessellatePartSplit(tes, "Column", 0.5F, 3);
 				tes.draw();
@@ -1382,14 +1382,14 @@ public class ItemRenderLibrary {
 				return true;
 			}
 		};
-		ItemRenderBase rbmkControl = new ItemRenderBase(){
-			public void renderInventory(ItemStack stack){
+		final ItemRenderBase rbmkControl = new ItemRenderBase(){
+			public void renderInventory(final ItemStack stack){
 				GL11.glTranslated(0, -5.5, 0);
 				GL11.glScaled(3.65, 3.65, 3.65);
 			}
-			public void renderCommon(ItemStack stack){
+			public void renderCommon(final ItemStack stack){
 				bindTexture(((RBMKBase)Block.getBlockFromItem(stack.getItem())).columnTexture);
-				Tessellator tes = Tessellator.instance;
+				final Tessellator tes = Tessellator.instance;
 				tes.startDrawing(GL11.GL_TRIANGLES);
 				ResourceManager.rbmk_rods.tessellatePartSplit(tes, "Column", 0.5F, 3);
 				tes.addTranslation(0, 3, 0);
@@ -1401,14 +1401,14 @@ public class ItemRenderLibrary {
 				return true;
 			}
 		};
-		ItemRenderBase rbmkPassive = new ItemRenderBase(){
-			public void renderInventory(ItemStack stack){
+		final ItemRenderBase rbmkPassive = new ItemRenderBase(){
+			public void renderInventory(final ItemStack stack){
 				GL11.glTranslated(0, -5.5, 0);
 				GL11.glScaled(3.65, 3.65, 3.65);
 			}
-			public void renderCommon(ItemStack stack){
+			public void renderCommon(final ItemStack stack){
 				bindTexture(((RBMKBase)Block.getBlockFromItem(stack.getItem())).columnTexture);
-				Tessellator tes = Tessellator.instance;
+				final Tessellator tes = Tessellator.instance;
 				tes.startDrawing(GL11.GL_TRIANGLES);
 				ResourceManager.rbmk_reflector.tessellatePartSplit(tes, "Column", 0.5F, 3);
 				tes.draw();
@@ -1729,7 +1729,7 @@ public class ItemRenderLibrary {
 			public void renderCommon() {
 				bindTexture(ResourceManager.transition_seal_tex);
 				GlStateManager.shadeModel(GL11.GL_SMOOTH);
-				AnimationWrapper w = new AnimationWrapper(System.currentTimeMillis(), ResourceManager.transition_seal_anim).onEnd(new EndResult(EndType.STAY, null));
+				final AnimationWrapper w = new AnimationWrapper(System.currentTimeMillis(), ResourceManager.transition_seal_anim).onEnd(new EndResult(EndType.STAY, null));
 				ResourceManager.transition_seal.controller.setAnim(w);
 				ResourceManager.transition_seal.renderAnimated(System.currentTimeMillis());
 				GlStateManager.shadeModel(GL11.GL_FLAT);
@@ -1749,7 +1749,7 @@ public class ItemRenderLibrary {
 		});
 	}
 
-	private static void bindTexture(ResourceLocation res) {
+	private static void bindTexture(final ResourceLocation res) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(res);
 	}
 }

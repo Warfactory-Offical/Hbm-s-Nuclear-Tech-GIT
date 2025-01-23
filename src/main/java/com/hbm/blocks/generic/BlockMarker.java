@@ -34,7 +34,7 @@ public class BlockMarker extends BlockContainer {
 	protected static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.4D, 0.0D, 0.4D, 0.6D, 0.6D, 0.6D);
 	public static final PropertyDirection FACING = BlockTorch.FACING;
 	
-	public BlockMarker(Material materialIn, String s) {
+	public BlockMarker(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -43,12 +43,12 @@ public class BlockMarker extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityStructureMarker();
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			int i = ((TileEntityStructureMarker)world.getTileEntity(pos)).type + 1;
@@ -83,47 +83,47 @@ public class BlockMarker extends BlockContainer {
 	}
 	
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(final IBlockAccess worldIn, final IBlockState state, final BlockPos pos, final EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		return STANDING_AABB;
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos) {
 		return NULL_AABB;
 	}
 	
-	public boolean isOpaqueCube(IBlockState state)
+	public boolean isOpaqueCube(final IBlockState state)
     {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(final IBlockState state)
     {
         return false;
     }
     
-    private boolean canPlaceOn(World worldIn, BlockPos pos)
+    private boolean canPlaceOn(final World worldIn, final BlockPos pos)
     {
-        IBlockState state = worldIn.getBlockState(pos);
+        final IBlockState state = worldIn.getBlockState(pos);
         return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
     }
 
     /**
      * Checks if this block can be placed exactly at the given position.
      */
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    public boolean canPlaceBlockAt(final World worldIn, final BlockPos pos)
     {
-        for (EnumFacing enumfacing : FACING.getAllowedValues())
+        for (final EnumFacing enumfacing : FACING.getAllowedValues())
         {
             if (this.canPlaceAt(worldIn, pos, enumfacing))
             {
@@ -134,7 +134,7 @@ public class BlockMarker extends BlockContainer {
         return false;
     }
 
-    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
+    private boolean canPlaceAt(final World worldIn, final BlockPos pos, final EnumFacing facing)
     {
         return this.canPlaceOn(worldIn, pos.down());
     }
@@ -143,7 +143,7 @@ public class BlockMarker extends BlockContainer {
      * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
      * IBlockstate
      */
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(final World worldIn, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer)
     {
     	return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
@@ -151,7 +151,7 @@ public class BlockMarker extends BlockContainer {
     /**
      * Called after the block is set in the Chunk data, but before the Tile Entity is set
      */
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state)
     {
         this.checkForDrop(worldIn, pos, state);
     }
@@ -161,12 +161,12 @@ public class BlockMarker extends BlockContainer {
      * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
      * block, etc.
      */
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos)
     {
         this.onNeighborChangeInternal(worldIn, pos, state);
     }
 
-    protected boolean onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state)
+    protected boolean onNeighborChangeInternal(final World worldIn, final BlockPos pos, final IBlockState state)
     {
         if (!this.checkForDrop(worldIn, pos, state))
         {
@@ -174,10 +174,10 @@ public class BlockMarker extends BlockContainer {
         }
         else
         {
-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-            EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
-            EnumFacing enumfacing1 = enumfacing.getOpposite();
-            BlockPos blockpos = pos.offset(enumfacing1);
+            final EnumFacing enumfacing = state.getValue(FACING);
+            final EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
+            final EnumFacing enumfacing1 = enumfacing.getOpposite();
+            final BlockPos blockpos = pos.offset(enumfacing1);
             boolean flag = false;
 
             if (enumfacing$axis.isHorizontal() && worldIn.getBlockState(blockpos).getBlockFaceShape(worldIn, blockpos, enumfacing) != BlockFaceShape.SOLID)
@@ -202,9 +202,9 @@ public class BlockMarker extends BlockContainer {
         }
     }
 
-    protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
+    protected boolean checkForDrop(final World worldIn, final BlockPos pos, final IBlockState state)
     {
-        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing)state.getValue(FACING)))
+        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, state.getValue(FACING)))
         {
             return true;
         }
@@ -220,7 +220,7 @@ public class BlockMarker extends BlockContainer {
         }
     }
 
-    public IBlockState getStateFromMeta(int meta)
+    public IBlockState getStateFromMeta(final int meta)
     {
         IBlockState iblockstate = this.getDefaultState();
 
@@ -246,11 +246,11 @@ public class BlockMarker extends BlockContainer {
         return iblockstate;
     }
 
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(final IBlockState state)
     {
         int i = 0;
 
-        switch ((EnumFacing)state.getValue(FACING))
+        switch (state.getValue(FACING))
         {
             case EAST:
                 i = i | 1;
@@ -273,19 +273,19 @@ public class BlockMarker extends BlockContainer {
         return i;
     }
 
-    public IBlockState withRotation(IBlockState state, Rotation rot)
+    public IBlockState withRotation(final IBlockState state, final Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+    public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
 

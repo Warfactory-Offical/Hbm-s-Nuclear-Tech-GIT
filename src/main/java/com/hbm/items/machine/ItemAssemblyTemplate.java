@@ -41,7 +41,7 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 	//public static List<AssemblerRecipe> recipesBackup = null;
 	
 
-	public ItemAssemblyTemplate(String s) {
+	public ItemAssemblyTemplate(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setHasSubtypes(true);
@@ -53,11 +53,11 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(ItemStack stack) {
-		String s = ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
-		int damage = getTagWithRecipeNumber(stack).getInteger("type");
-		ItemStack out = damage < AssemblerRecipes.recipeList.size() ? AssemblerRecipes.recipeList.get(damage).toStack() : ItemStack.EMPTY;
-		String s1 = ("" + I18n.format((out != ItemStack.EMPTY ? out.getTranslationKey() : "") + ".name")).trim();
+	public String getItemStackDisplayName(final ItemStack stack) {
+		String s = (I18n.format(this.getTranslationKey() + ".name")).trim();
+		final int damage = getTagWithRecipeNumber(stack).getInteger("type");
+		final ItemStack out = damage < AssemblerRecipes.recipeList.size() ? AssemblerRecipes.recipeList.get(damage).toStack() : ItemStack.EMPTY;
+		final String s1 = (I18n.format((out != ItemStack.EMPTY ? out.getTranslationKey() : "") + ".name")).trim();
 
 		if (s1 != null) {
 			s = s + " " + s1;
@@ -67,78 +67,77 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> list) {
 		if (tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
-			int count = AssemblerRecipes.recipeList.size();
+			final int count = AssemblerRecipes.recipeList.size();
 
 	    	for(int i = 0; i < count; i++) {
-				NBTTagCompound tag = new NBTTagCompound();
+				final NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("type", i);
-				ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
+				final ItemStack stack = ItemStackUtil.itemStackFrom(this, 1, 0);
 				stack.setTagCompound(tag);
 				list.add(stack);
 			}
 		}
 	}
 	
-	public static ItemStack getTemplate(int id){
-		NBTTagCompound tag = new NBTTagCompound();
+	public static ItemStack getTemplate(final int id){
+		final NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("type", id);
-		ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, 0);
+		final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.assembly_template, 1, 0);
 		stack.setTagCompound(tag);
 		return stack;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if (!(stack.getItem() instanceof ItemAssemblyTemplate))
 			return;
 		
 		list.add("§6" + I18nUtil.resolveKey("info.templatefolder"));
 		list.add("");
 
-		int i = getTagWithRecipeNumber(stack).getInteger("type");
+		final int i = getTagWithRecipeNumber(stack).getInteger("type");
 		
 		if(i < 0 || i >= AssemblerRecipes.recipeList.size()) {
     		list.add("I AM ERROR");
     		return;
     	}
 
-    	ComparableStack out = AssemblerRecipes.recipeList.get(i);
+    	final ComparableStack out = AssemblerRecipes.recipeList.get(i);
 
     	if(out == null) {
     		list.add("I AM ERROR");
     		return;
     	}
 
-    	Object[] in = AssemblerRecipes.recipes.get(out);
+    	final Object[] in = AssemblerRecipes.recipes.get(out);
 
     	if(in == null) {
     		list.add("I AM ERROR");
     		return;
     	}
 
-    	ItemStack output = out.toStack();
+    	final ItemStack output = out.toStack();
 
     	list.add("§l" + I18nUtil.resolveKey("info.template_out"));
 		list.add(" §a"+ output.getCount() + "x " + output.getDisplayName());
 		list.add("§l" + I18nUtil.resolveKey("info.template_in_p"));
 
-		for(Object o : in) {
+		for(final Object o : in) {
 
 			if(o instanceof ComparableStack)  {
-				ItemStack input = ((ComparableStack)o).toStack();
+				final ItemStack input = ((ComparableStack)o).toStack();
 	    		list.add(" §c"+ input.getCount() + "x " + input.getDisplayName());
 
-			} else if(o instanceof OreDictStack)  {
-				OreDictStack input = (OreDictStack) o;
-				NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+			} else if(o instanceof OreDictStack input)  {
+                final NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
 
 				if(ores.size() > 0) {
-					ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
+					final ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
 		    		list.add(" §c"+ input.count() + "x " + inStack.getDisplayName());
 				} else {
-		    		list.add("I AM ERROR - No OrdDict match found for "+o.toString());
+		    		list.add("I AM ERROR - No OrdDict match found for "+ o);
 				}
 			}
 		}
@@ -147,17 +146,17 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
     	list.add(" §3" + Math.floor((float)(getProcessTime(stack)) / 20 * 100) / 100 + " " + I18nUtil.resolveKey("info.template_seconds"));
 	}
 
-	public static int getProcessTime(ItemStack stack) {
+	public static int getProcessTime(final ItemStack stack) {
 		if (!(stack.getItem() instanceof ItemAssemblyTemplate))
 			return 100;
 		
-		int i = getTagWithRecipeNumber(stack).getInteger("type");
+		final int i = getTagWithRecipeNumber(stack).getInteger("type");
 
     	if(i < 0 || i >= AssemblerRecipes.recipeList.size())
     		return 100;
 
-    	ComparableStack out = AssemblerRecipes.recipeList.get(i);
-    	Integer time = AssemblerRecipes.time.get(out);
+    	final ComparableStack out = AssemblerRecipes.recipeList.get(i);
+    	final Integer time = AssemblerRecipes.time.get(out);
 
     	if(time != null)
     		return time;
@@ -171,11 +170,11 @@ public class ItemAssemblyTemplate extends Item implements IHasCustomModel {
 		return location;
 	}
 	
-	public static int getRecipeIndex(ItemStack stack){
+	public static int getRecipeIndex(final ItemStack stack){
 		return getTagWithRecipeNumber(stack).getInteger("type");
 	}
 
-	public static NBTTagCompound getTagWithRecipeNumber(@Nonnull ItemStack stack){
+	public static NBTTagCompound getTagWithRecipeNumber(@Nonnull final ItemStack stack){
 		if(!stack.hasTagCompound()){
 			stack.setTagCompound(new NBTTagCompound());
 			stack.getTagCompound().setInteger("type", 0);

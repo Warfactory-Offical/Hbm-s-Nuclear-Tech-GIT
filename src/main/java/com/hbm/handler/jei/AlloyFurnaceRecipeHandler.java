@@ -33,7 +33,7 @@ public class AlloyFurnaceRecipeHandler implements IRecipeCategory<AlloyFurnaceRe
 	
 	protected final List<ItemStack> alloyFuels;
 	
-	public AlloyFurnaceRecipeHandler(IGuiHelper help) {
+	public AlloyFurnaceRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 16, 150, 56);
 		
 		powerStatic = help.createDrawable(gui_rl, 176, 0, 14, 14);
@@ -69,15 +69,15 @@ public class AlloyFurnaceRecipeHandler implements IRecipeCategory<AlloyFurnaceRe
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		powerAnimated.draw(minecraft, 56, 21);
 		progressAnimated.draw(minecraft, 95, 19);
 		fuelAnimated.draw(minecraft, 38, 1);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, AlloyFurnaceRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final AlloyFurnaceRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 73, 1);
 		guiItemStacks.init(1, true, 73, 37);

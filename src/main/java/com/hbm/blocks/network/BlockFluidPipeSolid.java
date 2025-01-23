@@ -38,7 +38,7 @@ public class BlockFluidPipeSolid extends BlockContainer implements IToolable, IL
 	public static final PropertyBool EXTRACTS = PropertyBool.create("extracts");
 	
 	
-	public BlockFluidPipeSolid(Material materialIn, String s) {
+	public BlockFluidPipeSolid(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -48,7 +48,7 @@ public class BlockFluidPipeSolid extends BlockContainer implements IToolable, IL
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		if(meta > 0){
 			return new TileEntityFFFluidSuccMk2Solid();
 		} else {
@@ -57,37 +57,37 @@ public class BlockFluidPipeSolid extends BlockContainer implements IToolable, IL
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		tooltip.add(I18nUtil.resolveKey("desc.extraction"));
 	}
 	
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		TileEntity te = world.getTileEntity(pos);
+	public void onNeighborChange(final IBlockAccess world, final BlockPos pos, final BlockPos neighbor) {
+		final TileEntity te = world.getTileEntity(pos);
 		if(te instanceof TileEntityFFDuctBaseMk2){
 			((TileEntityFFDuctBaseMk2)te).onNeighborChange();
 		}
 	}
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		TileEntity te = worldIn.getTileEntity(pos);
+	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+		final TileEntity te = worldIn.getTileEntity(pos);
 		if(te instanceof TileEntityFFDuctBaseMk2){
 			((TileEntityFFDuctBaseMk2)te).onNeighborChange();
 		}
 	}
 	
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public IBlockState getActualState(final IBlockState state, final IBlockAccess worldIn, final BlockPos pos) {
 		//getActualState appears to be called when the neighbor changes on client, so I can use this to update instead of a buggy packet.
-		TileEntity te = worldIn.getTileEntity(pos);
+		final TileEntity te = worldIn.getTileEntity(pos);
 		if(te instanceof TileEntityFFDuctBaseMk2)
 			((TileEntityFFDuctBaseMk2)te).onNeighborChange();
 		return state;
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity te = worldIn.getTileEntity(pos);
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+		final TileEntity te = worldIn.getTileEntity(pos);
 		
 		if(te instanceof TileEntityFFDuctBaseMk2){
 			TileEntityFFDuctBaseMk2.breakBlock(worldIn, pos);
@@ -96,38 +96,38 @@ public class BlockFluidPipeSolid extends BlockContainer implements IToolable, IL
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{ EXTRACTS });
+		return new BlockStateContainer(this, EXTRACTS);
 	}
 	
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState state) {
 		return state.getValue(EXTRACTS) ? 1 : 0;
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		return meta > 0 ? this.getDefaultState().withProperty(EXTRACTS, true) : this.getDefaultState().withProperty(EXTRACTS, false);
 	}
 
 	@Override
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool){
+	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool){
 		if(tool == ToolType.SCREWDRIVER){
 			Fluid type = null;
-			BlockPos pos = new BlockPos(x, y, z);
-			IBlockState state = world.getBlockState(pos);
+			final BlockPos pos = new BlockPos(x, y, z);
+			final IBlockState state = world.getBlockState(pos);
 			TileEntity te = world.getTileEntity(pos);
 			if(te instanceof TileEntityFFDuctBaseMk2){
 				type = ((TileEntityFFDuctBaseMk2) te).getType();
 			}
 			
-			boolean extracts = state.getValue(BlockFluidPipeSolid.EXTRACTS);
+			final boolean extracts = state.getValue(BlockFluidPipeSolid.EXTRACTS);
 			world.setBlockState(pos, this.getDefaultState().withProperty(BlockFluidPipeSolid.EXTRACTS, !extracts));
 			
 			te = world.getTileEntity(pos);
@@ -142,20 +142,20 @@ public class BlockFluidPipeSolid extends BlockContainer implements IToolable, IL
 	}
 
 	@Override
-	public void printHook(Pre event, World world, int x, int y, int z) {
+	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
 			
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
 		if(!(te instanceof TileEntityFFDuctBaseMk2))
 			return;
 		
-		Fluid ductFluid = ((TileEntityFFDuctBaseMk2) te).getType();
+		final Fluid ductFluid = ((TileEntityFFDuctBaseMk2) te).getType();
 		
-		List<String> text = new ArrayList();
+		final List<String> text = new ArrayList();
 		if(ductFluid == null){
 			text.add("§7" + I18nUtil.resolveKey("desc.none"));
 		} else{
-			int color = ModForgeFluids.getFluidColor(ductFluid);
+			final int color = ModForgeFluids.getFluidColor(ductFluid);
 			text.add("&[" + color + "&]" +I18nUtil.resolveKey(ductFluid.getUnlocalizedName()));
 		}
 		

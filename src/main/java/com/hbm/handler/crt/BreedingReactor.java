@@ -22,10 +22,10 @@ import net.minecraft.item.ItemStack;
 public class BreedingReactor {
 	
 	private static class ActionAddRecipe implements IAction{
-		private ItemStack input;
-		private ItemStack output;
+		private final ItemStack input;
+		private final ItemStack output;
 		private int heatLvl = 0;
-		public ActionAddRecipe(IItemStack input, IItemStack output, int heatLvl){
+		public ActionAddRecipe(final IItemStack input, final IItemStack output, final int heatLvl){
 			this.input = CraftTweakerMC.getItemStack(input);
 			this.output = CraftTweakerMC.getItemStack(output);
 			this.heatLvl = heatLvl;
@@ -53,16 +53,16 @@ public class BreedingReactor {
 	}
 
 	@ZenMethod
-	public static void addRecipe(IItemStack input, IItemStack output, int heatLvl){
+	public static void addRecipe(final IItemStack input, final IItemStack output, final int heatLvl){
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(input, output, heatLvl));
 	}
 
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private ItemStack input;
+		private final ItemStack input;
 
-		public ActionRemoveRecipe(IItemStack input){
+		public ActionRemoveRecipe(final IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);
 		}
 		@Override
@@ -80,18 +80,18 @@ public class BreedingReactor {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack input){
+	public static void removeRecipe(final IItemStack input){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(input));
 	}
 
 	
 
 	public static class ActionAddFuel implements IAction{
-		private ItemStack input;
+		private final ItemStack input;
 		private int heatLvl = 0;
 		private int usesInNuclearFurnace = 0;
 
-		public ActionAddFuel(IItemStack input, int heatLvl, int usesInNuclearFurnace){
+		public ActionAddFuel(final IItemStack input, final int heatLvl, final int usesInNuclearFurnace){
 			this.input = CraftTweakerMC.getItemStack(input);
 			this.heatLvl = heatLvl;
 			this.usesInNuclearFurnace = usesInNuclearFurnace;
@@ -119,16 +119,16 @@ public class BreedingReactor {
 	}
 
 	@ZenMethod
-	public static void addFuel(IItemStack input, int heatLvl, int usesInNuclearFurnace){
+	public static void addFuel(final IItemStack input, final int heatLvl, final int usesInNuclearFurnace){
 		NTMCraftTweaker.postInitActions.add(new ActionAddFuel(input, heatLvl, usesInNuclearFurnace));
 	}
 
 	
 
 	public static class ActionRemoveFuel implements IAction{
-		private ItemStack input;
+		private final ItemStack input;
 
-		public ActionRemoveFuel(IItemStack input){
+		public ActionRemoveFuel(final IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);
 		}
 		@Override
@@ -146,7 +146,7 @@ public class BreedingReactor {
 	}
 
 	@ZenMethod
-	public static void removeFuel(IItemStack input){
+	public static void removeFuel(final IItemStack input){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveFuel(input));
 	}
 	//TEMPLATE

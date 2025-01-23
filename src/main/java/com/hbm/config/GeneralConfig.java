@@ -83,7 +83,7 @@ public class GeneralConfig {
 	public static boolean enableLBSMSafeMEDrives = false;
 	public static boolean enableLBSMSafeCrates = false;
 
-	public static void loadFromConfig(Configuration config){
+	public static void loadFromConfig(final Configuration config){
 		final String CATEGORY_GENERAL = "01_general";
 		enableDebugMode = config.get(CATEGORY_GENERAL, "1.00_enableDebugMode", false).getBoolean(false);
 		enableSkybox = config.get(CATEGORY_GENERAL, "1.00_enableSkybox", true).getBoolean(true);
@@ -108,7 +108,7 @@ public class GeneralConfig {
 		enableGuns = config.get(CATEGORY_GENERAL, "1.20_enableGuns", true).getBoolean(true);
 		enableVirus = config.get(CATEGORY_GENERAL, "1.21_enableVirus", false).getBoolean(false);
         enableCrosshairs = config.get(CATEGORY_GENERAL, "1.22_enableCrosshairs", true).getBoolean(true);
-		Property shaders = config.get(CATEGORY_GENERAL, "1.23_enableShaders", false);
+		final Property shaders = config.get(CATEGORY_GENERAL, "1.23_enableShaders", false);
 		shaders.setComment("Experimental, don't use");
 		useShaders = shaders.getBoolean(false);
 		if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
@@ -121,7 +121,7 @@ public class GeneralConfig {
 			}
 		useShaders = false;
 		useShaders2 = config.get(CATEGORY_GENERAL, "1.23_enableShaders2", false).getBoolean(false);
-		Property ssg_anim = config.get(CATEGORY_GENERAL, "1.24_ssgAnimType", true);
+		final Property ssg_anim = config.get(CATEGORY_GENERAL, "1.24_ssgAnimType", true);
 		ssg_anim.setComment("Which supershotgun reload animation to use. True is Drillgon's animation, false is Bob's animation");
 		ssgAnim = ssg_anim.getBoolean();
 		instancedParticles = CommonConfig.createConfigBool(config, CATEGORY_GENERAL, "1.25_instancedParticles", "Enables instanced particle rendering for some particles, which makes them render several times faster. May not work on all computers, and will break with shaders.", true);
@@ -153,7 +153,7 @@ public class GeneralConfig {
 		bloom = config.get(CATEGORY_GENERAL, "1.30_enableBloom", true).getBoolean(true);
 		heatDistortion = config.get(CATEGORY_GENERAL, "1.30_enableHeatDistortion", true).getBoolean(true);
 		
-		Property adv_rads = config.get(CATEGORY_GENERAL, "1.31_enableAdvancedRadiation", true);
+		final Property adv_rads = config.get(CATEGORY_GENERAL, "1.31_enableAdvancedRadiation", true);
 		adv_rads.setComment("Enables a 3 dimensional version of the radiation system that also allows some blocks (like concrete bricks) to stop it from spreading");
 		advancedRadiation = adv_rads.getBoolean(true);
 		

@@ -17,12 +17,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderCore extends TileEntitySpecialRenderer<TileEntityCore> {
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityCore te) {
+	public boolean isGlobalRenderer(final TileEntityCore te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityCore core, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityCore core, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		if(core.heat == 0) {
         	renderStandby(core, x, y, z);
 		 } else {
@@ -38,7 +38,7 @@ public class RenderCore extends TileEntitySpecialRenderer<TileEntityCore> {
         }
 	}
 	
-	public void renderStandby(TileEntityCore core, double x, double y, double z) {
+	public void renderStandby(final TileEntityCore core, final double x, final double y, final double z) {
 
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -71,21 +71,21 @@ public class RenderCore extends TileEntitySpecialRenderer<TileEntityCore> {
         GL11.glPopMatrix();
     }
     
-    public void renderOrb(TileEntityCore core, double x, double y, double z) {
+    public void renderOrb(final TileEntityCore core, final double x, final double y, final double z) {
 
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-        int color = core.color;
-        float r = (color >> 16 & 255)/255F;
-		float g = (color >> 8 & 255)/255F;
-		float b = (color & 255)/255F;
+        final int color = core.color;
+        final float r = (color >> 16 & 255)/255F;
+		final float g = (color >> 8 & 255)/255F;
+		final float b = (color & 255)/255F;
 		GlStateManager.color(r, g, b, 1.0F);
 		
-		int tot = core.tanks[0].getCapacity() + core.tanks[1].getCapacity();
-		int fill = core.tanks[0].getFluidAmount() + core.tanks[1].getFluidAmount();
+		final int tot = core.tanks[0].getCapacity() + core.tanks[1].getCapacity();
+		final int fill = core.tanks[0].getFluidAmount() + core.tanks[1].getFluidAmount();
 		
-		float scale = (float)Math.log(core.heat+1) * ((float)fill / (float)tot) + 0.5F;
+		final float scale = (float)Math.log(core.heat+1) * ((float)fill / (float)tot) + 0.5F;
 		GL11.glScalef(scale, scale, scale);
 
         GlStateManager.enableCull();

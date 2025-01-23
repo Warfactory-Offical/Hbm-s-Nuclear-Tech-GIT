@@ -29,74 +29,74 @@ public class ShredderRecipes {
 	
 	public static void registerShredder() {
 		
-		String[] names = OreDictionary.getOreNames();
+		final String[] names = OreDictionary.getOreNames();
 		
 		for(int i = 0; i < names.length; i++) {
 			
-			String name = names[i];
+			final String name = names[i];
 			
 			//if the dict contains invalid names, skip
 			if(name == null || name.isEmpty())
 				continue;
 			
-			List<ItemStack> matches = OreDictionary.getOres(name);
+			final List<ItemStack> matches = OreDictionary.getOres(name);
 			
 			//if the name isn't assigned to an ore, also skip
 			if(matches == null || matches.isEmpty())
 				continue;
 
-			if(name.length() > 5 && name.substring(0, 5).equals("ingot")) {
-				ItemStack dust = getDustByName(name.substring(5));
+			if(name.length() > 5 && name.startsWith("ingot")) {
+				final ItemStack dust = getDustByName(name.substring(5));
 				
 				if(dust != null && dust.getItem() != ModItems.scrap) {
 
-					for(ItemStack stack : matches) {
+					for(final ItemStack stack : matches) {
 						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), dust);
 					}
 				}
-			} else if(name.length() > 6 && name.substring(0, 6).equals("nugget")) {
-				ItemStack dust = getTinyDustByName(name.substring(6));
+			} else if(name.length() > 6 && name.startsWith("nugget")) {
+				final ItemStack dust = getTinyDustByName(name.substring(6));
 				
 				if(dust != null && dust.getItem() != ModItems.scrap) {
 
-					for(ItemStack stack : matches) {
+					for(final ItemStack stack : matches) {
 						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), dust);
 					}
 				}
-			} else if(name.length() > 3 && name.substring(0, 3).equals("ore")) {
-				ItemStack dust = getDustByName(name.substring(3));
+			} else if(name.length() > 3 && name.startsWith("ore")) {
+				final ItemStack dust = getDustByName(name.substring(3));
 				
 				if(dust != null && dust.getItem() != ModItems.scrap) {
 					
 					dust.setCount(2);
 
-					for(ItemStack stack : matches) {
+					for(final ItemStack stack : matches) {
 						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), dust);
 					}
 				}
-			} else if(name.length() > 5 && name.substring(0, 5).equals("block")) {
-				ItemStack dust = getDustByName(name.substring(5));
+			} else if(name.length() > 5 && name.startsWith("block")) {
+				final ItemStack dust = getDustByName(name.substring(5));
 				
 				if(dust != null && dust.getItem() != ModItems.scrap) {
 					
 					dust.setCount(9);
 
-					for(ItemStack stack : matches) {
+					for(final ItemStack stack : matches) {
 						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), dust);
 					}
 				}
-			} else if(name.length() > 3 && name.substring(0, 3).equals("gem")) {
-				ItemStack dust = getDustByName(name.substring(3));
+			} else if(name.length() > 3 && name.startsWith("gem")) {
+				final ItemStack dust = getDustByName(name.substring(3));
 				
 				if(dust != null && dust.getItem() != ModItems.scrap) {
 
-					for(ItemStack stack : matches) {
+					for(final ItemStack stack : matches) {
 						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), dust);
 					}
 				}
-			} else if(name.length() > 3 && name.substring(0, 4).equals("dust")) {
+			} else if(name.length() > 3 && name.startsWith("dust")) {
 
-				for(ItemStack stack : matches) {
+				for(final ItemStack stack : matches) {
 					if(stack != null && !stack.isEmpty() && Item.REGISTRY.getNameForObject(stack.getItem()) != null)
 						shredderRecipes.put(ItemStackUtil.comparableStackFrom(stack), ItemStackUtil.itemStackFrom(ModItems.dust));
 				}
@@ -301,8 +301,8 @@ public class ShredderRecipes {
 			ShredderRecipes.setRecipe(ItemStackUtil.itemStackFrom(Blocks.WOOL, 1, i), ItemStackUtil.itemStackFrom(Items.STRING, 4));
 		}
 
-		for(Integer oreMeta : BedrockOreRegistry.oreIndexes.keySet()) {
-			int type = ItemBedrockOre.getOutType(oreMeta);
+		for(final Integer oreMeta : BedrockOreRegistry.oreIndexes.keySet()) {
+			final int type = ItemBedrockOre.getOutType(oreMeta);
 			if(type == 0 || type == 1){
 				ShredderRecipes.setRecipe(ItemStackUtil.itemStackFrom(ModItems.ore_bedrock, 1, oreMeta), ItemStackUtil.itemStackFrom(ModItems.ore_bedrock_enriched, 2, oreMeta));
 				ShredderRecipes.setRecipe(ItemStackUtil.itemStackFrom(ModItems.ore_bedrock_cleaned, 1, oreMeta), ItemStackUtil.itemStackFrom(ModItems.ore_bedrock_enriched, 2, oreMeta));
@@ -319,46 +319,46 @@ public class ShredderRecipes {
 		setRecipe("enderpearl", "dustEnderPearl");
 	}
 	
-	public static ItemStack getDustByName(String name) {
+	public static ItemStack getDustByName(final String name) {
 		
 		return getOredictByName("dust" + name);
 	}
 
-	public static ItemStack getTinyDustByName(String name) {
+	public static ItemStack getTinyDustByName(final String name) {
 		
 		return getOredictByName("dustTiny" + name);
 	}
 
-	public static ItemStack getOredictByName(String name) {
+	public static ItemStack getOredictByName(final String name) {
 		
-		List<ItemStack> matches = OreDictionary.getOres(name);
+		final List<ItemStack> matches = OreDictionary.getOres(name);
 		if(matches != null && !matches.isEmpty())
 			return matches.get(0).copy();
 		
 		return ItemStackUtil.itemStackFrom(ModItems.scrap);
 	}
 	
-	public static void setRecipe(Item in, ItemStack out) {
+	public static void setRecipe(final Item in, final ItemStack out) {
 		
 		shredderRecipes.put(ItemStackUtil.comparableStackFrom(in), out);
 	}
 	
-	public static void setRecipe(Block in, ItemStack out) {
+	public static void setRecipe(final Block in, final ItemStack out) {
 		
 		shredderRecipes.put(ItemStackUtil.comparableStackFrom(in), out);
 	}
 	
-	public static void setRecipe(ItemStack in, ItemStack out) {
+	public static void setRecipe(final ItemStack in, final ItemStack out) {
 		
 		shredderRecipes.put(ItemStackUtil.comparableStackFrom(in), out);
 	}
 
-	public static void setRecipe(String in, String out) {
+	public static void setRecipe(final String in, final String out) {
 		if(OreDictionary.doesOreNameExist(in) && OreDictionary.doesOreNameExist(out)) 
 			setRecipe(getOredictByName(in), getOredictByName(out));
 	}
 
-	public static void removeRecipe(ItemStack in) {
+	public static void removeRecipe(final ItemStack in) {
 		
 		shredderRecipes.remove(ItemStackUtil.comparableStackFrom(in));
 	}
@@ -367,7 +367,7 @@ public class ShredderRecipes {
 		
 		if(jeiShredderRecipes == null){
 			jeiShredderRecipes = new ArrayList<ShredderRecipe>();
-			for(Entry<ComparableStack, ItemStack> e : shredderRecipes.entrySet()){
+			for(final Entry<ComparableStack, ItemStack> e : shredderRecipes.entrySet()){
 				jeiShredderRecipes.add(new ShredderRecipe(e.getKey().toStack(), e.getValue()));
 			}
 		}
@@ -375,12 +375,12 @@ public class ShredderRecipes {
 		return jeiShredderRecipes;
 	}
 	
-	public static ItemStack getShredderResult(ItemStack stack) {
+	public static ItemStack getShredderResult(final ItemStack stack) {
 		
 		if(stack == null || stack.getItem() == null || stack.isEmpty())
 			return ItemStackUtil.itemStackFrom(ModItems.scrap);
 		
-		ItemStack sta = shredderRecipes.get(ItemStackUtil.comparableStackFrom(stack).makeSingular());
+		final ItemStack sta = shredderRecipes.get(ItemStackUtil.comparableStackFrom(stack).makeSingular());
 		
 		return sta == null ? ItemStackUtil.itemStackFrom(ModItems.scrap) : sta;
 	}
@@ -390,13 +390,13 @@ public class ShredderRecipes {
 		private final ItemStack input;
 		private final ItemStack output;
 		
-		public ShredderRecipe(ItemStack input, ItemStack output) {
+		public ShredderRecipe(final ItemStack input, final ItemStack output) {
 			this.input = input;
 			this.output = output; 
 		}
 		
 		@Override
-		public void getIngredients(IIngredients ingredients) {
+		public void getIngredients(final IIngredients ingredients) {
 			ingredients.setInput(VanillaTypes.ITEM, input);
 			ingredients.setOutput(VanillaTypes.ITEM, output);
 		}

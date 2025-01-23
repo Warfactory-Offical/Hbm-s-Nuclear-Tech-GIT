@@ -41,7 +41,7 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 		tanks[2] = new FluidTank(ModForgeFluids.smear, 0, 4000);
 	}
 	
-	public void setTankType(int idx, Fluid type){
+	public void setTankType(final int idx, final Fluid type){
 		if(types[idx] != type){
 			types[idx] = type;
 			if(type != null){
@@ -57,21 +57,20 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 
 		if(!world.isRemote) {
 			
-			TileEntity stack = world.getTileEntity(pos.up(3));
+			final TileEntity stack = world.getTileEntity(pos.up(3));
 			
 			
-			if(stack instanceof TileEntityMachineFractionTower) {
-				TileEntityMachineFractionTower frac = (TileEntityMachineFractionTower) stack;
-				
-				//make types equal
+			if(stack instanceof TileEntityMachineFractionTower frac) {
+
+                //make types equal
 				for(int i = 0; i < 3; i++) {
 					frac.setTankType(i, types[i]);
 				}
 				
 				//calculate transfer
-				int oil = Math.min(tanks[0].getFluidAmount(), frac.tanks[0].getCapacity() - frac.tanks[0].getFluidAmount());
-				int left = Math.min(frac.tanks[1].getFluidAmount(), tanks[1].getCapacity() - tanks[1].getFluidAmount());
-				int right = Math.min(frac.tanks[2].getFluidAmount(), tanks[2].getCapacity() - tanks[2].getFluidAmount());
+				final int oil = Math.min(tanks[0].getFluidAmount(), frac.tanks[0].getCapacity() - frac.tanks[0].getFluidAmount());
+				final int left = Math.min(frac.tanks[1].getFluidAmount(), tanks[1].getCapacity() - tanks[1].getFluidAmount());
+				final int right = Math.min(frac.tanks[2].getFluidAmount(), tanks[2].getCapacity() - tanks[2].getFluidAmount());
 				
 				//move oil up, pull fractions down
 				tanks[0].drain(oil, true);
@@ -96,7 +95,7 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	}
 
 	public void networkPack(){
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		for(int i=0; i<tanks.length; i++){
 			if(types[i] != null){
 				tanks[i].setFluid(new FluidStack(types[i], tanks[i].getFluidAmount()));
@@ -109,7 +108,7 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	}
 	
 	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
+	public void networkUnpack(final NBTTagCompound nbt) {
 		FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
 		for(int i=0; i<tanks.length; i++){
 			if(tanks[i].getFluid() != null){
@@ -122,7 +121,7 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	
 	private void setupTanks() {
 		
-		Quartet<Fluid, Fluid, Integer, Integer> quart = RefineryRecipes.getFractions(types[0]);
+		final Quartet<Fluid, Fluid, Integer, Integer> quart = RefineryRecipes.getFractions(types[0]);
 		
 		if(quart != null) {
 			setTankType(1, quart.getW());
@@ -132,12 +131,12 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	
 	private void fractionate() {
 		
-		Quartet<Fluid, Fluid, Integer, Integer> quart = RefineryRecipes.getFractions(types[0]);
+		final Quartet<Fluid, Fluid, Integer, Integer> quart = RefineryRecipes.getFractions(types[0]);
 		
 		if(quart != null) {
 			
-			int left = quart.getY();
-			int right = quart.getZ();
+			final int left = quart.getY();
+			final int right = quart.getZ();
 			
 			if(tanks[0].getFluidAmount() >= 100 && hasSpace(left, right)) {
 				tanks[0].drain(100, true);
@@ -147,12 +146,12 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 		}
 	}
 	
-	private boolean hasSpace(int left, int right) {
+	private boolean hasSpace(final int left, final int right) {
 		return tanks[1].getFluidAmount() + left <= tanks[1].getCapacity() && tanks[2].getFluidAmount() + right <= tanks[2].getCapacity();
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
 		for(int i=0; i<tanks.length; i++){
@@ -165,7 +164,7 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		for(int i=0; i<tanks.length; i++){
 			if(types[i] != null){
@@ -178,14 +177,14 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 		return nbt;
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		for(int i = 2; i < 6; i++) {
-			ForgeDirection dir = ForgeDirection.getOrientation(i);
+			final ForgeDirection dir = ForgeDirection.getOrientation(i);
 			fillFluid(pos.getX() + dir.offsetX * 2, pos.getY(), pos.getZ() + dir.offsetZ * 2, tank);
 		}
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank tank) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 
@@ -220,14 +219,14 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && resource.getFluid() == types[0])
 			return tanks[0].fill(resource, doFill);
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		FluidStack drain = null;
 		if(resource.getFluid() == types[1])
 			drain = tanks[1].drain(resource, doDrain);
@@ -237,7 +236,7 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		FluidStack drain = tanks[1].drain(maxDrain, doDrain);
 		if(drain == null)
 			drain = tanks[2].drain(maxDrain, doDrain);
@@ -245,14 +244,14 @@ public class TileEntityMachineFractionTower extends TileEntity  implements INBTP
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

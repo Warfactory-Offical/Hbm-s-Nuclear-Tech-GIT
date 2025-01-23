@@ -18,7 +18,7 @@ public class EntityBombletTheta extends EntityThrowable {
 	double decelY = 0.1D;
 	double accelXZ = 0.1D;
 	
-	public EntityBombletTheta(World worldIn) {
+	public EntityBombletTheta(final World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 	}
@@ -41,7 +41,7 @@ public class EntityBombletTheta extends EntityThrowable {
 		this.motionZ -= vector.z;
 		
 		if(motionY < -0.75D && !world.isRemote && rand.nextInt(10) == 0) {
-			EntityBombletSelena selena = new EntityBombletSelena(world);
+			final EntityBombletSelena selena = new EntityBombletSelena(world);
 			selena.posX = this.posX;
 			selena.posY = this.posY;
 			selena.posZ = this.posZ;
@@ -69,12 +69,11 @@ public class EntityBombletTheta extends EntityThrowable {
 	}
 	
 	protected void rotation() {
-        float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        final float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
         for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -94,11 +93,11 @@ public class EntityBombletTheta extends EntityThrowable {
 	}
 	
 	@Override
-	protected void onImpact(RayTraceResult result) {}
+	protected void onImpact(final RayTraceResult result) {}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance)
+    public boolean isInRangeToRenderDist(final double distance)
     {
         return distance < 25000;
     }

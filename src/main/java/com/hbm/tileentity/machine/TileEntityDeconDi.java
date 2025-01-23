@@ -15,21 +15,21 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class TileEntityDeconDi extends TileEntity implements ITickable {
 
 	private static float digammaRemove;
-	public TileEntityDeconDi(float dig) {
+	public TileEntityDeconDi(final float dig) {
 		super();
-		this.digammaRemove = dig;
+		digammaRemove = dig;
 	}
 
 	@Override
 	public void update() {
 		if(!this.world.isRemote) {
-			List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5));
+			final List<Entity> entities = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() - 0.5, pos.getY(), pos.getZ() - 0.5, pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5));
 
 			if(!entities.isEmpty()) {
-				for(Entity e : entities) {
+				for(final Entity e : entities) {
 					if(e.hasCapability(EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null)){
-						if(this.digammaRemove > 0.0F){
-							e.getCapability(EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null).decreaseDigamma(this.digammaRemove);
+						if(digammaRemove > 0.0F){
+							e.getCapability(EntityHbmPropsProvider.ENT_HBM_PROPS_CAP, null).decreaseDigamma(digammaRemove);
 						}
 					}
 				}

@@ -53,7 +53,7 @@ public class RefineryRecipes {
 			ItemStackUtil.itemStackFrom(ModItems.nuclear_waste_tiny, 1)));
 	}
 
-	public static Pair<FluidStack[], ItemStack> getRecipe(Fluid f){
+	public static Pair<FluidStack[], ItemStack> getRecipe(final Fluid f){
 		if(f != null)
 			return refineryRecipesMap.get(f);
 		return null;
@@ -66,7 +66,7 @@ public class RefineryRecipes {
 		fractions.put(ModForgeFluids.lightoil, new Quartet<>(ModForgeFluids.diesel, ModForgeFluids.kerosene, light_frac_diesel, light_frac_kero));
 	}
 	
-	public static Quartet<Fluid, Fluid, Integer, Integer> getFractions(Fluid oil) {
+	public static Quartet<Fluid, Fluid, Integer, Integer> getFractions(final Fluid oil) {
 		return fractions.get(oil);
 	}
 }

@@ -18,12 +18,12 @@ public class RenderMultiblock extends TileEntitySpecialRenderer<TileEntityMultib
 	public static TextureAtlasSprite structScaffold;
 	
 	@Override
-	public boolean isGlobalRenderer(TileEntityMultiblock te) {
+	public boolean isGlobalRenderer(final TileEntityMultiblock te) {
 		return true;
 	}
 	
 	@Override
-	public void render(TileEntityMultiblock te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMultiblock te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		GL11.glPushMatrix();
 		
 		GL11.glTranslated(x, y, z);
@@ -35,7 +35,7 @@ public class RenderMultiblock extends TileEntitySpecialRenderer<TileEntityMultib
         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
         GlStateManager.disableAlpha();
 		
-        Block b = te.getBlockType();
+        final Block b = te.getBlockType();
         RenderHelper.bindBlockTexture();
         
         RenderHelper.startDrawingTexturedQuads();
@@ -93,7 +93,7 @@ public class RenderMultiblock extends TileEntitySpecialRenderer<TileEntityMultib
 		}
 	}
 	
-	public void renderSmolBlockAt(TextureAtlasSprite loc, int x, int y, int z) {
+	public void renderSmolBlockAt(final TextureAtlasSprite loc, final int x, final int y, final int z) {
 		// GL11.glTranslatef(x, y, z);
 		//GL11.glRotatef(180, 0F, 0F, 1F);
 		RenderHelper.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, loc.getMaxU(), loc.getMinV());

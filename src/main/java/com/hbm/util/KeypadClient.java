@@ -1,11 +1,5 @@
 package com.hbm.util;
 
-import java.nio.FloatBuffer;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
-
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.main.ResourceManager;
@@ -13,7 +7,6 @@ import com.hbm.packet.KeypadServerPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.WavefrontObjDisplayList;
 import com.hbm.render.amlfrom1710.WavefrontObject;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GLAllocation;
@@ -28,6 +21,11 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
+
+import java.nio.FloatBuffer;
 
 @SideOnly(Side.CLIENT)
 public class KeypadClient extends Keypad {
@@ -45,15 +43,15 @@ public class KeypadClient extends Keypad {
 	public AxisAlignedBB[] pressedButtonBoxes = new AxisAlignedBB[12];
 	public AxisAlignedBB mainBox;
 
-	public KeypadClient(TileEntity te, Matrix4f transform) {
+	public KeypadClient(final TileEntity te, final Matrix4f transform) {
 		super(te);
 		//All these magic numbers are pulled out of the keypad model in blender so the box would exactly match the model
 		this.transform = transform;
 		for(int x = 0; x < 3; x++) {
 			for(int y = 3; y >= 0; y--) {
-				Vector4f pos1 = new Vector4f(0.3125F - 0.234375F * x, 0.042969F + 0.175781F * y, 0, 1);
-				Vector4f pos2 = new Vector4f(0.15625F - 0.234375F * x, 0.160156F + 0.175781F * y, -0.0625F, 1);
-				Vector4f pos2_pressed = new Vector4f(0.15625F - 0.234375F * x, 0.160156F + 0.175781F * y, -0.0125F, 1);
+				final Vector4f pos1 = new Vector4f(0.3125F - 0.234375F * x, 0.042969F + 0.175781F * y, 0, 1);
+				final Vector4f pos2 = new Vector4f(0.15625F - 0.234375F * x, 0.160156F + 0.175781F * y, -0.0625F, 1);
+				final Vector4f pos2_pressed = new Vector4f(0.15625F - 0.234375F * x, 0.160156F + 0.175781F * y, -0.0125F, 1);
 				Matrix4f.transform(transform, pos1, pos1);
 				Matrix4f.transform(transform, pos2, pos2);
 				Matrix4f.transform(transform, pos2_pressed, pos2_pressed);
@@ -61,17 +59,17 @@ public class KeypadClient extends Keypad {
 				pressedButtonBoxes[(3 - y) * 3 + x] = new AxisAlignedBB(pos1.x + 0.5F, pos1.y, pos1.z + 0.5F, pos2_pressed.x + 0.5F, pos2_pressed.y, pos2_pressed.z + 0.5F);
 			}
 		}
-		Vector4f pos1 = new Vector4f(-0.375F, 0, 0, 1);
-		Vector4f pos2 = new Vector4f(0.375F, 1, -0.0625F, 1);
+		final Vector4f pos1 = new Vector4f(-0.375F, 0, 0, 1);
+		final Vector4f pos2 = new Vector4f(0.375F, 1, -0.0625F, 1);
 		Matrix4f.transform(transform, pos1, pos1);
 		Matrix4f.transform(transform, pos2, pos2);
 		mainBox = new AxisAlignedBB(pos1.x + 0.5F, pos1.y, pos1.z + 0.5F, pos2.x + 0.5F, pos2.y, pos2.z + 0.5F);
 	}
 
-	public boolean playerClick(BlockPos pos) {
-		int idx = rayTraceForButtonIndex(pos);
+	public boolean playerClick(final BlockPos pos) {
+		final int idx = rayTraceForButtonIndex(pos);
 		if(idx >= 0) {
-			Button b = buttons[idx];
+			final Button b = buttons[idx];
 			if(b.cooldown == 0) {
 				PacketDispatcher.wrapper.sendToServer(new KeypadServerPacket(pos, 0, idx));
 				return true;
@@ -80,13 +78,13 @@ public class KeypadClient extends Keypad {
 		return false;
 	}
 	
-	public AxisAlignedBB rayTrace(BlockPos pos){
-		int idx = rayTraceForButtonIndex(pos);
+	public AxisAlignedBB rayTrace(final BlockPos pos){
+		final int idx = rayTraceForButtonIndex(pos);
 		if(idx < 0){
-			EntityPlayer p = Minecraft.getMinecraft().player;
-			Vec3d vec1 = p.getPositionEyes(MainRegistry.proxy.partialTicks());
-			Vec3d vec2 = vec1.add(p.getLook(MainRegistry.proxy.partialTicks()).scale(3));
-			RayTraceResult r = mainBox.offset(pos).calculateIntercept(vec1, vec2);
+			final EntityPlayer p = Minecraft.getMinecraft().player;
+			final Vec3d vec1 = p.getPositionEyes(MainRegistry.proxy.partialTicks());
+			final Vec3d vec2 = vec1.add(p.getLook(MainRegistry.proxy.partialTicks()).scale(3));
+			final RayTraceResult r = mainBox.offset(pos).calculateIntercept(vec1, vec2);
 			if(r != null && r.typeOfHit != Type.MISS){
 				return mainBox.offset(pos);
 			}
@@ -99,14 +97,14 @@ public class KeypadClient extends Keypad {
 		}
 	}
 	
-	public int rayTraceForButtonIndex(BlockPos pos){
-		EntityPlayer p = Minecraft.getMinecraft().player;
-		Vec3d vec1 = p.getPositionEyes(MainRegistry.proxy.partialTicks());
-		Vec3d vec2 = vec1.add(p.getLook(MainRegistry.proxy.partialTicks()).scale(3));
+	public int rayTraceForButtonIndex(final BlockPos pos){
+		final EntityPlayer p = Minecraft.getMinecraft().player;
+		final Vec3d vec1 = p.getPositionEyes(MainRegistry.proxy.partialTicks());
+		final Vec3d vec2 = vec1.add(p.getLook(MainRegistry.proxy.partialTicks()).scale(3));
 		int idx = -1;
 		RayTraceResult hit = null;
 		for(int i = 0; i < buttonBoxes.length; i ++){
-			RayTraceResult r = buttonBoxes[i].offset(pos).calculateIntercept(vec1, vec2);
+			final RayTraceResult r = buttonBoxes[i].offset(pos).calculateIntercept(vec1, vec2);
 			if(r == null || r.typeOfHit == Type.MISS)
 				continue;
 			if(hit == null || r.hitVec.squareDistanceTo(vec1) < hit.hitVec.squareDistanceTo(vec1)){
@@ -117,19 +115,16 @@ public class KeypadClient extends Keypad {
 		return idx;
 	}
 	
-	public boolean isPlayerMouseingOver(BlockPos pos){
-		EntityPlayer p = Minecraft.getMinecraft().player;
-		Vec3d vec1 = p.getPositionEyes(MainRegistry.proxy.partialTicks());
-		Vec3d vec2 = vec1.add(p.getLook(MainRegistry.proxy.partialTicks()).scale(3));
-		RayTraceResult r = mainBox.offset(pos).calculateIntercept(vec1, vec2);
-		if(r != null && r.typeOfHit != Type.MISS){
-			return true;
-		}
-		return false;
-	}
+	public boolean isPlayerMouseingOver(final BlockPos pos){
+		final EntityPlayer p = Minecraft.getMinecraft().player;
+		final Vec3d vec1 = p.getPositionEyes(MainRegistry.proxy.partialTicks());
+		final Vec3d vec2 = vec1.add(p.getLook(MainRegistry.proxy.partialTicks()).scale(3));
+		final RayTraceResult r = mainBox.offset(pos).calculateIntercept(vec1, vec2);
+        return r != null && r.typeOfHit != Type.MISS;
+    }
 	
 	public static void load(){
-		WavefrontObjDisplayList model = new WavefrontObjDisplayList(new WavefrontObject(new ResourceLocation(RefStrings.MODID, "models/keypad.obj")));
+		final WavefrontObjDisplayList model = new WavefrontObjDisplayList(new WavefrontObject(new ResourceLocation(RefStrings.MODID, "models/keypad.obj")));
 		mainModel = model.getListForName("Keypad");
 		displayModel = model.getListForName("Display");
 		for(int i = 0; i < 9; i++){
@@ -152,7 +147,7 @@ public class KeypadClient extends Keypad {
 		transform.store(AUX_GL_MATRIX);
 		AUX_GL_MATRIX.rewind();
 		GL11.glMultMatrix(AUX_GL_MATRIX);
-		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		String disp = "";
 		if(isActive()) {
 			if(isSettingCode){
@@ -186,7 +181,7 @@ public class KeypadClient extends Keypad {
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.275, 0.67, -0.0625);
-		float s = 0.02F;
+		final float s = 0.02F;
 		GL11.glScaled(s*0.5, -s*0.5, s);
 		GL11.glRotated(180, 0, 1, 0);
 		for(int i = 0; i < 12; i ++){
@@ -217,7 +212,7 @@ public class KeypadClient extends Keypad {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
 		
-		int code = buildIntCode();
+		final int code = buildIntCode();
 		
 		if(code < 0){
 			GL11.glTranslated(0.3, 1-0.08, 0.03125);

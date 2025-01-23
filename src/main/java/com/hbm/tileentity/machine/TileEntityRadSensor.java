@@ -36,14 +36,14 @@ public class TileEntityRadSensor extends TileEntity implements ITickable, Simple
 	public int lastComparatorOutput = 0;
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		chunkRads = compound.getFloat("chunkRads");
 		recievedDose = compound.getFloat("recievedDose");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		compound.setFloat("chunkRads", chunkRads);
 		compound.setFloat("recievedDose", recievedDose);
 		return super.writeToNBT(compound);
@@ -117,15 +117,15 @@ public class TileEntityRadSensor extends TileEntity implements ITickable, Simple
 		return 15;
 	}
 
-	public static int getRedstonePower(World world, BlockPos blockPos, EnumFacing side) {
-	    BlockPos offsetPos = blockPos.offset(side);
-	    int worldPower = world.getRedstonePower(offsetPos, side);
+	public static int getRedstonePower(final World world, final BlockPos blockPos, final EnumFacing side) {
+	    final BlockPos offsetPos = blockPos.offset(side);
+	    final int worldPower = world.getRedstonePower(offsetPos, side);
 	    if (worldPower >= 15) {
 	        return worldPower;
 	    } else {
-	        IBlockState offsetState = world.getBlockState(offsetPos);
+	        final IBlockState offsetState = world.getBlockState(offsetPos);
 	        if(offsetState.getBlock() instanceof BlockRedstoneWire) {
-	            int wirePower = offsetState.getValue(BlockRedstoneWire.POWER);
+	            final int wirePower = offsetState.getValue(BlockRedstoneWire.POWER);
 	            return Math.max(worldPower, wirePower);
 	        }
 	        return worldPower;
@@ -137,7 +137,7 @@ public class TileEntityRadSensor extends TileEntity implements ITickable, Simple
 		if(!world.isRemote) {
 			
 
-			RadiationSavedData data = RadiationSavedData.getData(world);
+			final RadiationSavedData data = RadiationSavedData.getData(world);
 			chunkRads = (data.getRadNumFromCoord(pos) + lastChunkRads)/2F;
 			
 			if(0 < getRedstonePower(world, pos, EnumFacing.DOWN)){
@@ -168,17 +168,17 @@ public class TileEntityRadSensor extends TileEntity implements ITickable, Simple
 	}
 
 	@Callback(doc = "getRads(); returns the measured chunk radiation - float")
-	public Object[] getRads(Context context, Arguments args) {
+	public Object[] getRads(final Context context, final Arguments args) {
 		return new Object[] {chunkRads};
 	}
 
 	@Callback(doc = "getDose(); returns the measured chunk radiation dose - float")
-	public Object[] getDose(Context context, Arguments args) {
+	public Object[] getDose(final Context context, final Arguments args) {
 		return new Object[] {recievedDose};
 	}
 
 	@Callback(doc = "resetDose(); resets the radiation dose")
-	public Object[] resetDose(Context context, Arguments args) {
+	public Object[] resetDose(final Context context, final Arguments args) {
 		recievedDose = 0;
 		return new Object[] {null};
 	}

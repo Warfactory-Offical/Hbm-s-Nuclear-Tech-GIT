@@ -38,7 +38,7 @@ public class TileEntityKeypadBase extends TileEntity implements ITickable, IKeyp
 		if(world.isRemote){
 			setupKeypadClient();
 		} else {
-			NBTTagCompound nbt = keypad.writeToNbt(new NBTTagCompound());
+			final NBTTagCompound nbt = keypad.writeToNbt(new NBTTagCompound());
 			keypad = new Keypad(this);
 			keypad.readFromNbt(nbt);
 		}
@@ -46,8 +46,8 @@ public class TileEntityKeypadBase extends TileEntity implements ITickable, IKeyp
 	
 	@SideOnly(Side.CLIENT)
 	public void setupKeypadClient() {
-		float rot = ForgeDirection.getOrientation(this.getBlockMetadata()).getRotationRadians();
-		Matrix4f mat = new Matrix4f();
+		final float rot = ForgeDirection.getOrientation(this.getBlockMetadata()).getRotationRadians();
+		final Matrix4f mat = new Matrix4f();
 		mat.rotate(rot, new Vector3f(0, 1, 0));
 		mat.translate(new Vector3f(0, 0, -0.5F));
 		keypad = new KeypadClient(this, mat);
@@ -74,13 +74,13 @@ public class TileEntityKeypadBase extends TileEntity implements ITickable, IKeyp
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		keypad.writeToNbt(compound);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		keypad.readFromNbt(compound);
 		super.readFromNBT(compound);
 	}

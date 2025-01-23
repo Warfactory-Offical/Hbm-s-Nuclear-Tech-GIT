@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 public class RadSensor extends BlockContainer {
 
-	public RadSensor(Material materialIn, String s) {
+	public RadSensor(final Material materialIn, final String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,14 +34,14 @@ public class RadSensor extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(player != null){
 	    	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
-	    	TileEntityRadSensor entity = (TileEntityRadSensor) world.getTileEntity(pos);
+	    	final TileEntityRadSensor entity = (TileEntityRadSensor) world.getTileEntity(pos);
 	    	player.sendMessage(new TextComponentString("§6===== ☢ Radiaton Sensor ☢ =====§r"));
     		player.sendMessage(new TextComponentString("§eCurrent chunk radiation: §a"+entity.chunkRads+" RAD/s§r"));
 			player.sendMessage(new TextComponentString("§eRedstone signal output: §c"+entity.redstoneOutput+"§r"));
@@ -54,37 +54,37 @@ public class RadSensor extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
 		return new TileEntityRadSensor();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public EnumBlockRenderType getRenderType(final IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 
 
 	@Override
-	public boolean canProvidePower(IBlockState state) {
+	public boolean canProvidePower(final IBlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean getWeakChanges(IBlockAccess world, BlockPos pos){
+	public boolean getWeakChanges(final IBlockAccess world, final BlockPos pos){
 		return false;
 	}
 	
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public int getWeakPower(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		if(side == EnumFacing.UP)
 			return 0;
-		TileEntityRadSensor entity = (TileEntityRadSensor) blockAccess.getTileEntity(pos);
+		final TileEntityRadSensor entity = (TileEntityRadSensor) blockAccess.getTileEntity(pos);
         return entity.redstoneOutput;
 	}
 
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public int getStrongPower(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
 		return getWeakPower(blockState, blockAccess, pos, side);
 	}
 
@@ -92,18 +92,18 @@ public class RadSensor extends BlockContainer {
 
 
 	@Override
-	public boolean hasComparatorInputOverride(IBlockState state){
+	public boolean hasComparatorInputOverride(final IBlockState state){
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos){
-		TileEntityRadSensor entity = (TileEntityRadSensor) worldIn.getTileEntity(pos);
+	public int getComparatorInputOverride(final IBlockState blockState, final World worldIn, final BlockPos pos){
+		final TileEntityRadSensor entity = (TileEntityRadSensor) worldIn.getTileEntity(pos);
         return entity.comparatorOutput;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add("Power with redstone from below to reset dose counter");
 	}

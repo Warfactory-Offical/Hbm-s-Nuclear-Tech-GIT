@@ -7,6 +7,7 @@ import static com.hbm.inventory.OreDictManager.IRON;
 import static com.hbm.inventory.OreDictManager.STEEL;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.hbm.inventory.OreDictManager.*;
@@ -28,8 +29,8 @@ import net.minecraft.item.ItemStack;
 
 public class AnvilRecipes {
 
-	private static List<AnvilSmithingRecipe> smithingRecipes = new ArrayList<>();
-	private static List<AnvilConstructionRecipe> constructionRecipes = new ArrayList<>();
+	private static final List<AnvilSmithingRecipe> smithingRecipes = new ArrayList<>();
+	private static final List<AnvilConstructionRecipe> constructionRecipes = new ArrayList<>();
 	
 	public static void register() {
 		registerSmithing();
@@ -45,9 +46,9 @@ public class AnvilRecipes {
 	 */
 	public static void registerSmithing() {
 		
-		Block[] anvils = new Block[]{ModBlocks.anvil_iron, ModBlocks.anvil_lead};
+		final Block[] anvils = new Block[]{ModBlocks.anvil_iron, ModBlocks.anvil_lead};
 		
-		for(Block anvil : anvils) {
+		for(final Block anvil : anvils) {
 			smithingRecipes.add(new AnvilSmithingRecipe(1, ItemStackUtil.itemStackFrom(ModBlocks.anvil_bismuth, 1), ItemStackUtil.comparableStackFrom(anvil), ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.BISMUTH), 10)));
 			smithingRecipes.add(new AnvilSmithingRecipe(1, ItemStackUtil.itemStackFrom(ModBlocks.anvil_dnt, 1), ItemStackUtil.comparableStackFrom(anvil), new OreDictStack(DNT.ingot(), 10)));
 			smithingRecipes.add(new AnvilSmithingRecipe(1, ItemStackUtil.itemStackFrom(ModBlocks.anvil_osmiridium, 1), ItemStackUtil.comparableStackFrom(anvil), new OreDictStack(OSMIRIDIUM.ingot(), 10)));
@@ -182,14 +183,14 @@ public class AnvilRecipes {
 				},
 				new AnvilOutput(ItemStackUtil.itemStackFrom(ModBlocks.machine_difurnace_off))).setTier(1));
 		
-		int ukModifier = 1;
+		final int ukModifier = 1;
 		constructionRecipes.add(new AnvilConstructionRecipe(
 				new AStack[] {
 						new OreDictStack("blockGlassColorless", 4 * ukModifier),
 						new OreDictStack(STEEL.ingot(), 8 * ukModifier),
 						new OreDictStack(CU.ingot(), 8 * ukModifier),
 						ItemStackUtil.comparableStackFrom(ModItems.motor, 2 * ukModifier),
-						ItemStackUtil.comparableStackFrom(ModItems.circuit_aluminium, 1 * ukModifier)
+						ItemStackUtil.comparableStackFrom(ModItems.circuit_aluminium, ukModifier)
 				},
 				new AnvilOutput(ItemStackUtil.itemStackFrom(ModBlocks.machine_assembler))).setTier(2));
 		
@@ -369,7 +370,7 @@ public class AnvilRecipes {
 		constructionRecipes.add(new AnvilConstructionRecipe(new AStack[] {new OreDictStack(IRON.plate()), ItemStackUtil.comparableStackFrom(Items.REDSTONE)}, new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.primer_50))).setTier(1));
 		constructionRecipes.add(new AnvilConstructionRecipe(new AStack[] {new OreDictStack(IRON.plate()), ItemStackUtil.comparableStackFrom(Items.REDSTONE)}, new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.primer_buckshot))).setTier(1));
 		
-		Object[][] recs = new Object[][] {
+		final Object[][] recs = new Object[][] {
 			{ModItems.ammo_12gauge,	ModItems.powder_fire,								ModItems.ammo_12gauge_incendiary,	20,		2},
 			{ModItems.ammo_12gauge,	Item.getItemFromBlock(ModBlocks.gravel_obsidian),	ModItems.ammo_12gauge_shrapnel,		20,		2},
 			{ModItems.ammo_12gauge, ModItems.ingot.getItemStack(MaterialMineral.U238),								ModItems.ammo_12gauge_du,			20,		3},
@@ -441,7 +442,7 @@ public class AnvilRecipes {
 			{ModItems.ammo_556_flechette,	ModItems.pellet_chlorophyte,	ModItems.ammo_556_flechette_chlorophyte,	10,		3},
 		};
 		
-		for(Object[] objs : recs) {
+		for(final Object[] objs : recs) {
 			
 			if(objs[1] instanceof Item) {
 				constructionRecipes.add(new AnvilConstructionRecipe(new AStack[] { ItemStackUtil.comparableStackFrom((Item)objs[0], (int)objs[3]), ItemStackUtil.comparableStackFrom((Item)objs[1], 1) },
@@ -719,9 +720,9 @@ public class AnvilRecipes {
 				}).setTier(3));
 	}
 	
-	public static void pullFromAssembler(ComparableStack result, int tier) {
+	public static void pullFromAssembler(final ComparableStack result, final int tier) {
 		
-		AStack[] ingredients = AssemblerRecipes.recipes.get(result);
+		final AStack[] ingredients = AssemblerRecipes.recipes.get(result);
 		
 		if(ingredients != null) {
 			constructionRecipes.add(new AnvilConstructionRecipe(ingredients, new AnvilOutput(result.toStack())).setTier(tier));
@@ -736,9 +737,9 @@ public class AnvilRecipes {
 		return constructionRecipes;
 	}
 
-	public static boolean removeConstructionRecipe(ItemStack[] outputs) {
+	public static boolean removeConstructionRecipe(final ItemStack[] outputs) {
 		start:
-		for(AnvilConstructionRecipe constructionRecipe : constructionRecipes) {
+		for(final AnvilConstructionRecipe constructionRecipe : constructionRecipes) {
 			// check length same
 			if(constructionRecipe.output.size() != outputs.length) continue;
 			// check outputs same
@@ -755,9 +756,9 @@ public class AnvilRecipes {
 		return false;
 	}
 
-	public static boolean removeConstructionRecipeByInput(AStack[] inputs) {
+	public static boolean removeConstructionRecipeByInput(final AStack[] inputs) {
 		start:
-		for(AnvilConstructionRecipe constructionRecipe : constructionRecipes) {
+		for(final AnvilConstructionRecipe constructionRecipe : constructionRecipes) {
 			// check length same
 			if(constructionRecipe.input.size() != inputs.length) continue;
 			// check outputs same
@@ -773,8 +774,8 @@ public class AnvilRecipes {
 		return false;
 	}
 
-	public static void addConstructionRecipe(AStack[] inputs, ItemStack[] output, int tier) {
-		AnvilOutput[] anvilOutputs = new AnvilOutput[output.length];
+	public static void addConstructionRecipe(final AStack[] inputs, final ItemStack[] output, final int tier) {
+		final AnvilOutput[] anvilOutputs = new AnvilOutput[output.length];
 		for(int i = 0; i < output.length; i++) {
 			anvilOutputs[i] = new AnvilOutput(output[i]);
 		}
@@ -788,44 +789,44 @@ public class AnvilRecipes {
 		public int tierUpper = -1;
 		OverlayType overlay = OverlayType.NONE;
 		
-		public AnvilConstructionRecipe(AStack input, AnvilOutput output) {
+		public AnvilConstructionRecipe(final AStack input, final AnvilOutput output) {
 			this.input.add(input);
 			this.output.add(output);
 			this.setOverlay(OverlayType.SMITHING); //preferred overlay for 1:1 conversions is smithing
 		}
 		
-		public AnvilConstructionRecipe(AStack[] input, AnvilOutput output) {
-			for(AStack stack : input) this.input.add(stack);
+		public AnvilConstructionRecipe(final AStack[] input, final AnvilOutput output) {
+            Collections.addAll(this.input, input);
 			this.output.add(output);
 			this.setOverlay(OverlayType.CONSTRUCTION); //preferred overlay for many:1 conversions is construction
 		}
 		
-		public AnvilConstructionRecipe(AStack input, AnvilOutput[] output) {
+		public AnvilConstructionRecipe(final AStack input, final AnvilOutput[] output) {
 			this.input.add(input);
-			for(AnvilOutput out : output) this.output.add(out);
+            Collections.addAll(this.output, output);
 			this.setOverlay(OverlayType.RECYCLING); //preferred overlay for 1:many conversions is recycling
 		}
 		
-		public AnvilConstructionRecipe(AStack[] input, AnvilOutput[] output) {
-			for(AStack stack : input) this.input.add(stack);
-			for(AnvilOutput out : output) this.output.add(out);
+		public AnvilConstructionRecipe(final AStack[] input, final AnvilOutput[] output) {
+            Collections.addAll(this.input, input);
+            Collections.addAll(this.output, output);
 			this.setOverlay(OverlayType.NONE); //no preferred overlay for many:many conversions
 		}
 		
-		public AnvilConstructionRecipe setTier(int tier) {
+		public AnvilConstructionRecipe setTier(final int tier) {
 			this.tierLower = tier;
 			if(GeneralConfig.enableBabyMode) this.tierLower = 1;
 			return this;
 		}
 		
-		public AnvilConstructionRecipe setTierRange(int lower, int upper) {
+		public AnvilConstructionRecipe setTierRange(final int lower, final int upper) {
 			this.tierLower = lower;
 			this.tierUpper = upper;
 			if(GeneralConfig.enableBabyMode) this.tierLower = this.tierUpper = 1;
 			return this;
 		}
 		
-		public boolean isTierValid(int tier) {
+		public boolean isTierValid(final int tier) {
 			
 			if(this.tierUpper == -1)
 				return tier >= this.tierLower;
@@ -833,7 +834,7 @@ public class AnvilRecipes {
 			return tier >= this.tierLower && tier <= this.tierUpper;
 		}
 		
-		public AnvilConstructionRecipe setOverlay(OverlayType overlay) {
+		public AnvilConstructionRecipe setOverlay(final OverlayType overlay) {
 			this.overlay = overlay;
 			return this;
 		}
@@ -848,7 +849,7 @@ public class AnvilRecipes {
 			case CONSTRUCTION: return this.output.get(0).stack.copy();
 			case SMITHING: return this.output.get(0).stack.copy();
 			case RECYCLING:
-				for(AStack stack : this.input) {
+				for(final AStack stack : this.input) {
 					if(stack instanceof ComparableStack)
 						return ((ComparableStack)stack).toStack();
 				}
@@ -862,11 +863,11 @@ public class AnvilRecipes {
 		public ItemStack stack;
 		public float chance;
 		
-		public AnvilOutput(ItemStack stack) {
+		public AnvilOutput(final ItemStack stack) {
 			this(stack, 1F);
 		}
 		
-		public AnvilOutput(ItemStack stack, float chance) {
+		public AnvilOutput(final ItemStack stack, final float chance) {
 			this.stack = stack;
 			this.chance = chance;
 		}
@@ -876,6 +877,6 @@ public class AnvilRecipes {
 		NONE,
 		CONSTRUCTION,
 		RECYCLING,
-		SMITHING;
-	}
+		SMITHING
+    }
 }

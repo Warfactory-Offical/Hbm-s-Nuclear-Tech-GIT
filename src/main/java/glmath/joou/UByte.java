@@ -57,7 +57,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      *
      * @param value
      */
-    public UByte(byte value) {
+    public UByte(final byte value) {
         this.value = value;
     }
 
@@ -66,7 +66,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      *
      * @param value
      */
-    public UByte(short value) {
+    public UByte(final short value) {
         this.value = (byte) value;
     }
 
@@ -75,7 +75,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      *
      * @param value
      */
-    public UByte(int value) {
+    public UByte(final int value) {
         this.value = (byte) value;
     }
 
@@ -84,7 +84,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      *
      * @param value
      */
-    public UByte(long value) {
+    public UByte(final long value) {
         this.value = (byte) value;
     }
 
@@ -93,7 +93,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      *
      * @param value
      */
-    public UByte(BigInteger value) {
+    public UByte(final BigInteger value) {
         this.value = value.byteValue();
     }
 
@@ -102,11 +102,11 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      *
      * @param value
      */
-    public UByte(String value) {
+    public UByte(final String value) {
         this.value = Byte.parseByte(value);
     }
 
-    public UByte(UByte uByte) {
+    public UByte(final UByte uByte) {
         this.value = uByte.value;
     }
 
@@ -116,7 +116,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof UByte) {
             return value == ((UByte) obj).value;
         }
@@ -129,8 +129,9 @@ public final class UByte extends UNumber implements Comparable<UByte> {
     }
 
     @Override
-    public int compareTo(UByte o) {
-        int a = value & 0xff, b = o.value & 0xff;
+    public int compareTo(final UByte o) {
+        final int a = value & 0xff;
+        final int b = o.value & 0xff;
         return a < b ? -1 : (a == b ? 0 : 1);
     }
     
@@ -153,7 +154,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static byte checkSigned(byte value) throws ArithmeticException {
+    public static byte checkSigned(final byte value) throws ArithmeticException {
         if (value < 0) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -167,7 +168,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static byte checkSigned(short value) throws ArithmeticException {
+    public static byte checkSigned(final short value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -181,7 +182,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static byte checkSigned(int value) throws ArithmeticException {
+    public static byte checkSigned(final int value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -195,7 +196,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static byte checkSigned(long value) throws ArithmeticException {
+    public static byte checkSigned(final long value) throws ArithmeticException {
         if (value < 0 || value > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -209,7 +210,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static byte checkSigned(BigInteger value) throws ArithmeticException {
+    public static byte checkSigned(final BigInteger value) throws ArithmeticException {
         if (value.compareTo(BigInteger.ZERO) < 0 || value.intValue() > MAX_VALUE) {
             throw new ArithmeticException("Value is out of range : " + value);
         }
@@ -223,7 +224,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      * @return value if it is in range
      * @throws ArithmeticException if value is out of range
      */
-    public static byte checkSigned(String value) throws ArithmeticException {
+    public static byte checkSigned(final String value) throws ArithmeticException {
         if (value.startsWith("-")) {
             throw new ArithmeticException("Value is out of range : " + value);
         }

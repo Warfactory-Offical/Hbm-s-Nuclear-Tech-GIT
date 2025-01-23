@@ -74,15 +74,15 @@ public class AssemblerRecipes {
 	 * @param dir
 	 *            The suggested config folder
 	 */
-	public static void preInit(File dir) {
+	public static void preInit(final File dir) {
 
 		if(dir == null || !dir.isDirectory())
 			return;
 
 		template = dir;
 
-		List<File> files = Arrays.asList(dir.listFiles());
-		for(File file : files) {
+		final File[] files = dir.listFiles();
+		for(final File file : files) {
 			if(file.getName().equals("hbmAssembler.json")) {
 				config = file;
 			}
@@ -95,11 +95,11 @@ public class AssemblerRecipes {
 		generateList();
 	}
 
-	public static ItemStack getOutputFromTempate(ItemStack stack) {
+	public static ItemStack getOutputFromTempate(final ItemStack stack) {
 
 		if(stack != null && stack.getItem() instanceof ItemAssemblyTemplate) {
 
-			int i = ItemAssemblyTemplate.getRecipeIndex(stack);
+			final int i = ItemAssemblyTemplate.getRecipeIndex(stack);
 			if(i >= 0 && i < recipeList.size()) {
 				return recipeList.get(i).toStack();
 			}
@@ -108,18 +108,18 @@ public class AssemblerRecipes {
 		return null;
 	}
 
-	public static List<AStack> getRecipeFromTempate(ItemStack stack) {
+	public static List<AStack> getRecipeFromTempate(final ItemStack stack) {
 
 		if(stack != null && stack.getItem() instanceof ItemAssemblyTemplate) {
 
-			int i = ItemAssemblyTemplate.getRecipeIndex(stack);
+			final int i = ItemAssemblyTemplate.getRecipeIndex(stack);
 
 			if(i >= 0 && i < recipeList.size()) {
-				ItemStack out = recipeList.get(i).toStack();
+				final ItemStack out = recipeList.get(i).toStack();
 
 				if(out != null) {
-					ComparableStack comp = ItemStackUtil.comparableStackFrom(out);
-					AStack[] ret = recipes.get(comp);
+					final ComparableStack comp = ItemStackUtil.comparableStackFrom(out);
+					final AStack[] ret = recipes.get(comp);
 					return Arrays.asList(ret);
 				}
 			}
@@ -134,7 +134,7 @@ public class AssemblerRecipes {
 	 */
 	public static void generateList() {
 
-		List<ComparableStack> list = new ArrayList<>(recipes.keySet());
+		final List<ComparableStack> list = new ArrayList<>(recipes.keySet());
 		Collections.sort(list);
 		recipeList = list;
 	}
@@ -1039,16 +1039,15 @@ public class AssemblerRecipes {
 		hidden.add(ItemStackUtil.comparableStackFrom(ModBlocks.machine_radgen, 1));
 	}
 
-	public static void addTantalium(ComparableStack out, int amount) {
+	public static void addTantalium(final ComparableStack out, final int amount) {
 		
-		AStack[] ins = recipes.get(out);
+		final AStack[] ins = recipes.get(out);
 		
 		if(ins != null) {
 			
-			AStack[] news = new AStack[ins.length + 1];
-			
-			for(int i = 0; i < ins.length; i++)
-				news[i] = ins[i];
+			final AStack[] news = new AStack[ins.length + 1];
+
+            System.arraycopy(ins, 0, news, 0, ins.length);
 			
 			news[news.length - 1] = ItemStackUtil.comparableStackFrom(ModItems.circuit_tantalium, amount);
 			
@@ -1056,7 +1055,7 @@ public class AssemblerRecipes {
 		}
 	}
 	
-	public static void makeRecipe(ComparableStack out, AStack[] in, int duration) {
+	public static void makeRecipe(final ComparableStack out, final AStack[] in, final int duration) {
 
 		if(out == null || Item.REGISTRY.getNameForObject(out.item) == null) {
 			MainRegistry.logger.error("Canceling assembler registration, item was null!");
@@ -1067,7 +1066,7 @@ public class AssemblerRecipes {
 		time.put(out, duration);
 	}
 
-	public static void removeRecipe(ComparableStack out){
+	public static void removeRecipe(final ComparableStack out){
 		if(out == null || Item.REGISTRY.getNameForObject(out.item) == null) {
 			MainRegistry.logger.error("Canceling assembler recipe removal, item was null!");
 			return;
@@ -1081,11 +1080,11 @@ public class AssemblerRecipes {
 		itemRegistry = GameRegistry.findRegistry(Item.class);
 		blockRegistry = GameRegistry.findRegistry(Block.class);
 		
-		File recipeConfig = new File(MainRegistry.proxy.getDataDir().getPath() + "/config/hbm/assemblerConfig.cfg");
+		final File recipeConfig = new File(MainRegistry.proxy.getDataDir().getPath() + "/config/hbm/assemblerConfig.cfg");
 		if (!recipeConfig.exists())
 			try {
 				recipeConfig.getParentFile().mkdirs();
-				FileWriter write = new FileWriter(recipeConfig);
+				final FileWriter write = new FileWriter(recipeConfig);
 				write.write("# Format: time;itemName,meta,amount|nextItemName,meta,amount;productName,meta,amount\n"
 						  + "# One line per recipe.\n"
 						  + "# For an oredict input item, replace the mod id with oredict, like oredict:plateSteel. These do not require metatdata\n"
@@ -1101,7 +1100,7 @@ public class AssemblerRecipes {
 				addConfigRecipes(write);
 				write.close();
 				
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				MainRegistry.logger.log(Level.ERROR, "ERROR: Could not create config file: " + recipeConfig.getAbsolutePath());
 				e.printStackTrace();
 				return;
@@ -1124,44 +1123,43 @@ public class AssemblerRecipes {
 				else
 					parseRecipe(currentLine, lineCount);
 			}
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			MainRegistry.logger.log(Level.ERROR, "Could not find assembler config file! This should never happen.");
 			e.printStackTrace();
-		} catch (IOException e){
+		} catch (final IOException e){
 			MainRegistry.logger.log(Level.ERROR, "Error reading assembler config!");
 			e.printStackTrace();
 		} finally {
 			if(read != null)
 				try {
 					read.close();
-				} catch (IOException e) {}
+				} catch (final IOException e) {}
 		}
 		
 	}
 	
-	public static void parseRemoval(String currentLine, int line){
-		String[] parts = currentLine.split(" ");
+	public static void parseRemoval(final String currentLine, final int line){
+		final String[] parts = currentLine.split(" ");
 		if(parts.length != 2){
 			MainRegistry.logger.log(Level.WARN, "Could not parse assembler recipe removal on line " + line + ": does not have two parts. Skipping...");
 			return;
 		}
-		AStack stack = parseAStack(parts[1], 64);
+		final AStack stack = parseAStack(parts[1], 64);
 		if(stack == null){
 			MainRegistry.logger.log(Level.WARN, "Could not parse assembler output itemstack from \"" + parts[1] + "\" on line " + line + ". Skipping...");
 			return;
 		}
-		if(!(stack instanceof ComparableStack)){
+		if(!(stack instanceof ComparableStack cStack)){
 			MainRegistry.logger.log(Level.WARN, "Oredict stacks are not allowed as assembler outputs! Line number: " + line + " Skipping...");
 			return;
 		}
-		ComparableStack cStack = (ComparableStack) stack;
-		recipes.remove(cStack);
+        recipes.remove(cStack);
 		time.remove(cStack);
 		recipeList.remove(cStack);
 	}
 
-	private static void parseRecipe(String currentLine, int line) {
-		String[] parts = currentLine.split(";");
+	private static void parseRecipe(final String currentLine, final int line) {
+		final String[] parts = currentLine.split(";");
 		if(parts.length != 3){
 			MainRegistry.logger.log(Level.WARN, "Could not parse assembler recipe on line " + line + ": does not have three parts. Skipping...");
 			return;
@@ -1169,20 +1167,20 @@ public class AssemblerRecipes {
 		int recipeTime = 0;
 		try {
 			recipeTime = Integer.parseInt(parts[0]);
-		} catch (NumberFormatException e){
+		} catch (final NumberFormatException e){
 			MainRegistry.logger.log(Level.WARN, "Could not parse assembler process time from \"" + parts[0] + "\" on line " + line + ". Skipping...");
 			return;
 		}
-		List<AStack> input = new ArrayList<>();
-		for(String s : parts[1].split("\\|")){
-			AStack stack = parseAStack(s, 12*64);
+		final List<AStack> input = new ArrayList<>();
+		for(final String s : parts[1].split("\\|")){
+			final AStack stack = parseAStack(s, 12*64);
 			if(stack == null){
 				MainRegistry.logger.log(Level.WARN, "Could not parse assembler input itemstack from \"" + s + "\" on line " + line + ". Skipping...");
 				return;
 			}
 			input.add(stack);
 		}
-		AStack output = parseAStack(parts[2], 64);
+		final AStack output = parseAStack(parts[2], 64);
 		if(output == null){
 			MainRegistry.logger.log(Level.WARN, "Could not parse assembler output itemstack from \"" + parts[2] + "\" on line " + line + ". Skipping...");
 			return;
@@ -1201,11 +1199,11 @@ public class AssemblerRecipes {
 	
 	//The whole point of these two methods below is to ignore the part inside braces for nbt tags.
 	//I'm sure there's a cleaner way to do this, but I'm not going to spend more time trying to figure it out.
-	private static String readSplitPart(int idx, String s){
-		StringBuilder build = new StringBuilder();
+	private static String readSplitPart(final int idx, final String s){
+		final StringBuilder build = new StringBuilder();
 		int braceCount = 0;
 		for(int i = idx; i < s.length(); i ++){
-			char c = s.charAt(i);
+			final char c = s.charAt(i);
 			if(c == '{'){
 				braceCount ++;
 			} else if(c == '}'){
@@ -1220,11 +1218,11 @@ public class AssemblerRecipes {
 		return build.toString();
 	}
 	
-	private static String[] splitStringIgnoreBraces(String s){
-		List<String> list = new ArrayList<>();
+	private static String[] splitStringIgnoreBraces(final String s){
+		final List<String> list = new ArrayList<>();
 		int idx = 0;
 		while(idx < s.length()){
-			String part = readSplitPart(idx, s);
+			final String part = readSplitPart(idx, s);
 			if(part != null)
 				list.add(part);
 			else
@@ -1236,11 +1234,11 @@ public class AssemblerRecipes {
 		return list.toArray(new String[list.size()]);
 	}
 
-	private static AStack parseAStack(String s, int maxSize){
-		String[] parts = splitStringIgnoreBraces(s);
+	private static AStack parseAStack(final String s, final int maxSize){
+		final String[] parts = splitStringIgnoreBraces(s);
 		if(parts.length == 3 || parts.length == 4){
 			Block block = null;
-			Item item = itemRegistry.getValue(new ResourceLocation(parts[0]));
+			final Item item = itemRegistry.getValue(new ResourceLocation(parts[0]));
 			if(item == null)
 				block = blockRegistry.getValue(new ResourceLocation(parts[0]));
 			if(item == null && block == null){
@@ -1250,7 +1248,7 @@ public class AssemblerRecipes {
 			int meta = 0;
 			try {
 				meta = Integer.parseInt(parts[1]);
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				MainRegistry.logger.log(Level.WARN, "Could not parse item metadata from \"" + parts[1] + "\". Skipping...");
 				return null;
 			}
@@ -1261,7 +1259,7 @@ public class AssemblerRecipes {
 			int amount = 0;
 			try {
 				amount = Integer.parseInt(parts[2]);
-			} catch (NumberFormatException e){
+			} catch (final NumberFormatException e){
 				MainRegistry.logger.log(Level.WARN, "Could not parse item amount from \"" + parts[2] + "\". Skipping...");
 				return null;
 			}
@@ -1270,14 +1268,14 @@ public class AssemblerRecipes {
 				return null;
 			}
 			if(parts.length == 4){
-				String name = parts[3];
+				final String name = parts[3];
 				name.trim();
-				NBTTagCompound tag = parseNBT(name);
+				final NBTTagCompound tag = parseNBT(name);
 				if(tag == null){
 					MainRegistry.logger.log(Level.WARN, "Failed to parse NBT tag: " + parts[3] + ". Skipping...");
 					return null;
 				}
-				ItemStack stack;
+				final ItemStack stack;
 				if(item == null)
 					stack = ItemStackUtil.itemStackFrom(block, amount, meta);
 				else
@@ -1291,13 +1289,13 @@ public class AssemblerRecipes {
 			}
 		}
 		if(parts.length == 2){
-			String[] ore = parts[0].split(":");
+			final String[] ore = parts[0].split(":");
 			if(ore.length == 2 && ore[0].equals("oredict")){
-				String name = ore[1];
+				final String name = ore[1];
 				int amount = 0;
 				try {
 					amount = Integer.parseInt(parts[1]);
-				} catch (NumberFormatException e){
+				} catch (final NumberFormatException e){
 					MainRegistry.logger.log(Level.WARN, "Could not parse item amount from \"" + parts[1] + "\". Skipping...");
 					return null;
 				}
@@ -1313,16 +1311,16 @@ public class AssemblerRecipes {
 		return null;
 	}
 	
-	private static NBTTagCompound parseNBT(String json){
+	private static NBTTagCompound parseNBT(final String json){
 		try {
 			return JsonToNBT.getTagFromJson(json);
-		} catch(Exception e){
+		} catch(final Exception e){
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	private static void addConfigRecipes(FileWriter write) throws IOException {
+	private static void addConfigRecipes(final FileWriter write) throws IOException {
 			write.write("\n");
 	}
 }

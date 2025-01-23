@@ -16,16 +16,16 @@ public class Vec2d extends FuncRelational {
         y = 0;
     }
 
-    public Vec2d(int x, int y) {
-        this((double) x, (double) y);
+    public Vec2d(final int x, final int y) {
+        this(x, (double) y);
     }
 
-    public Vec2d(double x, double y) {
+    public Vec2d(final double x, final double y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vec2d set(double x, double y) {
+    public Vec2d set(final double x, final double y) {
         this.x = x;
         this.y = y;
         return this;

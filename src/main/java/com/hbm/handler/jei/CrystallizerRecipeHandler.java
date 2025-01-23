@@ -28,7 +28,7 @@ public class CrystallizerRecipeHandler implements IRecipeCategory<CrystallizerRe
 	protected final IDrawableStatic powerStatic;
 	protected final IDrawableAnimated powerAnimated;
 	
-	public CrystallizerRecipeHandler(IGuiHelper help) {
+	public CrystallizerRecipeHandler(final IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 155, 55);
 		
 		progressStatic = help.createDrawable(gui_rl, 192, 0, 22, 16);
@@ -59,14 +59,14 @@ public class CrystallizerRecipeHandler implements IRecipeCategory<CrystallizerRe
 	}
 	
 	@Override
-	public void drawExtras(Minecraft minecraft) {
+	public void drawExtras(final Minecraft minecraft) {
 		powerAnimated.draw(minecraft, 2, 2);
 		progressAnimated.draw(minecraft, 98, 19);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, CrystallizerRecipe recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(final IRecipeLayout recipeLayout, final CrystallizerRecipe recipeWrapper, final IIngredients ingredients) {
+		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 73, 19);
 		guiItemStacks.init(1, true, 37, 19);

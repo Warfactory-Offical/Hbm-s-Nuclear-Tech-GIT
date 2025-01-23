@@ -18,7 +18,7 @@ public class TileEntityHatch extends TileEntity implements ITickable {
 	public void update() {
 		if(controller == null)
 			return;
-		Block b = world.getBlockState(controller).getBlock();
+		final Block b = world.getBlockState(controller).getBlock();
 		
 		if(b != ModBlocks.seal_controller && !world.isRemote) {
 			this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -29,19 +29,19 @@ public class TileEntityHatch extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		controller = BlockPos.fromLong(compound.getLong("controller"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		if(controller != null)
 			compound.setLong("controller", controller.toLong());
 		return super.writeToNBT(compound);
 	}
 	
-	public void setControllerPos(BlockPos pos) {
+	public void setControllerPos(final BlockPos pos) {
 		this.controller = pos;
 	}
 }

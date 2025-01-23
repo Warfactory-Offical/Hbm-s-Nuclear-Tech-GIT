@@ -45,7 +45,7 @@ public class BlockHazard extends Block implements IItemHazard {
 
 	
 	
-	public BlockHazard(Material mat, String s) {
+	public BlockHazard(final Material mat, final String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -54,33 +54,33 @@ public class BlockHazard extends Block implements IItemHazard {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
-	public BlockHazard(String s) {
+	public BlockHazard(final String s) {
 		this(Material.IRON, s);
 	}
 
-	public BlockHazard(Material mat, SoundType type, String s) {
+	public BlockHazard(final Material mat, final SoundType type, final String s) {
 		this(mat, s);
 		setSoundType(type);
 	}
 
-	public BlockHazard(SoundType type, String s) {
+	public BlockHazard(final SoundType type, final String s) {
 		this(Material.IRON, s);
 		setSoundType(type);
 	}
 	
-	public BlockHazard setDisplayEffect(ExtDisplayEffect extEffect) {
+	public BlockHazard setDisplayEffect(final ExtDisplayEffect extEffect) {
 		this.extEffect = extEffect;
 		return this;
 	}
 
 	@Override
-	public Block setSoundType(SoundType sound) {
+	public Block setSoundType(final SoundType sound) {
 		return super.setSoundType(sound);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
+	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand){
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
 
 		if(extEffect == null)
@@ -104,9 +104,9 @@ public class BlockHazard extends Block implements IItemHazard {
 		}
 	}
 	
-	private void sPart(World world, int x, int y, int z, Random rand) {
+	private void sPart(final World world, final int x, final int y, final int z, final Random rand) {
 
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
 			if(dir == ForgeDirection.DOWN && this.extEffect == ExtDisplayEffect.FLAMES)
 				continue;
@@ -128,7 +128,7 @@ public class BlockHazard extends Block implements IItemHazard {
 					world.spawnParticle(EnumParticleTypes.TOWN_AURA, ix, iy, iz, 0.0, 0.0, 0.0);
 				}
 				if(this.extEffect == ExtDisplayEffect.SCHRAB) {
-					NBTTagCompound data = new NBTTagCompound();
+					final NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "schrabfog");
 					data.setDouble("posX", ix);
 					data.setDouble("posY", iy);
@@ -150,7 +150,7 @@ public class BlockHazard extends Block implements IItemHazard {
 	}
 
 	@Override
-	public IItemHazard addRadiation(float radiation) {
+	public IItemHazard addRadiation(final float radiation) {
 		this.getModule().addRadiation(radiation);
 		this.radIn = radiation * 0.1F;
 		this.radMax = radiation;
@@ -162,18 +162,18 @@ public class BlockHazard extends Block implements IItemHazard {
 		return this;
 	}
 
-	public BlockHazard addRad3d(int rad3d) {
+	public BlockHazard addRad3d(final int rad3d) {
 		this.rad3d = rad3d;
 		return this;
 	}
 
 	@Override
-	public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon){
+	public boolean isBeaconBase(final IBlockAccess worldObj, final BlockPos pos, final BlockPos beacon){
 		return beaconable;
 	}
 	
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand){
+	public void updateTick(final World worldIn, final BlockPos pos, final IBlockState state, final Random rand){
 
 		if(this.rad3d > 0){
 			ContaminationUtil.radiate(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 32, this.rad3d, 0, this.module.fire * 5000, 0, 0);
@@ -192,7 +192,7 @@ public class BlockHazard extends Block implements IItemHazard {
 
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 		if(this.rad3d > 0)
 			return 20;
 		if(this.radIn > 0)
@@ -201,7 +201,7 @@ public class BlockHazard extends Block implements IItemHazard {
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state){
+	public void onBlockAdded(final World worldIn, final BlockPos pos, final IBlockState state){
 		super.onBlockAdded(worldIn, pos, state);
 		if(this.radIn > 0 || this.rad3d > 0){
 			this.setTickRandomly(true);
@@ -210,7 +210,7 @@ public class BlockHazard extends Block implements IItemHazard {
 	}
 
 	@Override
-	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
+	public void onPlayerDestroy(final World world, final BlockPos pos, final IBlockState state) {
 		if(this == ModBlocks.block_meteor_molten) {
         	if(!world.isRemote)
         		world.setBlockState(pos, Blocks.LAVA.getDefaultState());
@@ -227,7 +227,7 @@ public class BlockHazard extends Block implements IItemHazard {
 
 	@Override
 	@SuppressWarnings("unreachable-")
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity) {
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entity) {
 
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase)entity, 0.5F, 0, false, EnumHand.MAIN_HAND);
@@ -236,12 +236,11 @@ public class BlockHazard extends Block implements IItemHazard {
     	if (entity instanceof EntityLivingBase && this == ModBlocks.brick_jungle_mystic)
     	{
     		((EntityLivingBase) entity).addPotionEffect(new PotionEffect(HbmPotion.taint, 15 * 20, 2));
-    		return;
-    	}
+        }
  	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity){
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity){
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase)entity, 0.5F, 0, false, EnumHand.MAIN_HAND);
 
@@ -249,12 +248,11 @@ public class BlockHazard extends Block implements IItemHazard {
     	if (entity instanceof EntityLivingBase && this == ModBlocks.brick_jungle_mystic)
     	{
     		((EntityLivingBase) entity).addPotionEffect(new PotionEffect(HbmPotion.taint, 15 * 20, 2));
-    		return;
-    	}
+        }
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		if(this == ModBlocks.frozen_planks)
 		{
 			return Items.SNOWBALL;

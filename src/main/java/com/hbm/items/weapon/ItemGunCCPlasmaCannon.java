@@ -12,13 +12,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGunCCPlasmaCannon extends ItemGunBase {
 
-	public ItemGunCCPlasmaCannon(GunConfiguration config, String s) {
+	public ItemGunCCPlasmaCannon(final GunConfiguration config, final String s) {
 		super(config, s);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onFireClient(ItemStack stack, EntityPlayer player, boolean shouldDoThirdPerson) {
+	public void onFireClient(final ItemStack stack, final EntityPlayer player, final boolean shouldDoThirdPerson) {
 	}
 	
 	@Override
@@ -29,7 +29,7 @@ public class ItemGunCCPlasmaCannon extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHUD(Pre event, ElementType type, EntityPlayer player, ItemStack stack, EnumHand hand) {
+	public void renderHUD(final Pre event, final ElementType type, final EntityPlayer player, final ItemStack stack, final EnumHand hand) {
 		
 	}
 

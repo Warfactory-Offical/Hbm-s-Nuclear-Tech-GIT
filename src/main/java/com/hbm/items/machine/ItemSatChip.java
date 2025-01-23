@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ItemSatChip extends Item {
 
-	public ItemSatChip(String s) {
+	public ItemSatChip(final String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -21,18 +21,18 @@ public class ItemSatChip extends Item {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.satellitefr", getFreq(stack)));
 	}
 	
-	public static int getFreq(ItemStack stack) {
+	public static int getFreq(final ItemStack stack) {
 		if(stack.getTagCompound() == null) {
 			return 0;
 		}
 		return stack.getTagCompound().getInteger("freq");
 	}
 	
-	public static void setFreq(ItemStack stack, int i) {
+	public static void setFreq(final ItemStack stack, final int i) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}

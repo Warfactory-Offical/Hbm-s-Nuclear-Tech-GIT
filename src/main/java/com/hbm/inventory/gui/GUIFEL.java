@@ -27,9 +27,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIFEL extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_fel.png");
-	private TileEntityFEL fel;
+	private final TileEntityFEL fel;
 
-	public GUIFEL(InventoryPlayer invPlayer, TileEntityFEL laser) {
+	public GUIFEL(final InventoryPlayer invPlayer, final TileEntityFEL laser) {
 		super(new ContainerFEL(invPlayer, laser));
 		fel = laser;
 
@@ -38,14 +38,14 @@ public class GUIFEL extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float f) {
+	public void drawScreen(final int mouseX, final int mouseY, final float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 182, guiTop + 27, 16, 113, fel.power, fel.maxPower);
+		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 182, guiTop + 27, 16, 113, fel.power, TileEntityFEL.maxPower);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(int mouseX, int mouseY, int i) throws IOException {
+	protected void mouseClicked(final int mouseX, final int mouseY, final int i) throws IOException {
 		super.mouseClicked(mouseX, mouseY, i);
 
 		if(guiLeft + 142 <= mouseX && guiLeft + 142 + 29 > mouseX && guiTop + 41 < mouseY && guiTop + 41 + 17 >= mouseY) {
@@ -55,8 +55,8 @@ public class GUIFEL extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		String name = this.fel.hasCustomInventoryName() ? this.fel.getInventoryName() : I18n.format(this.fel.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		final String name = this.fel.hasCustomInventoryName() ? this.fel.getInventoryName() : I18n.format(this.fel.getInventoryName());
 
 		this.fontRenderer.drawString(name, 90 + this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 7, 0xffffff);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 98, 4210752);
@@ -69,7 +69,7 @@ public class GUIFEL extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
 		super.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -78,19 +78,19 @@ public class GUIFEL extends GuiInfoContainer {
 		if(fel.isOn)
 			drawTexturedModalRect(guiLeft + 142, guiTop + 41, 203, 0, 29, 17);
 		
-		int k = (int)fel.getPowerScaled(113);
+		final int k = (int)fel.getPowerScaled(113);
 		drawTexturedModalRect(guiLeft + 182, guiTop + 27 + 113 - k, 203, 17 + 113 - k, 16, k);
 		
-		int color = !(fel.mode == EnumWavelengths.VISIBLE) ? fel.mode.guiColor : Color.HSBtoRGB(fel.getWorld().getTotalWorldTime() / 50.0F, 0.5F, 1F) & 16777215;
+		final int color = !(fel.mode == EnumWavelengths.VISIBLE) ? fel.mode.guiColor : Color.HSBtoRGB(fel.getWorld().getTotalWorldTime() / 50.0F, 0.5F, 1F) & 16777215;
 		
-		if(fel.power > fel.powerReq * Math.pow(2, fel.mode.ordinal()) && fel.isOn && !(fel.mode == EnumWavelengths.NULL) && fel.distance > 0) {
+		if(fel.power > TileEntityFEL.powerReq * Math.pow(2, fel.mode.ordinal()) && fel.isOn && !(fel.mode == EnumWavelengths.NULL) && fel.distance > 0) {
 	
 			GlStateManager.disableTexture2D();
 			GlStateManager.disableLighting();
 			GlStateManager.glLineWidth(10F);
 			GlStateManager.color(((color >> 16) & 0xFF) / 255.0F, ((color >> 8) & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
 			
-			BufferBuilder buf = Tessellator.getInstance().getBuffer();
+			final BufferBuilder buf = Tessellator.getInstance().getBuffer();
 			buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
 			
 			buf.pos(guiLeft + 135, guiTop + 31.5F, this.zLevel).endVertex();

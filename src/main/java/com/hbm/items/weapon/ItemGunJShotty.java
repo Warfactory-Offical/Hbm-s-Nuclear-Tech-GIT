@@ -45,16 +45,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGunJShotty extends ItemGunBase {
 
-	public ItemGunJShotty(GunConfiguration config, String s) {
+	public ItemGunJShotty(final GunConfiguration config, final String s) {
 		super(config, s);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void startAnim(EntityPlayer player, ItemStack stack, int slot, AnimType type) {
+	public void startAnim(final EntityPlayer player, final ItemStack stack, final int slot, final AnimType type) {
 		switch(type){
 		case RELOAD:
-			int bullets = getMag(stack);
+			final int bullets = getMag(stack);
 			if(bullets == 1){
 				HbmAnimations.hotbar[slot] = new BlenderAnimation(stack.getItem().getTranslationKey(), System.currentTimeMillis(), 1, ResourceManager.jshotgun_anim0, new EndResult(EndType.END));
 			} else if(bullets == 0){
@@ -64,8 +64,8 @@ public class ItemGunJShotty extends ItemGunBase {
 		case CYCLE:
 			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
 				MainRegistry.proxy.setRecoil(10F);
-			float partialTicks = MainRegistry.proxy.partialTicks();
-			Vec3d start = new Vec3d(-0.28, -0.1, 2).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYaw)).add(player.getPositionEyes(partialTicks));
+			final float partialTicks = MainRegistry.proxy.partialTicks();
+			final Vec3d start = new Vec3d(-0.28, -0.1, 2).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYaw)).add(player.getPositionEyes(partialTicks));
 			Vec3d look = player.getLook(partialTicks);
 			look = BobMathUtil.randVecInCone(look, 20);
 			look = look.scale(0.1F);
@@ -76,8 +76,8 @@ public class ItemGunJShotty extends ItemGunBase {
 	}
 	
 	@Override
-	protected EntityBulletBase getBulletEntity(World world, EntityPlayer player, ItemStack stack, int config, EnumHand hand) {
-		EntityBulletBase b = super.getBulletEntity(world, player, stack, config, hand);
+	protected EntityBulletBase getBulletEntity(final World world, final EntityPlayer player, final ItemStack stack, final int config, final EnumHand hand) {
+		final EntityBulletBase b = super.getBulletEntity(world, player, stack, config, hand);
 		b.overrideDamage = 4 + world.rand.nextInt(7);
 		b.overrideMaxAge = 4+world.rand.nextInt(3);
 		b.overrideStyle(BulletConfiguration.STYLE_TRACER);
@@ -85,30 +85,30 @@ public class ItemGunJShotty extends ItemGunBase {
 	}
 	
 	@Override
-	protected int getBullets(World world, EntityPlayer player, EnumHand hand, BulletConfiguration config) {
+	protected int getBullets(final World world, final EntityPlayer player, final EnumHand hand, final BulletConfiguration config) {
 		return 8 + world.rand.nextInt(5);
 		//return 1;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void playerWorldRender(EntityPlayer player, RenderWorldLastEvent e, EnumHand hand) {
+	public void playerWorldRender(final EntityPlayer player, final RenderWorldLastEvent e, final EnumHand hand) {
 		if(hand == EnumHand.MAIN_HAND){
-			float partialTicks = e.getPartialTicks();
+			final float partialTicks = e.getPartialTicks();
 			Vec3d start = new Vec3d(-0.28, -0.1, 2).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYaw)).add(player.getPositionEyes(partialTicks));
 			Vec3d direction = player.getLook(partialTicks);
 			if(getFlashlightActive(player.getHeldItemMainhand())){
 				if(ItemRenderJShotgun.firstPersonFlashlightPos != null && player == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0){
-					Vec3d world = RenderHelper.unproject_world(HbmShaderManager2.inv_ViewProjectionMatrix, ItemRenderJShotgun.firstPersonFlashlightPos[0], ItemRenderJShotgun.firstPersonFlashlightPos[1], 1);
-					Vec3d eyePos = player.getPositionEyes(partialTicks);
-					Entity ent = Minecraft.getMinecraft().getRenderViewEntity();
-					double rPosX = ent.prevPosX + (ent.posX-ent.prevPosX)*partialTicks;
-					double rPosY = ent.prevPosY + (ent.posY-ent.prevPosY)*partialTicks;
-					double rPosZ = ent.prevPosZ + (ent.posZ-ent.prevPosZ)*partialTicks;
-					Vec3d camPos = ActiveRenderInfo.getCameraPosition().add(rPosX, rPosY, rPosZ);
+					final Vec3d world = RenderHelper.unproject_world(HbmShaderManager2.inv_ViewProjectionMatrix, ItemRenderJShotgun.firstPersonFlashlightPos[0], ItemRenderJShotgun.firstPersonFlashlightPos[1], 1);
+					final Vec3d eyePos = player.getPositionEyes(partialTicks);
+					final Entity ent = Minecraft.getMinecraft().getRenderViewEntity();
+					final double rPosX = ent.prevPosX + (ent.posX-ent.prevPosX)*partialTicks;
+					final double rPosY = ent.prevPosY + (ent.posY-ent.prevPosY)*partialTicks;
+					final double rPosZ = ent.prevPosZ + (ent.posZ-ent.prevPosZ)*partialTicks;
+					final Vec3d camPos = ActiveRenderInfo.getCameraPosition().add(rPosX, rPosY, rPosZ);
 					start = camPos.add(world.subtract(eyePos).normalize().scale(1));
 					
-					Vec3d dir = BobMathUtil.viewToLocal(new Vector4f((float)ItemRenderJShotgun.flashlightDirection.x, (float)ItemRenderJShotgun.flashlightDirection.y, (float)ItemRenderJShotgun.flashlightDirection.z, 0))[0].normalize();
+					final Vec3d dir = BobMathUtil.viewToLocal(new Vector4f((float)ItemRenderJShotgun.flashlightDirection.x, (float)ItemRenderJShotgun.flashlightDirection.y, (float)ItemRenderJShotgun.flashlightDirection.z, 0))[0].normalize();
 					direction = new Vec3d(dir.x, dir.y, dir.z);
 				}
 				LightRenderer.addFlashlight(start, start.add(direction.scale(30)), 20, 500, ResourceManager.fl_cookie, true, true);
@@ -120,8 +120,8 @@ public class ItemGunJShotty extends ItemGunBase {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack stack = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+		final ItemStack stack = playerIn.getHeldItem(handIn);
 		setFlashlightActive(stack, !getFlashlightActive(stack));
 		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 1, 1);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
@@ -129,13 +129,13 @@ public class ItemGunJShotty extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHUD(Pre event, ElementType type, EntityPlayer player, ItemStack stack, EnumHand hand) {
+	public void renderHUD(final Pre event, final ElementType type, final EntityPlayer player, final ItemStack stack, final EnumHand hand) {
 		super.renderHUD(event, type, player, stack, hand);
 		if(type == ElementType.CROSSHAIRS){
 			event.setCanceled(true);
-			ScaledResolution res = event.getResolution();
-			float x = res.getScaledWidth()/2;
-			float y = res.getScaledHeight()/2;
+			final ScaledResolution res = event.getResolution();
+			final float x = res.getScaledWidth()/2;
+			final float y = res.getScaledHeight()/2;
 
 			GL11.glPushMatrix();
 				Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.shotgun_crosshair);
@@ -153,11 +153,11 @@ public class ItemGunJShotty extends ItemGunBase {
 		}
 	}
 	
-	public static void setFlashlightActive(ItemStack stack, boolean b) {
+	public static void setFlashlightActive(final ItemStack stack, final boolean b) {
 		writeNBT(stack, "flashlightActive", b ? 1 : 0);
 	}
 
-	public static boolean getFlashlightActive(ItemStack stack) {
+	public static boolean getFlashlightActive(final ItemStack stack) {
 		return readNBT(stack, "flashlightActive") == 1;
 	}
 }

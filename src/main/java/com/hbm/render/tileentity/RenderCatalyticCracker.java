@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderCatalyticCracker extends TileEntitySpecialRenderer<TileEntityMachineCatalyticCracker> {
 	
 	@Override
-	public void render(TileEntityMachineCatalyticCracker te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(final TileEntityMachineCatalyticCracker te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 
 		GlStateManager.pushMatrix();
 

@@ -23,15 +23,15 @@ import net.minecraft.util.ResourceLocation;
 public class SSmokeRenderer extends Render<EntitySSmokeFX> {
 
 	private Item item;
-	private int meta;
+	private final int meta;
 
-	public SSmokeRenderer(RenderManager manager, Item p_i1259_1_, int p_i1259_2_) {
+	public SSmokeRenderer(final RenderManager manager, final Item p_i1259_1_, final int p_i1259_2_) {
 		super(manager);
 		this.item = p_i1259_1_;
 		this.meta = p_i1259_2_;
 	}
 
-	public SSmokeRenderer(RenderManager manager, Item p_i1260_1_) {
+	public SSmokeRenderer(final RenderManager manager, final Item p_i1260_1_) {
 		this(manager, p_i1260_1_, 0);
 	}
 
@@ -44,8 +44,8 @@ public class SSmokeRenderer extends Render<EntitySSmokeFX> {
 	 * float f1). But JAD is pre 1.5 so doesn't do that.
 	 */
 	@Override
-	public void doRender(EntitySSmokeFX fx, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
-			float p_76986_9_) {
+	public void doRender(final EntitySSmokeFX fx, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_,
+                         final float p_76986_9_) {
 
 
 			if (fx.particleAge <= fx.maxAge && fx.particleAge >= fx.maxAge / 8 * 7) {
@@ -72,7 +72,7 @@ public class SSmokeRenderer extends Render<EntitySSmokeFX> {
 				item = ModItems.smoke3;
 			}
 
-			if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
+			if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8) {
 				item = ModItems.smoke2;
 			}
 
@@ -80,7 +80,7 @@ public class SSmokeRenderer extends Render<EntitySSmokeFX> {
 				item = ModItems.smoke1;
 			}
 
-			TextureAtlasSprite tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(item, 1, meta), null, null).getParticleTexture();
+			final TextureAtlasSprite tex = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(item, 1, meta), null, null).getParticleTexture();
 
 			if (tex != null) {
 				GL11.glPushMatrix();
@@ -92,7 +92,7 @@ public class SSmokeRenderer extends Render<EntitySSmokeFX> {
 				GL11.glScalef(0.25F, 0.25F, 0.25F);
 				//
 				this.bindEntityTexture(fx);
-				Tessellator tessellator = Tessellator.getInstance();
+				final Tessellator tessellator = Tessellator.getInstance();
 
 				this.func_77026_a(tessellator, tex);
 				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -106,20 +106,20 @@ public class SSmokeRenderer extends Render<EntitySSmokeFX> {
 	 * unless you call Render.bindEntityTexture.
 	 */
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySSmokeFX e) {
+	protected ResourceLocation getEntityTexture(final EntitySSmokeFX e) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 
-	private void func_77026_a(Tessellator tes, TextureAtlasSprite tex) {
-		BufferBuilder buf = tes.getBuffer();
+	private void func_77026_a(final Tessellator tes, final TextureAtlasSprite tex) {
+		final BufferBuilder buf = tes.getBuffer();
 		GlStateManager.disableLighting();
-		float f = tex.getMinU();
-		float f1 = tex.getMaxU();
-		float f2 = tex.getMinV();
-		float f3 = tex.getMaxV();
-		float f4 = 1.0F;
-		float f5 = 0.5F;
-		float f6 = 0.25F;
+		final float f = tex.getMinU();
+		final float f1 = tex.getMaxU();
+		final float f2 = tex.getMinV();
+		final float f3 = tex.getMaxV();
+		final float f4 = 1.0F;
+		final float f5 = 0.5F;
+		final float f6 = 0.25F;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

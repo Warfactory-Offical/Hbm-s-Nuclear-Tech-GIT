@@ -25,13 +25,13 @@ public class FluidBarrelRender extends TileEntityItemStackRenderer {
 	public IBakedModel itemModel;
 	
 	@Override
-	public void renderByItem(ItemStack stack) {
+	public void renderByItem(final ItemStack stack) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		RenderHelper.bindBlockTexture();
 
-		Tessellator tes = Tessellator.getInstance();
-		BufferBuilder buf = Tessellator.getInstance().getBuffer();
+		final Tessellator tes = Tessellator.getInstance();
+		final BufferBuilder buf = Tessellator.getInstance().getBuffer();
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, itemModel);
@@ -46,7 +46,7 @@ public class FluidBarrelRender extends TileEntityItemStackRenderer {
 		tes.draw();*/
 		final double HALF_A_PIXEL = 0.03125;
 		final double PIX = 0.0625;
-		FluidStack f = FluidUtil.getFluidContained(stack);
+		final FluidStack f = FluidUtil.getFluidContained(stack);
 		TextureAtlasSprite lava = null;
 		if (f != null)
 			lava = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(f.getFluid().getStill().toString());

@@ -12,11 +12,11 @@ import java.util.Locale;
 
 public class ExplosionResistanceTooltipManager {
 
-    public static void addTooltip(ItemStack stack, List<String> list) {
+    public static void addTooltip(final ItemStack stack, final List<String> list) {
         if (stack != null && stack.getItem() instanceof ItemBlock) {
-            Block block = Block.getBlockFromItem(stack.getItem());
+            final Block block = Block.getBlockFromItem(stack.getItem());
 
-            float resistance = block.getExplosionResistance(null);
+            final float resistance = block.getExplosionResistance(null);
 
             String resistanceLabel = null;
 
@@ -35,9 +35,9 @@ public class ExplosionResistanceTooltipManager {
             }
 
             if (resistanceLabel != null) {
-                DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+                final DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
                 symbols.setGroupingSeparator(' ');
-                DecimalFormat df = new DecimalFormat("#,###", symbols);
+                final DecimalFormat df = new DecimalFormat("#,###", symbols);
 
                 list.add(TextFormatting.GOLD + "[" + String.format(resistanceLabel, df.format(resistance)) + "]");
             }

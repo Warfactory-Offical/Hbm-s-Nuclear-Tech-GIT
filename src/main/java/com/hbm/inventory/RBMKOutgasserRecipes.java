@@ -143,56 +143,56 @@ public class RBMKOutgasserRecipes {
 		addRecipe(1000000, ModItems.meteorite_sword_bred, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_irradiated));
 	}
 
-	public static void addRecipe(int requiredFlux, ItemStack in, ItemStack out) {
+	public static void addRecipe(final int requiredFlux, final ItemStack in, final ItemStack out) {
 		rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
 	}
 
-	public static void addRecipe(int requiredFlux, Item in, ItemStack out) {
+	public static void addRecipe(final int requiredFlux, final Item in, final ItemStack out) {
 		rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
 	}
 	
-	public static void addRecipe(int requiredFlux, Block in, ItemStack out) {
+	public static void addRecipe(final int requiredFlux, final Block in, final ItemStack out) {
 		rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
 	}
 
-	public static void addRecipe(int requiredFlux, String in, ItemStack out) {
+	public static void addRecipe(final int requiredFlux, final String in, final ItemStack out) {
 		if(!OreDictionary.getOres(in).isEmpty() && OreDictionary.getOres(in).get(0) != null && !OreDictionary.getOres(in).get(0).isEmpty())
 			rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(OreDictionary.getOres(in).get(0)), new Object[] {requiredFlux, out});
 	}
 
-	public static void addRecipe(float requiredFlux, String in, ItemStack out) {
+	public static void addRecipe(final float requiredFlux, final String in, final ItemStack out) {
 		addRecipe((int)requiredFlux, in, out);
 	}
 
-	public static void addRecipe(float requiredFlux, Item in, ItemStack out) {
+	public static void addRecipe(final float requiredFlux, final Item in, final ItemStack out) {
 		addRecipe((int)requiredFlux, in, out);
 	}
 
-	public static void addRecipe(float requiredFlux, ItemStack in, ItemStack out) {
+	public static void addRecipe(final float requiredFlux, final ItemStack in, final ItemStack out) {
 		addRecipe((int)requiredFlux, in, out);
 	}
 
-	public static void addRecipe(float requiredFlux, Block in, ItemStack out) {
+	public static void addRecipe(final float requiredFlux, final Block in, final ItemStack out) {
 		addRecipe((int)requiredFlux, in, out);
 	}
 	
-	public static void removeRecipe(ItemStack in) {
+	public static void removeRecipe(final ItemStack in) {
 		rbmkOutgasserRecipes.remove(ItemStackUtil.comparableStackFrom(in));
 	}
 
-	public static int getRequiredFlux(ItemStack stack) {
+	public static int getRequiredFlux(final ItemStack stack) {
 		
 		if(stack == null || stack.isEmpty())
 			return -1;
 		
-		ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
+		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
 		if(rbmkOutgasserRecipes.containsKey(comp)){
 			return (int)rbmkOutgasserRecipes.get(comp)[0];
 		}
 
-		String[] dictKeys = comp.getDictKeys();
+		final String[] dictKeys = comp.getDictKeys();
 		
-		for(String key : dictKeys) {
+		for(final String key : dictKeys) {
 			if(rbmkOutgasserRecipes.containsKey(key)){
 				return (int)rbmkOutgasserRecipes.get(key)[1];
 			}
@@ -200,19 +200,19 @@ public class RBMKOutgasserRecipes {
 		return -1;
 	}
 
-	public static ItemStack getOutput(ItemStack stack) {
+	public static ItemStack getOutput(final ItemStack stack) {
 		
 		if(stack == null || stack.getItem() == null)
 			return null;
 
-		ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
+		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
 		if(rbmkOutgasserRecipes.containsKey(comp)){
 			return (ItemStack)rbmkOutgasserRecipes.get(comp)[1];
 		}
 		
-		String[] dictKeys = comp.getDictKeys();
+		final String[] dictKeys = comp.getDictKeys();
 		
-		for(String key : dictKeys) {
+		for(final String key : dictKeys) {
 			
 			if(rbmkOutgasserRecipes.containsKey(key)){
 				return (ItemStack)rbmkOutgasserRecipes.get(key)[1];
@@ -224,7 +224,7 @@ public class RBMKOutgasserRecipes {
 	public static List<RBMKOutgasserRecipe> getRBMKOutgasserRecipes() {
 		if(jeiRBMKOutgasserRecipes == null){
 			jeiRBMKOutgasserRecipes = new ArrayList<RBMKOutgasserRecipe>();
-			for(Entry<ComparableStack, Object[]> e : rbmkOutgasserRecipes.entrySet()){
+			for(final Entry<ComparableStack, Object[]> e : rbmkOutgasserRecipes.entrySet()){
 				jeiRBMKOutgasserRecipes.add(new RBMKOutgasserRecipe(e.getKey().toStack(), (int)e.getValue()[0], (ItemStack)e.getValue()[1]));
 			}
 		}
@@ -237,21 +237,21 @@ public class RBMKOutgasserRecipes {
 		private final int requiredFlux;
 		private final ItemStack output;
 		
-		public RBMKOutgasserRecipe(ItemStack input, int requiredFlux, ItemStack output) {
+		public RBMKOutgasserRecipe(final ItemStack input, final int requiredFlux, final ItemStack output) {
 			this.input = input;
 			this.requiredFlux = requiredFlux;
 			this.output = output;
 		}
 		
 		@Override
-		public void getIngredients(IIngredients ingredients) {
+		public void getIngredients(final IIngredients ingredients) {
 			ingredients.setInput(VanillaTypes.ITEM, input);
 			ingredients.setOutput(VanillaTypes.ITEM, output);
 		}
 
 		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-			FontRenderer fontRenderer = minecraft.fontRenderer;
+		public void drawInfo(final Minecraft minecraft, final int recipeWidth, final int recipeHeight, final int mouseX, final int mouseY) {
+			final FontRenderer fontRenderer = minecraft.fontRenderer;
 	    	
 	    	fontRenderer.drawString("Flux", 21-12, 33-17, 4210752);
 	    	fontRenderer.drawString(""+requiredFlux, 123-12-fontRenderer.getStringWidth(""+requiredFlux), 34-17, 0x46EA00);

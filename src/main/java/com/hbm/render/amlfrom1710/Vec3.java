@@ -19,23 +19,23 @@ public class Vec3
      * Static method for creating a new Vec3D given the three x,y,z values. This is only called from the other static
      * method which creates and places it in the list.
      */
-    public static Vec3 createVectorHelper(double p_72443_0_, double p_72443_2_, double p_72443_4_)
+    public static Vec3 createVectorHelper(final double p_72443_0_, final double p_72443_2_, final double p_72443_4_)
     {
         return new Vec3(p_72443_0_, p_72443_2_, p_72443_4_);
     }
 
-    public static Vec3 createVectorHelper(Entity e)
+    public static Vec3 createVectorHelper(final Entity e)
     {
         return new Vec3(e.posX, e.posY, e.posZ);
     }
     
-    public Vec3(Vec3d vec) {
+    public Vec3(final Vec3d vec) {
     	this.xCoord = vec.x;
     	this.yCoord = vec.y;
     	this.zCoord = vec.z;
 	}
 
-    public Vec3(BlockPos vec) {
+    public Vec3(final BlockPos vec) {
         this.xCoord = vec.getX();
         this.yCoord = vec.getY();
         this.zCoord = vec.getZ();
@@ -66,7 +66,7 @@ public class Vec3
     /**
      * Sets the x,y,z components of the vector as specified.
      */
-    public Vec3 setComponents(double p_72439_1_, double p_72439_3_, double p_72439_5_)
+    public Vec3 setComponents(final double p_72439_1_, final double p_72439_3_, final double p_72439_5_)
     {
         this.xCoord = p_72439_1_;
         this.yCoord = p_72439_3_;
@@ -74,14 +74,14 @@ public class Vec3
         return this;
     }
     
-    public Vec3 set(Vec3 other){
+    public Vec3 set(final Vec3 other){
     	return setComponents(other.xCoord, other.yCoord, other.zCoord);
     }
 
     /**
      * Returns a new vector with the result of the specified vector minus this.
      */
-    public Vec3 subtract(Vec3 other)
+    public Vec3 subtract(final Vec3 other)
     {
         /**
          * Static method for creating a new Vec3D given the three x,y,z values. This is only called from the other
@@ -90,7 +90,7 @@ public class Vec3
         return createVectorHelper(this.xCoord - other.xCoord, this.yCoord - other.yCoord, this.zCoord - other.zCoord);
     }
     
-    public Vec3 subtract(double x, double y, double z){
+    public Vec3 subtract(final double x, final double y, final double z){
     	return new Vec3(xCoord - x, yCoord - y, zCoord - z);
     }
 
@@ -99,11 +99,11 @@ public class Vec3
      */
     public Vec3 normalize()
     {
-        double d0 = (double)MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
+        final double d0 = MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
         return d0 < 1.0E-4D ? createVectorHelper(0.0D, 0.0D, 0.0D) : createVectorHelper(this.xCoord / d0, this.yCoord / d0, this.zCoord / d0);
     }
 
-    public double dotProduct(Vec3 p_72430_1_)
+    public double dotProduct(final Vec3 p_72430_1_)
     {
         return this.xCoord * p_72430_1_.xCoord + this.yCoord * p_72430_1_.yCoord + this.zCoord * p_72430_1_.zCoord;
     }
@@ -111,7 +111,7 @@ public class Vec3
     /**
      * Returns a new vector with the result of this vector x the specified vector.
      */
-    public Vec3 crossProduct(Vec3 p_72431_1_)
+    public Vec3 crossProduct(final Vec3 p_72431_1_)
     {
         /**
          * Static method for creating a new Vec3D given the three x,y,z values. This is only called from the other
@@ -124,7 +124,7 @@ public class Vec3
      * Adds the specified x,y,z vector components to this vector and returns the resulting vector. Does not change this
      * vector.
      */
-    public Vec3 add(double p_72441_1_, double p_72441_3_, double p_72441_5_)
+    public Vec3 add(final double p_72441_1_, final double p_72441_3_, final double p_72441_5_)
     {
         /**
          * Static method for creating a new Vec3D given the three x,y,z values. This is only called from the other
@@ -133,56 +133,56 @@ public class Vec3
         return createVectorHelper(this.xCoord + p_72441_1_, this.yCoord + p_72441_3_, this.zCoord + p_72441_5_);
     }
     
-    public Vec3 add(Vec3 other){
+    public Vec3 add(final Vec3 other){
     	return new Vec3(xCoord + other.xCoord, yCoord + other.yCoord, zCoord + other.zCoord);
     }
 
     /**
      * Euclidean distance between this and the specified vector, returned as double.
      */
-    public double distanceTo(Vec3 p_72438_1_)
+    public double distanceTo(final Vec3 p_72438_1_)
     {
-        double d0 = p_72438_1_.xCoord - this.xCoord;
-        double d1 = p_72438_1_.yCoord - this.yCoord;
-        double d2 = p_72438_1_.zCoord - this.zCoord;
-        return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        final double d0 = p_72438_1_.xCoord - this.xCoord;
+        final double d1 = p_72438_1_.yCoord - this.yCoord;
+        final double d2 = p_72438_1_.zCoord - this.zCoord;
+        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
-    public double distanceTo(double x, double y, double z)
+    public double distanceTo(final double x, final double y, final double z)
     {
-        double d0 = x - this.xCoord;
-        double d1 = y - this.yCoord;
-        double d2 = z - this.zCoord;
-        return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        final double d0 = x - this.xCoord;
+        final double d1 = y - this.yCoord;
+        final double d2 = z - this.zCoord;
+        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
-    public double distanceTo(Entity e)
+    public double distanceTo(final Entity e)
     {
-        double d0 = e.posX - this.xCoord;
-        double d1 = e.posY - this.yCoord;
-        double d2 = e.posZ - this.zCoord;
-        return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        final double d0 = e.posX - this.xCoord;
+        final double d1 = e.posY - this.yCoord;
+        final double d2 = e.posZ - this.zCoord;
+        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
     /**
      * The square of the Euclidean distance between this and the specified vector.
      */
-    public double squareDistanceTo(Vec3 p_72436_1_)
+    public double squareDistanceTo(final Vec3 p_72436_1_)
     {
-        double d0 = p_72436_1_.xCoord - this.xCoord;
-        double d1 = p_72436_1_.yCoord - this.yCoord;
-        double d2 = p_72436_1_.zCoord - this.zCoord;
+        final double d0 = p_72436_1_.xCoord - this.xCoord;
+        final double d1 = p_72436_1_.yCoord - this.yCoord;
+        final double d2 = p_72436_1_.zCoord - this.zCoord;
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
     /**
      * The square of the Euclidean distance between this and the vector of x,y,z components passed in.
      */
-    public double squareDistanceTo(double p_72445_1_, double p_72445_3_, double p_72445_5_)
+    public double squareDistanceTo(final double p_72445_1_, final double p_72445_3_, final double p_72445_5_)
     {
-        double d3 = p_72445_1_ - this.xCoord;
-        double d4 = p_72445_3_ - this.yCoord;
-        double d5 = p_72445_5_ - this.zCoord;
+        final double d3 = p_72445_1_ - this.xCoord;
+        final double d4 = p_72445_3_ - this.yCoord;
+        final double d5 = p_72445_5_ - this.zCoord;
         return d3 * d3 + d4 * d4 + d5 * d5;
     }
 
@@ -191,7 +191,7 @@ public class Vec3
      */
     public double length()
     {
-        return (double)MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
+        return MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
     }
     
     public double lengthSquared(){
@@ -202,11 +202,11 @@ public class Vec3
      * Returns a new vector with x value equal to the second parameter, along the line between this vector and the
      * passed in vector, or null if not possible.
      */
-    public Vec3 getIntermediateWithXValue(Vec3 p_72429_1_, double p_72429_2_)
+    public Vec3 getIntermediateWithXValue(final Vec3 p_72429_1_, final double p_72429_2_)
     {
-        double d1 = p_72429_1_.xCoord - this.xCoord;
-        double d2 = p_72429_1_.yCoord - this.yCoord;
-        double d3 = p_72429_1_.zCoord - this.zCoord;
+        final double d1 = p_72429_1_.xCoord - this.xCoord;
+        final double d2 = p_72429_1_.yCoord - this.yCoord;
+        final double d3 = p_72429_1_.zCoord - this.zCoord;
 
         if (d1 * d1 < 1.0000000116860974E-7D)
         {
@@ -214,7 +214,7 @@ public class Vec3
         }
         else
         {
-            double d4 = (p_72429_2_ - this.xCoord) / d1;
+            final double d4 = (p_72429_2_ - this.xCoord) / d1;
             return d4 >= 0.0D && d4 <= 1.0D ? createVectorHelper(this.xCoord + d1 * d4, this.yCoord + d2 * d4, this.zCoord + d3 * d4) : null;
         }
     }
@@ -223,11 +223,11 @@ public class Vec3
      * Returns a new vector with y value equal to the second parameter, along the line between this vector and the
      * passed in vector, or null if not possible.
      */
-    public Vec3 getIntermediateWithYValue(Vec3 p_72435_1_, double p_72435_2_)
+    public Vec3 getIntermediateWithYValue(final Vec3 p_72435_1_, final double p_72435_2_)
     {
-        double d1 = p_72435_1_.xCoord - this.xCoord;
-        double d2 = p_72435_1_.yCoord - this.yCoord;
-        double d3 = p_72435_1_.zCoord - this.zCoord;
+        final double d1 = p_72435_1_.xCoord - this.xCoord;
+        final double d2 = p_72435_1_.yCoord - this.yCoord;
+        final double d3 = p_72435_1_.zCoord - this.zCoord;
 
         if (d2 * d2 < 1.0000000116860974E-7D)
         {
@@ -235,7 +235,7 @@ public class Vec3
         }
         else
         {
-            double d4 = (p_72435_2_ - this.yCoord) / d2;
+            final double d4 = (p_72435_2_ - this.yCoord) / d2;
             return d4 >= 0.0D && d4 <= 1.0D ? createVectorHelper(this.xCoord + d1 * d4, this.yCoord + d2 * d4, this.zCoord + d3 * d4) : null;
         }
     }
@@ -244,11 +244,11 @@ public class Vec3
      * Returns a new vector with z value equal to the second parameter, along the line between this vector and the
      * passed in vector, or null if not possible.
      */
-    public Vec3 getIntermediateWithZValue(Vec3 p_72434_1_, double p_72434_2_)
+    public Vec3 getIntermediateWithZValue(final Vec3 p_72434_1_, final double p_72434_2_)
     {
-        double d1 = p_72434_1_.xCoord - this.xCoord;
-        double d2 = p_72434_1_.yCoord - this.yCoord;
-        double d3 = p_72434_1_.zCoord - this.zCoord;
+        final double d1 = p_72434_1_.xCoord - this.xCoord;
+        final double d2 = p_72434_1_.yCoord - this.yCoord;
+        final double d3 = p_72434_1_.zCoord - this.zCoord;
 
         if (d3 * d3 < 1.0000000116860974E-7D)
         {
@@ -256,7 +256,7 @@ public class Vec3
         }
         else
         {
-            double d4 = (p_72434_2_ - this.zCoord) / d3;
+            final double d4 = (p_72434_2_ - this.zCoord) / d3;
             return d4 >= 0.0D && d4 <= 1.0D ? createVectorHelper(this.xCoord + d1 * d4, this.yCoord + d2 * d4, this.zCoord + d3 * d4) : null;
         }
     }
@@ -269,51 +269,51 @@ public class Vec3
     /**
      * Rotates the vector around the x axis by the specified angle.
      */
-    public void rotateAroundX(float p_72440_1_)
+    public void rotateAroundX(final float p_72440_1_)
     {
-        float f1 = MathHelper.cos(p_72440_1_);
-        float f2 = MathHelper.sin(p_72440_1_);
-        double d0 = this.xCoord;
-        double d1 = this.yCoord * (double)f1 + this.zCoord * (double)f2;
-        double d2 = this.zCoord * (double)f1 - this.yCoord * (double)f2;
+        final float f1 = MathHelper.cos(p_72440_1_);
+        final float f2 = MathHelper.sin(p_72440_1_);
+        final double d0 = this.xCoord;
+        final double d1 = this.yCoord * (double)f1 + this.zCoord * (double)f2;
+        final double d2 = this.zCoord * (double)f1 - this.yCoord * (double)f2;
         this.setComponents(d0, d1, d2);
     }
 
     /**
      * Rotates the vector around the y axis by the specified angle.
      */
-    public void rotateAroundY(float p_72442_1_)
+    public void rotateAroundY(final float p_72442_1_)
     {
-        float f1 = MathHelper.cos(p_72442_1_);
-        float f2 = MathHelper.sin(p_72442_1_);
-        double d0 = this.xCoord * (double)f1 + this.zCoord * (double)f2;
-        double d1 = this.yCoord;
-        double d2 = this.zCoord * (double)f1 - this.xCoord * (double)f2;
+        final float f1 = MathHelper.cos(p_72442_1_);
+        final float f2 = MathHelper.sin(p_72442_1_);
+        final double d0 = this.xCoord * (double)f1 + this.zCoord * (double)f2;
+        final double d1 = this.yCoord;
+        final double d2 = this.zCoord * (double)f1 - this.xCoord * (double)f2;
         this.setComponents(d0, d1, d2);
     }
 
     /**
      * Rotates the vector around the z axis by the specified angle.
      */
-    public void rotateAroundZ(float p_72446_1_)
+    public void rotateAroundZ(final float p_72446_1_)
     {
-        float f1 = MathHelper.cos(p_72446_1_);
-        float f2 = MathHelper.sin(p_72446_1_);
-        double d0 = this.xCoord * (double)f1 + this.yCoord * (double)f2;
-        double d1 = this.yCoord * (double)f1 - this.xCoord * (double)f2;
-        double d2 = this.zCoord;
+        final float f1 = MathHelper.cos(p_72446_1_);
+        final float f2 = MathHelper.sin(p_72446_1_);
+        final double d0 = this.xCoord * (double)f1 + this.yCoord * (double)f2;
+        final double d1 = this.yCoord * (double)f1 - this.xCoord * (double)f2;
+        final double d2 = this.zCoord;
         this.setComponents(d0, d1, d2);
     }
     
-    public Vec3 interpolate(Vec3 other, double inter){
+    public Vec3 interpolate(final Vec3 other, final double inter){
     	return Vec3.createVectorHelper(this.xCoord + (other.xCoord - this.xCoord)*inter, this.yCoord + (other.yCoord - this.yCoord)*inter, this.zCoord + (other.zCoord - this.zCoord)*inter);
     }
     
-    public Vec3 mult(float mult){
+    public Vec3 mult(final float mult){
     	return Vec3.createVectorHelper(this.xCoord*mult, this.yCoord*mult, this.zCoord*mult);
     }
     
-    public Vec3 multd(double mult){
+    public Vec3 multd(final double mult){
     	return Vec3.createVectorHelper(this.xCoord*mult, this.yCoord*mult, this.zCoord*mult);
     }
     
@@ -322,17 +322,19 @@ public class Vec3
     }
 
     //https://en.wikipedia.org/wiki/Outer_product
-	public Matrix3f outerProduct(Vec3 other) {
-		Matrix3f mat = new Matrix3f(
+	public Matrix3f outerProduct(final Vec3 other) {
+		final Matrix3f mat = new Matrix3f(
 				(float)(xCoord*other.xCoord), (float)(xCoord*other.yCoord), (float)(xCoord*other.zCoord),
 				(float)(yCoord*other.xCoord), (float)(yCoord*other.yCoord), (float)(yCoord*other.zCoord),
 				(float)(zCoord*other.xCoord), (float)(zCoord*other.yCoord), (float)(zCoord*other.zCoord));
 		return mat;
 	}
 	
-	 public Vec3 matTransform(Matrix3f mat) {
-	     double x,y,z;
-	     x = mat.m00* xCoord + mat.m01*yCoord + mat.m02*zCoord; 
+	 public Vec3 matTransform(final Matrix3f mat) {
+	     final double x;
+         double y;
+         final double z;
+         x = mat.m00* xCoord + mat.m01*yCoord + mat.m02*zCoord;
 	     y = mat.m10* xCoord + mat.m11*yCoord + mat.m12*zCoord; 
 	     z = mat.m20* xCoord + mat.m21*yCoord + mat.m22*zCoord; 
 	     return new Vec3(x, y, z);
@@ -350,11 +352,11 @@ public class Vec3
         return new BlockPos(xCoord, yCoord, zCoord);
     }
 
-	public Vec3 max(double d) {
+	public Vec3 max(final double d) {
 		return new Vec3(Math.max(xCoord, d), Math.max(yCoord, d), Math.max(zCoord, d));
 	}
 	
-	public Vec3 min(double d) {
+	public Vec3 min(final double d) {
 		return new Vec3(Math.min(xCoord, d), Math.min(yCoord, d), Math.min(zCoord, d));
 	}
 }

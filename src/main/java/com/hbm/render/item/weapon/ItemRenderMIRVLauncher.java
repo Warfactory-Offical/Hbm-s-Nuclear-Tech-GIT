@@ -22,7 +22,7 @@ public class ItemRenderMIRVLauncher extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GL11.glPopMatrix();
 		GlStateManager.enableCull();
 		Minecraft.getMinecraft().renderEngine.bindTexture(mirv_rl);

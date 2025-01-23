@@ -17,14 +17,14 @@ public class RenderMissileCustom extends Render<EntityMissileCustom> {
 
 	public static final IRenderFactory<EntityMissileCustom> FACTORY = (RenderManager man) -> {return new RenderMissileCustom(man);};
 	
-	protected RenderMissileCustom(RenderManager renderManager) {
+	protected RenderMissileCustom(final RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(EntityMissileCustom entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityMissileCustom entity, double x, double y, double z, final float entityYaw, final float partialTicks) {
 		GL11.glPushMatrix();
-		double[] pos = RenderHelper.getRenderPosFromMissile(entity, partialTicks);
+		final double[] pos = RenderHelper.getRenderPosFromMissile(entity, partialTicks);
 		x = pos[0];
 		y = pos[1];
 		z = pos[2];
@@ -38,7 +38,7 @@ public class RenderMissileCustom extends Render<EntityMissileCustom> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMissileCustom entity) {
+	protected ResourceLocation getEntityTexture(final EntityMissileCustom entity) {
 		return ResourceManager.universal;
 	}
 

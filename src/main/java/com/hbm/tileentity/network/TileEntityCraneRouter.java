@@ -43,9 +43,9 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
     public void update() {
         if(!world.isRemote) {
 
-            NBTTagCompound data = new NBTTagCompound();
+            final NBTTagCompound data = new NBTTagCompound();
             for(int i = 0; i < patterns.length; i++) {
-                NBTTagCompound compound = new NBTTagCompound();
+                final NBTTagCompound compound = new NBTTagCompound();
                 patterns[i].writeToNBT(compound);
                 data.setTag("pattern" + i, compound);
             }
@@ -55,60 +55,60 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
     }
 
     @Override
-    public void networkUnpack(NBTTagCompound data) {
+    public void networkUnpack(final NBTTagCompound data) {
         super.networkUnpack(data);
 
         for(int i = 0; i < patterns.length; i++) {
-            NBTTagCompound compound = data.getCompoundTag("pattern" + i);
+            final NBTTagCompound compound = data.getCompoundTag("pattern" + i);
             patterns[i].readFromNBT(compound);
         }
         this.modes = data.getIntArray("modes");
     }
 
     @Override
-    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new ContainerCraneRouter(player.inventory, this);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
         return new GUICraneRouter(player.inventory, this);
     }
 
-    public void nextMode(int index) {
+    public void nextMode(final int index) {
 
-        int matcher = index / 5;
-        int mIndex = index % 5;
+        final int matcher = index / 5;
+        final int mIndex = index % 5;
 
         this.patterns[matcher].nextMode(world, inventory.getStackInSlot(index), mIndex);
     }
 
-    public void initPattern(ItemStack stack, int index) {
+    public void initPattern(final ItemStack stack, final int index) {
 
-        int matcher = index / 5;
-        int mIndex = index % 5;
+        final int matcher = index / 5;
+        final int mIndex = index % 5;
 
         this.patterns[matcher].initPatternSmart(world, stack, mIndex);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 
         for(int i = 0; i < patterns.length; i++) {
-            NBTTagCompound compound = nbt.getCompoundTag("pattern" + i);
+            final NBTTagCompound compound = nbt.getCompoundTag("pattern" + i);
             patterns[i].readFromNBT(compound);
         }
         this.modes = nbt.getIntArray("modes");
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
 
         for(int i = 0; i < patterns.length; i++) {
-            NBTTagCompound compound = new NBTTagCompound();
+            final NBTTagCompound compound = new NBTTagCompound();
             patterns[i].writeToNBT(compound);
             nbt.setTag("pattern" + i, compound);
         }
@@ -117,16 +117,16 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
     }
 
     @Override
-    public boolean hasPermission(EntityPlayer player) {
-        int xCoord = pos.getX();
-        int yCoord = pos.getY();
-        int zCoord = pos.getZ();
+    public boolean hasPermission(final EntityPlayer player) {
+        final int xCoord = pos.getX();
+        final int yCoord = pos.getY();
+        final int zCoord = pos.getZ();
         return new Vec3d(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).length() < 20;
     }
 
     @Override
-    public void receiveControl(NBTTagCompound data) {
-        int i = data.getInteger("toggle");
+    public void receiveControl(final NBTTagCompound data) {
+        final int i = data.getInteger("toggle");
         modes[i]++;
         if(modes[i] > 3)
             modes [i] = 0;

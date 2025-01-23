@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 public class ModelMaskMan extends ModelBase {
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 
 		GL11.glPushMatrix();
@@ -20,7 +20,7 @@ public class ModelMaskMan extends ModelBase {
 		GL11.glRotatef(180, 1, 0, 0);
 		GL11.glTranslatef(0, -1.5F, 0);
 		GL11.glRotatef(-90, 0, 1, 0);
-		EntityMaskMan man = (EntityMaskMan)entity;
+		final EntityMaskMan man = (EntityMaskMan)entity;
 		
 		//boolean target = entity.worldObj.getEntityByID(man.getDataWatcher().getWatchableObjectInt(man.dwTargetPlayer)) != null;
 
@@ -29,11 +29,11 @@ public class ModelMaskMan extends ModelBase {
 
 
         //float f7 = man.limbSwing - man.limbSwingAmount * (1.0F - f5);
-        float f7 = f;
+        final float f7 = f;
         //float f6 = (man.prevLimbSwingAmount + (man.limbSwingAmount - man.prevLimbSwingAmount) * f5) * 0.5F;
-        float f6 = f1;
+        final float f6 = f1;
 
-        double swing = Math.toDegrees(MathHelper.cos(f7 / 2F + (float)Math.PI) * 1.4F * f6);
+        final double swing = Math.toDegrees(MathHelper.cos(f7 / 2F + (float)Math.PI) * 1.4F * f6);
 
 		GL11.glRotated(swing * -0.1, 1, 0, 0);
 		ResourceManager.maskman.renderPart("Torso");

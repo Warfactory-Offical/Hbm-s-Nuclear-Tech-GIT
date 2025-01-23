@@ -88,39 +88,39 @@ public class DFCRecipes {
 		DFCRecipes.setRecipe(69000000000000L, Items.WRITABLE_BOOK, ItemStackUtil.itemStackFrom(ModItems.book_of_));
 	}
 
-	public static void setRecipe(long requiredFlux, ItemStack in, ItemStack out) {
+	public static void setRecipe(final long requiredFlux, final ItemStack in, final ItemStack out) {
 		dfcRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
 	}
 
-	public static void setRecipe(long requiredFlux, Item in, ItemStack out) {
+	public static void setRecipe(final long requiredFlux, final Item in, final ItemStack out) {
 		dfcRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
 	}
 	
-	public static void setRecipe(long requiredFlux, Block in, ItemStack out) {
+	public static void setRecipe(final long requiredFlux, final Block in, final ItemStack out) {
 		dfcRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
 	}
 
-	public static void setRecipe(long requiredFlux, String in, ItemStack out) {
+	public static void setRecipe(final long requiredFlux, final String in, final ItemStack out) {
 		dfcRecipes.put(ItemStackUtil.comparableStackFrom(OreDictionary.getOres(in).get(0)), new Object[] {requiredFlux, out});
 	}
 
-	public static void removeRecipe(ItemStack in) {
+	public static void removeRecipe(final ItemStack in) {
 		dfcRecipes.remove(ItemStackUtil.comparableStackFrom(in));
 	}
 
-	public static long getRequiredFlux(ItemStack stack) {
+	public static long getRequiredFlux(final ItemStack stack) {
 		
 		if(stack == null || stack.isEmpty())
 			return -1;
 		
-		ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
+		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
 		if(dfcRecipes.containsKey(comp)){
 			return (long)dfcRecipes.get(comp)[0];
 		}
 
-		String[] dictKeys = comp.getDictKeys();
+		final String[] dictKeys = comp.getDictKeys();
 		
-		for(String key : dictKeys) {
+		for(final String key : dictKeys) {
 			if(dfcRecipes.containsKey(key)){
 				return (long)dfcRecipes.get(key)[1];
 			}
@@ -128,19 +128,19 @@ public class DFCRecipes {
 		return -1;
 	}
 
-	public static ItemStack getOutput(ItemStack stack) {
+	public static ItemStack getOutput(final ItemStack stack) {
 		
 		if(stack == null || stack.getItem() == null)
 			return null;
 
-		ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
+		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
 		if(dfcRecipes.containsKey(comp)){
 			return (ItemStack)dfcRecipes.get(comp)[1];
 		}
 		
-		String[] dictKeys = comp.getDictKeys();
+		final String[] dictKeys = comp.getDictKeys();
 		
-		for(String key : dictKeys) {
+		for(final String key : dictKeys) {
 			
 			if(dfcRecipes.containsKey(key)){
 				return (ItemStack)dfcRecipes.get(key)[1];
@@ -152,7 +152,7 @@ public class DFCRecipes {
 	public static List<DFCRecipe> getDFCRecipes() {
 		if(jeiDFCRecipes == null){
 			jeiDFCRecipes = new ArrayList<DFCRecipe>();
-			for(Entry<ComparableStack, Object[]> e : dfcRecipes.entrySet()){
+			for(final Entry<ComparableStack, Object[]> e : dfcRecipes.entrySet()){
 				jeiDFCRecipes.add(new DFCRecipe(e.getKey().toStack(), (long)e.getValue()[0], (ItemStack)e.getValue()[1]));
 			}
 		}
@@ -165,24 +165,24 @@ public class DFCRecipes {
 		private final long requiredFlux;
 		private final ItemStack output;
 		
-		public DFCRecipe(ItemStack input, long requiredFlux, ItemStack output) {
+		public DFCRecipe(final ItemStack input, final long requiredFlux, final ItemStack output) {
 			this.input = input;
 			this.requiredFlux = requiredFlux;
 			this.output = output;
 		}
 		
 		@Override
-		public void getIngredients(IIngredients ingredients) {
+		public void getIngredients(final IIngredients ingredients) {
 			ingredients.setInput(VanillaTypes.ITEM, input);
 			ingredients.setOutput(VanillaTypes.ITEM, output);
 		}
 
 		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-			FontRenderer fontRenderer = minecraft.fontRenderer;
+		public void drawInfo(final Minecraft minecraft, final int recipeWidth, final int recipeHeight, final int mouseX, final int mouseY) {
+			final FontRenderer fontRenderer = minecraft.fontRenderer;
 	    	
 	    	fontRenderer.drawString("Spark", 8, 8, 4210752);
-	    	String number = Library.getShortNumber(requiredFlux);
+	    	final String number = Library.getShortNumber(requiredFlux);
 	    	fontRenderer.drawString(number, 80-fontRenderer.getStringWidth(number), 8, 0xa82a0e);
 	    	GlStateManager.color(1, 1, 1, 1);
 		}

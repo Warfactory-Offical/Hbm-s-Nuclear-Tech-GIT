@@ -22,20 +22,20 @@ public class JetpackSyncPacket implements IMessage {
 	public JetpackSyncPacket() {
 	}
 
-	public JetpackSyncPacket(EntityPlayer player) {
+	public JetpackSyncPacket(final EntityPlayer player) {
 		playerId = player.getEntityId();
 		info = JetpackHandler.get(player);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		playerId = buf.readInt();
 		info = new JetpackInfo(false);
 		info.read(buf);
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(playerId);
 		info.write(buf);
 	}
@@ -43,10 +43,10 @@ public class JetpackSyncPacket implements IMessage {
 	public static class Handler implements IMessageHandler<JetpackSyncPacket, IMessage> {
 
 		@Override
-		public IMessage onMessage(JetpackSyncPacket message, MessageContext ctx) {
+		public IMessage onMessage(final JetpackSyncPacket message, final MessageContext ctx) {
 			if(ctx.side == Side.SERVER) {
 				ctx.getServerHandler().player.server.addScheduledTask(() -> {
-					EntityPlayer player = ctx.getServerHandler().player;
+					final EntityPlayer player = ctx.getServerHandler().player;
 					JetpackInfo info = JetpackHandler.get(player);
 					if(info == null) {
 						JetpackHandler.put(player, info = new JetpackInfo(false));
@@ -60,13 +60,12 @@ public class JetpackSyncPacket implements IMessage {
 		}
 
 		@SideOnly(Side.CLIENT)
-		public void handleMessageClient(JetpackSyncPacket m, MessageContext ctx) {
+		public void handleMessageClient(final JetpackSyncPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				World world = Minecraft.getMinecraft().world;
-				Entity ent = world.getEntityByID(m.playerId);
-				if(ent instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) ent;
-					JetpackInfo info = JetpackHandler.get(player);
+				final World world = Minecraft.getMinecraft().world;
+				final Entity ent = world.getEntityByID(m.playerId);
+				if(ent instanceof EntityPlayer player) {
+                    JetpackInfo info = JetpackHandler.get(player);
 					if(info == null) {
 						info = new JetpackInfo(true);
 						JetpackHandler.put(player, info);

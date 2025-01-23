@@ -37,7 +37,7 @@ public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements 
 		super.update();
 	}
 
-	public void moveItem(int fromSlot, int toSlot){
+	public void moveItem(final int fromSlot, final int toSlot){
 		inventory.setStackInSlot(toSlot, inventory.getStackInSlot(fromSlot).copy());
 		inventory.setStackInSlot(fromSlot, ItemStack.EMPTY);
 	}
@@ -48,22 +48,22 @@ public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements 
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
 		return true;
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
+	public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
 		return true;
 	}
 
 	@Override
-	public boolean canLoad(ItemStack toLoad) {
+	public boolean canLoad(final ItemStack toLoad) {
 		return toLoad != null && inventory.getStackInSlot(11).isEmpty();
 	}
 
 	@Override
-	public void load(ItemStack toLoad) {
+	public void load(final ItemStack toLoad) {
 		inventory.setStackInSlot(11, toLoad.copy());
 		this.markDirty();
 	}

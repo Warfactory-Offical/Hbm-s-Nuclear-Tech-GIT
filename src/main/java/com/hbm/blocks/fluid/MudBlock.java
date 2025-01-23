@@ -24,7 +24,7 @@ public class MudBlock extends BlockFluidClassic {
 	public static DamageSource damageSource;
 	public Random rand = new Random();
 	
-	public MudBlock(Fluid fluid, Material material, DamageSource d, String s) {
+	public MudBlock(final Fluid fluid, final Material material, final DamageSource d, final String s) {
 		super(fluid, material);
 		damageSource = d;
 		this.setTranslationKey(s);
@@ -37,7 +37,7 @@ public class MudBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean canDisplace(IBlockAccess world, BlockPos pos) {
+	public boolean canDisplace(final IBlockAccess world, final BlockPos pos) {
 		if (world.getBlockState(pos).getMaterial().isLiquid()) {
 			return false;
 		}
@@ -45,7 +45,7 @@ public class MudBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean displaceIfPossible(World world, BlockPos pos) {
+	public boolean displaceIfPossible(final World world, final BlockPos pos) {
 		if (world.getBlockState(pos).getMaterial().isLiquid()) {
 			return false;
 		}
@@ -53,7 +53,7 @@ public class MudBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entity) {
 		entity.setInWeb();
 
 		if (entity instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer) entity)) {} else {
@@ -62,7 +62,7 @@ public class MudBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 		reactToBlocks2(world, pos.east());
 		reactToBlocks2(world, pos.west());
 		reactToBlocks2(world, pos.up());
@@ -73,7 +73,7 @@ public class MudBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighbourPos) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block neighborBlock, final BlockPos neighbourPos) {
 		reactToBlocks(world, pos.east());
 		reactToBlocks(world, pos.west());
 		reactToBlocks(world, pos.up());
@@ -83,9 +83,9 @@ public class MudBlock extends BlockFluidClassic {
 		super.neighborChanged(state, world, pos, neighborBlock, neighbourPos);
 	}
 	
-	public void reactToBlocks(World world, BlockPos pos) {
+	public void reactToBlocks(final World world, final BlockPos pos) {
 		if(world.getBlockState(pos).getMaterial() != ModBlocks.fluidmud) {
-			IBlockState block = world.getBlockState(pos);
+			final IBlockState block = world.getBlockState(pos);
 			
 			if(block.getMaterial().isLiquid()) {
 				world.setBlockToAir(pos);
@@ -94,10 +94,10 @@ public class MudBlock extends BlockFluidClassic {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void reactToBlocks2(World world, BlockPos pos) {
+	public void reactToBlocks2(final World world, final BlockPos pos) {
 		if(world.getBlockState(pos).getMaterial() != ModBlocks.fluidmud) {
-			IBlockState state = world.getBlockState(pos);
-			Block block = state.getBlock();
+			final IBlockState state = world.getBlockState(pos);
+			final Block block = state.getBlock();
 
 			if (block == Blocks.STONE || 
 					block == Blocks.STONE_BRICK_STAIRS || 
@@ -163,7 +163,7 @@ public class MudBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(final World world) {
 		return 15;
 	}
 	

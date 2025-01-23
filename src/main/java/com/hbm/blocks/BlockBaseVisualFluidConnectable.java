@@ -9,17 +9,17 @@ public class BlockBaseVisualFluidConnectable extends BlockBase implements IFluid
 
 	private Fluid[] fluids;
 	
-	public BlockBaseVisualFluidConnectable(Material m, String s){
+	public BlockBaseVisualFluidConnectable(final Material m, final String s){
 		super(m, s);
 	}
 	
-	public BlockBaseVisualFluidConnectable addFluids(Fluid... fluids){
+	public BlockBaseVisualFluidConnectable addFluids(final Fluid... fluids){
 		this.fluids = fluids;
 		return this;
 	}
 
 	@Override
-	public boolean shouldConnect(Fluid f){
+	public boolean shouldConnect(final Fluid f){
 		if(fluids == null)
 			return true;
 		for(int i = 0; i < fluids.length; i ++){

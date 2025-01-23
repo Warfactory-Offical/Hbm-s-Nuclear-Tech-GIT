@@ -24,7 +24,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class CentrifugeRecipes {
 
-	private static LinkedHashMap<Object, ItemStack[]> recipes = new LinkedHashMap<Object, ItemStack[]>();
+	private static final LinkedHashMap<Object, ItemStack[]> recipes = new LinkedHashMap<Object, ItemStack[]>();
 	private static List<CentrifugeRecipe> centrifugeRecipes = null;
 	
 	public static void register() {
@@ -260,9 +260,9 @@ public class CentrifugeRecipes {
 		recipes.put(CO.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_cobalt, 2), ItemStackUtil.itemStackFrom(ModItems.powder_iron, 3), ItemStackUtil.itemStackFrom(ModItems.powder_copper, 3), ItemStackUtil.itemStackFrom(ModItems.powder_lithium_tiny, 1) });
 		recipes.put(ASBESTOS.crystal(), new ItemStack[] { ItemStackUtil.itemStackFrom(ModItems.powder_asbestos, 2), ItemStackUtil.itemStackFrom(ModItems.powder_asbestos, 2), ItemStackUtil.itemStackFrom(ModItems.powder_boron_tiny, 1), ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1) });
 
-		for(Entry<Integer, String> entry : BedrockOreRegistry.oreIndexes.entrySet()) {
-			int oreMeta = entry.getKey();
-			String oreName = entry.getValue();
+		for(final Entry<Integer, String> entry : BedrockOreRegistry.oreIndexes.entrySet()) {
+			final int oreMeta = entry.getKey();
+			final String oreName = entry.getValue();
  			recipes.put(ItemStackUtil.comparableStackFrom(ModItems.ore_bedrock, 1, oreMeta), new ItemStack[] { 
 				ItemStackUtil.itemStackFrom(ModItems.ore_bedrock_centrifuged, 1, oreMeta), 
 				ItemStackUtil.itemStackFrom(ModItems.ore_bedrock_centrifuged, 1, oreMeta), 
@@ -301,7 +301,7 @@ public class CentrifugeRecipes {
 		}
 	}
 
-	public static ItemStack getNugget(String oreName){
+	public static ItemStack getNugget(final String oreName){
 		if(oreName.equals("oreLead") || oreName.equals("oreCopper")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.CADMIUM), 1);
 		if(oreName.equals("oreGold") || oreName.equals("oreTungsten")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.BISMUTH), 1);
 		if(oreName.equals("oreUranium")) return ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.RA226), 1);
@@ -313,26 +313,26 @@ public class CentrifugeRecipes {
 		return ItemStackUtil.itemStackFrom(Blocks.GRAVEL, 1);
 	}
 
-	public static void addRecipe(ItemStack in, ItemStack[] outputs){
+	public static void addRecipe(final ItemStack in, final ItemStack[] outputs){
 		recipes.put(ItemStackUtil.comparableStackFrom(in), outputs);
 	}
 
-	public static void removeRecipe(ItemStack in){
+	public static void removeRecipe(final ItemStack in){
 		recipes.remove(ItemStackUtil.comparableStackFrom(in));
 	}
 	
-	public static ItemStack[] getOutput(ItemStack stack) {
+	public static ItemStack[] getOutput(final ItemStack stack) {
 		
 		if(stack == null || stack.getItem() == null)
 			return null;
 	
-		ComparableStack comp = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
+		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack.getItem(), 1, stack.getItemDamage());
 		if(recipes.containsKey(comp))
 			return RecipesCommon.copyStackArray(recipes.get(comp));
 		
-		String[] dictKeys = comp.getDictKeys();
+		final String[] dictKeys = comp.getDictKeys();
 		
-		for(String key : dictKeys) {
+		for(final String key : dictKeys) {
 
 			if(recipes.containsKey(key))
 				return RecipesCommon.copyStackArray(recipes.get(key));
@@ -346,10 +346,10 @@ public class CentrifugeRecipes {
 			return centrifugeRecipes;
 		centrifugeRecipes = new ArrayList<CentrifugeRecipe>();
 		
-		for(Entry<Object, ItemStack[]> entry : CentrifugeRecipes.recipes.entrySet()) {
+		for(final Entry<Object, ItemStack[]> entry : CentrifugeRecipes.recipes.entrySet()) {
 			
 			if(entry.getKey() instanceof String) {
-				List<ItemStack> ingredients = OreDictionary.getOres((String)entry.getKey());
+				final List<ItemStack> ingredients = OreDictionary.getOres((String)entry.getKey());
 				centrifugeRecipes.add(new CentrifugeRecipe(ingredients, Arrays.asList(entry.getValue())));
 			} else {
 				centrifugeRecipes.add(new CentrifugeRecipe(((ComparableStack)entry.getKey()).toStack(), Arrays.asList(entry.getValue())));
@@ -365,20 +365,20 @@ public class CentrifugeRecipes {
 		private final List<ItemStack> outputs;
 		public final List<ItemStack> inputs;
 		
-		public CentrifugeRecipe(ItemStack input, List<ItemStack> outputs) {
+		public CentrifugeRecipe(final ItemStack input, final List<ItemStack> outputs) {
 			this.input = input;
 			this.inputs = null;
 			this.outputs = outputs; 
 		}
 		
-		public CentrifugeRecipe(List<ItemStack> inputs, List<ItemStack> outputs) {
+		public CentrifugeRecipe(final List<ItemStack> inputs, final List<ItemStack> outputs) {
 			this.inputs = inputs;
 			this.input = ItemStack.EMPTY;
 			this.outputs = outputs; 
 		}
 		
 		@Override
-		public void getIngredients(IIngredients ingredients) {
+		public void getIngredients(final IIngredients ingredients) {
 			if(inputs != null){
 				ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(inputs));
 			} else {

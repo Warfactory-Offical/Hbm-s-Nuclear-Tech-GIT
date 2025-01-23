@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class BlockCoalOil extends BlockOre {
 
-	public BlockCoalOil(String s) {
+	public BlockCoalOil(final String s) {
 		super();
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -31,11 +31,11 @@ public class BlockCoalOil extends BlockOre {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		for(EnumFacing dir : EnumFacing.VALUES) {
+	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+		for(final EnumFacing dir : EnumFacing.VALUES) {
 
-        	IBlockState nS = world.getBlockState(pos.offset(dir));
-        	Block n = nS.getBlock();
+        	final IBlockState nS = world.getBlockState(pos.offset(dir));
+        	final Block n = nS.getBlock();
 
         	if(n == ModBlocks.ore_coal_oil_burning || n == ModBlocks.balefire || n == Blocks.FIRE || nS.getMaterial() == Material.LAVA) {
         		world.scheduleUpdate(pos, this, world.rand.nextInt(20) + 2);
@@ -44,14 +44,14 @@ public class BlockCoalOil extends BlockOre {
 	}
 	
 	@Override
-	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	public void onBlockHarvested(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player) {
 		if(player.getHeldItemMainhand() == null)
     		return;
 
     	if(!(player.getHeldItemMainhand().getItem() instanceof ItemTool || player.getHeldItemMainhand().getItem() instanceof ItemToolAbility))
     		return;
 
-    	ItemTool tool = (ItemTool)player.getHeldItemMainhand().getItem();
+    	final ItemTool tool = (ItemTool)player.getHeldItemMainhand().getItem();
 
     	if(tool.getToolMaterialName() != ToolMaterial.WOOD.toString()) {
 
@@ -61,22 +61,22 @@ public class BlockCoalOil extends BlockOre {
 	}
 	
 	@Override
-	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn) {
+	public void onExplosionDestroy(final World worldIn, final BlockPos pos, final Explosion explosionIn) {
 		worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState());
 	}
 	
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
 		world.setBlockState(pos, ModBlocks.ore_coal_oil_burning.getDefaultState());
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
 		return Items.COAL;
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(final IBlockState state, final int fortune, final Random random) {
 		return 2 + random.nextInt(2);
 	}
 }

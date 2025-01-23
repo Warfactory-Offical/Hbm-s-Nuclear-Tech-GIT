@@ -15,7 +15,7 @@ public class SmallBlockPronter {
 	 * @param y
 	 * @param z
 	 */
-	public static void renderSmolBlockAt(TextureAtlasSprite loc, float x, float y, float z) {
+	public static void renderSmolBlockAt(final TextureAtlasSprite loc, final float x, final float y, final float z) {
 		RenderHelper.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, loc.getMaxU(), loc.getMinV());
 		RenderHelper.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, loc.getMinU(), loc.getMinV());
 		RenderHelper.addVertexWithUV(x + 11 * pixel / 2, y + 11 * pixel / 2, z + 1 - 11 * pixel / 2, loc.getMinU(), loc.getMaxV());

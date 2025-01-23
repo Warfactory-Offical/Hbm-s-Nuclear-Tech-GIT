@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public class WasteDrumRecipes {
 
 	public static LinkedHashMap<Item, ItemStack> recipes = new LinkedHashMap<>();
-	private static HashSet<Item> outputs = new HashSet<>();
+	private static final HashSet<Item> outputs = new HashSet<>();
 	
 	public static void registerRecipes() {
 
@@ -26,17 +26,17 @@ public class WasteDrumRecipes {
 		addRecipe(ModItems.waste_schrabidium_hot, ItemStackUtil.itemStackFrom(ModItems.waste_schrabidium, 1));
 	}
 
-	public static void addRecipe(ItemStack input, ItemStack output){
+	public static void addRecipe(final ItemStack input, final ItemStack output){
 		recipes.put(input.getItem(), output);
 		outputs.add(output.getItem());
 	}
 
-	public static void addRecipe(Item input, ItemStack output){
+	public static void addRecipe(final Item input, final ItemStack output){
 		recipes.put(input, output);
 		outputs.add(output.getItem());
 	}
 	
-	public static ItemStack getOutput(Item item) {
+	public static ItemStack getOutput(final Item item) {
 		
 		if(item == null)
 			return null;
@@ -44,11 +44,11 @@ public class WasteDrumRecipes {
 		return recipes.get(item);
 	}
 
-	public static boolean hasRecipe(Item item){
+	public static boolean hasRecipe(final Item item){
 		return recipes.containsKey(item);
 	}
 
-	public static boolean isCold(Item item){
+	public static boolean isCold(final Item item){
 		return outputs.contains(item);
 	}
 }

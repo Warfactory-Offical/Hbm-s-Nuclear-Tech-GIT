@@ -12,9 +12,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMiningLaser extends Container {
 
-	private TileEntityMachineMiningLaser diFurnace;
+	private final TileEntityMachineMiningLaser diFurnace;
 
-	public ContainerMiningLaser(InventoryPlayer invPlayer, TileEntityMachineMiningLaser tedf) {
+	public ContainerMiningLaser(final InventoryPlayer invPlayer, final TileEntityMachineMiningLaser tedf) {
 		diFurnace = tedf;
 
 		//Battery
@@ -37,14 +37,14 @@ public class ContainerMiningLaser extends Container {
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
+    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		final Slot var4 = this.inventorySlots.get(par2);
 
 		if (var4 != null && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
             if (par2 <= diFurnace.inventory.getSlots() - 1) {
@@ -72,7 +72,7 @@ public class ContainerMiningLaser extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 }

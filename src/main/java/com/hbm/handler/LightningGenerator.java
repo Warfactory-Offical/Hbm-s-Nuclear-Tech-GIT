@@ -17,32 +17,32 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LightningGenerator {
 
-	private static Random rand = new Random();
+	private static final Random rand = new Random();
 	
-	public static LightningNode generateLightning(Vec3d from, Vec3d to, LightningGenInfo info){
+	public static LightningNode generateLightning(final Vec3d from, final Vec3d to, final LightningGenInfo info){
 		rand.setSeed(Minecraft.getMinecraft().world.getTotalWorldTime());
-		LightningNode lfrom = new LightningNode(from);
-		LightningNode lto = new LightningNode(to);
+		final LightningNode lfrom = new LightningNode(from);
+		final LightningNode lto = new LightningNode(to);
 		lfrom.children.add(lto);
 		lto.parent = lfrom;
 		generateLightning(lfrom, info);
 		return lfrom;
 	}
 	
-	public static void generateLightning(LightningNode node, LightningGenInfo info){
-		Vec3d from = node.pos;
-		Vec3d to = node.children.get(0).pos;
+	public static void generateLightning(final LightningNode node, final LightningGenInfo info){
+		final Vec3d from = node.pos;
+		final Vec3d to = node.children.get(0).pos;
 		subdivide(node, info.subdivisions, info.subdivMult, info.subdivRecurse-1, info.randAmount, info.randAmountSubdivMultiplier);
 		LightningNode child = node.children.get(0);
 		float value = 0;
 		while(child.children.size() > 0){
 			value += 0.02F;
-			LightningNode next = child.children.get(0);
+			final LightningNode next = child.children.get(0);
 			if(rand.nextFloat() < info.forkChance-value){
-				Vec3d randVec = BobMathUtil.randVecInCone(to.subtract(from).normalize(), info.forkConeDegrees, rand);
-				LightningNode fork1 = new LightningNode(child.pos);
-				float len = 1+rand.nextFloat()*info.forkLengthRandom;
-				LightningNode fork2 = new LightningNode(child.pos.add(randVec.scale(len*from.subtract(to).length()*0.25F)));
+				final Vec3d randVec = BobMathUtil.randVecInCone(to.subtract(from).normalize(), info.forkConeDegrees, rand);
+				final LightningNode fork1 = new LightningNode(child.pos);
+				final float len = 1+rand.nextFloat()*info.forkLengthRandom;
+				final LightningNode fork2 = new LightningNode(child.pos.add(randVec.scale(len*from.subtract(to).length()*0.25F)));
 				fork1.children.add(fork2);
 				fork2.parent = fork1;
 				subdivide(fork1, (int) (len*0.75*info.forkSubdivisions), info.forkSubdivMult, info.forkSubdivRecurse, info.forkRandAmount*info.randAmount*rand.nextFloat()*0.8F, info.forkRandAmountSubdivMultiplier);
@@ -52,13 +52,13 @@ public class LightningGenerator {
 		}
 	}
 	
-	public static void subdivide(LightningNode n, int subdivisions, float subdivMult, int recurse, float randAmount, float randAmountSubdivMultiplier){
+	public static void subdivide(final LightningNode n, final int subdivisions, final float subdivMult, final int recurse, final float randAmount, final float randAmountSubdivMultiplier){
 		LightningNode parent = n;
 		LightningNode child = n.children.get(0);
-		float subdivision = 1F/(float)(subdivisions+1);
+		final float subdivision = 1F/(float)(subdivisions+1);
 		for(int i = 1; i <= subdivisions; i ++){
-			Vec3d newPos = BobMathUtil.mix(n.pos, child.pos, subdivision*i).add((rand.nextFloat()*2-1)*randAmount, (rand.nextFloat()*2-1)*randAmount, (rand.nextFloat()*2-1)*randAmount);
-			LightningNode insert = new LightningNode(newPos);
+			final Vec3d newPos = BobMathUtil.mix(n.pos, child.pos, subdivision*i).add((rand.nextFloat()*2-1)*randAmount, (rand.nextFloat()*2-1)*randAmount, (rand.nextFloat()*2-1)*randAmount);
+			final LightningNode insert = new LightningNode(newPos);
 			insert.parent = parent;
 			insert.children.add(child);
 			parent.children.set(0, insert);
@@ -69,20 +69,20 @@ public class LightningGenerator {
 			return;
 		child = n;
 		while(child.children.size() > 0){
-			LightningNode next = child.children.get(0);
+			final LightningNode next = child.children.get(0);
 			subdivide(child, (int)(subdivisions*subdivMult), subdivMult, recurse-1, randAmount*randAmountSubdivMultiplier, randAmountSubdivMultiplier);
 			child = next;
 		}
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void render(LightningNode n, Vec3d playerPos, float scale){
+	public static void render(final LightningNode n, final Vec3d playerPos, final float scale){
 		render(n, playerPos, scale, 0, 0, 0, false, null);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void render(LightningNode n, Vec3d playerPos, float scale, float x, float y, float z, boolean fadeEnd, @Nullable IColorGetter c){
-		List<Vec3d> toRender = new ArrayList<>();
+	public static void render(LightningNode n, final Vec3d playerPos, final float scale, final float x, final float y, final float z, final boolean fadeEnd, @Nullable final IColorGetter c){
+		final List<Vec3d> toRender = new ArrayList<>();
 		toRender.add(n.pos.add(x, y, z));
 		while(n.children.size() > 0){
 			//Render forks
@@ -100,7 +100,7 @@ public class LightningGenerator {
 		public List<LightningNode> children = new ArrayList<>(1);
 		public Vec3d pos;
 		
-		public LightningNode(Vec3d pos) {
+		public LightningNode(final Vec3d pos) {
 			this.pos = pos;
 		}
 	}

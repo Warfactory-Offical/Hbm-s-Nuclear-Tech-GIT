@@ -109,7 +109,7 @@ public class CompatibilityConfig {
 
 
 	
-	public static void loadFromConfig(Configuration config) {
+	public static void loadFromConfig(final Configuration config) {
 		final String CATEGORY_DIMRAD = "01_dimension_radiation";
 		final String CATEGORY_DIMORE = "02_dimension_ores";
 		final String CATEGORY_DIMSTRUC = "03_dimension_structures";
@@ -119,7 +119,7 @@ public class CompatibilityConfig {
 		final String CATEGORY_NUKES = "07_nukes";
 		final String CATEGORY_BORES = "08_bedrockOres";
 
-		String dimRadComment = "Amount of background radiation in the dimension in Rad/s - <dimID:Rad> (Int:Float)";
+		final String dimRadComment = "Amount of background radiation in the dimension in Rad/s - <dimID:Rad> (Int:Float)";
 		dimensionRad = CommonConfig.createConfigHashMap(config, CATEGORY_DIMRAD, "01.01_dimensionRadiation", dimRadComment, "Int", "Float", new String[]{  
 			"-1:0.666", //Nether
 			"1:0.01", //End
@@ -323,14 +323,14 @@ public class CompatibilityConfig {
 		}, ":");
 		
 
-		String mobModRadComment = "Amount of radiation resistance all the mobs of that mod get. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod=radresistance> (String:Float)";
+		final String mobModRadComment = "Amount of radiation resistance all the mobs of that mod get. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod=radresistance> (String:Float)";
 		mobModRadresistance = CommonConfig.createConfigHashMap(config, CATEGORY_MOB, "06.01_mob_Mod_Radresistance", mobModRadComment, "String", "Float", new String[]{ 
 			"srparasites=0.2",
 			"thaumcraft=0.75",
 		}, "=");
 		
 
-		String mobRadComment = "Amount of radiation resistance the mob gets. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod:mobitentifier=radresistance> (String:Float)";
+		final String mobRadComment = "Amount of radiation resistance the mob gets. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod:mobitentifier=radresistance> (String:Float)";
 		mobRadresistance = CommonConfig.createConfigHashMap(config, CATEGORY_MOB, "06.02_mob_Radresistance", mobRadComment, "String", "Float", new String[]{ 
 			"minecraft:parrot=0.5", 
 			"minecraft:rabbit=1.0", 
@@ -447,11 +447,11 @@ public class CompatibilityConfig {
 		});
 	}
 
-	public static boolean isWarDim(World world){
+	public static boolean isWarDim(final World world){
 		return isWarDim(world.provider.getDimension());
 	}
 
-	public static boolean isWarDim(int dimID){
+	public static boolean isWarDim(final int dimID){
 		if(peaceDimensionsIsWhitelist)
 			return !peaceDimensions.contains(dimID);
 		else

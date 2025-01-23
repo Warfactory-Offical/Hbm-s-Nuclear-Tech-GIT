@@ -34,7 +34,7 @@ public class BusAnimationKeyframe {
 		this.interpolationType = InterpolationType.SMOOTH;
 	}
 
-	public BusAnimationKeyframe(double x, double y, double z, int duration) {
+	public BusAnimationKeyframe(final double x, final double y, final double z, final int duration) {
 		this();
 		this.x = x;
 		this.y = y;
@@ -42,7 +42,7 @@ public class BusAnimationKeyframe {
 		this.duration = duration;
 	}
 
-	public BusAnimationKeyframe(double x, double y, double z, int duration, InterpolationType interpolation) {
+	public BusAnimationKeyframe(final double x, final double y, final double z, final int duration, final InterpolationType interpolation) {
 		this(x, y, z, duration);
 		this.interpolationType = interpolation;
 	}

@@ -45,16 +45,16 @@ public class ItemRenderCrucible extends TEISRBase {
 	public static Vec3d playerPos;
 	
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		if(buf == null){
 			buf = GLAllocation.createDirectByteBuffer(8*4).asDoubleBuffer();
 		}
-		boolean depleted = ItemCrucible.getCharges(itemStackIn) == 0;
+		final boolean depleted = ItemCrucible.getCharges(itemStackIn) == 0;
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+			final EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 			GL11.glScaled(5, 5, 5);
 			GL11.glTranslated(0.2, -1.5, 0.5);
 			GL11.glRotated(-90, 0, 1, 0);
@@ -63,19 +63,19 @@ public class ItemRenderCrucible extends TEISRBase {
 			
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.turbofan_blades_tex);
 			
-			Animation anim = HbmAnimations.getRelevantAnim(hand);
+			final Animation anim = HbmAnimations.getRelevantAnim(hand);
 			if(ItemSwordCutter.startPos != null && anim != null && (ItemSwordCutter.clicked || anim.animation != null)){
-				double[] swing_rot = HbmAnimations.getRelevantTransformation("SWING", hand);
-				EntityPlayer p = Minecraft.getMinecraft().player;
-				Vec3d v = ItemSwordCutter.startPos.rotateYaw((float) Math.toRadians(p.rotationYaw+180)).rotatePitch((float) Math.toRadians(-p.rotationPitch));
+				final double[] swing_rot = HbmAnimations.getRelevantTransformation("SWING", hand);
+				final EntityPlayer p = Minecraft.getMinecraft().player;
+				final Vec3d v = ItemSwordCutter.startPos.rotateYaw((float) Math.toRadians(p.rotationYaw+180)).rotatePitch((float) Math.toRadians(-p.rotationPitch));
 				double angle = Math.toDegrees(Math.atan2(v.y, v.x))-80;
-				float oX = 0.4F;
-				float oY = -1.55F;
-				float oZ = 0;
+				final float oX = 0.4F;
+				final float oY = -1.55F;
+				final float oZ = 0;
 				boolean flag = false;
 				if(anim.animation != null){
 					angle = ItemSwordCutter.prevAngle;
-					long time = System.currentTimeMillis() - anim.startMillis;
+					final long time = System.currentTimeMillis() - anim.startMillis;
 					if(anim.animation.getDuration()-time < 400){
 						flag = true;
 					}
@@ -93,7 +93,7 @@ public class ItemRenderCrucible extends TEISRBase {
 				GL11.glRotated(swing_rot[0], 1, 0, 0);
 			}
 			
-			AnimationWrapper w = HbmAnimations.getRelevantBlenderAnim(hand);
+			final AnimationWrapper w = HbmAnimations.getRelevantBlenderAnim(hand);
 			if(w == AnimationWrapper.EMPTY){
 				GlStateManager.shadeModel(GL11.GL_FLAT);
 				return;
@@ -102,8 +102,8 @@ public class ItemRenderCrucible extends TEISRBase {
 				GL11.glTranslated(-0.1, -0.25, 0.1);
 				w.startTime = System.currentTimeMillis()-400;
 			}
-			double[] sRot = HbmAnimations.getRelevantTransformation("SWING_ROT", hand);
-			double[] sTrans = HbmAnimations.getRelevantTransformation("SWING_TRANS", hand);
+			final double[] sRot = HbmAnimations.getRelevantTransformation("SWING_ROT", hand);
+			final double[] sTrans = HbmAnimations.getRelevantTransformation("SWING_TRANS", hand);
 			GL11.glTranslated(sTrans[0], sTrans[1], sTrans[2]);
 			GL11.glRotated(sRot[0], 1, 0, 0);
 			GL11.glRotated(sRot[2], 0, 0, 1);
@@ -114,15 +114,15 @@ public class ItemRenderCrucible extends TEISRBase {
 			ResourceManager.crucible_anim.renderAnimated(System.currentTimeMillis(), new IAnimatedModelCallback() {
 
 				@Override
-				public boolean onRender(int prevFrame, int currentFrame, int model, float diffN, String name) {
+				public boolean onRender(final int prevFrame, final int currentFrame, final int model, final float diffN, final String name) {
 						if(name.startsWith("Guard")){
 							Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.crucible_guard);
 						} else if(name.equals("Hilt")){
 							Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.crucible_hilt);
 						} else if(name.equals("Blade")){
-							int[] particleFrames = {13, 14, 15, 16, 17, 18, 19, 20};
+							final int[] particleFrames = {13, 14, 15, 16, 17, 18, 19, 20};
 							if(currentFrame <= 20)
-								for(int f : particleFrames){
+								for(final int f : particleFrames){
 									if(currentFrame >= f && prevFrame < f){
 										for(int i = 0; i < 50; i ++)
 											ModEventHandlerClient.firstPersonAuxParticles.add(new ParticleCrucibleSpark(world, 2, 0.0025F, 0, (world.rand.nextFloat()-0.5F)*0.2F, 0.6F-world.rand.nextFloat()*0.75F, 0, 0, -0.01F*world.rand.nextFloat()).lifetime(6+(int)world.rand.nextGaussian()*10));
@@ -141,7 +141,7 @@ public class ItemRenderCrucible extends TEISRBase {
 							GlStateManager.color(1, 0.5F, 0.5F, 1);
 							TrailRenderer2.color[1] = 0.5F;
 							TrailRenderer2.color[2] = 0.5F;
-							for(ParticleFirstPerson p : ModEventHandlerClient.firstPersonAuxParticles){
+							for(final ParticleFirstPerson p : ModEventHandlerClient.firstPersonAuxParticles){
 								if(p.getType() == ParticleType.CRUCIBLE)
 									p.renderParticle(Tessellator.getInstance().getBuffer(), entity, MainRegistry.proxy.partialTicks(), 0, 0, 0, 0, 0);
 							}
@@ -151,7 +151,7 @@ public class ItemRenderCrucible extends TEISRBase {
 							TrailRenderer2.color[3] = 0.5F;
 							if(GeneralConfig.bloom){
 								HbmShaderManager2.bloomData.bindFramebuffer(true);
-								for(ParticleFirstPerson p : ModEventHandlerClient.firstPersonAuxParticles){
+								for(final ParticleFirstPerson p : ModEventHandlerClient.firstPersonAuxParticles){
 									if(p.getType() == ParticleType.CRUCIBLE)
 										p.renderParticle(Tessellator.getInstance().getBuffer(), entity, MainRegistry.proxy.partialTicks(), 0, 0, 0, 0, 0);
 								}
@@ -191,7 +191,7 @@ public class ItemRenderCrucible extends TEISRBase {
 				}
 				
 				@Override
-				public void postRender(int prevFrame, int currentFrame, int model, float diffN, String modelName) {
+				public void postRender(final int prevFrame, final int currentFrame, final int model, final float diffN, final String modelName) {
 					if(modelName.equals("Blade")){
 						GlStateManager.color(1F, 1F, 1F, 1);
 						GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
@@ -249,7 +249,7 @@ public class ItemRenderCrucible extends TEISRBase {
 			GL11.glTranslated(0.15, 0.15, 0);
 			GL11.glRotated(-135+90, 0, 0, 1);
 			GL11.glRotated(90, 0, 1, 0);
-			double scale = 0.09D;
+			final double scale = 0.09D;
 			GL11.glScaled(scale, scale, scale);
 
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.crucible_hilt);

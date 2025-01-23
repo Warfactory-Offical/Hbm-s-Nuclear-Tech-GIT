@@ -58,20 +58,20 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 		
 		if(!world.isRemote) {
 			
-			Object[] outs = MachineRecipes.getTurbineOutput(types[0]);
+			final Object[] outs = MachineRecipes.getTurbineOutput(types[0]);
 			
 			types[1] = (Fluid)outs[0];
 			
-			int processMax = (int) Math.ceil(tanks[0].getFluidAmount() / (Integer)outs[2]);				//the maximum amount of cycles total
-			int processSteam = tanks[0].getFluidAmount() / (Integer)outs[2];								//the maximum amount of cycles depending on steam
-			int processWater = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / (Integer)outs[1];		//the maximum amount of cycles depending on water
+			final int processMax = (int) Math.ceil(tanks[0].getFluidAmount() / (Integer)outs[2]);				//the maximum amount of cycles total
+			final int processSteam = tanks[0].getFluidAmount() / (Integer)outs[2];								//the maximum amount of cycles depending on steam
+			final int processWater = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / (Integer)outs[1];		//the maximum amount of cycles depending on water
 			
-			int cycles = Math.min(processMax, Math.min(processSteam, processWater));
+			final int cycles = Math.min(processMax, Math.min(processSteam, processWater));
 			
 			tanks[0].drain((Integer)outs[2] * cycles, true);
 			tanks[1].fill(new FluidStack(types[1], (Integer)outs[1] * cycles), true);
 			
-			powerProduction = (Integer)outs[3] * cycles;
+			powerProduction = (long) (Integer) outs[3] * cycles;
 			power += powerProduction;
 			
 			if(power > maxPower)
@@ -84,7 +84,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 			
 			networkPack();
 			this.fillFluidInit(tanks[1]);
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+			final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 			this.sendPower(world, pos.add(-dir.offsetX * 11, 0, -dir.offsetZ * 11), dir.getOpposite());
 			
 		} else {
@@ -100,8 +100,8 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 					this.lastRotor -= 360;
 				}
 				
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-				ForgeDirection side = dir.getRotation(ForgeDirection.UP);
+				final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+				final ForgeDirection side = dir.getRotation(ForgeDirection.UP);
 				
 				for(int i = 0; i < 10; i++) {
 					world.spawnParticle(EnumParticleTypes.CLOUD,
@@ -115,7 +115,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 	
 	public void networkPack() {
-		NBTTagCompound data = new NBTTagCompound();
+		final NBTTagCompound data = new NBTTagCompound();
 		data.setLong("powerP", powerProduction);
 		data.setLong("power", power);
 		data.setString("type", types[0].getName());
@@ -127,7 +127,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public void networkUnpack(NBTTagCompound data) {
+	public void networkUnpack(final NBTTagCompound data) {
 		FFUtils.deserializeTankArray(data.getTagList("tanks", 10), tanks);
 		this.powerProduction = data.getLong("powerP");
 		this.power = data.getLong("power");
@@ -139,7 +139,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		tanks[0].readFromNBT(nbt.getCompoundTag("tank0"));
 		tanks[1].readFromNBT(nbt.getCompoundTag("tank1"));
@@ -149,7 +149,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setTag("tank0", tanks[0].writeToNBT(new NBTTagCompound()));
 		nbt.setTag("tank1", tanks[1].writeToNBT(new NBTTagCompound()));
@@ -159,7 +159,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 		return nbt;
 	}
 
-	public void fillFluidInit(FluidTank tank) {
+	public void fillFluidInit(final FluidTank tank) {
 		
 		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 		dir = dir.getRotation(ForgeDirection.UP);
@@ -168,7 +168,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 		fillFluid(pos.getX() + dir.offsetX * -3, pos.getY(), pos.getZ() + dir.offsetZ * -3, tank);
 	}
 
-	public void fillFluid(int x, int y, int z, FluidTank tank) {
+	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 	
@@ -189,7 +189,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource != null && resource.getFluid() == types[0]){
 			return tanks[0].fill(resource, doFill);
 		}
@@ -197,7 +197,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		if(resource != null && resource.getFluid() == types[1]){
 			return tanks[1].drain(resource, doDrain);
 		}
@@ -205,17 +205,17 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -228,7 +228,7 @@ public class TileEntityChungus extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public void setPower(long i) {
+	public void setPower(final long i) {
 		power = i;
 	}
 

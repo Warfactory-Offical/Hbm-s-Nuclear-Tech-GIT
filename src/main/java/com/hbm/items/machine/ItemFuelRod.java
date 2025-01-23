@@ -18,12 +18,12 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemFuelRod extends ItemHazard {
 	
-	private int lifeTime;
-	private int heat;
-	private float irad;
-	private boolean iblind;
+	private final int lifeTime;
+	private final int heat;
+	private final float irad;
+	private final boolean iblind;
 
-	public ItemFuelRod(float radiation, boolean blinding, int life, int heat, String s) {
+	public ItemFuelRod(final float radiation, final boolean blinding, final int life, final int heat, final String s) {
 		super(radiation, false, blinding, s);
 		this.irad = radiation;
 		this.iblind = blinding;
@@ -34,7 +34,7 @@ public class ItemFuelRod extends ItemHazard {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World world, final List<String> tooltip, final ITooltipFlag flagIn) {
 		//tooltip.add(TextFormatting.GREEN + "["+ I18nUtil.resolveKey("trait.radioactive") +"]");
 		//tooltip.add(TextFormatting.YELLOW + "" + this.irad + " "+I18nUtil.resolveKey("desc.rads"));
 		//if(this.iblind){
@@ -47,17 +47,17 @@ public class ItemFuelRod extends ItemHazard {
 	}
 	
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+	public ICapabilityProvider initCapabilities(final ItemStack stack, final NBTTagCompound nbt) {
 		return super.initCapabilities(stack, nbt);
 	}
 	
-	public static void setLifetime(ItemStack stack, int time){
+	public static void setLifetime(final ItemStack stack, final int time){
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setInteger("life", time);
 	}
 	
-	public static int getLifeTime(ItemStack stack){
+	public static int getLifeTime(final ItemStack stack){
 		if(!stack.hasTagCompound()){
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -73,11 +73,11 @@ public class ItemFuelRod extends ItemHazard {
 		return heat;
 	}
 	
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean showDurabilityBar(final ItemStack stack) {
         return true;
     }
 
-    public double getDurabilityForDisplay(ItemStack stack)
+    public double getDurabilityForDisplay(final ItemStack stack)
     {
         return (double)getLifeTime(stack) / (double)((ItemFuelRod)stack.getItem()).lifeTime;
     }

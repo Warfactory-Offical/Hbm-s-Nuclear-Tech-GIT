@@ -29,7 +29,7 @@ public class TEFFPacket implements IMessage {
 
 	}
 
-	public TEFFPacket(BlockPos pos, float rad, int health, int maxHealth, int power, boolean isOn, int color, int cooldown) {
+	public TEFFPacket(final BlockPos pos, final float rad, final int health, final int maxHealth, final int power, final boolean isOn, final int color, final int cooldown) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
@@ -43,7 +43,7 @@ public class TEFFPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -57,7 +57,7 @@ public class TEFFPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -74,16 +74,15 @@ public class TEFFPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(TEFFPacket m, MessageContext ctx) {
+		public IMessage onMessage(final TEFFPacket m, final MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 				try {
 					
-					if(te instanceof TileEntityForceField) {
-						TileEntityForceField ff = (TileEntityForceField)te;
+					if(te instanceof TileEntityForceField ff) {
 
-						ff.radius = m.rad;
+                        ff.radius = m.rad;
 						ff.health = m.health;
 						ff.maxHealth = m.maxHealth;
 						ff.power = m.power;
@@ -92,7 +91,7 @@ public class TEFFPacket implements IMessage {
 						ff.cooldown = m.cooldown;
 					}
 					
-				} catch (Exception x) {
+				} catch (final Exception x) {
 				}
 			});
 			

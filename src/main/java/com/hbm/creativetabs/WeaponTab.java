@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class WeaponTab extends CreativeTabs {
 
-	public WeaponTab(int index, String label) {
+	public WeaponTab(final int index, final String label) {
 		super(index, label);
 	}
 

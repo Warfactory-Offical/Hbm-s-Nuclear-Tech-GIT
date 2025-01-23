@@ -20,31 +20,31 @@ import net.minecraft.util.math.Vec3d;
 public class ItemRenderHFSword extends TEISRBase {
 
 	@Override
-	public void renderByItem(ItemStack itemStackIn) {
+	public void renderByItem(final ItemStack itemStackIn) {
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+			final EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 			GL11.glScaled(5, 5, 5);
 			GL11.glTranslated(0.3, -1.45, 0.55);
 			GL11.glRotated(-90, 0, 1, 0);
 			GL11.glRotated(-20, 1, 0, 0);
 			GL11.glRotated(5, 0, 0, 1);
 			
-			Animation anim = HbmAnimations.getRelevantAnim(hand);
+			final Animation anim = HbmAnimations.getRelevantAnim(hand);
 			if(ItemSwordCutter.startPos != null && anim != null && (ItemSwordCutter.clicked || anim.animation != null)){
-				double[] swing_rot = HbmAnimations.getRelevantTransformation("SWING", hand);
-				EntityPlayer p = Minecraft.getMinecraft().player;
-				Vec3d v = ItemSwordCutter.startPos.rotateYaw((float) Math.toRadians(p.rotationYaw+180)).rotatePitch((float) Math.toRadians(-p.rotationPitch));
+				final double[] swing_rot = HbmAnimations.getRelevantTransformation("SWING", hand);
+				final EntityPlayer p = Minecraft.getMinecraft().player;
+				final Vec3d v = ItemSwordCutter.startPos.rotateYaw((float) Math.toRadians(p.rotationYaw+180)).rotatePitch((float) Math.toRadians(-p.rotationPitch));
 				double angle = Math.toDegrees(Math.atan2(v.y, v.x))-80;
-				float oX = 0.4F;
-				float oY = -1.55F;
-				float oZ = 0;
+				final float oX = 0.4F;
+				final float oY = -1.55F;
+				final float oZ = 0;
 				boolean flag = false;
 				if(anim.animation != null){
 					angle = ItemSwordCutter.prevAngle;
-					long time = System.currentTimeMillis() - anim.startMillis;
+					final long time = System.currentTimeMillis() - anim.startMillis;
 					if(anim.animation.getDuration()-time < 400){
 						flag = true;
 					}
@@ -61,7 +61,7 @@ public class ItemRenderHFSword extends TEISRBase {
 				}
 				GL11.glRotated(swing_rot[0], 1, 0, 0);
 			}
-			AnimationWrapper w = HbmAnimations.getRelevantBlenderAnim(hand);
+			final AnimationWrapper w = HbmAnimations.getRelevantBlenderAnim(hand);
 			if(w == AnimationWrapper.EMPTY){
 				GlStateManager.shadeModel(GL11.GL_FLAT);
 				return;
@@ -91,24 +91,20 @@ public class ItemRenderHFSword extends TEISRBase {
 			GL11.glRotated(180, 0, 1, 0);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.hf_sword_tex);
 			ResourceManager.hf_sword.render((prevFrame, currentFrame, model, diffN, modelName) -> {
-				if(modelName.equals("rightArm"))
-					return true;
-				return false;
-			});
+                return modelName.equals("rightArm");
+            });
 			break;
 		case GUI:
 			GL11.glTranslated(-0.6, 0.1, 0);
 			GL11.glRotated(-135+90, 0, 0, 1);
 			GL11.glRotated(90, 0, 1, 0);
-			double scale = 0.6D;
+			final double scale = 0.6D;
 			GL11.glScaled(scale, scale, scale);
 
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.hf_sword_tex);
 			ResourceManager.hf_sword.render((prevFrame, currentFrame, model, diffN, modelName) -> {
-				if(modelName.equals("rightArm"))
-					return true;
-				return false;
-			});
+                return modelName.equals("rightArm");
+            });
 			break;
 		case NONE:
 			break;

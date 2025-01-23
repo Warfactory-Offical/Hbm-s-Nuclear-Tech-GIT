@@ -13,16 +13,16 @@ import net.minecraft.world.World;
 
 public class ItemPileRod extends ItemHazard {
 	
-	public ItemPileRod(String s){
+	public ItemPileRod(final String s){
 		super(s);
 	}
 
-	public ItemPileRod(float radiation, String s){
+	public ItemPileRod(final float radiation, final String s){
 		super(radiation, s);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
 		tooltip.add(TextFormatting.YELLOW + "Use on drilled graphite to insert");
 		tooltip.add(TextFormatting.YELLOW + "Use screwdriver to extract");
 		tooltip.add("");

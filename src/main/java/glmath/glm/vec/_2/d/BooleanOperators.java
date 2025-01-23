@@ -11,11 +11,11 @@ package glmath.glm.vec._2.d;
  */
 abstract class BooleanOperators extends ArithmeticOperators {
 
-    public boolean equals(Vec2d b) {
+    public boolean equals(final Vec2d b) {
         return x == b.x & y == b.y;
     }
 
-    public boolean notEquals(Vec2d b) {
+    public boolean notEquals(final Vec2d b) {
         return x != b.x | y != b.y;
     }
 }

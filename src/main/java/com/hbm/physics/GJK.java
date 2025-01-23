@@ -17,14 +17,14 @@ public class GJK {
 	public static Simplex csoSimplex = new Simplex();
 	
 	//https://www.youtube.com/watch?v=Qupqu1xe7Io
-	public static GJKInfo colliding(RigidBody bodyA, RigidBody bodyB, Collider a, Collider b){
+	public static GJKInfo colliding(final RigidBody bodyA, final RigidBody bodyB, final Collider a, final Collider b){
 		return colliding(bodyA, bodyB, a, b, true);
 	}
-	public static boolean collidesAny(RigidBody bodyA, RigidBody bodyB, Collider a, Collider b){
+	public static boolean collidesAny(final RigidBody bodyA, final RigidBody bodyB, final Collider a, final Collider b){
 		return colliding(bodyA, bodyB, a, b, false) != null;
 	}
-	public static GJKInfo colliding(@Nullable RigidBody bodyA, @Nullable RigidBody bodyB, Collider a, Collider b, boolean epa){
-		GJKInfo returnInfo = new GJKInfo();
+	public static GJKInfo colliding(@Nullable final RigidBody bodyA, @Nullable final RigidBody bodyB, final Collider a, final Collider b, final boolean epa){
+		final GJKInfo returnInfo = new GJKInfo();
 		csoSimplex.reset();
 		Vec3 direction = new Vec3(0, 0, 1);
 		Vec3 supportCSO = doCSOSupport(bodyA, bodyB, a, b, direction).v;
@@ -57,16 +57,16 @@ public class GJK {
 			case 3:
 				ab = csoSimplex.points[1].v.subtract(csoSimplex.points[0].v);
 				Vec3 ac = csoSimplex.points[2].v.subtract(csoSimplex.points[0].v);
-				Vec3 abc = ab.crossProduct(ac);
+				final Vec3 abc = ab.crossProduct(ac);
 				ao = csoSimplex.points[0].v.negate();
 				direction = triangleCase(ab, ac, abc, ao);
 				break;
 			case 4:
 				ab = csoSimplex.points[1].v.subtract(csoSimplex.points[0].v);
 				ac = csoSimplex.points[2].v.subtract(csoSimplex.points[0].v);
-				Vec3 ad = csoSimplex.points[3].v.subtract(csoSimplex.points[0].v);
+				final Vec3 ad = csoSimplex.points[3].v.subtract(csoSimplex.points[0].v);
 				ao = csoSimplex.points[0].v.negate();
-				Vec3 dir = tetraCase(ab, ac, ad, ao);
+				final Vec3 dir = tetraCase(ab, ac, ad, ao);
 				if(dir == null){
 					if(epa)
 						EPA(bodyA, bodyB, a, b, returnInfo);
@@ -85,7 +85,7 @@ public class GJK {
 		return returnInfo;
 	}
 	
-	public static Vec3 triangleCase(Vec3 ab, Vec3 ac, Vec3 abc, Vec3 ao){
+	public static Vec3 triangleCase(final Vec3 ab, final Vec3 ac, final Vec3 abc, final Vec3 ao){
 		if(abc.crossProduct(ac).dotProduct(ao) > 0){
 			if(ac.dotProduct(ao) > 0){
 				csoSimplex.points[1] = csoSimplex.points[2];
@@ -120,7 +120,7 @@ public class GJK {
 				if(abc.dotProduct(ao) > 0){
 					return abc;
 				} else {
-					Mkv tmp = csoSimplex.points[2];
+					final Mkv tmp = csoSimplex.points[2];
 					csoSimplex.points[2] = csoSimplex.points[1];
 					csoSimplex.points[1] = tmp;
 					return abc.negate();
@@ -129,7 +129,7 @@ public class GJK {
 		}
 	}
 	
-	public static Vec3 tetraCase(Vec3 ab, Vec3 ac, Vec3 ad, Vec3 ao){
+	public static Vec3 tetraCase(final Vec3 ab, final Vec3 ac, final Vec3 ad, final Vec3 ao){
 		if(ab.crossProduct(ac).dotProduct(ao) > 0){
 			csoSimplex.points[3] = null;
 			csoSimplex.size--;
@@ -153,15 +153,15 @@ public class GJK {
 	}
 	
 	//Calls csoSupport, possibly will be useful if I need to keep the support points found on a and b as well.
-	public static Mkv doCSOSupport(RigidBody bodyA, RigidBody bodyB, Collider a, Collider b, Vec3 direction){
-		Vec3 supportCSO = new Vec3(0, 0, 0);
+	public static Mkv doCSOSupport(final RigidBody bodyA, final RigidBody bodyB, final Collider a, final Collider b, final Vec3 direction){
+		final Vec3 supportCSO = new Vec3(0, 0, 0);
 		csoSupport(bodyA, bodyB, a, b, direction, supportCSO);
-		Mkv vert = new Mkv(supportCSO, direction);
+		final Mkv vert = new Mkv(supportCSO, direction);
 		csoSimplex.push_back(vert);
 		return vert;
 	}
 	
-	public static void csoSupport(RigidBody bodyA, RigidBody bodyB, Collider a, Collider b, Vec3 dir, Vec3 supportCSO){
+	public static void csoSupport(final RigidBody bodyA, final RigidBody bodyB, final Collider a, final Collider b, final Vec3 dir, final Vec3 supportCSO){
 		/*if(a.body != null){
 			Vec3 vecA = a.body.globalToLocalVec(dir);
 			supportA.set(a.body.localToGlobalPos(a.support(vecA)));
@@ -178,7 +178,7 @@ public class GJK {
 		supportCSO.set(localSupport(bodyA, a, dir).subtract(localSupport(bodyB, b, dir.negate())));
 	}
 	
-	public static Vec3 localSupport(RigidBody body, Collider c, Vec3 worldDir){
+	public static Vec3 localSupport(final RigidBody body, final Collider c, Vec3 worldDir){
 		if(body != null){
 			Vec3 localDir = body.globalToLocalVec(worldDir);
 			if(margin != 0){
@@ -197,11 +197,11 @@ public class GJK {
 	
 	/// EPA START ///
 	
-	private static List<Mkv[]> faces = new ArrayList<>();
-	private static List<Mkv[]> edges = new ArrayList<>();
-	private static Vec3[][] features = new Vec3[2][3];
+	private static final List<Mkv[]> faces = new ArrayList<>();
+	private static final List<Mkv[]> edges = new ArrayList<>();
+	private static final Vec3[][] features = new Vec3[2][3];
 	
-	public static void EPA(RigidBody bodyA, RigidBody bodyB, Collider a, Collider b, GJKInfo info){
+	public static void EPA(final RigidBody bodyA, final RigidBody bodyB, final Collider a, final Collider b, final GJKInfo info){
 		//Create the faces for the first tetrahedron
 		faces.add(buildFace(csoSimplex.points[0], csoSimplex.points[1], csoSimplex.points[2]));
 		faces.add(buildFace(csoSimplex.points[0], csoSimplex.points[2], csoSimplex.points[3]));
@@ -210,25 +210,25 @@ public class GJK {
 		for(int iter = 0; iter < epaMaxIterations; iter ++){
 			Mkv[] closestFace = null;
 			double smallestDist = Double.MAX_VALUE;
-			for(Mkv[] face : faces){
-				double lenSq = originDistToPlaneSq(face);
+			for(final Mkv[] face : faces){
+				final double lenSq = originDistToPlaneSq(face);
 				if(lenSq < smallestDist){
 					smallestDist = lenSq;
 					closestFace = face;
 				}
 			}
-			Mkv support = doCSOSupport(bodyA, bodyB, a, b, closestFace[3].v);
+			final Mkv support = doCSOSupport(bodyA, bodyB, a, b, closestFace[3].v);
 			final float epsilon = 0.00001F;
 			if(distToPlaneSq(closestFace, support.v) < epsilon){
 				info.result = Result.COLLIDING;
-				Vec3 separation = planeProjectOrigin(closestFace);
+				final Vec3 separation = planeProjectOrigin(closestFace);
 				info.normal = separation.normalize();
 				info.depth = (float) separation.length();
 				for(int i = 0; i < 3; i ++){
 					features[0][i] = localSupport(bodyA, a, closestFace[i].r);
 					features[1][i] = localSupport(bodyB, b, closestFace[i].r.negate());
 				}
-				Vec3 bCoords = barycentricCoords(closestFace, separation);
+				final Vec3 bCoords = barycentricCoords(closestFace, separation);
 				info.contactPointA = new Vec3(
 						features[0][0].xCoord*bCoords.xCoord+features[0][1].xCoord*bCoords.yCoord+features[0][2].xCoord*bCoords.zCoord,
 						features[0][0].yCoord*bCoords.xCoord+features[0][1].yCoord*bCoords.yCoord+features[0][2].yCoord*bCoords.zCoord,
@@ -246,9 +246,9 @@ public class GJK {
 				return;
 			}
 			//E x p a n d  the polytope
-			Iterator<Mkv[]> itr = faces.iterator();
+			final Iterator<Mkv[]> itr = faces.iterator();
 			while(itr.hasNext()){
-				Mkv[] face = itr.next();
+				final Mkv[] face = itr.next();
 				if(face[3].v.dotProduct(support.v.subtract(face[0].v)) > 0){
 					itr.remove();
 					Mkv[] edge = new Mkv[]{face[1], face[0]};
@@ -271,7 +271,7 @@ public class GJK {
 					}
 				}
 			}
-			for(Mkv[] edge : edges){
+			for(final Mkv[] edge : edges){
 				faces.add(buildFace(edge[0], edge[1], support));
 			}
 			edges.clear();
@@ -281,10 +281,10 @@ public class GJK {
 	}
 	
 	//I don't trust ArrayList's default remove to work with arrays, and I don't want to spend the time to check it.
-	public static boolean removeEdge(Mkv[] edge){
-		Iterator<Mkv[]> itr = edges.iterator();
+	public static boolean removeEdge(final Mkv[] edge){
+		final Iterator<Mkv[]> itr = edges.iterator();
 		while(itr.hasNext()){
-			Mkv[] edge2 = itr.next();
+			final Mkv[] edge2 = itr.next();
 			if(edge[0] == edge2[0] && edge[1] == edge2[1]){
 				itr.remove();
 				return true;
@@ -293,29 +293,29 @@ public class GJK {
 		return false;
 	}
 	
-	public static Vec3 planeProjectOrigin(Mkv[] face){
-		Vec3 point = face[0].v.negate();
-		double dot = face[3].v.dotProduct(point);
+	public static Vec3 planeProjectOrigin(final Mkv[] face){
+		final Vec3 point = face[0].v.negate();
+		final double dot = face[3].v.dotProduct(point);
 		return face[3].v.mult((float) dot).negate();
 	}
 	
-	public static double distToPlaneSq(Mkv[] face, Vec3 point){
-		double dot = face[3].v.dotProduct(point.subtract(face[0].v));
-		Vec3 proj = face[3].v.mult((float) dot);
+	public static double distToPlaneSq(final Mkv[] face, final Vec3 point){
+		final double dot = face[3].v.dotProduct(point.subtract(face[0].v));
+		final Vec3 proj = face[3].v.mult((float) dot);
 		return proj.lengthSquared();
 	}
 	
-	public static double originDistToPlaneSq(Mkv[] face){
-		double dot = face[0].v.dotProduct(face[3].v);
-		Vec3 proj = face[3].v.mult((float) dot);
+	public static double originDistToPlaneSq(final Mkv[] face){
+		final double dot = face[0].v.dotProduct(face[3].v);
+		final Vec3 proj = face[3].v.mult((float) dot);
 		return proj.lengthSquared();
 	}
 	
-	public static Mkv[] buildFace(Mkv a, Mkv b, Mkv c){
-		Vec3 ab = b.v.subtract(a.v);
-		Vec3 ac = c.v.subtract(a.v);
-		Vec3 ao = a.v.negate();
-		Vec3 normal = ab.crossProduct(ac).normalize();
+	public static Mkv[] buildFace(final Mkv a, final Mkv b, final Mkv c){
+		final Vec3 ab = b.v.subtract(a.v);
+		final Vec3 ac = c.v.subtract(a.v);
+		final Vec3 ao = a.v.negate();
+		final Vec3 normal = ab.crossProduct(ac).normalize();
 		if(normal.dotProduct(ao) < 0){
 			return new Mkv[]{a, b, c, new Mkv(normal, null)};
 		} else {
@@ -323,16 +323,16 @@ public class GJK {
 		}
 	}
 	
-	public static Vec3 barycentricCoords(Mkv[] face, Vec3 point){
+	public static Vec3 barycentricCoords(final Mkv[] face, final Vec3 point){
 		//Idea is that the barycentric coordinate is the area of the opposite triangle to the vertex, so we compute that with the cross product
 		//and make that the weight. You also have to divide by the sum of the weights to normalize them.
 		//I was under the impression that the area of the triangle would be the cross product over 2, but apparently the barycentric coords don't need that.
 		//I'm thinking this is because the normalization deals with that for me.
-		double u = face[1].v.subtract(point).crossProduct(face[2].v.subtract(point)).length();
-		double v = face[0].v.subtract(point).crossProduct(face[2].v.subtract(point)).length();
-		double w = face[0].v.subtract(point).crossProduct(face[1].v.subtract(point)).length();
+		final double u = face[1].v.subtract(point).crossProduct(face[2].v.subtract(point)).length();
+		final double v = face[0].v.subtract(point).crossProduct(face[2].v.subtract(point)).length();
+		final double w = face[0].v.subtract(point).crossProduct(face[1].v.subtract(point)).length();
 		//Normalize
-		double uvw = u+v+w;
+		final double uvw = u+v+w;
 		return new Vec3(u, v, w).multd(1/uvw);
 	}
 	
@@ -340,7 +340,7 @@ public class GJK {
 		public int size = 0;
 		public Mkv[] points = new Mkv[4];
 		
-		public void push_back(Mkv vec){
+		public void push_back(final Mkv vec){
 			for(int i = Math.min(size, 2); i >= 0; i --){
 				points[i+1] = points[i];
 			}
@@ -358,7 +358,7 @@ public class GJK {
 		}
 		
 		public Simplex copy(){
-			Simplex simp = new Simplex();
+			final Simplex simp = new Simplex();
 			simp.size = size;
 			for(int i = 0; i < 4; i ++){
 				simp.points[i] = points[i].copy();
@@ -373,13 +373,13 @@ public class GJK {
 		public Vec3 v;
 		public Vec3 r;
 		
-		public Mkv(Vec3 point, Vec3 direction) {
+		public Mkv(final Vec3 point, final Vec3 direction) {
 			this.v = point;
 			this.r = direction;
 		}
 		
 		public Mkv copy(){
-			Mkv vert = new Mkv(v.copy(), r.copy());
+			final Mkv vert = new Mkv(v.copy(), r.copy());
 			return vert;
 		}
 	}
@@ -396,6 +396,6 @@ public class GJK {
 		COLLIDING,
 		SEPARATED,
 		GJK_FAILED,
-		EPA_FAILED;
-	}
+		EPA_FAILED
+    }
 }

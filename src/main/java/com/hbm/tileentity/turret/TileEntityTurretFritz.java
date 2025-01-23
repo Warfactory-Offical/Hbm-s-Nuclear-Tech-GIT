@@ -84,18 +84,18 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 		
 		if(this.tank.getFluid() != null && FluidCombustionRecipes.hasFuelRecipe(tank.getFluid().getFluid()) && this.tank.getFluidAmount() >= drain) {
 			
-			BulletConfiguration conf = BulletConfigSyncingUtil.pullConfig(BulletConfigSyncingUtil.FLA_NORMAL);
+			final BulletConfiguration conf = BulletConfigSyncingUtil.pullConfig(BulletConfigSyncingUtil.FLA_NORMAL);
 			this.spawnBullet(conf, FluidCombustionRecipes.getFlameEnergy(tank.getFluid().getFluid()) * 0.002F);
 			this.tank.drain(drain, true);
 			
-			Vec3 pos = new Vec3(this.getTurretPos());
-			Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+			final Vec3 pos = new Vec3(this.getTurretPos());
+			final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 			vec.rotateAroundZ((float) -this.rotationPitch);
 			vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 			
 			world.playSound(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), HBMSoundHandler.flamethrowerShoot, SoundCategory.BLOCKS, 2F, 1F + world.rand.nextFloat() * 0.5F);
 			
-			NBTTagCompound data = new NBTTagCompound();
+			final NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaburst");
 			data.setString("mode", "flame");
 			data.setInteger("count", 2);
@@ -128,19 +128,19 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbt){
 		nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
 		return super.writeToNBT(nbt);
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbt){
+	public void readFromNBT(final NBTTagCompound nbt){
 		tank.readFromNBT(nbt.getCompoundTag("tank"));
 		super.readFromNBT(nbt);
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
 		return new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
 	}
 
@@ -150,36 +150,36 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 	}
 
 	@Override
-	public int fill(FluidStack resource, boolean doFill){
+	public int fill(final FluidStack resource, final boolean doFill){
 		if(resource == null || !FluidCombustionRecipes.hasFuelRecipe(resource.getFluid()))
 			return 0;
 		return tank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain){
+	public FluidStack drain(final FluidStack resource, final boolean doDrain){
 		return tank.drain(resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain){
+	public FluidStack drain(final int maxDrain, final boolean doDrain){
 		return tank.drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
 	}
 
 	@Override
-	public void recievePacket(NBTTagCompound[] tags){
+	public void recievePacket(final NBTTagCompound[] tags){
 		if(tags.length == 1){
 			tank.readFromNBT(tags[0]);
 		}

@@ -17,11 +17,11 @@ public class BusAnimationSequence {
 		SCALE
 	}
 
-	private List<BusAnimationKeyframe> keyframes = new ArrayList<>();
+	private final List<BusAnimationKeyframe> keyframes = new ArrayList<>();
 	public EnumTransformation transformationType;
 
 	//appends a keyframe at the end of the sequence
-	public BusAnimationSequence addKeyframe(BusAnimationKeyframe keyframe) {
+	public BusAnimationSequence addKeyframe(final BusAnimationKeyframe keyframe) {
 
 		keyframes.add(keyframe);
 
@@ -29,9 +29,9 @@ public class BusAnimationSequence {
 	}
 
 	//all transformation data is absolute, additive transformations have not yet been implemented
-	public double[] getTransformation(int millis) {
+	public double[] getTransformation(final int millis) {
 
-		BusAnimationKeyframe frame = getFrameAtTime(millis);
+		final BusAnimationKeyframe frame = getFrameAtTime(millis);
 
 		if(frame == null)
 			return null;
@@ -43,27 +43,27 @@ public class BusAnimationSequence {
 		//if this is the first frame, the "previous" values are 0
 		double[] previous = new double[] {0, 0, 0};
 
-		BusAnimationKeyframe lastFrame = getPreviousFrame(frame);
+		final BusAnimationKeyframe lastFrame = getPreviousFrame(frame);
 
 		if(lastFrame != null)
 			previous = lastFrame.toArray();
 
 		//the time elapsed during the frame is the total current time minus the starting timie of the current frame
-		int frameTime = millis - getStartingTime(frame);
-		double interpolation = (double)frameTime / (double)frame.duration;
+		final int frameTime = millis - getStartingTime(frame);
+		final double interpolation = (double)frameTime / (double)frame.duration;
 
-		double interX = (frame.x - previous[0]) * interpolation + previous[0];
-		double interY = (frame.y - previous[1]) * interpolation + previous[1];
-		double interZ = (frame.z - previous[2]) * interpolation + previous[2];
+		final double interX = (frame.x - previous[0]) * interpolation + previous[0];
+		final double interY = (frame.y - previous[1]) * interpolation + previous[1];
+		final double interZ = (frame.z - previous[2]) * interpolation + previous[2];
 
 		return new double[] {interX, interY, interZ};
 	}
 
-	public BusAnimationKeyframe getFrameAtTime(int millis) {
+	public BusAnimationKeyframe getFrameAtTime(final int millis) {
 
 		int time = 0;
 
-		for(BusAnimationKeyframe frame : keyframes) {
+		for(final BusAnimationKeyframe frame : keyframes) {
 			time += frame.duration;
 
 			if(millis < time)
@@ -73,9 +73,9 @@ public class BusAnimationSequence {
 		return null;
 	}
 
-	public BusAnimationKeyframe getPreviousFrame(BusAnimationKeyframe frame) {
+	public BusAnimationKeyframe getPreviousFrame(final BusAnimationKeyframe frame) {
 
-		int index = keyframes.indexOf(frame);
+		final int index = keyframes.indexOf(frame);
 
 		if(index == 0)
 			return null;
@@ -83,11 +83,11 @@ public class BusAnimationSequence {
 		return keyframes.get(index - 1);
 	}
 
-	public int getStartingTime(BusAnimationKeyframe start) {
+	public int getStartingTime(final BusAnimationKeyframe start) {
 
 		int time = 0;
 
-		for(BusAnimationKeyframe frame : keyframes) {
+		for(final BusAnimationKeyframe frame : keyframes) {
 
 			if(frame == start)
 				break;
@@ -102,7 +102,7 @@ public class BusAnimationSequence {
 
 		int time = 0;
 
-		for(BusAnimationKeyframe frame : keyframes) {
+		for(final BusAnimationKeyframe frame : keyframes) {
 			time += frame.duration;
 		}
 

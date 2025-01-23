@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 
 public abstract class ParticleLayerBase extends Particle {
 	
-	public ParticleLayerBase(World worldIn, double posXIn, double posYIn, double posZIn) {
+	public ParticleLayerBase(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 	}
 

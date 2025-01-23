@@ -25,7 +25,7 @@ public class ModelM65Blaze extends ModelBiped {
 		textureWidth = 32;
 		textureHeight = 32;
 
-		float yOffset = 4F;
+		final float yOffset = 4F;
 
 		mask = new ModelRenderer(this, 0, 0);
 		Shape1 = new ModelRenderer(this, 0, 0);
@@ -101,15 +101,10 @@ public class ModelM65Blaze extends ModelBiped {
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity) {
 
-		if(entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if (player.isSneaking()) {
-				this.isSneak = true;
-			} else {
-				this.isSneak = false;
-			}
+		if(entity instanceof EntityPlayer player) {
+            this.isSneak = player.isSneaking();
 		}
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		this.mask.rotationPointX = this.bipedHead.rotationPointX;
@@ -119,10 +114,10 @@ public class ModelM65Blaze extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+	public void render(final Entity par1Entity, final float par2, final float par3, final float par4, final float par5, final float par6, final float par7) {
 		setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 		GL11.glPushMatrix();
-		double d = 1D / 16D * 18D;
+		final double d = 1D / 16D * 18D;
 		//GL11.glTranslated(0, 1/16D, 0);
 		GL11.glScaled(d, d, d);
 		GL11.glScaled(1.01D, 1.01D, 1.01D);
@@ -130,13 +125,13 @@ public class ModelM65Blaze extends ModelBiped {
 		GL11.glPopMatrix();
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
-	protected void convertToChild(ModelRenderer parParent, ModelRenderer parChild) {
+	protected void convertToChild(final ModelRenderer parParent, final ModelRenderer parChild) {
 		// move child rotation point to be relative to parent
 		parChild.rotationPointX -= parParent.rotationPointX;
 		parChild.rotationPointY -= parParent.rotationPointY;

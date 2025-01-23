@@ -1,7 +1,4 @@
 package com.hbm.items.gear;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
@@ -9,7 +6,7 @@ import com.hbm.render.RenderHelper;
 import com.hbm.render.model.ModelCloak;
 import com.hbm.render.model.ModelGoggles;
 import com.hbm.render.model.ModelHat;
-
+import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.model.ModelBiped;
@@ -27,6 +24,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class ArmorModel extends ItemArmor {
 
 	@SideOnly(Side.CLIENT)
@@ -38,14 +37,14 @@ public class ArmorModel extends ItemArmor {
 	@SideOnly(Side.CLIENT)
 	private ModelHat modelHat;
 	
-	private ResourceLocation goggleBlur0 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_0.png");
-	private ResourceLocation goggleBlur1 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_1.png");
-	private ResourceLocation goggleBlur2 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_2.png");
-	private ResourceLocation goggleBlur3 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_3.png");
-	private ResourceLocation goggleBlur4 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_4.png");
-	private ResourceLocation goggleBlur5 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_5.png");
+	private final ResourceLocation goggleBlur0 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_0.png");
+	private final ResourceLocation goggleBlur1 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_1.png");
+	private final ResourceLocation goggleBlur2 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_2.png");
+	private final ResourceLocation goggleBlur3 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_3.png");
+	private final ResourceLocation goggleBlur4 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_4.png");
+	private final ResourceLocation goggleBlur5 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_5.png");
 
-	public ArmorModel(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
+	public ArmorModel(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -55,7 +54,7 @@ public class ArmorModel extends ItemArmor {
 	}
 	
 	@Override
-	public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
+	public boolean isValidArmor(final ItemStack stack, final EntityEquipmentSlot armorType, final Entity entity) {
 		if (this == ModItems.goggles) {
 			return armorType == EntityEquipmentSlot.HEAD;
 		}
@@ -85,7 +84,7 @@ public class ArmorModel extends ItemArmor {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
 		if (this == ModItems.goggles) {
 			if (armorSlot == EntityEquipmentSlot.HEAD) {
 				if (this.modelGoggles == null) {
@@ -114,7 +113,7 @@ public class ArmorModel extends ItemArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
 		if (stack.getItem() == ModItems.goggles) {
 			return "hbm:textures/armor/Goggles.png";
 		}
@@ -138,7 +137,7 @@ public class ArmorModel extends ItemArmor {
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
+	public void renderHelmetOverlay(final ItemStack stack, final EntityPlayer player, final ScaledResolution resolution, final float partialTicks) {
 		if(this != ModItems.goggles)
     		return;
     	
@@ -169,9 +168,9 @@ public class ArmorModel extends ItemArmor {
         }
         
         RenderHelper.startDrawingTexturedQuads();
-        RenderHelper.addVertexWithUV(0.0D, (double)resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
-        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), (double)resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
-        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
+        RenderHelper.addVertexWithUV(0.0D, resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
+        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
+        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
         RenderHelper.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
         RenderHelper.draw();
         GlStateManager.depthMask(true);
@@ -181,7 +180,7 @@ public class ArmorModel extends ItemArmor {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
 		if (stack.getItem() == ModItems.cape_radiation) {
 			list.add("Avalible for everyone");
 		}
@@ -197,7 +196,7 @@ public class ArmorModel extends ItemArmor {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity e, int itemSlot, boolean isSelected) {
+	public void onUpdate(final ItemStack stack, final World world, final Entity e, final int itemSlot, final boolean isSelected) {
 		if(!(e instanceof EntityPlayer))
 			return;
 		if(!world.isRemote){

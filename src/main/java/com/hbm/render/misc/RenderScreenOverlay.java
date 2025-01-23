@@ -34,7 +34,7 @@ public class RenderScreenOverlay {
 	private static float prevDigResult;
 	private static float lastDigResult;
 	
-	public static void renderRadCounter(ScaledResolution resolution, float in, Gui gui) {
+	public static void renderRadCounter(final ScaledResolution resolution, final float in, final Gui gui) {
 		GL11.glPushMatrix();
 
 		GlStateManager.enableBlend();
@@ -54,16 +54,16 @@ public class RenderScreenOverlay {
         	lastRadResult = in;
         }
 		
-		int length = 74;
-		int maxRad = 1000;
+		final int length = 74;
+		final int maxRad = 1000;
 		
-		int bar = getScaled(in, maxRad, 74);
+		final int bar = getScaled(in, maxRad, 74);
 		
 		//if(radiation >= 1 && radiation <= 999)
 		//	bar -= (1 + Minecraft.getMinecraft().theWorld.rand.nextInt(3));
 		
-		int posX = RadiationConfig.geigerX;
-		int posY = resolution.getScaledHeight() - 18 - RadiationConfig.geigerY;
+		final int posX = RadiationConfig.geigerX;
+		final int posY = resolution.getScaledHeight() - 18 - RadiationConfig.geigerY;
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(misc);
         gui.drawTexturedModalRect(posX, posY, 0, 0, 94, 18);
@@ -83,7 +83,7 @@ public class RenderScreenOverlay {
 		if(radiation > 1000) {
 			Minecraft.getMinecraft().fontRenderer.drawString(">1000 RAD/s", posX, posY - 8, 0xFF0000);
 		} else if(radiation >= 1) {
-			Minecraft.getMinecraft().fontRenderer.drawString(((int)Math.round(radiation)) + " RAD/s", posX, posY - 8, 0xFFFF00);
+			Minecraft.getMinecraft().fontRenderer.drawString(Math.round(radiation) + " RAD/s", posX, posY - 8, 0xFFFF00);
 		} else if(radiation > 0) {
 			Minecraft.getMinecraft().fontRenderer.drawString("<1 RAD/s", posX, posY - 8, 0x00FF00);
 		}
@@ -95,7 +95,7 @@ public class RenderScreenOverlay {
 	}
 
 
-	public static void renderDigCounter(ScaledResolution resolution, float in, Gui gui) {
+	public static void renderDigCounter(final ScaledResolution resolution, final float in, final Gui gui) {
 		GL11.glPushMatrix();
 
 		GlStateManager.enableBlend();
@@ -115,16 +115,16 @@ public class RenderScreenOverlay {
         	lastDigResult = in;
         }
 		
-		int length = 74;
-		int maxDig = 10;
+		final int length = 74;
+		final int maxDig = 10;
 		
-		int bar = getScaled(in, maxDig, 74);
+		final int bar = getScaled(in, maxDig, 74);
 		
 		//if(radiation >= 1 && radiation <= 999)
 		//	bar -= (1 + Minecraft.getMinecraft().theWorld.rand.nextInt(3));
 		
-		int posX = RadiationConfig.digammaX;
-		int posY = resolution.getScaledHeight() - 18 - RadiationConfig.digammaY;
+		final int posX = RadiationConfig.digammaX;
+		final int posY = resolution.getScaledHeight() - 18 - RadiationConfig.digammaY;
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(misc);
         gui.drawTexturedModalRect(posX, posY, 0, 218, 94, 18);
@@ -155,19 +155,19 @@ public class RenderScreenOverlay {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Gui.ICONS);
 	}
 	
-	private static int getScaled(double cur, double max, double scale) {
+	private static int getScaled(final double cur, final double max, final double scale) {
 		
 		return (int) Math.min(cur / max * scale, scale);
 	}
 
 	
-	public static void renderCustomCrosshairs(ScaledResolution resolution, Gui gui, Crosshair cross) {
+	public static void renderCustomCrosshairs(final ScaledResolution resolution, final Gui gui, final Crosshair cross) {
 		if(cross == Crosshair.NONE) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(Gui.ICONS);
 			return;
 		}
 		
-		int size = cross.size;
+		final int size = cross.size;
 
 		GL11.glPushMatrix();
 			Minecraft.getMinecraft().renderEngine.bindTexture(misc);
@@ -180,12 +180,12 @@ public class RenderScreenOverlay {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Gui.ICONS);
 	}
 	
-	public static void renderAmmo(ScaledResolution resolution, Gui gui, Item ammo, int count, int max, int dura, EnumHand hand, boolean renderCount) {
+	public static void renderAmmo(final ScaledResolution resolution, final Gui gui, final Item ammo, final int count, final int max, final int dura, final EnumHand hand, final boolean renderCount) {
 		
 		GL11.glPushMatrix();
         
 		int pX = resolution.getScaledWidth() / 2 + 62 + 36;
-		int pZ = resolution.getScaledHeight() - 21;
+		final int pZ = resolution.getScaledHeight() - 21;
 		if(hand == EnumHand.OFF_HAND){
 			pX -= 277;
 		}
@@ -194,7 +194,7 @@ public class RenderScreenOverlay {
         gui.drawTexturedModalRect(pX, pZ + 16, 94, 0, 52, 3);
         gui.drawTexturedModalRect(pX + 1, pZ + 16, 95, 3, 50 - dura, 3);
 		
-		String cap = max == -1 ? ("∞") : ("" + max);
+		final String cap = max == -1 ? ("∞") : ("" + max);
 		
 		//if(renderCount)
 		Minecraft.getMinecraft().fontRenderer.drawString(count + " / " + cap, pX + 16, pZ + 6, 0xFFFFFF);
@@ -211,12 +211,12 @@ public class RenderScreenOverlay {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Gui.ICONS);
 	}
 	
-	public static void renderAmmoAlt(ScaledResolution resolution, Gui gui, Item ammo, int count, EnumHand hand) {
+	public static void renderAmmoAlt(final ScaledResolution resolution, final Gui gui, final Item ammo, final int count, final EnumHand hand) {
 
 		GL11.glPushMatrix();
 
 		int pX = resolution.getScaledWidth() / 2 + 62 + 36 + 18;
-		int pZ = resolution.getScaledHeight() - 21 - 16;
+		final int pZ = resolution.getScaledHeight() - 21 - 16;
 		if(hand == EnumHand.OFF_HAND){
 			pX -= 296;
 		}
@@ -260,7 +260,7 @@ public class RenderScreenOverlay {
 		public int y;
 		public int size;
 		
-		private Crosshair(int x, int y, int size) {
+		private Crosshair(final int x, final int y, final int size) {
 			this.x = x;
 			this.y = y;
 			this.size = size;

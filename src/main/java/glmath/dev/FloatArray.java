@@ -17,13 +17,13 @@ public class FloatArray {
     public static final int M03 = 3, M13 = 7, M23 = 11, M33 = 15;
     public static final int COUNT = 16;
 
-    public static float[] perspective_(float fovy, float aspect, float zNear, float zFar) {
+    public static float[] perspective_(final float fovy, final float aspect, final float zNear, final float zFar) {
         return perspective(fovy, aspect, zNear, zFar, new float[COUNT]);
     }
 
-    public static float[] perspective(float fovy, float aspect, float zNear, float zFar, float[] res) {
-        float h = (float) Math.tan(fovy * 0.5f) * zNear;
-        float w = h * aspect;
+    public static float[] perspective(final float fovy, final float aspect, final float zNear, final float zFar, final float[] res) {
+        final float h = (float) Math.tan(fovy * 0.5f) * zNear;
+        final float w = h * aspect;
         res[M00] = zNear / w;
         res[M01] = 0.0f;
         res[M02] = 0.0f;

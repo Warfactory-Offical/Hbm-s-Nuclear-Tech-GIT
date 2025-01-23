@@ -224,7 +224,7 @@ public class ChemplantRecipes {
 		
 	}
 
-	public static void makeRecipe(int index, String name, AStack[] itemInputs, FluidStack[] fluidInputs, AStack[] outputItems, FluidStack[] outputFluids, int duration) {
+	public static void makeRecipe(final int index, final String name, final AStack[] itemInputs, final FluidStack[] fluidInputs, final AStack[] outputItems, final FluidStack[] outputFluids, final int duration) {
 		if(itemInputs != null)
 			recipeItemInputs.put(index, itemInputs);
 		if(fluidInputs != null)
@@ -239,7 +239,7 @@ public class ChemplantRecipes {
 			recipeNames.put(index, name);
 	}
 
-	public static void removeRecipe(int index) {
+	public static void removeRecipe(final int index) {
 		recipeItemInputs.remove(index);
 		recipeFluidInputs.remove(index);
 		recipeItemOutputs.remove(index);
@@ -248,29 +248,29 @@ public class ChemplantRecipes {
 		recipeNames.remove(index);
 	}
 
-	public static List<AStack> getChemInputFromTempate(ItemStack stack) {
+	public static List<AStack> getChemInputFromTempate(final ItemStack stack) {
 		if (stack == null || !(stack.getItem() instanceof ItemChemistryTemplate))
 			return null;
-		AStack[] inputs = recipeItemInputs.get(stack.getItemDamage());
+		final AStack[] inputs = recipeItemInputs.get(stack.getItemDamage());
 		if(inputs != null)
 			return Arrays.asList(inputs);
 		return null;
 	}
 
 
-	public static FluidStack[] getFluidInputFromTempate(ItemStack stack) {
+	public static FluidStack[] getFluidInputFromTempate(final ItemStack stack) {
 		if (stack == null || !(stack.getItem() instanceof ItemChemistryTemplate))
 			return null;
 		return recipeFluidInputs.get(stack.getItemDamage());
 	}
 
 
-	public static ItemStack[] getChemOutputFromTempate(ItemStack stack) {
+	public static ItemStack[] getChemOutputFromTempate(final ItemStack stack) {
 		if (stack == null || !(stack.getItem() instanceof ItemChemistryTemplate))
 			return null;
-		AStack[] outputs = recipeItemOutputs.get(stack.getItemDamage());
+		final AStack[] outputs = recipeItemOutputs.get(stack.getItemDamage());
 		if(outputs != null){
-			ItemStack[] stackOutputs = new ItemStack[outputs.length];
+			final ItemStack[] stackOutputs = new ItemStack[outputs.length];
 			for(int i=0; i<stackOutputs.length; i++){
 				stackOutputs[i] = outputs[i].getStack();
 			}
@@ -280,39 +280,39 @@ public class ChemplantRecipes {
 	}
 
 
-	public static FluidStack[] getFluidOutputFromTempate(ItemStack stack) {
+	public static FluidStack[] getFluidOutputFromTempate(final ItemStack stack) {
 		if (stack == null || !(stack.getItem() instanceof ItemChemistryTemplate))
 			return null;
 		return recipeFluidOutputs.get(stack.getItemDamage());
 	}
 
 
-	public static int getProcessTime(ItemStack stack) {	
+	public static int getProcessTime(final ItemStack stack) {
     	if(!(stack.getItem() instanceof ItemChemistryTemplate))
     		return 100;
-        Integer time = recipeDurations.get(stack.getItemDamage());
+        final Integer time = recipeDurations.get(stack.getItemDamage());
         if(time != null)
         	return time;
         return 100;
     }
 
-    public static String getName(ItemStack stack) {	
+    public static String getName(final ItemStack stack) {
     	if(!(stack.getItem() instanceof ItemChemistryTemplate))
     		return null;
-        String name = recipeNames.get(stack.getItemDamage());
+        final String name = recipeNames.get(stack.getItemDamage());
         if(name != null)
         	return name;
         return "BAD_RECIPE";
     }
 
-    public static String getName(int i) {	
-        String name = recipeNames.get(i);
+    public static String getName(final int i) {
+        final String name = recipeNames.get(i);
         if(name != null)
         	return name;
         return "";
     }
 
-    public static boolean hasRecipe(ItemStack stack) {	
+    public static boolean hasRecipe(final ItemStack stack) {
     	if(stack == null || !(stack.getItem() instanceof ItemChemistryTemplate))
     		return false;
        	return recipeNames.containsKey(stack.getItemDamage());

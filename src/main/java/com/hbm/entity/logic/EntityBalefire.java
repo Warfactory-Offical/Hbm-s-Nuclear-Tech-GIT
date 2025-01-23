@@ -35,7 +35,7 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 	private Ticket loaderTicket;
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(final NBTTagCompound nbt) {
 		age = nbt.getInteger("age");
 		destructionRange = nbt.getInteger("destructionRange");
 		speed = nbt.getInteger("speed");
@@ -49,7 +49,7 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(final NBTTagCompound nbt) {
 		nbt.setInteger("age", age);
 		nbt.setInteger("destructionRange", destructionRange);
 		nbt.setInteger("speed", speed);
@@ -61,7 +61,7 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 		
 	}
 
-	public EntityBalefire(World p_i1582_1_) {
+	public EntityBalefire(final World p_i1582_1_) {
 		super(p_i1582_1_);
 	}
 
@@ -115,7 +115,7 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(Ticket ticket) {
+	public void init(final Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -134,10 +134,10 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
+	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -153,7 +153,7 @@ public class EntityBalefire extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(ChunkPos chunk : loadedChunks)
+            for(final ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }

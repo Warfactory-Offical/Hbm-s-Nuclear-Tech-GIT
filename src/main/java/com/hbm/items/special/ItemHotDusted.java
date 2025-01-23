@@ -9,17 +9,17 @@ import net.minecraft.world.World;
 
 public class ItemHotDusted extends ItemHot {
 
-	public ItemHotDusted(int heat, String s){
+	public ItemHotDusted(final int heat, final String s){
 		super(heat, s);
 		setHasSubtypes(true);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
 		tooltip.add("Forged " + stack.getItemDamage() + " time(s)");
 	}
 	
-	public static int getMaxHeat(ItemStack stack) {
+	public static int getMaxHeat(final ItemStack stack) {
 		return heat - stack.getItemDamage() * 10;
 	}
 }

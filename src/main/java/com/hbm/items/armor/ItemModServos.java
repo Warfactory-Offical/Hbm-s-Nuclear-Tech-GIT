@@ -1,12 +1,9 @@
 package com.hbm.items.armor;
 
-import java.util.List;
-
 import com.google.common.collect.Multimap;
+import com.hbm.config.PotionConfig;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
-import com.hbm.config.PotionConfig;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,14 +16,16 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemModServos extends ItemArmorMod {
 
-	public ItemModServos(String s){
+	public ItemModServos(final String s){
 		super(ArmorModHandler.servos, false, true, true, false, s);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
 		if(this == ModItems.servo_set) {
 			list.add(TextFormatting.DARK_PURPLE + "Chestplate: Haste I / Damage +50%");
 			list.add(TextFormatting.DARK_PURPLE + "Leggings: Speed +25% / Jump II");
@@ -41,8 +40,8 @@ public class ItemModServos extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(List<String> list, ItemStack stack, ItemStack armor){
-		ItemArmor item = (ItemArmor)armor.getItem();
+	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor){
+		final ItemArmor item = (ItemArmor)armor.getItem();
 		
 		if(item.armorType == EntityEquipmentSlot.CHEST) {
 
@@ -66,8 +65,8 @@ public class ItemModServos extends ItemArmorMod {
 	}
 	
 	@Override
-	public void modUpdate(EntityLivingBase entity, ItemStack armor){
-		ItemArmor item = (ItemArmor)armor.getItem();
+	public void modUpdate(final EntityLivingBase entity, final ItemStack armor){
+		final ItemArmor item = (ItemArmor)armor.getItem();
 		
 		if(item.armorType == EntityEquipmentSlot.CHEST) {
 
@@ -91,10 +90,10 @@ public class ItemModServos extends ItemArmorMod {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getModifiers(EntityEquipmentSlot slot, ItemStack armor){
-		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
+	public Multimap<String, AttributeModifier> getModifiers(final EntityEquipmentSlot slot, final ItemStack armor){
+		final Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
 		
-		ItemArmor item = (ItemArmor)armor.getItem();
+		final ItemArmor item = (ItemArmor)armor.getItem();
 		
 		if(item.armorType == EntityEquipmentSlot.CHEST) {
 			if(this == ModItems.servo_set)

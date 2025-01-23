@@ -21,7 +21,7 @@ public class Portal {
 	World world;
 	Entity dummyRenderEntity;
 	
-	public Portal(World world, Vec3d blc, Vec3d brc, Vec3d tlc, Vec3d trc, EnumFacing dir) {
+	public Portal(final World world, final Vec3d blc, final Vec3d brc, final Vec3d tlc, final Vec3d trc, final EnumFacing dir) {
 		this.bottomLeftCorner = blc;
 		this.bottomRightCorner = brc;
 		this.topLeftCorner = tlc;
@@ -34,7 +34,7 @@ public class Portal {
 			PortalManager.ALL_RENDER_PORTALS.add(this);
 	}
 	
-	public Portal link(Portal portal){
+	public Portal link(final Portal portal){
 		this.linkedPortal = portal;
 		return this;
 	}

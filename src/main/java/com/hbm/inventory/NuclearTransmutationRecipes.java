@@ -28,12 +28,12 @@ public class NuclearTransmutationRecipes {
 		addRecipe(new OreDictStack(U.block()), ItemStackUtil.itemStackFrom(ModBlocks.block_schraranium, 1), 50_000_000L);
 	}
 
-	public static void addRecipe(AStack input, ItemStack output, long energy){
+	public static void addRecipe(final AStack input, final ItemStack output, final long energy){
 		recipesOutput.put(input, output);
 		recipesEnergy.put(input, energy);
 	}
 	
-	public static ItemStack getOutput(ItemStack stack) {
+	public static ItemStack getOutput(final ItemStack stack) {
 		if(stack == null || stack.isEmpty())
 			return null;
 		
@@ -43,9 +43,9 @@ public class NuclearTransmutationRecipes {
 		outputItem = recipesOutput.get(new NbtComparableStack(stack));
 		if(outputItem != null)
 			return outputItem;
-		int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(stack.getItem(), 1, stack.getItemDamage()));
+		final int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(stack.getItem(), 1, stack.getItemDamage()));
 		for(int id = 0; id < ids.length; id++) {
-			OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(ids[id]));
+			final OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(ids[id]));
 			outputItem = recipesOutput.get(oreStack);
 			if(outputItem != null)
 				return outputItem;
@@ -53,7 +53,7 @@ public class NuclearTransmutationRecipes {
 		return null;
 	}
 
-	public static long getEnergy(ItemStack stack) {
+	public static long getEnergy(final ItemStack stack) {
 		if(stack == null || stack.isEmpty())
 			return -1;
 
@@ -63,9 +63,9 @@ public class NuclearTransmutationRecipes {
 		outputItem = recipesEnergy.get(new NbtComparableStack(stack));
 		if(outputItem != null)
 			return outputItem;
-		int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(stack.getItem(), 1, stack.getItemDamage()));
+		final int[] ids = OreDictionary.getOreIDs(ItemStackUtil.itemStackFrom(stack.getItem(), 1, stack.getItemDamage()));
 		for(int id = 0; id < ids.length; id++) {
-			OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(ids[id]));
+			final OreDictStack oreStack = new OreDictStack(OreDictionary.getOreName(ids[id]));
 			outputItem = recipesEnergy.get(oreStack);
 			if(outputItem != null)
 				return outputItem;
