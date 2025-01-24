@@ -1,4 +1,4 @@
-# <u>**HBM Nuclear Tech Mod - 1.12.2 Warfactory fork **</u>
+# <u>**HBM Nuclear Tech Mod - 1.12.2 Warfactory fork**</u>
 
 This is my 1.12.2 custom version abandoned HBM 1.12.2 Extended editon by Alcater
 which is forked from the fork made by [TheOriginalGolem](https://github.com/TheOriginalGolem/Hbm-s-Nuclear-Tech-GIT)
