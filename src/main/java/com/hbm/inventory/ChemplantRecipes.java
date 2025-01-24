@@ -132,9 +132,9 @@ public class ChemplantRecipes {
 		
 		makeRecipe(440, "RADIOSOLVENT", null, new FluidStack[]{ new FluidStack(ModForgeFluids.solvent, 500), new FluidStack(ModForgeFluids.watz, 500) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.radiosolvent, 1000) }, 50);
 		
-		makeRecipe(450, "CIRCUIT_4", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_red_copper, 1), ItemStackUtil.comparableStackFrom(ModItems.wire_gold, 4), new OreDictStack(LAPIS.dust(), 1), new OreDictStack(ANY_PLASTIC.ingot(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 400) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_gold, 1) }, null, 200);
+		makeRecipe(450, "CIRCUIT_4", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_red_copper, 1), ItemStackUtil.comparableStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 4), new OreDictStack(LAPIS.dust(), 1), new OreDictStack(ANY_PLASTIC.ingot(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 400) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_gold, 1) }, null, 200);
 		
-		makeRecipe(460, "CIRCUIT_5", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_gold, 1), ItemStackUtil.comparableStackFrom(ModItems.wire_schrabidium, 4), new OreDictStack(DIAMOND.dust(), 1), new OreDictStack(DESH.ingot(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 800), new FluidStack(ModForgeFluids.petroleum, 400) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_schrabidium, 1) }, null, 250);
+		makeRecipe(460, "CIRCUIT_5", new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_gold, 1), ItemStackUtil.comparableStackFrom(ModItems.wire.getItemStack(MaterialMineral.SCHRABIDIUM), 4), new OreDictStack(DIAMOND.dust(), 1), new OreDictStack(DESH.ingot(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 800), new FluidStack(ModForgeFluids.petroleum, 400) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.circuit_schrabidium, 1) }, null, 250);
 		
 		makeRecipe(470, "POLYMER", new AStack[] { new OreDictStack(COAL.gem(), 2), new OreDictStack(F.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.petroleum, 600) }, new AStack[] { ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER), 1) }, null, 100);
 		

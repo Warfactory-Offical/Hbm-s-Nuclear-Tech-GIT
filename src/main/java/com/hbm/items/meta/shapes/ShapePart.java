@@ -7,6 +7,7 @@ public enum ShapePart implements IMetaItemShape {
     INGOT("ingot", "ingot", ""),
     BILLET("billet", "billet", ""),
     NUGGET("nugget", "nugget", ""),
+    WIRE("wire", "wire", "wireFine"),
     ;
 
     private final String a, b, c;

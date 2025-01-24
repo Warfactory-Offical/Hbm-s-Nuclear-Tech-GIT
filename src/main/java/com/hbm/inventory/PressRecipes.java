@@ -70,15 +70,15 @@ public class PressRecipes {
 		addRecipe(PressType.PLATE, new OreDictStack(CMB.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_combine_steel));
 		addRecipe(PressType.PLATE, new OreDictStack(BIGMT.ingot()), ItemStackUtil.itemStackFrom(ModItems.plate_saturnite));
 
-		addRecipe(PressType.WIRE, new OreDictStack(AL.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(CU.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_copper, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(W.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_tungsten, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(MINGRADE.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_red_copper, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(GOLD.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_gold, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(SA326.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_schrabidium, 8));
-		addRecipe(PressType.WIRE, new OreDictStack("ingotAdvanced"), ItemStackUtil.itemStackFrom(ModItems.wire_advanced_alloy, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(ALLOY.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_advanced_alloy, 8));
-		addRecipe(PressType.WIRE, new OreDictStack(MAGTUNG.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire_magnetized_tungsten, 8));
+		addRecipe(PressType.WIRE, new OreDictStack(AL.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ALUMINIUM), 8));
+		addRecipe(PressType.WIRE, new OreDictStack(CU.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.COPPER), 8));
+		addRecipe(PressType.WIRE, new OreDictStack(W.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.TUNGSTEN), 8));
+		addRecipe(PressType.WIRE, new OreDictStack(MINGRADE.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.RED_COPPER), 8));
+		addRecipe(PressType.WIRE, new OreDictStack(GOLD.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 8));
+		addRecipe(PressType.WIRE, new OreDictStack(SA326.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.SCHRABIDIUM), 8));
+		addRecipe(PressType.WIRE, new OreDictStack("ingotAdvanced"), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ADVANCED_ALLOY), 8));
+		addRecipe(PressType.WIRE, new OreDictStack(ALLOY.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ADVANCED_ALLOY), 8));
+		addRecipe(PressType.WIRE, new OreDictStack(MAGTUNG.ingot()), ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 8));
 
 		addRecipe(PressType.CIRCUIT, ItemStackUtil.comparableStackFrom(ModItems.circuit_raw), ItemStackUtil.itemStackFrom(ModItems.circuit_aluminium));
 		addRecipe(PressType.CIRCUIT, ItemStackUtil.comparableStackFrom(ModItems.circuit_bismuth_raw), ItemStackUtil.itemStackFrom(ModItems.circuit_bismuth));

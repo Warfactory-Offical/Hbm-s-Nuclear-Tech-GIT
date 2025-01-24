@@ -1,4 +1,5 @@
 package com.hbm.entity.missile;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class EntityMissileMicro extends EntityMissileBaseAdvanced {
 	public List<ItemStack> getDebris() {
 		final List<ItemStack> list = new ArrayList<ItemStack>();
 
-		list.add(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 4));
+		list.add(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ALUMINIUM), 4));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.plate_titanium, 4));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.hull_small_aluminium, 2));
 		list.add(ItemStackUtil.itemStackFrom(ModItems.ducttape, 1));

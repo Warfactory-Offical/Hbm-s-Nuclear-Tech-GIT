@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.tileentity.machine.TileEntityTesla;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class EntityTeslaCrab extends EntityCyberCrab {
@@ -35,13 +38,37 @@ public class EntityTeslaCrab extends EntityCyberCrab {
         super.onLivingUpdate();
     }
 
-    @Override
-	protected Item getDropItem(){
-        return ModItems.wire_advanced_alloy;
+	protected ItemStack getDropItemStack(){
+        return ModItems.wire.getItemStack(MaterialMineral.ADVANCED_ALLOY);
     }
 
     protected void dropRareDrop(final int p_70600_1_) {
     	this.dropItem(ModItems.coil_copper, 1);
     }
 
+    @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+    {
+        ItemStack item = this.getDropItemStack();
+
+        if (item != null)
+        {
+            int i = this.rand.nextInt(3);
+
+            if (lootingModifier > 0)
+            {
+                i += this.rand.nextInt(lootingModifier + 1);
+            }
+
+            for (int j = 0; j < i; ++j)
+            {
+                this.dropItem(item, 1);
+            }
+        }
+    }
+
+    public EntityItem dropItem(ItemStack itemIn, int size)
+    {
+        return this.entityDropItem(new ItemStack(itemIn.getItem(), itemIn.getMetadata(), size), 0);
+    }
 }

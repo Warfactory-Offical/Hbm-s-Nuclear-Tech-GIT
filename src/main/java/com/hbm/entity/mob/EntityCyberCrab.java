@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.ModDamageSource;
 
@@ -16,10 +17,12 @@ import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -100,13 +103,12 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 		return true;
 	}
 	
-	@Override
-	protected Item getDropItem() {
-		return ModItems.wire_gold;
+	protected ItemStack getDropItemStack() {
+		return ModItems.wire.getItemStack(MaterialMineral.GOLD);
 	}
 	
 	protected void dropRareDrop(final int p_70600_1_) {
-    	this.dropItem(ModItems.wire_magnetized_tungsten, 1);
+    	this.dropItem(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 1);
     }
 	
 	@Override
@@ -121,6 +123,33 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 
 	@Override
 	public void setSwingingArms(final boolean swingingArms) {
+	}
+
+
+	@Override
+	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+	{
+		ItemStack item = this.getDropItemStack();
+
+		if (item != null)
+		{
+			int i = this.rand.nextInt(3);
+
+			if (lootingModifier > 0)
+			{
+				i += this.rand.nextInt(lootingModifier + 1);
+			}
+
+			for (int j = 0; j < i; ++j)
+			{
+				this.dropItem(item, 1);
+			}
+		}
+	}
+
+	public EntityItem dropItem(ItemStack itemIn, int size)
+	{
+		return this.entityDropItem(new ItemStack(itemIn.getItem(), itemIn.getMetadata(), size), 0);
 	}
 
 }

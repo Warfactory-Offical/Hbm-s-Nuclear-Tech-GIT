@@ -39,13 +39,12 @@ public class MetaItem<
         ModItems.ALL_ITEMS.add(this);
     }
 
+
     public ItemStack getItemStack(final EMaterial material, final int amount) {
         return ItemStackUtil.itemStackFrom(this, amount, Arrays.asList(materials).indexOf(material));
     }
 
-    public ItemStack getItemStack(final EMaterial material) {
-        return getItemStack(material, 1);
-    }
+    public ItemStack getItemStack(final EMaterial material) { return getItemStack(material, 1); }
 
     @Override
     public void getSubItems(@NotNull final CreativeTabs tab, @NotNull final NonNullList<ItemStack> items) {

@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -207,6 +208,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     protected Item getDropItem() {
     	return ModItems.rod_uranium_fuel_depleted;
     }
+
 
     @Override
     protected void dropLoot(final boolean wasRecentlyHit, final int looting, final DamageSource source) {

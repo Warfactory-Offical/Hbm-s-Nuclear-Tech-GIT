@@ -5,6 +5,7 @@ import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.entity.projectile.EntityChopperMine;
 import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
@@ -13,8 +14,11 @@ import com.hbm.render.amlfrom1710.Vec3;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -375,7 +379,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 
 		this.dropItem(ModItems.combine_scrap, rand.nextInt(8) + 1);
 		this.dropItem(ModItems.plate_combine_steel, rand.nextInt(5) + 1);
-		this.dropItem(ModItems.wire_magnetized_tungsten, rand.nextInt(3) + 1);
+		this.dropItem(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN, rand.nextInt(3) + 1));
 	}
 	
 	@Override
@@ -415,7 +419,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
     	else if(i > 7)
 			this.dropItem(ModItems.plate_combine_steel, 1);
     	else
-			this.dropItem(ModItems.wire_magnetized_tungsten, 1);
+			this.dropItem(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN,3));
     }
 
 	public void setIsDying(final boolean b) {
@@ -425,5 +429,11 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 	public boolean getIsDying() {
 		return this.getDataManager().get(DYING);
 	}
-	
+
+
+	public EntityItem dropItem(ItemStack itemIn)
+	{
+		return this.entityDropItem(itemIn, 0);
+	}
+
 }

@@ -1,26 +1,14 @@
 package com.hbm.items.special;
 import com.hbm.interfaces.Spaghetti;
-import com.hbm.util.ItemStackUtil;
+import com.hbm.items.meta.materials.MaterialMineral;
 
-import java.util.List;
-import java.util.Random;
-
-import com.hbm.config.BombConfig;
-import com.hbm.config.GeneralConfig;
 import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.handler.ArmorUtil;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-import com.hbm.util.I18nUtil;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -133,7 +121,7 @@ public class ItemCustomLore extends Item {
 			this == ModItems.powder_schrabidate ||
 			this == ModItems.powder_schrabidium ||
 
-			this == ModItems.wire_schrabidium ||
+			//this == ModItems.wire.getItem(MaterialMineral.SCHRABIDIUM) ||
 
 			this == ModItems.plate_schrabidium ||
 			this == ModItems.plate_saturnite ||

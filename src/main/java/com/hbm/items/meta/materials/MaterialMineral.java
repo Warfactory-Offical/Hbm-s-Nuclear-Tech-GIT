@@ -441,5 +441,17 @@ public enum MaterialMineral implements IMetaItemMaterial {
                 DAFFERGON,
                 MERCURY,
         };
+
+    }
+    public static MaterialMineral[] wireValues() {
+        return new  MaterialMineral[] {
+                GOLD,
+                RED_COPPER,
+                TUNGSTEN,
+                ALUMINIUM,
+                COPPER,
+                SCHRABIDIUM,
+                MAGNETIZED_TUNGSTEN,
+        };
     }
 }

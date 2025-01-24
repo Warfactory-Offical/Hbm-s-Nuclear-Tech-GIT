@@ -522,6 +522,7 @@ public class ModEventHandler {
 	@SubscribeEvent
 	public void worldTick(final WorldTickEvent event) {
 		if (event.world == null || event.world.isRemote) return; // Dont bother updating shit
+		List<Object> entityList = new ArrayList<>(event.world.loadedEntityList);
 
 		// Handle pipe network updates
 		if (!MainRegistry.allPipeNetworks.isEmpty()) {
@@ -548,7 +549,7 @@ public class ModEventHandler {
 		}
 
 		// Hazard system update for dropped items
-		for (final Object e : event.world.loadedEntityList) {
+		for (final Object e : entityList) {
 			if (e instanceof EntityItem) {
 				HazardSystem.updateDroppedItem((EntityItem) e);
 			}

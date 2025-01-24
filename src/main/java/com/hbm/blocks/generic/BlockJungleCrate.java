@@ -1,4 +1,5 @@
 package com.hbm.blocks.generic;
+import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.util.ItemStackUtil;
 
 import java.util.Random;
@@ -33,7 +34,7 @@ public class BlockJungleCrate extends Block {
 		drops.add(ItemStackUtil.itemStackFrom(Items.GOLD_INGOT, 4 + rand.nextInt(4)));
 		drops.add(ItemStackUtil.itemStackFrom(Items.GOLD_NUGGET, 8 + rand.nextInt(10)));
 		drops.add(ItemStackUtil.itemStackFrom(ModItems.powder_gold, 2 + rand.nextInt(3)));
-		drops.add(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 2 + rand.nextInt(2)));
+		drops.add(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 2 + rand.nextInt(2)));
 
         if(rand.nextInt(2) == 0)
         	drops.add(ItemStackUtil.itemStackFrom(ModItems.plate_gold, 1 + rand.nextInt(2)));

@@ -293,7 +293,7 @@ public class OreDictManager {
 		//VANILLA - Fixed
 		COAL.dust(powder_coal).dustSmall(powder_coal_tiny).gem(Items.COAL).crystal(crystal_coal);
 		IRON.dust(powder_iron).crystal(crystal_iron).plate(plate_iron).ore(ore_gneiss_iron,cluster_iron,cluster_depth_iron);
-		GOLD.dust(powder_gold).crystal(crystal_gold).plate(plate_gold).ore(ore_gneiss_gold);
+		GOLD.dust(powder_gold).crystal(crystal_gold).plate(plate_gold).ore(ore_gneiss_gold).wire(wire.getItemStack(MaterialMineral.GOLD));
 		LAPIS.dust(powder_lapis).crystal(crystal_lapis);
 		REDSTONE.crystal(crystal_redstone);
 		QUARTZ.dust(powder_quartz).gem(Items.QUARTZ);
@@ -303,9 +303,9 @@ public class OreDictManager {
 
 // Raw Elements
 		TI.ingot(ingot.getItemStack(MaterialMineral.TITANIUM)).dust(powder_titanium).block(block_titanium).crystal(crystal_titanium).plate(plate_titanium).ore(ore_titanium,cluster_titanium,cluster_depth_titanium,ore_meteor_titanium);
-		CU.ingot(ingot.getItemStack(MaterialMineral.COPPER)).dust(powder_copper).block(block_copper).crystal(crystal_copper).plate(plate_copper).ore(ore_copper,cluster_copper,ore_gneiss_copper,ore_meteor_copper);
-		W.ingot(ingot.getItemStack(MaterialMineral.TUNGSTEN)).dust(powder_tungsten).block(block_tungsten).crystal(crystal_tungsten).ore(ore_tungsten,cluster_depth_tungsten,ore_nether_tungsten,ore_meteor_tungsten).oreNether(ore_nether_tungsten);
-		AL.ingot(ingot.getItemStack(MaterialMineral.ALUMINIUM)).dust(powder_aluminium).block(block_aluminium).crystal(crystal_aluminium).plate(plate_aluminium).ore(ore_aluminium,cluster_aluminium,ore_meteor_aluminium);
+		CU.ingot(ingot.getItemStack(MaterialMineral.COPPER)).dust(powder_copper).block(block_copper).crystal(crystal_copper).plate(plate_copper).ore(ore_copper,cluster_copper,ore_gneiss_copper,ore_meteor_copper).wire(wire.getItemStack(MaterialMineral.COPPER));
+		W.ingot(ingot.getItemStack(MaterialMineral.TUNGSTEN)).dust(powder_tungsten).block(block_tungsten).crystal(crystal_tungsten).ore(ore_tungsten,cluster_depth_tungsten,ore_nether_tungsten,ore_meteor_tungsten).oreNether(ore_nether_tungsten).wire(wire.getItemStack(MaterialMineral.TUNGSTEN));
+		AL.ingot(ingot.getItemStack(MaterialMineral.ALUMINIUM)).dust(powder_aluminium).block(block_aluminium).crystal(crystal_aluminium).plate(plate_aluminium).ore(ore_aluminium,cluster_aluminium,ore_meteor_aluminium).wire(wire.getItemStack(MaterialMineral.ALUMINIUM));
 		PB.toxic(2F).nugget(nugget.getItemStack(MaterialMineral.LEAD)).ingot(ingot.getItemStack(MaterialMineral.LEAD)).dust(powder_lead).block(block_lead).crystal(crystal_lead).plate(plate_lead).ore(ore_lead,ore_meteor_lead);
 		AS.toxic(16F).nugget(nugget.getItemStack(MaterialMineral.ARSENIC)).ingot(ingot.getItemStack(MaterialMineral.ARSENIC));
 		CD.nugget(nugget.getItemStack(MaterialMineral.CADMIUM)).ingot(ingot.getItemStack(MaterialMineral.CADMIUM)).dust(powder_cadmium).block(block_cadmium);
@@ -332,7 +332,7 @@ public class OreDictManager {
 		NITANIUM.dust(powder_nitan_mix).ore(ore_depth_nether_nitan);
 
 // Compounds
-		MINGRADE.ingot(ingot.getItemStack(MaterialMineral.RED_COPPER)).dust(powder_red_copper).block(block_red_copper);
+		MINGRADE.ingot(ingot.getItemStack(MaterialMineral.RED_COPPER)).dust(powder_red_copper).block(block_red_copper).wire(wire.getItemStack(MaterialMineral.RED_COPPER));
 		ALLOY.ingot(ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)).dust(powder_advanced_alloy).block(block_advanced_alloy).plate(plate_advanced_alloy);
 		STEEL.ingot(ingot.getItemStack(MaterialMineral.STEEL)).dust(powder_steel).dustSmall(powder_steel_tiny).block(block_steel).plate(plate_steel);
 		TCALLOY.ingot(ingot.getItemStack(MaterialMineral.TCALLOY)).dust(powder_tcalloy);
@@ -343,7 +343,7 @@ public class OreDictManager {
 		BAKELITE.ingot(ingot.getItemStack(MaterialMineral.BAKELITE)).dust(powder_bakelite).block(block_bakelite);
 		RUBBER.ingot(ingot.getItemStack(MaterialMineral.RUBBER)).block(block_rubber);
 		LATEX.ingot(ingot.getItemStack(MaterialMineral.BIORUBBER)).gem(ball_resin);
-		MAGTUNG.rad(0.75F).ingot(ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN)).dust(powder_magnetized_tungsten).block(block_magnetized_tungsten);
+		MAGTUNG.rad(0.75F).ingot(ingot.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN)).dust(powder_magnetized_tungsten).block(block_magnetized_tungsten).wire(wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN));
 		CMB.ingot(ingot.getItemStack(MaterialMineral.COMBINE_STEEL)).dust(powder_combine_steel).block(block_combine_steel).plate(plate_combine_steel);
 		DESH.nugget(nugget.getItemStack(MaterialMineral.DESH)).ingot(ingot.getItemStack(MaterialMineral.DESH)).dust(powder_desh).block(block_desh);
 		STAR.ingot(ingot.getItemStack(MaterialMineral.STARMETAL)).block(block_starmetal).crystal(crystal_starmetal).ore(ore_meteor_starmetal);
@@ -370,7 +370,7 @@ public class OreDictManager {
 		AM241.rad(HazardRegistry.am241).nugget(nugget.getItemStack(MaterialMineral.AM241)).billet(billet.getItemStack(MaterialMineral.AM241)).ingot(ingot.getItemStack(MaterialMineral.AM241));
 		AM242.rad(HazardRegistry.am242).nugget(nugget.getItemStack(MaterialMineral.AM242)).billet(billet.getItemStack(MaterialMineral.AM242)).ingot(ingot.getItemStack(MaterialMineral.AM242));
 		AMRG.rad(HazardRegistry.amrg).nugget(nugget.getItemStack(MaterialMineral.AM_MIX)).billet(billet.getItemStack(MaterialMineral.AM_MIX)).ingot(ingot.getItemStack(MaterialMineral.AM_MIX));
-		SA326.rad(HazardRegistry.sa326).blinding(50F).nugget(nugget.getItemStack(MaterialMineral.SCHRABIDIUM)).billet(billet.getItemStack(MaterialMineral.SCHRABIDIUM)).ingot(ingot.getItemStack(MaterialMineral.SCHRABIDIUM)).dust(powder_schrabidium).block(block_schrabidium).crystal(crystal_schrabidium).plate(plate_schrabidium).ore(ore_schrabidium,ore_gneiss_schrabidium,ore_nether_schrabidium).oreNether(ore_nether_schrabidium);
+		SA326.rad(HazardRegistry.sa326).blinding(50F).nugget(nugget.getItemStack(MaterialMineral.SCHRABIDIUM)).billet(billet.getItemStack(MaterialMineral.SCHRABIDIUM)).ingot(ingot.getItemStack(MaterialMineral.SCHRABIDIUM)).dust(powder_schrabidium).block(block_schrabidium).crystal(crystal_schrabidium).plate(plate_schrabidium).ore(ore_schrabidium,ore_gneiss_schrabidium,ore_nether_schrabidium).oreNether(ore_nether_schrabidium).wire(wire.getItemStack(MaterialMineral.SCHRABIDIUM));
 		SA327.rad(HazardRegistry.sa327).blinding(50F).nugget(nugget.getItemStack(MaterialMineral.SOLINIUM)).billet(billet.getItemStack(MaterialMineral.SOLINIUM)).ingot(ingot.getItemStack(MaterialMineral.SOLINIUM)).block(block_solinium);
 		SBD.rad(HazardRegistry.sb).blinding(50F).ingot(ingot.getItemStack(MaterialMineral.SCHRABIDATE)).dust(powder_schrabidate).block(block_schrabidate);
 		SRN.rad(HazardRegistry.sr).blinding(50F).ingot(ingot.getItemStack(MaterialMineral.SCHRARANIUM)).block(block_schraranium).crystal(crystal_schraranium);
@@ -571,6 +571,7 @@ public class OreDictManager {
 		public String billet() {		return BILLET	+ mats[0]; }
 		public String block() {			return BLOCK	+ mats[0]; }
 		public String ore() {			return ORE		+ mats[0]; }
+		public String wire() {			return WIRE		+ mats[0]; }
 		public String[] anys() {		return appendToAll(ANY); }
 		public String[] nuggets() {		return appendToAll(NUGGET); }
 		public String[] tinys() {		return appendToAll(TINY); }
@@ -584,6 +585,7 @@ public class OreDictManager {
 		public String[] billets() {		return appendToAll(BILLET); }
 		public String[] blocks() {		return appendToAll(BLOCK); }
 		public String[] ores() {		return appendToAll(ORE); }
+		public String[] wires() {	 	return appendToAll(WIRE); }
 
 		private String[] appendToAll(final String... prefix) {
 
@@ -678,6 +680,10 @@ public class OreDictManager {
 		public DictFrame ore(final Object... ore) {
 			hazMult = HazardRegistry.ore;
 			return makeObject(ORE, ore);
+		}
+		public DictFrame wire(final Object... wire) {
+			hazMult = HazardRegistry.wire;
+			return makeObject(WIRE, wire);
 		}
 		public DictFrame oreNether(final Object... oreNether) {
 			hazMult = HazardRegistry.ore;
@@ -803,6 +809,7 @@ public class OreDictManager {
 		public String billet() {		return BILLET	+ groupName; }
 		public String block() {			return BLOCK	+ groupName; }
 		public String ore() {			return ORE		+ groupName; }
+		public String wire() {			return WIRE		+ groupName; }
 	}
 
 	private static void addReRegistration(final String original, final String additional) {

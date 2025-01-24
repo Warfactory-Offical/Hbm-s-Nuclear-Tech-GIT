@@ -97,14 +97,14 @@ public class AnvilRecipes {
 		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(CMB.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_combine_steel))).setTier(3));
 		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(BIGMT.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_saturnite))).setTier(3));
 
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(AL.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 8))).setTier(4));
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(CU.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_copper, 8))).setTier(4));
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(W.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_tungsten, 8))).setTier(4));
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(MINGRADE.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_red_copper, 8))).setTier(4));
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(ALLOY.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_advanced_alloy, 8))).setTier(4));
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(GOLD.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 8))).setTier(4));
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(SA326.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_schrabidium, 8))).setTier(4));
-		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(MAGTUNG.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_magnetized_tungsten, 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(AL.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ALUMINIUM), 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(CU.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.COPPER), 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(W.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.TUNGSTEN), 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(MINGRADE.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.RED_COPPER), 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(ALLOY.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ADVANCED_ALLOY), 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(GOLD.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(SA326.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.SCHRABIDIUM), 8))).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(MAGTUNG.ingot()), new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 8))).setTier(4));
 
 		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(COAL.dust()), new AnvilOutput(ItemStackUtil.itemStackFrom(Items.COAL))).setTier(3));
 		constructionRecipes.add(new AnvilConstructionRecipe(new OreDictStack(NETHERQUARTZ.dust()), new AnvilOutput(ItemStackUtil.itemStackFrom(Items.QUARTZ))).setTier(3));
@@ -291,7 +291,7 @@ public class AnvilRecipes {
 						ItemStackUtil.comparableStackFrom(ModBlocks.steel_wall, 2),
 						new OreDictStack(REDSTONE.dust(), 4),
 						ItemStackUtil.comparableStackFrom(Blocks.LEVER, 2),
-						ItemStackUtil.comparableStackFrom(ModItems.wire_advanced_alloy, 3)
+						ItemStackUtil.comparableStackFrom(ModItems.wire.getItemStack(MaterialMineral.ADVANCED_ALLOY), 3)
 				},
 				new AnvilOutput(ItemStackUtil.itemStackFrom(ModBlocks.bm_power_box))).setTier(5));
 		
@@ -341,10 +341,10 @@ public class AnvilRecipes {
 				new AStack[] {new OreDictStack(IRON.plate(), 4), new OreDictStack(BIGMT.plate(), 2), ItemStackUtil.comparableStackFrom(ModItems.plate_armor_titanium, 1)},
 				new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_armor_ajr))).setTier(3));
 		constructionRecipes.add(new AnvilConstructionRecipe(
-				new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.plate_paa, 2), ItemStackUtil.comparableStackFrom(ModItems.plate_armor_ajr, 1), ItemStackUtil.comparableStackFrom(ModItems.wire_tungsten, 4)},
+				new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.plate_paa, 2), ItemStackUtil.comparableStackFrom(ModItems.plate_armor_ajr, 1), ItemStackUtil.comparableStackFrom(ModItems.wire.getItemStack(MaterialMineral.TUNGSTEN), 4)},
 				new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_armor_hev))).setTier(4));
 		constructionRecipes.add(new AnvilConstructionRecipe(
-				new AStack[] {new OreDictStack(OreDictManager.getReflector(), 2), ItemStackUtil.comparableStackFrom(ModItems.plate_armor_hev, 1), ItemStackUtil.comparableStackFrom(ModItems.wire_magnetized_tungsten, 4)},
+				new AStack[] {new OreDictStack(OreDictManager.getReflector(), 2), ItemStackUtil.comparableStackFrom(ModItems.plate_armor_hev, 1), ItemStackUtil.comparableStackFrom(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 4)},
 				new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_armor_lunar))).setTier(4));
 		constructionRecipes.add(new AnvilConstructionRecipe(
 				new AStack[] {ItemStackUtil.comparableStackFrom(ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED), 4), new OreDictStack(DESH.ingot(), 1), ItemStackUtil.comparableStackFrom(ModItems.billet.getItemStack(MaterialMineral.YHARONITE), 1)},
@@ -502,7 +502,7 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_raw),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 1)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 1)),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ALUMINIUM), 1)),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(Items.REDSTONE, 1))
 				}
 		).setTier(1));
@@ -510,7 +510,7 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_aluminium),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_steel, 1)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_aluminium, 1), 0.5F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.ALUMINIUM), 1), 0.5F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(Items.REDSTONE, 1), 0.25F)
 				}
 		).setTier(1));
@@ -518,9 +518,9 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_copper),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.circuit_aluminium, 1)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_copper, 2)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_copper, 1), 0.5F),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_copper, 1), 0.25F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.COPPER), 2)),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.COPPER), 1), 0.5F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.COPPER), 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.powder_quartz, 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_copper, 1), 0.5F)
 				}
@@ -529,9 +529,9 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_red_copper),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.circuit_copper, 1)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_red_copper, 2)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_red_copper, 1), 0.5F),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_red_copper, 1), 0.25F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.RED_COPPER), 2)),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.RED_COPPER), 1), 0.5F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.RED_COPPER), 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.powder_gold, 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_polymer, 1), 0.5F)
 				}
@@ -540,9 +540,9 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_gold),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.circuit_red_copper, 1)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 2)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 1), 0.5F),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 1), 0.25F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 2)),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 1), 0.5F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.powder_lapis, 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.POLYMER), 1), 0.5F)
 				}
@@ -551,9 +551,9 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_schrabidium),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.circuit_gold, 1)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_schrabidium, 2)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_schrabidium, 1), 0.5F),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_schrabidium, 1), 0.25F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.SCHRABIDIUM), 2)),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.SCHRABIDIUM), 1), 0.5F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.SCHRABIDIUM), 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.powder_diamond, 1), 0.25F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH), 1), 0.5F)
 				}
@@ -563,7 +563,7 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_tantalium_raw),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(Items.REDSTONE, 4)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 2)),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 2)),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_copper, 2)),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TANTALIUM), 1))
 				}
@@ -572,8 +572,8 @@ public class AnvilRecipes {
 				ItemStackUtil.comparableStackFrom(ModItems.circuit_tantalium),
 				new AnvilOutput[] {
 						new AnvilOutput(ItemStackUtil.itemStackFrom(Items.REDSTONE, 2)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 1)),
-						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire_gold, 1), 0.5F),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 1)),
+						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.wire.getItemStack(MaterialMineral.GOLD), 1), 0.5F),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.plate_copper, 1)),
 						new AnvilOutput(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.TANTALIUM), 1), 0.75F)
 				}

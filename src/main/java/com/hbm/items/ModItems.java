@@ -100,7 +100,6 @@ import com.hbm.items.gear.ArmorHazmat;
 import com.hbm.items.gear.ArmorModel;
 import com.hbm.items.gear.ArmorGasMask;
 import com.hbm.items.gear.ArmorT45;
-import com.hbm.items.gear.BigSword;
 import com.hbm.items.gear.HoeSchrabidium;
 import com.hbm.items.gear.JetpackBooster;
 import com.hbm.items.gear.JetpackBreak;
@@ -111,7 +110,6 @@ import com.hbm.items.gear.MaskOfInfamy;
 import com.hbm.items.gear.ModArmor;
 import com.hbm.items.gear.ModHoe;
 import com.hbm.items.gear.ModSword;
-import com.hbm.items.gear.RedstoneSword;
 import com.hbm.items.gear.WeaponSpecial;
 import com.hbm.items.machine.ItemAssemblyTemplate;
 import com.hbm.items.machine.ItemBattery;
@@ -321,6 +319,7 @@ public class ModItems {
 	public static final MetaItem<ShapePart, MaterialMineral> ingot = new MetaItem<>(ShapePart.INGOT, MaterialMineral.ingotValues()).setCreativeTab(MainRegistry.partsTab);
 	public static final MetaItem<ShapePart, MaterialMineral> billet = new MetaItem<>(ShapePart.BILLET, MaterialMineral.billetValues()).setCreativeTab(MainRegistry.partsTab);
 	public static final MetaItem<ShapePart, MaterialMineral> nugget = new MetaItem<>(ShapePart.NUGGET, MaterialMineral.nuggetValues()).setCreativeTab(MainRegistry.partsTab);
+	public static final MetaItem<ShapePart, MaterialMineral> wire = new MetaItem<>(ShapePart.WIRE, MaterialMineral.wireValues()).setCreativeTab(MainRegistry.partsTab);
 
 	public static final Item ingot_steel_dusted = new ItemHotDusted(200, "ingot_steel_dusted").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_u238m2 = new ItemUnstable(350, 200, "ingot_u238m2").setCreativeTab(MainRegistry.partsTab);
@@ -342,8 +341,7 @@ public class ModItems {
 	public static final Item hand_drill = new ItemTooling(ToolType.HAND_DRILL, 100, "hand_drill").setCreativeTab(MainRegistry.consumableTab);
 	public static final Item hand_drill_desh = new ItemTooling(ToolType.HAND_DRILL, -1, "hand_drill_desh").setCreativeTab(MainRegistry.consumableTab);
 	public static final Item reacher = new ItemCustomLore("reacher").setMaxStackSize(1).setFull3D().setCreativeTab(MainRegistry.consumableTab);
-	public static final Item bismuth_tool = new ItemAmatExtractor("bismuth_tool").setMaxStackSize(1).setFull3D().setCreativeTab(MainRegistry.consumableTab);
-	public static final Item wiring_red_copper = new ItemWiring("wiring_red_copper").setCreativeTab(MainRegistry.consumableTab);
+	public static final Item bismuth_tool = new ItemAmatExtractor("bismuth_tool").setMaxStackSize(1).setFull3D().setCreativeTab(MainRegistry.consumableTab); public static final Item wiring_red_copper = new ItemWiring("wiring_red_copper").setCreativeTab(MainRegistry.consumableTab);
 	public static final Item survey_scanner = new ItemSurveyScanner("survey_scanner").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
 	public static final Item oil_detector = new ItemOilDetector("oil_detector").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
 	public static final Item mirror_tool = new ItemMirrorTool("mirror_tool").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab);
@@ -2138,23 +2136,16 @@ public class ModItems {
 	public static final Item casing_9 = new ItemBase("casing_9").setCreativeTab(MainRegistry.partsTab);
 	public static final Item casing_50 = new ItemBase("casing_50").setCreativeTab(MainRegistry.partsTab);
 	public static final Item casing_buckshot = new ItemBase("casing_buckshot").setCreativeTab(MainRegistry.partsTab);
-	
+
 	//Wires and things
-	public static final Item wire_advanced_alloy = new ItemBase("wire_advanced_alloy").setCreativeTab(MainRegistry.partsTab);
-	public static final Item coil_advanced_alloy = new ItemBase("coil_advanced_alloy").setCreativeTab(MainRegistry.partsTab);
-	public static final Item coil_advanced_torus = new ItemBase("coil_advanced_torus").setCreativeTab(MainRegistry.partsTab);
-	public static final Item wire_gold = new ItemBase("wire_gold").setCreativeTab(MainRegistry.partsTab);
+
 	public static final Item coil_gold = new ItemBase("coil_gold").setCreativeTab(MainRegistry.partsTab);
 	public static final Item coil_gold_torus = new ItemBase("coil_gold_torus").setCreativeTab(MainRegistry.partsTab);
-	public static final Item wire_red_copper = new ItemBase("wire_red_copper").setCreativeTab(MainRegistry.partsTab);
-	public static final Item wire_tungsten = new ItemCustomLore("wire_tungsten").setCreativeTab(MainRegistry.partsTab);
 	public static final Item coil_tungsten = new ItemBase("coil_tungsten").setCreativeTab(MainRegistry.partsTab);
-	public static final Item wire_aluminium = new ItemBase("wire_aluminium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item wire_copper = new ItemBase("wire_copper").setCreativeTab(MainRegistry.partsTab);
 	public static final Item coil_copper = new ItemBase("coil_copper").setCreativeTab(MainRegistry.partsTab);
 	public static final Item coil_copper_torus = new ItemBase("coil_copper_torus").setCreativeTab(MainRegistry.partsTab);
-	public static final Item wire_schrabidium = new ItemHazard(1.5F, false, true, "wire_schrabidium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item wire_magnetized_tungsten = new ItemHazard(ItemHazard.magt * ItemHazard.wire, "wire_magnetized_tungsten").setCreativeTab(MainRegistry.partsTab);
+	public static final Item coil_advanced_alloy = new ItemBase("coil_advanced_alloy").setCreativeTab(MainRegistry.partsTab);
+	public static final Item coil_advanced_torus = new ItemBase("coil_advanced_torus").setCreativeTab(MainRegistry.partsTab);
 	public static final Item coil_magnetized_tungsten = new ItemHazard(ItemHazard.magt, "coil_magnetized_tungsten").setCreativeTab(MainRegistry.partsTab);
 	
 	
