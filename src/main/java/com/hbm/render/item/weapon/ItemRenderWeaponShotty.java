@@ -1,24 +1,22 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.animloader.AnimationWrapper;
 import com.hbm.config.GeneralConfig;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.item.TEISRBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderWeaponShotty extends TEISRBase {
 
 	@Override
-	public void renderByItem(final ItemStack item) {
+	public void renderByItem(ItemStack item) {
 		GL11.glPopMatrix();
 		GlStateManager.disableCull();
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.universal);
@@ -34,7 +32,7 @@ public class ItemRenderWeaponShotty extends TEISRBase {
 					GL11.glScaled(1, 1.5, 1.5);
 				} else {
 					GL11.glTranslated(0, -7, -0.6);
-					final double[] recoil = HbmAnimations.getRelevantTransformation("MEATHOOK_RECOIL", EnumHand.MAIN_HAND);
+					double[] recoil = HbmAnimations.getRelevantTransformation("MEATHOOK_RECOIL", EnumHand.MAIN_HAND);
 					GL11.glTranslated(recoil[2], recoil[1], 0);
 					if(this.entity != null && this.entity.isSneaking()) {
 						GL11.glTranslated(0, 0.20, 0.43);
@@ -50,7 +48,7 @@ public class ItemRenderWeaponShotty extends TEISRBase {
 				}
 				GlStateManager.shadeModel(GL11.GL_SMOOTH);
 				if(item.getTagCompound() != null && item.getTagCompound().hasKey("animation")) {
-					final NBTTagCompound anim = item.getTagCompound().getCompoundTag("animation");
+					NBTTagCompound anim = item.getTagCompound().getCompoundTag("animation");
 					if(anim.getInteger("id") == 0)
 						ResourceManager.supershotgun.controller.setAnim(new AnimationWrapper(anim.getLong("time"), anim.getFloat("mult"), ResourceManager.ssg_reload));
 					else
@@ -63,11 +61,11 @@ public class ItemRenderWeaponShotty extends TEISRBase {
 				GlStateManager.enableCull();
 				GL11.glPushMatrix();
 			} else {
-				final EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
-				final double[] recoil = HbmAnimations.getRelevantTransformation("SHOTTY_RECOIL", hand);
-				final double[] eject = HbmAnimations.getRelevantTransformation("SHOTTY_BREAK", hand);
-				final double[] ejectShell = HbmAnimations.getRelevantTransformation("SHOTTY_EJECT", hand);
-				final double[] insertShell = HbmAnimations.getRelevantTransformation("SHOTTY_INSERT", hand);
+				EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+				double[] recoil = HbmAnimations.getRelevantTransformation("SHOTTY_RECOIL", hand);
+				double[] eject = HbmAnimations.getRelevantTransformation("SHOTTY_BREAK", hand);
+				double[] ejectShell = HbmAnimations.getRelevantTransformation("SHOTTY_EJECT", hand);
+				double[] insertShell = HbmAnimations.getRelevantTransformation("SHOTTY_INSERT", hand);
 				
 				GL11.glTranslated(-5, -0.3, -2.5);
 				GL11.glRotated(4, 1, 0, 0);

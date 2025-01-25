@@ -8,10 +8,9 @@ import com.hbm.render.amlfrom1710.Tessellator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -24,7 +23,7 @@ public class DialLarge extends Control {
 
     private String label = "    POWER            (RS)";
 
-    public DialLarge(final String name, final ControlPanel panel) {
+    public DialLarge(String name, ControlPanel panel) {
         super(name, panel);
         vars.put("value", new DataValueFloat(0));
         configMap.put("label", new DataValueString(label));
@@ -41,10 +40,10 @@ public class DialLarge extends Control {
     }
 
     @Override
-    public void applyConfigs(final Map<String, DataValue> configs) {
+    public void applyConfigs(Map<String, DataValue> configs) {
         super.applyConfigs(configs);
 
-        for (final Map.Entry<String, DataValue> e : configMap.entrySet()) {
+        for (Map.Entry<String, DataValue> e : configMap.entrySet()) {
             switch (e.getKey()) {
                 case "label": {
                     label = e.getValue().toString();
@@ -58,10 +57,10 @@ public class DialLarge extends Control {
     public void render() {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.ctrl_dial_large_tex);
-        final Tessellator tes = Tessellator.instance;
-        final IModelCustom model = getModel();
+        Tessellator tes = Tessellator.instance;
+        IModelCustom model = getModel();
 
-        final int value = (int) getVar("value").getNumber();
+        int value = (int) getVar("value").getNumber();
 
         tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         tes.setTranslation(posX, 0, posY);
@@ -70,7 +69,7 @@ public class DialLarge extends Control {
         tes.draw();
 
         GL11.glPushMatrix();
-        final Matrix4f rot_mat = new Matrix4f().rotate((float) -MathHelper.clamp((value*(Math.PI/100F)), 0, Math.PI), new Vector3f(0, 1, 0));
+        Matrix4f rot_mat = new Matrix4f().rotate((float) -MathHelper.clamp((value*(Math.PI/100F)), 0, Math.PI), new Vector3f(0, 1, 0));
         Matrix4f.mul(new Matrix4f().translate(new Vector3f(posX, 0, posY+.77F)), rot_mat, new Matrix4f()).store(ClientProxy.AUX_GL_BUFFER);
         ClientProxy.AUX_GL_BUFFER.rewind();
         GlStateManager.multMatrix(ClientProxy.AUX_GL_BUFFER);
@@ -86,13 +85,13 @@ public class DialLarge extends Control {
         GL11.glNormal3f(0.0F, 0.0F, -1.0F);
         GL11.glRotatef(90, 1, 0, 0);
 
-        final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 
         for (int i=0; i<11; i++) {
-            final double angle = (Math.PI*1.1F)/11F * i;
-            final float r = 68;
-            final double x = r * Math.cos(angle-Math.PI)+i;
-            final double y = r * Math.sin(angle-Math.PI);
+            double angle = (Math.PI*1.1F)/11F * i;
+            float r = 68;
+            double x = r * Math.cos(angle-Math.PI)+i;
+            double y = r * Math.sin(angle-Math.PI);
             font.drawString(Integer.toString(i*10), (float) (x - ((i==10)? 14 : 10)), (float) (29.5F+y), 0x303030, false);
         }
 
@@ -112,7 +111,7 @@ public class DialLarge extends Control {
     }
 
     @Override
-    public Control newControl(final ControlPanel panel) {
+    public Control newControl(ControlPanel panel) {
         return new DialLarge(name, panel);
     }
 
@@ -122,7 +121,7 @@ public class DialLarge extends Control {
     }
 
     @Override
-    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
+    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
 
     }
 }

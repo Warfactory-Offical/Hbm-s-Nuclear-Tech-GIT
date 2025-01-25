@@ -9,7 +9,6 @@ import com.hbm.render.amlfrom1710.Tessellator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,7 +26,7 @@ public class KnobControl extends Control {
 
     private int positions = 2;
 
-    public KnobControl(final String name, final ControlPanel panel) {
+    public KnobControl(String name, ControlPanel panel) {
         super(name, panel);
         vars.put("value", new DataValueFloat(0));
         configMap.put("positions", new DataValueFloat(positions));
@@ -44,10 +43,10 @@ public class KnobControl extends Control {
     }
 
     @Override
-    public void applyConfigs(final Map<String, DataValue> configs) {
+    public void applyConfigs(Map<String, DataValue> configs) {
         super.applyConfigs(configs);
 
-        for (final Map.Entry<String, DataValue> e : configMap.entrySet()) {
+        for (Map.Entry<String, DataValue> e : configMap.entrySet()) {
             switch (e.getKey()) {
                 case "positions": {
                     positions = (int) e.getValue().getNumber();
@@ -61,10 +60,10 @@ public class KnobControl extends Control {
     public void render() {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.ctrl_knob_control_tex);
-        final Tessellator tes = Tessellator.instance;
-        final IModelCustom model = getModel();
+        Tessellator tes = Tessellator.instance;
+        IModelCustom model = getModel();
 
-        final int value = (int) getVar("value").getNumber();
+        int value = (int) getVar("value").getNumber();
 
         tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         tes.setTranslation(posX, 0, posY);
@@ -73,7 +72,7 @@ public class KnobControl extends Control {
         tes.draw();
 
         GL11.glPushMatrix();
-            final Matrix4f rot_mat = new Matrix4f().rotate((float) -(value*((2*Math.PI)/11F)), new Vector3f(0, 1, 0));
+            Matrix4f rot_mat = new Matrix4f().rotate((float) -(value*((2*Math.PI)/11F)), new Vector3f(0, 1, 0));
             Matrix4f.mul(new Matrix4f().translate(new Vector3f(posX, -.04F, posY)), rot_mat, new Matrix4f()).store(ClientProxy.AUX_GL_BUFFER);
             ClientProxy.AUX_GL_BUFFER.rewind();
             GlStateManager.multMatrix(ClientProxy.AUX_GL_BUFFER);
@@ -89,13 +88,13 @@ public class KnobControl extends Control {
             GL11.glNormal3f(0.0F, 0.0F, -1.0F);
             GL11.glRotatef(90, 1, 0, 0);
 
-            final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+            FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 
             for (int i=0; i<positions; i++) {
-                final double angle = (Math.PI*2)/11F * i;
-                final float r = 28;
-                final double x = r * Math.cos(angle-Math.PI/2);
-                final double y = r * Math.sin(angle-Math.PI/2);
+                double angle = (Math.PI*2)/11F * i;
+                float r = 28;
+                double x = r * Math.cos(angle-Math.PI/2);
+                double y = r * Math.sin(angle-Math.PI/2);
                 font.drawString(Integer.toString(i), (float) (((i==10)?-6.5 : -2.5F)+x), (float) (-3F+y), 0x282828, false);
             }
         GL11.glPopMatrix();
@@ -119,30 +118,30 @@ public class KnobControl extends Control {
     }
 
     @Override
-    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
-        final NodeSystem ctrl_press = new NodeSystem(this);
+    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
+        NodeSystem ctrl_press = new NodeSystem(this);
         {
-            final Map<String, DataValue> vars = new HashMap<>(receiveEvents.get(0).vars);
+            Map<String, DataValue> vars = new HashMap<>(receiveEvents.get(0).vars);
             vars.put("from index", new DataValueFloat(0));
-            final NodeInput node0 = new NodeInput(170, 100, "Event Data").setVars(vars);
+            NodeInput node0 = new NodeInput(170, 100, "Event Data").setVars(vars);
             ctrl_press.addNode(node0);
-            final NodeConditional node1 = new NodeConditional(230, 120);
+            NodeConditional node1 = new NodeConditional(230, 120);
             node1.inputs.get(0).setData(node0, 1, true);
             node1.inputs.get(1).setDefault(new DataValueFloat(-1));
             node1.inputs.get(2).setDefault(new DataValueFloat(1));
             ctrl_press.addNode(node1);
-            final NodeGetVar node2 = new NodeGetVar(170, 160, this).setData("value", false);
+            NodeGetVar node2 = new NodeGetVar(170, 160, this).setData("value", false);
             ctrl_press.addNode(node2);
-            final NodeMath node3 = new NodeMath(290, 140).setData(NodeMath.Operation.ADD);
+            NodeMath node3 = new NodeMath(290, 140).setData(NodeMath.Operation.ADD);
             node3.inputs.get(0).setData(node1, 0, true);
             node3.inputs.get(1).setData(node2, 0, true);
             ctrl_press.addNode(node3);
-            final NodeMath node4 = new NodeMath(350, 140).setData(NodeMath.Operation.CLAMP);
+            NodeMath node4 = new NodeMath(350, 140).setData(NodeMath.Operation.CLAMP);
             node4.inputs.get(0).setData(node3, 0, true);
             node4.inputs.get(1).setDefault(new DataValueFloat(0));
             node4.inputs.get(2).setDefault(new DataValueFloat(10));
             ctrl_press.addNode(node4);
-            final NodeSetVar node5 = new NodeSetVar(410, 145, this).setData("value", false);
+            NodeSetVar node5 = new NodeSetVar(410, 145, this).setData("value", false);
             node5.inputs.get(0).setData(node4, 0, true);
             ctrl_press.addNode(node5);
         }
@@ -150,7 +149,7 @@ public class KnobControl extends Control {
     }
 
     @Override
-    public Control newControl(final ControlPanel panel) {
+    public Control newControl(ControlPanel panel) {
         return new KnobControl(name, panel);
 
     }

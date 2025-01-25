@@ -1,10 +1,8 @@
 package com.hbm.tileentity.network;
 
 import com.hbm.tileentity.network.RTTYSystem.RTTYChannel;
-
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.MathHelper;
 
 public class TileEntityRadioTorchReceiver extends TileEntityRadioTorchBase {
@@ -16,10 +14,10 @@ public class TileEntityRadioTorchReceiver extends TileEntityRadioTorchBase {
 			
 			if(!this.channel.isEmpty()) {
 				
-				final RTTYChannel chan = RTTYSystem.listen(world, this.channel);
+				RTTYChannel chan = RTTYSystem.listen(world, this.channel);
 				
 				if(chan != null && (this.polling || (chan.timeStamp > this.lastUpdate - 1 && chan.timeStamp != -1))) { // if we're either polling or a new message has come in
-					final String msg = "" + chan.signal;
+					String msg = "" + chan.signal;
 					this.lastUpdate = world.getTotalWorldTime();
 					int nextState = 0; //if no remap apply, default to 0
 					
@@ -34,7 +32,7 @@ public class TileEntityRadioTorchReceiver extends TileEntityRadioTorchBase {
 						int sig = 0;
 						try { 
 							sig = Integer.parseInt(msg); 
-						} catch(final Exception x) {
+						} catch(Exception x) {
 						}
 						nextState = MathHelper.clamp(sig, 0, 15);
 					}
@@ -45,8 +43,8 @@ public class TileEntityRadioTorchReceiver extends TileEntityRadioTorchBase {
 					
 					if(this.lastState != nextState) {
 						this.lastState = nextState;
-						final EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
-						final BlockPos strongPos = new BlockPos(pos.getX() + dir.getXOffset(), pos.getY() + dir.getYOffset(), pos.getZ() + dir.getZOffset());
+						EnumFacing dir = EnumFacing.getFront(this.getBlockMetadata());
+						BlockPos strongPos = new BlockPos(pos.getX() + dir.getFrontOffsetX(), pos.getY() + dir.getFrontOffsetY(), pos.getZ() + dir.getFrontOffsetZ());
 						
 						world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
 						world.notifyNeighborsOfStateChange(strongPos, getBlockType(), true);

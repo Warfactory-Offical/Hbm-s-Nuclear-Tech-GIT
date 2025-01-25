@@ -1,11 +1,10 @@
 package com.hbm.render.util;
 
-import java.util.ArrayList;
-
 import com.hbm.render.amlfrom1710.Tessellator;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
 
 
 public class HbmGroupObject {
@@ -19,12 +18,12 @@ public class HbmGroupObject {
         this("");
     }
 
-    public HbmGroupObject(final String name)
+    public HbmGroupObject(String name)
     {
         this(name, -1);
     }
 
-    public HbmGroupObject(final String name, final int glDrawingMode)
+    public HbmGroupObject(String name, int glDrawingMode)
     {
         this.name = name;
         this.glDrawingMode = glDrawingMode;
@@ -35,7 +34,7 @@ public class HbmGroupObject {
     {
         if (faces.size() > 0)
         {
-            final Tessellator tessellator = Tessellator.instance;
+            Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawing(glDrawingMode);
             render(tessellator);
             tessellator.draw();
@@ -43,11 +42,11 @@ public class HbmGroupObject {
     }
 
     @SideOnly(Side.CLIENT)
-    public void render(final Tessellator tessellator)
+    public void render(Tessellator tessellator)
     {
         if (faces.size() > 0)
         {
-            for (final HbmFace face : faces)
+            for (HbmFace face : faces)
             {
                 face.addFaceForRender(tessellator);
             }

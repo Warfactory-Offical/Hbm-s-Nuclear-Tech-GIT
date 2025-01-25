@@ -19,13 +19,10 @@ import com.hbm.tileentity.machine.TileEntityMachineBoiler;
 import com.hbm.tileentity.machine.TileEntityMachineBoilerElectric;
 import com.hbm.tileentity.machine.TileEntityMachineBoilerRTG;
 import com.hbm.tileentity.machine.TileEntityMachineCentrifuge;
-import com.hbm.tileentity.machine.TileEntityMachineCoal;
 import com.hbm.tileentity.machine.TileEntityMachineDiesel;
 import com.hbm.tileentity.machine.TileEntityMachineElectricFurnace;
 import com.hbm.tileentity.machine.TileEntityMachineGasCent;
-import com.hbm.tileentity.machine.TileEntityMachineGenerator;
 import com.hbm.tileentity.machine.TileEntityMachineReactorLarge;
-import com.hbm.tileentity.machine.TileEntityMachineReactorSmall;
 import com.hbm.tileentity.machine.TileEntityMachineSeleniumEngine;
 import com.hbm.tileentity.machine.TileEntitySlidingBlastDoor;
 import com.hbm.tileentity.machine.TileEntityWatzCore;
@@ -55,7 +52,7 @@ public class AuxGaugePacket implements IMessage {
 
 	}
 
-	public AuxGaugePacket(final int x, final int y, final int z, final int value, final int id) {
+	public AuxGaugePacket(int x, int y, int z, int value, int id) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -63,12 +60,12 @@ public class AuxGaugePacket implements IMessage {
 		this.id = id;
 	}
 
-	public AuxGaugePacket(final BlockPos pos, final int value, final int id) {
+	public AuxGaugePacket(BlockPos pos, int value, int id) {
 		this(pos.getX(), pos.getY(), pos.getZ(), value, id);
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -77,7 +74,7 @@ public class AuxGaugePacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -89,25 +86,28 @@ public class AuxGaugePacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final AuxGaugePacket m, final MessageContext ctx) {
+		public IMessage onMessage(AuxGaugePacket m, MessageContext ctx) {
 
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				try {
-					final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-					if(te instanceof TileEntityAMSLimiter limiter) {
-                        if(m.id == 0)
+					if(te instanceof TileEntityAMSLimiter) {
+						TileEntityAMSLimiter limiter = (TileEntityAMSLimiter) te;
+						if(m.id == 0)
 							limiter.locked = m.value == 1;
 						else if(m.id == 1)
 							limiter.efficiency = m.value;
-					} else if(te instanceof TileEntityAMSEmitter emitter) {
-                        if(m.id == 0)
+					} else if(te instanceof TileEntityAMSEmitter) {
+						TileEntityAMSEmitter emitter = (TileEntityAMSEmitter) te;
+						if(m.id == 0)
 							emitter.locked = m.value == 1;
 						else if(m.id == 1)
 							emitter.efficiency = m.value;
-					} else if(te instanceof TileEntityAMSBase base) {
+					} else if(te instanceof TileEntityAMSBase) {
+						TileEntityAMSBase base = (TileEntityAMSBase) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							base.locked = m.value == 1;
 						else if(m.id == 1)
 							base.color = m.value;
@@ -115,102 +115,105 @@ public class AuxGaugePacket implements IMessage {
 							base.efficiency = m.value;
 						else if(m.id == 3)
 							base.field = m.value;
-					} else if(te instanceof TileEntityTurretCIWS cwis) {
+					} else if(te instanceof TileEntityTurretCIWS) {
+						TileEntityTurretCIWS cwis = (TileEntityTurretCIWS) te;
 
-                        cwis.rotation = m.value;
-					} else if(te instanceof TileEntityTurretCheapo cwis) {
+						cwis.rotation = m.value;
+					} else if(te instanceof TileEntityTurretCheapo) {
+						TileEntityTurretCheapo cwis = (TileEntityTurretCheapo) te;
 
-                        cwis.rotation = m.value;
-					} else if(te instanceof TileEntityMachineSeleniumEngine selenium) {
+						cwis.rotation = m.value;
+					} else if(te instanceof TileEntityMachineSeleniumEngine) {
+						TileEntityMachineSeleniumEngine selenium = (TileEntityMachineSeleniumEngine) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							selenium.pistonCount = m.value;
 						if(m.id == 1)
 							selenium.powerCap = m.value;
-					} else if(te instanceof TileEntityMachineDiesel selenium) {
+					} else if(te instanceof TileEntityMachineDiesel) {
+						TileEntityMachineDiesel selenium = (TileEntityMachineDiesel) te;
 
-                        selenium.powerCap = m.value;
-					} else if(te instanceof TileEntityMachineReactorSmall reactor) {
+						selenium.powerCap = m.value;
+					} else if(te instanceof TileEntityMachineGasCent) {
+						TileEntityMachineGasCent cent = (TileEntityMachineGasCent) te;
 
-                        if(m.id == 0)
-							reactor.rods = m.value;
-						if(m.id == 1)
-							reactor.retracting = m.value == 1;
-						if(m.id == 2)
-							reactor.coreHeat = m.value;
-						if(m.id == 3)
-							reactor.hullHeat = m.value;
-					} else if(te instanceof TileEntityMachineGasCent cent) {
-
-                        if(m.id == 0)
+						if(m.id == 0)
 							cent.progress = m.value;
 						if(m.id == 1)
 							cent.isProgressing = m.value == 1;
-					} else if(te instanceof TileEntityMachineCentrifuge cent) {
+					} else if(te instanceof TileEntityMachineCentrifuge) {
+						TileEntityMachineCentrifuge cent = (TileEntityMachineCentrifuge) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							cent.progress = m.value;
 						if(m.id == 1)
 							cent.isProgressing = m.value == 1;
-					} else if(te instanceof TileEntityMachineBoiler boiler) {
+					} else if(te instanceof TileEntityMachineBoiler) {
+						TileEntityMachineBoiler boiler = (TileEntityMachineBoiler) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							boiler.heat = m.value;
 						if(m.id == 1)
 							boiler.burnTime = m.value;
-					} else if(te instanceof TileEntityMachineBoilerRTG rtgBoiler) {
+					} else if(te instanceof TileEntityMachineBoilerRTG) {
+						TileEntityMachineBoilerRTG rtgBoiler = (TileEntityMachineBoilerRTG) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							rtgBoiler.heat = m.value;
 						if(m.id == 1)
 							rtgBoiler.rtgPower = m.value;
-					} else if(te instanceof TileEntityMachineCoal coalgen) {
+					} else if(te instanceof TileEntityMachineElectricFurnace) {
+						TileEntityMachineElectricFurnace furn = (TileEntityMachineElectricFurnace) te;
 
-                        if(m.id == 0)
-							coalgen.burnTime = m.value;
-					} else if(te instanceof TileEntityMachineElectricFurnace furn) {
-
-                        if(m.id == 0)
+						if(m.id == 0)
 							furn.dualCookTime = m.value;
-					} else if(te instanceof TileEntityMachineArcFurnace furn) {
+					} else if(te instanceof TileEntityMachineArcFurnace) {
+						TileEntityMachineArcFurnace furn = (TileEntityMachineArcFurnace) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							furn.dualCookTime = m.value;
-					} else if(te instanceof TileEntityMachineBoilerElectric boiler) {
+					} else if(te instanceof TileEntityMachineBoilerElectric) {
+						TileEntityMachineBoilerElectric boiler = (TileEntityMachineBoilerElectric) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							boiler.heat = m.value;
-					} else if(te instanceof TileEntityMachineReactorLarge reactor) {
+					} else if(te instanceof TileEntityMachineReactorLarge) {
+						TileEntityMachineReactorLarge reactor = (TileEntityMachineReactorLarge) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							reactor.size = m.value;
-					} else if(te instanceof TileEntityCompactLauncher launcher) {
-
-                        if(m.id == 0)
+					} else if(te instanceof TileEntityCompactLauncher) {
+						TileEntityCompactLauncher launcher = (TileEntityCompactLauncher) te;
+						
+						if(m.id == 0)
 							launcher.solid = m.value;
 						if(m.id == 1)
 							launcher.clearingTimer = m.value;
-					} else if(te instanceof TileEntityLaunchPad launcher) {
+					} else if(te instanceof TileEntityLaunchPad) {
+						TileEntityLaunchPad launcher = (TileEntityLaunchPad) te;
 
-                        launcher.clearingTimer = m.value;
-					} else if(te instanceof TileEntityLaunchTable launcher) {
+						launcher.clearingTimer = m.value;
+					} else if(te instanceof TileEntityLaunchTable) {
+						TileEntityLaunchTable launcher = (TileEntityLaunchTable) te;
 
-                        if(m.id == 0)
+						if(m.id == 0)
 							launcher.solid = m.value;
 						if(m.id == 1)
 							launcher.padSize = PartSize.values()[m.value];
 						if(m.id == 2)
 							launcher.clearingTimer = m.value;
-					} else if(te instanceof TileEntityRailgun gen) {
+					} else if(te instanceof TileEntityRailgun) {
 
-                        if(m.id == 0) {
-							final Vec3 vec = Vec3.createVectorHelper(5.5, 0, 0);
+						TileEntityRailgun gen = (TileEntityRailgun) te;
+
+						if(m.id == 0) {
+							Vec3 vec = Vec3.createVectorHelper(5.5, 0, 0);
 							vec.rotateAroundZ((float) (gen.pitch * Math.PI / 180D));
 							vec.rotateAroundY((float) (gen.yaw * Math.PI / 180D));
 
-							final double fX = gen.getPos().getX() + 0.5 + vec.xCoord;
-							final double fY = gen.getPos().getY() + 1 + vec.yCoord;
-							final double fZ = gen.getPos().getZ() + 0.5 + vec.zCoord;
+							double fX = gen.getPos().getX() + 0.5 + vec.xCoord;
+							double fY = gen.getPos().getY() + 1 + vec.yCoord;
+							double fZ = gen.getPos().getZ() + 0.5 + vec.zCoord;
 
 							MainRegistry.proxy.spawnSFX(gen.getWorld(), fX, fY, fZ, 0, vec.normalize());
 						}
@@ -226,11 +229,9 @@ public class AuxGaugePacket implements IMessage {
 					} else if(te instanceof TileEntityCoreStabilizer) {
 						if(m.id == 0)
 							((TileEntityCoreStabilizer) te).beam = m.value;
-					} else if(te instanceof TileEntityMachineGenerator){
+					} else if(te instanceof TileEntityWatzCore){
+						TileEntityWatzCore core = (TileEntityWatzCore) te;
 						if(m.id == 0)
-							((TileEntityMachineGenerator) te).heat = m.value;
-					} else if(te instanceof TileEntityWatzCore core){
-                        if(m.id == 0)
 							core.powerList = m.value;
 						else if(m.id == 1)
 							core.heatList = m.value;
@@ -243,9 +244,9 @@ public class AuxGaugePacket implements IMessage {
 						else if(m.id == 5)
 							core.heat = m.value;
 					} else if(te instanceof TileEntitySlidingBlastDoor){
-						((TileEntitySlidingBlastDoor) te).shouldUseBB = m.value == 1;
+						((TileEntitySlidingBlastDoor) te).shouldUseBB = m.value == 1 ? true : false;
 					}
-				} catch(final Exception x) {
+				} catch(Exception x) {
 				}
 			});
 

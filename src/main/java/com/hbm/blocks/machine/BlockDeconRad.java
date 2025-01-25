@@ -1,10 +1,7 @@
 package com.hbm.blocks.machine;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.machine.TileEntityDeconRad;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,31 +15,33 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Random;
+
 public class BlockDeconRad extends BlockContainer {
 
 	public static float radRemove;
-	public BlockDeconRad(final Material materialIn, final String s, final float rad) {
+	public BlockDeconRad(Material materialIn, String s, float rad) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		radRemove = rad;
+		this.radRemove = rad;
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
-		return new TileEntityDeconRad(radRemove);
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityDeconRad(this.radRemove);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
-		final float f = pos.getX() + 0.5F;
-		final float f1 = pos.getY() + 1.0F;
-		final float f2 = pos.getZ() + 0.5F;
+	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+		float f = pos.getX() + 0.5F;
+		float f1 = pos.getY() + 1.0F;
+		float f2 = pos.getZ() + 0.5F;
 
 		//worldIn.spawnParticle(EnumParticleTypes.CLOUD, f, f1, f2, 0.0D, 0.1D, 0.0D);
-		final Particle p = new ParticleCloud(worldIn, f, f1, f2, 0.0D, 0.1D, 0.0D){
+		Particle p = new ParticleCloud(worldIn, f, f1, f2, 0.0D, 0.1D, 0.0D){
 			@Override
 			public void onUpdate() {
 				this.prevPosX = this.posX;
@@ -72,7 +71,7 @@ public class BlockDeconRad extends BlockContainer {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 }

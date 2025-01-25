@@ -25,29 +25,29 @@ import java.util.List;
 
 public class JetpackRegular extends JetpackBase {
 
-	public JetpackRegular(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final Fluid fuel, final int maxFuel, final String s) {
+	public JetpackRegular(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, Fluid fuel, int maxFuel, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn, fuel, maxFuel, s);
 	}
 
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return "hbm:textures/armor/JetPackRed.png";
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
 		tooltip.add("Regular jetpack for simple upwards momentum.");
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
-		final IHBMData props = HbmCapability.getData(player);
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+		IHBMData props = HbmCapability.getData(player);
 		if(world.isRemote) {
 
 			if(player == MainRegistry.proxy.me() && props.isJetpackActive()) {
 
-				final boolean last = props.getKeyPressed(EnumKeybind.JETPACK);
-				final boolean current = MainRegistry.proxy.getIsKeyPressed(EnumKeybind.JETPACK);
+				boolean last = props.getKeyPressed(EnumKeybind.JETPACK);
+				boolean current = MainRegistry.proxy.getIsKeyPressed(EnumKeybind.JETPACK);
 
 				if(last != current) {
 					PacketDispatcher.wrapper.sendToServer(new KeybindPacket(EnumKeybind.JETPACK, current));
@@ -59,7 +59,7 @@ public class JetpackRegular extends JetpackBase {
 
 			if(getFuel(stack) > 0 && props.getKeyPressed(EnumKeybind.JETPACK) && props.isJetpackActive()) {
 
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack");
 				data.setInteger("player", player.getEntityId());
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, player.posX, player.posY, player.posZ), new TargetPoint(world.provider.getDimension(), player.posX, player.posY, player.posZ, 100));

@@ -1,10 +1,7 @@
 package com.hbm.blocks.generic;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.deco.TileEntityGeysir;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
@@ -21,78 +18,78 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Random;
+
 public class BlockGeysir extends BlockContainer {
 
-	public static final PropertyBool ACTIVE = PropertyBool.create("active");
-	
-	public BlockGeysir(final Material materialIn, final String s) {
-		super(materialIn);
-		this.setTranslationKey(s);
-		this.setRegistryName(s);
-		this.setCreativeTab(null);
-		
-		ModBlocks.ALL_BLOCKS.add(this);
-	}
+    public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
-		return new TileEntityGeysir();
-	}
-	
-	@Override
-	public Block setSoundType(final SoundType sound) {
-		return super.setSoundType(sound);
-	}
-	
-	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-	
-	public static void setState(final IBlockState state, final World worldIn, final BlockPos pos)
-    {
-        final TileEntity tileentity = worldIn.getTileEntity(pos);
-        
+    public BlockGeysir(Material materialIn, String s) {
+        super(materialIn);
+        this.setTranslationKey(s);
+        this.setRegistryName(s);
+        this.setCreativeTab(null);
+
+        ModBlocks.ALL_BLOCKS.add(this);
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileEntityGeysir();
+    }
+
+    @Override
+    public Block setSoundType(SoundType sound) {
+        return super.setSoundType(sound);
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
+
+    public static void setState(IBlockState state, World worldIn, BlockPos pos) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
         worldIn.setBlockState(pos, state, 2);
-            
-        if (tileentity != null)
-        {
+
+        if (tileentity != null) {
             tileentity.validate();
             worldIn.setTileEntity(pos, tileentity);
         }
     }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
-		final boolean active = stateIn.getValue(ACTIVE);
-		
-		if(this == ModBlocks.geysir_vapor && active) {
-			final float f = pos.getX() + 0.5F;
-			final float f1 = pos.getY() + 1.0F;
-			final float f2 = pos.getZ() + 0.5F;
-	
-			worldIn.spawnParticle(EnumParticleTypes.CLOUD, f, f1, f2, 0.0D, 0.1D, 0.0D);
-		}
-		if(this == ModBlocks.geysir_nether) {
-			worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY() + 1.0625F, pos.getZ() + 0.5F, 0.0D, 0.0D, 0.0D);
-		}
-	}
-	
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, ACTIVE);
-	}
-	
-	@Override
-	public int getMetaFromState(final IBlockState state) {
-		final boolean active = state.getValue(ACTIVE);
-		return active ? 1 : 0;
-	}
-	
-	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		return this.getDefaultState().withProperty(ACTIVE, meta > 0);
-	}
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        boolean active = stateIn.getValue(ACTIVE);
+
+        if (this == ModBlocks.geysir_vapor && active) {
+            float f = pos.getX() + 0.5F;
+            float f1 = pos.getY() + 1.0F;
+            float f2 = pos.getZ() + 0.5F;
+
+            worldIn.spawnParticle(EnumParticleTypes.CLOUD, f, f1, f2, 0.0D, 0.1D, 0.0D);
+        }
+        if (this == ModBlocks.geysir_nether) {
+            worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5F, pos.getY() + 1.0625F, pos.getZ() + 0.5F, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, new IProperty[]{ACTIVE});
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        boolean active = state.getValue(ACTIVE);
+        return active ? 1 : 0;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(ACTIVE, meta > 0);
+    }
 
 }

@@ -22,12 +22,12 @@ public class ParticleVortexCircle extends Particle {
 
 	public float workingAlpha;
 	
-	public ParticleVortexCircle(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale) {
+	public ParticleVortexCircle(World worldIn, double posXIn, double posYIn, double posZIn, float scale) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 	}
 	
-	public ParticleVortexCircle color(final float colR, final float colG, final float colB, final float colA){
+	public ParticleVortexCircle color(float colR, float colG, float colB, float colA){
 		this.particleRed = colR;
 		this.particleGreen = colG;
 		this.particleBlue = colB;
@@ -36,7 +36,7 @@ public class ParticleVortexCircle extends Particle {
 		return this;
 	}
 	
-	public ParticleVortexCircle lifetime(final int lifetime){
+	public ParticleVortexCircle lifetime(int lifetime){
 		this.particleMaxAge = lifetime;
 		return this;
 	}
@@ -60,22 +60,22 @@ public class ParticleVortexCircle extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.vortex_beam_circle_2);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GlStateManager.disableAlpha();
 		GlStateManager.depthMask(false);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-		final float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
+		float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
 		this.workingAlpha = MathHelper.clamp(1-BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0.6, 1), 0.6F, 1F, 0F, 1F), 0, 1)*particleAlpha;
 		
-		final float f4 = 0.1F * (this.particleScale+timeScale*0.5F);
+		float f4 = 0.1F * (this.particleScale+timeScale*0.5F);
         
-        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
-        final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
+        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
 
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
         

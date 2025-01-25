@@ -2,7 +2,6 @@ package com.hbm.tileentity.machine;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.BlockSeal;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +17,7 @@ public class TileEntityHatch extends TileEntity implements ITickable {
 	public void update() {
 		if(controller == null)
 			return;
-		final Block b = world.getBlockState(controller).getBlock();
+		Block b = world.getBlockState(controller).getBlock();
 		
 		if(b != ModBlocks.seal_controller && !world.isRemote) {
 			this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -29,19 +28,19 @@ public class TileEntityHatch extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		controller = BlockPos.fromLong(compound.getLong("controller"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		if(controller != null)
 			compound.setLong("controller", controller.toLong());
 		return super.writeToNBT(compound);
 	}
 	
-	public void setControllerPos(final BlockPos pos) {
+	public void setControllerPos(BlockPos pos) {
 		this.controller = pos;
 	}
 }

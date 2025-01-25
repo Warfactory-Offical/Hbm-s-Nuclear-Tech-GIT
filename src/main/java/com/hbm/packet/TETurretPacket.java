@@ -21,7 +21,7 @@ public class TETurretPacket implements IMessage {
 	public TETurretPacket() {
 	}
 	
-	public TETurretPacket(final int x, final int y, final int z, final boolean isAI) {
+	public TETurretPacket(int x, int y, int z, boolean isAI) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -29,7 +29,7 @@ public class TETurretPacket implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -37,7 +37,7 @@ public class TETurretPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -48,12 +48,12 @@ public class TETurretPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final TETurretPacket m, final MessageContext ctx) {
+		public IMessage onMessage(TETurretPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
-				final World world = Minecraft.getMinecraft().world;
+				BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				World world = Minecraft.getMinecraft().world;
 				if(world.isBlockLoaded(pos)){
-					final TileEntity te = world.getTileEntity(pos);
+					TileEntity te = world.getTileEntity(pos);
 					if(te instanceof TileEntityTurretBase){
 						((TileEntityTurretBase)te).isAI = m.isAI;
 					}

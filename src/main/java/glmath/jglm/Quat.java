@@ -40,14 +40,14 @@ public class Quat {
     public Quat() {
     }
 
-    public Quat(final float x, final float y, final float z, final float w) {
+    public Quat(float x, float y, float z, float w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Quat(final Vec3 vec, final float w) {
+    public Quat(Vec3 vec, float w) {
 
         this.x = vec.x;
         this.y = vec.y;
@@ -61,8 +61,8 @@ public class Quat {
      * @param vector1
      * @param vector2
      */
-    public Quat(final float[] vector1, final float[] vector2) {
-        final float theta = (float) Math.acos(dot(vector1, vector2));
+    public Quat(float[] vector1, float[] vector2) {
+        float theta = (float) Math.acos(dot(vector1, vector2));
         float[] cross = cross(vector1, vector2);
         cross = normalizeVec(cross);
 
@@ -79,8 +79,8 @@ public class Quat {
      * @return new float[4] with ,theta,Rx,Ry,Rz
      */
     public float[] toAxis() {
-        final float[] vec = new float[4];
-        final float scale = (float) Math.sqrt(x * x + y * y + z * z);
+        float[] vec = new float[4];
+        float scale = (float) Math.sqrt(x * x + y * y + z * z);
         vec[0] = (float) Math.acos(w) * 2.0f;
         vec[1] = x / scale;
         vec[2] = y / scale;
@@ -92,7 +92,7 @@ public class Quat {
 
         double heading, attitude, bank;
 
-        final double test = x * y + z * w;
+        double test = x * y + z * w;
 
         if (test > 0.499) { // singularity at north pole
             heading = 2 * Math.atan2(x, w);
@@ -104,9 +104,9 @@ public class Quat {
             attitude = -Math.PI / 2;
             bank = 0;
         }
-        final double sqx = x * x;
-        final double sqy = y * y;
-        final double sqz = z * z;
+        double sqx = x * x;
+        double sqy = y * y;
+        double sqz = z * z;
         heading = Math.atan2(2 * y * w - 2 * x * z, 1 - 2 * sqy - 2 * sqz);
         attitude = Math.asin(2 * test);
         bank = Math.atan2(2 * x * w - 2 * y * z, 1 - 2 * sqx - 2 * sqz);
@@ -120,10 +120,10 @@ public class Quat {
      * @param vector input vector
      * @return normalized vector
      */
-    private float[] normalizeVec(final float[] vector) {
-        final float[] newVector = new float[3];
+    private float[] normalizeVec(float[] vector) {
+        float[] newVector = new float[3];
 
-        final float d = (float) Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
+        float d = (float) Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
         if (d > 0.0f) {
             newVector[0] = vector[0] / d;
             newVector[1] = vector[1] / d;
@@ -139,7 +139,7 @@ public class Quat {
      * @param vec2 vector 2
      * @return the dot product as float
      */
-    private float dot(final float[] vec1, final float[] vec2) {
+    private float dot(float[] vec1, float[] vec2) {
         return (vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2]);
     }
 
@@ -150,8 +150,8 @@ public class Quat {
      * @param vec2 vecttor 2
      * @return the resulting vector
      */
-    private float[] cross(final float[] vec1, final float[] vec2) {
-        final float[] out = new float[3];
+    private float[] cross(float[] vec1, float[] vec2) {
+        float[] out = new float[3];
 
         out[0] = vec2[2] * vec1[1] - vec2[1] * vec1[2];
         out[1] = vec2[0] * vec1[2] - vec2[2] * vec1[0];
@@ -160,30 +160,30 @@ public class Quat {
         return out;
     }
 
-    public static Quat getQuatBetweenVecs(final Vec3 v1, final Vec3 v2) {
+    public static Quat getQuatBetweenVecs(Vec3 v1, Vec3 v2) {
 
-        final Vec3 cross = v1.crossProduct(v2);
+        Vec3 cross = v1.crossProduct(v2);
 
-        final Quat quat = new Quat();
+        Quat quat = new Quat();
 
         quat.x = cross.x;
         quat.y = cross.y;
         quat.z = cross.z;
 
 //        quat.w = (float) (Math.sqrt(Math.pow(v1.length(), 2) * Math.pow(v2.length(), 2)) + v1.dot(v2));
-        quat.w = v1.length() * v2.length() + v1.dot(v2);
+        quat.w = (float) (v1.length() * v2.length() + v1.dot(v2));
 
         return quat;
     }
 
-    public static Quat getQuatBetweenVecs1(final Vec3 a, final Vec3 b) {
+    public static Quat getQuatBetweenVecs1(Vec3 a, Vec3 b) {
 
         Vec3 tmp;
-        final Vec3 xUnit = new Vec3(1f, 0f, 0f);
-        final Vec3 yUnit = new Vec3(0f, 1f, 0f);
-        final Quat quat;
+        Vec3 xUnit = new Vec3(1f, 0f, 0f);
+        Vec3 yUnit = new Vec3(0f, 1f, 0f);
+        Quat quat;
 
-        final float dot = a.dot(b);
+        float dot = a.dot(b);
 
         if (dot < -0.999999) {
 //            System.out.println("1");
@@ -216,7 +216,7 @@ public class Quat {
         return w;
     }
 
-    public void setW(final float w) {
+    public void setW(float w) {
         this.w = w;
     }
 
@@ -224,7 +224,7 @@ public class Quat {
         return x;
     }
 
-    public void setX(final float x) {
+    public void setX(float x) {
         this.x = x;
     }
 
@@ -232,7 +232,7 @@ public class Quat {
         return y;
     }
 
-    public void setY(final float y) {
+    public void setY(float y) {
         this.y = y;
     }
 
@@ -240,7 +240,7 @@ public class Quat {
         return z;
     }
 
-    public void setZ(final float z) {
+    public void setZ(float z) {
         this.z = z;
     }
 
@@ -249,7 +249,7 @@ public class Quat {
      *
      * @param q quaternion
      */
-    public void add(final Quat q) {
+    public void add(Quat q) {
         x += q.x;
         y += q.y;
         z += q.z;
@@ -260,7 +260,7 @@ public class Quat {
      *
      * @param q quaternion
      */
-    public void subtract(final Quat q) {
+    public void subtract(Quat q) {
         x -= q.x;
         y -= q.y;
         z -= q.z;
@@ -271,7 +271,7 @@ public class Quat {
      *
      * @param n a float to divide by
      */
-    public void divide(final float n) {
+    public void divide(float n) {
         x /= n;
         y /= n;
         z /= n;
@@ -283,9 +283,9 @@ public class Quat {
      * @param q a quaternion to multiply with
      * @return
      */
-    public Quat mult(final Quat q) {
+    public Quat mult(Quat q) {
 
-        final Quat result = new Quat();
+        Quat result = new Quat();
 
 //        result.w = w * q.w - (x * q.x + y * q.y + z * q.z);
 //
@@ -313,9 +313,9 @@ public class Quat {
      * @param n a float constant
      * @return
      */
-    public Quat mult(final float n) {
+    public Quat mult(float n) {
 
-        final Quat result = new Quat(x, y, z, w);
+        Quat result = new Quat(x, y, z, w);
 
         result.x *= n;
         result.y *= n;
@@ -324,9 +324,9 @@ public class Quat {
         return result;
     }
 
-    public Vec3 mult(final Vec3 v) {
+    public Vec3 mult(Vec3 v) {
 
-        final Vec3 quatVector = new Vec3(x, y, z);
+        Vec3 quatVector = new Vec3(x, y, z);
 
         Vec3 uv = quatVector.crossProduct(v);
 
@@ -343,12 +343,12 @@ public class Quat {
      * Normalize a quaternion required if to be used as a rotational quaternion
      */
     public final void normalize() {
-        final float norme = (float) Math.sqrt(w * w + x * x + y * y + z * z);
+        float norme = (float) Math.sqrt(w * w + x * x + y * y + z * z);
         if (norme == 0.0f) {
             w = 1.0f;
             x = y = z = 0.0f;
         } else {
-            final float recip = 1.0f / norme;
+            float recip = 1.0f / norme;
 
             w *= recip;
             x *= recip;
@@ -364,7 +364,7 @@ public class Quat {
      */
     public Quat conjugate() {
 
-        final float norm = w * w + x * x + y * y + z * z;
+        float norm = w * w + x * x + y * y + z * z;
 
 //        w /= norm;
 //        x = -x / norm;
@@ -381,7 +381,7 @@ public class Quat {
      */
     public Mat4 toMatrix() {
 
-        final float[] matrix = new float[16];
+        float[] matrix = new float[16];
 
         matrix[0] = 1.0f - 2 * y * y - 2 * z * z;
         matrix[1] = 2 * x * y + 2 * w * z;
@@ -414,12 +414,8 @@ public class Quat {
      * @param b target quaternion
      * @param t float between 0 and 1 representing interp.
      */
-    public void slerp(final Quat a, final Quat b, final float t) {
-        final float omega;
-        float cosom;
-        float sinom;
-        float sclp;
-        final float sclq;
+    public void slerp(Quat a, Quat b, float t) {
+        float omega, cosom, sinom, sclp, sclq;
         cosom = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
         if ((1.0f + cosom) > Math.E) {
             if ((1.0f - cosom) > Math.E) {
@@ -454,7 +450,10 @@ public class Quat {
      * @return true if empty, false otherwise
      */
     public boolean isEmpty() {
-        return w == 1 && x == 0 && y == 0 && z == 0;
+        if (w == 1 && x == 0 && y == 0 && z == 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -463,7 +462,10 @@ public class Quat {
      * @return true if it is an identity rep., false otherwise
      */
     public boolean isIdentity() {
-        return w == 0 && x == 0 && y == 0 && z == 0;
+        if (w == 0 && x == 0 && y == 0 && z == 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -471,28 +473,28 @@ public class Quat {
      *
      * @param m 3x3 column matrix
      */
-    public void setFromMatrix(final float[] m) {
-        final float T = m[0] + m[4] + m[8] + 1;
+    public void setFromMatrix(float[] m) {
+        float T = m[0] + m[4] + m[8] + 1;
         if (T > 0) {
-            final float S = 0.5f / (float) Math.sqrt(T);
+            float S = 0.5f / (float) Math.sqrt(T);
             w = 0.25f / S;
             x = (m[5] - m[7]) * S;
             y = (m[6] - m[2]) * S;
             z = (m[1] - m[3]) * S;
         } else if ((m[0] > m[4]) & (m[0] > m[8])) {
-            final float S = (float) (Math.sqrt(1.0f + m[0] - m[4] - m[8]) * 2f); // S=4*qx
+            float S = (float) (Math.sqrt(1.0f + m[0] - m[4] - m[8]) * 2f); // S=4*qx
             w = (m[7] - m[5]) / S;
             x = 0.25f * S;
             y = (m[3] + m[1]) / S;
             z = (m[6] + m[2]) / S;
         } else if (m[4] > m[8]) {
-            final float S = (float) (Math.sqrt(1.0f + m[4] - m[0] - m[8]) * 2f); // S=4*qy
+            float S = (float) (Math.sqrt(1.0f + m[4] - m[0] - m[8]) * 2f); // S=4*qy
             w = (m[6] - m[2]) / S;
             x = (m[3] + m[1]) / S;
             y = 0.25f * S;
             z = (m[7] + m[5]) / S;
         } else {
-            final float S = (float) (Math.sqrt(1.0f + m[8] - m[0] - m[4]) * 2f); // S=4*qz
+            float S = (float) (Math.sqrt(1.0f + m[8] - m[0] - m[4]) * 2f); // S=4*qz
             w = (m[3] - m[1]) / S;
             x = (m[6] + m[2]) / S;
             y = (m[7] + m[5]) / S;
@@ -507,8 +509,8 @@ public class Quat {
      * @param m 3x3 column matrix
      * @return true if representing a rotational matrix, false otherwise
      */
-    public boolean isRotationMatrix(final float[] m) {
-        final double epsilon = 0.01; // margin to allow for rounding errors
+    public boolean isRotationMatrix(float[] m) {
+        double epsilon = 0.01; // margin to allow for rounding errors
         if (Math.abs(m[0] * m[3] + m[3] * m[4] + m[6] * m[7]) > epsilon) {
             return false;
         }
@@ -530,11 +532,11 @@ public class Quat {
         return (Math.abs(determinant(m) - 1) < epsilon);
     }
 
-    private float determinant(final float[] m) {
+    private float determinant(float[] m) {
         return m[0] * m[4] * m[8] + m[3] * m[7] * m[2] + m[6] * m[1] * m[5] - m[0] * m[7] * m[5] - m[3] * m[1] * m[8] - m[6] * m[4] * m[2];
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         System.out.println(title + " (" + x + ", " + y + ", " + z + ", " + w + ")");
     }
 }

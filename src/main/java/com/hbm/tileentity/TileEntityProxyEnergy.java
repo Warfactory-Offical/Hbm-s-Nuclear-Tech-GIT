@@ -1,29 +1,28 @@
 package com.hbm.tileentity;
 
-import api.hbm.energy.IEnergyUser;
-
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import net.minecraft.tileentity.TileEntity;
 
 //can be used as a soruce too since the core TE handles that anyway
-public class TileEntityProxyEnergy extends TileEntityProxyBase implements IEnergyUser {
+public class TileEntityProxyEnergy extends TileEntityProxyBase implements IEnergyReceiverMK2 {
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 
-		final TileEntity te = getTE();
+		TileEntity te = getTE();
 
-		if(te instanceof IEnergyUser) {
-			((IEnergyUser) te).setPower(i);
+		if(te instanceof IEnergyReceiverMK2) {
+			((IEnergyReceiverMK2) te).setPower(i);
 		}
 	}
 
 	@Override
 	public long getPower() {
 
-		final TileEntity te = getTE();
+		TileEntity te = getTE();
 
-		if(te instanceof IEnergyUser) {
-			return ((IEnergyUser) te).getPower();
+		if(te instanceof IEnergyReceiverMK2) {
+			return ((IEnergyReceiverMK2) te).getPower();
 		}
 
 		return 0;
@@ -32,10 +31,10 @@ public class TileEntityProxyEnergy extends TileEntityProxyBase implements IEnerg
 	@Override
 	public long getMaxPower() {
 
-		final TileEntity te = getTE();
+		TileEntity te = getTE();
 
-		if(te instanceof IEnergyUser) {
-			return ((IEnergyUser) te).getMaxPower();
+		if(te instanceof IEnergyReceiverMK2) {
+			return ((IEnergyReceiverMK2) te).getMaxPower();
 		}
 
 		return 0;

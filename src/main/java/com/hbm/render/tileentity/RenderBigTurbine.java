@@ -1,23 +1,21 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityMachineLargeTurbine;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderBigTurbine extends TileEntitySpecialRenderer<TileEntityMachineLargeTurbine> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityMachineLargeTurbine te) {
+	public boolean isGlobalRenderer(TileEntityMachineLargeTurbine te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityMachineLargeTurbine turbine, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineLargeTurbine turbine, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();

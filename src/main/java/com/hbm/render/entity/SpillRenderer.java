@@ -1,15 +1,8 @@
 package com.hbm.render.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.hbm.entity.particle.EntityOilSpillFX;
 import com.hbm.items.ModItems;
 import com.hbm.render.RenderHelper;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -17,6 +10,11 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpillRenderer extends Render<EntityOilSpillFX> {
 
@@ -25,13 +23,13 @@ public class SpillRenderer extends Render<EntityOilSpillFX> {
 	private Item renderItem;
 	private static final Map<Item, TextureAtlasSprite> textures = new HashMap<Item, TextureAtlasSprite>();
 	
-	protected SpillRenderer(final RenderManager renderManager) {
+	protected SpillRenderer(RenderManager renderManager) {
 		super(renderManager);
 		renderItem = ModItems.spill8;
 	}
 	
 	@Override
-	public void doRender(final EntityOilSpillFX fx, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityOilSpillFX fx, double x, double y, double z, float entityYaw, float partialTicks) {
 		if(textures.isEmpty()){
 			textures.put(ModItems.spill1, RenderHelper.getItemTexture(ModItems.spill1));
 			textures.put(ModItems.spill2, RenderHelper.getItemTexture(ModItems.spill2));
@@ -66,7 +64,7 @@ public class SpillRenderer extends Render<EntityOilSpillFX> {
 			renderItem = ModItems.spill3;
 		}
 
-		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8) {
+		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
 			renderItem = ModItems.spill2;
 		}
 
@@ -74,7 +72,7 @@ public class SpillRenderer extends Render<EntityOilSpillFX> {
 			renderItem = ModItems.spill1;
 		}
 
-		final TextureAtlasSprite iicon = textures.get(renderItem);
+		TextureAtlasSprite iicon = textures.get(renderItem);
 
 		if (iicon != null) {
 			GL11.glPushMatrix();
@@ -94,18 +92,18 @@ public class SpillRenderer extends Render<EntityOilSpillFX> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityOilSpillFX entity) {
+	protected ResourceLocation getEntityTexture(EntityOilSpillFX entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 	
-	private void func_77026_a(final TextureAtlasSprite p_77026_2_) {
-		final float f = p_77026_2_.getMinU();
-		final float f1 = p_77026_2_.getMaxU();
-		final float f2 = p_77026_2_.getMinV();
-		final float f3 = p_77026_2_.getMaxV();
-		final float f4 = 1.0F;
-		final float f5 = 0.5F;
-		final float f6 = 0.25F;
+	private void func_77026_a(TextureAtlasSprite p_77026_2_) {
+		float f = p_77026_2_.getMinU();
+		float f1 = p_77026_2_.getMaxU();
+		float f2 = p_77026_2_.getMinV();
+		float f3 = p_77026_2_.getMaxV();
+		float f4 = 1.0F;
+		float f5 = 0.5F;
+		float f6 = 0.25F;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		RenderHelper.startDrawingTexturedQuads();

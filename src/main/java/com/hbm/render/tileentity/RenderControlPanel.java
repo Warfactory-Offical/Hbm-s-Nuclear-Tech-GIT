@@ -2,24 +2,20 @@ package com.hbm.render.tileentity;
 
 import com.hbm.inventory.control_panel.ControlPanel;
 import com.hbm.lib.RefStrings;
-import com.hbm.main.MainRegistry;
-import net.minecraft.client.Minecraft;
+import com.hbm.main.ClientProxy;
+import com.hbm.main.ResourceManager;
+import com.hbm.tileentity.machine.TileEntityControlPanel;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import com.hbm.main.ClientProxy;
-import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.TileEntityControlPanel;
-
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-
 public class RenderControlPanel extends TileEntitySpecialRenderer<TileEntityControlPanel> {
 
 	@Override
-	public void render(final TileEntityControlPanel te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityControlPanel te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 
 		switch (te.panelType) {
@@ -40,7 +36,7 @@ public class RenderControlPanel extends TileEntitySpecialRenderer<TileEntityCont
 		GL11.glPopMatrix();
 	}
 
-	public void renderCustomPanel(final TileEntityControlPanel te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void renderCustomPanel(TileEntityControlPanel te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glTranslated(x+.5, y, z+.5);
 		GL11.glPushMatrix();
 		GL11.glRotatef(-90, 0, 0, 1);
@@ -56,8 +52,8 @@ public class RenderControlPanel extends TileEntitySpecialRenderer<TileEntityCont
 				GL11.glRotatef(-270, 1, 0, 0); break;
 		}
 
-		final boolean isUp = ((te.getBlockMetadata() >> 2) == 1);
-		final boolean isDown = ((te.getBlockMetadata() >> 3) == 1);
+		boolean isUp = ((te.getBlockMetadata() >> 2) == 1);
+		boolean isDown = ((te.getBlockMetadata() >> 3) == 1);
 
 		if (isUp) {
 			GL11.glRotatef(-180, 1, 0, 0);
@@ -75,22 +71,22 @@ public class RenderControlPanel extends TileEntitySpecialRenderer<TileEntityCont
 		GL11.glPushMatrix();
 		GL11.glTranslated(-0.5, 0, -0.5);
 
-		final float a_off = te.panel.a_off;
-		final float b_off = te.panel.b_off;
-		final float c_off = te.panel.c_off;
-		final float d_off = te.panel.d_off;
-		final float height = te.panel.height;
-		final float angle = te.panel.angle;
+		float a_off = te.panel.a_off;
+		float b_off = te.panel.b_off;
+		float c_off = te.panel.c_off;
+		float d_off = te.panel.d_off;
+		float height = te.panel.height;
+		float angle = te.panel.angle;
 
-		final float height1 = ControlPanel.getSlopeHeightFromZ(1-c_off, height, -angle);
-		final float height0 = ControlPanel.getSlopeHeightFromZ(a_off, height, -angle);
+		float height1 = ControlPanel.getSlopeHeightFromZ(1-c_off, height, -angle);
+		float height0 = ControlPanel.getSlopeHeightFromZ(a_off, height, -angle);
 
 		if (height != 0) {
 			GlStateManager.disableLighting();
-			final ResourceLocation texxy = new ResourceLocation(RefStrings.MODID + ":textures/models/misc/control_panel.png");
+			ResourceLocation texxy = new ResourceLocation(RefStrings.MODID + ":textures/models/misc/control_panel.png");
 			bindTexture(texxy);
-			final net.minecraft.client.renderer.Tessellator tess = net.minecraft.client.renderer.Tessellator.getInstance();
-			final BufferBuilder buf = tess.getBuffer();
+			net.minecraft.client.renderer.Tessellator tess = net.minecraft.client.renderer.Tessellator.getInstance();
+			BufferBuilder buf = tess.getBuffer();
 			// back
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 			buf.pos(a_off, 0, 1 - d_off).tex(1, 1).endVertex();
@@ -131,7 +127,7 @@ public class RenderControlPanel extends TileEntitySpecialRenderer<TileEntityCont
 		GL11.glPopMatrix();
 	}
 
-	public void renderFrontPanel(final TileEntityControlPanel te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void renderFrontPanel(TileEntityControlPanel te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GL11.glTranslated(x+.5F, y, z+.5F);
         GL11.glPushMatrix();
 

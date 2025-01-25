@@ -2,7 +2,6 @@ package com.hbm.tileentity.machine;
 
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEStructurePacket;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -28,13 +27,13 @@ public class TileEntityStructureMarker extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		type = compound.getInteger("type");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("type", type);
 		return super.writeToNBT(compound);
 	}

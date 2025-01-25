@@ -20,7 +20,7 @@ public class EnumParticlePacket implements IMessage {
 	public EnumParticlePacket() {
 	}
 	
-	public EnumParticlePacket(final EnumHbmParticles particle, final double x, final double y, final double z, final int count, final double strength) {
+	public EnumParticlePacket(EnumHbmParticles particle, double x, double y, double z, int count, double strength) {
 		this.particle = particle;
 		this.count = count;
 		this.strength = strength;
@@ -29,12 +29,12 @@ public class EnumParticlePacket implements IMessage {
 		this.z = z;
 	}
 	
-	public EnumParticlePacket(final EnumHbmParticles particle, final double x, final double y, final double z, final int count) {
+	public EnumParticlePacket(EnumHbmParticles particle, double x, double y, double z, int count) {
 		this(particle, x, y, z, count, 0);
 	}
 	
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		particle = EnumHbmParticles.values()[buf.readInt()];
 		x = buf.readDouble();
 		y = buf.readDouble();
@@ -45,7 +45,7 @@ public class EnumParticlePacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(particle.ordinal());
 		buf.writeDouble(x);
 		buf.writeDouble(y);
@@ -59,7 +59,7 @@ public class EnumParticlePacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final EnumParticlePacket message, final MessageContext ctx) {
+		public IMessage onMessage(EnumParticlePacket message, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				switch(message.particle){
 				case PARTICLES:

@@ -15,33 +15,33 @@ public class Vec4b extends FuncRelational {
         this(0);
     }
 
-    public Vec4b(final int i) {
+    public Vec4b(int i) {
         this(i, i, i, i);
     }
 
-    public Vec4b(final byte b) {
+    public Vec4b(byte b) {
         this(b, b, b, b);
     }
 
-    public Vec4b(final byte x, final byte y, final byte z, final byte w) {
+    public Vec4b(byte x, byte y, byte z, byte w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Vec4b(final int x, final int y, final int z, final int w) {
+    public Vec4b(int x, int y, int z, int w) {
         this.x = (byte) x;
         this.y = (byte) y;
         this.z = (byte) z;
         this.w = (byte) w;
     }
     
-    public Vec4b set(final int x, final int y, final int z, final int w) {
+    public Vec4b set(int x, int y, int z, int w) {
         return set((byte) x, (byte) y, (byte) z, (byte) w);
     }
 
-    public Vec4b set(final byte x, final byte y, final byte z, final byte w) {
+    public Vec4b set(byte x, byte y, byte z, byte w) {
         this.x = x;
         this.y = y;
         this.z = z;

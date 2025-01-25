@@ -17,10 +17,10 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 
 public class GUICraneBoxer extends GuiInfoContainer {
-    private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_boxer.png");
-    private final TileEntityCraneBoxer boxer;
+    private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_boxer.png");
+    private TileEntityCraneBoxer boxer;
 
-    private final String[] modeDesc = new String[] {
+    private String[] modeDesc = new String[] { 
         "desc.conveyor.boxer.mode1",
         "desc.conveyor.boxer.mode2",
         "desc.conveyor.boxer.mode4",
@@ -29,7 +29,7 @@ public class GUICraneBoxer extends GuiInfoContainer {
         "desc.conveyor.boxer.modeR"
     };
 
-    public GUICraneBoxer(final InventoryPlayer invPlayer, final TileEntityCraneBoxer tedf) {
+    public GUICraneBoxer(InventoryPlayer invPlayer, TileEntityCraneBoxer tedf) {
         super(new ContainerCraneBoxer(invPlayer, tedf));
         boxer = tedf;
 
@@ -38,27 +38,27 @@ public class GUICraneBoxer extends GuiInfoContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-        final String name = this.boxer.hasCustomInventoryName() ? this.boxer.getInventoryName() : I18n.format(this.boxer.getInventoryName());
+    protected void drawGuiContainerForegroundLayer(int i, int j) {
+        String name = this.boxer.hasCustomInventoryName() ? this.boxer.getInventoryName() : I18n.format(this.boxer.getInventoryName());
         this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
-    protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+    protected void mouseClicked(int x, int y, int i) throws IOException {
         super.mouseClicked(x, y, i);
 
         if(guiLeft + 151 <= x && guiLeft + 151 + 18 > x && guiTop + 34 < y && guiTop + 34 + 18 >= y) {
 
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            final NBTTagCompound data = new NBTTagCompound();
+            NBTTagCompound data = new NBTTagCompound();
             data.setBoolean("toggle", true);
             PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, boxer.getPos()));
         }
     }
 
     @Override
-    public void drawScreen(final int mouseX, final int mouseY, final float f) {
+    public void drawScreen(int mouseX, int mouseY, float f) {
         super.drawScreen(mouseX, mouseY, f);
 
         this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 148, guiTop + 31, 22, 22, mouseX, mouseY, new String[] { I18n.format(modeDesc[boxer.mode]) });
@@ -66,7 +66,7 @@ public class GUICraneBoxer extends GuiInfoContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
         super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);

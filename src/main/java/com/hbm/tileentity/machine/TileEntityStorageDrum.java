@@ -1,32 +1,21 @@
 package com.hbm.tileentity.machine;
 
-import java.util.List;
-
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.inventory.StorageDrumRecipes;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.interfaces.ITankPacketAcceptor;
-import com.hbm.items.ModItems;
-
+import com.hbm.inventory.StorageDrumRecipes;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.saveddata.RadiationSavedData;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.ContaminationUtil;
-import com.hbm.util.ContaminationUtil.ContaminationType;
-import com.hbm.util.ContaminationUtil.HazardType;
-
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -71,16 +60,16 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 				
 				if(!inventory.getStackInSlot(i).isEmpty()) {
 					
-					final Item item = inventory.getStackInSlot(i).getItem();
+					Item item = inventory.getStackInSlot(i).getItem();
 					
 					if(item instanceof IItemHazard && world.getTotalWorldTime() % 20 == 0) {
 						rad += ((IItemHazard)item).getModule().radiation;
 					}
 
-					final int[] wasteData = StorageDrumRecipes.getWaste(inventory.getStackInSlot(i));
+					int[] wasteData = StorageDrumRecipes.getWaste(inventory.getStackInSlot(i));
 					if(wasteData != null){
 						if(world.rand.nextInt(wasteData[0]) == 0){
-							final ItemStack outputStack = StorageDrumRecipes.getOutput(inventory.getStackInSlot(i));
+							ItemStack outputStack = StorageDrumRecipes.getOutput(inventory.getStackInSlot(i));
 							if(outputStack != null){
 								liquid += wasteData[1];
 								gas += wasteData[2];
@@ -95,7 +84,7 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 
 			for(int i = 0; i < 2; i++) {
 				
-				final int overflow = Math.max(this.tanks[i].getFluidAmount() + (i == 0 ? liquid : gas) - this.tanks[i].getCapacity(), 0);
+				int overflow = Math.max(this.tanks[i].getFluidAmount() + (i == 0 ? liquid : gas) - this.tanks[i].getCapacity(), 0);
 				
 				if(overflow > 0) {
 					RadiationSavedData.incrementRad(world, pos, overflow * 0.5F, Float.MAX_VALUE);
@@ -126,26 +115,26 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
 		return StorageDrumRecipes.getOutput(itemStack) != null || ContaminationUtil.isContaminated(itemStack);
 	}
 
 	@Override
-	public boolean canInsertItem(final int i, final ItemStack itemStack, final int j) {
+	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
 		return this.isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
-	public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
+	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
 		return !ContaminationUtil.isContaminated(itemStack) && StorageDrumRecipes.getOutput(itemStack) == null;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing side) {
+	public int[] getAccessibleSlotsFromSide(EnumFacing side) {
 		return slots_arr;
 	}
 
-	public void fillFluidInit(final FluidTank type) {
+	public void fillFluidInit(FluidTank type) {
 		fillFluid(this.pos.getX() - 1, this.pos.getY(), this.pos.getZ(), type);
 		fillFluid(this.pos.getX() + 1, this.pos.getY(), this.pos.getZ(), type);
 		fillFluid(this.pos.getX(), this.pos.getY() - 1, this.pos.getZ(), type);
@@ -154,20 +143,20 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 		fillFluid(this.pos.getX(), this.pos.getY(), this.pos.getZ() + 1, type);
 	}
 
-	public void fillFluid(final int x, final int y, final int z, final FluidTank tank) {
+	public void fillFluid(int x, int y, int z, FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, new BlockPos(x, y, z), tank.getCapacity());
 	}
 
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.tanks[0].readFromNBT(nbt.getCompoundTag("liquid"));
 		this.tanks[1].readFromNBT(nbt.getCompoundTag("gas"));
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setTag("liquid", this.tanks[0].writeToNBT(new NBTTagCompound()));
 		nbt.setTag("gas", this.tanks[1].writeToNBT(new NBTTagCompound()));
@@ -180,12 +169,12 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill){
+	public int fill(FluidStack resource, boolean doFill){
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain){
+	public FluidStack drain(FluidStack resource, boolean doDrain){
 		FluidStack stack = tanks[0].drain(resource, doDrain);
 		if(stack == null)
 			stack = tanks[1].drain(resource, doDrain);
@@ -193,7 +182,7 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain){
+	public FluidStack drain(int maxDrain, boolean doDrain){
 		FluidStack stack = tanks[0].drain(maxDrain, doDrain);
 		if(stack == null)
 			stack = tanks[1].drain(maxDrain, doDrain);
@@ -201,7 +190,7 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags){
+	public void recievePacket(NBTTagCompound[] tags){
 		if(tags.length == 2){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -209,14 +198,14 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements ITic
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		return super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

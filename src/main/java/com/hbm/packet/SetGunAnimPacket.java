@@ -21,13 +21,13 @@ public class SetGunAnimPacket implements IMessage {
 	public SetGunAnimPacket() {
 	}
 	
-	public SetGunAnimPacket(final long time, final int animIndex, final EnumHand hand) {
+	public SetGunAnimPacket(long time, int animIndex, EnumHand hand) {
 		this.time = time;
 		this.animIndex = animIndex;
 		this.hand = hand;
 	}
 	
-	public SetGunAnimPacket(final long time, final int animIndex, final float speedMultiplier, final EnumHand hand) {
+	public SetGunAnimPacket(long time, int animIndex, float speedMultiplier, EnumHand hand) {
 		this.time = time;
 		this.animIndex = animIndex;
 		this.speedMultiplier = speedMultiplier;
@@ -35,7 +35,7 @@ public class SetGunAnimPacket implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		time = buf.readLong();
 		animIndex = buf.readInt();
 		this.speedMultiplier = buf.readFloat();
@@ -43,21 +43,21 @@ public class SetGunAnimPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(time);
 		buf.writeInt(animIndex);
 		buf.writeFloat(speedMultiplier);
-		buf.writeBoolean(hand == EnumHand.MAIN_HAND);
+		buf.writeBoolean(hand == EnumHand.MAIN_HAND ? true : false);
 	}
 	
 	public static class Handler implements IMessageHandler<SetGunAnimPacket, IMessage> {
 
 		@Override
-		public IMessage onMessage(final SetGunAnimPacket m, final MessageContext ctx) {
-			final EntityPlayerMP player = ctx.getServerHandler().player;
-			final ItemStack stack = player.getHeldItem(m.hand);
+		public IMessage onMessage(SetGunAnimPacket m, MessageContext ctx) {
+			EntityPlayerMP player = ctx.getServerHandler().player;
+			ItemStack stack = player.getHeldItem(m.hand);
 			if(stack.getItem() instanceof ItemGunBase){
-				final NBTTagCompound anim = new NBTTagCompound();
+				NBTTagCompound anim = new NBTTagCompound();
 				anim.setLong("time", m.time);
 				anim.setFloat("mult", m.speedMultiplier);
 				anim.setInteger("id", m.animIndex);

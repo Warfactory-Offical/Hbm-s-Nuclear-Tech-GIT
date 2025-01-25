@@ -25,7 +25,7 @@ public class ItemColtanCompass extends Item {
 	public int lastZ = 0;
 	public long lease = 0;
 	
-	public ItemColtanCompass(final String s){
+	public ItemColtanCompass(String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.addPropertyOverride(new ResourceLocation("angle"), new IItemPropertyGetter(){
@@ -37,7 +37,7 @@ public class ItemColtanCompass extends Item {
             @SideOnly(Side.CLIENT)
             long lastUpdateTick;
             @SideOnly(Side.CLIENT)
-            public float apply(final ItemStack stack, @Nullable World worldIn, @Nullable final EntityLivingBase entityIn)
+            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
             {
                 if (entityIn == null && !stack.isOnItemFrame())
                 {
@@ -45,8 +45,8 @@ public class ItemColtanCompass extends Item {
                 }
                 else
                 {
-                    final boolean flag = entityIn != null;
-                    final Entity entity = flag ? entityIn : stack.getItemFrame();
+                    boolean flag = entityIn != null;
+                    Entity entity = (Entity)(flag ? entityIn : stack.getItemFrame());
 
                     if (worldIn == null)
                     {
@@ -59,7 +59,7 @@ public class ItemColtanCompass extends Item {
                     {
                         double d1 = flag ? (double)entity.rotationYaw : this.getFrameRotation((EntityItemFrame)entity);
                         d1 = MathHelper.positiveModulo(d1 / 360.0D, 1.0D);
-                        final double d2 = this.getColtToAngle(worldIn, entity) / (Math.PI * 2D);
+                        double d2 = this.getColtToAngle(worldIn, entity) / (Math.PI * 2D);
                         d0 = 0.5D - (d1 - 0.25D - d2);
                     }
                     else
@@ -76,7 +76,7 @@ public class ItemColtanCompass extends Item {
                 }
             }
             @SideOnly(Side.CLIENT)
-            private double wobble(final World worldIn, final double p_185093_2_)
+            private double wobble(World worldIn, double p_185093_2_)
             {
                 if (worldIn.getTotalWorldTime() != this.lastUpdateTick)
                 {
@@ -91,19 +91,19 @@ public class ItemColtanCompass extends Item {
                 return this.rotation;
             }
             @SideOnly(Side.CLIENT)
-            private double getFrameRotation(final EntityItemFrame p_185094_1_)
+            private double getFrameRotation(EntityItemFrame p_185094_1_)
             {
-                return MathHelper.wrapDegrees(180 + p_185094_1_.facingDirection.getHorizontalIndex() * 90);
+                return (double)MathHelper.wrapDegrees(180 + p_185094_1_.facingDirection.getHorizontalIndex() * 90);
             }
             @SideOnly(Side.CLIENT)
-            private double getColtToAngle(final World p_185092_1_, final Entity p_185092_2_)
+            private double getColtToAngle(World p_185092_1_, Entity p_185092_2_)
             {
             	if(ItemColtanCompass.this.lease < System.currentTimeMillis()){
             		return Math.random() * Math.PI * 2.0D;
             	}
-            	final double d4 = ItemColtanCompass.this.lastX;
-				final double d5 = ItemColtanCompass.this.lastZ;
-                return Math.atan2(d5 - p_185092_2_.posZ, d4 - p_185092_2_.posX);
+            	double d4 = (double) ItemColtanCompass.this.lastX;
+				double d5 = (double) ItemColtanCompass.this.lastZ;
+                return Math.atan2((double)d5 - p_185092_2_.posZ, (double)d4 - p_185092_2_.posX);
             }
 			
 		});
@@ -112,15 +112,15 @@ public class ItemColtanCompass extends Item {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected){
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected){
 		if(world.isRemote) {
 			if(stack.hasTagCompound()) {
 				lastX = stack.getTagCompound().getInteger("colX");
 				lastZ = stack.getTagCompound().getInteger("colZ");
 				lease = System.currentTimeMillis() + 1000;
 				
-				final Vec3 vec = Vec3.createVectorHelper(entity.posX - lastX, 0, entity.posZ - lastZ);
-				MainRegistry.proxy.displayTooltip(((int) vec.length()) + "m");
+				Vec3 vec = Vec3.createVectorHelper(entity.posX - lastX, 0, entity.posZ - lastZ);
+				MainRegistry.proxy.displayTooltip(((int) vec.lengthVector()) + "m");
 			}
 			
 			if(ItemColtanCompass.this.lease < System.currentTimeMillis()) {
@@ -132,9 +132,9 @@ public class ItemColtanCompass extends Item {
 			if(!stack.hasTagCompound()) {
 				stack.setTagCompound(new NBTTagCompound());
 
-				final Random colRand = new Random(world.getSeed() + 5);
-				final int colX = (int) (colRand.nextGaussian() * 1500);
-				final int colZ = (int) (colRand.nextGaussian() * 1500);
+				Random colRand = new Random(world.getSeed() + 5);
+				int colX = (int) (colRand.nextGaussian() * 1500);
+				int colZ = (int) (colRand.nextGaussian() * 1500);
 
 				stack.getTagCompound().setInteger("colX", colX);
 				stack.getTagCompound().setInteger("colZ", colZ);

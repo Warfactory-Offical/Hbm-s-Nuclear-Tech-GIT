@@ -1,10 +1,7 @@
 package com.hbm.blocks.generic;
 
-import java.util.Random;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.ForgeDirection;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -15,33 +12,35 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Random;
+
 public class BlockNetherCoal extends BlockOutgas {
 
-	public BlockNetherCoal(final boolean randomTick, final int rate, final boolean onBreak, final String s) {
+	public BlockNetherCoal(boolean randomTick, int rate, boolean onBreak, String s) {
 		super(randomTick, rate, onBreak, s);
 	}
 
 	@Override
-	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity){
+	public void onEntityWalk(World world, BlockPos pos, Entity entity){
 		entity.setFire(3);
 	}
-	
+
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
+	public Item getItemDropped(IBlockState state, Random rand, int fortune){
 		return ModItems.coal_infernal;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand){
+	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
-		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
 			if(dir == ForgeDirection.DOWN)
 				continue;
-			final int x = pos.getX();
-			final int y = pos.getY();
-			final int z = pos.getZ();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
 
 			if(worldIn.getBlockState(new BlockPos(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)).getMaterial() == Material.AIR) {
 

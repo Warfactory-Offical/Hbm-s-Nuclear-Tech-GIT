@@ -1,12 +1,9 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.weapon.ItemGunBase;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.item.TEISRBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,11 +11,12 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderWeaponBolter extends TEISRBase {
 
 	@Override
-	public void renderByItem(final ItemStack itemStackIn) {
+	public void renderByItem(ItemStack itemStackIn) {
 		GlStateManager.enableCull();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.bolter_tex);
@@ -38,7 +36,7 @@ public class ItemRenderWeaponBolter extends TEISRBase {
 				GL11.glRotated(0, 0, 0, 1);
 			}
 			
-			final double s0 = 0.25D;
+			double s0 = 0.25D;
 			GL11.glRotated(25, 0, 0, 1);
 			GL11.glTranslated(1.25, -0.25, -0.25);
 			GL11.glRotated(-95, 0, 1, 0);
@@ -49,20 +47,20 @@ public class ItemRenderWeaponBolter extends TEISRBase {
 				GL11.glRotated(-2, 0, 0, 1);
 			}
 			
-			final EnumHand hand = type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
+			EnumHand hand = type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
 
-			final double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", hand);
+			double[] recoil = HbmAnimations.getRelevantTransformation("RECOIL", hand);
 			GL11.glRotated(recoil[0] * 5, 1, 0, 0);
 			GL11.glTranslated(0, 0, recoil[0]);
 
-			final double[] tilt = HbmAnimations.getRelevantTransformation("TILT", hand);
+			double[] tilt = HbmAnimations.getRelevantTransformation("TILT", hand);
 			GL11.glTranslated(0, tilt[0], 3);
 			GL11.glRotated(tilt[0] * 35, 1, 0, 0);
 			GL11.glTranslated(0, 0, -3);
 
 			ResourceManager.bolter.renderPart("Body");
 
-			final double[] mag = HbmAnimations.getRelevantTransformation("MAG", hand);
+			double[] mag = HbmAnimations.getRelevantTransformation("MAG", hand);
 			GL11.glPushMatrix();
 			GL11.glTranslated(0, 0, 5);
 			GL11.glRotated(mag[0] * 60 * (mag[2] == 1 ? 2.5 : 1), -1, 0, 0);
@@ -73,7 +71,7 @@ public class ItemRenderWeaponBolter extends TEISRBase {
 			GL11.glPopMatrix();
 
 			GL11.glPushMatrix();
-			final double[] casing = HbmAnimations.getRelevantTransformation("EJECT", hand);
+			double[] casing = HbmAnimations.getRelevantTransformation("EJECT", hand);
 			GL11.glTranslated(casing[2] * 5, casing[2] * 2, 0);
 			GL11.glRotated(casing[2] * 60, 1, 0, 0);
 			ResourceManager.bolter.renderPart("Casing");
@@ -106,13 +104,13 @@ public class ItemRenderWeaponBolter extends TEISRBase {
         GL11.glDisable(GL11.GL_LIGHTING);
         GlStateManager.disableCull();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        final float lastX = OpenGlHelper.lastBrightnessX;
-        final float lastY = OpenGlHelper.lastBrightnessY;
+        float lastX = OpenGlHelper.lastBrightnessX;
+        float lastY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
-        final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-        final String s = ItemGunBase.getMag(itemStackIn) + "";
-        final float f3 = 0.04F;
+        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        String s = ItemGunBase.getMag(itemStackIn) + "";
+        float f3 = 0.04F;
         GL11.glTranslatef(0.025F -(font.getStringWidth(s) / 2) * 0.04F, 2.11F, 2.91F);
         GL11.glScalef(f3, -f3, f3);
         GL11.glRotatef(45, 1, 0, 0);

@@ -25,7 +25,7 @@ public class ItemCrateCaller extends Item {
 
 	Random rand = new Random();
 	
-	public ItemCrateCaller(final String s) {
+	public ItemCrateCaller(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.canRepair = false;
@@ -35,21 +35,21 @@ public class ItemCrateCaller extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.callsp"));
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		stack.damageItem(1, player);
 
-		final int x = rand.nextInt(31) - 15;
-		final int z = rand.nextInt(31) - 15;
+		int x = rand.nextInt(31) - 15;
+		int z = rand.nextInt(31) - 15;
 		
 		Block crate = ModBlocks.crate;
 		
-		final int i = rand.nextInt(1000);
+		int i = rand.nextInt(1000);
 		
 		if(i < 350)
 			crate = ModBlocks.crate_weapon;

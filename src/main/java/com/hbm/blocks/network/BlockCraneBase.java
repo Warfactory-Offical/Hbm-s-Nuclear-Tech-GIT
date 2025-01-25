@@ -1,11 +1,9 @@
 package com.hbm.blocks.network;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ITooltipProvider;
 import com.hbm.items.tool.ItemTooling;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.network.TileEntityCraneBase;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -18,14 +16,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -33,7 +27,7 @@ import java.util.Random;
 
 public abstract class BlockCraneBase extends BlockContainer implements ITooltipProvider {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public BlockCraneBase(final Material mat) {
+    public BlockCraneBase(Material mat) {
         super(mat);
     }
 
@@ -41,7 +35,7 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
     public abstract TileEntityCraneBase createNewTileEntity(World worldIn, int meta);
 
     @Override
-    public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(playerIn.getHeldItem(hand).getItem() instanceof ItemTooling) {
             return false;
         } else if(worldIn.isRemote) {
@@ -55,13 +49,13 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
     }
 
     @Override
-    public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
     }
 
     @Override
-    public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
-        final TileEntity tileentity = worldIn.getTileEntity(pos);
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof IInventory) {
             InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)tileentity);
@@ -72,18 +66,19 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
     }
 
     private final Random rand = new Random();
-    public void dropContents(final World world, final BlockPos pos, final IBlockState state, final int start, final int end) {
-        final TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof ISidedInventory tileentityfurnace) {
+    public void dropContents(World world, BlockPos pos, IBlockState state, int start, int end) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if(tileEntity instanceof ISidedInventory) {
+            ISidedInventory tileentityfurnace = (ISidedInventory) tileEntity;
             if(tileentityfurnace != null) {
 
                 for(int i1 = start; i1 < end; ++i1) {
-                    final ItemStack itemstack = tileentityfurnace.getStackInSlot(i1);
+                    ItemStack itemstack = tileentityfurnace.getStackInSlot(i1);
 
                     if(itemstack != null) {
-                        final float f = this.rand.nextFloat() * 0.8F + 0.1F;
-                        final float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
-                        final float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
+                        float f = this.rand.nextFloat() * 0.8F + 0.1F;
+                        float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
+                        float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
 
                         while(itemstack.getCount() > 0) {
                             int j1 = this.rand.nextInt(21) + 10;
@@ -93,13 +88,13 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
                             }
 
                             itemstack.shrink(j1);
-                            final EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, ItemStackUtil.itemStackFrom(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                            EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                             if(itemstack.hasTagCompound()) {
-                                entityitem.getItem().setTagCompound(itemstack.getTagCompound().copy());
+                                entityitem.getItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
                             }
 
-                            final float f3 = 0.05F;
+                            float f3 = 0.05F;
                             entityitem.motionX = (float) this.rand.nextGaussian() * f3;
                             entityitem.motionY = (float) this.rand.nextGaussian() * f3 + 0.2F;
                             entityitem.motionZ = (float) this.rand.nextGaussian() * f3;
@@ -116,23 +111,23 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(final IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
 
     @Override
-    public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
     @Override
-    public IBlockState withRotation(final IBlockState state, final Rotation rot) {
-        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+    public IBlockState withRotation(IBlockState state, Rotation rot) {
+        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
     }
 
     @Override
-    public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
+    public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
     }
 
     @Override
@@ -141,13 +136,13 @@ public abstract class BlockCraneBase extends BlockContainer implements ITooltipP
     }
 
     @Override
-    public IBlockState getStateFromMeta(final int meta) {
-        final EnumFacing enumfacing = EnumFacing.byHorizontalIndex(meta);
+    public IBlockState getStateFromMeta(int meta) {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
     @Override
-    public int getMetaFromState(final IBlockState state) {
+    public int getMetaFromState(IBlockState state) {
         return state.getValue(BlockHorizontal.FACING).getHorizontalIndex();
     }
 }

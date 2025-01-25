@@ -1,7 +1,4 @@
 package com.hbm.entity.missile;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.items.ModItems;
@@ -11,7 +8,6 @@ import com.hbm.lib.ModDamageSource;
 import com.hbm.main.AdvancementManager;
 import com.hbm.main.MainRegistry;
 import com.hbm.saveddata.satellites.Satellite;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,6 +23,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class EntitySoyuz extends Entity {
 
 	public static final DataParameter<Integer> SKIN = EntityDataManager.createKey(EntitySoyuz.class, DataSerializers.VARINT);
@@ -37,9 +35,9 @@ public class EntitySoyuz extends Entity {
 	public int targetZ;
 	boolean memed = false;
 
-	private final ItemStack[] payload;
+	private ItemStack[] payload;
 	
-	public EntitySoyuz(final World worldIn) {
+	public EntitySoyuz(World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
         this.setSize(5.0F, 50.0F);
@@ -57,9 +55,9 @@ public class EntitySoyuz extends Entity {
 		
 		if(!world.isRemote) {
 			
-			final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(posX - 5, posY - 15, posZ - 5, posX + 5, posY, posZ + 5));
+			List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(posX - 5, posY - 15, posZ - 5, posX + 5, posY, posZ + 5));
 			
-			for(final Entity e : list) {
+			for(Entity e : list) {
 				e.setFire(15);
 				e.attackEntityFrom(ModDamageSource.exhaust, 100.0F);
 				
@@ -87,9 +85,9 @@ public class EntitySoyuz extends Entity {
 		}
 	}
 	
-	private void spawnExhaust(final double x, final double y, final double z) {
+	private void spawnExhaust(double x, double y, double z) {
 
-		final NBTTagCompound data = new NBTTagCompound();
+		NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "exhaust");
 		data.setString("mode", "soyuz");
 		data.setInteger("count", 1);
@@ -105,21 +103,21 @@ public class EntitySoyuz extends Entity {
 		if(mode == 0 && payload != null) {
 			if(payload[0] != null) {
 				
-				final ItemStack load = payload[0];
+				ItemStack load = payload[0];
 				
 				if(load.getItem() == ModItems.flame_pony) {
 					ExplosionLarge.spawnTracers(world, posX, posY, posZ, 25);
-					for(final EntityPlayer p : world.playerEntities)
+					for(EntityPlayer p : world.playerEntities)
 						AdvancementManager.grantAchievement(p, AdvancementManager.achSpace);
 				}
 				
 				if(load.getItem() == ModItems.sat_foeq) {
-					for(final EntityPlayer p : world.playerEntities)
+					for(EntityPlayer p : world.playerEntities)
 						AdvancementManager.grantAchievement(p, AdvancementManager.achFOEQ);
 				}
 				
 				if(load.getItem() instanceof ItemSatChip) {
-				    final int freq = ItemSatChip.getFreq(load);
+				    int freq = ItemSatChip.getFreq(load);
 			    	Satellite.orbit(world, Satellite.getIDFromItem(load.getItem()), freq, posX, posY, posZ);
 				}
 			}
@@ -127,12 +125,12 @@ public class EntitySoyuz extends Entity {
 		
 		if(mode == 1) {
 			
-			final EntitySoyuzCapsule capsule = new EntitySoyuzCapsule(world);
+			EntitySoyuzCapsule capsule = new EntitySoyuzCapsule(world);
 			capsule.payload = this.payload;
 			capsule.soyuz = this.getSkin();
 			capsule.setPosition(targetX + 0.5, 600, targetZ + 0.5);
 			
-			final IChunkProvider provider = world.getChunkProvider();
+			IChunkProvider provider = world.getChunkProvider();
 			provider.provideChunk(targetX >> 4, targetZ >> 4);
 			
 			world.spawnEntity(capsule);
@@ -146,18 +144,18 @@ public class EntitySoyuz extends Entity {
 		this.getDataManager().register(SKIN, 0);
 	}
 	
-	public void setSat(final ItemStack stack) {
+	public void setSat(ItemStack stack) {
 		this.payload[0] = stack;
 	}
 	
-	public void setPayload(final List<ItemStack> payload) {
+	public void setPayload(List<ItemStack> payload) {
 		
 		for(int i = 0; i < payload.size(); i++) {
 			this.payload[i] = payload.get(i);
 		}
 	}
 	
-	public void setSkin(final int i) {
+	public void setSkin(int i) {
 		this.getDataManager().set(SKIN, i);
 	}
 	
@@ -167,14 +165,14 @@ public class EntitySoyuz extends Entity {
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(final double distance)
+    public boolean isInRangeToRenderDist(double distance)
     {
         return distance < 500000;
     }
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
-		final NBTTagList list = nbt.getTagList("items", 10);
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
+		NBTTagList list = nbt.getTagList("items", 10);
 		
 		this.setSkin(nbt.getInteger("skin"));
 		targetX = nbt.getInteger("targetX");
@@ -182,17 +180,17 @@ public class EntitySoyuz extends Entity {
 		mode = nbt.getInteger("mode");
 
 		for (int i = 0; i < list.tagCount(); i++) {
-			final NBTTagCompound nbt1 = list.getCompoundTagAt(i);
-			final byte b0 = nbt1.getByte("slot");
+			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
+			byte b0 = nbt1.getByte("slot");
 			if (b0 >= 0 && b0 < payload.length) {
-				payload[b0] = ItemStackUtil.itemStackFrom(nbt1);
+				payload[b0] = new ItemStack(nbt1);
 			}
 		}
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
-		final NBTTagList list = new NBTTagList();
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
+		NBTTagList list = new NBTTagList();
 
 		nbt.setInteger("skin", this.getSkin());
 		nbt.setInteger("targetX", targetX);
@@ -201,7 +199,7 @@ public class EntitySoyuz extends Entity {
 
 		for (int i = 0; i < payload.length; i++) {
 			if (payload[i] != null) {
-				final NBTTagCompound nbt1 = new NBTTagCompound();
+				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
 				payload[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);

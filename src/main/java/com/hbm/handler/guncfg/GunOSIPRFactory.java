@@ -13,7 +13,7 @@ public class GunOSIPRFactory {
 	
 	public static GunConfiguration getOSIPRConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 2;
 		config.roundsPerCycle = 1;
@@ -41,7 +41,7 @@ public class GunOSIPRFactory {
 	
 	public static GunConfiguration getAltConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 15;
 		config.roundsPerCycle = 1;
@@ -62,7 +62,7 @@ public class GunOSIPRFactory {
 	static float inaccuracy = 5;
 	public static BulletConfiguration getPulseConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_osipr_ammo;
 		bullet.spread *= inaccuracy;
@@ -75,7 +75,7 @@ public class GunOSIPRFactory {
 	
 	public static BulletConfiguration getPulseChargedConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.gun_osipr_ammo2;
 

@@ -1,26 +1,24 @@
 package com.hbm.render.tileentity;
 
-import com.hbm.interfaces.IDoor;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.animloader.AnimationWrapper;
 import com.hbm.animloader.AnimationWrapper.EndResult;
 import com.hbm.animloader.AnimationWrapper.EndType;
+import com.hbm.interfaces.IDoor;
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntitySiloHatch;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderSiloHatch extends TileEntitySpecialRenderer<TileEntitySiloHatch> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntitySiloHatch te) {
+	public boolean isGlobalRenderer(TileEntitySiloHatch te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntitySiloHatch te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntitySiloHatch te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x+0.5, y+0.595, z+0.5);
         switch(te.getBlockMetadata()-2) {
@@ -34,10 +32,10 @@ public class RenderSiloHatch extends TileEntitySpecialRenderer<TileEntitySiloHat
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.hatch_tex);
 		
-		final long time = System.currentTimeMillis();
-        final long startTime = te.state.isMovingState() ? te.sysTime : time;
-        final boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
-        final AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.silo_hatch_open);
+		long time = System.currentTimeMillis();
+        long startTime = te.state.isMovingState() ? te.sysTime : time;
+        boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
+        AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.silo_hatch_open);
         if(reverse){
         	w.reverse();
         }

@@ -1,8 +1,9 @@
 package com.hbm.render.amlfrom1710;
-import java.util.ArrayList;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
 
 public class GroupObject
 {
@@ -15,12 +16,12 @@ public class GroupObject
         this("");
     }
 
-    public GroupObject(final String name)
+    public GroupObject(String name)
     {
         this(name, -1);
     }
 
-    public GroupObject(final String name, final int glDrawingMode)
+    public GroupObject(String name, int glDrawingMode)
     {
         this.name = name;
         this.glDrawingMode = glDrawingMode;
@@ -32,7 +33,7 @@ public class GroupObject
         if (faces.size() > 0)
         {
         	
-            final Tessellator tessellator = Tessellator.instance;
+            Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawing(glDrawingMode);
             render(tessellator);
             tessellator.draw();
@@ -40,11 +41,11 @@ public class GroupObject
     }
 
     @SideOnly(Side.CLIENT)
-    public void render(final Tessellator tessellator)
+    public void render(Tessellator tessellator)
     {
         if (faces.size() > 0)
         {
-            for (final Face face : faces)
+            for (Face face : faces)
             {
                 face.addFaceForRender(tessellator);
             }
@@ -52,12 +53,12 @@ public class GroupObject
     }
 
     @SideOnly(Side.CLIENT)
-    public void renderSplit(final float splitHeight, final float scale)
+    public void renderSplit(float splitHeight, float scale)
     {
         if (faces.size() > 0)
         {
             
-            final Tessellator tessellator = Tessellator.instance;
+            Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawing(glDrawingMode);
             renderSplit(tessellator, splitHeight, scale);
             tessellator.draw();
@@ -65,11 +66,11 @@ public class GroupObject
     }
 
     @SideOnly(Side.CLIENT)
-    public void renderSplit(final Tessellator tessellator, final float splitHeight, final float scale)
+    public void renderSplit(Tessellator tessellator, float splitHeight, float scale)
     {
         if (faces.size() > 0)
         {
-            for (final Face face : faces)
+            for (Face face : faces)
             {
                 face.addFaceForRenderSplit(tessellator, 0F, splitHeight, scale);
             }

@@ -1,45 +1,37 @@
 package com.hbm.tileentity.machine;
 
-import java.util.*;
-
 import com.hbm.blocks.BlockControlPanelType;
+import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.control_panel.*;
-import com.hbm.lib.Library;
-import com.hbm.main.MainRegistry;
-import com.hbm.packet.NBTControlPacket;
+import com.hbm.packet.ControlPanelUpdatePacket;
+import com.hbm.packet.PacketDispatcher;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.common.Optional;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
-import com.hbm.interfaces.IControlReceiver;
-import com.hbm.packet.ControlPanelUpdatePacket;
-import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
 public class TileEntityControlPanel extends TileEntity implements ITickable, IControllable, IControlReceiver, SimpleComponent {
@@ -51,7 +43,7 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	public TileEntityControlPanel() {
 		inventory = new ItemStackHandler(1){
 			@Override
-			protected void onContentsChanged(final int slot){
+			protected void onContentsChanged(int slot){
 				markDirty();
 			}
 		};
@@ -63,8 +55,8 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 		if(world.isRemote)
 			loadClient();
 		else {
-			for(final Control c : panel.controls){
-				for(final BlockPos b : c.connectedSet){
+			for(Control c : panel.controls){
+				for(BlockPos b : c.connectedSet){
 					ControlEventSystem.get(world).subscribeTo(this, b);
 				}
 			}
@@ -73,10 +65,10 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 
 	@SideOnly(Side.CLIENT)
 	public void updateTransform() {
-		final Matrix4f mat = new Matrix4f();
+		Matrix4f mat = new Matrix4f();
 
-		final boolean isDown = ((getBlockMetadata() >> 2) == 1);
-		final boolean isUp = ((getBlockMetadata() >> 3) == 1);
+		boolean isDown = ((getBlockMetadata() >> 2) == 1);
+		boolean isUp = ((getBlockMetadata() >> 3) == 1);
 
 		// ○|￣|_
 		// it works, ignore
@@ -106,7 +98,7 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 		panel.setTransform(mat);
 	}
 
-	private void rotateByMetadata(final Matrix4f mat, final int meta) {
+	private void rotateByMetadata(Matrix4f mat, int meta) {
 		switch ((meta & 3) + 2) {
 			case 4:
 				mat.rotate((float) Math.toRadians(180), new Vector3f(0, 1, 0));
@@ -135,19 +127,19 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound){
+	public NBTTagCompound writeToNBT(NBTTagCompound compound){
 		compound.setTag("panel", panel.writeToNBT(new NBTTagCompound()));
 		return super.writeToNBT(compound);
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound){
+	public void readFromNBT(NBTTagCompound compound){
 		panel.readFromNBT(compound.getCompoundTag("panel"));
 		super.readFromNBT(compound);
 	}
 
 	@Override
-	public void receiveEvent(final BlockPos from, final ControlEvent e){
+	public void receiveEvent(BlockPos from, ControlEvent e){
 		panel.receiveEvent(from, e);
 	}
 
@@ -177,33 +169,33 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	@Override
-	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt){
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt){
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
-	public boolean hasPermission(final EntityPlayer player){
+	public boolean hasPermission(EntityPlayer player){
 		return true;
 	}
 
 	@Override
-	public void receiveControl(final NBTTagCompound data){
+	public void receiveControl(NBTTagCompound data){
 		if(data.hasKey("full_set")) {
 			markDirty();
-			for(final Control c : panel.controls){
-				for(final BlockPos b : c.connectedSet){
+			for(Control c : panel.controls){
+				for(BlockPos b : c.connectedSet){
 					ControlEventSystem.get(world).unsubscribeFrom(this, b);
 				}
 			}
 			this.panel.readFromNBT(data);
-			for(final Control c : panel.controls){
-				for(final BlockPos b : c.connectedSet){
+			for(Control c : panel.controls){
+				for(BlockPos b : c.connectedSet){
 					ControlEventSystem.get(world).subscribeTo(this, b);
 				}
 			}
 			PacketDispatcher.wrapper.sendToAllTracking(new ControlPanelUpdatePacket(pos, data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 1));
 		} else if(data.hasKey("click_control")) {
-			final ControlEvent evt = ControlEvent.readFromNBT(data);
+			ControlEvent evt = ControlEvent.readFromNBT(data);
 			panel.controls.get(data.getInteger("click_control")).receiveEvent(evt);
 		}
 	}
@@ -219,24 +211,24 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	public float[] getBox() {
-		final float baseSizeX = 1-(panel.b_off+panel.d_off);
-		final float baseSizeY = 1-(panel.a_off+panel.c_off);
+		float baseSizeX = 1-(panel.b_off+panel.d_off);
+		float baseSizeY = 1-(panel.a_off+panel.c_off);
 
-		final double base_hyp = 1/Math.cos(Math.abs(panel.angle));
-		final double panel_hyp = baseSizeY/Math.cos(Math.abs(panel.angle));
+		double base_hyp = 1/Math.cos(Math.abs(panel.angle));
+		double panel_hyp = baseSizeY/Math.cos(Math.abs(panel.angle));
 
-		final float box_width = 10;
-		final float box_height = (float) (base_hyp*10);
-		final float minX = (-box_width/2) + (panel.d_off*box_width);
-		final float minY = (-box_height/2) + (panel.a_off*box_height);
+		float box_width = 10;
+		float box_height = (float) (base_hyp*10);
+		float minX = (-box_width/2) + (panel.d_off*box_width);
+		float minY = (-box_height/2) + (panel.a_off*box_height);
 
 		return new float[] { minX, minY, minX+baseSizeX*10, (float) (minY+panel_hyp*10)};
 	}
 
-	public AxisAlignedBB getBoundingBox(final boolean isUp, final boolean isDown, final EnumFacing facing) {
+	public AxisAlignedBB getBoundingBox(boolean isUp, boolean isDown, EnumFacing facing) {
 		AxisAlignedBB defAABB = null;
-		final float height1 = ControlPanel.getSlopeHeightFromZ(1-panel.c_off, panel.height, -panel.angle);
-		final float height0 = ControlPanel.getSlopeHeightFromZ(panel.a_off, panel.height, -panel.angle);
+		float height1 = ControlPanel.getSlopeHeightFromZ(1-panel.c_off, panel.height, -panel.angle);
+		float height0 = ControlPanel.getSlopeHeightFromZ(panel.a_off, panel.height, -panel.angle);
 
 		if (isUp) {
 			defAABB = new AxisAlignedBB(panel.d_off, 0, panel.a_off, 1 - panel.b_off, Math.max(height0, height1), 1 - panel.c_off);
@@ -250,7 +242,7 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 		return defAABB;
 	}
 
-	public static AxisAlignedBB rotateAABB(final AxisAlignedBB box, final EnumFacing facing){
+	public static AxisAlignedBB rotateAABB(AxisAlignedBB box, EnumFacing facing){
 		switch(facing){
 			case NORTH:
 				return new AxisAlignedBB(1-box.minX, box.minY, 1-box.maxZ, 1-box.maxX, box.maxY, 1-box.minZ);
@@ -273,8 +265,8 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	@Callback()
-	public Object[] listControls(final Context context, final Arguments args) {
-		final List<String> ctrlList = new ArrayList<>();
+	public Object[] listControls(Context context, Arguments args) {
+		List<String> ctrlList = new ArrayList<>();
 		for (int i=0; i < panel.controls.size(); i++) {
 			ctrlList.add(panel.controls.get(i).name + " ("+i+")");
 		}
@@ -282,14 +274,14 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	@Callback()
-	public Object[] listGlobalVars(final Context context, final Arguments args) {
+	public Object[] listGlobalVars(Context context, Arguments args) {
 		return new Object[]{panel.globalVars};
 	}
 
 	@Callback(doc = "getGlobalVar(name:str);")
-	public Object[] getGlobalVar(final Context context, final Arguments args) {
-		final String name = args.checkString(0);
-		final DataValue value = panel.getVar(name);
+	public Object[] getGlobalVar(Context context, Arguments args) {
+		String name = args.checkString(0);
+		DataValue value = panel.getVar(name);
 		if (Objects.requireNonNull(value.getType()) == DataValue.DataType.NUMBER) {
 			return new Object[]{value.getNumber()};
 		}
@@ -297,8 +289,8 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	@Callback(doc = "setGlobalVar(name:str, value:[bool,str,double,int]);")
-	public Object[] setGlobalVar(final Context context, final Arguments args) {
-		final String name = args.checkString(0);
+	public Object[] setGlobalVar(Context context, Arguments args) {
+		String name = args.checkString(0);
 
 		if (args.isBoolean(1))
 			panel.globalVars.put(name, new DataValueFloat(args.checkBoolean(1)));
@@ -315,15 +307,15 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	@Callback(doc = "listLocalVars(ID:int); list local vars for control ID.")
-	public Object[] listLocalVars(final Context context, final Arguments args) {
+	public Object[] listLocalVars(Context context, Arguments args) {
 		return new Object[]{panel.controls.get(args.checkInteger(0)).vars};
 	}
 
 	@Callback(doc = "getLocalVar(ID:int, name:str); get var for control ID.")
-	public Object[] getLocalVar(final Context context, final Arguments args) {
-		final int index = args.checkInteger(0);
-		final String name = args.checkString(1);
-		final DataValue value = panel.controls.get(index).getVar(name);
+	public Object[] getLocalVar(Context context, Arguments args) {
+		int index = args.checkInteger(0);
+		String name = args.checkString(1);
+		DataValue value = panel.controls.get(index).getVar(name);
 		if (Objects.requireNonNull(value.getType()) == DataValue.DataType.NUMBER) {
 			return new Object[]{value.getNumber()};
 		}
@@ -331,19 +323,19 @@ public class TileEntityControlPanel extends TileEntity implements ITickable, ICo
 	}
 
 	@Callback(doc = "getLocalVar(ID:int, name:str, value:[bool,str,double,int]); set var for control ID.")
-	public Object[] setLocalVar(final Context context, final Arguments args) {
-		final int index = args.checkInteger(0);
-		final String name = args.checkString(1);
+	public Object[] setLocalVar(Context context, Arguments args) {
+		int index = args.checkInteger(0);
+		String name = args.checkString(1);
 
 		if (args.isBoolean(2))
 			panel.controls.get(index).vars.put(name, new DataValueFloat(args.checkBoolean(2)));
 		else if (args.isString(2)) {
-			final DataValue value = panel.controls.get(index).vars.get(name);
-			final String newValue = args.checkString(2);
+			DataValue value = panel.controls.get(index).vars.get(name);
+			String newValue = args.checkString(2);
 
 			if (value.getType().equals(DataValue.DataType.ENUM)) {
 				if (((DataValueEnum) value).enumClass.equals(EnumDyeColor.class)) {
-					for (final EnumDyeColor c : EnumDyeColor.values()) {
+					for (EnumDyeColor c : EnumDyeColor.values()) {
 						if (c.getName().equals(newValue)) {
 							panel.controls.get(index).vars.put(name, new DataValueEnum<>(EnumDyeColor.valueOf(newValue.toUpperCase())));
 							return new Object[]{};

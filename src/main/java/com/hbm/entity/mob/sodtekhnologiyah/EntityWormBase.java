@@ -1,10 +1,7 @@
 package com.hbm.entity.mob.sodtekhnologiyah;
 
-import java.util.List;
-
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +11,8 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public abstract class EntityWormBase extends EntityBurrowing {
 
@@ -45,7 +44,7 @@ public abstract class EntityWormBase extends EntityBurrowing {
 	public static final Predicate<Entity> wormSelector = target -> target instanceof EntityWormBase;
 
 
-	public EntityWormBase(final World world) {
+	public EntityWormBase(World world) {
 		super(world);
 		this.setSize(1.0F, 1.0F);
 		this.surfaceY = 60;
@@ -55,7 +54,7 @@ public abstract class EntityWormBase extends EntityBurrowing {
 		return this.partID;
 	}
 
-	public void setPartID(final int par1) {
+	public void setPartID(int par1) {
 		this.partID = par1;
 	}
 
@@ -63,12 +62,12 @@ public abstract class EntityWormBase extends EntityBurrowing {
 		return this.uniqueWormID;
 	}
 
-	public void setUniqueWormID(final int id) {
+	public void setUniqueWormID(int id) {
 		this.uniqueWormID = id;
 	}
 
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		System.out.println(source);
 		if(this.isEntityInvulnerable(source) || source == DamageSource.DROWN || source == DamageSource.IN_WALL ||
 				((source.getImmediateSource() instanceof EntityWormBase) && ((EntityWormBase) source.getImmediateSource()).uniqueWormID == this.uniqueWormID)) {
@@ -104,9 +103,9 @@ public abstract class EntityWormBase extends EntityBurrowing {
 		}
 	}
 	
-	protected void attackEntitiesInList(final List<Entity> targets) {
+	protected void attackEntitiesInList(List<Entity> targets) {
 
-		for(final Entity var3 : targets) {
+		for(Entity var3 : targets) {
 			if(((var3 instanceof EntityLivingBase)) && (canAttackClass(((EntityLivingBase)var3).getClass()))
 					&& ((!(var3 instanceof EntityWormBase)) || (((EntityWormBase) var3).getUniqueWormID() != getUniqueWormID()))) {
 				attackEntityAsMob(var3);
@@ -115,23 +114,23 @@ public abstract class EntityWormBase extends EntityBurrowing {
 	}
 	
 	@Override
-	public boolean canAttackClass(final Class<? extends EntityLivingBase> cls) {
+	public boolean canAttackClass(Class<? extends EntityLivingBase> cls) {
 		return true;
 	}
 	
 	@Override
-	public boolean attackEntityAsMob(final Entity target) {
-		final boolean var2 = target.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength(target));
+	public boolean attackEntityAsMob(Entity target) {
+		boolean var2 = target.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength(target));
 
 		if(var2) {
 			this.idleTime = 0;
-			final double tx = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
-			final double ty = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
-			final double tz = (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D;
-			final double deltaX = target.posX - tx;
-			final double deltaY = target.posZ - ty;
-			final double deltaZ = target.posY - tz;
-			final double knockback = this.knockbackDivider * (deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ + 0.1D);
+			double tx = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
+			double ty = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
+			double tz = (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D;
+			double deltaX = target.posX - tx;
+			double deltaY = target.posZ - ty;
+			double deltaZ = target.posY - tz;
+			double knockback = this.knockbackDivider * (deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ + 0.1D);
 			target.addVelocity(deltaX / knockback, deltaY / knockback, deltaZ / knockback);
 		}
 
@@ -156,13 +155,13 @@ public abstract class EntityWormBase extends EntityBurrowing {
 	}
 	
 	@Override
-	public void writeEntityToNBT(final NBTTagCompound compound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("wormID", this.getUniqueWormID());
 	}
 	
 	@Override
-	public void readEntityFromNBT(final NBTTagCompound compound) {
+	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		setUniqueWormID(compound.getInteger("wormID"));
 	}

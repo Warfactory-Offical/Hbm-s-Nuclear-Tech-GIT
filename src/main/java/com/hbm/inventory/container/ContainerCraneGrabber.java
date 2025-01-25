@@ -3,7 +3,6 @@ package com.hbm.inventory.container;
 import com.hbm.inventory.SlotPattern;
 import com.hbm.inventory.SlotUpgrade;
 import com.hbm.tileentity.network.TileEntityCraneGrabber;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -14,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public class ContainerCraneGrabber extends Container {
     protected TileEntityCraneGrabber grabber;
 
-    public ContainerCraneGrabber(final InventoryPlayer invPlayer, final TileEntityCraneGrabber grabber) {
+    public ContainerCraneGrabber(InventoryPlayer invPlayer, TileEntityCraneGrabber grabber) {
         this.grabber = grabber;
 
         //filter
@@ -39,15 +38,15 @@ public class ContainerCraneGrabber extends Container {
     }
 
     @Override
-    public ItemStack slotClick(final int slotId, final int dragType, final ClickType clickTypeIn, final EntityPlayer player) {
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
         if (slotId < 0 || slotId >= 9) {
             return super.slotClick(slotId, dragType, clickTypeIn, player);
         }
 
-        final Slot slot = this.inventorySlots.get(slotId);
+        Slot slot = this.inventorySlots.get(slotId);
 
         ItemStack ret = ItemStack.EMPTY;
-        final ItemStack held = player.inventory.getItemStack();
+        ItemStack held = player.inventory.getItemStack();
 
         if (slot.getHasStack()) {
             ret = slot.getStack().copy();
@@ -71,7 +70,7 @@ public class ContainerCraneGrabber extends Container {
     }
 
     @Override
-    public boolean canInteractWith(final EntityPlayer player) {
+    public boolean canInteractWith(EntityPlayer player) {
         return grabber.isUseableByPlayer(player);
     }
 

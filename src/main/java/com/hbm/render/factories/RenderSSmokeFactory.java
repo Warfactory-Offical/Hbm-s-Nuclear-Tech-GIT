@@ -2,7 +2,6 @@ package com.hbm.render.factories;
 
 import com.hbm.entity.particle.EntitySSmokeFX;
 import com.hbm.render.entity.SSmokeRenderer;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.Item;
@@ -12,11 +11,11 @@ public class RenderSSmokeFactory implements IRenderFactory<EntitySSmokeFX> {
 
 	Item renderItem;
 	
-	public RenderSSmokeFactory(final Item item) {
+	public RenderSSmokeFactory(Item item) {
 		renderItem = item;
 	}
 	@Override
-	public Render<? super EntitySSmokeFX> createRenderFor(final RenderManager manager) {
+	public Render<? super EntitySSmokeFX> createRenderFor(RenderManager manager) {
 		return new SSmokeRenderer(manager, renderItem);
 	}
 

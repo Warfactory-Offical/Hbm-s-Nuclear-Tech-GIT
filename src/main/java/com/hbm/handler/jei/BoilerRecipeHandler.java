@@ -24,7 +24,7 @@ public class BoilerRecipeHandler implements IRecipeCategory<BoilerRecipe> {
 	protected final IDrawableStatic tempStatic;
 	protected final IDrawableAnimated tempAnimated;
 	
-	public BoilerRecipeHandler(final IGuiHelper help) {
+	public BoilerRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 33, 33, 109, 19);
 		tempStatic = help.createDrawable(gui_rl, 0, 86, 6, 16);
 		tempAnimated = help.createAnimatedDrawable(tempStatic, 240, StartDirection.BOTTOM, false);
@@ -51,13 +51,13 @@ public class BoilerRecipeHandler implements IRecipeCategory<BoilerRecipe> {
 	}
 	
 	@Override
-	public void drawExtras(final Minecraft minecraft) {
+	public void drawExtras(Minecraft minecraft) {
 		tempAnimated.draw(minecraft, 52, 2);
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final BoilerRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, BoilerRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 1, 1);
 		guiItemStacks.init(1, false, 91, 1);

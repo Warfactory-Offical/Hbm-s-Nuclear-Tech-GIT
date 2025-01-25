@@ -3,7 +3,6 @@ package com.hbm.blocks.machine;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityCore;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +17,7 @@ import net.minecraft.world.World;
 
 public class CoreCore extends BlockContainer {
 
-	public CoreCore(final Material materialIn, final String s) {
+	public CoreCore(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -27,12 +26,12 @@ public class CoreCore extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityCore();
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
@@ -46,32 +45,32 @@ public class CoreCore extends BlockContainer {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 

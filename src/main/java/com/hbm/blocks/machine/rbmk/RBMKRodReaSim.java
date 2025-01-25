@@ -2,18 +2,17 @@ package com.hbm.blocks.machine.rbmk;
 
 import com.hbm.tileentity.TileEntityProxyInventory;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKRodReaSim;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class RBMKRodReaSim extends RBMKRod {
 
-	public RBMKRodReaSim(final boolean moderated, final String s, final String c) {
+	public RBMKRodReaSim(boolean moderated, String s, String c) {
 		super(moderated, s, c);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		
 		if(meta >= offset)
 			return new TileEntityRBMKRodReaSim();

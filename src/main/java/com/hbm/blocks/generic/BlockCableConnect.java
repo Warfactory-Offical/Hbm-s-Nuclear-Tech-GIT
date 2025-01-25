@@ -1,21 +1,20 @@
 package com.hbm.blocks.generic;
 
+import api.hbm.energymk2.IEnergyConnectorBlock;
 import com.hbm.blocks.BlockBase;
 import com.hbm.lib.ForgeDirection;
-
-import api.hbm.energy.IEnergyConnectorBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 public class BlockCableConnect extends BlockBase implements IEnergyConnectorBlock {
 
-	public BlockCableConnect(final Material material, final String s) {
+	public BlockCableConnect(Material material, String s) {
 		super(material, s);
 	}
 
-	@Override 
-	public boolean canConnect(final IBlockAccess world, final BlockPos pos, final ForgeDirection dir){
-		return true; 
+	@Override
+	public boolean canConnect(IBlockAccess world, BlockPos pos, ForgeDirection dir){
+		return true;
 	}
 }

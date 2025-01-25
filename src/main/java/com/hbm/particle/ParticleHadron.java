@@ -26,7 +26,7 @@ public class ParticleHadron extends Particle {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/particle/hadron.png");
 	
-	public ParticleHadron(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
+	public ParticleHadron(World worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleMaxAge = 10;
 	}
@@ -37,7 +37,7 @@ public class ParticleHadron extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		GlStateManager.color(1, 1, 1, 1);
 		GlStateManager.disableLighting();
@@ -49,13 +49,13 @@ public class ParticleHadron extends Particle {
 
 		this.particleAlpha = 1 - (((float)this.particleAge + partialTicks) / (float)this.particleMaxAge);
 		this.particleAlpha = MathHelper.clamp(this.particleAlpha, 0, 1);
-		final float f4 = (this.particleAge + partialTicks) * 0.15F;
+		float f4 = (this.particleAge + partialTicks) * 0.15F;
 
-	    final float f5 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-	    final float f6 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-	    final float f7 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+	    float f5 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+	    float f6 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+	    float f7 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
 
-		final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
+		Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
 		
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
         buffer.pos((double)f5 + avec3d[0].x, (double)f6 + avec3d[0].y, (double)f7 + avec3d[0].z).tex(1, 1).color(1.0F, 1.0F, 1.0F, this.particleAlpha).lightmap(240, 240).endVertex();

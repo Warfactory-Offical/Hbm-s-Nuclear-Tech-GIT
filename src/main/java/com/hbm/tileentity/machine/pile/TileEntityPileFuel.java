@@ -1,9 +1,9 @@
 package com.hbm.tileentity.machine.pile;
 
+import api.hbm.block.IPileNeutronReceiver;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.pile.BlockGraphiteDrilledBase;
-
-import api.hbm.block.IPileNeutronReceiver;
+import com.hbm.config.GeneralConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -14,7 +14,7 @@ public class TileEntityPileFuel extends TileEntityPileBase implements IPileNeutr
 	public int neutrons;
 	public int lastNeutrons;
 	public int progress;
-	public static final int maxProgress = 100000;
+	public static final int maxProgress = GeneralConfig.enable528 ? 75000 : 50000;
 
 	@Override
 	public void update() {
@@ -40,12 +40,12 @@ public class TileEntityPileFuel extends TileEntityPileBase implements IPileNeutr
 	
 	private void react() {
 		
-		final int reaction = (int) (this.neutrons * (1D - ((double)this.heat / (double)maxHeat) * 0.5D)); //max heat reduces reaction by 50% due to thermal expansion
+		int reaction = (int) (this.neutrons * (1D - ((double)this.heat / (double)maxHeat) * 0.5D)); //max heat reduces reaction by 50% due to thermal expansion
 		
 		this.lastNeutrons = this.neutrons;
 		this.neutrons = 0;
-
-        this.progress += reaction;
+		
+		this.progress += reaction;
 		
 		if(reaction <= 0)
 			return;
@@ -57,20 +57,24 @@ public class TileEntityPileFuel extends TileEntityPileBase implements IPileNeutr
 	}
 
 	@Override
-	public void receiveNeutrons(final int n) {
+	public void receiveNeutrons(int n) {
 		this.neutrons += n;
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.heat = nbt.getInteger("heat");
+		this.progress = nbt.getInteger("progress");
+		this.neutrons = nbt.getInteger("neutrons");
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setInteger("heat", this.heat);
+		nbt.setInteger("progress", this.progress);
+		nbt.setInteger("neutrons", this.neutrons);
 		return nbt;
 	}
 }

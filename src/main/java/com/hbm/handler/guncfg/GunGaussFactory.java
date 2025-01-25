@@ -17,7 +17,7 @@ public class GunGaussFactory {
 	
 	public static GunConfiguration getXVLConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 6;
 		config.roundsPerCycle = 1;
@@ -55,7 +55,7 @@ public class GunGaussFactory {
 	
 	public static GunConfiguration getChargedConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 10;
 		config.roundsPerCycle = 1;
@@ -75,7 +75,7 @@ public class GunGaussFactory {
 
 	public static BulletConfiguration getGaussConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_xvl1456_ammo;
 		bullet.dmgMin = 6;
@@ -90,7 +90,7 @@ public class GunGaussFactory {
 	
 	public static BulletConfiguration getAltConfig() {
 		
-		final BulletConfiguration bullet = getGaussConfig();
+		BulletConfiguration bullet = getGaussConfig();
 		
 		bullet.vPFX = "reddust";
 		

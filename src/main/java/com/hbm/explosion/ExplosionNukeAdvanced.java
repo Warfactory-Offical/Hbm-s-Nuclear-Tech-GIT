@@ -25,7 +25,7 @@ public class ExplosionNukeAdvanced
 	public float explosionCoefficient = 1.0F;
 	public int type = 0;
 	
-	public void saveToNbt(final NBTTagCompound nbt, final String name) {
+	public void saveToNbt(NBTTagCompound nbt, String name) {
 		nbt.setInteger(name + "posX", posX);
 		nbt.setInteger(name + "posY", posY);
 		nbt.setInteger(name + "posZ", posZ);
@@ -42,7 +42,7 @@ public class ExplosionNukeAdvanced
 		nbt.setInteger(name + "type", type);
 	}
 	
-	public void readFromNbt(final NBTTagCompound nbt, final String name) {
+	public void readFromNbt(NBTTagCompound nbt, String name) {
 		posX = nbt.getInteger(name + "posX");
 		posY = nbt.getInteger(name + "posY");
 		posZ = nbt.getInteger(name + "posZ");
@@ -59,7 +59,7 @@ public class ExplosionNukeAdvanced
 		type = nbt.getInteger(name + "type");
 	}
 	
-	public ExplosionNukeAdvanced(final int x, final int y, final int z, final World world, final int rad, final float coefficient, final int typ)
+	public ExplosionNukeAdvanced(int x, int y, int z, World world, int rad, float coefficient, int typ)
 	{
 		this.posX = x;
 		this.posY = y;
@@ -90,7 +90,7 @@ public class ExplosionNukeAdvanced
 			waste(this.lastposX, this.lastposZ); break;
 		}
 		this.shell = (int) Math.floor((Math.sqrt(n) + 1) / 2); //crazy stuff I can't explain
-		final int shell2 = this.shell * 2;
+		int shell2 = this.shell * 2;
 		this.leg = (int) Math.floor((this.n - (shell2 - 1) * (shell2 - 1)) / shell2);
 		this.element = (this.n - (shell2 - 1) * (shell2 - 1)) - shell2 * this.leg - this.shell + 1;
 		this.lastposX = this.leg == 0 ? this.shell : this.leg == 1 ? -this.element : this.leg == 2 ? -this.shell : this.element;
@@ -100,9 +100,9 @@ public class ExplosionNukeAdvanced
 		
 	}
 
-	private void breakColumn(final int x, final int z)
+	private void breakColumn(int x, int z)
 	{
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		int dist = this.radius2 - (x * x + z * z); //we have two sides of the triangle (hypotenuse is radius, one leg is (x*x+z*z)) this calculates the third one
 		if (dist > 0) //check if any blocks have to be broken here
 		{
@@ -119,9 +119,9 @@ public class ExplosionNukeAdvanced
 		}
 	}
 
-	private void vapor(final int x, final int z)
+	private void vapor(int x, int z)
 	{
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		int dist = this.radius2 - (x * x + z * z);
 		if (dist > 0)
 		{
@@ -134,9 +134,9 @@ public class ExplosionNukeAdvanced
 		}
 	}
 
-	private void waste(final int x, final int z)
+	private void waste(int x, int z)
 	{
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		int dist = this.radius2 - (x * x + z * z);
 		if (dist > 0)
 		{

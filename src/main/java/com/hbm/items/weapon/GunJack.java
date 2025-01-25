@@ -35,7 +35,7 @@ public class GunJack extends Item {
 	public int dmgMin = 12;
 	public int dmgMax = 24;
 	
-	public GunJack(final String s) {
+	public GunJack(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -44,29 +44,30 @@ public class GunJack extends Item {
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(final ItemStack stack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer player))
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if(!(entityLiving instanceof EntityPlayer))
 			return;
-        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_jack){
+		EntityPlayer player = (EntityPlayer) entityLiving;
+		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_jack){
 			player.getHeldItemOffhand().onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
-		final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.gun_jack_ammo));
+		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.gun_jack_ammo));
 		MinecraftForge.EVENT_BUS.post(event);
 		j = event.getCharge();
 
-		final boolean flag = player.capabilities.isCreativeMode
+		boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 		if (flag || Library.hasInventoryItem(player.inventory, ModItems.gun_jack_ammo)) {
@@ -89,11 +90,11 @@ public class GunJack extends Item {
 				Library.consumeInventoryItem(player.inventory, ModItems.gun_jack_ammo);
 			}
 
-			final int k = rand.nextInt(25) + 24;
+			int k = rand.nextInt(25) + 24;
 			
 			for(int i = 0; i < k; i++) {
 
-				final EntityBullet entityarrow1 = new EntityBullet(worldIn, player, 3.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+				EntityBullet entityarrow1 = new EntityBullet(worldIn, player, 3.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 				entityarrow1.setDamage(dmgMin + rand.nextInt(dmgMax - dmgMin));
 				
 				if(!worldIn.isRemote)
@@ -103,8 +104,8 @@ public class GunJack extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.gun_jack_ammo));
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.gun_jack_ammo));
 		MinecraftForge.EVENT_BUS.post(event);
 
 		if (playerIn.capabilities.isCreativeMode || Library.hasInventoryItem(playerIn.inventory, ModItems.gun_jack_ammo)) {
@@ -119,7 +120,7 @@ public class GunJack extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("One barrel? Boring.");
 		list.add("Two barrels? Nah.");
 		list.add("Four barrels? Heck yes!");
@@ -132,8 +133,8 @@ public class GunJack extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 4.5, 0));
 		}

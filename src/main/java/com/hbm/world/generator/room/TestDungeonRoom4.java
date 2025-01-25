@@ -14,13 +14,13 @@ import net.minecraft.world.World;
 
 public class TestDungeonRoom4 extends CellularDungeonRoom {
 	
-	public TestDungeonRoom4(final CellularDungeon parent, final CellularDungeonRoom daisyChain, final EnumFacing dir) {
+	public TestDungeonRoom4(CellularDungeon parent, CellularDungeonRoom daisyChain, EnumFacing dir) {
 		super(parent);
 		this.daisyChain = daisyChain;
 		this.daisyDirection = dir;
 	}
 
-	public void generateMain(final World world, final int x, final int y, final int z) {
+	public void generateMain(World world, int x, int y, int z) {
 		
 		super.generateMain(world, x, y, z);
 		DungeonToolbox.generateBox(world, x, y + parent.height - 2, z, parent.width, 1, parent.width, new ArrayList<IBlockState>() {
@@ -34,7 +34,7 @@ public class TestDungeonRoom4 extends CellularDungeonRoom {
 		{ add(ModBlocks.meteor_polished.getDefaultState()); add(ModBlocks.meteor_polished.getDefaultState()); add(ModBlocks.meteor_polished.getDefaultState()); add(ModBlocks.meteor_polished.getDefaultState()); add(ModBlocks.meteor_polished.getDefaultState()); add(ModBlocks.meteor_spawner.getDefaultState()); }});
 	}
 	
-	public void generateWall(final World world, final int x, final int y, final int z, final EnumFacing wall, final boolean door) {
+	public void generateWall(World world, int x, int y, int z, EnumFacing wall, boolean door) {
 		
 		if(wall != EnumFacing.NORTH)
 			super.generateWall(world, x, y, z, wall, door);

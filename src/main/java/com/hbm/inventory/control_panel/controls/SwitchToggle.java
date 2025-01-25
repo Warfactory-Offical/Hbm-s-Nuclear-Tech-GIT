@@ -25,7 +25,7 @@ import java.util.List;
 
 public class SwitchToggle extends Control {
 
-    public SwitchToggle(final String name, final ControlPanel panel) {
+    public SwitchToggle(String name, ControlPanel panel) {
         super(name, panel);
         vars.put("isOn", new DataValueFloat(0));
     }
@@ -42,13 +42,13 @@ public class SwitchToggle extends Control {
 
     @Override
     public void render() {
-        final boolean isOn = getVar("isOn").getBoolean();
+        boolean isOn = getVar("isOn").getBoolean();
 
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.ctrl_switch_toggle_tex);
-        final Tessellator tes = Tessellator.instance;
+        Tessellator tes = Tessellator.instance;
 
-        final IModelCustom model = getModel();
+        IModelCustom model = getModel();
 
         tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         tes.setTranslation(posX, 0, posY);
@@ -57,10 +57,10 @@ public class SwitchToggle extends Control {
         tes.draw();
 
         GlStateManager.disableTexture2D();
-        final float lX = OpenGlHelper.lastBrightnessX;
-        final float lY = OpenGlHelper.lastBrightnessY;
-        final float onCMul = (isOn) ? 3F : .4F;
-        final float offCMul = (isOn) ? .4F : 3F;
+        float lX = OpenGlHelper.lastBrightnessX;
+        float lY = OpenGlHelper.lastBrightnessY;
+        float onCMul = (isOn) ? 3F : .4F;
+        float offCMul = (isOn) ? .4F : 3F;
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (isOn)?240:lX, (isOn)?240:lY);
         tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
@@ -79,7 +79,7 @@ public class SwitchToggle extends Control {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lX, lY);
         GlStateManager.enableTexture2D();
 
-        final Matrix4f rot_mat = new Matrix4f().rotate((float) ((isOn) ? Math.toRadians(-60) : 0), new Vector3f(1, 0, 0));
+        Matrix4f rot_mat = new Matrix4f().rotate((float) ((isOn) ? Math.toRadians(-60) : 0), new Vector3f(1, 0, 0));
         Matrix4f.mul(new Matrix4f().translate(new Vector3f(posX, 0, posY)), rot_mat, new Matrix4f()).store(ClientProxy.AUX_GL_BUFFER);
         ClientProxy.AUX_GL_BUFFER.rewind();
         GlStateManager.multMatrix(ClientProxy.AUX_GL_BUFFER);
@@ -110,15 +110,15 @@ public class SwitchToggle extends Control {
     }
 
     @Override
-    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
-        final NodeSystem ctrl_press = new NodeSystem(this);
+    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
+        NodeSystem ctrl_press = new NodeSystem(this);
         {
-            final NodeGetVar node0 = new NodeGetVar(170, 100, this).setData("isOn", false);
+            NodeGetVar node0 = new NodeGetVar(170, 100, this).setData("isOn", false);
             ctrl_press.addNode(node0);
-            final NodeBoolean node1 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
+            NodeBoolean node1 = new NodeBoolean(230, 120).setData(NodeBoolean.BoolOperation.NOT);
             node1.inputs.get(0).setData(node0, 0, true);
             ctrl_press.addNode(node1);
-            final NodeSetVar node2 = new NodeSetVar(290, 140, this).setData("isOn", false);
+            NodeSetVar node2 = new NodeSetVar(290, 140, this).setData("isOn", false);
             node2.inputs.get(0).setData(node1, 0, true);
             ctrl_press.addNode(node2);
         }
@@ -126,7 +126,7 @@ public class SwitchToggle extends Control {
     }
 
     @Override
-    public Control newControl(final ControlPanel panel) {
+    public Control newControl(ControlPanel panel) {
         return new SwitchToggle(name, panel);
     }
 }

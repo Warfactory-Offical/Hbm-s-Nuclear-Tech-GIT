@@ -58,7 +58,7 @@ public class CommandHbm extends CommandBase {
 	}
 
 	@Override
-	public String getUsage(final ICommandSender sender) {
+	public String getUsage(ICommandSender sender) {
 		return "[WIP] Usage: /hbm <subcommand> <args>\nDo /hbm subcommands for a list of subcommands";
 	}
 	
@@ -69,7 +69,7 @@ public class CommandHbm extends CommandBase {
 	}
 
 	@Override
-	public List<String> getTabCompletions(final MinecraftServer server, final ICommandSender sender, final String[] args, final BlockPos targetPos) {
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
 		if(args.length == 1) {
 			return getSubCommands().stream().filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
 		} else if(args.length == 2) {
@@ -83,15 +83,17 @@ public class CommandHbm extends CommandBase {
 	}
 
 	@Override
-	public void execute(final MinecraftServer server, final ICommandSender sender, final String[] args) throws CommandException {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length == 0) {
 			throw new CommandException(getUsage(sender));
 		} else if(args.length > 0) {
 			if("subcommands".equals(args[0])) {
 				doSubcommandCommand(server, sender, args);
-            } else if("gen".equals(args[0])) {
+				return;
+			} else if("gen".equals(args[0])) {
 				doGenCommand(server, sender, args);
-            } else if("reloadCollada".equals(args[0])){
+				return;
+			} else if("reloadCollada".equals(args[0])){
 				if(FMLCommonHandler.instance().getSide() == Side.CLIENT){
 					Minecraft.getMinecraft().addScheduledTask(() -> {
 						ResourceManager.loadAnimatedModels();
@@ -114,7 +116,7 @@ public class CommandHbm extends CommandBase {
 									shader.uniform1i("noise_1", 4);
 									GLCompat.activeTexture(GLCompat.GL_TEXTURE0);
 									
-									final float time = (System.currentTimeMillis()%10000000)/1000F;
+									float time = (System.currentTimeMillis()%10000000)/1000F;
 									shader.uniform1f("time", time);
 								});
 						
@@ -129,7 +131,7 @@ public class CommandHbm extends CommandBase {
 									shader.uniform1i("noise_1", 4);
 									GLCompat.activeTexture(GLCompat.GL_TEXTURE0);
 									
-									final float time = (System.currentTimeMillis()%10000000)/1000F;
+									float time = (System.currentTimeMillis()%10000000)/1000F;
 									shader.uniform1f("time", time);
 								});
 						
@@ -142,7 +144,7 @@ public class CommandHbm extends CommandBase {
 						
 						ResourceManager.heat_distortion = HbmShaderManager2.loadShader(new ResourceLocation(RefStrings.MODID, "shaders/heat_distortion"))
 								.withUniforms(shader -> {
-									final Framebuffer buffer = Minecraft.getMinecraft().getFramebuffer();
+									Framebuffer buffer = Minecraft.getMinecraft().getFramebuffer();
 									GLCompat.activeTexture(GLCompat.GL_TEXTURE0+3);
 									GlStateManager.bindTexture(buffer.framebufferTexture);
 									shader.uniform1i("fbo_tex", 3);
@@ -151,7 +153,7 @@ public class CommandHbm extends CommandBase {
 									shader.uniform1i("noise", 4);
 									GLCompat.activeTexture(GLCompat.GL_TEXTURE0);
 									
-									final float time = (System.currentTimeMillis()%10000000)/1000F;
+									float time = (System.currentTimeMillis()%10000000)/1000F;
 									shader.uniform1f("time", time);
 									shader.uniform2f("windowSize", Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
 								});
@@ -214,7 +216,7 @@ public class CommandHbm extends CommandBase {
 							Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.noise_2);
 							shader.uniform1i("noise", 4);
 							GlStateManager.setActiveTexture(GLCompat.GL_TEXTURE0);
-							final float time = (System.currentTimeMillis()%10000000)/1000F;
+							float time = (System.currentTimeMillis()%10000000)/1000F;
 							shader.uniform1f("time", time);
 						});
 						
@@ -258,7 +260,8 @@ public class CommandHbm extends CommandBase {
 					});
 					
 				}
-            }
+				return;
+			}
 		}
 	}
 
@@ -266,12 +269,12 @@ public class CommandHbm extends CommandBase {
 		return Lists.newArrayList("subcommands", "gen", "reloadCollada");
 	}
 
-	protected void doSubcommandCommand(final MinecraftServer server, final ICommandSender sender, final String[] args) {
+	protected void doSubcommandCommand(MinecraftServer server, ICommandSender sender, String[] args) {
 		if(args.length == 1) {
 			//If no subcommand is specified, list available subcommands.
-			final StringBuilder builder = new StringBuilder();
+			StringBuilder builder = new StringBuilder();
 			builder.append("Hbm command list [DEBUG]\n\n");
-			for(final String s : getSubCommands()) {
+			for(String s : getSubCommands()) {
 				builder.append(s).append("\n");
 			}
 			builder.delete(builder.length() - 1, builder.length());
@@ -279,25 +282,26 @@ public class CommandHbm extends CommandBase {
 		} else if(args.length > 1){
 			//If a subcommand is specified, try to give info about that command. If it doesn't exist, send an error message.
 			if("gen".equals(args[1])){
-                final String builder = "Info for command: gen\n\n" +
-                        "Generates a structure at the block under your current position. Generation can be forced.\n\n" +
-                        "Available structures:\n\n" +
-                        "antenna      relay\ndud           silo\nfactory      barrel\nvertibird     vertibird_crashed\nsatellite      spaceship\nsellafield     radio\nbunker       desert_atom\nlibrary      geysir_water\ngeysir_vapor      geysir_chlorine";
+				StringBuilder builder = new StringBuilder();
+				builder.append("Info for command: gen\n\n");
+				builder.append("Generates a structure at the block under your current position. Generation can be forced.\n\n");
+				builder.append("Available structures:\n\n");
+				builder.append("antenna      relay\ndud           silo\nfactory      barrel\nvertibird     vertibird_crashed\nsatellite      spaceship\nsellafield     radio\nbunker       desert_atom\nlibrary      geysir_water\ngeysir_vapor      geysir_chlorine");
 				//builder.delete(builder.length() - 1, builder.length());
-				sender.sendMessage(new TextComponentTranslation(builder));
+				sender.sendMessage(new TextComponentTranslation(builder.toString()));
 			} else {
 				sender.sendMessage(new TextComponentTranslation("Unknown command: " + args[1]));
 			}
 		}
 	}
 
-	protected void doGenCommand(final MinecraftServer server, final ICommandSender sender, final String[] args) {
+	protected void doGenCommand(MinecraftServer server, ICommandSender sender, String[] args) {
 		if(args.length > 1) {
 			boolean force = false;
-			final World world = sender.getEntityWorld();
-			final Random rand = world.rand;
-			final Vec3d senderPos = sender.getPositionVector();
-			final BlockPos genPos = new BlockPos(senderPos.x, world.getHeight((int) senderPos.x, (int) senderPos.z), senderPos.z);
+			World world = sender.getEntityWorld();
+			Random rand = world.rand;
+			Vec3d senderPos = sender.getPositionVector();
+			BlockPos genPos = new BlockPos(senderPos.x, world.getHeight((int) senderPos.x, (int) senderPos.z), senderPos.z);
 			
 			if(args.length > 2 && "f".equals(args[2]))
 				force = true;

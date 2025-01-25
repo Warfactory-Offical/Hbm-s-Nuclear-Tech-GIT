@@ -1,9 +1,5 @@
 package com.hbm.inventory.control_panel;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import com.hbm.inventory.control_panel.controls.configs.*;
 import com.hbm.lib.RefStrings;
 import net.minecraft.client.gui.GuiButton;
@@ -11,6 +7,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class SubElementItemConfig extends SubElement {
     public static ResourceLocation bg_tex = new ResourceLocation(RefStrings.MODID + ":textures/gui/control_panel/gui_base.png");
@@ -26,14 +26,14 @@ public class SubElementItemConfig extends SubElement {
     SubElementBaseConfig config_gui;
     private Map<String, DataValue> configs;
 
-    public SubElementItemConfig(final GuiControlEdit gui) {
+    public SubElementItemConfig(GuiControlEdit gui) {
         super(gui);
     }
 
     @Override
     protected void initGui() {
-        final int cX = gui.width/2;
-        final int cY = gui.height/2;
+        int cX = gui.width/2;
+        int cY = gui.height/2;
         btn_prev = gui.addButton(new GuiButton(gui.currentButtonId(), cX-30, gui.getGuiTop()+24, 15, 20, "<"));
         btn_next = gui.addButton(new GuiButton(gui.currentButtonId(), cX+15, gui.getGuiTop()+24, 15, 20, ">"));
         btn_done = gui.addButton(new GuiButton(gui.currentButtonId(), cX-85, cY+92, 170, 20, "Done"));
@@ -49,8 +49,8 @@ public class SubElementItemConfig extends SubElement {
     //TODO: clean this up, make variants[] private
     @Override
     protected void drawScreen() {
-        final int cX = gui.width/2;
-        final int cY = gui.height/2;
+        int cX = gui.width/2;
+        int cY = gui.height/2;
 
         num_variants = variants.size()-1;
 
@@ -63,7 +63,7 @@ public class SubElementItemConfig extends SubElement {
 
         if (curr_variant > variants.size()-1)
             curr_variant = 0;
-        final Control variant = ControlRegistry.getNew(variants.get(curr_variant), gui.control.panel);
+        Control variant = ControlRegistry.getNew(variants.get(curr_variant), gui.control.panel);
 
         String text = variant.name;
         int text_width = gui.getFontRenderer().getStringWidth(text);
@@ -129,31 +129,31 @@ public class SubElementItemConfig extends SubElement {
     }
 
     @Override
-    protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
         config_gui.mouseReleased(mouseX, mouseY, state);
     }
 
     @Override
-    protected void mouseClicked(final int mouseX, final int mouseY, final int button) {
+    protected void mouseClicked(int mouseX, int mouseY, int button) {
         config_gui.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
-    protected void keyTyped(final char typedChar, final int keyCode) {
+    protected void keyTyped(char typedChar, int keyCode) {
         config_gui.keyTyped(typedChar, keyCode);
     }
 
     @Override
-    protected void actionPerformed(final GuiButton button) {
+    protected void actionPerformed(GuiButton button) {
         if (button == btn_done) {
             configs = config_gui.getConfigs();
             gui.currentEditControl.applyConfigs(configs);
 
             if (gui.isEditMode) {
                 gui.linker.linked.clear();
-                final World world = gui.control.getWorld();
-                for (final BlockPos p : gui.currentEditControl.connectedSet) {
-                    final TileEntity te = world.getTileEntity(p);
+                World world = gui.control.getWorld();
+                for (BlockPos p : gui.currentEditControl.connectedSet) {
+                    TileEntity te = world.getTileEntity(p);
                     if (te instanceof IControllable)
                         gui.linker.linked.add((IControllable) te);
                     gui.linker.refreshButtons();
@@ -173,7 +173,7 @@ public class SubElementItemConfig extends SubElement {
     }
 
     @Override
-    protected void enableButtons(final boolean enable) {
+    protected void enableButtons(boolean enable) {
         btn_done.visible = enable;
         btn_done.enabled = enable;
         btn_next.visible = enable;

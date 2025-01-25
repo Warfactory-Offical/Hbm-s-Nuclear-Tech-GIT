@@ -20,7 +20,7 @@ public class ParticleRift extends Particle {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/particle/hadron.png");
 	
-	public ParticleRift(final World worldIn, final double posXIn, final double posYIn, final double posZIn){
+	public ParticleRift(World worldIn, double posXIn, double posYIn, double posZIn){
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleMaxAge = 10;
 	}
@@ -31,7 +31,7 @@ public class ParticleRift extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		com.hbm.render.RenderHelper.resetParticleInterpPos(entityIn, partialTicks);
 		
@@ -43,11 +43,11 @@ public class ParticleRift extends Particle {
 		GlStateManager.blendFunc(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR);
 		RenderHelper.disableStandardItemLighting();
 		
-		final float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-		final float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-		final float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 		
-		final float scale = (this.particleAge + partialTicks) * 0.5F;
+		float scale = (this.particleAge + partialTicks) * 0.5F;
 		
 		GlStateManager.disableTexture2D();
 		/*tess.startDrawingQuads();

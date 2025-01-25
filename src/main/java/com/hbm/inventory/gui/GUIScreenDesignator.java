@@ -1,27 +1,24 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.opengl.GL11;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.lwjgl.input.Keyboard;
-
-import com.hbm.lib.HBMSoundHandler;
 import com.hbm.items.ModItems;
+import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.ItemDesignatorPacket;
 import com.hbm.packet.PacketDispatcher;
-
-import net.minecraft.item.ItemStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIScreenDesignator extends GuiScreen {
 
@@ -40,11 +37,11 @@ public class GUIScreenDesignator extends GuiScreen {
     private GuiTextField zField;
 
     
-    public GUIScreenDesignator(final EntityPlayer player) {
+    public GUIScreenDesignator(EntityPlayer player) {
     	this.player = player;
     }
     
-    public void drawScreen(final int mouseX, final int mouseY, final float f) {
+    public void drawScreen(int mouseX, int mouseY, float f) {
         this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
         GlStateManager.enableLighting();
@@ -101,27 +98,27 @@ public class GUIScreenDesignator extends GuiScreen {
         loadSavedCoords();
     }
 
-    protected boolean isOnHereButton(final int i, final int j){
+    protected boolean isOnHereButton(int i, int j){
         return this.guiLeft+112 < i && this.guiLeft+112+18 > i && this.guiTop+87 < j && this.guiTop+87+18 > j;
     }
 
-    protected boolean isOnSaveButton(final int i, final int j){
+    protected boolean isOnSaveButton(int i, int j){
         return this.guiLeft+139 < i && this.guiLeft+139+18 > i && this.guiTop+87 < j && this.guiTop+87+18 > j;
     }
 
-    protected boolean isOnXButton(final int i, final int j){
+    protected boolean isOnXButton(int i, int j){
         return this.guiLeft+14 < i && this.guiLeft+14+18 > i && this.guiTop+33 < j && this.guiTop+33+18 > j;
     }
 
-    protected boolean isOnZButton(final int i, final int j){
+    protected boolean isOnZButton(int i, int j){
         return this.guiLeft+14 < i && this.guiLeft+14+18 > i && this.guiTop+55 < j && this.guiTop+55+18 > j;
     }
 
-    protected boolean isOnDistanceField(final int i, final int j){
+    protected boolean isOnDistanceField(int i, int j){
         return this.guiLeft+34 < i && this.guiLeft+34+67 > i && this.guiTop+89 < j && this.guiTop+89+14 > j;
     }
 
-    protected void mouseClicked(final int i, final int j, final int k) throws IOException {
+    protected void mouseClicked(int i, int j, int k) throws IOException {
         super.mouseClicked(i, j, k);
     	
         this.xField.mouseClicked(i, j, k);
@@ -159,8 +156,8 @@ public class GUIScreenDesignator extends GuiScreen {
         this.zField.setText(Integer.toString(NumberUtils.toInt(this.zField.getText())));
     }
 	
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-        final String name = "Manual Designator";
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
+        String name = "Manual Designator";
         this.fontRenderer.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, this.guiTop + 12, 0xCCCCCC);
 
         this.formatInput();
@@ -168,15 +165,15 @@ public class GUIScreenDesignator extends GuiScreen {
         this.xField.drawTextBox();
         this.zField.drawTextBox();
 
-        final int posx = NumberUtils.toInt(this.xField.getText());
-        final int posz = NumberUtils.toInt(this.zField.getText());
+        int posx = NumberUtils.toInt(this.xField.getText());
+        int posz = NumberUtils.toInt(this.zField.getText());
 
-        final String distance = Math.min(((int) Math.sqrt(Math.pow(posx-player.posX, 2)+Math.pow(posz-player.posZ, 2))), 99999999) + " m";
+        String distance = Math.min(((int) Math.sqrt(Math.pow(posx-player.posX, 2)+Math.pow(posz-player.posZ, 2))), 99999999) + " m";
 
         this.fontRenderer.drawString(distance, this.guiLeft + 97 - this.fontRenderer.getStringWidth(distance), this.guiTop + 93, 0x0091FF);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
+	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -198,7 +195,7 @@ public class GUIScreenDesignator extends GuiScreen {
         }
 	}
 	
-    protected void keyTyped(final char p_73869_1_, final int p_73869_2_) throws IOException {
+    protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException {
     	
         if (!(this.xField.textboxKeyTyped(p_73869_1_, p_73869_2_) || this.zField.textboxKeyTyped(p_73869_1_, p_73869_2_))) {
             super.keyTyped(p_73869_1_, p_73869_2_);

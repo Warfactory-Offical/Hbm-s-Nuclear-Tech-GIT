@@ -1,185 +1,168 @@
 package com.hbm.tileentity.network.energy;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import api.hbm.energymk2.Nodespace;
+import com.hbm.lib.DirPos;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.render.amlfrom1710.Vec3;
-import com.hbm.packet.PacketDispatcher;
-import com.hbm.packet.TEPylonSenderPacket;
-
-import api.hbm.energy.IEnergyConductor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.WorldServer;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	
-	public List<BlockPos> connected = new ArrayList<BlockPos>();
-	
-	public static boolean canConnect(final TileEntityPylonBase first, final TileEntityPylonBase second) {
-		
+	public List<int[]> connected = new ArrayList<int[]>();
+
+	public static int canConnect(TileEntityPylonBase first, TileEntityPylonBase second) {
+
 		if(first.getConnectionType() != second.getConnectionType())
-			return false;
-		
+			return 1;
+
 		if(first == second)
-			return false;
-		
-		final double len = Math.min(first.getMaxWireLength(), second.getMaxWireLength());
-		
-		final BlockPos firstPos = first.getConnectionPoint();
-		final BlockPos secondPos = second.getConnectionPoint();
-		
-		final Vec3 delta = Vec3.createVectorHelper(
-				(secondPos.getX()) - (firstPos.getX()),
-				(secondPos.getY()) - (firstPos.getY()),
-				(secondPos.getZ()) - (firstPos.getZ())
-				);
-		
-		return len >= delta.length();
-	}
-	
-	public void addConnection(final BlockPos targetPos) {
-		if(connected.contains(targetPos))
-			return;
-		connected.add(targetPos);
-		
-		if(this.getPowerNet() != null) {
-			this.getPowerNet().reevaluate();
-			this.network = null;
-		}
-		
-		if (!world.isRemote)
-			PacketDispatcher.wrapper.sendToAllAround(new TEPylonSenderPacket(targetPos.getX(), targetPos.getY(), targetPos.getZ(), pos.getX(), pos.getY(), pos.getZ(), true), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
-		this.markDirty();
+			return 2;
+
+		double len = Math.min(first.getMaxWireLength(), second.getMaxWireLength());
+
+		Vec3 firstPos = first.getConnectionPoint();
+		Vec3 secondPos = second.getConnectionPoint();
+
+		Vec3 delta = Vec3.createVectorHelper(
+				(secondPos.xCoord) - (firstPos.xCoord),
+				(secondPos.yCoord) - (firstPos.yCoord),
+				(secondPos.zCoord) - (firstPos.zCoord)
+		);
+
+		return len >= delta.lengthVector() ? 0 : 3;
 	}
 
-	public void removeConnection(final BlockPos pos) {
+	@Override
+	public Nodespace.PowerNode createNode() {
+		TileEntity tile = (TileEntity) this;
+		Nodespace.PowerNode node = new Nodespace.PowerNode(new BlockPos(tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ())).setConnections(new DirPos(pos.getX(), pos.getY(), pos.getZ(), ForgeDirection.UNKNOWN));
+		for(int[] pos : this.connected) node.addConnection(new DirPos(pos[0], pos[1], pos[2], ForgeDirection.UNKNOWN));
+		return node;
+	}
+
+	public void addConnection(int x, int y, int z) {
+
+		connected.add(new int[] {x, y, z});
+
+		Nodespace.PowerNode node = Nodespace.getNode(world, pos);
+		node.recentlyChanged = true;
+		node.addConnection(new DirPos(x, y, z, ForgeDirection.UNKNOWN));
+
+		this.markDirty();
+
+		if(world instanceof WorldServer) {
+			WorldServer worldS = (WorldServer) world;
+			worldS.notifyBlockUpdate(pos, worldS.getBlockState(pos), world.getBlockState(pos), 3);
+		}
+	}
+
+	public void removeConnection(BlockPos pos) {
 		connected.remove(pos);
 	}
 
-	public void disconnect(final BlockPos targetPos) {
-		final TileEntity te = world.getTileEntity(targetPos);
-			
-		if(te == this)
-			return;
-		
-		if(te instanceof TileEntityPylonBase pylon) {
-
-            if(pylon.connected.contains(this.pos)){
-				pylon.removeConnection(this.pos);
-				if (!world.isRemote)
-					PacketDispatcher.wrapper.sendToAllAround(new TEPylonSenderPacket(targetPos.getX(), targetPos.getY(), targetPos.getZ(), pos.getX(), pos.getY(), pos.getZ(), false), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
-				pylon.markDirty();
-			}
-		}
-	}
-	
 	public void disconnectAll() {
-		
-		for(final BlockPos targetPos : connected) {
-			
-			disconnect(targetPos);
-		}
-	}
-	
-	@Override
-	protected void connect() {
-		
-		for(final BlockPos targetPos : getConnectionPoints()) {
-			
-			final TileEntity te = world.getTileEntity(targetPos);
-			
-			if(te instanceof IEnergyConductor conductor) {
 
-                if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
-					conductor.getPowerNet().joinLink(this);
+		for(int[] pos : connected) {
+
+			TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+
+			if(te == this)
+				continue;
+
+			if(te instanceof TileEntityPylonBase) {
+				TileEntityPylonBase pylon = (TileEntityPylonBase) te;
+				Nodespace.destroyNode(world, new BlockPos(pos[0], pos[1], pos[2]));
+
+				for(int i = 0; i < pylon.connected.size(); i++) {
+					int[] conPos = pylon.connected.get(i);
+
+					if(conPos[0] == this.pos.getX() && conPos[1] == this.pos.getY() && conPos[2] == this.pos.getZ()) {
+						pylon.connected.remove(i);
+						i--;
+					}
 				}
-				
-				if(this.getPowerNet() != null && conductor.getPowerNet() != null && this.getPowerNet() != conductor.getPowerNet()) {
-					conductor.getPowerNet().joinNetworks(this.getPowerNet());
+
+				pylon.markDirty();
+
+				if(world instanceof WorldServer) {
+					WorldServer worldS = (WorldServer) world;
+					worldS.notifyBlockUpdate(pylon.pos, worldS.getBlockState(pylon.pos), world.getBlockState(pylon.pos), 3);
 				}
 			}
 		}
+
+		Nodespace.destroyNode(world, pos);
 	}
-	
-	@Override
-	public List<BlockPos> getConnectionPoints() {
-		return new ArrayList(connected);
-	}
-	
+
 	public abstract ConnectionType getConnectionType();
 	public abstract Vec3[] getMountPos();
-	public abstract int getMaxWireLength();
-	
-	public BlockPos getConnectionPoint() {
-		final Vec3[] mounts = this.getMountPos();
-		
+	public abstract double getMaxWireLength();
+
+	public Vec3 getConnectionPoint() {
+		Vec3[] mounts = this.getMountPos();
+
 		if(mounts == null || mounts.length == 0)
-			return pos.add(0.5, 0.5, 0.5);
-		
-		return mounts[0].toBlockPos().add(pos);
+			return Vec3.createVectorHelper(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+
+		return mounts[0].addVector(pos.getX(), pos.getY(), pos.getZ());
 	}
-	
+
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		
-		final int[] conX = new int[connected.size()];
-		final int[] conY = new int[connected.size()];
-		final int[] conZ = new int[connected.size()];
-		
+
+		nbt.setInteger("conCount", connected.size());
+
 		for(int i = 0; i < connected.size(); i++) {
-			conX[i] = connected.get(i).getX();
-			conY[i] = connected.get(i).getY();
-			conZ[i] = connected.get(i).getZ();
+			nbt.setIntArray("con" + i, connected.get(i));
 		}
-		
-		nbt.setIntArray("conX", conX);
-		nbt.setIntArray("conY", conY);
-		nbt.setIntArray("conZ", conZ);
 		return nbt;
 	}
-	
+
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		
-		this.connected.clear();
-		
-		final int[] conX = nbt.getIntArray("conX");
-		final int[] conY = nbt.getIntArray("conY");
-		final int[] conZ = nbt.getIntArray("conZ");
 
-		final BlockPos[] con = new BlockPos[conX.length];
-		
-		for(int i = 0; i < conX.length; i++) {
-			connected.add(new BlockPos(conX[i], conY[i], conZ[i]));
+		int count = nbt.getInteger("conCount");
+
+		this.connected.clear();
+
+		for(int i = 0; i < count; i++) {
+			connected.add(nbt.getIntArray("con" + i));
 		}
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket(){
-		final NBTTagCompound nbt = new NBTTagCompound();
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new SPacketUpdateTileEntity(this.getPos(), 0, nbt);
+		return new SPacketUpdateTileEntity(this.pos, 0, nbt);
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag(){
-		final NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return nbt;
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		return this.writeToNBT(nbt);
+	}
+
+	@Override
+	public void handleUpdateTag(NBTTagCompound tag) {
+		this.readFromNBT(tag);
 	}
 	
 	@Override
-	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 

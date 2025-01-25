@@ -5,7 +5,6 @@ import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -38,7 +37,7 @@ public class TileEntityMachinePuF6Tank extends TileEntity implements ITickable, 
 	public TileEntityMachinePuF6Tank() {
 		inventory = new ItemStackHandler(4){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -55,11 +54,11 @@ public class TileEntityMachinePuF6Tank extends TileEntity implements ITickable, 
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -69,7 +68,7 @@ public class TileEntityMachinePuF6Tank extends TileEntity implements ITickable, 
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		tank.readFromNBT(compound);
 		tankType = ModForgeFluids.puf6;
 		if(compound.hasKey("inventory"))
@@ -78,7 +77,7 @@ public class TileEntityMachinePuF6Tank extends TileEntity implements ITickable, 
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		tank.writeToNBT(compound);
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
@@ -96,14 +95,16 @@ public class TileEntityMachinePuF6Tank extends TileEntity implements ITickable, 
 		}
 	}
 	
-	protected boolean inputValidForTank(final int irrelevant, final int slot){
+	protected boolean inputValidForTank(int irrelevant, int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty() && tank != null){
-            return isValidFluidForTank(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
+			if(isValidFluidForTank(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
+				return true;
+			}
 		}
 		return false;
 	}
 	
-	private boolean isValidFluidForTank(final FluidStack stack) {
+	private boolean isValidFluidForTank(FluidStack stack) {
 		if(stack == null || tank == null)
 			return false;
 		return stack.getFluid() == tankType;
@@ -122,15 +123,16 @@ public class TileEntityMachinePuF6Tank extends TileEntity implements ITickable, 
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1){
-        } else {
+			return;
+		} else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		}
@@ -138,7 +140,7 @@ public class TileEntityMachinePuF6Tank extends TileEntity implements ITickable, 
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 

@@ -54,7 +54,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	private Ticket loaderTicket;
 	public int health = 50;
 
-	public EntityMissileBaseAdvanced(final World worldIn) {
+	public EntityMissileBaseAdvanced(World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 		startX = (int) posX;
@@ -63,7 +63,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 		targetZ = (int) posZ;
 	}
 
-	public EntityMissileBaseAdvanced(final World world, final float x, final float y, final float z, final int a, final int b) {
+	public EntityMissileBaseAdvanced(World world, float x, float y, float z, int a, int b) {
 		super(world);
 		this.ignoreFrustumCheck = true;
 		this.setLocationAndAngles(x, y, z, 0, 0);
@@ -73,16 +73,16 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 		targetZ = b;
 		this.motionY = 2;
 
-		final Vec3d vector = new Vec3d(targetX - startX, 0, targetZ - startZ);
-		accelXZ = decelY = 1 / vector.length();
+		Vec3d vector = new Vec3d(targetX - startX, 0, targetZ - startZ);
+		accelXZ = decelY = 1 / vector.lengthVector();
 		decelY *= 2;
 
 		velocity = 0.0;
 		this.setSize(1.5F, 9F);
 	}
 
-	public void setAcceleration(final double multiplier){
-		acceleration = multiplier;
+	public void setAcceleration(double multiplier){
+		this.acceleration = multiplier;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	}
 
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
 		} else {
@@ -116,7 +116,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	}
 
 	@Override
-	public void init(final Ticket ticket) {
+	public void init(Ticket ticket) {
 		if (!world.isRemote) {
 
 			if (ticket != null) {
@@ -136,11 +136,9 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 
 	@Override
-	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
+	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
 		if (!world.isRemote && loaderTicket != null) {
-			for (final ChunkPos chunk : loadedChunks) {
-				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
-			}
+			clearLoadedChunks();
 
 			loadedChunks.clear();
 			loadedChunks.add(new ChunkPos(newChunkX, newChunkZ));
@@ -153,7 +151,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 			loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
 			loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-			for (final ChunkPos chunk : loadedChunks) {
+			for (ChunkPos chunk : loadedChunks) {
 				ForgeChunkManager.forceChunk(loaderTicket, chunk);
 			}
 		}
@@ -161,7 +159,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 
 	public void clearLoadedChunks() {
 		if(!world.isRemote && loaderTicket != null && loadedChunks != null) {
-			for(final ChunkPos chunk : loadedChunks) {
+			for(ChunkPos chunk : loadedChunks) {
 				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
 			}
 		}
@@ -170,7 +168,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	private ChunkPos mainChunk;
 	public void loadMainChunk() {
 		if(!world.isRemote && loaderTicket != null){
-			final ChunkPos currentChunk = new ChunkPos((int) Math.floor(this.posX / 16D), (int) Math.floor(this.posZ / 16D));
+			ChunkPos currentChunk = new ChunkPos((int) Math.floor(this.posX / 16D), (int) Math.floor(this.posZ / 16D));
 			if(mainChunk == null){
 				ForgeChunkManager.forceChunk(loaderTicket, currentChunk);
 				this.mainChunk = currentChunk;
@@ -194,7 +192,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		motionX = nbt.getDouble("moX");
 		motionY = nbt.getDouble("moY");
 		motionZ = nbt.getDouble("moZ");
@@ -211,7 +209,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		nbt.setDouble("moX", motionX);
 		nbt.setDouble("moY", motionY);
 		nbt.setDouble("moZ", motionZ);
@@ -241,7 +239,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 		}
 		this.getDataManager().set(HEALTH, Integer.valueOf(this.health));
 		
-		final double oldPosY = this.posY;
+		double oldPosY = this.posY;
 		this.setLocationAndAngles(posX + this.motionX * velocity, posY + this.motionY * velocity, posZ + this.motionZ * velocity, (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI), (float)(Math.atan2(this.motionY, MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ)) * 180.0D / Math.PI) - 90);
 		this.prevPosY = oldPosY;
 		
@@ -274,7 +272,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 			}
 		}
 
-		final Block b = this.world.getBlockState(new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ)).getBlock();
+		Block b = this.world.getBlockState(new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ)).getBlock();
 		if((b != Blocks.AIR && b != Blocks.WATER && b != Blocks.FLOWING_WATER) || posY < 1) {
 			if(posY < 1){
 				this.setLocationAndAngles((int)this.posX, world.getHeight((int)this.posX, (int)this.posZ), (int)this.posZ, 0, 0);
@@ -307,7 +305,7 @@ public abstract class EntityMissileBaseAdvanced extends Entity implements IChunk
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(final double distance) {
+	public boolean isInRangeToRenderDist(double distance) {
 		return distance < 5000;
 	}
 

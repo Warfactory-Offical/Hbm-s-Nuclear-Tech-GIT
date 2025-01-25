@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ItemOilDetector extends Item {
 
-	public ItemOilDetector(final String s) {
+	public ItemOilDetector(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -32,37 +32,37 @@ public class ItemOilDetector extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format(this.getTranslationKey() + ".desc1"));
 		tooltip.add(I18n.format(this.getTranslationKey() + ".desc2"));
 	}
 
-	public static boolean isOil(final World world, final BlockPos b){
+	public static boolean isOil(World world, BlockPos b){
 		return world.getBlockState(b).getBlock() == ModBlocks.ore_oil;
 	}
 
-	public static boolean isBedrockOil(final World world, final BlockPos b){
+	public static boolean isBedrockOil(World world, BlockPos b){
 		return world.getBlockState(b).getBlock() == ModBlocks.ore_bedrock_oil;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		boolean bedrockoil = false;
 		boolean oil = false;
-		final int x = (int)player.posX;
-		final int y = (int)player.posY;
-		final int z = (int)player.posZ;
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = (int)player.posX;
+		int y = (int)player.posY;
+		int z = (int)player.posZ;
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
 		
 		boolean directoil = false;
 		for(int ly = y + 15; ly > 0; ly--){
 			directoil |= isOil(world, mPos.setPos(x, ly, z));
 			if(directoil) break;
 		}
-		final boolean directBedrock = isBedrockOil(world, new BlockPos(x, 0, z));
+		boolean directBedrock = isBedrockOil(world, new BlockPos(x, 0, z));
 		
-		final int range = 25;
-		final int samples = 50;
+		int range = 25;
+		int samples = 50;
 
 		int lx = 0;
 		int lz = 0;

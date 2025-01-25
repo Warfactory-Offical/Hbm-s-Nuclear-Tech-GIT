@@ -11,9 +11,14 @@ public class SatelliteRelay extends Satellite {
 		this.satIface = Interfaces.NONE;
 	}
 
-	public void onOrbit(final World world, final double x, final double y, final double z) {
+	public void onOrbit(World world, double x, double y, double z) {
 
-		for(final EntityPlayer p : world.playerEntities)
+		for(EntityPlayer p : world.playerEntities)
 			AdvancementManager.grantAchievement(p, AdvancementManager.achFOEQ);
 	}
+	@Override
+	public float[] getColor() {
+		return new float[] { 0.0F, 0.0F, 0.0F };
+	}
+
 }

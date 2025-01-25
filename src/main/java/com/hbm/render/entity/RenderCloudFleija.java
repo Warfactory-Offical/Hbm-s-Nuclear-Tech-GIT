@@ -1,29 +1,28 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
 import com.hbm.entity.effect.EntityCloudFleija;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.amlfrom1710.AdvancedModelLoader;
 import com.hbm.render.amlfrom1710.IModelCustom;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCloudFleija extends Render<EntityCloudFleija> {
 
 	private static final ResourceLocation objTesterModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/Sphere.obj");
-	private final IModelCustom blastModel;
-    private final ResourceLocation blastTexture;
+	private IModelCustom blastModel;
+    private ResourceLocation blastTexture;
     public float scale = 0;
     public float ring = 0;
     
     public static final IRenderFactory<EntityCloudFleija> FACTORY = (RenderManager man) -> {return new RenderCloudFleija(man);};
 	
-	protected RenderCloudFleija(final RenderManager renderManager) {
+	protected RenderCloudFleija(RenderManager renderManager) {
 		super(renderManager);
 		blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
     	blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/explosion/BlastFleija.png");
@@ -31,7 +30,7 @@ public class RenderCloudFleija extends Render<EntityCloudFleija> {
 	}
 	
 	@Override
-	public void doRender(final EntityCloudFleija cloud, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityCloudFleija cloud, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y, (float)z);
         GlStateManager.disableLighting();
@@ -42,7 +41,7 @@ public class RenderCloudFleija extends Render<EntityCloudFleija> {
         //GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
        // GlStateManager.disableAlpha();
         
-        final float s = cloud.age+partialTicks;
+        float s = cloud.age+partialTicks;
         GL11.glScalef(s, s, s);
         
         
@@ -66,10 +65,10 @@ public class RenderCloudFleija extends Render<EntityCloudFleija> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
+	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityCloudFleija entity) {
+	protected ResourceLocation getEntityTexture(EntityCloudFleija entity) {
 		return blastTexture;
 	}
 

@@ -1,17 +1,15 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.render.model.ModelNightmare;
 import com.hbm.render.model.ModelNightmare2;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderRevolverNightmare extends TEISRBase {
 
@@ -28,7 +26,7 @@ public class ItemRenderRevolverNightmare extends TEISRBase {
 	
 	//Drillgon200: push and pop matrix are done in the method calling this one
 	@Override
-	public void renderByItem(final ItemStack stack) {
+	public void renderByItem(ItemStack stack) {
 		if(stack.getItem() == ModItems.gun_revolver_nightmare)
 			Minecraft.getMinecraft().renderEngine.bindTexture(n1Loc);
 		if(stack.getItem() == ModItems.gun_revolver_nightmare2)

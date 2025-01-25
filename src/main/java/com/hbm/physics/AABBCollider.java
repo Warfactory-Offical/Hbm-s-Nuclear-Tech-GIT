@@ -13,21 +13,21 @@ public class AABBCollider extends Collider {
 	public float density = -1;
 	
 	//Only use if this is a static collider.
-	public AABBCollider(final AxisAlignedBB box) {
+	public AABBCollider(AxisAlignedBB box) {
 		this.box = box;
 		this.localCentroid = new Vec3(box.getCenter());
 	}
 	
-	public AABBCollider(final AxisAlignedBB box, final float density) {
+	public AABBCollider(AxisAlignedBB box, float density) {
 		this.box = box;
-		final float w = (float) (box.maxX-box.minX);
-		final float h = (float) (box.maxY-box.minY);
-		final float d = (float) (box.maxZ-box.minZ);
-		final float vol = w*h*d;
+		float w = (float) (box.maxX-box.minX);
+		float h = (float) (box.maxY-box.minY);
+		float d = (float) (box.maxZ-box.minZ);
+		float vol = w*h*d;
 		this.mass = density*vol;
 		this.localCentroid = new Vec3(box.getCenter());
 		//https://en.wikipedia.org/wiki/List_of_moments_of_inertia
-		final float i_mass = mass/12F;
+		float i_mass = mass/12F;
 		this.localInertiaTensor = new Matrix3f(
 				i_mass*(h*h+d*d), 0, 0,
 				0, i_mass*(w*w+d*d), 0,
@@ -35,7 +35,7 @@ public class AABBCollider extends Collider {
 	}
 
 	@Override
-	public Vec3 support(final Vec3 direction) {
+	public Vec3 support(Vec3 direction) {
 		return new Vec3(
 				direction.xCoord > 0 ? box.maxX : box.minX,
 				direction.yCoord > 0 ? box.maxY : box.minY,

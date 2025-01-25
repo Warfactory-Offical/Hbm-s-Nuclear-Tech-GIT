@@ -20,19 +20,19 @@ public class Transform {
 	
 	boolean hidden = false;
 	
-	public Transform(final float[] matrix){
+	public Transform(float[] matrix){
 		scale = getScaleFromMatrix(matrix);
 		auxGLMatrix.put(matrix);
 		auxGLMatrix.rewind();
 		rotation = new Quaternion().setFromMatrix((Matrix4f) new Matrix4f().load(auxGLMatrix));
-		translation = Vec3.createVectorHelper(matrix[3], matrix[4 +3], matrix[2*4+3]);
+		translation = Vec3.createVectorHelper(matrix[0*4+3], matrix[1*4+3], matrix[2*4+3]);
 		auxGLMatrix.rewind();
 	}
 	
-	private Vec3 getScaleFromMatrix(final float[] matrix){
-		final float scaleX = (float) Vec3.createVectorHelper(matrix[0], matrix[1], matrix[2]).length();
-		final float scaleY = (float) Vec3.createVectorHelper(matrix[4], matrix[5], matrix[6]).length();
-		final float scaleZ = (float) Vec3.createVectorHelper(matrix[8], matrix[9], matrix[10]).length();
+	private Vec3 getScaleFromMatrix(float[] matrix){
+		float scaleX = (float) Vec3.createVectorHelper(matrix[0], matrix[1], matrix[2]).vec.lengthVector();
+		float scaleY = (float) Vec3.createVectorHelper(matrix[4], matrix[5], matrix[6]).vec.lengthVector();
+		float scaleZ = (float) Vec3.createVectorHelper(matrix[8], matrix[9], matrix[10]).vec.lengthVector();
 		
 		matrix[0] = matrix[0]/scaleX;
 		matrix[1] = matrix[1]/scaleX;
@@ -48,10 +48,10 @@ public class Transform {
 		return Vec3.createVectorHelper(scaleX, scaleY, scaleZ);
 	}
 	
-	public void interpolateAndApply(final Transform other, final float inter){
-		final Vec3 trans = translation.interpolate(other.translation, inter);
-		final Vec3 scale = this.scale.interpolate(other.scale, inter);
-		final Quaternion rot = slerp(rotation, other.rotation, inter);
+	public void interpolateAndApply(Transform other, float inter){
+		Vec3 trans = translation.interpolate(other.translation, inter);
+		Vec3 scale = this.scale.interpolate(other.scale, inter);
+		Quaternion rot = slerp(rotation, other.rotation, inter);
 		GlStateManager.quatToGlMatrix(auxGLMatrix, rot);
 		scale(auxGLMatrix, scale);
 		auxGLMatrix.put(12, (float) trans.xCoord);
@@ -65,7 +65,7 @@ public class Transform {
 		GlStateManager.multMatrix(auxGLMatrix);
 	}
 	
-	private void scale(final FloatBuffer matrix, final Vec3 scale){
+	private void scale(FloatBuffer matrix, Vec3 scale){
 		matrix.put(0, (float) (matrix.get(0)*scale.xCoord));
 		matrix.put(4, (float) (matrix.get(4)*scale.xCoord));
 		matrix.put(8, (float) (matrix.get(8)*scale.xCoord));
@@ -84,7 +84,7 @@ public class Transform {
 	
 	//Thanks, wikipedia
 	//God, I wish java had operator overloads. Those are one of my favorite things about c and glsl.
-	protected Quaternion slerp(final Quaternion v0, Quaternion v1, final float t) {
+	protected Quaternion slerp(Quaternion v0, Quaternion v1, float t) {
 		// Only unit quaternions are valid rotations.
 	    // Normalize to avoid undefined behavior.
 		//Drillgon200: Any quaternions loaded from blender should be normalized already
@@ -107,7 +107,7 @@ public class Transform {
 	    if (dot > DOT_THRESHOLD) {
 	        // If the inputs are too close for comfort, linearly interpolate
 	        // and normalize the result.
-	        final Quaternion result = new Quaternion(v0.x + t*v1.x,
+	        Quaternion result = new Quaternion(v0.x + t*v1.x, 
 	        								v0.y + t*v1.y, 
 	        								v0.z + t*v1.z, 
 	        								v0.w + t*v1.w);
@@ -116,13 +116,13 @@ public class Transform {
 	    }
 
 	    // Since dot is in range [0, DOT_THRESHOLD], acos is safe
-	    final double theta_0 = Math.acos(dot);        // theta_0 = angle between input vectors
-	    final double theta = theta_0*t;          // theta = angle between v0 and result
-	    final double sin_theta = Math.sin(theta);     // compute this value only once
-	    final double sin_theta_0 = Math.sin(theta_0); // compute this value only once
+	    double theta_0 = Math.acos(dot);        // theta_0 = angle between input vectors
+	    double theta = theta_0*t;          // theta = angle between v0 and result
+	    double sin_theta = Math.sin(theta);     // compute this value only once
+	    double sin_theta_0 = Math.sin(theta_0); // compute this value only once
 
-	    final float s0 = (float) (Math.cos(theta) - dot * sin_theta / sin_theta_0);  // == sin(theta_0 - theta) / sin(theta_0)
-	    final float s1 = (float) (sin_theta / sin_theta_0);
+	    float s0 = (float) (Math.cos(theta) - dot * sin_theta / sin_theta_0);  // == sin(theta_0 - theta) / sin(theta_0)
+	    float s1 = (float) (sin_theta / sin_theta_0);
 
 	    return new Quaternion(s0*v0.x + s1*v1.x, 
 	    					s0*v0.y + s1*v1.y, 

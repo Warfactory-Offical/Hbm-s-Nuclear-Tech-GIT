@@ -28,7 +28,7 @@ public class Gun556mmFactory {
 
 	public static GunConfiguration getEuphieConfig() {
 
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 2;
 		config.roundsPerCycle = 1;
@@ -68,7 +68,7 @@ public class Gun556mmFactory {
 
 	public static GunConfiguration getSPIWConfig() {
 
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 3;
 		config.roundsPerCycle = 1;
@@ -114,7 +114,7 @@ public class Gun556mmFactory {
 
 	public static GunConfiguration getGLauncherConfig() {
 
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 60;
 		config.roundsPerCycle = 1;
@@ -150,7 +150,7 @@ public class Gun556mmFactory {
 	static float inaccuracy = 2.5F;
 	public static BulletConfiguration get556Config() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_556;
 		bullet.spread *= inaccuracy;
@@ -162,7 +162,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556GoldConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_566_gold;
 		bullet.spread = 0.0F;
@@ -172,14 +172,14 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556PhosphorusConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_556_phosphorus;
 		bullet.wear = 15;
 		bullet.incendiary = 5;
 		bullet.doesPenetrate = false;
 
-		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
+		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
 		eff.getCurativeItems().clear();
 		bullet.effects = new ArrayList<PotionEffect>();
 		bullet.effects.add(new PotionEffect(eff));
@@ -187,9 +187,9 @@ public class Gun556mmFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
+			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
 
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaburst");
 				data.setString("mode", "flame");
 				data.setInteger("count", 15);
@@ -204,7 +204,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556APConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_556_ap;
 		bullet.dmgMin = 4;
@@ -217,7 +217,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556DUConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_556_du;
 		bullet.dmgMin = 8;
@@ -230,7 +230,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556StarConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_556_star;
 		bullet.dmgMin = 15;
@@ -243,7 +243,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556TracerConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_556_tracer;
 		bullet.vPFX = "reddust";
@@ -253,7 +253,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556SleekConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_556_sleek;
 		bullet.dmgMin = 15;
@@ -265,12 +265,12 @@ public class Gun556mmFactory {
 		bullet.bHit = new IBulletHitBehavior() {
 
 			@Override
-			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHit(EntityBulletBase bullet, Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
 
-				final EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
+				EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
 				meteor.setPosition(hit.posX, hit.posY + 30 + meteor.world.rand.nextInt(10), hit.posZ);
 				meteor.motionY = -1D;
 				meteor.shooter = bullet.shooter;
@@ -281,7 +281,7 @@ public class Gun556mmFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
+			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
 
 				if(bullet.world.isRemote)
 					return;
@@ -289,7 +289,7 @@ public class Gun556mmFactory {
 				if(y == -1)
 					return;
 
-				final EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
+				EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
 				meteor.setPosition(bullet.posX, bullet.posY + 30 + meteor.world.rand.nextInt(10), bullet.posZ);
 				meteor.motionY = -1D;
 				meteor.shooter = bullet.shooter;
@@ -302,7 +302,7 @@ public class Gun556mmFactory {
 	
 	public static BulletConfiguration get556FlechetteSleekConfig() {
 
-		final BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = get556FlechetteConfig();
 
 		bullet.ammo = ModItems.ammo_556_flechette_sleek;
 		bullet.dmgMin = 12;
@@ -314,12 +314,12 @@ public class Gun556mmFactory {
 		bullet.bHit = new IBulletHitBehavior() {
 
 			@Override
-			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHit(EntityBulletBase bullet, Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
 
-				final EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
+				EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
 				meteor.setPosition(hit.posX, hit.posY + 30 + meteor.world.rand.nextInt(10), hit.posZ);
 				meteor.motionY = -1D;
 				meteor.shooter = bullet.shooter;
@@ -330,7 +330,7 @@ public class Gun556mmFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
+			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
 
 				if(bullet.world.isRemote)
 					return;
@@ -338,7 +338,7 @@ public class Gun556mmFactory {
 				if(y == -1)
 					return;
 
-				final EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
+				EntityBulletBase meteor = new EntityBulletBase(bullet.world, BulletConfigSyncingUtil.MASKMAN_METEOR);
 				meteor.setPosition(bullet.posX, bullet.posY + 30 + meteor.world.rand.nextInt(10), bullet.posZ);
 				meteor.motionY = -1D;
 				meteor.shooter = bullet.shooter;
@@ -351,7 +351,7 @@ public class Gun556mmFactory {
 	
 	public static BulletConfiguration get556FlechetteConfig() {
 
-		final BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = get556Config();
 
 		bullet.ammo = ModItems.ammo_556_flechette;
 		bullet.dmgMin = 6;
@@ -367,7 +367,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556FlechetteIncendiaryConfig() {
 
-		final BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = get556FlechetteConfig();
 
 		bullet.ammo = ModItems.ammo_556_flechette_incendiary;
 		bullet.incendiary = 5;
@@ -377,12 +377,12 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556FlechettePhosphorusConfig() {
 
-		final BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = get556FlechetteConfig();
 
 		bullet.ammo = ModItems.ammo_556_flechette_phosphorus;
 		bullet.incendiary = 5;
 
-		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
+		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
 		eff.getCurativeItems().clear();
 		bullet.effects = new ArrayList<PotionEffect>();
 		bullet.effects.add(new PotionEffect(eff));
@@ -390,9 +390,9 @@ public class Gun556mmFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
+			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
 
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaburst");
 				data.setString("mode", "flame");
 				data.setInteger("count", 15);
@@ -407,7 +407,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556FlechetteDUConfig() {
 
-		final BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = get556FlechetteConfig();
 
 		bullet.ammo = ModItems.ammo_556_flechette_du;
 		bullet.dmgMin = 12;
@@ -421,7 +421,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556KConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_556_k;
 		bullet.dmgMin = 0;

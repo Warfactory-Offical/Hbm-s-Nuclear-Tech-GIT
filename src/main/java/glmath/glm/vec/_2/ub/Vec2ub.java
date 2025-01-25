@@ -18,16 +18,16 @@ public class Vec2ub extends FuncRelational {
         y.value = 0;
     }
 
-    public Vec2ub(final int x, final int y) {
+    public Vec2ub(int x, int y) {
         this((byte) x, (byte) y);
     }
 
-    public Vec2ub(final byte x, final byte y) {
+    public Vec2ub(byte x, byte y) {
         this.x.value = x;
         this.y.value = y;
     }
 
-    public Vec2ub set(final UByte x, final UByte y) {
+    public Vec2ub set(UByte x, UByte y) {
         this.x = x;
         this.y = y;
         return this;

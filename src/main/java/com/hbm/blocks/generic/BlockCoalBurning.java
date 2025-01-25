@@ -1,10 +1,6 @@
 package com.hbm.blocks.generic;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,36 +13,38 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class BlockCoalBurning extends BlockOre {
 
-	public BlockCoalBurning(final String s) {
+	public BlockCoalBurning(String s) {
 		super();
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		
+
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
-	
+
 	@Override
-	public void randomDisplayTick(final IBlockState state, final World world, final BlockPos pos, final Random rand) {
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		super.randomDisplayTick(state, world, pos, rand);
-		for(final EnumFacing dir : EnumFacing.VALUES) {
+		for(EnumFacing dir : EnumFacing.VALUES) {
 
         	if(dir == EnumFacing.DOWN)
         		continue;
 
         	if(world.getBlockState(pos.offset(dir)).getMaterial() == Material.AIR) {
 
-        		double ix = pos.getX() + 0.5F + dir.getXOffset() + rand.nextDouble() - 0.5D;
-        		double iy = pos.getY() + 0.5F + dir.getYOffset() + rand.nextDouble() - 0.5D;
-        		double iz = pos.getZ() + 0.5F + dir.getZOffset() + rand.nextDouble() - 0.5D;
+        		double ix = pos.getX() + 0.5F + dir.getFrontOffsetX() + rand.nextDouble() - 0.5D;
+        		double iy = pos.getY() + 0.5F + dir.getFrontOffsetY() + rand.nextDouble() - 0.5D;
+        		double iz = pos.getZ() + 0.5F + dir.getFrontOffsetZ() + rand.nextDouble() - 0.5D;
 
-        		if(dir.getXOffset() != 0)
-        			ix = pos.getX() + 0.5F + dir.getXOffset() * 0.5 + rand.nextDouble() * 0.125 * dir.getXOffset();
-        		if(dir.getYOffset() != 0)
-        			iy = pos.getY() + 0.5F + dir.getYOffset() * 0.5 + rand.nextDouble() * 0.125 * dir.getYOffset();
-        		if(dir.getZOffset() != 0)
-        			iz = pos.getZ() + 0.5F + dir.getZOffset() * 0.5 + rand.nextDouble() * 0.125 * dir.getZOffset();
+        		if(dir.getFrontOffsetX() != 0)
+        			ix = pos.getX() + 0.5F + dir.getFrontOffsetX() * 0.5 + rand.nextDouble() * 0.125 * dir.getFrontOffsetX();
+        		if(dir.getFrontOffsetY() != 0)
+        			iy = pos.getY() + 0.5F + dir.getFrontOffsetY() * 0.5 + rand.nextDouble() * 0.125 * dir.getFrontOffsetY();
+        		if(dir.getFrontOffsetZ() != 0)
+        			iz = pos.getZ() + 0.5F + dir.getFrontOffsetZ() * 0.5 + rand.nextDouble() * 0.125 * dir.getFrontOffsetZ();
 
         		world.spawnParticle(EnumParticleTypes.FLAME, ix, iy, iz, 0.0, 0.0, 0.0);
         		world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, ix, iy, iz, 0.0, 0.0, 0.0);
@@ -54,20 +52,20 @@ public class BlockCoalBurning extends BlockOre {
         	}
         }
 	}
-	
+
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Items.AIR;
 	}
-	
+
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState());
 		super.breakBlock(worldIn, pos, state);
 	}
-	
+
 	@Override
-	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
+	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
 		entityIn.setFire(3);
 	}
 }

@@ -1,8 +1,5 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.forgefluid.FFUtils;
@@ -17,14 +14,12 @@ import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,6 +31,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 import scala.util.Random;
+
+import java.util.List;
 
 public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHandler, ITankPacketAcceptor {
 
@@ -69,7 +66,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 	public TileEntityAMSBase() {
 		inventory = new ItemStackHandler(16){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -99,11 +96,11 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -113,7 +110,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		field = compound.getInteger("field");
 		efficiency = compound.getInteger("efficiency");
@@ -131,7 +128,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setInteger("field", field);
 		compound.setInteger("efficiency", efficiency);
@@ -166,29 +163,33 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 				int f1 = 0, f2 = 0, f3 = 0, f4 = 0;
 				int booster = 0;
 
-				if(world.getTileEntity(pos.add(6, 0, 0)) instanceof TileEntityAMSLimiter te) {
-                    if(!te.locked && te.getBlockMetadata() == 4) {
+				if(world.getTileEntity(pos.add(6, 0, 0)) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(6, 0, 0));
+					if(!te.locked && te.getBlockMetadata() == 4) {
 						f1 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(-6, 0, 0)) instanceof TileEntityAMSLimiter te) {
-                    if(!te.locked && te.getBlockMetadata() == 5) {
+				if(world.getTileEntity(pos.add(-6, 0, 0)) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(-6, 0, 0));
+					if(!te.locked && te.getBlockMetadata() == 5) {
 						f2 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(0, 0, 6)) instanceof TileEntityAMSLimiter te) {
-                    if(!te.locked && te.getBlockMetadata() == 2) {
+				if(world.getTileEntity(pos.add(0, 0, 6)) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(0, 0, 6));
+					if(!te.locked && te.getBlockMetadata() == 2) {
 						f3 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(world.getTileEntity(pos.add(0, 0, -6)) instanceof TileEntityAMSLimiter te) {
-                    if(!te.locked && te.getBlockMetadata() == 3) {
+				if(world.getTileEntity(pos.add(0, 0, -6)) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)world.getTileEntity(pos.add(0, 0, -6));
+					if(!te.locked && te.getBlockMetadata() == 3) {
 						f4 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
@@ -203,8 +204,9 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 				if(booster > 0)
 					mode = 2;
 				
-				if(world.getTileEntity(pos.add(0, 9, 0)) instanceof TileEntityAMSEmitter te) {
-                    this.efficiency = te.efficiency;
+				if(world.getTileEntity(pos.add(0, 9, 0)) instanceof TileEntityAMSEmitter) {
+					TileEntityAMSEmitter te = (TileEntityAMSEmitter)world.getTileEntity(pos.add(0, 9, 0));
+						this.efficiency = te.efficiency;
 				}
 				
 				this.color = -1;
@@ -219,15 +221,15 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 				if(inventory.getStackInSlot(8).getItem() instanceof ItemCatalyst && inventory.getStackInSlot(9).getItem() instanceof ItemCatalyst &&
 						inventory.getStackInSlot(10).getItem() instanceof ItemCatalyst && inventory.getStackInSlot(11).getItem() instanceof ItemCatalyst &&
 						inventory.getStackInSlot(12).getItem() instanceof ItemAMSCore && hasResonators() && efficiency > 0) {
-					final int a = ((ItemCatalyst)inventory.getStackInSlot(8).getItem()).getColor();
-					final int b = ((ItemCatalyst)inventory.getStackInSlot(9).getItem()).getColor();
-					final int c = ((ItemCatalyst)inventory.getStackInSlot(10).getItem()).getColor();
-					final int d = ((ItemCatalyst)inventory.getStackInSlot(11).getItem()).getColor();
+					int a = ((ItemCatalyst)inventory.getStackInSlot(8).getItem()).getColor();
+					int b = ((ItemCatalyst)inventory.getStackInSlot(9).getItem()).getColor();
+					int c = ((ItemCatalyst)inventory.getStackInSlot(10).getItem()).getColor();
+					int d = ((ItemCatalyst)inventory.getStackInSlot(11).getItem()).getColor();
 
-					final int e = this.calcAvgHex(a, b);
-					final int f = this.calcAvgHex(c, d);
+					int e = this.calcAvgHex(a, b);
+					int f = this.calcAvgHex(c, d);
 					
-					final int g = this.calcAvgHex(e, f);
+					int g = this.calcAvgHex(e, f);
 					
 					this.color = g;
 
@@ -239,7 +241,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 						fuelMod *= ItemCatalyst.getFuelMod(inventory.getStackInSlot(i));
 					}
 
-					powerBase = ItemAMSCore.getPowerBase(inventory.getStackInSlot(12));
+					powerBase = (int)ItemAMSCore.getPowerBase(inventory.getStackInSlot(12));
 					heatBase = (int)ItemAMSCore.getHeatBase(inventory.getStackInSlot(12));
 					fuelBase = (int)ItemAMSCore.getFuelBase(inventory.getStackInSlot(12));
 					
@@ -252,7 +254,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 							tanks[2].getFluidAmount() > 0 && tanks[3].getFluidAmount() > 0) {
 
 						power += (powerBase * powerMod * gauss(1, (heat - (maxHeat / 2)) / maxHeat)) / 1000 * getFuelPower(tanks[2].getFluid()) * getFuelPower(tanks[3].getFluid());
-						heat += (heatBase * heatMod) / (this.field / 100F);
+						heat += (heatBase * heatMod) / (float)(this.field / 100F);
 						tanks[2].drain((int)(fuelBase * fuelMod), true);
 						tanks[3].drain((int)(fuelBase * fuelMod), true);
 						
@@ -294,22 +296,22 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, color, 1), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, efficiency, 2), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, field, 3), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-			PacketDispatcher.wrapper.sendToAllTracking(new FluidTankPacket(pos, tanks[0], tanks[1], tanks[2], tanks[3]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			PacketDispatcher.wrapper.sendToAllTracking(new FluidTankPacket(pos, new FluidTank[] {tanks[0], tanks[1], tanks[2], tanks[3]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 		}
 	}
 	
 	private void radiation() {
 		
-		final double maxSize = 5;
-		final double minSize = 0.5;
+		double maxSize = 5;
+		double minSize = 0.5;
 		double scale = minSize;
 		scale += ((((double)this.tanks[2].getFluidAmount()) / ((double)this.tanks[2].getCapacity())) + (((double)this.tanks[3].getFluidAmount()) / ((double)this.tanks[3].getCapacity()))) * ((maxSize - minSize) / 2);
 
 		scale *= 0.60;
 		
-		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 10 + 0.5, pos.getY() - 10 + 0.5 + 6, pos.getZ() - 10 + 0.5, pos.getX() + 10 + 0.5, pos.getY() + 10 + 0.5 + 6, pos.getZ() + 10 + 0.5));
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 10 + 0.5, pos.getY() - 10 + 0.5 + 6, pos.getZ() - 10 + 0.5, pos.getX() + 10 + 0.5, pos.getY() + 10 + 0.5 + 6, pos.getZ() + 10 + 0.5));
 		
-		for(final Entity e : list) {
+		for(Entity e : list) {
 			if(!(e instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer)e)))
 				if(!Library.isObstructed(world, pos.getX() + 0.5, pos.getY() + 0.5 + 6, pos.getZ() + 0.5, e.posX, e.posY + e.getEyeHeight(), e.posZ)) {
 					e.attackEntityFrom(ModDamageSource.ams, 1000);
@@ -317,9 +319,9 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 				}
 		}
 
-		final List<Entity> list2 = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - scale + 0.5, pos.getY() - scale + 0.5 + 6, pos.getZ() - scale + 0.5, pos.getX() + scale + 0.5, pos.getY() + scale + 0.5 + 6, pos.getZ() + scale + 0.5));
+		List<Entity> list2 = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - scale + 0.5, pos.getY() - scale + 0.5 + 6, pos.getZ() - scale + 0.5, pos.getX() + scale + 0.5, pos.getY() + scale + 0.5 + 6, pos.getZ() + scale + 0.5));
 		
-		for(final Entity e : list2) {
+		for(Entity e : list2) {
 			if(!(e instanceof EntityPlayer && ArmorUtil.checkForHaz2((EntityPlayer)e)))
 					e.attackEntityFrom(ModDamageSource.amsCore, 10000);
 		}
@@ -330,14 +332,14 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 			
 			for(int i = 0; i < 10; i++) {
 
-	    		final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 100);
+	    		EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 100);
 	    		cloud.posX = pos.getX() + rand.nextInt(201) - 100;
 	    		cloud.posY = pos.getY() + rand.nextInt(201) - 100;
 	    		cloud.posZ = pos.getZ() + rand.nextInt(201) - 100;
 	    		this.world.spawnEntity(cloud);
 			}
 			
-			final int radius = (int)(50 + (double)(tanks[2].getFluidAmount() + tanks[3].getFluidAmount()) / 16000D * 150);
+			int radius = (int)(50 + (double)(tanks[2].getFluidAmount() + tanks[3].getFluidAmount()) / 16000D * 150);
 			
 			world.spawnEntity(EntityNukeExplosionMK5.statFac(world, radius, pos.getX(), pos.getY(), pos.getZ()));
 			
@@ -345,7 +347,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 		}
 	}
 	
-	private int getCoolingStrength(final FluidStack type) {
+	private int getCoolingStrength(FluidStack type) {
 		if(type == null)
 			return 0;
 		else if(type.getFluid() == FluidRegistry.WATER){
@@ -361,7 +363,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 		}
 	}
 	
-	private int getFuelPower(final FluidStack type) {
+	private int getFuelPower(FluidStack type) {
 		if(type == null)
 			return 0;
 		else if(type.getFluid() == ModForgeFluids.deuterium){
@@ -373,10 +375,10 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 		}
 	}
 	
-	private float gauss(final float a, final float x) {
+	private float gauss(float a, float x) {
 		
 		//Greater values -> less difference of temperate impact
-		final double amplifier = 0.10;
+		double amplifier = 0.10;
 		
 		return (float) ( (1/Math.sqrt(a * Math.PI)) * Math.pow(Math.E, -1 * Math.pow(x, 2)/amplifier) );
 	}
@@ -385,40 +387,40 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 		return (float) (gauss( 1 / a, x / maxHeat) * Math.sqrt(Math.PI * 2) / (Math.sqrt(2) * Math.sqrt(maxPower)));
 	}*/
 	
-	private float calcField(final int a, final int b, final int c, final int d) {
+	private float calcField(int a, int b, int c, int d) {
 		return (float)(a + b + c + d) * (a * 25 + b * 25 + c * 25 + d  * 25) / 40000;
 	}
 	
-	private int calcAvgHex(final int h1, final int h2) {
+	private int calcAvgHex(int h1, int h2) {
 
-		final int r1 = ((h1 & 0xFF0000) >> 16);
-		final int g1 = ((h1 & 0x00FF00) >> 8);
-		final int b1 = ((h1 & 0x0000FF) >> 0);
+		int r1 = ((h1 & 0xFF0000) >> 16);
+		int g1 = ((h1 & 0x00FF00) >> 8);
+		int b1 = ((h1 & 0x0000FF) >> 0);
 		
-		final int r2 = ((h2 & 0xFF0000) >> 16);
-		final int g2 = ((h2 & 0x00FF00) >> 8);
-		final int b2 = ((h2 & 0x0000FF) >> 0);
+		int r2 = ((h2 & 0xFF0000) >> 16);
+		int g2 = ((h2 & 0x00FF00) >> 8);
+		int b2 = ((h2 & 0x0000FF) >> 0);
 
-		final int r = (((r1 + r2) / 2) << 16);
-		final int g = (((g1 + g2) / 2) << 8);
-		final int b = (((b1 + b2) / 2) << 0);
+		int r = (((r1 + r2) / 2) << 16);
+		int g = (((g1 + g2) / 2) << 8);
+		int b = (((b1 + b2) / 2) << 0);
 		
 		return r | g | b;
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getEfficiencyScaled(final int i) {
+	public int getEfficiencyScaled(int i) {
 		return (efficiency * i) / maxEfficiency;
 	}
 	
-	public int getFieldScaled(final int i) {
+	public int getFieldScaled(int i) {
 		return (field * i) / maxField;
 	}
 	
-	public int getHeatScaled(final int i) {
+	public int getHeatScaled(int i) {
 		return (heat * i) / maxHeat;
 	}
 	
@@ -471,7 +473,7 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource == null){
 			return 0;
 		} else if(resource.getFluid() == ModForgeFluids.coolant){
@@ -488,19 +490,20 @@ public class TileEntityAMSBase extends TileEntity implements ITickable, IFluidHa
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 4){
-        } else {
+			return;
+		} else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 			tanks[2].readFromNBT(tags[2]);

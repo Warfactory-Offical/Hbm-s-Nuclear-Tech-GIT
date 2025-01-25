@@ -1,26 +1,25 @@
 	package com.hbm.inventory.container;
 
-import com.hbm.inventory.SlotMachineOutput;
-import com.hbm.tileentity.machine.TileEntityMachinePress;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.SlotItemHandler;
+    import com.hbm.inventory.SlotMachineOutput;
+    import com.hbm.tileentity.machine.TileEntityMachinePress;
+    import net.minecraft.entity.player.EntityPlayer;
+    import net.minecraft.entity.player.InventoryPlayer;
+    import net.minecraft.inventory.Container;
+    import net.minecraft.inventory.IContainerListener;
+    import net.minecraft.inventory.Slot;
+    import net.minecraft.item.ItemStack;
+    import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachinePress extends Container {
 
-	private final TileEntityMachinePress nukeBoy;
+	private TileEntityMachinePress nukeBoy;
 
 	private int power;
 	private int progress;
 	private int burnTime;
 	private int maxBurn;
 	
-	public ContainerMachinePress(final InventoryPlayer invPlayer, final TileEntityMachinePress tedf) {
+	public ContainerMachinePress(InventoryPlayer invPlayer, TileEntityMachinePress tedf) {
 		
 		power = 0;
 		progress = 0;
@@ -53,7 +52,7 @@ public class ContainerMachinePress extends Container {
 	}
 	
 	@Override
-	public void addListener(final IContainerListener crafting) {
+	public void addListener(IContainerListener crafting) {
 		super.addListener(crafting);
 		crafting.sendWindowProperty(this, 0, this.nukeBoy.power);
 		crafting.sendWindowProperty(this, 1, this.nukeBoy.progress);
@@ -62,14 +61,14 @@ public class ContainerMachinePress extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
@@ -85,7 +84,7 @@ public class ContainerMachinePress extends Container {
 			
 			if (var5.getCount() == 0)
 			{
-				var4.putStack(ItemStack.EMPTY);
+				var4.putStack((ItemStack) ItemStack.EMPTY);
 			}
 			else
 			{
@@ -97,7 +96,7 @@ public class ContainerMachinePress extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return nukeBoy.isUsableByPlayer(player);
 	}
 	
@@ -107,7 +106,7 @@ public class ContainerMachinePress extends Container {
 		
 		for(int i = 0; i < this.listeners.size(); i++)
 		{
-			final IContainerListener par1 = this.listeners.get(i);
+			IContainerListener par1 = (IContainerListener)this.listeners.get(i);
 			
 			if(this.power != this.nukeBoy.power)
 			{
@@ -137,7 +136,7 @@ public class ContainerMachinePress extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(final int i, final int j) {
+	public void updateProgressBar(int i, int j) {
 		if(i == 0)
 		{
 			nukeBoy.power = j;

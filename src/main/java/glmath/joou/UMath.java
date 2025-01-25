@@ -11,35 +11,35 @@ package glmath.joou;
  */
 public class UMath {
 
-    public static UByte max(final UByte a, final UByte b) {
+    public static UByte max(UByte a, UByte b) {
         return a.compareTo(b) > 0 ? a : b;
     }
 
-    public static UInt max(final UInt a, final UInt b) {
+    public static UInt max(UInt a, UInt b) {
         return a.compareTo(b) > 0 ? a : b;
     }
 
-    public static ULong max(final ULong a, final ULong b) {
+    public static ULong max(ULong a, ULong b) {
         return a.compareTo(b) > 0 ? a : b;
     }
 
-    public static UShort max(final UShort a, final UShort b) {
+    public static UShort max(UShort a, UShort b) {
         return a.compareTo(b) > 0 ? a : b;
     }
 
-    public static UByte min(final UByte a, final UByte b) {
+    public static UByte min(UByte a, UByte b) {
         return a.compareTo(b) < 0 ? a : b;
     }
 
-    public static UInt min(final UInt a, final UInt b) {
+    public static UInt min(UInt a, UInt b) {
         return a.compareTo(b) < 0 ? a : b;
     }
 
-    public static ULong min(final ULong a, final ULong b) {
+    public static ULong min(ULong a, ULong b) {
         return a.compareTo(b) < 0 ? a : b;
     }
 
-    public static UShort min(final UShort a, final UShort b) {
+    public static UShort min(UShort a, UShort b) {
         return a.compareTo(b) < 0 ? a : b;
     }
 }

@@ -1,29 +1,26 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.forgefluid.FFUtils;
 import com.hbm.inventory.container.ContainerMachineFluidTank;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxButtonPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityMachineFluidTank;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIMachineFluidTank extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_tank.png");
-	private final TileEntityMachineFluidTank tank;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_tank.png");
+	private TileEntityMachineFluidTank tank;
 
-	public GUIMachineFluidTank(final InventoryPlayer invPlayer, final TileEntityMachineFluidTank tedf) {
+	public GUIMachineFluidTank(InventoryPlayer invPlayer, TileEntityMachineFluidTank tedf) {
 		super(new ContainerMachineFluidTank(invPlayer, tedf));
 		tank = tedf;
 
@@ -32,20 +29,20 @@ public class GUIMachineFluidTank extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		// tank.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 71, guiTop +
 		// 69 - 52, 34, 52);
 		this.renderTankInfo(mouseX, mouseY, guiLeft + 71, guiTop + 69 - 52, 34, 52);
 
-		final String[] text = new String[] { "Inserting a fuse into the marked", "slot will set the tank to output mode" };
+		String[] text = new String[] { "Inserting a fuse into the marked", "slot will set the tank to output mode" };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
-	protected void mouseClicked(final int x, final int y, final int mouseButton) throws IOException {
+	protected void mouseClicked(int x, int y, int mouseButton) throws IOException {
 		super.mouseClicked(x, y, mouseButton);
 		if(guiLeft + 151 <= x && guiLeft + 151 + 18 > x && guiTop + 35 < y && guiTop + 35 + 18 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
@@ -54,8 +51,8 @@ public class GUIMachineFluidTank extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.tank.hasCustomInventoryName() ? this.tank.getInventoryName() : I18n.format(this.tank.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
+		String name = this.tank.hasCustomInventoryName() ? this.tank.getInventoryName() : I18n.format(this.tank.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -63,16 +60,16 @@ public class GUIMachineFluidTank extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		final int i = tank.mode;
+		int i = tank.mode;
 		drawTexturedModalRect(guiLeft + 151, guiTop + 34, 176, i * 18, 18, 18);
 
-		FFUtils.drawLiquid(tank.tank, this.guiLeft, this.guiTop, this.zLevel, 34, 52, 71, 97);
+		tank.tankNew.renderTank(guiLeft + 71, guiTop + 69, this.zLevel, 34, 52);
 		this.mc.getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft + 71, guiTop + 17, 0, 204, 34, 52);
 
@@ -89,14 +86,15 @@ public class GUIMachineFluidTank extends GuiInfoContainer {
 	}
 
 
-	public void renderTankInfo(final int mouseX, final int mouseY, final int x, final int y, final int width, final int height) {
+	public void renderTankInfo(int mouseX, int mouseY, int x, int y, int width, int height) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY) {
 			/*if(tank.tank.getFluid() != null) {
 				this.drawFluidInfo(new String[] { I18n.format(tank.tank.getInfo().fluid.getTranslationKey()), tank.tank.getFluidAmount() + "/" + tank.tank.getCapacity() + "mB" }, mouseX, mouseY);
 			} else {
 				this.drawFluidInfo(new String[] { I18n.format("None"), "0/" + tank.tank.getCapacity() + "mB" }, mouseX, mouseY);
 			}*/
-			FFUtils.renderTankInfo(this, mouseX, mouseY, x, y, width, height, tank.tank);
+
+			tank.tankNew.renderTankInfo(this, mouseX, mouseY, x, y, width, height);
 
 		}
 	}

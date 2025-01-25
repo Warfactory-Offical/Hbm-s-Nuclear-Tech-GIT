@@ -1,28 +1,23 @@
 package com.hbm.entity.logic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.config.CompatibilityConfig;
-import com.hbm.entity.logic.IChunkLoader;
-import com.hbm.main.MainRegistry;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.ForgeChunkManager.Type;
-import net.minecraft.util.math.ChunkPos;
-
-import org.apache.logging.log4j.Level;
-
 import com.hbm.config.GeneralConfig;
-import com.hbm.util.ContaminationUtil;
 import com.hbm.explosion.ExplosionBalefire;
 import com.hbm.main.MainRegistry;
-
+import com.hbm.util.ContaminationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.ForgeChunkManager.Type;
+import org.apache.logging.log4j.Level;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityBalefire extends Entity implements IChunkLoader {
 
@@ -31,16 +26,14 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 	public ExplosionBalefire exp;
 	public int speed = 1;
 	public boolean did = false;
-	public boolean mute = false;
 	private Ticket loaderTicket;
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		age = nbt.getInteger("age");
 		destructionRange = nbt.getInteger("destructionRange");
 		speed = nbt.getInteger("speed");
 		did = nbt.getBoolean("did");
-		mute = nbt.getBoolean("mute");
     	
 		exp = new ExplosionBalefire((int)this.posX, (int)this.posY, (int)this.posZ, this.world, this.destructionRange);
 		exp.readFromNbt(nbt, "exp_");
@@ -49,19 +42,18 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("age", age);
 		nbt.setInteger("destructionRange", destructionRange);
 		nbt.setInteger("speed", speed);
 		nbt.setBoolean("did", did);
-		nbt.setBoolean("mute", mute);
 		
 		if(exp != null)
 			exp.saveToNbt(nbt, "exp_");
 		
 	}
 
-	public EntityBalefire(final World p_i1582_1_) {
+	public EntityBalefire(World p_i1582_1_) {
 		super(p_i1582_1_);
 	}
 
@@ -115,7 +107,7 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(final Ticket ticket) {
+	public void init(Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -134,10 +126,10 @@ public class EntityBalefire extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
+	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(final ChunkPos chunk : loadedChunks)
+            for(ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -153,15 +145,10 @@ public class EntityBalefire extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(final ChunkPos chunk : loadedChunks)
+            for(ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
         }
-	}
-	
-	public EntityBalefire mute() {
-		this.mute = true;
-		return this;
 	}
 }

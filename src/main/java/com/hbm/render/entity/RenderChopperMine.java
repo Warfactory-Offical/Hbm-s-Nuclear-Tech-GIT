@@ -1,15 +1,13 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityChopperMine;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelChopperMine;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderChopperMine extends Render<EntityChopperMine> {
 
@@ -19,13 +17,13 @@ public class RenderChopperMine extends Render<EntityChopperMine> {
 	
 	ModelChopperMine mine;
 	
-	protected RenderChopperMine(final RenderManager renderManager) {
+	protected RenderChopperMine(RenderManager renderManager) {
 		super(renderManager);
 		mine = new ModelChopperMine();
 	}
 	
 	@Override
-	public void doRender(final EntityChopperMine entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityChopperMine entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glScalef(1.5F, 1.5F, 1.5F);
@@ -38,7 +36,7 @@ public class RenderChopperMine extends Render<EntityChopperMine> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityChopperMine entity) {
+	protected ResourceLocation getEntityTexture(EntityChopperMine entity) {
 		return mine_rl;
 	}
 

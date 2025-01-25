@@ -1,15 +1,13 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.render.RenderHelper;
 import com.hbm.tileentity.machine.TileEntitySoyuzStruct;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderSoyuzMultiblock extends TileEntitySpecialRenderer<TileEntitySoyuzStruct> {
 	
@@ -18,12 +16,12 @@ public class RenderSoyuzMultiblock extends TileEntitySpecialRenderer<TileEntityS
 	public static TextureAtlasSprite[] blockIcons = new TextureAtlasSprite[]{null, null, null};
 	
 	@Override
-	public boolean isGlobalRenderer(final TileEntitySoyuzStruct te) {
+	public boolean isGlobalRenderer(TileEntitySoyuzStruct te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntitySoyuzStruct te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntitySoyuzStruct te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		
 		GL11.glTranslatef((float)x, (float)y, (float)z);
@@ -116,7 +114,7 @@ public class RenderSoyuzMultiblock extends TileEntitySpecialRenderer<TileEntityS
 		GL11.glPopMatrix();
 	}
 	
-	public void renderSmolBlockAt(final TextureAtlasSprite loc1, final int x, final int y, final int z) {
+	public void renderSmolBlockAt(TextureAtlasSprite loc1, int x, int y, int z) {
 		// GL11.glTranslatef(x, y, z);
 		RenderHelper.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, loc1.getMaxU(), loc1.getMinV());
 		RenderHelper.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, loc1.getMinU(), loc1.getMinV());

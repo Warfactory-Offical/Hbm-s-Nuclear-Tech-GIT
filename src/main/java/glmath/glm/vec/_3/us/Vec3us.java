@@ -19,17 +19,17 @@ public class Vec3us extends FuncRelational {
         z.value = 0;
     }
 
-    public Vec3us(final int x, final int y, final int z) {
+    public Vec3us(int x, int y, int z) {
         this((short) x, (short) y, (short) z);
     }
 
-    public Vec3us(final short x, final short y, final short z) {
+    public Vec3us(short x, short y, short z) {
         this.x.value = x;
         this.y.value = y;
         this.z.value = z;
     }
 
-    public Vec3us set(final UShort x, final UShort y, final UShort z) {
+    public Vec3us set(UShort x, UShort y, UShort z) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -1,58 +1,59 @@
 package com.hbm.util;
 
-import api.hbm.item.IGasMask;
-import com.hbm.handler.ArmorModHandler;
-import com.hbm.handler.ArmorUtil;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import com.hbm.handler.ArmorModHandler;
+import com.hbm.handler.ArmorUtil;
+
+import api.hbm.item.IGasMask;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 public class ArmorRegistry {
 
 	public static HashMap<Item, ArrayList<HazardClass>> hazardClasses = new HashMap<>();
 	
-	public static void registerHazard(final Item item, final HazardClass... hazards) {
+	public static void registerHazard(Item item, HazardClass... hazards) {
 		hazardClasses.put(item, new ArrayList<HazardClass>(Arrays.asList(hazards)));
 	}
 	
-	public static boolean hasAllProtection(final EntityLivingBase entity, final EntityEquipmentSlot slot, final HazardClass... clazz) {
+	public static boolean hasAllProtection(EntityLivingBase entity, EntityEquipmentSlot slot, HazardClass... clazz) {
 		
 		if(ArmorUtil.checkArmorNull(entity, slot))
 			return false;
 		
-		final List<HazardClass> list = getProtectionFromItem(entity.getItemStackFromSlot(slot));
+		List<HazardClass> list = getProtectionFromItem(entity.getItemStackFromSlot(slot));
 		return list.containsAll(Arrays.asList(clazz));
 	}
 	
-	public static boolean hasAnyProtection(final EntityLivingBase entity, final EntityEquipmentSlot slot, final HazardClass... clazz) {
+	public static boolean hasAnyProtection(EntityLivingBase entity, EntityEquipmentSlot slot, HazardClass... clazz) {
 		
 		if(ArmorUtil.checkArmorNull(entity, slot))
 			return false;
 		
-		final List<HazardClass> list = getProtectionFromItem(entity.getItemStackFromSlot(slot));
+		List<HazardClass> list = getProtectionFromItem(entity.getItemStackFromSlot(slot));
 		
 		if(list == null)
 			return false;
 		
-		for(final HazardClass haz : clazz) {
+		for(HazardClass haz : clazz) {
 			if(list.contains(haz)) return true;
 		}
 		
 		return false;
 	}
 	
-	public static boolean hasProtection(final EntityLivingBase entity, final EntityEquipmentSlot slot, final HazardClass clazz) {
+	public static boolean hasProtection(EntityLivingBase entity, EntityEquipmentSlot slot, HazardClass clazz) {
 		
 		if(ArmorUtil.checkArmorNull(entity, slot))
 			return false;
 		
-		final List<HazardClass> list = getProtectionFromItem(entity.getItemStackFromSlot(slot));
+		List<HazardClass> list = getProtectionFromItem(entity.getItemStackFromSlot(slot));
 		
 		if(list == null)
 			return false;
@@ -60,24 +61,25 @@ public class ArmorRegistry {
 		return list.contains(clazz);
 	}
 	
-	public static List<HazardClass> getProtectionFromItem(final ItemStack stack) {
+	public static List<HazardClass> getProtectionFromItem(ItemStack stack) {
 
-		final List<HazardClass> prot = new ArrayList<>();
+		List<HazardClass> prot = new ArrayList<>();
 		
-		final Item item = stack.getItem();
+		Item item = stack.getItem();
 		
 		//if the item has HazardClasses assigned to it, add those
 		if(hazardClasses.containsKey(item))
 			prot.addAll(hazardClasses.get(item));
 		
-		if(item instanceof IGasMask mask) {
-            final ItemStack filter = mask.getFilter(stack);
+		if(item instanceof IGasMask) {
+			IGasMask mask = (IGasMask) item;
+			ItemStack filter = mask.getFilter(stack);
 
 			if(filter != null && !filter.isEmpty()) {
 				//add the HazardClasses from the filter, then remove the ones blacklisted by the mask
-				final List<HazardClass> filProt = hazardClasses.get(filter.getItem());
+				List<HazardClass> filProt = hazardClasses.get(filter.getItem());
 				
-				for(final HazardClass c : mask.getBlacklist(stack))
+				for(HazardClass c : mask.getBlacklist(stack))
 					filProt.remove(c);
 				
 				prot.addAll(filProt);
@@ -86,9 +88,9 @@ public class ArmorRegistry {
 		
 		if(ArmorModHandler.hasMods(stack)) {
 			
-			final ItemStack[] mods = ArmorModHandler.pryMods(stack);
+			ItemStack[] mods = ArmorModHandler.pryMods(stack);
 			
-			for(final ItemStack mod : mods) {
+			for(ItemStack mod : mods) {
 				
 				//recursion! run the exact same procedure on every mod, in case future mods will have filter support
 				if(mod != null)
@@ -114,7 +116,7 @@ public class ArmorRegistry {
 		
 		public final String lang;
 		
-		private HazardClass(final String lang) {
+		private HazardClass(String lang) {
 			this.lang = lang;
 		}
 	}

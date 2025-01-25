@@ -1,7 +1,6 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.blocks.ModBlocks;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -11,11 +10,11 @@ public class TileEntityChlorineSeal extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		if(!world.isRemote && world.isBlockPowered(pos))
+		if(!world.isRemote && world.isBlockIndirectlyGettingPowered(pos) > 0)
 			spread(new BlockPos.MutableBlockPos(pos), 0);
 	}
 	
-	private void spread(final MutableBlockPos spread, final int index) {
+	private void spread(MutableBlockPos spread, int index) {
 		
 		if(index > 50)
 			return;

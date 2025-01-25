@@ -1,14 +1,13 @@
 package com.hbm.items.machine;
 
-import java.util.List;
-
-import com.hbm.lib.Library;
 import com.hbm.items.ModItems;
-
+import com.hbm.lib.Library;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ItemCatalyst extends Item {
 
@@ -18,7 +17,7 @@ public class ItemCatalyst extends Item {
 	float heatMod;
 	float fuelMod;
 	
-	public ItemCatalyst(final int color, final String s) {
+	public ItemCatalyst(int color, String s) {
 		this.color = color;
 		this.powerAbs = 0;
 		this.powerMod = 1.0F;
@@ -30,7 +29,7 @@ public class ItemCatalyst extends Item {
 		ModItems.ALL_ITEMS.add(this);
 	}
 	
-	public ItemCatalyst(final int color, final long powerAbs, final float powerMod, final float heatMod, final float fuelMod, final String s) {
+	public ItemCatalyst(int color, long powerAbs, float powerMod, float heatMod, float fuelMod, String s) {
 		this.color = color;
 		this.powerAbs = powerAbs;
 		this.powerMod = powerMod;
@@ -47,32 +46,32 @@ public class ItemCatalyst extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Absolute Energy Bonus: " + (powerAbs >= 0 ? "§a+" : "§c") + Library.getShortNumber(powerAbs) + "HE");
 		tooltip.add("Energy Modifier:           " + (powerMod >= 1 ? "§a+" : "§c") + (Math.round(powerMod * 1000) * .10 - 100) + "%");
 		tooltip.add("Heat Modifier:               " + (heatMod > 1 ? "§c+" : "§a") + (Math.round(heatMod * 1000) * .10 - 100) + "%");
 		tooltip.add("Fuel Modifier:               " + (fuelMod > 1 ? "§c+" : "§a") + (Math.round(fuelMod * 1000) * .10 - 100) + "%");
 	}
 	
-	public static long getPowerAbs(final ItemStack stack) {
+	public static long getPowerAbs(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 0;
 		return ((ItemCatalyst)stack.getItem()).powerAbs;
 	}
 	
-	public static float getPowerMod(final ItemStack stack) {
+	public static float getPowerMod(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 1F;
 		return ((ItemCatalyst)stack.getItem()).powerMod;
 	}
 	
-	public static float getHeatMod(final ItemStack stack) {
+	public static float getHeatMod(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 1F;
 		return ((ItemCatalyst)stack.getItem()).heatMod;
 	}
 	
-	public static float getFuelMod(final ItemStack stack) {
+	public static float getFuelMod(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 1F;
 		return ((ItemCatalyst)stack.getItem()).fuelMod;

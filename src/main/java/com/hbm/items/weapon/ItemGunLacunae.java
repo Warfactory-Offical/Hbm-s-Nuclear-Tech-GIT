@@ -2,7 +2,6 @@ package com.hbm.items.weapon;
 
 import com.hbm.handler.GunConfiguration;
 import com.hbm.lib.HBMSoundHandler;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -11,12 +10,12 @@ import net.minecraft.world.World;
 
 public class ItemGunLacunae extends ItemGunBase {
 	
-	public ItemGunLacunae(final GunConfiguration config, final String s) {
+	public ItemGunLacunae(GunConfiguration config, String s) {
 		super(config, s);
 	}
 	
 	@Override
-	public void startAction(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
+	public void startAction(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
 		
 		if(main) {
 			setDelay(stack, 20);
@@ -25,14 +24,14 @@ public class ItemGunLacunae extends ItemGunBase {
 	}
 	
 	@Override
-	public void endAction(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
+	public void endAction(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
 		
 		if(main)
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lacunaeSpindown, SoundCategory.PLAYERS, 1.0F, 1.0F);
 	}
 	
 	@Override
-	protected void updateServer(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand hand) {
+	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand hand) {
 		
 		super.updateServer(stack, world, player, slot, hand);
 		

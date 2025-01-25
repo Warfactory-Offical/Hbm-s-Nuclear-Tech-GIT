@@ -7,7 +7,6 @@ import com.hbm.lib.ForgeDirection;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.INBTPacketReceiver;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -52,7 +51,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 
 			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 150));
 			
-			final int convert = Math.min(tanks[0].getFluidAmount(), tanks[1].getCapacity() - tanks[1].getFluidAmount());
+			int convert = Math.min(tanks[0].getFluidAmount(), tanks[1].getCapacity() - tanks[1].getFluidAmount());
 			if(convert > 0)
 				this.waterTimer = 20;
 
@@ -65,45 +64,45 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	public void networkPack() {
-		final NBTTagCompound data = new NBTTagCompound();
+		NBTTagCompound data = new NBTTagCompound();
 		data.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		data.setByte("timer", (byte) this.waterTimer);
 		INBTPacketReceiver.networkPack(this, data, 150);
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		FFUtils.deserializeTankArray(data.getTagList("tanks", 10), tanks);
 		this.waterTimer = data.getByte("timer");
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		tanks[0].readFromNBT(nbt.getCompoundTag("steam"));
 		tanks[1].readFromNBT(nbt.getCompoundTag("water"));
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setTag("steam", tanks[1].writeToNBT(new NBTTagCompound()));
 		nbt.setTag("water", tanks[1].writeToNBT(new NBTTagCompound()));
 		return nbt;
 	}
 
-	public void fillFluidInit(final FluidTank tank) {
+	public void fillFluidInit(FluidTank tank) {
 		
-		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 			fillFluid(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, tank);
 	}
 
-	public void fillFluid(final int x, final int y, final int z, final FluidTank type) {
+	public void fillFluid(int x, int y, int z, FluidTank type) {
 		FFUtils.fillFluid(this, type, world, new BlockPos(x, y, z), type.getCapacity());
 	}
 	
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags){
+	public void recievePacket(NBTTagCompound[] tags){
 		if(tags.length == 1){
 			tanks[0].readFromNBT(tags[0]);
 		}
@@ -115,7 +114,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill){
+	public int fill(FluidStack resource, boolean doFill){
 		if(resource != null && resource.getFluid() == ModForgeFluids.spentsteam){
 			return tanks[0].fill(resource, doFill);
 		}
@@ -123,7 +122,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain){
+	public FluidStack drain(FluidStack resource, boolean doDrain){
 		if(resource != null && resource.getFluid() == FluidRegistry.WATER){
 			return tanks[1].drain(resource, doDrain);
 		}
@@ -131,12 +130,12 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain){
+	public FluidStack drain(int maxDrain, boolean doDrain){
 		return tanks[1].drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -144,7 +143,7 @@ public class TileEntityCondenser extends TileEntity implements ITickable, IFluid
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 }

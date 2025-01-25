@@ -10,7 +10,7 @@ import net.minecraft.world.storage.WorldSavedData;
 public class AuxSavedData extends WorldSavedData {
 public List<DataPair> data = new ArrayList<DataPair>();
 
-	public AuxSavedData(final String p_i2141_1_) {
+	public AuxSavedData(String p_i2141_1_) {
 		super(p_i2141_1_);
 	}
 
@@ -27,17 +27,17 @@ public List<DataPair> data = new ArrayList<DataPair>();
     	
     	public DataPair() { }
     	
-    	public DataPair(final String s, final int i) {
+    	public DataPair(String s, int i) {
     		key = s;
     		value = i;
     	}
     	
-    	void readFromNBT(final NBTTagCompound nbt, final int i) {
+    	void readFromNBT(NBTTagCompound nbt, int i) {
     		this.key = nbt.getString("aux_key_" + i);
     		this.value = nbt.getInteger("aux_val_" + i);
     	}
     	
-    	void writeToNBT(final NBTTagCompound nbt, final int i) {
+    	void writeToNBT(NBTTagCompound nbt, int i) {
     		nbt.setString("aux_key_" + i, key);
     		nbt.setInteger("aux_val_" + i, value);
     	}
@@ -45,12 +45,12 @@ public List<DataPair> data = new ArrayList<DataPair>();
     }
 
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		
-		final int count = nbt.getInteger("dCount");
+		int count = nbt.getInteger("dCount");
 		
 		for(int i = 0; i < count; i++) {
-			final DataPair struct = new DataPair();
+			DataPair struct = new DataPair();
 			struct.readFromNBT(nbt, i);
 			
 			data.add(struct);
@@ -58,7 +58,7 @@ public List<DataPair> data = new ArrayList<DataPair>();
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		
 		nbt.setInteger("dCount", data.size());
 		
@@ -68,7 +68,7 @@ public List<DataPair> data = new ArrayList<DataPair>();
 		return nbt;
 	}
 	
-	public static AuxSavedData getData(final World worldObj) {
+	public static AuxSavedData getData(World worldObj) {
 
 		AuxSavedData data = (AuxSavedData)worldObj.getPerWorldStorage().getOrLoadData(AuxSavedData.class, "hbmauxdata");
 	    if(data == null) {
@@ -80,8 +80,8 @@ public List<DataPair> data = new ArrayList<DataPair>();
 	    return data;
 	}
 	
-	public static void setThunder(final World world, final int dura) {
-		final AuxSavedData data = getData(world);
+	public static void setThunder(World world, int dura) {
+		AuxSavedData data = getData(world);
 		
 		if(data.data == null) {
 			data.data = new ArrayList<DataPair>();
@@ -91,7 +91,7 @@ public List<DataPair> data = new ArrayList<DataPair>();
 			
 			DataPair thunder = null;
 			
-			for(final DataPair pair : data.data) {
+			for(DataPair pair : data.data) {
 				if(pair.key.equals("thunder")) {
 					thunder = pair;
 					break;
@@ -108,14 +108,14 @@ public List<DataPair> data = new ArrayList<DataPair>();
 		data.markDirty();
 	}
 
-	public static int getThunder(final World world) {
+	public static int getThunder(World world) {
 
-		final AuxSavedData data = getData(world);
+		AuxSavedData data = getData(world);
 		
 		if(data == null)
 			return 0;
 
-		for(final DataPair pair : data.data) {
+		for(DataPair pair : data.data) {
 			if(pair.key.equals("thunder")) {
 				return pair.value;
 			}

@@ -1,7 +1,6 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.blocks.ModBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.init.Blocks;
@@ -26,7 +25,7 @@ public class TileEntityMultiblock extends TileEntity implements ITickable {
 			
 			if(this.getBlockType() == ModBlocks.struct_launcher_core_large) {
 				
-				final EnumFacing meta = isTable();
+				EnumFacing meta = isTable();
 				
 				if(meta != null)
 					buildTable(meta);
@@ -35,7 +34,7 @@ public class TileEntityMultiblock extends TileEntity implements ITickable {
 	}
 	
 	private boolean isCompact() {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
 		for(int i = -1; i <= 1; i++)
 			for(int j = -1; j <= 1; j++)
 				if(!(i == 0 && j == 0))
@@ -46,7 +45,7 @@ public class TileEntityMultiblock extends TileEntity implements ITickable {
 	}
 	
 	private EnumFacing isTable() {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
 		for(int i = -4; i <= 4; i++)
 			for(int j = -4; j <= 4; j++)
 				if(!(i == 0 && j == 0))
@@ -108,7 +107,7 @@ public class TileEntityMultiblock extends TileEntity implements ITickable {
 		placeDummy(pos.getX(), pos.getY(), pos.getZ() + 1, pos, ModBlocks.dummy_plate_compact_launcher);
 	}
 	
-	private void buildTable(final EnumFacing meta) {
+	private void buildTable(EnumFacing meta) {
 		
 		world.setBlockState(pos, ModBlocks.launch_table.getDefaultState().withProperty(BlockHorizontal.FACING, meta), 2);
 		
@@ -180,14 +179,15 @@ public class TileEntityMultiblock extends TileEntity implements ITickable {
 		
 	}
 	
-	private void placeDummy(final int x, final int y, final int z, final BlockPos target, final Block block) {
-		final BlockPos pos = new BlockPos(x, y, z);
+	private void placeDummy(int x, int y, int z, BlockPos target, Block block) {
+		BlockPos pos = new BlockPos(x, y, z);
 		world.setBlockState(pos, block.getDefaultState());
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy dummy) {
-            dummy.target = target;
+		if(te instanceof TileEntityDummy) {
+			TileEntityDummy dummy = (TileEntityDummy)te;
+			dummy.target = target;
 		}
 	}
 	

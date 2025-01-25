@@ -1,31 +1,40 @@
 package com.hbm.core;
 
-import com.hbm.main.ModEventHandlerClient;
-import net.minecraft.launchwrapper.IClassTransformer;
+import java.util.Arrays;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.IntInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
-import java.util.Arrays;
+import com.hbm.main.ModEventHandlerClient;
+
+import net.minecraft.launchwrapper.IClassTransformer;
 
 public class EntityRendererTransformer implements IClassTransformer {
 
 	private static final String[] classesBeingTransformed = { "net.minecraft.client.renderer.EntityRenderer" };
 
 	@Override
-	public byte[] transform(final String name, final String transformedName, final byte[] classBeingTransformed) {
-		final boolean isObfuscated = !name.equals(transformedName);
-		final int index = Arrays.asList(classesBeingTransformed).indexOf(transformedName);
+	public byte[] transform(String name, String transformedName, byte[] classBeingTransformed) {
+		boolean isObfuscated = !name.equals(transformedName);
+		int index = Arrays.asList(classesBeingTransformed).indexOf(transformedName);
 		return index != -1 ? transform(index, classBeingTransformed, isObfuscated) : classBeingTransformed;
 	}
 
-	private static byte[] transform(final int index, final byte[] classBeingTransformed, final boolean isObfuscated) {
+	private static byte[] transform(int index, byte[] classBeingTransformed, boolean isObfuscated) {
 		System.out.println("Transforming: " + classesBeingTransformed[index]);
 		try {
-			final ClassNode classNode = new ClassNode();
-			final ClassReader classReader = new ClassReader(classBeingTransformed);
+			ClassNode classNode = new ClassNode();
+			ClassReader classReader = new ClassReader(classBeingTransformed);
 			classReader.accept(classNode, 0);
 
 			switch (index) {
@@ -34,25 +43,25 @@ public class EntityRendererTransformer implements IClassTransformer {
 				break;
 			}
 
-			final ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+			ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 			classNode.accept(classWriter);
 			return classWriter.toByteArray();
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return classBeingTransformed;
 	}
 
-	private static void transformEntityRenderer(final ClassNode dispatcher, final boolean isObfuscated) {
+	private static void transformEntityRenderer(ClassNode dispatcher, boolean isObfuscated) {
 		System.out.println("AAAAAAA");
-		for (final MethodNode method : dispatcher.methods) {
+		for (MethodNode method : dispatcher.methods) {
 			if (method.name.equals("updateLightmap") || method.name.equals("func_78472_g")) {
 				for(int i = 1; i < method.instructions.size(); i++){
-					final AbstractInsnNode insn = method.instructions.get(i);
-					final AbstractInsnNode insn2 = method.instructions.get(i-1);
+					AbstractInsnNode insn = method.instructions.get(i);
+					AbstractInsnNode insn2 = method.instructions.get(i-1);
 					if(insn instanceof VarInsnNode && insn.getOpcode() == Opcodes.ISTORE && ((VarInsnNode)insn).var == 20
 							&& insn2 instanceof IntInsnNode && insn2.getOpcode() == Opcodes.SIPUSH && ((IntInsnNode)insn2).operand == 255){
-						final InsnList inject = new InsnList();
+						InsnList inject = new InsnList();
 						System.out.println(method.desc);
 						System.out.println(method.instructions.get(i-1));
 						

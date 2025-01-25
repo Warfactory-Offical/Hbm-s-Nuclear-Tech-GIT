@@ -18,13 +18,13 @@ import net.minecraft.world.World;
 
 public class ParticleLightningHandGlow extends Particle {
 
-	public ParticleLightningHandGlow(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale, final int age) {
+	public ParticleLightningHandGlow(World worldIn, double posXIn, double posYIn, double posZIn, float scale, int age) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.particleMaxAge = age;
 	}
 	
-	public ParticleLightningHandGlow color(final float r, final float g, final float b, final float a){
+	public ParticleLightningHandGlow color(float r, float g, float b, float a){
 		this.particleRed = r;
 		this.particleGreen = g;
 		this.particleBlue = b;
@@ -37,7 +37,8 @@ public class ParticleLightningHandGlow extends Particle {
 		this.particleAge ++;
 		if(particleAge >= particleMaxAge){
 			setExpired();
-        }
+			return;
+		}
 	}
 
 	@Override
@@ -51,16 +52,16 @@ public class ParticleLightningHandGlow extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		GlStateManager.disableDepth();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		GlStateManager.disableAlpha();
 		
-		final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
-	    final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
-	    final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
+		float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
+	    float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
+	    float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
 	    GL11.glTranslated(f5, f6, f7);
 	    
 	    
@@ -80,9 +81,9 @@ public class ParticleLightningHandGlow extends Particle {
 		GL11.glLoadMatrix(ClientProxy.AUX_GL_BUFFER);
 
 		
-		final float ageN = (this.particleAge+partialTicks) /(float)this.particleMaxAge;
-		final float scale = MathHelper.clamp(ageN*2, 0, 1)* MathHelper.clamp(2-ageN*2+0.1F, 0, 1);
-		final float f4 = 0.1F * this.particleScale * scale;
+		float ageN = (float)(this.particleAge+partialTicks)/(float)this.particleMaxAge;
+		float scale = MathHelper.clamp(ageN*2, 0, 1)* MathHelper.clamp(2-ageN*2+0.1F, 0, 1);
+		float f4 = 0.1F * this.particleScale * scale;
         
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.fresnel_ms);
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);

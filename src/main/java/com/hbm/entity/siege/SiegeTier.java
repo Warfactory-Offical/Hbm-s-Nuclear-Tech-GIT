@@ -1,17 +1,15 @@
 package com.hbm.entity.siege;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
 
 import com.hbm.items.ModItems;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class SiegeTier {
 	
@@ -33,15 +31,15 @@ public class SiegeTier {
 	public static SiegeTier DNT;
 	
 	public static void registerTiers() {
-		DEFAULT_BUFF =	new SiegeTier(20, "buff")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 0))	.setDR(0.2F)										.setDMG(2F);
-		CLAY =			new SiegeTier(30, "clay")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 1))	.setDR(0.2F)										.setDMG(3F);
-		STONE =			new SiegeTier(40, "stone")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 2))	.setDR(0.3F)	.setDT(1F)				.setFP()	.setDMG(5F);
-		IRON =			new SiegeTier(50, "iron")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 3))	.setDR(0.3F)	.setDT(2F)				.setFP()	.setDMG(7.5F)					.setFF();
-		SILVER =		new SiegeTier(70, "silver")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 4))	.setDR(0.5F)	.setDT(3F)	.setNF()	.setFP()	.setDMG(10F)	.setSP(0.5F)	.setFF();
-		GOLD =			new SiegeTier(100, "gold")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 5))	.setDR(0.5F)	.setDT(5F)	.setNF()	.setFP()	.setDMG(15F)	.setSP(0.5F)	.setFF();
-		DESH =			new SiegeTier(150, "desh")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 6))	.setDR(0.7F)	.setDT(7F)	.setNF()	.setFP()	.setDMG(25F)	.setSP(0.5F)	.setFF();
-		SCHRAB =		new SiegeTier(250, "schrab")	.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 7))	.setDR(0.7F)	.setDT(10F)	.setNF()	.setFP()	.setDMG(50F)	.setSP(1F)		.setFF();
-		DNT =			new SiegeTier(500, "dnt")		.addDrop(ItemStackUtil.itemStackFrom(ModItems.coin_siege, 1, 8))	.setDR(0.9F)	.setDT(20F)	.setNF()	.setFP()	.setDMG(100F)	.setSP(1F)		.setFF();
+		DEFAULT_BUFF =	new SiegeTier(20, "buff")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 0))	.setDR(0.2F)										.setDMG(2F);
+		CLAY =			new SiegeTier(30, "clay")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 1))	.setDR(0.2F)										.setDMG(3F);
+		STONE =			new SiegeTier(40, "stone")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 2))	.setDR(0.3F)	.setDT(1F)				.setFP()	.setDMG(5F);
+		IRON =			new SiegeTier(50, "iron")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 3))	.setDR(0.3F)	.setDT(2F)				.setFP()	.setDMG(7.5F)					.setFF();
+		SILVER =		new SiegeTier(70, "silver")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 4))	.setDR(0.5F)	.setDT(3F)	.setNF()	.setFP()	.setDMG(10F)	.setSP(0.5F)	.setFF();
+		GOLD =			new SiegeTier(100, "gold")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 5))	.setDR(0.5F)	.setDT(5F)	.setNF()	.setFP()	.setDMG(15F)	.setSP(0.5F)	.setFF();
+		DESH =			new SiegeTier(150, "desh")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 6))	.setDR(0.7F)	.setDT(7F)	.setNF()	.setFP()	.setDMG(25F)	.setSP(0.5F)	.setFF();
+		SCHRAB =		new SiegeTier(250, "schrab")	.addDrop(new ItemStack(ModItems.coin_siege, 1, 7))	.setDR(0.7F)	.setDT(10F)	.setNF()	.setFP()	.setDMG(50F)	.setSP(1F)		.setFF();
+		DNT =			new SiegeTier(500, "dnt")		.addDrop(new ItemStack(ModItems.coin_siege, 1, 8))	.setDR(0.9F)	.setDT(20F)	.setNF()	.setFP()	.setDMG(100F)	.setSP(1F)		.setFF();
 	}
 
 	public int id;
@@ -59,7 +57,7 @@ public class SiegeTier {
 	//so this is basically delegates but in java? or like, uh, storing lambdas? i don't know what it is but i feel like playing god. i like it.
 	public Consumer<EntityLivingBase> delegate;
 	
-	public SiegeTier(final float baseHealth, final String name) {
+	public SiegeTier(float baseHealth, String name) {
 		this.id = nextID;
 		SiegeTier.tiers[this.id] = this;
 		nextID++;
@@ -68,22 +66,22 @@ public class SiegeTier {
 		this.name = name;
 	}
 	
-	private SiegeTier setDT(final float dt) {
+	private SiegeTier setDT(float dt) {
 		this.dt = dt;
 		return this;
 	}
 	
-	private SiegeTier setDR(final float dr) {
+	private SiegeTier setDR(float dr) {
 		this.dr = dr;
 		return this;
 	}
 	
-	private SiegeTier setDMG(final float dmg) {
+	private SiegeTier setDMG(float dmg) {
 		this.damageMod = dmg;
 		return this;
 	}
 	
-	private SiegeTier setSP(final float sp) {
+	private SiegeTier setSP(float sp) {
 		this.speedMod = sp;
 		return this;
 	}
@@ -103,21 +101,21 @@ public class SiegeTier {
 		return this;
 	}
 	
-	private SiegeTier addDrop(final Item drop) {
-		return addDrop(ItemStackUtil.itemStackFrom(drop));
+	private SiegeTier addDrop(Item drop) {
+		return addDrop(new ItemStack(drop));
 	}
 	
-	private SiegeTier addDrop(final ItemStack drop) {
+	private SiegeTier addDrop(ItemStack drop) {
 		this.dropItem.add(drop);
 		return this;
 	}
 	
-	private SiegeTier setAura(final int range, final PotionEffect... effects) {
+	private SiegeTier setAura(int range, PotionEffect... effects) {
 		this.daisyChain(x -> SiegeTier.doAura(x, range, effects)); //HOLY SHIT THAT ACTUALLY WORKS!!
 		return this;
 	}
 	
-	private SiegeTier daisyChain(final Consumer<EntityLivingBase> link) {
+	private SiegeTier daisyChain(Consumer<EntityLivingBase> link) {
 		
 		if(this.delegate == null)
 			this.delegate = link;
@@ -127,22 +125,22 @@ public class SiegeTier {
 		return this;
 	}
 	
-	public void runDelegate(final EntityLivingBase entity) {
+	public void runDelegate(EntityLivingBase entity) {
 		if(this.delegate != null) this.delegate.accept(entity);
 	}
 	
 	/*
 	 * DELEGATIONS
 	 */
-	private static void doAura(final EntityLivingBase entity, final int range, final PotionEffect... effects) {
+	private static void doAura(EntityLivingBase entity, int range, PotionEffect... effects) {
 		
-		final List<EntityPlayer> players = entity.world.getEntitiesWithinAABB(EntityPlayer.class, entity.getEntityBoundingBox().grow(range, range, range));
+		List<EntityPlayer> players = entity.world.getEntitiesWithinAABB(EntityPlayer.class, entity.getEntityBoundingBox().grow(range, range, range));
 		
-		for(final EntityPlayer player : players) {
+		for(EntityPlayer player : players) {
 			
 			if(player.getDistanceSq(entity) < range * range) {
 				
-				for(final PotionEffect e : effects) {
+				for(PotionEffect e : effects) {
 					player.addPotionEffect(new PotionEffect(e));
 				}
 			}

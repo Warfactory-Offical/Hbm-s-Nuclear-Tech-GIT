@@ -7,7 +7,6 @@ import com.hbm.inventory.container.ContainerCraneBoxer;
 import com.hbm.inventory.gui.GUICraneBoxer;
 import com.hbm.lib.Library;
 import com.hbm.tileentity.IGUIProvider;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,16 +57,16 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
         if (!world.isRemote) {
             tickCounter++;
 
-            final int xCoord = pos.getX();
-            final int yCoord = pos.getY();
-            final int zCoord = pos.getZ();
-            final boolean redstone = world.isBlockPowered(pos);
+            int xCoord = pos.getX();
+            int yCoord = pos.getY();
+            int zCoord = pos.getZ();
+            boolean redstone = world.isBlockPowered(pos);
 
             if (mode == MODE_REDSTONE && redstone && !lastRedstone && tickCounter%10==0) {
                 tickCounter = 0;
-                final EnumFacing outputSide = getOutputSide();
-                final BlockPos outputPos = pos.offset(outputSide);
-                final Block outputBlock = world.getBlockState(outputPos).getBlock();
+                EnumFacing outputSide = getOutputSide();
+                BlockPos outputPos = pos.offset(outputSide);
+                Block outputBlock = world.getBlockState(outputPos).getBlock();
                 IConveyorBelt belt = null;
 
                 if (outputBlock instanceof IConveyorBelt) {
@@ -76,8 +75,8 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 
                 int pack = 0;
 
-                for (final int index : allowed_slots) {
-                    final ItemStack stack = inventory.getStackInSlot(index);
+                for (int index : allowed_slots) {
+                    ItemStack stack = inventory.getStackInSlot(index);
 
                     if(!stack.isEmpty()){
                         pack++;
@@ -85,11 +84,11 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
                 }
 
                 if (belt != null && pack > 0) {
-                    final ItemStack[] box = new ItemStack[pack];
+                    ItemStack[] box = new ItemStack[pack];
 
-                    for (final int index : allowed_slots) {
+                    for (int index : allowed_slots) {
                         if (pack > 0) {
-                            final ItemStack stack = inventory.getStackInSlot(index);
+                            ItemStack stack = inventory.getStackInSlot(index);
                             if (!stack.isEmpty()) {
                                 pack--;
                                 box[pack] = stack.copy();
@@ -98,9 +97,9 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
                         }
                     }
 
-                    final EntityMovingPackage moving = new EntityMovingPackage(world);
-                    final Vec3d pos = new Vec3d(xCoord + 0.5 + outputSide.getDirectionVec().getX() * 0.55, yCoord + 0.5 + outputSide.getDirectionVec().getY() * 0.55, zCoord + 0.5 + outputSide.getDirectionVec().getZ() * 0.55);
-                    final Vec3d snap = belt.getClosestSnappingPosition(world, outputPos, pos);
+                    EntityMovingPackage moving = new EntityMovingPackage(world);
+                    Vec3d pos = new Vec3d(xCoord + 0.5 + outputSide.getDirectionVec().getX() * 0.55, yCoord + 0.5 + outputSide.getDirectionVec().getY() * 0.55, zCoord + 0.5 + outputSide.getDirectionVec().getZ() * 0.55);
+                    Vec3d snap = belt.getClosestSnappingPosition(world, outputPos, pos);
                     moving.setPosition(snap.x, snap.y, snap.z);
                     moving.setItemStacks(box);
                     world.spawnEntity(moving);
@@ -123,16 +122,16 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 
                 int fullStacks = 0;
 
-                for(final int index : allowed_slots) {
-                    final ItemStack stack = inventory.getStackInSlot(index);
+                for(int index : allowed_slots) {
+                    ItemStack stack = inventory.getStackInSlot(index);
 
                     if(!stack.isEmpty() && stack.getCount() == stack.getMaxStackSize()) {
                         fullStacks++;
                     }
                 }
 
-                final EnumFacing outputSide = getOutputSide();
-                final Block b = world.getBlockState(pos.offset(outputSide)).getBlock();
+                EnumFacing outputSide = getOutputSide();
+                Block b = world.getBlockState(pos.offset(outputSide)).getBlock();
                 IConveyorBelt belt = null;
 
                 if(b instanceof IConveyorBelt) {
@@ -141,10 +140,10 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 
                 if(belt != null && fullStacks >= pack) {
 
-                    final ItemStack[] box = new ItemStack[pack];
+                    ItemStack[] box = new ItemStack[pack];
 
-                    for(final int index : allowed_slots) {
-                        final ItemStack stack = inventory.getStackInSlot(index);
+                    for(int index : allowed_slots) {
+                        ItemStack stack = inventory.getStackInSlot(index);
 
                         if(!stack.isEmpty() && stack.getCount() == stack.getMaxStackSize()) {
                             pack--;
@@ -155,30 +154,30 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
                         }
                     }
 
-                    final EntityMovingPackage moving = new EntityMovingPackage(world);
-                    final Vec3d posV = new Vec3d(xCoord + 0.5 + outputSide.getDirectionVec().getX() * 0.55, yCoord + 0.5 + outputSide.getDirectionVec().getY() * 0.55, zCoord + 0.5 + outputSide.getDirectionVec().getZ() * 0.55);
-                    final Vec3d snap = belt.getClosestSnappingPosition(world, pos.offset(outputSide), posV);
+                    EntityMovingPackage moving = new EntityMovingPackage(world);
+                    Vec3d posV = new Vec3d(xCoord + 0.5 + outputSide.getDirectionVec().getX() * 0.55, yCoord + 0.5 + outputSide.getDirectionVec().getY() * 0.55, zCoord + 0.5 + outputSide.getDirectionVec().getZ() * 0.55);
+                    Vec3d snap = belt.getClosestSnappingPosition(world, pos.offset(outputSide), posV);
                     moving.setPosition(snap.x, snap.y, snap.z);
                     moving.setItemStacks(box);
                     world.spawnEntity(moving);
                 }
             }
 
-            final NBTTagCompound data = new NBTTagCompound();
+            NBTTagCompound data = new NBTTagCompound();
             data.setByte("mode", mode);
             this.networkPack(data, 15);
         }
     }
 
     public void tryFillTe(){
-        final EnumFacing outputSide = getOutputSide();
-        final TileEntity te = world.getTileEntity(pos.offset(outputSide));
+        EnumFacing outputSide = getOutputSide();
+        TileEntity te = world.getTileEntity(pos.offset(outputSide));
 
-        final int meta = this.getBlockMetadata();
+        int meta = this.getBlockMetadata();
         if(te != null){
-            final ICapabilityProvider capte = te;
+            ICapabilityProvider capte = te;
             if(capte.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide)) {
-                final IItemHandler cap = capte.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide);
+                IItemHandler cap = capte.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, outputSide);
 
                 for(int i = 0; i < inventory.getSlots(); i++) {
                     tryFillContainerCap(cap, i);
@@ -187,11 +186,11 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
         }
     }
 
-    public boolean tryFillTeDirect(final ItemStack stack){
+    public boolean tryFillTeDirect(ItemStack stack){
         return tryInsertItemCap(inventory, stack);
     }
 
-    public boolean tryFillContainerCap(final IItemHandler chest, final int slot) {
+    public boolean tryFillContainerCap(IItemHandler chest, int slot) {
         //Check if we have something to output
         if(inventory.getStackInSlot(slot).isEmpty())
             return false;
@@ -199,24 +198,24 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
         return tryInsertItemCap(chest, inventory.getStackInSlot(slot));
     }
 
-    public boolean tryInsertItemCap(final IItemHandler chest, final ItemStack stack) {
+    public boolean tryInsertItemCap(IItemHandler chest, ItemStack stack) {
         //Check if we have something to output
         if(stack.isEmpty())
             return false;
 
         for(int i = 0; i < chest.getSlots(); i++) {
 
-            final ItemStack outputStack = stack.copy();
+            ItemStack outputStack = stack.copy();
             if(outputStack.isEmpty() || outputStack.getCount() == 0)
                 return true;
 
-            final ItemStack chestItem = chest.getStackInSlot(i).copy();
+            ItemStack chestItem = chest.getStackInSlot(i).copy();
             if(chestItem.isEmpty() || (Library.areItemStacksCompatible(outputStack, chestItem, false) && chestItem.getCount() < chestItem.getMaxStackSize())) {
-                final int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
+                int fillAmount = Math.min(chestItem.getMaxStackSize()-chestItem.getCount(), outputStack.getCount());
 
                 outputStack.setCount(fillAmount);
 
-                final ItemStack rest = chest.insertItem(i, outputStack, true);
+                ItemStack rest = chest.insertItem(i, outputStack, true);
                 if(rest.getItem() == Item.getItemFromBlock(Blocks.AIR)){
                     stack.shrink(outputStack.getCount());
                     chest.insertItem(i, outputStack, false);
@@ -228,43 +227,43 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+    public int[] getAccessibleSlotsFromSide(EnumFacing e) {
         return allowed_slots;
     }
 
     @Override
-    public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
+    public boolean isItemValidForSlot(int i, ItemStack itemStack) {
         return true;
     }
 
     @Override
-    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return new ContainerCraneBoxer(player.inventory, this);
     }
 
     @Override
-    public boolean hasPermission(final EntityPlayer player) {
-        final int xCoord = pos.getX();
-        final int yCoord = pos.getY();
-        final int zCoord = pos.getZ();
+    public boolean hasPermission(EntityPlayer player) {
+        int xCoord = pos.getX();
+        int yCoord = pos.getY();
+        int zCoord = pos.getZ();
         return new Vec3d(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).length() < 20;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return new GUICraneBoxer(player.inventory, this);
     }
 
     @Override
-    public void readFromNBT(final NBTTagCompound nbt) {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.mode = nbt.getByte("mode");
         this.lastRedstone = nbt.getBoolean("lastRedstone");
     }
 
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setByte("mode", mode);
         nbt.setBoolean("lastRedstone", lastRedstone);
@@ -272,14 +271,14 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
     }
 
     @Override
-    public void receiveControl(final NBTTagCompound data) {
+    public void receiveControl(NBTTagCompound data) {
         if(data.hasKey("toggle")) {
             mode = (byte) ((mode + 1) % 6);
         }
     }
 
     @Override
-    public void networkUnpack(final NBTTagCompound nbt) {
+    public void networkUnpack(NBTTagCompound nbt) { 
         this.mode = nbt.getByte("mode");
     }
 }

@@ -10,7 +10,7 @@ public class SoundLoopMachine extends PositionedSound implements ITickableSound 
 	boolean donePlaying = false;
 	TileEntity te;
 
-	public SoundLoopMachine(final SoundEvent path, final TileEntity te) {
+	public SoundLoopMachine(SoundEvent path, TileEntity te) {
 		super(path, SoundCategory.BLOCKS);
 		this.repeat = true;
 		this.volume = 1;
@@ -33,11 +33,11 @@ public class SoundLoopMachine extends PositionedSound implements ITickableSound 
 		return this.donePlaying;
 	}
 	
-	public void setVolume(final float f) {
+	public void setVolume(float f) {
 		volume = f;
 	}
 	
-	public void setPitch(final float f) {
+	public void setPitch(float f) {
 		pitch = f;
 	}
 	

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ArmorAJR extends ArmorFSBPowered {
 
-	public ArmorAJR(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
+	public ArmorAJR(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
 		super(material, layer, slot, texture, maxPower, chargeRate, consumption, drain, s);
 	}
 
@@ -19,7 +19,7 @@ public class ArmorAJR extends ArmorFSBPowered {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		if(models == null) {
 			models = new ModelArmorAJR[4];
 

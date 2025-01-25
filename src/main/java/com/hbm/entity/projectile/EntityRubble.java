@@ -20,33 +20,33 @@ public class EntityRubble extends EntityThrowable {
 	public static final DataParameter<Integer> BLOCKID = EntityDataManager.createKey(EntityRubble.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> BLOCKMETA = EntityDataManager.createKey(EntityRubble.class, DataSerializers.VARINT);
 	
-	public EntityRubble(final World p_i1773_1_)
+	public EntityRubble(World p_i1773_1_)
     {
         super(p_i1773_1_);
     }
 
-    public EntityRubble(final World p_i1774_1_, final EntityLivingBase p_i1774_2_)
+    public EntityRubble(World p_i1774_1_, EntityLivingBase p_i1774_2_)
     {
         super(p_i1774_1_, p_i1774_2_);
     }
 
     @Override
 	public void entityInit() {
-        this.dataManager.register(BLOCKID, Integer.valueOf(0));
-        this.dataManager.register(BLOCKMETA, Integer.valueOf(0));
+        this.dataManager.register(BLOCKID, (int)Integer.valueOf(0));
+        this.dataManager.register(BLOCKMETA, (int)Integer.valueOf(0));
     }
 
-    public EntityRubble(final World p_i1775_1_, final double p_i1775_2_, final double p_i1775_4_, final double p_i1775_6_)
+    public EntityRubble(World p_i1775_1_, double p_i1775_2_, double p_i1775_4_, double p_i1775_6_)
     {
         super(p_i1775_1_, p_i1775_2_, p_i1775_4_, p_i1775_6_);
     }
 
     @Override
-	protected void onImpact(final RayTraceResult p_70184_1_)
+	protected void onImpact(RayTraceResult p_70184_1_)
     {
         if (p_70184_1_.entityHit != null)
         {
-            final byte b0 = 15;
+            byte b0 = 15;
 
             p_70184_1_.entityHit.attackEntityFrom(ModDamageSource.rubble, b0);
         }
@@ -61,7 +61,7 @@ public class EntityRubble extends EntityThrowable {
         }
     }
     
-    public void setMetaBasedOnBlock(final Block b, final int i) {
+    public void setMetaBasedOnBlock(Block b, int i) {
 
     	this.dataManager.set(BLOCKID, Block.getIdFromBlock(b));
     	this.dataManager.set(BLOCKMETA, i);

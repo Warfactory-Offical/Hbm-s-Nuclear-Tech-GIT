@@ -1,7 +1,5 @@
 package com.hbm.inventory.gui;
 
-import com.hbm.forgefluid.FFUtils;
-import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.inventory.container.ContainerChemfac;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineChemfac;
@@ -17,7 +15,7 @@ public class GUIChemfac extends GuiInfoContainer {
 
 	private final TileEntityMachineChemfac chemfac;
 
-	public GUIChemfac(final InventoryPlayer playerInv, final TileEntityMachineChemfac tile) {
+	public GUIChemfac(InventoryPlayer playerInv, TileEntityMachineChemfac tile) {
 		super(new ContainerChemfac(playerInv, tile));
 
 		this.chemfac = tile;
@@ -27,33 +25,33 @@ public class GUIChemfac extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		super.renderHoveredToolTip(mouseX, mouseY);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 234, guiTop + 25, 16, 52, chemfac.power, chemfac.getMaxPower());
 
 		for (int i = 0; i < 8; i++) {
-			final int offX = guiLeft + 110 * (i % 2);
-			final int offY = guiTop + 38 * (i / 2);
+			int offX = guiLeft + 110 * (i % 2);
+			int offY = guiTop + 38 * (i / 2);
 
-			FFUtils.renderTankInfo(this, mouseX, mouseY, offX + 40, offY + 45 - 32, 5, 34, chemfac.tanks[i * 4].getTank(), chemfac.tanks[i * 4].getType());
-			FFUtils.renderTankInfo(this, mouseX, mouseY, offX + 45, offY + 45 - 32, 5, 34, chemfac.tanks[i * 4 + 1].getTank(), chemfac.tanks[i * 4 + 1].getType());
-			FFUtils.renderTankInfo(this, mouseX, mouseY, offX + 102, offY + 45 - 32, 5, 34, chemfac.tanks[i * 4 + 2].getTank(), chemfac.tanks[i * 4 + 2].getType());
-			FFUtils.renderTankInfo(this, mouseX, mouseY, offX + 107, offY + 45 - 32, 5, 34, chemfac.tanks[i * 4 + 3].getTank(), chemfac.tanks[i * 4 + 3].getType());
+			chemfac.tanksNew[i * 4 + 0].renderTankInfo(this, mouseX, mouseY, offX + 40, offY + 45 - 32, 5, 34);
+			chemfac.tanksNew[i * 4 + 1].renderTankInfo(this, mouseX, mouseY, offX + 45, offY + 45 - 32, 5, 34);
+			chemfac.tanksNew[i * 4 + 2].renderTankInfo(this, mouseX, mouseY, offX + 102, offY + 45 - 32, 5, 34);
+			chemfac.tanksNew[i * 4 + 3].renderTankInfo(this, mouseX, mouseY, offX + 107, offY + 45 - 32, 5, 34);
 		}
 
-		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 233, guiTop + 108, 9, 54, chemfac.water.getTank(), ModForgeFluids.coolant);
-		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 242, guiTop + 108, 9, 54, chemfac.steam.getTank(), ModForgeFluids.hotcoolant);
+		chemfac.waterNew.renderTankInfo(this, mouseX, mouseY, guiLeft + 233, guiTop + 108, 9, 54);
+		chemfac.steamNew.renderTankInfo(this, mouseX, mouseY, guiLeft + 242, guiTop + 108, 9, 54);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		super.drawDefaultBackground();
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -62,33 +60,33 @@ public class GUIChemfac extends GuiInfoContainer {
 		drawTexturedModalRect(guiLeft + 26, guiTop + 167, 26, 167, 230, 44);
 		drawTexturedModalRect(guiLeft + 26, guiTop + 211, 26, 211, 176, 45);
 
-		final int p = (int) (chemfac.power * 52 / chemfac.getMaxPower());
+		int p = (int) (chemfac.power * 52 / chemfac.getMaxPower());
 		drawTexturedModalRect(guiLeft + 234, guiTop + 77 - p, 0, 219 - p, 16, p);
 
 		if (chemfac.power > 0)
 			drawTexturedModalRect(guiLeft + 238, guiTop + 11, 0, 219, 9, 12);
 
 		for (int i = 0; i < 8; i++) {
-			final int offX = 110 * (i % 2);
-			final int offY = 38 * (i / 2);
+			int offX = 110 * (i % 2);
+			int offY = 38 * (i / 2);
 
-			final int prog = chemfac.progress[i];
-			final int j = prog * 17 / Math.max(chemfac.maxProgress[i], 1);
+			int prog = chemfac.progress[i];
+			int j = prog * 17 / Math.max(chemfac.maxProgress[i], 1);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 			drawTexturedModalRect(guiLeft + offX + 51, guiTop + offY + 16, 202, 247, j, 11);
 
-			FFUtils.drawLiquid(chemfac.tanks[i * 4].getTank(), guiLeft, guiTop, this.zLevel, 3, 32, offX + 41, offY + 74);
-			FFUtils.drawLiquid(chemfac.tanks[i * 4 + 1].getTank(), guiLeft, guiTop, this.zLevel, 3, 32, offX + 46, offY + 74);
-			FFUtils.drawLiquid(chemfac.tanks[i * 4 + 2].getTank(), guiLeft, guiTop, this.zLevel, 3, 32, offX + 103, offY + 74);
-			FFUtils.drawLiquid(chemfac.tanks[i * 4 + 3].getTank(), guiLeft, guiTop, this.zLevel, 3, 32, offX + 108, offY + 74);
+			chemfac.tanksNew[i * 4 + 0].renderTank(offX + 41, offY + 46, this.zLevel, 3, 32);
+			chemfac.tanksNew[i * 4 + 1].renderTank(offX + 46, offY + 46, this.zLevel, 3, 32);
+			chemfac.tanksNew[i * 4 + 2].renderTank(offX + 103, offY + 46, this.zLevel, 3, 32);
+			chemfac.tanksNew[i * 4 + 3].renderTank(offX + 108, offY + 46, this.zLevel, 3, 32);
 		}
 
-		FFUtils.drawLiquid(chemfac.water.getTank(), guiLeft, guiTop, this.zLevel, 7, 52, 234, 189);
-		FFUtils.drawLiquid(chemfac.steam.getTank(), guiLeft, guiTop, this.zLevel, 7, 52, 243, 189);
+		chemfac.waterNew.renderTank(guiLeft + 234, guiTop + 161, this.zLevel, 7, 52);
+		chemfac.steamNew.renderTank(guiLeft + 243, guiTop + 161, this.zLevel, 7, 52);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_LMENU))
 			for (int i = 0; i < this.inventorySlots.inventorySlots.size(); i++) {
-				final Slot s = this.inventorySlots.getSlot(i);
+				Slot s = this.inventorySlots.getSlot(i);
 
 				this.fontRenderer.drawStringWithShadow(i + "", guiLeft + s.xPos + 2, guiTop + s.yPos, 0xffffff);
 				this.fontRenderer.drawStringWithShadow(s.getSlotIndex() + "", guiLeft + s.xPos + 2, guiTop + s.yPos + 8, 0xff8080);

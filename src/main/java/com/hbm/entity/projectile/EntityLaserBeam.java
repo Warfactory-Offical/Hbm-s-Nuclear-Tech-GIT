@@ -49,12 +49,12 @@ public class EntityLaserBeam extends Entity implements IProjectile {
     /** The amount of knockback an arrow applies when it hits a mob. */
     private int knockbackStrength;
 	
-	public EntityLaserBeam(final World worldIn) {
+	public EntityLaserBeam(World worldIn) {
 		super(worldIn);
 		this.setSize(0.5F, 0.5F);
 	}
 
-	public EntityLaserBeam(final World p_i1756_1_, final EntityLivingBase p_i1756_2_, final float p_i1756_3_)
+	public EntityLaserBeam(World p_i1756_1_, EntityLivingBase p_i1756_2_, float p_i1756_3_)
     {
         super(p_i1756_1_);
         this.shootingEntity = p_i1756_2_;
@@ -72,8 +72,8 @@ public class EntityLaserBeam extends Entity implements IProjectile {
     }
 	
 	@Override
-	public void shoot(double x, double y, double z, final float velocity, final float inaccuracy) {
-		final float f2 = MathHelper.sqrt(x * x + y * y + z * z);
+	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+		float f2 = MathHelper.sqrt(x * x + y * y + z * z);
         x /= f2;
         y /= f2;
         z /= f2;
@@ -86,7 +86,7 @@ public class EntityLaserBeam extends Entity implements IProjectile {
         this.motionX = x;
         this.motionY = y;
         this.motionZ = z;
-        final float f3 = MathHelper.sqrt(x * x + z * z);
+        float f3 = MathHelper.sqrt(x * x + z * z);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(y, f3) * 180.0D / Math.PI);
         this.ticksInGround = 0;
@@ -94,21 +94,21 @@ public class EntityLaserBeam extends Entity implements IProjectile {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setPositionAndRotationDirect(final double x, final double y, final double z, final float yaw, final float pitch, final int posRotationIncrements, final boolean teleport) {
+	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 		this.setPosition(x, y, z);
         this.setRotation(yaw, pitch);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setVelocity(final double x, final double y, final double z) {
+	public void setVelocity(double x, double y, double z) {
 		this.motionX = x;
         this.motionY = y;
         this.motionZ = z;
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            final float f = MathHelper.sqrt(x * x + z * z);
+            float f = MathHelper.sqrt(x * x + z * z);
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(y, f) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
@@ -130,7 +130,7 @@ public class EntityLaserBeam extends Entity implements IProjectile {
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
         }
 
-        final IBlockState blockstate = world.getBlockState(new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f));
+        IBlockState blockstate = world.getBlockState(new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f));
 
         if (blockstate.getMaterial() != Material.AIR)
         {
@@ -160,24 +160,24 @@ public class EntityLaserBeam extends Entity implements IProjectile {
             }
 
             Entity entity = null;
-            final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int i;
             float f1;
 
             for (i = 0; i < list.size(); ++i)
             {
-                final Entity entity1 = list.get(i);
+                Entity entity1 = (Entity)list.get(i);
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f1 = 0.3F;
-                    final AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(f1, f1, f1);
-                    final RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(f1, f1, f1);
+                    RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
                     {
-                        final double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
+                        double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
 
                         if (d1 < d0 || d0 == 0.0D)
                         {
@@ -193,8 +193,9 @@ public class EntityLaserBeam extends Entity implements IProjectile {
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
             {
+                EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
 
                 if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
                 {
@@ -203,14 +204,14 @@ public class EntityLaserBeam extends Entity implements IProjectile {
             }
 
             float f2;
-            final float f4;
+            float f4;
 
             if (movingobjectposition != null && CompatibilityConfig.isWarDim(world))
             {
                 if (movingobjectposition.entityHit != null)
                 {
                     f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                    final int k = MathHelper.ceil(f2 * this.damage);
+                    int k = MathHelper.ceil(f2 * this.damage);
 
                     DamageSource damagesource = null;
 
@@ -230,8 +231,9 @@ public class EntityLaserBeam extends Entity implements IProjectile {
 
                     if (movingobjectposition.entityHit.attackEntityFrom(damagesource, k))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase entitylivingbase)
+                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
                         {
+                            EntityLivingBase entitylivingbase = (EntityLivingBase)movingobjectposition.entityHit;
 
                             if (this.knockbackStrength > 0)
                             {
@@ -274,8 +276,8 @@ public class EntityLaserBeam extends Entity implements IProjectile {
                 	this.field_145791_d = movingobjectposition.getBlockPos().getX();
 					this.field_145792_e = movingobjectposition.getBlockPos().getY();
 					this.field_145789_f = movingobjectposition.getBlockPos().getZ();
-					final BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
-					final IBlockState test_blockstate = this.world.getBlockState(pos);
+					BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
+					IBlockState test_blockstate = this.world.getBlockState(pos);
 					this.field_145790_g = test_blockstate.getBlock();
 					this.inData = field_145790_g.getMetaFromState(test_blockstate);
                 }
@@ -314,7 +316,7 @@ public class EntityLaserBeam extends Entity implements IProjectile {
 		return false;
 	}
 	
-	public void setDamage(final double damage) {
+	public void setDamage(double damage) {
 		this.damage = damage;
 	}
 	
@@ -328,7 +330,7 @@ public class EntityLaserBeam extends Entity implements IProjectile {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 		this.field_145791_d = compound.getShort("xTile");
         this.field_145792_e = compound.getShort("yTile");
         this.field_145789_f = compound.getShort("zTile");
@@ -354,7 +356,7 @@ public class EntityLaserBeam extends Entity implements IProjectile {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setShort("xTile", (short)this.field_145791_d);
 		compound.setShort("yTile", (short)this.field_145792_e);
 		compound.setShort("zTile", (short)this.field_145789_f);

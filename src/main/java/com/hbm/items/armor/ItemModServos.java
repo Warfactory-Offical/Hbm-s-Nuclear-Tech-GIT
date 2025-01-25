@@ -20,12 +20,12 @@ import java.util.List;
 
 public class ItemModServos extends ItemArmorMod {
 
-	public ItemModServos(final String s){
+	public ItemModServos(String s){
 		super(ArmorModHandler.servos, false, true, true, false, s);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		if(this == ModItems.servo_set) {
 			list.add(TextFormatting.DARK_PURPLE + "Chestplate: Haste I / Damage +50%");
 			list.add(TextFormatting.DARK_PURPLE + "Leggings: Speed +25% / Jump II");
@@ -40,8 +40,8 @@ public class ItemModServos extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor){
-		final ItemArmor item = (ItemArmor)armor.getItem();
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor){
+		ItemArmor item = (ItemArmor)armor.getItem();
 		
 		if(item.armorType == EntityEquipmentSlot.CHEST) {
 
@@ -65,8 +65,8 @@ public class ItemModServos extends ItemArmorMod {
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor){
-		final ItemArmor item = (ItemArmor)armor.getItem();
+	public void modUpdate(EntityLivingBase entity, ItemStack armor){
+		ItemArmor item = (ItemArmor)armor.getItem();
 		
 		if(item.armorType == EntityEquipmentSlot.CHEST) {
 
@@ -90,10 +90,10 @@ public class ItemModServos extends ItemArmorMod {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getModifiers(final EntityEquipmentSlot slot, final ItemStack armor){
-		final Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
+	public Multimap<String, AttributeModifier> getModifiers(EntityEquipmentSlot slot, ItemStack armor){
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
 		
-		final ItemArmor item = (ItemArmor)armor.getItem();
+		ItemArmor item = (ItemArmor)armor.getItem();
 		
 		if(item.armorType == EntityEquipmentSlot.CHEST) {
 			if(this == ModItems.servo_set)

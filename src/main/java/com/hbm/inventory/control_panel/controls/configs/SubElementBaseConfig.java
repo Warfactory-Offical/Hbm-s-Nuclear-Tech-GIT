@@ -1,12 +1,14 @@
 package com.hbm.inventory.control_panel.controls.configs;
 
-import com.hbm.inventory.control_panel.*;
+import com.hbm.inventory.control_panel.DataValue;
+import com.hbm.inventory.control_panel.GuiControlEdit;
+import com.hbm.inventory.control_panel.SubElement;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SubElementBaseConfig extends SubElement {
-    public SubElementBaseConfig(final GuiControlEdit gui) {
+    public SubElementBaseConfig(GuiControlEdit gui) {
         super(gui);
     }
 

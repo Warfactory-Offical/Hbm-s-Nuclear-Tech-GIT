@@ -1,11 +1,7 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector4f;
-
 import com.hbm.animloader.AnimatedModel.IAnimatedModelCallback;
 import com.hbm.animloader.AnimationWrapper;
-import com.hbm.config.GeneralConfig;
 import com.hbm.handler.HbmShaderManager2;
 import com.hbm.items.weapon.ItemGunBase;
 import com.hbm.items.weapon.ItemGunJShotty;
@@ -17,7 +13,6 @@ import com.hbm.render.RenderHelper;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.util.BobMathUtil;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,6 +23,8 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector4f;
 
 public class ItemRenderJShotgun extends TEISRBase {
 
@@ -35,18 +32,18 @@ public class ItemRenderJShotgun extends TEISRBase {
 	public static Vec3d flashlightDirection;
 
 	@Override
-	public void renderByItem(final ItemStack stack) {
+	public void renderByItem(ItemStack stack) {
 		GL11.glTranslated(0.5, 0.5, 0.5);
-		final int mag = ItemGunBase.getMag(stack);
+		int mag = ItemGunBase.getMag(stack);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.jshotgun_tex);
 		
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			final EnumHand hand = type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
-			final AnimationWrapper reload = HbmAnimations.getRelevantBlenderAnim(hand);
-			final float time = HbmAnimations.getTimeDifference("JS_RECOIL", hand);
-			final float timeMax = 0.0375F;
+			EnumHand hand = type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
+			AnimationWrapper reload = HbmAnimations.getRelevantBlenderAnim(hand);
+			float time = HbmAnimations.getTimeDifference("JS_RECOIL", hand);
+			float timeMax = 0.0375F;
 			if(time > 0 && time < timeMax){
 				ResourceManager.flash_lmap.use();
 				GlStateManager.setActiveTexture(GLCompat.GL_TEXTURE0+3);
@@ -55,7 +52,7 @@ public class ItemRenderJShotgun extends TEISRBase {
 				ResourceManager.flash_lmap.uniform1i("flash_map", 3);
 				GlStateManager.setActiveTexture(GLCompat.GL_TEXTURE0);
 			}
-			final double[] recoil = HbmAnimations.getRelevantTransformation("JS_RECOIL", hand);
+			double[] recoil = HbmAnimations.getRelevantTransformation("JS_RECOIL", hand);
 			GL11.glScaled(2.5, 2.5, 2.5);
 			if(type == TransformType.FIRST_PERSON_RIGHT_HAND) {
 				GL11.glRotated(270 + recoil[0] * 10, 0, 0, 1);
@@ -75,7 +72,7 @@ public class ItemRenderJShotgun extends TEISRBase {
 			GlStateManager.shadeModel(GL11.GL_SMOOTH);
 			ResourceManager.jshotgun.renderAnimated(System.currentTimeMillis(), new IAnimatedModelCallback() {
 				@Override
-				public boolean onRender(final int prevFrame, final int currentFrame, final int model, final float diffN, final String modelName) {
+				public boolean onRender(int prevFrame, int currentFrame, int model, float diffN, String modelName) {
 					//Sounds
 					if(prevFrame == 9 && currentFrame == 10){
 						Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getRecord(HBMSoundHandler.jsg_reload0, 1F, 0.15F));
@@ -90,14 +87,14 @@ public class ItemRenderJShotgun extends TEISRBase {
 					//Render
 					if(modelName.startsWith("Flash")){
 						if(time > 0 && time < timeMax){
-							final boolean left = mag == 1 || mag == 2;
+							boolean left = mag == 1 || mag == 2;
 							if((left && modelName.equals("Flash1")) || (!left && modelName.equals("Flash2"))){
 								Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.mflash);
 								HbmShaderManager2.releaseShader();
 								GlStateManager.enableBlend();
 								GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-								final float prevLx = OpenGlHelper.lastBrightnessX;
-								final float prevLy = OpenGlHelper.lastBrightnessY;
+								float prevLx = OpenGlHelper.lastBrightnessX;
+								float prevLy = OpenGlHelper.lastBrightnessY;
 								OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 								GlStateManager.disableLighting();
 								GlStateManager.depthMask(false);
@@ -128,8 +125,10 @@ public class ItemRenderJShotgun extends TEISRBase {
 						if(diff > reload.anim.length)
 							done = true;
 					}
-                    return done && (modelName.startsWith("rightArm") || modelName.startsWith("leftArm") || modelName.startsWith("Boolet"));
-                }
+					if(done && (modelName.startsWith("rightArm") || modelName.startsWith("leftArm") || modelName.startsWith("Boolet")))
+						return true;
+					return false;
+				}
 			});
 			if(time > 0 && time < timeMax){
 				HbmShaderManager2.releaseShader();
@@ -156,10 +155,10 @@ public class ItemRenderJShotgun extends TEISRBase {
 			break;
 		}
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		final boolean flash = ItemGunJShotty.getDelay(stack) == ((ItemGunJShotty)stack.getItem()).mainConfig.rateOfFire && MainRegistry.proxy.partialTicks() < 0.75F;
+		boolean flash = ItemGunJShotty.getDelay(stack) == ((ItemGunJShotty)stack.getItem()).mainConfig.rateOfFire && MainRegistry.proxy.partialTicks() < 0.75F;
 		ResourceManager.jshotgun.render(new IAnimatedModelCallback() {
 			@Override
-			public boolean onRender(final int prevFrame, final int currentFrame, final int model, final float diffN, final String modelName) {
+			public boolean onRender(int prevFrame, int currentFrame, int model, float diffN, String modelName) {
 				if(modelName.startsWith("rightArm") || modelName.startsWith("leftArm") || modelName.startsWith("Boolet"))
 					return true;
 				if(modelName.startsWith("Flash")){
@@ -167,8 +166,8 @@ public class ItemRenderJShotgun extends TEISRBase {
 						Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.mflash);
 						GlStateManager.enableBlend();
 						GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-						final float prevLx = OpenGlHelper.lastBrightnessX;
-						final float prevLy = OpenGlHelper.lastBrightnessY;
+						float prevLx = OpenGlHelper.lastBrightnessX;
+						float prevLy = OpenGlHelper.lastBrightnessY;
 						OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 						GlStateManager.disableLighting();
 						GlStateManager.depthMask(false);

@@ -1,7 +1,6 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKControlAuto;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -10,9 +9,9 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerRBMKControlAuto extends Container {
 
-	private final TileEntityRBMKControlAuto rbmk;
+	private TileEntityRBMKControlAuto rbmk;
 
-	public ContainerRBMKControlAuto(final InventoryPlayer invPlayer, final TileEntityRBMKControlAuto tedf) {
+	public ContainerRBMKControlAuto(InventoryPlayer invPlayer, TileEntityRBMKControlAuto tedf) {
 		rbmk = tedf;
 
 		for(int i = 0; i < 3; i++) {
@@ -27,12 +26,12 @@ public class ContainerRBMKControlAuto extends Container {
 	}
 	
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int p_82846_2_) {
+	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 }

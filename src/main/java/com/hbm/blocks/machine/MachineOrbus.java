@@ -6,7 +6,6 @@ import com.hbm.lib.ForgeDirection;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityMachineOrbus;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,12 +18,12 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 public class MachineOrbus extends BlockDummyable {
 
-	public MachineOrbus(final Material mat, final String s) {
+	public MachineOrbus(Material mat, String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		
 		if(meta >= 12) return new TileEntityMachineOrbus();
 		if(meta >= 6) return new TileEntityProxyCombo(false, false, true);
@@ -42,12 +41,12 @@ public class MachineOrbus extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 			
 			if(pos == null)
 				return false;
@@ -60,13 +59,13 @@ public class MachineOrbus extends BlockDummyable {
 	}
 
 	@Override
-	public void fillSpace(final World world, int x, final int y, int z, ForgeDirection dir, final int o) {
+	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 		
-		final ForgeDirection d2 = dir.getRotation(ForgeDirection.UP);
+		ForgeDirection d2 = dir.getRotation(ForgeDirection.UP);
 		dir = dir.getOpposite();
 
 		for(int i = 0; i < 5; i += 4) {

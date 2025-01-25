@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class JungleDungeonRoom extends CellularDungeonRoom {
 
-	public JungleDungeonRoom(final CellularDungeon parent) {
+	public JungleDungeonRoom(CellularDungeon parent) {
 		super(parent);
 	}
 	
@@ -29,7 +29,7 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 		if(!(this.parent instanceof JungleDungeon))
 			return; //just to be safe
 
-		final ITimedJob job = new ITimedJob() {
+		ITimedJob job = new ITimedJob() {
 
 			@Override
 			public void work() {
@@ -38,11 +38,11 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 				DungeonToolbox.generateBox(world, x, y + 1, z, parent.width, parent.height - 1, parent.width, Blocks.AIR.getDefaultState());
 				DungeonToolbox.generateBox(world, x, y + parent.height - 1, z, parent.width, 1, parent.width, parent.ceiling);
 
-				final int rtd = world.rand.nextInt(50);
+				int rtd = world.rand.nextInt(50);
 
 				// 1:10 chance to have a lava floor
 				if(rtd < 5) {
-					final List<IBlockState> metas = Arrays.asList(
+					List<IBlockState> metas = Arrays.asList(
 						ModBlocks.brick_jungle_cracked.getDefaultState(),
 						ModBlocks.brick_jungle_lava.getDefaultState(),
 						ModBlocks.brick_jungle_lava.getDefaultState()
@@ -64,7 +64,7 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 						for(int a = 0; a < 3; a++) {
 							for(int b = 0; b < 3; b++) {
 
-								final Block bl = world.getBlockState(new BlockPos(x + 1 + a, y - 4, z + 1 + b)).getBlock();
+								Block bl = world.getBlockState(new BlockPos(x + 1 + a, y - 4, z + 1 + b)).getBlock();
 
 								if(world.getBlockState(new BlockPos(x + 1 + a, y - 1, z + 1 + b)).getBlock() == Blocks.AIR) {
 									if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava || bl == ModBlocks.brick_jungle_trap) {
@@ -87,7 +87,7 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 	@Override
 	public void generateWall(final World world, final int x, final int y, final int z, final EnumFacing wall, final boolean door) {
 
-		final ITimedJob job = new ITimedJob() {
+		ITimedJob job = new ITimedJob() {
 
 			@Override
 			public void work() {

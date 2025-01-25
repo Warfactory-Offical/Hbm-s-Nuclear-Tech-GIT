@@ -1,7 +1,6 @@
 package com.hbm.packet;
 
-import api.hbm.energy.IEnergyUser;
-
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
@@ -24,7 +23,7 @@ public class AuxElectricityPacket implements IMessage {
 		
 	}
 
-	public AuxElectricityPacket(final BlockPos pos, final long charge)
+	public AuxElectricityPacket(BlockPos pos, long charge)
 	{
 		this.x = pos.getX();
 		this.y = pos.getY();
@@ -32,7 +31,7 @@ public class AuxElectricityPacket implements IMessage {
 		this.charge = charge;
 	}
 
-	public AuxElectricityPacket(final int x2, final int y2, final int z2, final long power) {
+	public AuxElectricityPacket(int x2, int y2, int z2, long power) {
 		this.x = x2;
 		this.y = y2;
 		this.z = z2;
@@ -40,7 +39,7 @@ public class AuxElectricityPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -48,7 +47,7 @@ public class AuxElectricityPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -59,17 +58,18 @@ public class AuxElectricityPacket implements IMessage {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final AuxElectricityPacket m, final MessageContext ctx) {
+		public IMessage onMessage(AuxElectricityPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				BlockPos pos = new BlockPos(m.x, m.y, m.z);
 				try {
-					final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 
-					if (te != null && te instanceof IEnergyUser gen) {
+					if (te != null && te instanceof IEnergyReceiverMK2) {
 
-                        gen.setPower(m.charge);
+						IEnergyReceiverMK2 gen = (IEnergyReceiverMK2) te;
+						gen.setPower(m.charge);
 					}
-				} catch (final Exception x) { }
+				} catch (Exception x) { }
 			});
 			
 			return null;

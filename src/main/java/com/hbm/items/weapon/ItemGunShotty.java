@@ -8,7 +8,6 @@ import com.hbm.packet.MeathookResetStrafePacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.SetGunAnimPacket;
 import com.hbm.render.anim.HbmAnimations.AnimType;
-
 import glmath.glm.vec._2.Vec2;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -35,17 +34,17 @@ public class ItemGunShotty extends ItemGunBase {
 	//For swinging left or right with the meathook
 	public static float motionStrafe;
 	
-	public ItemGunShotty(final GunConfiguration config, final String s) {
+	public ItemGunShotty(GunConfiguration config, String s) {
 		super(config, s);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void startActionClient(final ItemStack stack, final World world, final EntityPlayer player, final boolean main, final EnumHand hand) {
+	public void startActionClient(ItemStack stack, World world, EntityPlayer player, boolean main, EnumHand hand) {
 		if(mainConfig.firingMode == GunConfiguration.FIRE_MANUAL && m1 && tryShoot(stack, world, player, main)){
-			final long time = System.currentTimeMillis();
-			final float mult = player.getUniqueID().toString().equals(Library.Dr_Nostalgia) ? 10 : 1;
-			final NBTTagCompound anim = new NBTTagCompound();
+			long time = System.currentTimeMillis();
+			float mult = player.getUniqueID().toString().equals(Library.Dr_Nostalgia) ? 10 : 1;
+			NBTTagCompound anim = new NBTTagCompound();
 			anim.setLong("time", time);
 			anim.setInteger("id", 0);
 			anim.setFloat("mult", mult);
@@ -58,21 +57,21 @@ public class ItemGunShotty extends ItemGunBase {
 	}
 	
 	@Override
-	protected void spawnProjectile(final World world, final EntityPlayer player, final ItemStack stack, final int config, final EnumHand hand) {
+	protected void spawnProjectile(World world, EntityPlayer player, ItemStack stack, int config, EnumHand hand) {
 		setHookedEntity(player, stack, null);
 		super.spawnProjectile(world, player, stack, config, hand);
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-			final ItemStack stack = playerIn.getHeldItem(handIn);
-			final RayTraceResult ray = Library.rayTraceEntitiesInCone(playerIn, 30, 1, 6);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+			ItemStack stack = playerIn.getHeldItem(handIn);
+			RayTraceResult ray = Library.rayTraceEntitiesInCone(playerIn, 30, 1, 6);
 			if(!worldIn.isRemote && ray != null && ray.typeOfHit == Type.ENTITY && !hasHookedEntity(worldIn, stack)){
-				final Entity ent = ray.entityHit;
+				Entity ent = ray.entityHit;
 				setHookedEntity(playerIn, stack, ent);
 				setTimeout(stack, 30);
 				
-				/*Vec3d toEnt = ent.getPositionVector().add(0, ent.getEyeHeight()*0.75, 0).subtract(playerIn.getPositionEyes(1.0F)).normalize();
+				/*Vec3d toEnt = ent.getPositionVector().addVector(0, ent.getEyeHeight()*0.75, 0).subtract(playerIn.getPositionEyes(1.0F)).normalize();
 				double yaw = Math.toDegrees(Math.atan2(toEnt.x, toEnt.z));
 				double sqrt = MathHelper.sqrt(toEnt.x * toEnt.x + toEnt.z * toEnt.z);
 				double pitch = Math.toDegrees(Math.atan2(toEnt.y, sqrt));
@@ -90,18 +89,18 @@ public class ItemGunShotty extends ItemGunBase {
 	}
 	
 	@Override
-	protected void updateServer(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand hand) {
+	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand hand) {
 		super.updateServer(stack, world, player, slot, hand);
-		final int timeout = getTimeout(stack);
+		int timeout = getTimeout(stack);
 		if(timeout > 0)
 			setTimeout(stack, timeout-1);
 		
 		if(hasHookedEntity(world, stack)){
 			player.fallDistance = 0;
-			final Entity ent = getHookedEntity(world, stack);
-			final Vec3d entPos = ent.getPositionVector().add(0, ent.getEyeHeight()*0.75, 0);
-			final Vec3d playerPos = player.getPositionEyes(1);
-			final double toEnt = entPos.subtract(playerPos).lengthSquared();
+			Entity ent = getHookedEntity(world, stack);
+			Vec3d entPos = ent.getPositionVector().addVector(0, ent.getEyeHeight()*0.75, 0);
+			Vec3d playerPos = player.getPositionEyes(1);
+			double toEnt = entPos.subtract(playerPos).lengthSquared();
 			if(toEnt < 16 || Library.isObstructed(world, playerPos.x, playerPos.y, playerPos.z, entPos.x, entPos.y, entPos.z))
 				setHookedEntity(player, stack, null);
 		}
@@ -114,22 +113,22 @@ public class ItemGunShotty extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	protected void updateClient(final ItemStack stack, final World world, final EntityPlayer player, final int slot, final EnumHand hand) {
+	protected void updateClient(ItemStack stack, World world, EntityPlayer player, int slot, EnumHand hand) {
 		prevScreenPos = screenPos;
-		final RayTraceResult ray = Library.rayTraceEntitiesInCone(player, 30, 1, 6);
+		RayTraceResult ray = Library.rayTraceEntitiesInCone(player, 30, 1, 6);
 		if(ray != null && ray.typeOfHit == Type.ENTITY){
-			rayTrace = ray.entityHit.getPositionVector().add(0, ray.entityHit.getEyeHeight()*0.75, 0);
+			rayTrace = ray.entityHit.getPositionVector().addVector(0, ray.entityHit.getEyeHeight()*0.75, 0);
 		} else {
 			rayTrace = null;
 		}
 		
 		if(hasHookedEntity(world, stack)){
-			final Entity ent = getHookedEntity(world, stack);
-			Vec3d toEnt = ent.getPositionVector().add(0, ent.getEyeHeight()*0.75, 0).subtract(player.getPositionEyes(1.0F)).normalize().scale(1.3);
+			Entity ent = getHookedEntity(world, stack);
+			Vec3d toEnt = ent.getPositionVector().addVector(0, ent.getEyeHeight()*0.75, 0).subtract(player.getPositionEyes(1.0F)).normalize().scale(1.3);
 			motionStrafe *= 0.9;
 			//Cross product returns a vector perpendicular to the two supplied vectors.
 			//In this case, it gives us the tangent vector to the circle we want to travel around to get a nice swing.
-			final Vec3d cross = toEnt.crossProduct(new Vec3d(0, 1, 0)).scale(-motionStrafe);
+			Vec3d cross = toEnt.crossProduct(new Vec3d(0, 1, 0)).scale(-motionStrafe);
 			player.motionX = toEnt.x + cross.x;
 			player.motionY = toEnt.y + 0.05;
 			player.motionZ = toEnt.z + cross.z;
@@ -139,14 +138,14 @@ public class ItemGunShotty extends ItemGunBase {
 				//then adds the difference to the player's rotation. Only do this when the player is actually tracking the entity.
 				//This essentially acts as aim assist so you don't have to track the entity manually.
 				toEnt = toEnt.normalize();
-				final Vec3d newToEnt = ent.getPositionVector().add(player.motionX, ent.getEyeHeight()*0.75+player.motionY, player.motionZ).subtract(player.getPositionEyes(1.0F)).normalize();
-				final Vec3d toEntAngle = Library.getEuler(toEnt);
-				final Vec3d toEntAngle2 = Library.getEuler(newToEnt);
+				Vec3d newToEnt = ent.getPositionVector().addVector(player.motionX, ent.getEyeHeight()*0.75+player.motionY, player.motionZ).subtract(player.getPositionEyes(1.0F)).normalize();
+				Vec3d toEntAngle = Library.getEuler(toEnt);
+				Vec3d toEntAngle2 = Library.getEuler(newToEnt);
 				Vec3d diff = toEntAngle2.subtract(toEntAngle);
 				if(diff.x > 180){
 					diff = diff.subtract(360, 0, 0);
 				} else if(diff.x < -180){
-					diff = diff.add(360, 0, 0);
+					diff = diff.addVector(360, 0, 0);
 				}
 				player.rotationYaw += diff.x;
 				player.rotationPitch += diff.y;
@@ -166,7 +165,7 @@ public class ItemGunShotty extends ItemGunBase {
 		super.updateClient(stack, world, player, slot, hand);
 	}
 	
-	public static void setHookedEntity(final EntityPlayer p, final ItemStack stack, final Entity e){
+	public static void setHookedEntity(EntityPlayer p, ItemStack stack, Entity e){
 		if(!stack.hasTagCompound()){
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -180,28 +179,28 @@ public class ItemGunShotty extends ItemGunBase {
 		}
 	}
 	
-	public static boolean hasHookedEntity(final World w, final ItemStack stack){
+	public static boolean hasHookedEntity(World w, ItemStack stack){
 		if(stack == null || stack.getItem() != ModItems.gun_supershotgun)
 			return false;
-		final int timeout = getTimeout(stack);
+		int timeout = getTimeout(stack);
 		return timeout > 0 && getHookedEntity(w, stack) != null;	
 	}
 	
-	public static Entity getHookedEntity(final World world, final ItemStack stack){
+	public static Entity getHookedEntity(World world, ItemStack stack){
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("hooked_entity")){
 			return world.getEntityByID(stack.getTagCompound().getInteger("hooked_entity"));
 		}
 		return null;
 	}
 	
-	public static int getTimeout(final ItemStack stack){
+	public static int getTimeout(ItemStack stack){
 		if(!stack.hasTagCompound()){
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		return stack.getTagCompound().getInteger("meathook_timeout");
 	}
 	
-	public static void setTimeout(final ItemStack stack, final int timeout){
+	public static void setTimeout(ItemStack stack, int timeout){
 		if(!stack.hasTagCompound()){
 			stack.setTagCompound(new NBTTagCompound());
 		}

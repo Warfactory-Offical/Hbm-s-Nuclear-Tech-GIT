@@ -3,14 +3,13 @@ package com.hbm.inventory.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hbm.util.Compat;
-
 public class MaterialShapes {
 	
 	public static final List<MaterialShapes> allShapes = new ArrayList();
 	
 	public static final MaterialShapes QUANTUM = new MaterialShapes(1); // 1/72 of an ingot, allows the ingot to be divisible through 2, 4, 6, 8, 9, 12, 24 and 36
 	public static final MaterialShapes NUGGET = new MaterialShapes(8, "nugget");
+	public static final MaterialShapes FRAGMENT = new MaterialShapes(8, "bedrockorefragment");
 	public static final MaterialShapes DUSTTINY = new MaterialShapes(NUGGET.quantity, "dustTiny");
 	public static final MaterialShapes WIRE = new MaterialShapes(9);
 	public static final MaterialShapes BILLET = new MaterialShapes(NUGGET.quantity * 6, "billet");
@@ -42,25 +41,25 @@ public class MaterialShapes {
 	}
 	*/
 	
-	private final int quantity;
+	private int quantity;
 	public final String[] prefixes;
 	
-	private MaterialShapes(final int quantity, final String... prefixes) {
+	private MaterialShapes(int quantity, String... prefixes) {
 		this.quantity = quantity;
 		this.prefixes = prefixes;
 		
-		for(final String prefix : prefixes) {
+		for(String prefix : prefixes) {
 			Mats.prefixByName.put(prefix, this);
 		}
 		
 		allShapes.add(this);
 	}
 	
-	public int q(final int amount) {
+	public int q(int amount) {
 		return this.quantity * amount;
 	}
 	
-	public int q(final int unitsUsed, final int itemsProduced) { //eg rails: INOGT.q(6, 16) since the recipe uses 6 ton ingots producing 16 individual rail blocks
+	public int q(int unitsUsed, int itemsProduced) { //eg rails: INOGT.q(6, 16) since the recipe uses 6 ton ingots producing 16 individual rail blocks
 		return this.quantity * unitsUsed / itemsProduced;
 	}
 

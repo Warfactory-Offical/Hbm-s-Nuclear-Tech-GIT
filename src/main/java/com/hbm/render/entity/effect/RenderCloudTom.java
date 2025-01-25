@@ -1,13 +1,10 @@
 package com.hbm.render.entity.effect;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.effect.EntityCloudTom;
 import com.hbm.main.ClientProxy;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.amlfrom1710.Tessellator;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
@@ -16,17 +13,18 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCloudTom extends Render<EntityCloudTom> {
 
 	public static final IRenderFactory<EntityCloudTom> FACTORY = man -> new RenderCloudTom(man);
 	
-	protected RenderCloudTom(final RenderManager renderManager) {
+	protected RenderCloudTom(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(final EntityCloudTom entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityCloudTom entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		if(!ClientProxy.renderingConstant)
 			return;
 		GL11.glPushMatrix();
@@ -39,16 +37,16 @@ public class RenderCloudTom extends Render<EntityCloudTom> {
         GlStateManager.depthMask(false);
         GlStateManager.tryBlendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
 
-		final EntityCloudTom blast = entity;
+		EntityCloudTom blast = (EntityCloudTom)entity;
 
-		final double scale = blast.age + partialTicks;
+		double scale = blast.age + partialTicks;
 
-		final int segments = 16;
-		final float angle = (float) Math.toRadians(360D/segments);
-		final int height = 20;
-		final int depth = 20;
+		int segments = 16;
+		float angle = (float) Math.toRadians(360D/segments);
+		int height = 20;
+		int depth = 20;
 
-		final Tessellator tess = Tessellator.instance;
+		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 
 		bindTexture(this.getEntityTexture(blast));
@@ -56,7 +54,7 @@ public class RenderCloudTom extends Render<EntityCloudTom> {
         GlStateManager.matrixMode(GL11.GL_TEXTURE);
         GlStateManager.loadIdentity();
 
-    	final float movement = -(Minecraft.getMinecraft().player.ticksExisted + partialTicks) * 0.005F * 10;
+    	float movement = -(Minecraft.getMinecraft().player.ticksExisted + partialTicks) * 0.005F * 10;
     	GL11.glTranslatef(0, movement, 0);
 
         GlStateManager.matrixMode(GL11.GL_MODELVIEW);
@@ -65,11 +63,11 @@ public class RenderCloudTom extends Render<EntityCloudTom> {
 
 			for(int j = 0; j < 5; j++) {
 
-				final double mod = 1 - j * 0.025;
-				final double h = height + j * 10;
-				final double off = 1D / j;
+				double mod = 1 - j * 0.025;
+				double h = height + j * 10;
+				double off = 1D / j;
 
-				final Vec3 vec = Vec3.createVectorHelper(scale, 0, 0);
+				Vec3 vec = Vec3.createVectorHelper(scale, 0, 0);
 				vec.rotateAroundY(angle * i);
 				double x0 = vec.xCoord * mod;
 				double z0 = vec.zCoord * mod;
@@ -104,10 +102,10 @@ public class RenderCloudTom extends Render<EntityCloudTom> {
         GlStateManager.disableBlend();
         GlStateManager.enableLighting();
 		GL11.glPopMatrix();
-	}
-
-    @Override
-	protected ResourceLocation getEntityTexture(final EntityCloudTom entity) {
+	};
+	
+	@Override
+	protected ResourceLocation getEntityTexture(EntityCloudTom entity) {
 		return ResourceManager.tomblast;
 	}
 

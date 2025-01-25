@@ -25,80 +25,80 @@ public class Vec3 extends funcRelational {
         z = 0f;
     }
 
-    public Vec3(final Vec3 v) {
+    public Vec3(Vec3 v) {
         x = v.x;
         y = v.y;
         z = v.z;
     }
 
-    public Vec3(final Vec4 v) {
+    public Vec3(Vec4 v) {
         x = v.x;
         y = v.y;
         z = v.z;
     }
 
-    public Vec3(final float f) {
+    public Vec3(float f) {
         x = f;
         y = f;
         z = f;
     }
 
-    public Vec3(final float x, final float y, final float z) {
+    public Vec3(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3(final float[] fa) {
+    public Vec3(float[] fa) {
         this(fa, 0);
     }
 
-    public Vec3(final float[] fa, final int i) {
-        x = fa[i];
+    public Vec3(float[] fa, int i) {
+        x = fa[i + 0];
         y = fa[i + 1];
         z = fa[i + 2];
     }
 
-    public Vec3(final double x, final double y, final double z) {
+    public Vec3(double x, double y, double z) {
         this.x = (float) x;
         this.y = (float) y;
         this.z = (float) z;
     }
 
-    public Vec3 set(final Vec3 v) {
+    public Vec3 set(Vec3 v) {
         return set(v.x, v.y, v.z);
     }
 
-    public Vec3 set(final float f) {
+    public Vec3 set(float f) {
         x = f;
         y = f;
         z = f;
         return this;
     }
 
-    public Vec3 set(final double x, final double y, final double z) {
+    public Vec3 set(double x, double y, double z) {
         return set((float) x, (float) y, (float) z);
     }
 
-    public Vec3 set(final float x, final float y, final float z) {
+    public Vec3 set(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
         return this;
     }
 
-    public Vec3 set(final float[] fa) {
+    public Vec3 set(float[] fa) {
         x = fa[0];
         y = fa[1];
         z = fa[2];
         return this;
     }
 
-    public static Vec3 linearRand_(final Vec3 min, final Vec3 max) {
+    public static Vec3 linearRand_(Vec3 min, Vec3 max) {
         return linearRand(min, max, new Vec3());
     }
 
-    public static Vec3 linearRand(final Vec3 min, final Vec3 max, final Vec3 res) {
+    public static Vec3 linearRand(Vec3 min, Vec3 max, Vec3 res) {
         res.x = (float) Glm.linearRand(min.x, max.x);
         res.y = (float) Glm.linearRand(min.y, max.y);
         res.z = (float) Glm.linearRand(min.z, max.z);
@@ -113,7 +113,7 @@ public class Vec3 extends funcRelational {
         return negate(new Vec3());
     }
 
-    public Vec3 negate(final Vec3 res) {
+    public Vec3 negate(Vec3 res) {
         res.x = -x;
         res.y = -y;
         res.z = -z;
@@ -128,7 +128,7 @@ public class Vec3 extends funcRelational {
         return toVec4(new Vec4());
     }
 
-    public Vec4 toVec4(final Vec4 res) {
+    public Vec4 toVec4(Vec4 res) {
         return res.set(x, y, z, 1.0f);
     }
 
@@ -136,7 +136,7 @@ public class Vec3 extends funcRelational {
         return toFa(new float[3]);
     }
 
-    public float[] toFa(final float[] fa) {
+    public float[] toFa(float[] fa) {
         fa[0] = x;
         fa[1] = y;
         fa[2] = z;
@@ -147,13 +147,13 @@ public class Vec3 extends funcRelational {
         return toDfb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer());
     }
 
-    public FloatBuffer toDfb(final FloatBuffer fb) {
+    public FloatBuffer toDfb(FloatBuffer fb) {
         return toDfb(fb, 0);
     }
 
-    public FloatBuffer toDfb(final FloatBuffer fb, final int index) {
+    public FloatBuffer toDfb(FloatBuffer fb, int index) {
         return fb
-                .put(index, x)
+                .put(index + 0, x)
                 .put(index + 1, y)
                 .put(index + 2, z);
     }
@@ -162,14 +162,14 @@ public class Vec3 extends funcRelational {
         return toDbb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()));
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb) {
+    public ByteBuffer toDbb(ByteBuffer bb) {
         return toDbb(bb, 0);
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb, final int index) {
+    public ByteBuffer toDbb(ByteBuffer bb, int index) {
         return bb
-                .putFloat(index, x)
-                .putFloat(index + Float.BYTES, y)
+                .putFloat(index + 0 * Float.BYTES, x)
+                .putFloat(index + 1 * Float.BYTES, y)
                 .putFloat(index + 2 * Float.BYTES, z);
     }
 
@@ -182,11 +182,11 @@ public class Vec3 extends funcRelational {
         print("", System.out);
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         print(title, System.out);
     }
 
-    public void print(final String title, final PrintStream printStream) {
+    public void print(String title, PrintStream printStream) {
         printStream.println(title + "\n(" + x + ", " + y + ", " + z + ")");
     }
 }

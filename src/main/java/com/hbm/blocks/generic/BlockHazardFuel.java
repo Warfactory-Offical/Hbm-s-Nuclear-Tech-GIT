@@ -8,11 +8,11 @@ import net.minecraft.world.World;
 
 public class BlockHazardFuel extends BlockHazard {
 
-	private final int burntime;
+	private int burntime;
 	public int encouragement;
 	public int flammability;
 	
-	public BlockHazardFuel(final Material m, final String s, final int en, final int flam, final int burntime){
+	public BlockHazardFuel(Material m, String s, int en, int flam, int burntime){
 		super(m, s);
 		this.encouragement = en;
 		this.flammability = flam;
@@ -24,22 +24,22 @@ public class BlockHazardFuel extends BlockHazard {
 	}
 	
 	@Override
-	public int getFlammability(final IBlockAccess world, final BlockPos pos, final EnumFacing face){
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face){
 		return flammability;
 	}
 	
 	@Override
-	public int getFireSpreadSpeed(final IBlockAccess world, final BlockPos pos, final EnumFacing face){
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face){
 		return encouragement;
 	}
 
 	@Override
-	public boolean isFlammable(final IBlockAccess world, final BlockPos pos, final EnumFacing face){
+	public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face){
 		return true;
 	}
 
 	@Override
-	public boolean isFireSource(final World world, final BlockPos pos, final EnumFacing side){
+	public boolean isFireSource(World world, BlockPos pos, EnumFacing side){
 		return true;
 	}
 }

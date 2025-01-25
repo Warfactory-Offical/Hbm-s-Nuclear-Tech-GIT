@@ -1,5 +1,4 @@
 package com.hbm.creativetabs;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 
@@ -10,17 +9,17 @@ import net.minecraft.item.ItemStack;
 
 public class NukeTab extends CreativeTabs {
 
-	public NukeTab(final int index, final String label) {
+	public NukeTab(int index, String label) {
 		super(index, label);
 		this.setBackgroundImageName("nuke.png");
 	}
 
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getTabIconItem() {
 		if(ModBlocks.float_bomb != null){
-			return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.nuke_man));
+			return new ItemStack(Item.getItemFromBlock(ModBlocks.nuke_man));
 		}
-		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
+		return new ItemStack(Items.IRON_PICKAXE);
 	}
 
 }

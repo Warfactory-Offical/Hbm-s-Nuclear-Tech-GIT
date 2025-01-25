@@ -1,16 +1,11 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
-import com.hbm.lib.RefStrings;
 import com.hbm.render.item.TEISRBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderRevolverInverted extends TEISRBase {
 	
@@ -18,13 +13,13 @@ public class ItemRenderRevolverInverted extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(final ItemStack item) {
+	public void renderByItem(ItemStack item) {
 		if(type == null) return;
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
-		final double s0 = 1.5D;
-		final double s1 = 1.5D;
-		final double s2 = 1.5D;
+		double s0 = 1.5D;
+		double s1 = 1.5D;
+		double s2 = 1.5D;
 		switch(type) {
 		
 		case FIRST_PERSON_LEFT_HAND:

@@ -17,19 +17,19 @@ abstract class funcCommon {
 
     public float w, x, y, z;
 
-    public Quat add(final Quat y) {
+    public Quat add(Quat y) {
         return add(y, (Quat) this);
     }
 
-    public Quat add_(final Quat y) {
+    public Quat add_(Quat y) {
         return add(y, new Quat());
     }
 
-    public Quat add(final Quat y, final Quat res) {
+    public Quat add(Quat y, Quat res) {
         return add((Quat) this, y, res);
     }
 
-    public static Quat add(final Quat x, final Quat y, final Quat res) {
+    public static Quat add(Quat x, Quat y, Quat res) {
         res.w = x.w + y.w;
         res.x = x.x + y.x;
         res.y = x.y + y.y;
@@ -37,19 +37,19 @@ abstract class funcCommon {
         return res;
     }
 
-    public Quat mul_(final Quat q) {
+    public Quat mul_(Quat q) {
         return mul(q, new Quat());
     }
 
-    public Quat mul(final Quat q) {
+    public Quat mul(Quat q) {
         return mul(q, (Quat) this);
     }
 
-    public Quat mul(final Quat q, final Quat res) {
+    public Quat mul(Quat q, Quat res) {
         return Quat.mul((Quat) this, q, res);
     }
 
-    public static Quat mul(final Quat x, final Quat y, final Quat res) {
+    public static Quat mul(Quat x, Quat y, Quat res) {
         return res.set(
                 x.w * y.w - x.x * y.x - x.y * y.y - x.z * y.z,
                 x.w * y.x + x.x * y.w + x.y * y.z - x.z * y.y,
@@ -57,58 +57,58 @@ abstract class funcCommon {
                 x.w * y.z + x.z * y.w + x.x * y.y - x.y * y.x);
     }
 
-    public Vec3 mul(final Vec3 v) {
+    public Vec3 mul(Vec3 v) {
         return Quat.mul((Quat) this, v, v);
     }
 
-    public Vec3 mul_(final Vec3 v) {
+    public Vec3 mul_(Vec3 v) {
         return Quat.mul((Quat) this, v, new Vec3());
     }
 
-    public Vec3 mul(final Vec3 v, final Vec3 res) {
+    public Vec3 mul(Vec3 v, Vec3 res) {
         return Quat.mul((Quat) this, v, res);
     }
 
-    public static Vec3 mul(final Quat q, final Vec3 v, final Vec3 res) {
-        final float n0 = q.x + q.x;
-        final float n1 = q.y + q.y;
-        final float n2 = q.z + q.z;
-        final float n3 = q.x * n0;
-        final float n4 = q.y * n1;
-        final float n5 = q.z * n2;
-        final float n6 = q.x * n1;
-        final float n7 = q.x * n2;
-        final float n8 = q.y * n2;
-        final float n9 = q.w * n0;
-        final float n10 = q.w * n1;
-        final float n11 = q.w * n2;
+    public static Vec3 mul(Quat q, Vec3 v, Vec3 res) {
+        float n0 = q.x + q.x;
+        float n1 = q.y + q.y;
+        float n2 = q.z + q.z;
+        float n3 = q.x * n0;
+        float n4 = q.y * n1;
+        float n5 = q.z * n2;
+        float n6 = q.x * n1;
+        float n7 = q.x * n2;
+        float n8 = q.y * n2;
+        float n9 = q.w * n0;
+        float n10 = q.w * n1;
+        float n11 = q.w * n2;
         res.set((1.0f - (n4 + n5)) * v.x + (n6 - n11) * v.y + (n7 + n10) * v.z,
                 (n6 + n11) * v.x + (1.0f - (n3 + n5)) * v.y + (n8 - n9) * v.z,
                 (n7 - n10) * v.x + (n8 + n9) * v.y + (1.0f - (n3 + n4)) * v.z);
         return res;
     }
 
-    public Quat mul(final double d) {
+    public Quat mul(double d) {
         return mul((float) d, (Quat) this);
     }
 
-    public Quat mul_(final double d) {
+    public Quat mul_(double d) {
         return mul((float) d, new Quat());
     }
 
-    public Quat mul(final float f) {
+    public Quat mul(float f) {
         return mul(f, (Quat) this);
     }
 
-    public Quat mul_(final float f) {
+    public Quat mul_(float f) {
         return mul(f, new Quat());
     }
 
-    public Quat mul(final float f, final Quat res) {
+    public Quat mul(float f, Quat res) {
         return Quat.mul((Quat) this, f, res);
     }
 
-    public static Quat mul(final Quat x, final float y, final Quat res) {
+    public static Quat mul(Quat x, float y, Quat res) {
         return res.set(
                 x.w * y,
                 x.x * y,
@@ -116,19 +116,19 @@ abstract class funcCommon {
                 x.z * y);
     }
 
-    public Quat sub(final Quat y) {
+    public Quat sub(Quat y) {
         return sub(y, (Quat) this);
     }
 
-    public Quat sub_(final Quat y) {
+    public Quat sub_(Quat y) {
         return sub(y, new Quat());
     }
 
-    public Quat sub(final Quat y, final Quat res) {
+    public Quat sub(Quat y, Quat res) {
         return sub((Quat) this, y, res);
     }
 
-    public static Quat sub(final Quat x, final Quat y, final Quat res) {
+    public static Quat sub(Quat x, Quat y, Quat res) {
         res.w = x.w - y.w;
         res.x = x.x - y.x;
         res.y = x.y - y.y;

@@ -7,7 +7,6 @@ import com.hbm.inventory.container.ContainerFirebox;
 import com.hbm.inventory.gui.GUIFirebox;
 import com.hbm.modules.ModuleBurnTime;
 import com.hbm.tileentity.IConfigurableMachine;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -63,10 +62,11 @@ public class TileEntityHeaterOven extends TileEntityFireboxBase implements IConf
     }
 
     protected void tryPullHeat() {
-        final TileEntity te = world.getTileEntity(pos.offset(EnumFacing.DOWN));
+        TileEntity te = world.getTileEntity(pos.offset(EnumFacing.DOWN));
 
-        if (te instanceof IHeatSource source) {
-            final int toPull = Math.max(Math.min(source.getHeatStored(), this.getMaxHeat() - this.heatEnergy), 0);
+        if (te instanceof IHeatSource) {
+            IHeatSource source = (IHeatSource) te;
+            int toPull = Math.max(Math.min(source.getHeatStored(), this.getMaxHeat() - this.heatEnergy), 0);
             this.heatEnergy += toPull * heatEff;
             source.useUpHeat(toPull);
         }
@@ -93,7 +93,7 @@ public class TileEntityHeaterOven extends TileEntityFireboxBase implements IConf
     }
 
     @Override
-    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return new ContainerFirebox(player.inventory, this);
     }
 
@@ -102,7 +102,7 @@ public class TileEntityHeaterOven extends TileEntityFireboxBase implements IConf
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (texture == null) {
             texture = new ResourceLocation("hbm:textures/gui/machine/gui_heating_oven.png");
         }
@@ -115,7 +115,7 @@ public class TileEntityHeaterOven extends TileEntityFireboxBase implements IConf
     }
 
     @Override
-    public void readIfPresent(final JsonObject obj) {
+    public void readIfPresent(JsonObject obj) {
         baseHeat = IConfigurableMachine.grab(obj, "I:baseHeat", baseHeat);
         timeMult = IConfigurableMachine.grab(obj, "D:burnTimeMult", timeMult);
         heatEff = IConfigurableMachine.grab(obj, "D:heatPullEff", heatEff);
@@ -126,7 +126,7 @@ public class TileEntityHeaterOven extends TileEntityFireboxBase implements IConf
     }
 
     @Override
-    public void writeConfig(final JsonWriter writer) throws IOException {
+    public void writeConfig(JsonWriter writer) throws IOException {
         writer.name("I:baseHeat").value(baseHeat);
         writer.name("D:burnTimeMult").value(timeMult);
         writer.name("D:heatPullEff").value(heatEff);

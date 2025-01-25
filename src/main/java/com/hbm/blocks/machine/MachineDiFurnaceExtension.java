@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class MachineDiFurnaceExtension extends BlockContainer {
-    public MachineDiFurnaceExtension(final Material mat, final String s) {
+    public MachineDiFurnaceExtension(Material mat, String s) {
         super(mat);
         this.setTranslationKey(s);
         this.setRegistryName(s);
@@ -28,16 +28,16 @@ public class MachineDiFurnaceExtension extends BlockContainer {
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityProxyCombo(true, false, false);
     }
 
     @Override
-    public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (worldIn.isRemote) {
             return true;
         } else if (!playerIn.isSneaking()) {
-            final TileEntity te = worldIn.getTileEntity(pos.down());
+            TileEntity te = worldIn.getTileEntity(pos.down());
 
             if (te instanceof TileEntityDiFurnace) {
                 playerIn.openGui(MainRegistry.instance, ModBlocks.guiID_test_difurnace, worldIn, pos.getX(), pos.getY() - 1, pos.getZ());
@@ -48,12 +48,12 @@ public class MachineDiFurnaceExtension extends BlockContainer {
     }
 
     @Override
-    public boolean isOpaqueCube(final IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(final IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
 }

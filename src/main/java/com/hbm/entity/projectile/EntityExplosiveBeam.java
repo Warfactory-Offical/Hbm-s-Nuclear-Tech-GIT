@@ -47,7 +47,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
     private int ticksInAir;
     private double damage = 2.0D;
 
-    public EntityExplosiveBeam(final World p_i1753_1_)
+    public EntityExplosiveBeam(World p_i1753_1_)
     {
         super(p_i1753_1_);
         if(p_i1753_1_.isRemote)
@@ -55,7 +55,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         this.setSize(0.5F, 0.5F);
     }
 
-    public EntityExplosiveBeam(final World p_i1754_1_, final double p_i1754_2_, final double p_i1754_4_, final double p_i1754_6_)
+    public EntityExplosiveBeam(World p_i1754_1_, double p_i1754_2_, double p_i1754_4_, double p_i1754_6_)
     {
         super(p_i1754_1_);
         if(p_i1754_1_.isRemote)
@@ -64,7 +64,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         this.setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
     }
 
-    public EntityExplosiveBeam(final World p_i1755_1_, final EntityLivingBase p_i1755_2_, final EntityLivingBase p_i1755_3_, final float p_i1755_4_, final float p_i1755_5_)
+    public EntityExplosiveBeam(World p_i1755_1_, EntityLivingBase p_i1755_2_, EntityLivingBase p_i1755_3_, float p_i1755_4_, float p_i1755_5_)
     {
         super(p_i1755_1_);
         if(p_i1755_1_.isRemote)
@@ -77,24 +77,24 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         }
 
         this.posY = p_i1755_2_.posY + p_i1755_2_.getEyeHeight() - 0.10000000149011612D;
-        final double d0 = p_i1755_3_.posX - p_i1755_2_.posX;
-        final double d1 = p_i1755_3_.getEntityBoundingBox().minY + p_i1755_3_.height / 3.0F - this.posY;
-        final double d2 = p_i1755_3_.posZ - p_i1755_2_.posZ;
-        final double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+        double d0 = p_i1755_3_.posX - p_i1755_2_.posX;
+        double d1 = p_i1755_3_.getEntityBoundingBox().minY + p_i1755_3_.height / 3.0F - this.posY;
+        double d2 = p_i1755_3_.posZ - p_i1755_2_.posZ;
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
         if (d3 >= 1.0E-7D)
         {
-            final float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            final float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-            final double d4 = d0 / d3;
-            final double d5 = d2 / d3;
+            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+            float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+            double d4 = d0 / d3;
+            double d5 = d2 / d3;
             this.setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
-            final float f4 = (float)d3 * 0.2F;
+            float f4 = (float)d3 * 0.2F;
             this.shoot(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
         }
     }
 	
-    public EntityExplosiveBeam(final World p_i1756_1_, final EntityLivingBase p_i1756_2_, final float p_i1756_3_, final boolean offHand)
+    public EntityExplosiveBeam(World p_i1756_1_, EntityLivingBase p_i1756_2_, float p_i1756_3_, boolean offHand)
     {
         super(p_i1756_1_);
         if(p_i1756_1_.isRemote)
@@ -121,7 +121,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         this.shoot(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
     }
 
-    public EntityExplosiveBeam(final World world, final int x, final int y, final int z, final double mx, final double my, final double mz, final double grav) {
+    public EntityExplosiveBeam(World world, int x, int y, int z, double mx, double my, double mz, double grav) {
         super(world);
     	this.posX = x + 0.5F;
     	this.posY = y + 0.5F;
@@ -144,9 +144,9 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
      * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
      */
     @Override
-	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, final float p_70186_7_, final float p_70186_8_)
+	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_)
     {
-        final float f2 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
+        float f2 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
         p_70186_1_ /= f2;
         p_70186_3_ /= f2;
         p_70186_5_ /= f2;
@@ -159,7 +159,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         this.motionX = p_70186_1_;
         this.motionY = p_70186_3_;
         this.motionZ = p_70186_5_;
-        final float f3 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
+        float f3 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(p_70186_1_, p_70186_5_) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70186_3_, f3) * 180.0D / Math.PI);
         this.ticksInGround = 0;
@@ -170,7 +170,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
      */
     @Override
 	@SideOnly(Side.CLIENT)
-    public void setVelocity(final double p_70016_1_, final double p_70016_3_, final double p_70016_5_)
+    public void setVelocity(double p_70016_1_, double p_70016_3_, double p_70016_5_)
     {
         this.motionX = p_70016_1_;
         this.motionY = p_70016_3_;
@@ -178,7 +178,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            final float f = MathHelper.sqrt(p_70016_1_ * p_70016_1_ + p_70016_5_ * p_70016_5_);
+            float f = MathHelper.sqrt(p_70016_1_ * p_70016_1_ + p_70016_5_ * p_70016_5_);
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(p_70016_1_, p_70016_5_) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70016_3_, f) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
@@ -206,7 +206,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
             //this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(this.motionY, (double)f) * 180.0D / Math.PI);
         }
 
-        final IBlockState block = this.world.getBlockState(new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f));
+        IBlockState block = this.world.getBlockState(new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f));
 
         if (block.getMaterial() != Material.AIR)
         {
@@ -233,24 +233,24 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
             }
 
             Entity entity = null;
-            final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int i;
             float f1;
 
             for (i = 0; i < list.size(); ++i)
             {
-                final Entity entity1 = list.get(i);
+                Entity entity1 = list.get(i);
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f1 = 0.3F;
-                    final AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
-                    final RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
+                    RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
                     {
-                        final double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
+                        double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
 
                         if (d1 < d0 || d0 == 0.0D)
                         {
@@ -266,9 +266,10 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
             {
-
+                EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
+                
                 if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
                 {
                     movingobjectposition = null;
@@ -328,7 +329,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-	public void writeEntityToNBT(final NBTTagCompound p_70014_1_)
+	public void writeEntityToNBT(NBTTagCompound p_70014_1_)
     {
         p_70014_1_.setShort("xTile", (short)this.field_145791_d);
         p_70014_1_.setShort("yTile", (short)this.field_145792_e);
@@ -347,7 +348,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-	public void readEntityFromNBT(final NBTTagCompound p_70037_1_)
+	public void readEntityFromNBT(NBTTagCompound p_70037_1_)
     {
         this.field_145791_d = p_70037_1_.getShort("xTile");
         this.field_145792_e = p_70037_1_.getShort("yTile");
@@ -383,7 +384,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         return false;
     }
 
-    public void setDamage(final double p_70239_1_)
+    public void setDamage(double p_70239_1_)
     {
         this.damage = p_70239_1_;
     }
@@ -401,9 +402,9 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
     /**
      * Whether the arrow has a stream of critical hit particles flying behind it.
      */
-    public void setIsCritical(final boolean p_70243_1_)
+    public void setIsCritical(boolean p_70243_1_)
     {
-        final byte b0 = this.dataManager.get(CRITICAL);
+        byte b0 = this.dataManager.get(CRITICAL);
         if (p_70243_1_)
         {
             this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 | 1)));
@@ -419,14 +420,14 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
      */
     public boolean getIsCritical()
     {
-        final byte b0 = this.dataManager.get(CRITICAL);
+        byte b0 = this.dataManager.get(CRITICAL);
         return (b0 & 1) != 0;
     }
     
     private void explode() {
     	if(!world.isRemote) {
 			this.world.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 100.0F, this.world.rand.nextFloat() * 0.1F + 0.9F, true);
-			final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
+			EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
 			entity.posX = this.posX;
 			entity.posY = this.posY;
 			entity.posZ = this.posZ;
@@ -437,7 +438,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
 
 			this.world.spawnEntity(entity);
     		
-    		final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 10);
+    		EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, 10);
     		cloud.posX = this.posX;
     		cloud.posY = this.posY;
     		cloud.posZ = this.posZ;

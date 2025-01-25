@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class IconUtil {
 
-	public static TextureAtlasSprite getTextureFromBlock(final Block b) {
+	public static TextureAtlasSprite getTextureFromBlock(Block b) {
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(b.getDefaultState()).getParticleTexture();
 	}
 

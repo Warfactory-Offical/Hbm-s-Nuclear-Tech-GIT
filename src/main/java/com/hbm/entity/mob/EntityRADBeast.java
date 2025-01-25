@@ -1,17 +1,12 @@
 package com.hbm.entity.mob;
-import com.hbm.items.meta.materials.MaterialMineral;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.main.AdvancementManager;
-import com.hbm.util.ContaminationUtil;
 import com.hbm.saveddata.RadiationSavedData;
-
+import com.hbm.util.ContaminationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -31,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class EntityRADBeast extends EntityMob implements IRadiationImmune {
 
 	public static final DataParameter<Integer> TARGET_ID = EntityDataManager.createKey(EntityRADBeast.class, DataSerializers.VARINT);
@@ -38,7 +35,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
 	private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
     
-	public EntityRADBeast(final World worldIn) {
+	public EntityRADBeast(World worldIn) {
 		super(worldIn);
 		this.isImmuneToFire = true;
         this.experienceValue = 30;
@@ -54,18 +51,18 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     
     public EntityRADBeast makeLeader() {
     	this.setDropChance(EntityEquipmentSlot.MAINHAND, 1);
-    	this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.coin_radiation));
+    	this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.coin_radiation));
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(360.0D);
         this.heal(this.getMaxHealth());
     	return this;
     }
     
     @Override
-    public void onDeath(final DamageSource cause) {
+    public void onDeath(DamageSource cause) {
     	if(this.getMaxHealth() > 150) {
-	        final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
+	        List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
 
-	        for(final EntityPlayer player : players) {
+	        for(EntityPlayer player : players) {
 	        	AdvancementManager.grantAchievement(player, AdvancementManager.achMeltdown);
 	        }
         }
@@ -89,7 +86,7 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     @Override
-    protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
     	return SoundEvents.ENTITY_BLAZE_HURT;
     }
     
@@ -99,11 +96,11 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(final float f) {
+    public int getBrightnessForRender(float f) {
         return 15728880;
     }
 
-    public float getBrightness(final float f) {
+    public float getBrightness(float f) {
         return 1.0F;
     }
     
@@ -173,16 +170,16 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     @Override
-    public boolean attackEntityAsMob(final Entity target) {
+    public boolean attackEntityAsMob(Entity target) {
     	boolean flag = false;
-    	final float dist = (float) this.getDistanceSq(target);
+    	float dist = (float) this.getDistanceSq(target);
     	if (this.idleTime <= 0 && dist < 4.0F && target.getEntityBoundingBox().maxY > this.getEntityBoundingBox().minY && target.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
             this.idleTime = 20;
             return super.attackEntityAsMob(target);
         } else if(dist < 30.0F) {
 
-            final double deltaX = target.posX - this.posX;
-            final double deltaZ = target.posZ - this.posZ;
+            double deltaX = target.posX - this.posX;
+            double deltaZ = target.posZ - this.posZ;
 
             if (this.idleTime == 0 && getAttackTarget() != null) {
 
@@ -197,31 +194,30 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     }
     
     public Entity getUnfortunateSoul() {
-    	final int id = this.dataManager.get(TARGET_ID);
+    	int id = this.dataManager.get(TARGET_ID);
     	return world.getEntityByID(id);
     }
 
     @Override
-    public void fall(final float distance, final float damageMultiplier) {}
+    public void fall(float distance, float damageMultiplier) {}
     
     @Override
     protected Item getDropItem() {
     	return ModItems.rod_uranium_fuel_depleted;
     }
 
-
     @Override
-    protected void dropLoot(final boolean wasRecentlyHit, final int looting, final DamageSource source) {
+    protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         super.dropLoot(wasRecentlyHit, looting, source);
         if(looting > 0) {
-                this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.POLONIUM), looting), 0);
+                this.dropItem(ModItems.nugget_polonium, looting);
             }
             
-        final int count = this.rand.nextInt(3) + 1;
+        int count = this.rand.nextInt(3) + 1;
         
         for(int i = 0; i < count; i++) {
             
-            final int r = this.rand.nextInt(3);
+            int r = this.rand.nextInt(3);
             
             if(r == 0) {
                 this.dropItem(this.isWet() ? ModItems.waste_uranium : ModItems.rod_uranium_fuel_depleted, 1);

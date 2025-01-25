@@ -30,7 +30,7 @@ public class NTMCraftTweaker {
 	}
 
 	@Nullable
-	public static AStack IIngredientToAStack(final IIngredient ingredient){
+	public static AStack IIngredientToAStack(IIngredient ingredient){
 		if(ingredient instanceof IItemStack){
 			return new RecipesCommon.ComparableStack(CraftTweakerMC.getItemStack((IItemStack) ingredient));
 		}
@@ -38,7 +38,7 @@ public class NTMCraftTweaker {
 			return new RecipesCommon.OreDictStack(((IOreDictEntry) ingredient).getName());
 		}
 		if(ingredient instanceof IngredientStack){
-			final IIngredient  ingredient2 = (IIngredient) ingredient.getInternal();
+			IIngredient  ingredient2 = (IIngredient) ingredient.getInternal();
 			if(ingredient2 instanceof IItemStack){
 				return new RecipesCommon.ComparableStack(CraftTweakerMC.getItemStack((IItemStack) ingredient2));
 			}
@@ -50,8 +50,8 @@ public class NTMCraftTweaker {
 		return null;
 	}
 
-	public static AStack[] IIngredientsToAStack(final IIngredient[] ingredients){
-		final AStack[] result = new AStack[ingredients.length];
+	public static AStack[] IIngredientsToAStack(IIngredient[] ingredients){
+		AStack[] result = new AStack[ingredients.length];
 		for(int i = 0; i < ingredients.length; i++){
 			result[i] = IIngredientToAStack(ingredients[i]);
 		}

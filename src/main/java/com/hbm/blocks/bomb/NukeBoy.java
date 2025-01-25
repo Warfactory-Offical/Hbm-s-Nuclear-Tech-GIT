@@ -1,8 +1,5 @@
 package com.hbm.blocks.bomb;
 
-import java.util.List;
-
-import com.hbm.util.I18nUtil;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.BombConfig;
 import com.hbm.entity.effect.EntityNukeTorex;
@@ -11,8 +8,7 @@ import com.hbm.interfaces.IBomb;
 import com.hbm.lib.InventoryHelper;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.bomb.TileEntityNukeBoy;
-
-import net.minecraft.client.util.ITooltipFlag;
+import com.hbm.util.I18nUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
@@ -21,26 +17,24 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class NukeBoy extends BlockContainer implements IBomb {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	public NukeBoy(final Material materialIn, final String s) {
+	public NukeBoy(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -49,22 +43,22 @@ public class NukeBoy extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityNukeBoy();
 	}
 
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			final TileEntityNukeBoy entity = (TileEntityNukeBoy) world.getTileEntity(pos);
+			TileEntityNukeBoy entity = (TileEntityNukeBoy) world.getTileEntity(pos);
 			if(entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_nuke_boy, world, pos.getX(), pos.getY(), pos.getZ());
 			}
@@ -75,11 +69,11 @@ public class NukeBoy extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
-		final TileEntityNukeBoy entity = (TileEntityNukeBoy) worldIn.getTileEntity(pos);
-		if(worldIn.isBlockPowered(pos)) {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		TileEntityNukeBoy entity = (TileEntityNukeBoy) worldIn.getTileEntity(pos);
+		if(worldIn.isBlockIndirectlyGettingPowered(pos) > 0) {
 			if(entity.isReady() && !worldIn.isRemote) {
-				this.onPlayerDestroy(worldIn, pos, state);
+				this.onBlockDestroyedByPlayer(worldIn, pos, state);
 				entity.clearSlots();
 				worldIn.setBlockToAir(pos);
 				igniteTestBomb(worldIn, pos.getX(), pos.getY(), pos.getZ());
@@ -87,7 +81,7 @@ public class NukeBoy extends BlockContainer implements IBomb {
 		}
 	}
 
-	public boolean igniteTestBomb(final World world, final int x, final int y, final int z) {
+	public boolean igniteTestBomb(World world, int x, int y, int z) {
 		if(!world.isRemote) {
 			world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, world.rand.nextFloat() * 0.1F + 0.9F); // x,y,z,sound,volume,pitch
 
@@ -101,64 +95,71 @@ public class NukeBoy extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
 	}
 
 	@Override
-	public void explode(final World world, final BlockPos pos) {
-		final TileEntityNukeBoy entity = (TileEntityNukeBoy) world.getTileEntity(pos);
-		if(entity.isReady()) {
-			this.onPlayerDestroy(world, pos, world.getBlockState(pos));
-			entity.clearSlots();
-			world.setBlockToAir(pos);
-			igniteTestBomb(world, pos.getX(), pos.getY(), pos.getZ());
+	public BombReturnCode explode(World world, BlockPos pos) {
+		if(!world.isRemote) {
+			TileEntityNukeBoy entity = (TileEntityNukeBoy) world.getTileEntity(pos);
+			if (entity.isReady()) {
+				this.onBlockDestroyedByPlayer(world, pos, world.getBlockState(pos));
+				entity.clearSlots();
+				world.setBlockToAir(pos);
+				igniteTestBomb(world, pos.getX(), pos.getY(), pos.getZ());
+				return BombReturnCode.DETONATED;
+			}
+
+			return BombReturnCode.ERROR_MISSING_COMPONENT;
 		}
+
+		return BombReturnCode.UNDEFINED;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, new IProperty[]{FACING});
 	}
 	
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(FACING).getIndex();
+	public int getMetaFromState(IBlockState state) {
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		EnumFacing enumfacing = EnumFacing.byIndex(meta);
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {
@@ -171,23 +172,23 @@ public class NukeBoy extends BlockContainer implements IBomb {
 	
 	
 	@Override
-	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add("§2["+ I18nUtil.resolveKey("trait.nuclearbomb")+"]"+"§r");
 		tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.boyRadius)+"§r");
 		if(!BombConfig.disableNuclear){
 			tooltip.add("§2["+ I18nUtil.resolveKey("trait.fallout")+"]"+"§r");
-			tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", BombConfig.boyRadius *(1+BombConfig.falloutRange/100))+"§r");
+			tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", (int)BombConfig.boyRadius*(1+BombConfig.falloutRange/100))+"§r");
 		}
 	}
 }

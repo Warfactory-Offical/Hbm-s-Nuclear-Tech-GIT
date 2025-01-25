@@ -1,7 +1,4 @@
 package com.hbm.render.tileentity;
-import com.hbm.util.ItemStackUtil;
-
-import org.lwjgl.opengl.GL11;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
@@ -10,7 +7,6 @@ import com.hbm.render.RenderHelper;
 import com.hbm.render.model.ModelGun;
 import com.hbm.render.model.ModelStatue;
 import com.hbm.tileentity.deco.TileEntityDecoBlockAlt;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -19,14 +15,15 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
+import org.lwjgl.opengl.GL11;
 
 public class RenderDecoBlockAlt extends TileEntitySpecialRenderer<TileEntityDecoBlockAlt> {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":" + "textures/models/misc/ModelStatue.png");
 	private static final ResourceLocation gunTexture = new ResourceLocation(RefStrings.MODID + ":" + "textures/models/weapons/ModelGun.png");
 
-	private final ModelStatue model;
-	private final ModelGun gun;
+	private ModelStatue model;
+	private ModelGun gun;
 
 	public RenderDecoBlockAlt() {
 		this.model = new ModelStatue();
@@ -34,12 +31,12 @@ public class RenderDecoBlockAlt extends TileEntitySpecialRenderer<TileEntityDeco
 	}
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityDecoBlockAlt te) {
+	public boolean isGlobalRenderer(TileEntityDecoBlockAlt te) {
 		return true;
 	}
 
 	@Override
-	public void render(final TileEntityDecoBlockAlt te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityDecoBlockAlt te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		GL11.glRotatef(180, 0F, 0F, 1F);
@@ -58,19 +55,19 @@ public class RenderDecoBlockAlt extends TileEntitySpecialRenderer<TileEntityDeco
 			break;
 		}
 
-		final Block b = te.getBlockType();
+		Block b = te.getBlockType();
 
 		this.bindTexture(texture);
 		this.model.renderModel(0.0625F);
-		final float g = 0.0625F;
-		final float q = g * 2 + 0.0625F / 3;
+		float g = 0.0625F;
+		float q = g * 2 + 0.0625F / 3;
 		GL11.glTranslatef(0.0F, -2 * g, q);
 		GL11.glRotatef(180, 0F, 0F, 1F);
 		if(b == ModBlocks.statue_elb_w || b == ModBlocks.statue_elb_f) {
 			GL11.glPushMatrix();
 			GL11.glTranslated(0, 0.11, 0);
 			GL11.glScaled(0.5, 0.5, 0.5);
-			final ItemStack stack = ItemStackUtil.itemStackFrom(ModItems.watch);
+			ItemStack stack = new ItemStack(ModItems.watch);
 			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, te.getWorld(), null);
 			model = ForgeHooksClient.handleCameraTransforms(model, TransformType.FIXED, false);
 			RenderHelper.bindBlockTexture();

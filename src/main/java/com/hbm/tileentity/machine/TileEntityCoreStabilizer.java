@@ -1,12 +1,11 @@
 package com.hbm.tileentity.machine;
 
-import com.hbm.items.ModItems;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.items.machine.ItemLens;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +19,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityCoreStabilizer extends TileEntityMachineBase implements ITickable, IEnergyUser {
+public class TileEntityCoreStabilizer extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 
 	public long power;
 	public static final long maxPower = 10000000000000L;
@@ -39,10 +38,10 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	public void update() {
 		if(!world.isRemote) {
 
-			this.updateStandardConnections(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 			
 			watts = MathHelper.clamp(watts, 1, 100);
-			final long demand = (long) Math.pow(watts, 6);
+			long demand = (long) Math.pow(watts, 6);
 			isOn = false;
 
 			beam = 0;
@@ -54,19 +53,20 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 
 			if(lens != null && power >= demand * lens.drainMod) {
 				isOn = true;
-				final EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
+				EnumFacing dir = EnumFacing.getFront(this.getBlockMetadata());
 				for(int i = 1; i <= range; i++) {
 	
-					final int x = pos.getX() + dir.getXOffset() * i;
-					final int y = pos.getY() + dir.getYOffset() * i;
-					final int z = pos.getZ() + dir.getZOffset() * i;
-					final BlockPos pos1 = new BlockPos(x, y, z);
+					int x = pos.getX() + dir.getFrontOffsetX() * i;
+					int y = pos.getY() + dir.getFrontOffsetY() * i;
+					int z = pos.getZ() + dir.getFrontOffsetZ() * i;
+					BlockPos pos1 = new BlockPos(x, y, z);
 					
-					final TileEntity te = world.getTileEntity(pos1);
+					TileEntity te = world.getTileEntity(pos1);
 	
-					if(te instanceof TileEntityCore core) {
-
-                        core.field += (int)(watts * lens.fieldMod);
+					if(te instanceof TileEntityCore) {
+						
+						TileEntityCore core = (TileEntityCore)te;
+						core.field += (int)(watts * lens.fieldMod);
 						this.power -= (long)(demand * lens.drainMod);
 						beam = i;
 						
@@ -94,7 +94,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		power = data.getLong("power");
 		watts = data.getInteger("watts");
 		isOn = data.getBoolean("isOn");
@@ -105,16 +105,16 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 		return "container.dfcStabilizer";
 	}
 
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getWattsScaled(final int i) {
+	public int getWattsScaled(int i) {
 		return (watts * i) / 100;
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		this.power = i;
 	}
 
@@ -141,7 +141,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		watts = compound.getInteger("watts");
 		isOn = compound.getBoolean("isOn");
@@ -149,7 +149,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setInteger("watts", watts);
 		compound.setBoolean("isOn", isOn);

@@ -1,14 +1,13 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.saveddata.RadiationSavedData;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileEntityGeiger extends TileEntity implements ITickable {
 
@@ -27,7 +26,7 @@ public class TileEntityGeiger extends TileEntity implements ITickable {
 		
 		if(timer % 5 == 0) {
 			if(ticker > 0) {
-				final List<Integer> list = new ArrayList<Integer>();
+				List<Integer> list = new ArrayList<Integer>();
 
 				if(ticker < 1)
 					list.add(0);
@@ -46,7 +45,7 @@ public class TileEntityGeiger extends TileEntity implements ITickable {
 				if(ticker > 25)
 					list.add(6);
 			
-				final int r = list.get(world.rand.nextInt(list.size()));
+				int r = list.get(world.rand.nextInt(list.size()));
 				
 				if(r > 0)
 		        	world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.geigerSounds[r-1], SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -59,9 +58,9 @@ public class TileEntityGeiger extends TileEntity implements ITickable {
 	
 	public int check() {
 		
-		final RadiationSavedData data = RadiationSavedData.getData(world);
+		RadiationSavedData data = RadiationSavedData.getData(world);
 		
-		final int rads = (int)Math.ceil(data.getRadNumFromCoord(pos));
+		int rads = (int)Math.ceil(data.getRadNumFromCoord(pos));
 		
 		return rads;
 	}

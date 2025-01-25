@@ -1,30 +1,28 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityRocketHoming;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelSRocket;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderSRocket extends Render<EntityRocketHoming> {
 
 	public static final IRenderFactory<EntityRocketHoming> FACTORY = (RenderManager man) -> {return new RenderSRocket(man);};
 	
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/ModelSRocket.png");
-	private final ModelSRocket missile;
+	private ModelSRocket missile;
 	
-	protected RenderSRocket(final RenderManager renderManager) {
+	protected RenderSRocket(RenderManager renderManager) {
 		super(renderManager);
 		missile = new ModelSRocket();
 	}
 	
 	@Override
-	public void doRender(final EntityRocketHoming rocket, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityRocketHoming rocket, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		GL11.glRotatef(rocket.prevRotationYaw + (rocket.rotationYaw - rocket.prevRotationYaw) * partialTicks - 90.0F,
@@ -42,7 +40,7 @@ public class RenderSRocket extends Render<EntityRocketHoming> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityRocketHoming entity) {
+	protected ResourceLocation getEntityTexture(EntityRocketHoming entity) {
 		return texture;
 	}
 

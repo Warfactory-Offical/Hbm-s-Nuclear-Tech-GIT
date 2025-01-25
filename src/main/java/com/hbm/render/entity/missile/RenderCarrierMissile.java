@@ -1,30 +1,28 @@
 package com.hbm.render.entity.missile;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.missile.EntityCarrier;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.RenderHelper;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCarrierMissile extends Render<EntityCarrier> {
 
 	public static final IRenderFactory<EntityCarrier> FACTORY = (RenderManager man) -> {return new RenderCarrierMissile(man);};
 	
-	protected RenderCarrierMissile(final RenderManager renderManager) {
+	protected RenderCarrierMissile(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityCarrier rocket, double x, double y, double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityCarrier rocket, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-		final double[] renderPos = RenderHelper.getRenderPosFromMissile(rocket, partialTicks);
+		double[] renderPos = RenderHelper.getRenderPosFromMissile(rocket, partialTicks);
 		x = renderPos[0];
 		y = renderPos[1];
 		z = renderPos[2];
@@ -58,7 +56,7 @@ public class RenderCarrierMissile extends Render<EntityCarrier> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityCarrier entity) {
+	protected ResourceLocation getEntityTexture(EntityCarrier entity) {
 		return ResourceManager.missileCarrier_tex;
 	}
 

@@ -28,33 +28,33 @@ import net.minecraft.world.gen.ChunkProviderServer;
 
 public class RadiationWorldHandler {
 
-	public static void handleWorldDestruction(final World world) {
+	public static void handleWorldDestruction(World world) {
 
 		//TODO fix this up for new radiation system
-		if(!(world instanceof WorldServer serv))
+		if(!(world instanceof WorldServer))
 			return;
 		if(!RadiationConfig.worldRadEffects || !GeneralConfig.enableRads)
 			return;
 
-		final int count = 50;//MainRegistry.worldRad;
-		final int threshold = 5;//MainRegistry.worldRadThreshold;
+		int count = 50;//MainRegistry.worldRad;
+		int threshold = 5;//MainRegistry.worldRadThreshold;
 		
 		if(GeneralConfig.advancedRadiation) {
 			if(GeneralConfig.enableDebugMode) {
 				MainRegistry.logger.info("[Debug] Starting world destruction processing");
 			}
 
-			final Collection<RadPocket> activePockets = RadiationSystemNT.getActiveCollection(world);
+			Collection<RadPocket> activePockets = RadiationSystemNT.getActiveCollection(world);
 			if(activePockets.size() == 0)
 				return;
-			final int randIdx = world.rand.nextInt(activePockets.size());
+			int randIdx = world.rand.nextInt(activePockets.size());
 			int itr = 0;
-			for(final RadPocket p : activePockets){
+			for(RadPocket p : activePockets){
 				if(itr == randIdx){
 					if(p.radiation < threshold)
 						return;
-					final BlockPos startPos = p.getSubChunkPos();
-					final RadPocket[] pocketsByBlock = p.parent.pocketsByBlock;
+					BlockPos startPos = p.getSubChunkPos();
+					RadPocket[] pocketsByBlock = p.parent.pocketsByBlock;
 
 					for(int i = 0; i < 16; i ++){
 						for(int j = 0; j < 16; j ++){
@@ -64,9 +64,9 @@ public class RadiationWorldHandler {
 								if(pocketsByBlock != null && pocketsByBlock[i*16*16+j*16+k] != p){
 									continue;
 								}
-								final BlockPos pos = startPos.add(i, j, k);
-								final IBlockState b = world.getBlockState(pos);
-								final Block bblock = b.getBlock();
+								BlockPos pos = startPos.add(i, j, k);
+								IBlockState b = world.getBlockState(pos);
+								Block bblock = b.getBlock();
 
 								if(!world.isAirBlock(pos)){
 									if(bblock == Blocks.GRASS) {
@@ -81,7 +81,7 @@ public class RadiationWorldHandler {
 									} else if(bblock == Blocks.HARDENED_CLAY || bblock == Blocks.STAINED_HARDENED_CLAY) {
 										world.setBlockState(pos, ModBlocks.waste_terracotta.getDefaultState());
 									} else if(bblock == Blocks.SAND) {
-										final BlockSand.EnumType meta = b.getValue(BlockSand.VARIANT);
+										BlockSand.EnumType meta = b.getValue(BlockSand.VARIANT);
 										world.setBlockState(pos, meta == BlockSand.EnumType.SAND ? ModBlocks.waste_sand.getDefaultState() : ModBlocks.waste_sand_red.getDefaultState());
 									} else if(bblock == Blocks.GRAVEL) {
 										world.setBlockState(pos, ModBlocks.waste_gravel.getDefaultState());
@@ -122,18 +122,20 @@ public class RadiationWorldHandler {
 			}
 			return;
 		}
+		
+		WorldServer serv = (WorldServer)world;
 
-        final RadiationSavedData data = RadiationSavedData.getData(serv);
-		final ChunkProviderServer provider = serv.getChunkProvider();
+		RadiationSavedData data = RadiationSavedData.getData(serv);
+		ChunkProviderServer provider = (ChunkProviderServer) serv.getChunkProvider();
 
-		final Object[] entries = data.contamination.entrySet().toArray();
+		Object[] entries = data.contamination.entrySet().toArray();
 
 		if(entries.length == 0)
 			return;
 
-		final Entry<ChunkPos, RadiationSaveStructure> randEnt = (Entry<ChunkPos, RadiationSaveStructure>) entries[world.rand.nextInt(entries.length)];
+		Entry<ChunkPos, RadiationSaveStructure> randEnt = (Entry<ChunkPos, RadiationSaveStructure>) entries[world.rand.nextInt(entries.length)];
 
-		final ChunkPos coords = randEnt.getKey();
+		ChunkPos coords = randEnt.getKey();
 
 
 		if(randEnt == null || randEnt.getValue().radiation < threshold)
@@ -147,12 +149,12 @@ public class RadiationWorldHandler {
 					if(world.rand.nextInt(3) != 0)
 						continue;
 
-					final int x = coords.getXStart() + a;
-					final int z = coords.getZStart() + b;
-					final int y = world.getHeight(x, z) - world.rand.nextInt(2);
-					final BlockPos pos = new BlockPos(x, y, z);
-					final IBlockState c = world.getBlockState(pos);
-					final Block bblock = c.getBlock();
+					int x = coords.getXStart() + a;
+					int z = coords.getZStart() + b;
+					int y = world.getHeight(x, z) - world.rand.nextInt(2);
+					BlockPos pos = new BlockPos(x, y, z);
+					IBlockState c = world.getBlockState(pos);
+					Block bblock = c.getBlock();
 
 					if(!world.isAirBlock(pos)){
 						if(bblock == Blocks.GRASS) {
@@ -162,7 +164,7 @@ public class RadiationWorldHandler {
 							world.setBlockState(pos, ModBlocks.waste_dirt.getDefaultState());
 
 						} else if(bblock == Blocks.SAND) {
-							final BlockSand.EnumType meta = c.getValue(BlockSand.VARIANT);
+							BlockSand.EnumType meta = c.getValue(BlockSand.VARIANT);
 							if(world.rand.nextInt(60) == 0) {
 								world.setBlockState(pos, meta == BlockSand.EnumType.SAND ? ModBlocks.waste_trinitite.getDefaultState() : ModBlocks.waste_trinitite_red.getDefaultState());
 							} else {

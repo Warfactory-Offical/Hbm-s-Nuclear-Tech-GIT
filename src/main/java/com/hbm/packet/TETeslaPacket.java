@@ -24,7 +24,7 @@ public class TETeslaPacket implements IMessage {
 	public TETeslaPacket() {
 	}
 	
-	public TETeslaPacket(final BlockPos pos, final List<double[]> targets) {
+	public TETeslaPacket(BlockPos pos, List<double[]> targets) {
 		this.targets = targets;
 		this.pos = pos;
 	}
@@ -32,9 +32,9 @@ public class TETeslaPacket implements IMessage {
 	
 	
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
-		final int size = buf.readInt();
+		int size = buf.readInt();
 		targets = new ArrayList<double[]>(size);
 		for(int i = 0; i < size; i++){
 			targets.add(new double[]{buf.readDouble(), buf.readDouble(), buf.readDouble()});
@@ -43,13 +43,13 @@ public class TETeslaPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(pos.getX());
 		buf.writeInt(pos.getY());
 		buf.writeInt(pos.getZ());
 		buf.writeInt(targets.size());
 		for(int i = 0; i < targets.size(); i ++){
-			final double[] d = targets.get(i);
+			double[] d = targets.get(i);
 			buf.writeDouble(d[0]);
 			buf.writeDouble(d[1]);
 			buf.writeDouble(d[2]);
@@ -60,9 +60,9 @@ public class TETeslaPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final TETeslaPacket m, final MessageContext ctx) {
+		public IMessage onMessage(TETeslaPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(m.pos);
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(m.pos);
 				if(te instanceof TileEntityTesla){
 					((TileEntityTesla) te).targets = m.targets;
 				}

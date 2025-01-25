@@ -22,7 +22,7 @@ public class SatCoordPacket implements IMessage {
 		
 	}
 
-	public SatCoordPacket(final int x, final int y, final int z, final int freq)
+	public SatCoordPacket(int x, int y, int z, int freq)
 	{
 		this.x = x;
 		this.y = y;
@@ -31,7 +31,7 @@ public class SatCoordPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -39,7 +39,7 @@ public class SatCoordPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -49,16 +49,16 @@ public class SatCoordPacket implements IMessage {
 	public static class Handler implements IMessageHandler<SatCoordPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(final SatCoordPacket m, final MessageContext ctx) {
+		public IMessage onMessage(SatCoordPacket m, MessageContext ctx) {
 			ctx.getServerHandler().player.getServer().addScheduledTask(() -> {
-				final EntityPlayer p = ctx.getServerHandler().player;
+				EntityPlayer p = ctx.getServerHandler().player;
 				
 				if(p.getHeldItemMainhand().getItem() instanceof ItemSatInterface) {
 					
-					final int freq = ItemSatInterface.getFreq(p.getHeldItemMainhand());
+					int freq = ItemSatInterface.getFreq(p.getHeldItemMainhand());
 					
 					if(freq == m.freq) {
-					    final Satellite sat = SatelliteSavedData.getData(p.world).getSatFromFreq(m.freq);
+					    Satellite sat = SatelliteSavedData.getData(p.world).getSatFromFreq(m.freq);
 					    
 					    if(sat != null)
 					    	sat.onCoordAction(p.world, p, m.x, m.y, m.z);

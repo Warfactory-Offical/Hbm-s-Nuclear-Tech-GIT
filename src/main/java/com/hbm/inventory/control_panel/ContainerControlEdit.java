@@ -1,10 +1,6 @@
 package com.hbm.inventory.control_panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.tileentity.machine.TileEntityControlPanel;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -16,13 +12,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContainerControlEdit extends Container {
 
 	public TileEntityControlPanel control;
 	public Slot input;
 	public List<SlotDisableable> invSlots = new ArrayList<>();
 	
-	public ContainerControlEdit(final InventoryPlayer invPlayer, final TileEntityControlPanel te) {
+	public ContainerControlEdit(InventoryPlayer invPlayer, TileEntityControlPanel te) {
 		control = te;
 		input = this.addSlotToContainer(new SlotItemHandlerDisableable(te.inventory, 0, 8, 13));
 		
@@ -41,18 +40,18 @@ public class ContainerControlEdit extends Container {
 	}
 	
 	@Override
-	public boolean canInteractWith(final EntityPlayer playerIn) {
+	public boolean canInteractWith(EntityPlayer playerIn) {
 		return true;
 	}
 	
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer playerIn, final int index){
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index){
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(index);
+		Slot var4 = this.inventorySlots.get(index);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (index == 0) {
@@ -80,9 +79,9 @@ public class ContainerControlEdit extends Container {
 	}
 	
 	@Override
-	public void onContainerClosed(final EntityPlayer playerIn){
+	public void onContainerClosed(EntityPlayer playerIn){
 		for(int i = 0; i < control.inventory.getSlots(); i ++){
-			final ItemStack stack = control.inventory.getStackInSlot(i);
+			ItemStack stack = control.inventory.getStackInSlot(i);
 			if(!playerIn.addItemStackToInventory(stack))
 				playerIn.dropItem(stack, false);
 			control.inventory.setStackInSlot(i, ItemStack.EMPTY);
@@ -92,7 +91,7 @@ public class ContainerControlEdit extends Container {
 	
 	public static class SlotItemHandlerDisableable extends SlotItemHandler {
 		public boolean isEnabled = false;
-		public SlotItemHandlerDisableable(final IItemHandler itemHandler, final int index, final int xPosition, final int yPosition){
+		public SlotItemHandlerDisableable(IItemHandler itemHandler, int index, int xPosition, int yPosition){
 			super(itemHandler, index, xPosition, yPosition);
 		}
 		
@@ -103,7 +102,7 @@ public class ContainerControlEdit extends Container {
 		}
 		
 		@Override
-		public boolean canTakeStack(final EntityPlayer playerIn){
+		public boolean canTakeStack(EntityPlayer playerIn){
 			return super.canTakeStack(playerIn);
 		}
 		
@@ -111,7 +110,7 @@ public class ContainerControlEdit extends Container {
 	
 	public static class SlotDisableable extends Slot {
 		public boolean isEnabled = false;
-		public SlotDisableable(final IInventory inventoryIn, final int index, final int xPosition, final int yPosition){
+		public SlotDisableable(IInventory inventoryIn, int index, int xPosition, int yPosition){
 			super(inventoryIn, index, xPosition, yPosition);
 		}
 		@Override
@@ -120,7 +119,7 @@ public class ContainerControlEdit extends Container {
 			return isEnabled;
 		}
 		@Override
-		public boolean canTakeStack(final EntityPlayer playerIn){
+		public boolean canTakeStack(EntityPlayer playerIn){
 			return super.canTakeStack(playerIn);
 		}
 	}

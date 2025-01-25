@@ -6,12 +6,12 @@ public interface IDoor {
 	void close();
 	DoorState getState();
 	void toggle();
-	default boolean setTexture(final String tex){
+	default boolean setTexture(String tex){
 		return false;
 	}
-	default void setTextureState(final byte tex){}
+	default void setTextureState(byte tex){};
 
-    enum DoorState {
+	enum DoorState {
 		CLOSED,
 		OPEN,
 		CLOSING,

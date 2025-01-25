@@ -1,14 +1,10 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Multimap;
 import com.hbm.entity.missile.EntityBombletSelena;
 import com.hbm.entity.projectile.EntityRocket;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,11 +21,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 public class GunDampfmaschine extends Item {
 
 	Random rand = new Random();
 	
-	public GunDampfmaschine(final String s) {
+	public GunDampfmaschine(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -38,31 +37,31 @@ public class GunDampfmaschine extends Item {
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(final ItemStack stack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		playerIn.setActiveHand(handIn);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
 	@Override
-	public void onUsingTick(final ItemStack stack, final EntityLivingBase player, final int count) {
-		final World world = player.world;
+	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
+		World world = player.world;
 		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_dampfmaschine){
 			player.getHeldItemOffhand().getItem().onUsingTick(player.getHeldItemOffhand(), player, count);
 		}
 		if (true) {
 			
 			if(!player.isSneaking()) {
-				final EntityRocket entitybullet = new EntityRocket(world, player, 3.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+				EntityRocket entitybullet = new EntityRocket(world, player, 3.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 				
 				world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.crateBreak, SoundCategory.PLAYERS, 10.0F, 0.9F + (rand.nextFloat() * 0.2F));
 				if(count == this.getMaxItemUseDuration(stack))
@@ -76,7 +75,7 @@ public class GunDampfmaschine extends Item {
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PIG_AMBIENT, SoundCategory.PLAYERS, 10.0F, 0.9F + (rand.nextFloat() * 0.2F));
 				
 				if(count % 10 == 0) {
-					final EntityBombletSelena bomb = new EntityBombletSelena(world);
+					EntityBombletSelena bomb = new EntityBombletSelena(world);
 					bomb.posX = player.posX;
 					bomb.posY = player.posY + player.getEyeHeight();
 					bomb.posZ = player.posZ;
@@ -95,7 +94,7 @@ public class GunDampfmaschine extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("Sometimes, to do what’s right,");
 		list.add("you have to become the villain of");
 		list.add("the pi-I mean me too, thanks.");
@@ -109,8 +108,8 @@ public class GunDampfmaschine extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", -2, 0));
 		}

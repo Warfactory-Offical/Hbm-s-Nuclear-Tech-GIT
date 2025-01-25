@@ -20,7 +20,7 @@ public class TETurretCIWSPacket implements IMessage {
 	public TETurretCIWSPacket() {
 	}
 	
-	public TETurretCIWSPacket(final int x, final int y, final int z, final double rotY, final double rotP) {
+	public TETurretCIWSPacket(int x, int y, int z, double rotY, double rotP) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -28,7 +28,7 @@ public class TETurretCIWSPacket implements IMessage {
 		this.rotY = rotY;
 	}
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -37,7 +37,7 @@ public class TETurretCIWSPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -50,10 +50,10 @@ public class TETurretCIWSPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final TETurretCIWSPacket message, final MessageContext ctx) {
+		public IMessage onMessage(TETurretCIWSPacket message, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final BlockPos pos = new BlockPos(message.x, message.y, message.z);
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+				BlockPos pos = new BlockPos(message.x, message.y, message.z);
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 				if(te instanceof TileEntityTurretCIWS){
 					((TileEntityTurretCIWS)te).rotationYaw = message.rotY;
 					((TileEntityTurretCIWS)te).rotationPitch = message.rotP;

@@ -1,7 +1,6 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.TileEntityFireboxBase;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,7 +12,7 @@ public class ContainerFirebox extends Container {
 	
 	protected TileEntityFireboxBase firebox;
 	
-	public ContainerFirebox(final InventoryPlayer invPlayer, final TileEntityFireboxBase furnace) {
+	public ContainerFirebox(InventoryPlayer invPlayer, TileEntityFireboxBase furnace) {
 		this.firebox = furnace;
 		this.firebox.playersUsing++;
 		
@@ -32,12 +31,12 @@ public class ContainerFirebox extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer player, final int index) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
-		final Slot slot = this.inventorySlots.get(index);
+		Slot slot = (Slot) this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			final ItemStack originalStack = slot.getStack();
+			ItemStack originalStack = slot.getStack();
 			stack = originalStack.copy();
 
 			if(index <= 1) {
@@ -62,12 +61,12 @@ public class ContainerFirebox extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return firebox.isUseableByPlayer(player);
 	}
 
 	@Override
-	public void onContainerClosed(final EntityPlayer player) {
+	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
 		this.firebox.playersUsing--;
 	}

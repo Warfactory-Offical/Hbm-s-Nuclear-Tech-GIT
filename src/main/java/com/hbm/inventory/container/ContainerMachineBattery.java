@@ -1,9 +1,8 @@
 package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
-import com.hbm.tileentity.machine.TileEntityMachineFENSU;
 import com.hbm.tileentity.machine.TileEntityMachineBattery;
-
+import com.hbm.tileentity.machine.TileEntityMachineFENSU;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -16,7 +15,7 @@ public class ContainerMachineBattery extends Container {
 
 	public TileEntityMachineBattery diFurnace;
 	
-	public ContainerMachineBattery(final InventoryPlayer invPlayer, final TileEntityMachineBattery tedf) {
+	public ContainerMachineBattery(InventoryPlayer invPlayer, TileEntityMachineBattery tedf) {
 		
 		diFurnace = tedf;
 		
@@ -41,13 +40,13 @@ public class ContainerMachineBattery extends Container {
 	
 	//Drillgon200: I have no idea how this method works.
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer playerIn, final int par2) {
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int par2) {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 1) {
@@ -75,10 +74,10 @@ public class ContainerMachineBattery extends Container {
 	
 	@Override
 	public void detectAndSendChanges() {
-		final NBTTagCompound nbt = new NBTTagCompound();
+		NBTTagCompound nbt = new NBTTagCompound();
 
 		nbt.setLong("power", diFurnace.power);
-		nbt.setLong("powerDelta", diFurnace.powerDelta);
+		nbt.setLong("powerDelta", diFurnace.delta);
 		nbt.setShort("redLow", diFurnace.redLow);
 		nbt.setShort("redHigh", diFurnace.redHigh);
 		nbt.setByte("priority", (byte)diFurnace.priority.ordinal());
@@ -90,7 +89,7 @@ public class ContainerMachineBattery extends Container {
 	}
 	
 	@Override
-	public boolean canInteractWith(final EntityPlayer playerIn) {
+	public boolean canInteractWith(EntityPlayer playerIn) {
 		return diFurnace.isUseableByPlayer(playerIn);
 	}
 }

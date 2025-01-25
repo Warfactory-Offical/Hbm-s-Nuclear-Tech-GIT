@@ -19,7 +19,7 @@ import glmath.glm.vec._3.i.Vec3i;
  */
 public class Vec4i extends FuncRelational {
 
-    public Vec4i(final Vec4i v) {
+    public Vec4i(Vec4i v) {
         this(v.x, v.y, v.z, v.w);
     }
 
@@ -27,54 +27,54 @@ public class Vec4i extends FuncRelational {
         this(0);
     }
 
-    public Vec4i(final int i) {
+    public Vec4i(int i) {
         this(i, i, i, i);
     }
 
-    public Vec4i(final int x, final int y, final int z, final int w) {
+    public Vec4i(int x, int y, int z, int w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Vec4i(final int[] ia) {
+    public Vec4i(int[] ia) {
         this(ia, 0);
     }
 
-    public Vec4i(final int[] ia, final int i) {
-        this(ia[i], ia[i + 1], ia[i + 2], ia[i + 3]);
+    public Vec4i(int[] ia, int i) {
+        this(ia[i + 0], ia[i + 1], ia[i + 2], ia[i + 3]);
     }
 
-    public Vec4i(final long l) {
+    public Vec4i(long l) {
         this((int) l);
     }
 
-    public Vec4i(final long[] la) {
+    public Vec4i(long[] la) {
         this(la, 0);
     }
 
-    public Vec4i(final long[] la, final int i) {
-        this(la[i], la[i + 1], la[i + 2], la[i + 3]);
+    public Vec4i(long[] la, int i) {
+        this(la[i + 0], la[i + 1], la[i + 2], la[i + 3]);
     }
 
-    public Vec4i(final int i, final Vec3i v) {
+    public Vec4i(int i, Vec3i v) {
         this(i, v.x, v.y, v.z);
     }
 
-    public Vec4i(final Vec3i v, final int i) {
+    public Vec4i(Vec3i v, int i) {
         this(v.x, v.y, v.z, i);
     }
 
-    public Vec4i(final Vec2i v0, final Vec2i v1) {
+    public Vec4i(Vec2i v0, Vec2i v1) {
         this(v0.x, v0.y, v1.x, v1.y);
     }
 
-    public Vec4i(final Vec2i v, final int i0, final int i1) {
+    public Vec4i(Vec2i v, int i0, int i1) {
         this(v.x, v.y, i0, i1);
     }
 
-    public Vec4i(final long x, final long y, final long z, final long w) {
+    public Vec4i(long x, long y, long z, long w) {
         this((int) x, (int) y, (int) z, (int) w);
     }
 
@@ -82,55 +82,55 @@ public class Vec4i extends FuncRelational {
         return set(0);
     }
 
-    public Vec4i set(final Vec4i v) {
+    public Vec4i set(Vec4i v) {
         return set(v.x, v.y, v.z, v.w);
     }
 
-    public Vec4i set(final int i) {
+    public Vec4i set(int i) {
         return set(i, i, i, i);
     }
 
-    public Vec4i set(final int[] ia) {
+    public Vec4i set(int[] ia) {
         return set(ia, 0);
     }
 
-    public Vec4i set(final int[] ia, final int i) {
-        return set(ia[i], ia[i + 1], ia[i + 2], ia[i + 3]);
+    public Vec4i set(int[] ia, int i) {
+        return set(ia[i + 0], ia[i + 1], ia[i + 2], ia[i + 3]);
     }
 
-    public Vec4i set(final long l) {
+    public Vec4i set(long l) {
         return set(l, l, l, l);
     }
 
-    public Vec4i set(final long[] la) {
+    public Vec4i set(long[] la) {
         return set(la, 0);
     }
 
-    public Vec4i set(final long[] la, final int i) {
-        return set(la[i], la[i + 1], la[i + 2], la[i + 3]);
+    public Vec4i set(long[] la, int i) {
+        return set(la[i + 0], la[i + 1], la[i + 2], la[i + 3]);
     }
 
-    public Vec4i set(final int i, final Vec3i v) {
+    public Vec4i set(int i, Vec3i v) {
         return set(i, v.x, v.y, v.z);
     }
 
-    public Vec4i set(final Vec3i v, final int i) {
+    public Vec4i set(Vec3i v, int i) {
         return set(v.x, v.y, v.z, i);
     }
 
-    public Vec4i set(final Vec2i v0, final Vec2i v1) {
+    public Vec4i set(Vec2i v0, Vec2i v1) {
         return set(v0.x, v0.y, v1.x, v1.y);
     }
 
-    public Vec4i set(final Vec2i v, final int i0, final int i1) {
+    public Vec4i set(Vec2i v, int i0, int i1) {
         return set(v.x, v.y, i0, i1);
     }
 
-    public Vec4i set(final long x, final long y, final long z, final long w) {
+    public Vec4i set(long x, long y, long z, long w) {
         return set((int) x, (int) y, (int) z, (int) w);
     }
 
-    public Vec4i set(final int x, final int y, final int z, final int w) {
+    public Vec4i set(int x, int y, int z, int w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -142,7 +142,7 @@ public class Vec4i extends FuncRelational {
         return toIA_(new int[4]);
     }
 
-    public int[] toIA_(final int[] ia) {
+    public int[] toIA_(int[] ia) {
         ia[0] = x;
         ia[1] = y;
         ia[2] = z;
@@ -154,13 +154,13 @@ public class Vec4i extends FuncRelational {
         return toDib(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asIntBuffer());
     }
 
-    public IntBuffer toDib(final IntBuffer ib) {
+    public IntBuffer toDib(IntBuffer ib) {
         return toDib(ib, 0);
     }
 
-    public IntBuffer toDib(final IntBuffer ib, final int index) {
+    public IntBuffer toDib(IntBuffer ib, int index) {
         return ib
-                .put(index, x)
+                .put(index + 0, x)
                 .put(index + 1, y)
                 .put(index + 2, z)
                 .put(index + 3, w);
@@ -170,13 +170,13 @@ public class Vec4i extends FuncRelational {
         return toDfb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer());
     }
 
-    public FloatBuffer toDfb(final FloatBuffer fb) {
+    public FloatBuffer toDfb(FloatBuffer fb) {
         return toDfb(fb, 0);
     }
 
-    public FloatBuffer toDfb(final FloatBuffer fb, final int index) {
+    public FloatBuffer toDfb(FloatBuffer fb, int index) {
         return fb
-                .put(index, x)
+                .put(index + 0, x)
                 .put(index + 1, y)
                 .put(index + 2, z)
                 .put(index + 3, w);
@@ -186,14 +186,14 @@ public class Vec4i extends FuncRelational {
         return toDbb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()));
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb) {
+    public ByteBuffer toDbb(ByteBuffer bb) {
         return toDbb(bb, 0);
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb, final int index) {
+    public ByteBuffer toDbb(ByteBuffer bb, int index) {
         return bb
-                .putInt(index, x)
-                .putInt(index + Integer.BYTES, y)
+                .putInt(index + 0 * Integer.BYTES, x)
+                .putInt(index + 1 * Integer.BYTES, y)
                 .putInt(index + 2 * Integer.BYTES, z)
                 .putInt(index + 3 * Integer.BYTES, w);
     }
@@ -202,16 +202,16 @@ public class Vec4i extends FuncRelational {
         print("", true);
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         print(title, true);
     }
 
-    public void print(final boolean outStream) {
+    public void print(boolean outStream) {
         print("", outStream);
     }
 
-    public void print(final String title, final boolean outStream) {
-        final String res = title + "\n(" + x + ", " + y + ", " + z + ", " + w + ")";
+    public void print(String title, boolean outStream) {
+        String res = title + "\n(" + x + ", " + y + ", " + z + ", " + w + ")";
         if (outStream) {
             System.out.print(res);
         } else {

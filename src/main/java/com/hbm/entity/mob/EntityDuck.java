@@ -1,7 +1,6 @@
 package com.hbm.entity.mob;
 
 import com.hbm.lib.HBMSoundHandler;
-
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.util.DamageSource;
@@ -10,7 +9,7 @@ import net.minecraft.world.World;
 
 public class EntityDuck extends EntityChicken {
 
-	public EntityDuck(final World worldIn) {
+	public EntityDuck(World worldIn) {
 		super(worldIn);
 	}
 	
@@ -20,7 +19,7 @@ public class EntityDuck extends EntityChicken {
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return HBMSoundHandler.ducc;
 	}
 	
@@ -30,7 +29,7 @@ public class EntityDuck extends EntityChicken {
 	}
 	
 	@Override
-	public EntityChicken createChild(final EntityAgeable ageable) {
+	public EntityChicken createChild(EntityAgeable ageable) {
 		return new EntityDuck(this.world);
 	}
 	

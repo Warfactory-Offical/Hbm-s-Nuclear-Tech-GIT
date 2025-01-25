@@ -1,7 +1,5 @@
 package com.hbm.render.entity.mob;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.mob.EntityDuck;
 import com.hbm.lib.RefStrings;
 import net.minecraft.client.renderer.entity.RenderChicken;
@@ -9,6 +7,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 /**
  *  BOW
@@ -28,7 +27,7 @@ public class RenderQuacc extends RenderChicken {
 	 /**
      *  BOW
      */
-	public RenderQuacc(final RenderManager p_i47211_1_) {
+	public RenderQuacc(RenderManager p_i47211_1_) {
 		super(p_i47211_1_);
 	}
 	
@@ -36,7 +35,7 @@ public class RenderQuacc extends RenderChicken {
      *  BOW
      */
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityChicken DUCC) {
+	protected ResourceLocation getEntityTexture(EntityChicken DUCC) {
 		return ducc;
 	}
 	
@@ -44,7 +43,7 @@ public class RenderQuacc extends RenderChicken {
      *  BOW
      */
 	@Override
-	protected void preRenderCallback(final EntityChicken DUCC, final float partialTickTime) {
+	protected void preRenderCallback(EntityChicken DUCC, float partialTickTime) {
 		GL11.glScaled(25, 25, 25);
 	}
 }

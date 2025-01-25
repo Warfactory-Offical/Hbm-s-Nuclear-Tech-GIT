@@ -1,26 +1,24 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.container.ContainerMicrowave;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxButtonPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityMicrowave;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIMicrowave extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_microwave.png");
-	private final TileEntityMicrowave microwave;
+	private TileEntityMicrowave microwave;
 
-	public GUIMicrowave(final InventoryPlayer invPlayer, final TileEntityMicrowave microwave) {
+	public GUIMicrowave(InventoryPlayer invPlayer, TileEntityMicrowave microwave) {
 		super(new ContainerMicrowave(invPlayer, microwave));
 		this.microwave = microwave;
 
@@ -29,14 +27,14 @@ public class GUIMicrowave extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 51 - 34, 16, 34, microwave.power, TileEntityMicrowave.maxPower);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+	protected void mouseClicked(int x, int y, int i) throws IOException {
     	super.mouseClicked(x, y, i);
 
 	    if(guiLeft + 43 <= x && guiLeft + 43 + 18 > x && guiTop + 25 < y && guiTop + 25 + 18 >= y) {
@@ -48,27 +46,27 @@ public class GUIMicrowave extends GuiInfoContainer {
     }
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.microwave.hasCustomInventoryName() ? this.microwave.getInventoryName() : I18n.format(this.microwave.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
+		String name = this.microwave.hasCustomInventoryName() ? this.microwave.getInventoryName() : I18n.format(this.microwave.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		final int i = (int)microwave.getPowerScaled(34);
+		int i = (int)microwave.getPowerScaled(34);
 		drawTexturedModalRect(guiLeft + 8, guiTop + 51 - i, 176, 34 - i, 16, i);
 
-		final int j = Math.min(microwave.getProgressScaled(23), 22);
+		int j = Math.min(microwave.getProgressScaled(23), 22);
 		drawTexturedModalRect(guiLeft + 104, guiTop + 34, 192, 0, j, 16);
 
-		final int k = microwave.getSpeedScaled(34);
+		int k = microwave.getSpeedScaled(34);
 		drawTexturedModalRect(guiLeft + 62, guiTop + 60 - k, 214, 34 - k, 4, k);
 	}
 }

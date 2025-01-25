@@ -24,7 +24,7 @@ public class ItemPill extends ItemFood {
 
 	Random rand = new Random();
 	
-	public ItemPill(final int hunger, final String s) {
+	public ItemPill(int hunger, String s) {
 		super(hunger, false);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -34,7 +34,7 @@ public class ItemPill extends ItemFood {
 	}
 	
 	@Override
-	protected void onFoodEaten(final ItemStack stack, final World worldIn, final EntityPlayer player) {
+	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
 		if (!worldIn.isRemote)
         {
 			VersatileConfig.applyPotionSickness(player, 5);
@@ -73,18 +73,18 @@ public class ItemPill extends ItemFood {
 				player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 10 * 60 * 20, 2));
 				player.addPotionEffect(new PotionEffect(MobEffects.POISON, 5 * 20, 2));
 				
-				final PotionEffect eff = new PotionEffect(HbmPotion.potionsickness, 10 * 60 * 20);
+				PotionEffect eff = new PotionEffect(HbmPotion.potionsickness, 10 * 60 * 20);
 				eff.setCurativeItems(new ArrayList());
 				player.addPotionEffect(eff);
 			}
 
         	if(this == ModItems.xanax) {
-				final float digamma = HbmLivingProps.getDigamma(player);
+				float digamma = HbmLivingProps.getDigamma(player);
 				HbmLivingProps.setDigamma(player, Math.max(digamma - 0.5F, 0F));
 			}
 
 			if(this == ModItems.fmn) {
-				final float digamma = HbmLivingProps.getDigamma(player);
+				float digamma = HbmLivingProps.getDigamma(player);
 				HbmLivingProps.setDigamma(player, Math.min(digamma, 2F));
 				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 60, 0));
 			}
@@ -97,7 +97,7 @@ public class ItemPill extends ItemFood {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(this == ModItems.pill_iodine) {
 			tooltip.add("Removes negative effects");
 		}
@@ -126,12 +126,12 @@ public class ItemPill extends ItemFood {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 10;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		if(!VersatileConfig.hasPotionSickness(playerIn))
 			playerIn.setActiveHand(handIn);
 		return super.onItemRightClick(worldIn, playerIn, handIn);

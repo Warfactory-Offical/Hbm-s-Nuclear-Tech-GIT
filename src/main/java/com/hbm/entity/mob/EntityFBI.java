@@ -1,9 +1,4 @@
 package com.hbm.entity.mob;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.MobConfig;
@@ -13,21 +8,12 @@ import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,9 +31,13 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class EntityFBI extends EntityMob implements IRangedAttackMob {
 	
-	public EntityFBI(final World world) {
+	public EntityFBI(World world) {
 		super(world);
 		((PathNavigateGround)this.getNavigator()).setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -74,8 +64,8 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
 	}
 	
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
-		if(source instanceof EntityDamageSourceIndirect && source.getTrueSource() instanceof EntityFBI) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect)source).getTrueSource() instanceof EntityFBI) {
     		return false;
     	}
 		if(this.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null && this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Item.getItemFromBlock(Blocks.GLASS)) {
@@ -93,32 +83,32 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
 	}
 	
 	@Override
-	protected void setEquipmentBasedOnDifficulty(final DifficultyInstance difficulty) {
-		final int equip = rand.nextInt(2);
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		int equip = rand.nextInt(2);
 
         switch(equip) {
-        case 0: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.gun_revolver_nopip)); break;
-        case 1: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStackUtil.itemStackFrom(ModItems.gun_ks23)); break;
+        case 0: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.gun_revolver_nopip)); break;
+        case 1: this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.gun_ks23)); break;
         }
         if(rand.nextInt(5) == 0) {
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.security_helmet));
-        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.security_plate));
-        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.security_legs));
-        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.security_boots));
+        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.security_helmet));
+        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.security_plate));
+        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.security_legs));
+        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.security_boots));
         }
 
         if(this.world != null && this.world.provider.getDimension() != 0) {
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.paa_helmet));
-        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStackUtil.itemStackFrom(ModItems.paa_plate));
-        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, ItemStackUtil.itemStackFrom(ModItems.paa_legs));
-        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, ItemStackUtil.itemStackFrom(ModItems.paa_boots));
+        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.paa_helmet));
+        	this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.paa_plate));
+        	this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.paa_legs));
+        	this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.paa_boots));
         }
 	}
 	
 	@Override
-	public boolean isPotionApplicable(final PotionEffect potioneffectIn) {
+	public boolean isPotionApplicable(PotionEffect potioneffectIn) {
     	if(this.getItemStackFromSlot(EntityEquipmentSlot.HEAD) == null || this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty())
-            this.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStackUtil.itemStackFrom(ModItems.gas_mask_m65));
+            this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.gas_mask_m65));
 
         return false;
 	}
@@ -135,10 +125,10 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(final EntityLivingBase target, final float distanceFactor) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		if(!this.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty()) {
 			if(this.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == ModItems.gun_revolver_nopip) {
-				final EntityBullet bullet = new EntityBullet(world, this, target, 3F, 2);
+				EntityBullet bullet = new EntityBullet(world, this, target, 3F, 2);
 				bullet.damage = 10;
 		        this.world.spawnEntity(bullet);
 		        this.playSound(HBMSoundHandler.revolverShootAlt, 1.0F, 1.0F);
@@ -146,7 +136,7 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
 
 			if(this.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == ModItems.gun_ks23) {
 				for(int i = 0; i < 7; i++) {
-					final EntityBullet bullet = new EntityBullet(world, this, target, 3F, 5);
+					EntityBullet bullet = new EntityBullet(world, this, target, 3F, 5);
 					bullet.damage = 3;
 			        this.world.spawnEntity(bullet);
 				}
@@ -173,8 +163,6 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
 		canDestroy.add(ModBlocks.dummy_block_centrifuge);
 		canDestroy.add(ModBlocks.dummy_block_gascent);
 		canDestroy.add(ModBlocks.machine_crystallizer);
-		canDestroy.add(ModBlocks.dummy_block_reactor_small);
-		canDestroy.add(ModBlocks.dummy_port_reactor_small);
 		canDestroy.add(ModBlocks.machine_turbine);
 		canDestroy.add(ModBlocks.machine_large_turbine);
 		canDestroy.add(ModBlocks.crate_iron);
@@ -190,7 +178,7 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
 	}
 	
 	@Override
-	public IEntityLivingData onInitialSpawn(final DifficultyInstance difficulty, final IEntityLivingData livingdata) {
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		this.setEquipmentBasedOnDifficulty(difficulty);
 		return super.onInitialSpawn(difficulty, livingdata);
 	}
@@ -202,29 +190,29 @@ public class EntityFBI extends EntityMob implements IRangedAttackMob {
     		return;
 
     	if(this.ticksExisted % MobConfig.raidAttackDelay == 0) {
-    		final Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackReach, 0, 0);
+    		Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackReach, 0, 0);
     		vec.rotateAroundY((float)(Math.PI * 2) * rand.nextFloat());
 
-            final Vec3 vec3 = Vec3.createVectorHelper(this.posX, this.posY + 0.5 + rand.nextFloat(), this.posZ);
-            final Vec3 vec31 = Vec3.createVectorHelper(vec3.xCoord + vec.xCoord, vec3.yCoord + vec.yCoord, vec3.zCoord + vec.zCoord);
-            final RayTraceResult mop = this.world.rayTraceBlocks(vec3.toVec3d(), vec31.toVec3d(), false, true, false);
+            Vec3 vec3 = Vec3.createVectorHelper(this.posX, this.posY + 0.5 + rand.nextFloat(), this.posZ);
+            Vec3 vec31 = Vec3.createVectorHelper(vec3.xCoord + vec.xCoord, vec3.yCoord + vec.yCoord, vec3.zCoord + vec.zCoord);
+            RayTraceResult mop = this.world.rayTraceBlocks(vec3.toVec3d(), vec31.toVec3d(), false, true, false);
 
             if(mop != null && mop.typeOfHit == Type.BLOCK) {
 
             	if(canDestroy.contains(world.getBlockState(mop.getBlockPos())))
             		world.destroyBlock(mop.getBlockPos(), false);
             }
-            final double range = 1.5;
+            double range = 1.5;
 
-        	final List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX, posY, posZ, posX, posY, posZ).grow(range, range, range));
+        	List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX, posY, posZ, posX, posY, posZ).grow(range, range, range));
 
-        	for(final EntityItem item : items)
+        	for(EntityItem item : items)
         		item.setFire(10);
     	}
 	}
 	
 	@Override
-	public void setSwingingArms(final boolean swingingArms) {
+	public void setSwingingArms(boolean swingingArms) {
 		
 	}
 }

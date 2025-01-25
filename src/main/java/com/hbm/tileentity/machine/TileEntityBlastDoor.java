@@ -1,8 +1,5 @@
 package com.hbm.tileentity.machine;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.DummyBlockBlast;
 import com.hbm.handler.RadiationSystemNT;
@@ -13,10 +10,8 @@ import com.hbm.inventory.control_panel.ControlEventSystem;
 import com.hbm.inventory.control_panel.DataValueFloat;
 import com.hbm.inventory.control_panel.IControllable;
 import com.hbm.lib.HBMSoundHandler;
-import com.hbm.main.MainRegistry;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEVaultPacket;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -28,6 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TileEntityBlastDoor extends TileEntityLockableBase implements ITickable, IControllable, IAnimatedDoor {
 
@@ -52,7 +50,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	public void update() {
 		if(!world.isRemote) {
 			
-			if(!isLocked() && world.isBlockPowered(pos) || world.isBlockPowered(pos.up(6))) {
+			if(!isLocked() && world.isBlockIndirectlyGettingPowered(pos) > 0 || world.isBlockIndirectlyGettingPowered(pos.up(6)) > 0) {
 				
 				if(!redstoned) {
 					this.tryToggle();
@@ -130,10 +128,10 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	
 	public void openNeigh() {
 
-		final TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
-		final TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
-		final TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
-		final TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
+		TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
+		TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
+		TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
+		TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
@@ -176,10 +174,10 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	
 	public void closeNeigh() {
 
-		final TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
-		final TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
-		final TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
-		final TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
+		TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
+		TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
+		TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
+		TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
@@ -216,10 +214,10 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	
 	public void lockNeigh() {
 
-		final TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
-		final TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
-		final TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
-		final TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
+		TileEntity te0 = world.getTileEntity(pos.add(1, 0, 0));
+		TileEntity te1 = world.getTileEntity(pos.add(-1, 0, 0));
+		TileEntity te2 = world.getTileEntity(pos.add(0, 0, 1));
+		TileEntity te3 = world.getTileEntity(pos.add(0, 0, -1));
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
@@ -289,23 +287,24 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 		return false;
 	}
 
-	public boolean placeDummy(final BlockPos pos) {
+	public boolean placeDummy(BlockPos pos) {
 		
 		if(!world.getBlockState(pos).getBlock().isReplaceable(world, pos))
 			return false;
 		
 		world.setBlockState(pos, ModBlocks.dummy_block_blast.getDefaultState());
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy dummy) {
-            dummy.target = this.pos;
+		if(te instanceof TileEntityDummy) {
+			TileEntityDummy dummy = (TileEntityDummy)te;
+			dummy.target = this.pos;
 		}
 		
 		return true;
 	}
 	
-	public void removeDummy(final BlockPos pos) {
+	public void removeDummy(BlockPos pos) {
 		
 		if(world.getBlockState(pos).getBlock() == ModBlocks.dummy_block_blast) {
 			DummyBlockBlast.safeBreak = true;
@@ -315,7 +314,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		state = DoorState.values()[compound.getInteger("state")];
 		sysTime = compound.getLong("sysTime");
 		timer = compound.getInteger("timer");
@@ -324,7 +323,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("state", state.ordinal());
 		compound.setLong("sysTime", sysTime);
 		compound.setInteger("timer", timer);
@@ -333,7 +332,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 	}
 
 	@Override
-	public void receiveEvent(final BlockPos from, final ControlEvent e){
+	public void receiveEvent(BlockPos from, ControlEvent e){
 		if(e.name.equals("door_toggle")){
 			tryToggle();
 		}
@@ -414,7 +413,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase implements ITick
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(final DoorState newState) {
+	public void handleNewState(DoorState newState) {
 
 	}
 

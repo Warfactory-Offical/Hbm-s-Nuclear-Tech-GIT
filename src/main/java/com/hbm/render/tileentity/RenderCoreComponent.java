@@ -1,7 +1,5 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.RenderHelper;
@@ -14,19 +12,19 @@ import com.hbm.tileentity.machine.TileEntityCoreEmitter;
 import com.hbm.tileentity.machine.TileEntityCoreInjector;
 import com.hbm.tileentity.machine.TileEntityCoreReceiver;
 import com.hbm.tileentity.machine.TileEntityCoreStabilizer;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCoreComponent extends TileEntitySpecialRenderer<TileEntityMachineBase> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityMachineBase te) {
+	public boolean isGlobalRenderer(TileEntityMachineBase te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityMachineBase tileEntity, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineBase tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y, z + 0.5);
         GlStateManager.enableLighting();
@@ -75,7 +73,7 @@ public class RenderCoreComponent extends TileEntitySpecialRenderer<TileEntityMac
 	    
         if(tileEntity instanceof TileEntityCoreStabilizer) {
 	        GL11.glTranslated(0, 0.5, 0);
-	        final int range = ((TileEntityCoreStabilizer)tileEntity).beam;
+	        int range = ((TileEntityCoreStabilizer)tileEntity).beam;
 
 	        if(range > 0) {
 	    		BeamPronter.prontBeam(Vec3.createVectorHelper(0, 0, range), EnumWaveType.STRAIGHT, EnumBeamType.SOLID, 0x002333, 0x7F7F7F, 0, 1, 0F, 2, 0.125F);
@@ -86,19 +84,20 @@ public class RenderCoreComponent extends TileEntitySpecialRenderer<TileEntityMac
 
         if(tileEntity instanceof TileEntityCoreEmitter) {
 	        GL11.glTranslated(0, 0.5, 0);
-	        final int range = ((TileEntityCoreEmitter)tileEntity).beam;
+	        int range = ((TileEntityCoreEmitter)tileEntity).beam;
 	        
 	        if(range > 0) {
-	        	final float width = (float)Math.max(1, Math.log10(((TileEntityCoreEmitter)tileEntity).prev) - 6) / 8F;
+	        	float width = (float)Math.max(1, Math.log10(((TileEntityCoreEmitter)tileEntity).prev) - 6) / 8F;
 		        BeamPronter.prontBeam(Vec3.createVectorHelper(0, 0, range), EnumWaveType.STRAIGHT, EnumBeamType.SOLID, 0x401500, 0x7F7F7F, 0, 1, 0F, 2, width);
 		        BeamPronter.prontBeam(Vec3.createVectorHelper(0, 0, range), EnumWaveType.RANDOM, EnumBeamType.SOLID, 0x401500, 0x7F7F7F, (int)tileEntity.getWorld().getTotalWorldTime() % 1000, (int)(0.3F * range/width), width * 0.75F, 2, width * 0.5F);
 		        BeamPronter.prontBeam(Vec3.createVectorHelper(0, 0, range), EnumWaveType.RANDOM, EnumBeamType.SOLID, 0x5B1D00, 0x7F7F7F, (int)tileEntity.getWorld().getTotalWorldTime() % 1000 + 1, (int)(0.3F * range/width), width * 0.75F, 2, width * 0.5F);
 	        }
         }
 
-        if(tileEntity instanceof TileEntityCoreInjector injector) {
+        if(tileEntity instanceof TileEntityCoreInjector) {      
 	        GL11.glTranslated(0, 0.5, 0);
-            final int range = injector.beam;
+	        TileEntityCoreInjector injector = (TileEntityCoreInjector)tileEntity;
+	        int range = injector.beam;
 	        
 	        if(range > 0) {
 	        	RenderHelper.bindBlockTexture();

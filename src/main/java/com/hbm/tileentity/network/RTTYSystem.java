@@ -1,12 +1,10 @@
 package com.hbm.tileentity.network;
 
+import com.hbm.util.Tuple.Pair;
+import net.minecraft.world.World;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
-
-import com.hbm.util.Tuple.Pair;
-
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 
 public class RTTYSystem {
 
@@ -16,25 +14,25 @@ public class RTTYSystem {
 	public static HashMap<Pair<World, String>, Object> newMessages = new HashMap();
 	
 	/** Pushes a new signal to be used next tick. Only the last signal pushed will be used. */
-	public static void broadcast(final World world, final String channelName, final Object signal) {
-		final Pair identifier = new Pair(world, channelName);
+	public static void broadcast(World world, String channelName, Object signal) {
+		Pair identifier = new Pair(world, channelName);
 		newMessages.put(identifier, signal);
 	}
 	
 	/** Returns the RTTY channel with that name, or null */
-	public static RTTYChannel listen(final World world, final String channelName) {
-		final RTTYChannel channel = broadcast.get(new Pair(world, channelName));
+	public static RTTYChannel listen(World world, String channelName) {
+		RTTYChannel channel = broadcast.get(new Pair(world, channelName));
 		return channel;
 	}
 	
 	/** Moves all new messages to the broadcast map, adding the appropriate timestamp and clearing the new message queue */
 	public static void updateBroadcastQueue() {
 		
-		for(final Entry<Pair<World, String>, Object> worldEntry : newMessages.entrySet()) {
-			final Pair<World, String> identifier = worldEntry.getKey();
-			final Object lastSignal = worldEntry.getValue();
+		for(Entry<Pair<World, String>, Object> worldEntry : newMessages.entrySet()) {
+			Pair<World, String> identifier = worldEntry.getKey();
+			Object lastSignal = worldEntry.getValue();
 			
-			final RTTYChannel channel = new RTTYChannel();
+			RTTYChannel channel = new RTTYChannel();
 			channel.timeStamp = identifier.getKey().getTotalWorldTime();
 			channel.signal = lastSignal;
 			

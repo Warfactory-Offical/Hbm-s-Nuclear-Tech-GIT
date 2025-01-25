@@ -1,8 +1,5 @@
 package com.hbm.tileentity.turret;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.config.WeaponConfig;
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.handler.BulletConfiguration;
@@ -12,11 +9,12 @@ import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.util.EntityDamageUtil;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 	static List<Integer> configs = new ArrayList<>();
@@ -109,7 +107,7 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 		} else {
 
 			if(loaded <= 0) {
-				final BulletConfiguration conf = this.getFirstConfigLoaded();
+				BulletConfiguration conf = this.getFirstConfigLoaded();
 
 				if(conf != null) {
 					this.conusmeAmmo(conf.ammo);
@@ -136,12 +134,12 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 				if(world.rand.nextInt(100) + 1 <= WeaponConfig.ciwsHitrate)
 					EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.shrapnel, 2F + world.rand.nextInt(2));
 
-				final Vec3 pos = new Vec3(this.getTurretPos());
-				final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = new Vec3(this.getTurretPos());
+				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 
-				final Vec3 hOff = Vec3.createVectorHelper(0, 0.25, 0);
+				Vec3 hOff = Vec3.createVectorHelper(0, 0.25, 0);
 				hOff.rotateAroundZ((float) -this.rotationPitch);
 				hOff.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 
@@ -153,7 +151,7 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 						hOff.zCoord *= -1;
 					}
 
-					final NBTTagCompound data = new NBTTagCompound();
+					NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "vanillaExt");
 					data.setString("mode", "largeexplode");
 					data.setFloat("size", 1.5F);
@@ -165,13 +163,13 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt){
+	public void readFromNBT(NBTTagCompound nbt){
 		this.loaded = nbt.getInteger("loaded");
 		super.readFromNBT(nbt);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt){
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
 		nbt.setInteger("loaded", loaded);
 		return super.writeToNBT(nbt);
 	}

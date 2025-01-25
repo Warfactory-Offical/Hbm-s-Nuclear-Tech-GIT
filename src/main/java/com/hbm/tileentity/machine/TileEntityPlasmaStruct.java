@@ -5,7 +5,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachinePlasmaHeater;
 import com.hbm.handler.MultiblockHandlerXR;
 import com.hbm.lib.ForgeDirection;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
@@ -20,7 +19,7 @@ public class TileEntityPlasmaStruct extends TileEntity implements ITickable {
 	
 	@Override
 	public void update() {
-		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
 
 		if(world.isRemote) {
 			world.spawnParticle(EnumParticleTypes.REDSTONE,
@@ -38,7 +37,7 @@ public class TileEntityPlasmaStruct extends TileEntity implements ITickable {
 
 		age = 0;
 
-		final MachinePlasmaHeater plas = (MachinePlasmaHeater)ModBlocks.plasma_heater;
+		MachinePlasmaHeater plas = (MachinePlasmaHeater)ModBlocks.plasma_heater;
 
 		int[] rot = MultiblockHandlerXR.rotate(plas.getDimensions(), dir.toEnumFacing());
 

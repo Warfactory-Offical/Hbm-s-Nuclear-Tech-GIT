@@ -1,15 +1,7 @@
 package com.hbm.inventory.gui;
 
-import java.util.Iterator;
-import java.util.Arrays;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.hbm.lib.Library;
 import com.hbm.lib.RefStrings;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,45 +10,51 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class GuiInfoContainer extends GuiContainer {
 	
 	ResourceLocation guiUtil =  new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_utility.png");
 
-	public GuiInfoContainer(final Container p_i1072_1_) {
+	public GuiInfoContainer(Container p_i1072_1_) {
 		super(p_i1072_1_);
 	}
 	
-	public void drawFluidInfo(final String[] text, final int x, final int y) {
+	public void drawFluidInfo(String[] text, int x, int y) {
 		this.drawHoveringText(Arrays.asList(text), x, y);
 	}
 
-	public void drawFluidInfo(final List<String> text, final int x, final int y) {
+	public void drawFluidInfo(List<String> text, int x, int y) {
 		this.drawHoveringText(text, x, y);
 	}
 
 	//the mojang employee who made this private on the super can explode
-	public boolean isMouseOverSlot(final Slot slotIn, final int mouseX, final int mouseY)
+	public boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY)
     {
         return this.isPointInRegion(slotIn.xPos, slotIn.yPos, 16, 16, mouseX, mouseY);
     }
-	public void drawElectricityInfo(final GuiInfoContainer gui, final int mouseX, final int mouseY, final int x, final int y, final int width, final int height, final long power, final long maxPower) {
+	public void drawElectricityInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, long power, long maxPower) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
 			gui.drawFluidInfo(new String[] { Library.getShortNumber(power) + "/" + Library.getShortNumber(maxPower) + "HE" }, mouseX, mouseY);
 	}
 	
-	public void drawCustomInfo(final GuiInfoContainer gui, final int mouseX, final int mouseY, final int x, final int y, final int width, final int height, final String[] text) {
+	public void drawCustomInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, String[] text) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
 			this.drawHoveringText(Arrays.asList(text), mouseX, mouseY);
 	}
 	
-	public void drawCustomInfoStat(final int mouseX, final int mouseY, final int x, final int y, final int width, final int height, final int tPosX, final int tPosY, final String[] text) {
+	public void drawCustomInfoStat(int mouseX, int mouseY, int x, int y, int width, int height, int tPosX, int tPosY, String[] text) {
 		
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
 			this.drawHoveringText(Arrays.asList(text), tPosX, tPosY);
 	}
 	
-	public void drawInfoPanel(final int x, final int y, final int width, final int height, final int type) {
+	public void drawInfoPanel(int x, int y, int width, int height, int type) {
 
 		Minecraft.getMinecraft().getTextureManager().bindTexture(guiUtil);
 		
@@ -100,7 +98,7 @@ public abstract class GuiInfoContainer extends GuiContainer {
 		}
 	}
 
-		protected void drawStackText(final List lines, final int x, final int y, final FontRenderer font, final int highLightIndex) {
+		protected void drawStackText(List lines, int x, int y, FontRenderer font, int highLightIndex) {
 		
 		if(!lines.isEmpty()) {
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -110,15 +108,15 @@ public abstract class GuiInfoContainer extends GuiContainer {
 
 			int height = 0;
 			int longestline = 0;
-			final Iterator iterator = lines.iterator();
+			Iterator iterator = lines.iterator();
 
 			while(iterator.hasNext()) {
-				final Object[] line = (Object[]) iterator.next();
+				Object[] line = (Object[]) iterator.next();
 				int lineWidth = 0;
 				
 				boolean hasStack = false;
 				
-				for(final Object o : line) {
+				for(Object o : line) {
 					
 					if(o instanceof String) {
 						lineWidth += font.getStringWidth((String) o);
@@ -153,16 +151,16 @@ public abstract class GuiInfoContainer extends GuiContainer {
 			this.zLevel = 400.0F;
 			itemRender.zLevel = 400.0F;
 			//int j1 = -267386864;
-			final int colorBg = 0xF0100010;
+			int colorBg = 0xF0100010;
 			this.drawGradientRect(minX - 3, minY - 4, minX + longestline + 3, minY - 3, colorBg, colorBg);
 			this.drawGradientRect(minX - 3, minY + height + 3, minX + longestline + 3, minY + height + 4, colorBg, colorBg);
 			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY + height + 3, colorBg, colorBg);
 			this.drawGradientRect(minX - 4, minY - 3, minX - 3, minY + height + 3, colorBg, colorBg);
 			this.drawGradientRect(minX + longestline + 3, minY - 3, minX + longestline + 4, minY + height + 3, colorBg, colorBg);
 			//int k1 = 1347420415;
-			final int color0 = 0x505000FF;
+			int color0 = 0x505000FF;
 			//int l1 = (k1 & 16711422) >> 1 | k1 & -16777216;
-			final int color1 = (color0 & 0xFEFEFE) >> 1 | color0 & 0xFF000000;
+			int color1 = (color0 & 0xFEFEFE) >> 1 | color0 & 0xFF000000;
 			this.drawGradientRect(minX - 3, minY - 3 + 1, minX - 3 + 1, minY + height + 3 - 1, color0, color1);
 			this.drawGradientRect(minX + longestline + 2, minY - 3 + 1, minX + longestline + 3, minY + height + 3 - 1, color0, color1);
 			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY - 3 + 1, color0, color0);
@@ -171,24 +169,23 @@ public abstract class GuiInfoContainer extends GuiContainer {
 			int totalLen = 0;
 			for(int index = 0; index < lines.size(); index++) {
 				
-				final Object[] line = (Object[]) lines.get(index);
+				Object[] line = (Object[]) lines.get(index);
 				int indent = 0;
 				boolean hasStack = false;
 				
-				for(final Object o : line) {
-                    if (!(o instanceof String)) {
-                        hasStack = true;
-                        break;
-                    }
+				for(Object o : line) {
+					if(!(o instanceof String)) {
+						hasStack = true;
+					}
 				}
 				
 				for(int i = 0; i < line.length; i++) {
-					final Object o = line[i];
+					Object o = line[i];
 					if(o instanceof String) {
 						font.drawStringWithShadow((String) o, minX + indent, minY + (hasStack ? 4 : 0), -1);
 						indent += font.getStringWidth((String) o) + 2;
 					} else {
-						final ItemStack stack = (ItemStack) o;
+						ItemStack stack = (ItemStack) o;
 						GL11.glColor3f(1F, 1F, 1F);
 
 						if(totalLen + i == highLightIndex) {
@@ -218,5 +215,9 @@ public abstract class GuiInfoContainer extends GuiContainer {
 			RenderHelper.enableStandardItemLighting();
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		}
+	}
+
+	protected boolean checkClick(int x, int y, int left, int top, int sizeX, int sizeY) {
+		return guiLeft + left <= x && guiLeft + left + sizeX > x && guiTop + top < y && guiTop + top + sizeY >= y;
 	}
 }

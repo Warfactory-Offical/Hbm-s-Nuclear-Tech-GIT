@@ -1,7 +1,6 @@
 package com.hbm.tileentity.bomb;
 
 import com.hbm.items.ModItems;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,14 +14,14 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityNukeFleija extends TileEntity {
 
 	public ItemStackHandler inventory = new ItemStackHandler(11){
-		protected void onContentsChanged(final int slot) {
+		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
 			markDirty();
-		}
-    };
+		};
+	};
 	private String customName;
 
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -31,26 +30,27 @@ public class TileEntityNukeFleija extends TileEntity {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
-		final NBTTagCompound tag = inventory.serializeNBT();
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		NBTTagCompound tag = inventory.serializeNBT();
 		compound.setTag("inventory", tag);
 		return super.writeToNBT(compound);
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? true
+				: super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 				? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory)
 				: super.getCapability(capability, facing);
@@ -64,7 +64,7 @@ public class TileEntityNukeFleija extends TileEntity {
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 
@@ -75,14 +75,18 @@ public class TileEntityNukeFleija extends TileEntity {
 
 	public boolean isReady() {
 
-        return inventory.getStackInSlot(0).getItem() == ModItems.fleija_igniter
-                && inventory.getStackInSlot(1).getItem() == ModItems.fleija_igniter
-                && inventory.getStackInSlot(2).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(3).getItem() == ModItems.fleija_propellant
-                && inventory.getStackInSlot(4).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(5).getItem() == ModItems.fleija_core
-                && inventory.getStackInSlot(6).getItem() == ModItems.fleija_core && inventory.getStackInSlot(7).getItem() == ModItems.fleija_core
-                && inventory.getStackInSlot(8).getItem() == ModItems.fleija_core && inventory.getStackInSlot(9).getItem() == ModItems.fleija_core
-                && inventory.getStackInSlot(10).getItem() == ModItems.fleija_core;
-    }
+		if (inventory.getStackInSlot(0).getItem() == ModItems.fleija_igniter
+				&& inventory.getStackInSlot(1).getItem() == ModItems.fleija_igniter
+				&& inventory.getStackInSlot(2).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(3).getItem() == ModItems.fleija_propellant
+				&& inventory.getStackInSlot(4).getItem() == ModItems.fleija_propellant && inventory.getStackInSlot(5).getItem() == ModItems.fleija_core
+				&& inventory.getStackInSlot(6).getItem() == ModItems.fleija_core && inventory.getStackInSlot(7).getItem() == ModItems.fleija_core
+				&& inventory.getStackInSlot(8).getItem() == ModItems.fleija_core && inventory.getStackInSlot(9).getItem() == ModItems.fleija_core
+				&& inventory.getStackInSlot(10).getItem() == ModItems.fleija_core) {
+			return true;
+		}
+
+		return false;
+	}
 
 	public void clearSlots() {
 		for (int i = 0; i < inventory.getSlots(); i++) {

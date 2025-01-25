@@ -4,7 +4,6 @@ import com.google.common.base.Predicate;
 import com.hbm.entity.projectile.EntityBulletBase;
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.lib.HBMSoundHandler;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -20,10 +19,13 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT {
 
 	protected final Predicate<Entity> selector = ent -> {
 
-        return !(ent instanceof EntityWormBaseNT) || ((EntityWormBaseNT) ent).getHeadID() != EntityBOTPrimeBase.this.getHeadID();
-    };
+		if(ent instanceof EntityWormBaseNT && ((EntityWormBaseNT) ent).getHeadID() == EntityBOTPrimeBase.this.getHeadID())
+			return false;
 
-	public EntityBOTPrimeBase(final World world) {
+		return true;
+	};
+
+	public EntityBOTPrimeBase(World world) {
 		super(world);
 		this.setSize(2.0F, 2.0F);
 		this.isImmuneToFire = true;
@@ -35,7 +37,7 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT {
 	}
 
 	@Override
-	public boolean canEntityBeSeen(final Entity p_70685_1_) {
+	public boolean canEntityBeSeen(Entity p_70685_1_) {
 		return this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), new Vec3d(p_70685_1_.posX, p_70685_1_.posY + (double)p_70685_1_.getEyeHeight(), p_70685_1_.posZ), false, true, false) == null;
 	}
 	
@@ -57,7 +59,7 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT {
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return SoundEvents.ENTITY_BLAZE_HURT;
 	}
 	
@@ -66,23 +68,25 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT {
 		return HBMSoundHandler.bombDet;
 	}
 	
-	protected void laserAttack(final Entity target, final boolean head) {
+	protected void laserAttack(Entity target, boolean head) {
 
-		if(!(target instanceof EntityLivingBase living))
+		if(!(target instanceof EntityLivingBase))
 			return;
 
-        if(head) {
+		EntityLivingBase living = (EntityLivingBase) target;
+
+		if(head) {
 
 			for(int i = 0; i < 5; i++) {
 
-				final EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.WORM_LASER, this, living, 1.0F, i * 0.05F);
+				EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.WORM_LASER, this, living, 1.0F, i * 0.05F);
 				this.world.spawnEntity(bullet);
 			}
 
 			this.playSound(HBMSoundHandler.ballsLaser, 5.0F, 0.75F);
 
 		} else {
-			final EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.WORM_BOLT, this, living, 0.5F, 0.125F);
+			EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.WORM_BOLT, this, living, 0.5F, 0.125F);
 			this.world.spawnEntity(bullet);
 			this.playSound(HBMSoundHandler.ballsLaser, 5.0F, 1.0F);
 		}

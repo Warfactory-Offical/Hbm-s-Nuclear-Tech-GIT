@@ -20,7 +20,7 @@ public class Vec4i extends Veci {
         super();
     }
 
-    public Vec4i(final int[] vec4) {
+    public Vec4i(int[] vec4) {
         vector = vec4;
         x = vector[0];
         y = vector[1];
@@ -28,7 +28,7 @@ public class Vec4i extends Veci {
         w = vector[3];
     }
 
-    public Vec4i(final int value) {
+    public Vec4i(int value) {
         vector = new int[]{value, value, value, value};
         x = vector[0];
         y = vector[1];
@@ -36,7 +36,7 @@ public class Vec4i extends Veci {
         w = vector[3];
     }
 
-    public Vec4i(final Vec3i vec3i, final int w) {
+    public Vec4i(Vec3i vec3i, int w) {
         x = vec3i.x;
         y = vec3i.y;
         z = vec3i.z;
@@ -44,7 +44,7 @@ public class Vec4i extends Veci {
         vector = new int[]{x, y, z, this.w};
     }
 
-    public Vec4i(final int[] intArray, final int i) {
+    public Vec4i(int[] intArray, int i) {
         vector = new int[]{intArray[i], intArray[i + 1], intArray[i + 2], intArray[i + 3]};
         x = vector[0];
         y = vector[1];
@@ -52,7 +52,7 @@ public class Vec4i extends Veci {
         w = vector[3];
     }
 
-    public Vec4i(final int x, final int y, final int z, final int w) {
+    public Vec4i(int x, int y, int z, int w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -69,7 +69,7 @@ public class Vec4i extends Veci {
         System.out.println("(" + x + ", " + y + ", " + z + ", " + w + ")");
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         System.out.println(title + " (" + x + ", " + y + ", " + z + ", " + w + ")");
     }
 

@@ -24,12 +24,12 @@ public class JetpackGlider extends ItemArmorMod implements IItemFluidHandler {
 
 	public int capacity;
 	
-	public JetpackGlider(final ArmorMaterial enumArmorMaterialSteel, final int i, final EntityEquipmentSlot chest, final int capacity, final String s) {
+	public JetpackGlider(ArmorMaterial enumArmorMaterialSteel, int i, EntityEquipmentSlot chest, int capacity, String s) {
 		super(ArmorModHandler.plate_only, false, true, false, false, s);
 		this.capacity = capacity;
 	}
 
-	public FluidTank getTank(final ItemStack stack){
+	public FluidTank getTank(ItemStack stack){
 		if(!stack.hasTagCompound()){
 			stack.setTagCompound(new NBTTagCompound());
 			return new FluidTank(capacity);
@@ -37,7 +37,7 @@ public class JetpackGlider extends ItemArmorMod implements IItemFluidHandler {
 		return new FluidTank(capacity).readFromNBT(stack.getTagCompound().getCompoundTag("fuelTank"));
 	}
 	
-	public void setTank(final ItemStack stack, final FluidTank tank){
+	public void setTank(ItemStack stack, FluidTank tank){
 		if(!stack.hasTagCompound()){
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -46,32 +46,32 @@ public class JetpackGlider extends ItemArmorMod implements IItemFluidHandler {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
-		final FluidTank tank = getTank(stack);
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+		FluidTank tank = getTank(stack);
 		if(tank.getFluid() == null){
 			list.add(TextFormatting.RED + "    Fuel Type: None");
 			list.add(TextFormatting.RED + "    Fuel Speed: " + JetpackHandler.getSpeed(null));
 		} else {
-			list.add(TextFormatting.RED + "    Fuel Type: " + I18n.format(tank.getFluid().getUnlocalizedName()));
+			list.add(TextFormatting.RED + "    Fuel Type: " + I18n.format(tank.getFluid().getTranslationKey()));
 			list.add(TextFormatting.RED + "    Fuel Speed: " + JetpackHandler.getSpeed(tank.getFluid().getFluid()));
 		}
-		final int percent = (int)(((float)tank.getFluidAmount()/tank.getCapacity())*100);
+		int percent = (int)(((float)tank.getFluidAmount()/tank.getCapacity())*100);
 		list.add(TextFormatting.RED + "    Fuel Amount: " + tank.getFluidAmount() + "/" + tank.getCapacity() + " (" + percent + "%)");
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		super.addDesc(list, stack, armor);
 		addInformation(stack, null, list, null);
 	}
 	
 	@Override
-	public int fill(final ItemStack stack, final FluidStack fluid, final boolean doFill) {
+	public int fill(ItemStack stack, FluidStack fluid, boolean doFill) {
 		if(fluid == null)
 			return 0;
 		if(fluid.getFluid() == ModForgeFluids.kerosene || fluid.getFluid() == ModForgeFluids.balefire || fluid.getFluid() == ModForgeFluids.nitan){
-			final FluidTank tank = getTank(stack);
-			final int fill = tank.fill(fluid, doFill);
+			FluidTank tank = getTank(stack);
+			int fill = tank.fill(fluid, doFill);
 			if(doFill)
 				setTank(stack, tank);
 			return fill;
@@ -80,18 +80,18 @@ public class JetpackGlider extends ItemArmorMod implements IItemFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(final ItemStack stack, final FluidStack resource, final boolean doDrain) {
-		final FluidTank tank = getTank(stack);
-		final FluidStack drain = tank.drain(resource, doDrain);
+	public FluidStack drain(ItemStack stack, FluidStack resource, boolean doDrain) {
+		FluidTank tank = getTank(stack);
+		FluidStack drain = tank.drain(resource, doDrain);
 		if(doDrain)
 			setTank(stack, tank);
 		return drain;
 	}
 
 	@Override
-	public FluidStack drain(final ItemStack stack, final int maxDrain, final boolean doDrain) {
-		final FluidTank tank = getTank(stack);
-		final FluidStack drain = tank.drain(maxDrain, doDrain);
+	public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
+		FluidTank tank = getTank(stack);
+		FluidStack drain = tank.drain(maxDrain, doDrain);
 		if(doDrain)
 			setTank(stack, tank);
 		return drain;

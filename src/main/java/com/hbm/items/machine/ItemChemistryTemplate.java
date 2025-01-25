@@ -1,7 +1,4 @@
 package com.hbm.items.machine;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.interfaces.IHasCustomModel;
 import com.hbm.inventory.ChemplantRecipes;
@@ -12,7 +9,7 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.I18nUtil;
-
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -21,16 +18,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
 
 public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 
 	public static final ModelResourceLocation chemModel = new ModelResourceLocation(RefStrings.MODID + ":chemistry_template", "inventory");
 	
-	public ItemChemistryTemplate(final String s){
+	public ItemChemistryTemplate(String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setHasSubtypes(true);
@@ -42,83 +40,93 @@ public class ItemChemistryTemplate extends Item implements IHasCustomModel {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(final ItemStack stack) {
-		String s = (I18n.format(this.getTranslationKey() + ".name")).trim();
-        final String s1 = (I18n.format("chem." + ChemplantRecipes.getName(stack))).trim();
+	public String getItemStackDisplayName(ItemStack stack) {
+		ChemplantRecipes.ChemRecipe recipe = ChemplantRecipes.indexMapping.get(stack.getItemDamage());
+		if(recipe == null) {
+			return ChatFormatting.RED + "Broken Template" + ChatFormatting.RESET;
+		} else {
+			String s = ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
+			String s1 = ("" + I18n.format("chem." + recipe.name)).trim();
 
-        if (s1 != null) {
-            s = s + " " + s1;
-        }
-
-        return s;
+			if (s1 != null) {
+				s = s + " " + s1;
+			}
+			return s;
+		}
 	}
 	
 	@Override
-	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> list) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH){
-			for (final int i: ChemplantRecipes.recipeNames.keySet()){
-	            list.add(ItemStackUtil.itemStackFrom(this, 1, i));
-	        }
+			for(int i: ChemplantRecipes.recipeNames.keySet()) {
+				list.add(new ItemStack(this, 1, i));
+			}
 		}
 	}
 	
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if(!(stack.getItem() instanceof ItemChemistryTemplate))
     			return;
 
-	    	final List<AStack> itemInputs = ChemplantRecipes.getChemInputFromTempate(stack);
-	    	final FluidStack[] fluidInputs = ChemplantRecipes.getFluidInputFromTempate(stack);
-	    	final ItemStack[] itemOutputs = ChemplantRecipes.getChemOutputFromTempate(stack);
-	    	final FluidStack[] fluidOutputs = ChemplantRecipes.getFluidOutputFromTempate(stack);
-	    	final int time = ChemplantRecipes.getProcessTime(stack);
+		ChemplantRecipes.ChemRecipe recipe = ChemplantRecipes.indexMapping.get(stack.getItemDamage());
+
+		if(recipe == null) {
+			return;
+		}
 
 	    	list.add("§6" + I18nUtil.resolveKey("info.templatefolder"));
 			list.add("");
 
-	    	try {
-	    		list.add("§l" + I18nUtil.resolveKey("info.template_out_p"));
-	    		if(itemOutputs != null){
-	    			for(final ItemStack ouputItem : itemOutputs){
-	    				list.add(" §a"+ ouputItem.getCount() + "x " + ouputItem.getDisplayName());
-	    			}
-	    		}
-	    		if(fluidOutputs != null){
-	    			for(final FluidStack outputFluid : fluidOutputs){
-	    				list.add(" §b"+ outputFluid.amount + "mB " + outputFluid.getFluid().getLocalizedName(outputFluid));
-	    			}
-	    		}
-	    		list.add("§l" + I18nUtil.resolveKey("info.template_in_p"));
-	    		
-	    		if(itemInputs != null){
-	    			for(final AStack o : itemInputs){
-		    			if(o instanceof ComparableStack)  {
-							final ItemStack input = ((ComparableStack)o).toStack();
-				    		list.add(" §c"+ input.getCount() + "x " + input.getDisplayName());
+		try {
+			list.add(ChatFormatting.BOLD + I18nUtil.resolveKey("info.template_out_p"));
+			for(int i = 0; i < 4; i++) {
+				if(recipe.outputs[i] != null) {
+					list.add(recipe.outputs[i].getCount() + "x " + recipe.outputs[i].getDisplayName());
+				}
+			}
 
-						} else if(o instanceof OreDictStack input)  {
-                            final NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+			for(int i = 0; i < 2; i++) {
+				if(recipe.outputFluids[i] != null) {
+					int p = recipe.outputFluids[i].pressure;
+					list.add(recipe.outputFluids[i].fill + "mB " + recipe.outputFluids[i].type.getLocalizedName() + (p != 0 ? (" at " + p + "PU") : ""));
+				}
+			}
 
-							if(ores.size() > 0) {
-								final ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
-					    		list.add(" §c"+ input.count() + "x " + inStack.getDisplayName());
-							} else {
-					    		list.add("I AM ERROR - No OrdDict match found for "+ o);
-							}
+			list.add(ChatFormatting.BOLD + I18nUtil.resolveKey("info.template_in_p"));
+
+			for(int i = 0; i < recipe.inputs.length; i++) {
+				AStack o = recipe.inputs[i];
+				if(recipe.inputs[i] != null) {
+					if(o instanceof ComparableStack)  {
+						ItemStack input = ((ComparableStack)o).toStack();
+						list.add(" §c"+ input.getCount() + "x " + input.getDisplayName());
+
+					} else if(o instanceof OreDictStack)  {
+						OreDictStack input = (OreDictStack) o;
+						NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+
+						if(ores.size() > 0) {
+							ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
+							list.add(" §c"+ input.count() + "x " + inStack.getDisplayName());
+						} else {
+							list.add("I AM ERROR - No OrdDict match found for "+o.toString());
 						}
 					}
-	    		}
-	    		
-    			if(fluidInputs != null){
-    				for(final FluidStack inputFluid : fluidInputs){
-    					list.add(" §e" + inputFluid.amount + "mB " + inputFluid.getFluid().getLocalizedName(inputFluid));
-    				}
-    			}
+				}
+			}
+
+			for(int i = 0; i < 2; i++) {
+				if(recipe.inputFluids[i] != null) {
+					int p = recipe.inputFluids[i].pressure;
+					list.add(recipe.inputFluids[i].fill + "mB " + recipe.inputFluids[i].type.getLocalizedName() + (p != 0 ? (" at " + p + "PU") : ""));
+				}
+			}
 	    		
 	    		list.add("§l" + I18nUtil.resolveKey("info.template_time"));
-	        	list.add(" §3"+ Math.floor((float)(time) / 20 * 100) / 100 + " " + I18nUtil.resolveKey("info.template_seconds"));
-	    	} catch(final Exception e) {
+	        	list.add(" §3"+ Math.floor((float)(recipe.getDuration()) / 20 * 100) / 100 + " " + I18nUtil.resolveKey("info.template_seconds"));
+	    	} catch(Exception e) {
 	    		list.add("###INVALID###");
 	    		list.add("0x334077-0x6A298F-0xDF3795-0x334077");
 	    	}

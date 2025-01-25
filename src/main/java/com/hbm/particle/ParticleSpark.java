@@ -26,7 +26,7 @@ public class ParticleSpark extends Particle {
 	public float stretch;
 	public float gravity;
 	
-	public ParticleSpark(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float stretch, final float scale, final int lifetime, final float gravity) {
+	public ParticleSpark(World worldIn, double posXIn, double posYIn, double posZIn, float stretch, float scale, int lifetime, float gravity) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.stretch = stretch;
 		this.particleScale = scale;
@@ -34,7 +34,7 @@ public class ParticleSpark extends Particle {
 		this.gravity = gravity;
 	}
 	
-	public ParticleSpark color(final float colR, final float colG, final float colB, final float colA){
+	public ParticleSpark color(float colR, float colG, float colB, float colA){
 		this.particleRed = colR;
 		this.particleGreen = colG;
 		this.particleBlue = colB;
@@ -42,7 +42,7 @@ public class ParticleSpark extends Particle {
 		return this;
 	}
 	
-	public ParticleSpark motion(final float mX, final float mY, final float mZ){
+	public ParticleSpark motion(float mX, float mY, float mZ){
 		this.motionX = mX;
 		this.motionY = mY-gravity;
 		this.motionZ = mZ;
@@ -59,7 +59,11 @@ public class ParticleSpark extends Particle {
 			setExpired();
 			return;
 		}
-        this.canCollide = this.particleAge >= 4;
+		if(this.particleAge < 4){
+			this.canCollide = false;
+		} else {
+			this.canCollide = true;
+		}
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
@@ -72,29 +76,29 @@ public class ParticleSpark extends Particle {
 	
 	@Override
 	public void move(double x, double y, double z) {
-		final double d0 = y;
-        final double origX = x;
-        final double origZ = z;
+		double d0 = y;
+        double origX = x;
+        double origZ = z;
 
         if (this.canCollide)
         {
-            final List<AxisAlignedBB> list = this.world.getCollisionBoxes(null, this.getBoundingBox().expand(x, y, z));
+            List<AxisAlignedBB> list = this.world.getCollisionBoxes((Entity)null, this.getBoundingBox().expand(x, y, z));
 
-            for (final AxisAlignedBB axisalignedbb : list)
+            for (AxisAlignedBB axisalignedbb : list)
             {
                 y = axisalignedbb.calculateYOffset(this.getBoundingBox(), y);
             }
 
             this.setBoundingBox(this.getBoundingBox().offset(0.0D, y, 0.0D));
 
-            for (final AxisAlignedBB axisalignedbb1 : list)
+            for (AxisAlignedBB axisalignedbb1 : list)
             {
                 x = axisalignedbb1.calculateXOffset(this.getBoundingBox(), x);
             }
 
             this.setBoundingBox(this.getBoundingBox().offset(x, 0.0D, 0.0D));
 
-            for (final AxisAlignedBB axisalignedbb2 : list)
+            for (AxisAlignedBB axisalignedbb2 : list)
             {
                 z = axisalignedbb2.calculateZOffset(this.getBoundingBox(), z);
             }
@@ -135,7 +139,7 @@ public class ParticleSpark extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.bfg_particle);
 		GlStateManager.disableAlpha();
 		GlStateManager.depthMask(false);
@@ -145,19 +149,19 @@ public class ParticleSpark extends Particle {
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.disableLighting();
 		
-        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
-        final float mX = (float)(this.posX + (this.posX+this.motionX - this.posX) * (double)partialTicks - interpPosX);
-        final float mY = (float)(this.posY + (this.posY+this.motionY - this.posY) * (double)partialTicks - interpPosY);
-        final float mZ = (float)(this.posZ + (this.posZ+this.motionZ - this.posZ) * (double)partialTicks - interpPosZ);
+        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+        float mX = (float)(this.posX + (this.posX+this.motionX - this.posX) * (double)partialTicks - interpPosX);
+        float mY = (float)(this.posY + (this.posY+this.motionY - this.posY) * (double)partialTicks - interpPosY);
+        float mZ = (float)(this.posZ + (this.posZ+this.motionZ - this.posZ) * (double)partialTicks - interpPosZ);
         
         Vec3d particleAxis = new Vec3d(mX, mY, mZ).subtract(f5, f6, f7);
-        final Vec3d toPlayer = new Vec3d(mX, mY, mZ);
+        Vec3d toPlayer = new Vec3d(mX, mY, mZ);
         Vec3d point1 = particleAxis.crossProduct(toPlayer).normalize().scale(0.5*particleScale);
         Vec3d point2 = point1.scale(-1);
-        point1 = point1.add(f5, f6, f7);
-        point2 = point2.add(f5, f6, f7);
+        point1 = point1.addVector(f5, f6, f7);
+        point2 = point2.addVector(f5, f6, f7);
         particleAxis = particleAxis.scale(stretch);
         
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);

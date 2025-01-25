@@ -1,30 +1,29 @@
 package com.hbm.tileentity.machine;
 
-import com.hbm.packet.PacketDispatcher;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.lib.Library;
-import com.hbm.lib.ForgeDirection;
-import com.hbm.packet.FluidTankPacket;
 import com.hbm.interfaces.ITankPacketAcceptor;
+import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.Library;
+import com.hbm.packet.FluidTankPacket;
+import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyUser;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityMachineUUCreator extends TileEntityMachineBase implements IEnergyUser, IFluidHandler, ITickable, ITankPacketAcceptor {
+public class TileEntityMachineUUCreator extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidHandler, ITickable, ITankPacketAcceptor {
 	
 	public int[] log = new int[20];
 	public static final long rfPerMbOfUU = 1_000_000L;
@@ -74,9 +73,9 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 			this.log[this.log.length-1] = loggedProducedMB;
 
 			producedmb = getAvgUU();
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] { tank }), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
 
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isOn", isOn);
 			data.setLong("power", power);
 			data.setDouble("uuMB", producedmb);
@@ -89,43 +88,43 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 		for(int i = 0; i < this.log.length; i++) {
 			sum += this.log[i];
 		}
-		return sum / (double)this.log.length;
+		return (double)(sum / (double)this.log.length);
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		this.isOn = data.getBoolean("isOn");
 		this.power = data.getLong("power");
 		this.producedmb = data.getDouble("uuMB");
 	}
 
 	@Override
-	public void handleButtonPacket(final int value, final int meta) {
+	public void handleButtonPacket(int value, int meta) {
 		if(meta == 0) {
 			this.isOn = !this.isOn;
 		}
 	}
 
-	public int getPowerScaled(final int i) {
-		final double powerScaled = (double)power / (double)maxPower;
+	public int getPowerScaled(int i) {
+		double powerScaled = (double)power / (double)maxPower;
 		return (int)(i * powerScaled);
 	}
 	
 	private void updateConnections() {
-		this.trySubscribe(world, pos.add(0, 3, 0), ForgeDirection.UP);
-		this.trySubscribe(world, pos.add(2, 3, 0), ForgeDirection.UP);
-		this.trySubscribe(world, pos.add(-2, 3, 0), ForgeDirection.UP);
-		this.trySubscribe(world, pos.add(0, 3, 2), ForgeDirection.UP);
-		this.trySubscribe(world, pos.add(0, 3, -2), ForgeDirection.UP);
+		this.trySubscribe(world, pos.getX(), pos.getY() + 3, pos.getZ(), ForgeDirection.UP);
+		this.trySubscribe(world, pos.getX() + 2, pos.getY() + 3, pos.getZ(), ForgeDirection.UP);
+		this.trySubscribe(world, pos.getX() + -2, pos.getY() + 3, pos.getZ(), ForgeDirection.UP);
+		this.trySubscribe(world, pos.getX(), pos.getY() + 3, pos.getZ() + 2, ForgeDirection.UP);
+		this.trySubscribe(world, pos.getX(), pos.getY() + 3, pos.getZ() - 2, ForgeDirection.UP);
 
-		this.trySubscribe(world, pos.add(0, -1, 0), ForgeDirection.DOWN);
-		this.trySubscribe(world, pos.add(2, -1, 0), ForgeDirection.DOWN);
-		this.trySubscribe(world, pos.add(-2, -1, 0), ForgeDirection.DOWN);
-		this.trySubscribe(world, pos.add(0, -1, 2), ForgeDirection.DOWN);
-		this.trySubscribe(world, pos.add(0, -1, -2), ForgeDirection.DOWN);
+		this.trySubscribe(world, pos.getX(), pos.getY() - 1, pos.getZ(), ForgeDirection.DOWN);
+		this.trySubscribe(world, pos.getX() + 2, pos.getY() - 1, pos.getZ(), ForgeDirection.DOWN);
+		this.trySubscribe(world, pos.getX() + -2, pos.getY() - 1, pos.getZ(), ForgeDirection.DOWN);
+		this.trySubscribe(world, pos.getX(), pos.getY() - 1, pos.getZ() + 2, ForgeDirection.DOWN);
+		this.trySubscribe(world, pos.getX(), pos.getY() - 1, pos.getZ() - 2, ForgeDirection.DOWN);
 	}
 
-	private void fillFluidInit(final FluidTank tank) {
+	private void fillFluidInit(FluidTank tank) {
 		boolean update =  false;
 		update = FFUtils.fillFluid(this, tank, world, pos.add(0, 3, 0), 1_000_000_000) || update;
 		update = FFUtils.fillFluid(this, tank, world, pos.add(2, 3, 0), 1_000_000_000) || update;
@@ -161,7 +160,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.isOn = nbt.getBoolean("isOn");
 		this.power = nbt.getLong("power");
@@ -169,7 +168,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setBoolean("isOn", isOn);
 		nbt.setLong("power", power);
@@ -178,7 +177,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length == 1)
 			tank.readFromNBT(tags[0]);
 	}
@@ -190,7 +189,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}
@@ -198,12 +197,12 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-		public int fill(final FluidStack resource, final boolean doFill) {
+		public int fill(FluidStack resource, boolean doFill) {
 			return 0;
 		}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		if(resource == null)
 			return null;
 		if(resource.isFluidEqual(tank.getFluid())) {
@@ -213,7 +212,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if(tank.getFluid() != null) {
 			return tank.drain(maxDrain, doDrain);
 		}
@@ -221,7 +220,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		}
@@ -235,7 +234,7 @@ public class TileEntityMachineUUCreator extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

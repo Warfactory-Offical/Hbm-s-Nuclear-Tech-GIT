@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 public class ModArmor extends ItemArmor {
 
-	public ModArmor(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
+	public ModArmor(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -20,7 +20,7 @@ public class ModArmor extends ItemArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		if(stack.getItem().equals(ModItems.steel_helmet) || stack.getItem().equals(ModItems.steel_plate) || stack.getItem().equals(ModItems.steel_boots)) {
 			return (RefStrings.MODID + ":textures/armor/steel_1.png");
 		}

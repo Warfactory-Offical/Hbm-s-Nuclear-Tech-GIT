@@ -1,9 +1,6 @@
 package com.hbm.render.entity.item;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.item.EntityMovingItem;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
@@ -15,22 +12,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderMovingItem extends Render<EntityMovingItem> {
 
 	public static final IRenderFactory<EntityMovingItem> FACTORY = man -> new RenderMovingItem(man);
 	
-	protected RenderMovingItem(final RenderManager renderManager) {
+	protected RenderMovingItem(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(final EntityMovingItem item, final double x, final double y, final double z, final float f1, final float f2) {
+	public void doRender(EntityMovingItem item, double x, double y, double z, float f1, float f2) {
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 
-		final ItemStack stack = item.getItemStack();
+		ItemStack stack = item.getItemStack();
 		GL11.glScaled(0.5, 0.5, 0.5);
 		if(!(stack.getItem() instanceof ItemBlock)) {
 			GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
@@ -48,7 +46,7 @@ public class RenderMovingItem extends Render<EntityMovingItem> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityMovingItem p_110775_1_) {
+	protected ResourceLocation getEntityTexture(EntityMovingItem p_110775_1_) {
 		return null;
 	}
 

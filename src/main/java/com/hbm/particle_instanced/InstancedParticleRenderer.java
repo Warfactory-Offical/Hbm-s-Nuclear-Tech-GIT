@@ -47,17 +47,17 @@ public class InstancedParticleRenderer {
 	private static ByteBuffer particleBuffer = GLAllocation.createDirectByteBuffer(0);
 	
 	protected static ArrayDeque<ParticleInstanced> particles = Queues.newArrayDeque();
-	private static final Queue<ParticleInstanced> queue = Queues.newArrayDeque();
+	private static final Queue<ParticleInstanced> queue = Queues.<ParticleInstanced> newArrayDeque();
 	
-	public static void addParticle(final ParticleInstanced p) {
+	public static void addParticle(ParticleInstanced p) {
 		if(p != null)
 			queue.add(p);
 	}
 	
 	public static void updateParticles() {
-		final Iterator<ParticleInstanced> itr = particles.iterator();
+		Iterator<ParticleInstanced> itr = particles.iterator();
 		while(itr.hasNext()) {
-			final ParticleInstanced p = itr.next();
+			ParticleInstanced p = itr.next();
 			p.onUpdate();
 			if(!p.isAlive()) {
 				faceCount -= p.getFaceCount();
@@ -67,7 +67,7 @@ public class InstancedParticleRenderer {
 		if(!queue.isEmpty()) {
 			for(ParticleInstanced particle = queue.poll(); particle != null; particle = queue.poll()) {
 				if(particles.size() > 16384){
-					final ParticleInstanced p = particles.removeFirst();
+					ParticleInstanced p = particles.removeFirst();
 					faceCount -= p.getFaceCount();
 				}
 				faceCount += particle.getFaceCount();
@@ -77,7 +77,7 @@ public class InstancedParticleRenderer {
 		}
 	}
 	
-	public static void renderParticles(final Entity entityIn, final float partialTicks) {
+	public static void renderParticles(Entity entityIn, float partialTicks) {
 		Particle.interpPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * (double) partialTicks;
 		Particle.interpPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * (double) partialTicks;
 		Particle.interpPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * (double) partialTicks;
@@ -90,12 +90,12 @@ public class InstancedParticleRenderer {
 		GlStateManager.depthMask(false);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		final int bufferSize = faceCount*BYTES_PER_PARTICLE;
+		int bufferSize = faceCount*BYTES_PER_PARTICLE;
 		if(particleBuffer.capacity() < bufferSize)
 			particleBuffer = GLAllocation.createDirectByteBuffer(bufferSize);
 		particleBuffer.limit(bufferSize);
 		
-		for(final ParticleInstanced p : particles){
+		for(ParticleInstanced p : particles){
 			p.addDataToBuffer(particleBuffer, partialTicks);
 		}
 		particleBuffer.rewind();
@@ -117,21 +117,21 @@ public class InstancedParticleRenderer {
 	}
 	
 	public static void setup(){
-		final int particleQuadVbo = GLCompat.genBuffers();
-		final int particleDataVbo = GLCompat.genBuffers();
-		final float[] vertexData = {
+		int particleQuadVbo = GLCompat.genBuffers();
+		int particleDataVbo = GLCompat.genBuffers();
+		float[] vertexData = {
 				-0.5F, -0.5F, 0,
 				0.5F, -0.5F, 0,
 				0.5F, 0.5F, 0,
 				-0.5F, 0.5F, 0};
-		final ByteBuffer data = GLAllocation.createDirectByteBuffer(4*vertexData.length);
-		for(final float f : vertexData)
+		ByteBuffer data = GLAllocation.createDirectByteBuffer(4*vertexData.length);
+		for(float f : vertexData)
 			data.putFloat(f);
 		data.rewind();
 		GLCompat.bindBuffer(GLCompat.GL_ARRAY_BUFFER, particleQuadVbo);
 		GLCompat.bufferData(GLCompat.GL_ARRAY_BUFFER, data, GLCompat.GL_STATIC_DRAW);
 		
-		final int vao = GLCompat.genVertexArrays();
+		int vao = GLCompat.genVertexArrays();
 		GLCompat.bindVertexArray(vao);
 		GLCompat.vertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 12, 0);
 		GLCompat.enableVertexAttribArray(0);
@@ -167,7 +167,7 @@ public class InstancedParticleRenderer {
 	}
 	
 	@SubscribeEvent
-	public static void renderLast(final RenderWorldLastEvent event) {
+	public static void renderLast(RenderWorldLastEvent event) {
 		if(GeneralConfig.instancedParticles){
 			partialTicks = event.getPartialTicks();
 			renderParticles(Minecraft.getMinecraft().getRenderViewEntity(), event.getPartialTicks());
@@ -177,7 +177,7 @@ public class InstancedParticleRenderer {
 	private static boolean init = true;
 	
 	@SubscribeEvent
-	public static void clientTick(final ClientTickEvent event) {
+	public static void clientTick(ClientTickEvent event) {
 		if(GeneralConfig.instancedParticles && event.phase == Phase.START) {
 			if(init){
 				setup();

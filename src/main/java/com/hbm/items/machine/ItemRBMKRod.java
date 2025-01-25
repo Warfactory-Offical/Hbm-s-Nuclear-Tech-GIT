@@ -1,7 +1,5 @@
 package com.hbm.items.machine;
 
-import java.util.List;
-
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
@@ -9,7 +7,6 @@ import com.hbm.modules.ItemHazardModule;
 import com.hbm.tileentity.machine.rbmk.IRBMKFluxReceiver.NType;
 import com.hbm.tileentity.machine.rbmk.RBMKDials;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ItemRBMKRod extends Item implements IItemHazard {
 
@@ -70,12 +69,12 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 
 	// Lol had quite some freetime
 
-	public ItemRBMKRod(final ItemRBMKPellet pellet, final String s) {
+	public ItemRBMKRod(ItemRBMKPellet pellet, String s) {
 		this(pellet.fullName, s);
 		this.pellet = pellet;
 	}
 
-	public ItemRBMKRod(final String fullName, final String s) {
+	public ItemRBMKRod(String fullName, String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.module = new ItemHazardModule();
@@ -89,73 +88,73 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		ModItems.ALL_ITEMS.add(this);
 	}
 
-	public ItemRBMKRod setYield(final double yield) {
+	public ItemRBMKRod setYield(double yield) {
 		this.yield = yield;
 		return this;
 	}
 
-	public ItemRBMKRod setStats(final double funcEnd) {
+	public ItemRBMKRod setStats(double funcEnd) {
 		return setStats(funcEnd, 0);
 	}
 
-	public ItemRBMKRod setStats(final double funcEnd, final double selfRate) {
+	public ItemRBMKRod setStats(double funcEnd, double selfRate) {
 		this.reactivity = funcEnd;
 		this.selfRate = selfRate;
 		return this;
 	}
 
-	public ItemRBMKRod setStats(final double funcEnd, final double selfRate, final double archLength) {
+	public ItemRBMKRod setStats(double funcEnd, double selfRate, double archLength) {
 		this.reactivity = funcEnd;
 		this.selfRate = selfRate;
 		this.archLength = archLength;
 		return this;
 	}
 
-	public ItemRBMKRod setFunction(final EnumBurnFunc func) {
+	public ItemRBMKRod setFunction(EnumBurnFunc func) {
 		this.function = func;
 		return this;
 	}
 
-	public ItemRBMKRod setDepletionFunction(final EnumDepleteFunc func) {
+	public ItemRBMKRod setDepletionFunction(EnumDepleteFunc func) {
 		this.depFunc = func;
 		return this;
 	}
 
-	public ItemRBMKRod setXenon(final double gen, final double burn) {
+	public ItemRBMKRod setXenon(double gen, double burn) {
 		this.xGen = gen;
 		this.xBurn = burn;
 		return this;
 	}
 
-	public ItemRBMKRod setHeat(final double heat) {
+	public ItemRBMKRod setHeat(double heat) {
 		this.heat = heat;
 		return this;
 	}
 
-	public ItemRBMKRod setDiffusion(final double diffusion) {
+	public ItemRBMKRod setDiffusion(double diffusion) {
 		this.diffusion = diffusion;
 		return this;
 	}
 
-	public ItemRBMKRod setMeltingPoint(final double meltingPoint) {
+	public ItemRBMKRod setMeltingPoint(double meltingPoint) {
 		this.meltingPoint = meltingPoint;
 		return this;
 	}
 
-	public ItemRBMKRod setNeutronTypes(final NType nType, final NType rType) {
+	public ItemRBMKRod setNeutronTypes(NType nType, NType rType) {
 		this.nType = nType;
 		this.rType = rType;
 		return this;
 	}
 
-	public ItemRBMKRod setFuelColor(final float R, final float G, final float B) {
+	public ItemRBMKRod setFuelColor(float R, float G, float B) {
 		this.fuelR = R;
 		this.fuelG = G;
 		this.fuelB = B;
 		return this;
 	}
 
-	public ItemRBMKRod setCherenkovColor(final float R, final float G, final float B) {
+	public ItemRBMKRod setCherenkovColor(float R, float G, float B) {
 		this.cherenkovR = R;
 		this.cherenkovG = G;
 		this.cherenkovB = B;
@@ -171,7 +170,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * @param inFlux
 	 * @return outFlux
 	 */
-	public double burn(final World world, final ItemStack stack, double inFlux) {
+	public double burn(World world, ItemStack stack, double inFlux) {
 		
 		inFlux += selfRate;
 		
@@ -187,7 +186,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		
 		setPoison(stack, xenon);
 		
-		final double outFlux = reactivityFunc(inFlux, getEnrichment(stack)) * RBMKDials.getReactivityMod(world);
+		double outFlux = reactivityFunc(inFlux, getEnrichment(stack)) * RBMKDials.getReactivityMod(world);
 		
 		double y = getYield(stack);
 		y -= inFlux;
@@ -203,7 +202,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		return outFlux;
 	}
 
-	public static double getMeltdownFactor(final double meltdownPercent){
+	public static double getMeltdownFactor(double meltdownPercent){
 		if(meltdownPercent == 0) return 1;
 		return 1D - 0.3D * (meltdownPercent/100D);
 	}
@@ -212,7 +211,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * Heat up the core based on the outFlux, then move some heat to the hull
 	 * @param stack
 	 */
-	public void updateHeat(final World world, final ItemStack stack, final double mod) {
+	public void updateHeat(World world, ItemStack stack, double mod) {
 		
 		double coreHeat = getCoreHeat(stack);
 		double hullHeat = getHullHeat(stack);
@@ -225,8 +224,8 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 
 		if(coreHeat > hullHeat) {
 			
-			final double mid = (coreHeat - hullHeat) / 2D;
-			final double heatTransfer = mid * this.diffusion * RBMKDials.getFuelDiffusionMod(world) * mod;
+			double mid = (coreHeat - hullHeat) / 2D;
+			double heatTransfer = mid * this.diffusion * RBMKDials.getFuelDiffusionMod(world) * mod;
 			coreHeat -= heatTransfer * getMeltdownFactor(meltdownPercent);
 			hullHeat += heatTransfer;
 			
@@ -240,7 +239,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * @param stack
 	 * @return
 	 */
-	public double provideHeat(final World world, final ItemStack stack, final double heat, final double mod) {
+	public double provideHeat(World world, ItemStack stack, double heat, double mod) {
 		
 		double hullHeat = getHullHeat(stack);
 
@@ -249,8 +248,8 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		//that average is sent to the component which is always fatal
 		if(getMeltdownPercent(stack) >= 100) {
 			setMeltdownPercent(stack, 100);
-			final double coreHeat = getCoreHeat(stack);
-			final double avg = (heat + hullHeat + coreHeat) / 3D;
+			double coreHeat = getCoreHeat(stack);
+			double avg = (heat + hullHeat + coreHeat) / 3D;
 			setCoreHeat(stack, avg);
 			setHullHeat(stack, avg);
 			return avg;
@@ -282,7 +281,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		
 		public String title = "";
 		
-		private EnumBurnFunc(final String title) {
+		private EnumBurnFunc(String title) {
 			this.title = title;
 		}
 	}
@@ -291,9 +290,9 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * @param flux [0;100] ...or at least those are sane levels
 	 * @return the amount of reactivity yielded, unmodified by xenon
 	 */
-	public double reactivityFunc(final double in, final double enrichment) {
+	public double reactivityFunc(double in, double enrichment) {
 		
-		final double flux = in * reactivityModByEnrichment(enrichment);
+		double flux = in * reactivityModByEnrichment(enrichment);
 		
 		switch(this.function) {
 		case PASSIVE: return selfRate * enrichment;
@@ -310,9 +309,9 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		return 0;
 	}
 	
-	public String getFuncDescription(final ItemStack stack) {
+	public String getFuncDescription(ItemStack stack) {
 
-		final String function;
+		String function;
 		
 		switch(this.function) {
 		case PASSIVE: function = TextFormatting.RED + "" + selfRate;
@@ -340,13 +339,13 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		
 		if(enrichment < 1) {
 			enrichment = reactivityModByEnrichment(enrichment);
-			final String reactivity = TextFormatting.YELLOW + "" + ((int)(this.reactivity * enrichment * 1000D) / 1000D) + TextFormatting.WHITE;
-			final String enrichmentPer = TextFormatting.GOLD + " (" + ((int)(enrichment * 1000D) / 10D) + "%)";
+			String reactivity = TextFormatting.YELLOW + "" + ((int)(this.reactivity * enrichment * 1000D) / 1000D) + TextFormatting.WHITE;
+			String enrichmentPer = TextFormatting.GOLD + " (" + ((int)(enrichment * 1000D) / 10D) + "%)";
 			
-			return String.format(function, selfRate > 0 ? "(x" + TextFormatting.RED + " + " + selfRate + TextFormatting.WHITE + ")" : "x", reactivity).concat(enrichmentPer);
+			return String.format(function, selfRate > 0 ? "(x" + TextFormatting.RED + " + " + selfRate + "" + TextFormatting.WHITE + ")" : "x", reactivity).concat(enrichmentPer);
 		}
 		
-		return String.format(function, selfRate > 0 ? "(x" + TextFormatting.RED + " + " + selfRate + TextFormatting.WHITE + ")" : "x", reactivity);
+		return String.format(function, selfRate > 0 ? "(x" + TextFormatting.RED + " + " + selfRate + "" + TextFormatting.WHITE + ")" : "x", reactivity);
 	}
 
 	public static enum EnumDepleteFunc {
@@ -354,10 +353,10 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		RAISING_SLOPE,	//for breeding fuels such as MEU, maximum of 110% at 28% depletion
 		BOOSTED_SLOPE,	//for strong breeding fuels such Th232, maximum of 132% at 64% depletion
 		GENTLE_SLOPE,	//recommended for most fuels, maximum barely over the start, near the beginning
-		STATIC            //for arcade-style neutron sources
+		STATIC;			//for arcade-style neutron sources
 	}
 
-	public double reactivityModByEnrichment(final double enrichment) {
+	public double reactivityModByEnrichment(double enrichment) {
 		
 		switch(this.depFunc) {
 		default:
@@ -374,7 +373,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * @param flux
 	 * @return
 	 */
-	public double xenonGenFunc(final double flux) {
+	public double xenonGenFunc(double flux) {
 		return flux * xGen;
 	}
 	
@@ -383,7 +382,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * @param flux
 	 * @return
 	 */
-	public double xenonBurnFunc(final double flux) {
+	public double xenonBurnFunc(double flux) {
 		return (flux * flux) / xBurn;
 	}
 	
@@ -391,7 +390,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * @param stack
 	 * @return enrichment [0;1]
 	 */
-	public static double getEnrichment(final ItemStack stack) {
+	public static double getEnrichment(ItemStack stack) {
 		return getYield(stack) / ((ItemRBMKRod) stack.getItem()).yield;
 	}
 	
@@ -399,12 +398,12 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * @param stack
 	 * @return poison [0;1]
 	 */
-	public static double getPoisonLevel(final ItemStack stack) {
+	public static double getPoisonLevel(ItemStack stack) {
 		return getPoison(stack) / 100D;
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flag) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flag) {
 		
 		list.add(TextFormatting.ITALIC + this.fullName);
 		
@@ -457,7 +456,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int i, final boolean b) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
 		
 		if(entity instanceof EntityLivingBase) {
 			updateModule(stack);
@@ -466,7 +465,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(final EntityItem item) {
+	public boolean onEntityItemUpdate(EntityItem item) {
 		
 		super.onEntityItemUpdate(item);
 		updateModule(item.getItem());
@@ -480,9 +479,9 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		return this.module;
 	}
 	
-	private void updateModule(final ItemStack stack) {
+	private void updateModule(ItemStack stack) {
 		
-		final float mod = (float)(1 + (1 - getEnrichment(stack)) * 24 + getPoisonLevel(stack) * 100);
+		float mod = (float)(1 + (1 - getEnrichment(stack)) * 24 + getPoisonLevel(stack) * 100);
 		this.module.setMod(mod);
 	}
 	
@@ -494,11 +493,11 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * |__|  \__| |_____/     |__|
 	 */
 	
-	public static void setYield(final ItemStack stack, final double yield) {
+	public static void setYield(ItemStack stack, double yield) {
 		setDouble(stack, "yield", yield);
 	}
 	
-	public static double getYield(final ItemStack stack) {
+	public static double getYield(ItemStack stack) {
 		
 		if(stack.getItem() instanceof ItemRBMKRod) {
 			return getDouble(stack, "yield");
@@ -507,49 +506,49 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		return 0;
 	}
 
-	public static void setMeltdownPercent(final ItemStack stack, final double meltdownPercent){
+	public static void setMeltdownPercent(ItemStack stack, double meltdownPercent){
 		setDouble(stack, "meltdown", meltdownPercent);
 	}
 
-	public static double getMeltdownPercent(final ItemStack stack){
+	public static double getMeltdownPercent(ItemStack stack){
 		return getDouble(stack, "meltdown");
 	}
 	
-	public static void setPoison(final ItemStack stack, final double xenon) {
+	public static void setPoison(ItemStack stack, double xenon) {
 		setDouble(stack, "xenon", xenon);
 	}
 	
-	public static double getPoison(final ItemStack stack) {
+	public static double getPoison(ItemStack stack) {
 		return getDouble(stack, "xenon");
 	}
 	
-	public static void setCoreHeat(final ItemStack stack, final double heat) {
+	public static void setCoreHeat(ItemStack stack, double heat) {
 		setDouble(stack, "core", heat);
 	}
 	
-	public static double getCoreHeat(final ItemStack stack) {
+	public static double getCoreHeat(ItemStack stack) {
 		return getDouble(stack, "core");
 	}
 	
-	public static void setHullHeat(final ItemStack stack, final double heat) {
+	public static void setHullHeat(ItemStack stack, double heat) {
 		setDouble(stack, "hull", heat);
 	}
 	
-	public static double getHullHeat(final ItemStack stack) {
+	public static double getHullHeat(ItemStack stack) {
 		return getDouble(stack, "hull");
 	}
 
 	@Override
-	public boolean showDurabilityBar(final ItemStack stack) {
+	public boolean showDurabilityBar(ItemStack stack) {
 		return getDurabilityForDisplay(stack) > 0D;
 	}
 
 	@Override
-	public double getDurabilityForDisplay(final ItemStack stack) {
+	public double getDurabilityForDisplay(ItemStack stack) {
 		return 1D - getEnrichment(stack);
 	}
 	
-	public static void setDouble(final ItemStack stack, final String key, final double yield) {
+	public static void setDouble(ItemStack stack, String key, double yield) {
 		
 		if(!stack.hasTagCompound())
 			setNBTDefaults(stack);
@@ -557,7 +556,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		stack.getTagCompound().setDouble(key, yield);
 	}
 	
-	public static double getDouble(final ItemStack stack, final String key) {
+	public static double getDouble(ItemStack stack, String key) {
 		
 		if(!stack.hasTagCompound())
 			setNBTDefaults(stack);
@@ -569,7 +568,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	 * Sets up the default values for all NBT data because doing it one-by-one will only correctly set the first called value and the rest stays 0 which is very not good
 	 * @param stack
 	 */
-	private static void setNBTDefaults(final ItemStack stack) {
+	private static void setNBTDefaults(ItemStack stack) {
 		stack.setTagCompound(new NBTTagCompound());
 		setYield(stack, ((ItemRBMKRod)stack.getItem()).yield);
 		setCoreHeat(stack, 20.0D);

@@ -1,15 +1,10 @@
 package com.hbm.entity.grenade;
 
-import java.util.List;
-
-import org.apache.logging.log4j.Level;
-
 import com.hbm.config.CompatibilityConfig;
 import com.hbm.config.GeneralConfig;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.main.MainRegistry;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -33,6 +28,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
+
+import java.util.List;
 
 public abstract class EntityGrenadeBouncyBase extends Entity implements IProjectile {
 
@@ -40,37 +38,37 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 	protected String throwerName;
 	protected int timer = 0;
 
-	public EntityGrenadeBouncyBase(final World world) {
+	public EntityGrenadeBouncyBase(World world) {
 		super(world);
 		this.setSize(0.25F, 0.25F);
 	}
 
-	public EntityGrenadeBouncyBase(final World world, final EntityLivingBase living, final EnumHand hand) {
+	public EntityGrenadeBouncyBase(World world, EntityLivingBase living, EnumHand hand) {
 		super(world);
 		this.thrower = living;
 		this.setSize(0.25F, 0.25F);
 		this.setLocationAndAngles(living.posX, living.posY + (double) living.getEyeHeight(), living.posZ, living.rotationYaw, living.rotationPitch);
 		if (hand == EnumHand.MAIN_HAND) {
-			this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+			this.posX -= (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 			this.posY -= 0.10000000149011612D;
-			this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+			this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 		} else {
-			this.posX += MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+			this.posX += (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 			this.posY -= 0.10000000149011612D;
-			this.posZ += MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+			this.posZ += (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 		}
 
 		this.setPosition(this.posX, this.posY, this.posZ);
-		final float f = 0.4F;
-		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * f;
-		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * f;
-		this.motionY = -MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float) Math.PI) * f;
+		float f = 0.4F;
+		this.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * f);
+		this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * f);
+		this.motionY = (double) (-MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float) Math.PI) * f);
 		this.shoot(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
 		this.rotationPitch = 0;
         this.prevRotationPitch = 0;
 	}
 
-	public EntityGrenadeBouncyBase(final World world, final double posX, final double posY, final double posZ) {
+	public EntityGrenadeBouncyBase(World world, double posX, double posY, double posZ) {
 		super(world);
 		this.setSize(0.25F, 0.25F);
 		this.setPosition(posX, posY, posZ);
@@ -81,7 +79,7 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 	}
 
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(final double p_70112_1_) {
+	public boolean isInRangeToRenderDist(double p_70112_1_) {
 		double d1 = this.getEntityBoundingBox().getAverageEdgeLength() * 4.0D;
 		d1 *= 64.0D;
 		return p_70112_1_ < d1 * d1;
@@ -99,17 +97,17 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 		return 0.03F;
 	}
 
-	public void shoot(double motionX, double motionY, double motionZ, final float f0, final float f1) {
-		final float f2 = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
-		motionX /= f2;
-		motionY /= f2;
-		motionZ /= f2;
+	public void shoot(double motionX, double motionY, double motionZ, float f0, float f1) {
+		float f2 = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
+		motionX /= (double) f2;
+		motionY /= (double) f2;
+		motionZ /= (double) f2;
 		motionX += this.rand.nextGaussian() * 0.007499999832361937D * (double) f1;
 		motionY += this.rand.nextGaussian() * 0.007499999832361937D * (double) f1;
 		motionZ += this.rand.nextGaussian() * 0.007499999832361937D * (double) f1;
-		motionX *= f0;
-		motionY *= f0;
-		motionZ *= f0;
+		motionX *= (double) f0;
+		motionY *= (double) f0;
+		motionZ *= (double) f0;
 		this.motionX = motionX;
 		this.motionY = motionY;
 		this.motionZ = motionZ;
@@ -117,7 +115,7 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void setVelocity(final double motionX, final double motionY, final double motionZ) {
+	public void setVelocity(double motionX, double motionY, double motionZ) {
 		this.motionX = motionX;
 		this.motionY = motionY;
 		this.motionZ = motionZ;
@@ -136,11 +134,11 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 		this.prevPosZ = this.posZ;
 		this.prevRotationPitch = this.rotationPitch;
 
-        this.rotationPitch -= Vec3.createVectorHelper(motionX, motionY, motionZ).length() * 25;
+        this.rotationPitch -= Vec3.createVectorHelper(motionX, motionY, motionZ).lengthVector() * 25;
 		
-		final double d0 = this.motionX;
-		final double d1 = this.motionY;
-		final double d2 = this.motionZ;
+		double d0 = this.motionX;
+		double d1 = this.motionY;
+		double d2 = this.motionZ;
 
 		if (!this.hasNoGravity()) {
 			this.motionY -= 0.03999999910593033D;
@@ -157,22 +155,22 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 		float f = 0.98F;
 
 		if (this.onGround) {
-			final BlockPos underPos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ));
-			final net.minecraft.block.state.IBlockState underState = this.world.getBlockState(underPos);
+			BlockPos underPos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ));
+			net.minecraft.block.state.IBlockState underState = this.world.getBlockState(underPos);
 			f = underState.getBlock().getSlipperiness(underState, this.world, underPos, this) * 0.98F;
 		}
 
-		this.motionX *= f;
+		this.motionX *= (double) f;
 		this.motionY *= 0.9800000190734863D;
-		this.motionZ *= f;
+		this.motionZ *= (double) f;
 
 		this.handleWaterMovement();
 
 		if (!this.world.isRemote) {
-			final double d3 = this.motionX - d0;
-			final double d4 = this.motionY - d1;
-			final double d5 = this.motionZ - d2;
-			final double d6 = d3 * d3 + d4 * d4 + d5 * d5;
+			double d3 = this.motionX - d0;
+			double d4 = this.motionY - d1;
+			double d5 = this.motionZ - d2;
+			double d6 = d3 * d3 + d4 * d4 + d5 * d5;
 
 			if (d6 > 0.01D) {
 				this.isAirBorne = true;
@@ -190,7 +188,7 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 			String s = "null";
 
 			if (thrower != null && thrower instanceof EntityPlayer)
-				s = thrower.getDisplayName().getUnformattedText();
+				s = ((EntityPlayer) thrower).getDisplayName().getUnformattedText();
 
 			if (GeneralConfig.enableExtendedLogging)
 				MainRegistry.logger.log(Level.INFO, "[GREN] Set off grenade at " + ((int) posX) + " / " + ((int) posY) + " / " + ((int) posZ) + " by " + s + "!");
@@ -215,17 +213,17 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 				this.motionZ = 0.0D;
 			}
 
-			final double d2 = x;
-			final double d3 = y;
-			final double d4 = z;
+			double d2 = x;
+			double d3 = y;
+			double d4 = z;
 
-			final List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this, this.getEntityBoundingBox().expand(x, y, z));
+			List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this, this.getEntityBoundingBox().expand(x, y, z));
 
 			if (y != 0.0D) {
 				int k = 0;
 
-				for (final int l = list1.size(); k < l; ++k) {
-					y = list1.get(k).calculateYOffset(this.getEntityBoundingBox(), y);
+				for (int l = list1.size(); k < l; ++k) {
+					y = ((AxisAlignedBB) list1.get(k)).calculateYOffset(this.getEntityBoundingBox(), y);
 				}
 
 				this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, y, 0.0D));
@@ -234,8 +232,8 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 			if (x != 0.0D) {
 				int j5 = 0;
 
-				for (final int l5 = list1.size(); j5 < l5; ++j5) {
-					x = list1.get(j5).calculateXOffset(this.getEntityBoundingBox(), x);
+				for (int l5 = list1.size(); j5 < l5; ++j5) {
+					x = ((AxisAlignedBB) list1.get(j5)).calculateXOffset(this.getEntityBoundingBox(), x);
 				}
 
 				if (x != 0.0D) {
@@ -246,8 +244,8 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 			if (z != 0.0D) {
 				int k5 = 0;
 
-				for (final int i6 = list1.size(); k5 < i6; ++k5) {
-					z = list1.get(k5).calculateZOffset(this.getEntityBoundingBox(), z);
+				for (int i6 = list1.size(); k5 < i6; ++k5) {
+					z = ((AxisAlignedBB) list1.get(k5)).calculateZOffset(this.getEntityBoundingBox(), z);
 				}
 
 				if (z != 0.0D) {
@@ -262,16 +260,16 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 			this.collidedVertically = d3 != y;
 			this.onGround = this.collidedVertically && d3 < 0.0D;
 			this.collided = this.collidedHorizontally || this.collidedVertically;
-			final int j6 = MathHelper.floor(this.posX);
-			final int i1 = MathHelper.floor(this.posY - 0.20000000298023224D);
-			final int k6 = MathHelper.floor(this.posZ);
+			int j6 = MathHelper.floor(this.posX);
+			int i1 = MathHelper.floor(this.posY - 0.20000000298023224D);
+			int k6 = MathHelper.floor(this.posZ);
 			BlockPos blockpos = new BlockPos(j6, i1, k6);
 			IBlockState iblockstate = this.world.getBlockState(blockpos);
 
 			if (iblockstate.getMaterial() == Material.AIR) {
-				final BlockPos blockpos1 = blockpos.down();
-				final IBlockState iblockstate1 = this.world.getBlockState(blockpos1);
-				final Block block1 = iblockstate1.getBlock();
+				BlockPos blockpos1 = blockpos.down();
+				IBlockState iblockstate1 = this.world.getBlockState(blockpos1);
+				Block block1 = iblockstate1.getBlock();
 
 				if (block1 instanceof BlockFence || block1 instanceof BlockWall || block1 instanceof BlockFenceGate) {
 					iblockstate = iblockstate1;
@@ -293,9 +291,9 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 			
 			// Start bounce
 			boolean bounce = false;
-			final boolean collidedX = d2 != x;
-			final boolean collidedY = d3 != y;
-			final boolean collidedZ = d4 != z;
+			boolean collidedX = d2 != x;
+			boolean collidedY = d3 != y;
+			boolean collidedZ = d4 != z;
 			if (this.collided) {
 
 
@@ -307,7 +305,7 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 					motionX *= -1;
 				
 				bounce = true;
-				final Vec3d mot = new Vec3d(motionX, motionY, motionZ);
+				Vec3d mot = new Vec3d(motionX, motionY, motionZ);
 				if (mot.length() > 0.05)
 					world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.grenadeBounce, SoundCategory.HOSTILE, 2.0F, 1.0F);
 
@@ -317,7 +315,7 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 			}
 			// End bounce
 
-			final Block block = iblockstate.getBlock();
+			Block block = iblockstate.getBlock();
 
 			if (d3 != y && !bounce) {
 				block.onLanded(this.world, this);
@@ -325,9 +323,9 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 
 			try {
 				this.doBlockCollisions();
-			} catch (final Throwable throwable) {
-				final CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
-				final CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
+			} catch (Throwable throwable) {
+				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
+				CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
 				this.addEntityCrashInfo(crashreportcategory);
 				throw new ReportedException(crashreport);
 			}
@@ -337,12 +335,12 @@ public abstract class EntityGrenadeBouncyBase extends Entity implements IProject
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		timer = nbt.getInteger("timer");
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("timer", timer);
 	}
 

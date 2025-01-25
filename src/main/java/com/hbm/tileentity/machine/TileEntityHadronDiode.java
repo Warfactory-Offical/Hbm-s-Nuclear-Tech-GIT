@@ -3,7 +3,6 @@ package com.hbm.tileentity.machine;
 import com.hbm.blocks.machine.BlockHadronDiode;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityTickingBase;
-
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityHadronDiode extends TileEntityTickingBase {
@@ -44,7 +43,7 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	
 	public void sendSides() {
 
-		final NBTTagCompound data = new NBTTagCompound();
+		NBTTagCompound data = new NBTTagCompound();
 
 		for(int i = 0; i < 6; i++) {
 
@@ -56,19 +55,19 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	}
 	
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		for(int i = 0; i < 6; i++) {
 			sides[i] = DiodeConfig.values()[nbt.getInteger("" + i)];
 		}
 		//world.markBlockRangeForRenderUpdate(pos, pos);
 	}
 	
-	public DiodeConfig getConfig(final int side) {
+	public DiodeConfig getConfig(int side) {
 
 		if(ForgeDirection.getOrientation(side) == ForgeDirection.UNKNOWN)
 			return DiodeConfig.NONE;
 
-		final DiodeConfig conf = sides[side];
+		DiodeConfig conf = sides[side];
 
 		if(conf == null)
 			return DiodeConfig.NONE;
@@ -76,14 +75,14 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 		return conf;
 	}
 
-	public void setConfig(final int side, final int config) {
+	public void setConfig(int side, int config) {
 		sides[side] = DiodeConfig.values()[config];
 		this.markDirty();
 		sendSides();
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		for(int i = 0; i < 6; i++) {
 			sides[i] = DiodeConfig.values()[compound.getInteger("side_" + i)];
 		}
@@ -93,7 +92,7 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		for(int i = 0; i < 6; i++) {
 
 			if(sides[i] != null) {

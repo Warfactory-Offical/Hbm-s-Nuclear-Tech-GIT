@@ -16,7 +16,7 @@ public class Vertex_v3fn3f {
     public Vec3 position;
     public Vec3 normal;
 
-    public Vertex_v3fn3f(final Vec3 position, final Vec3 normal) {
+    public Vertex_v3fn3f(Vec3 position, Vec3 normal) {
         this.position = position;
         this.normal = normal;
     }

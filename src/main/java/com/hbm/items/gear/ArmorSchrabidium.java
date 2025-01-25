@@ -18,7 +18,7 @@ import net.minecraftforge.common.ISpecialArmor;
 
 public class ArmorSchrabidium extends ItemArmor implements ISpecialArmor {
 
-	public ArmorSchrabidium(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
+	public ArmorSchrabidium(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,7 +28,7 @@ public class ArmorSchrabidium extends ItemArmor implements ISpecialArmor {
 	}
 
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		if(stack.getItem().equals(ModItems.schrabidium_helmet) || stack.getItem().equals(ModItems.schrabidium_plate) || stack.getItem().equals(ModItems.schrabidium_boots)) {
 			return (RefStrings.MODID + ":textures/armor/schrabidium_1.png");
 		}
@@ -39,12 +39,12 @@ public class ArmorSchrabidium extends ItemArmor implements ISpecialArmor {
 	}
 	
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 
 	@Override
-	public ArmorProperties getProperties(final EntityLivingBase player, final ItemStack armor, final DamageSource source, final double damage, final int slot) {
+	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
 		if(damage >= 20)
 		{
 			player.setHealth(player.getHealth() - 1F);
@@ -54,7 +54,7 @@ public class ArmorSchrabidium extends ItemArmor implements ISpecialArmor {
 	}
 
 	@Override
-	public int getArmorDisplay(final EntityPlayer player, final ItemStack armor, final int slot) {
+	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
 		if(slot == 0)
 		{
 			return 3;
@@ -75,12 +75,12 @@ public class ArmorSchrabidium extends ItemArmor implements ISpecialArmor {
 	}
 
 	@Override
-	public void damageArmor(final EntityLivingBase entity, final ItemStack stack, final DamageSource source, final int damage, final int slot) {
-		stack.damageItem(damage, entity);
+	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
+		stack.damageItem(damage * 1, entity);
 	}
 	
 	@Override
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack armor) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack armor) {
 		if(armor.getItem() == ModItems.schrabidium_helmet)
 		 {
 			 player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 5, 0, true, false));

@@ -1,15 +1,15 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.energymk2.IBatteryItem;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.interfaces.Untested;
 import com.hbm.inventory.ShredderRecipes;
 import com.hbm.items.machine.ItemBlades;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IBatteryItem;
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -17,12 +17,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityMachineShredder extends TileEntityMachineBase implements ITickable, IEnergyUser {
+public class TileEntityMachineShredder extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 
 	public long power;
 	public int progress;
@@ -44,18 +41,18 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
-		final int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(EnumFacing e){
+		int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
+	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack stack){
+	public boolean isItemValidForSlot(int i, ItemStack stack){
 		if (i < 9) {
 			return true;
 		} else if (i == 29 && stack.getItem() instanceof IBatteryItem) {
@@ -66,16 +63,17 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
 		if(slot >= 9 && slot <= 26)
 			return true;
 		if(slot >= 27 && slot <= 29){
-            return itemStack.getItemDamage() == itemStack.getMaxDamage() && itemStack.getMaxDamage() > 0;
+			if(itemStack.getItemDamage() == itemStack.getMaxDamage() && itemStack.getMaxDamage() > 0)
+				return true;
 		}
 		return false;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -85,7 +83,7 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
@@ -93,13 +91,13 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
-	public int getDiFurnaceProgressScaled(final int i) {
+	public int getDiFurnaceProgressScaled(int i) {
 		return (progress * i) / processingSpeed;
 	}
 	
@@ -116,8 +114,9 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 		boolean flag1 = false;
 		
 		if(!world.isRemote)
-		{			
-			this.updateStandardConnections(world, pos);
+		{
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 			if(hasPower() && canProcess())
 			{
 				progress++;
@@ -144,9 +143,14 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 				progress = 0;
 			}
 			
-			boolean trigger = !hasPower() || !canProcess() || this.progress != 0;
-
-            if(trigger)
+			boolean trigger = true;
+			
+			if(hasPower() && canProcess() && this.progress == 0)
+			{
+				trigger = false;
+			}
+			
+			if(trigger)
             {
                 flag1 = true;
             }
@@ -167,8 +171,8 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 		{
 			if(!inventory.getStackInSlot(inpSlot).isEmpty() && hasSpace(inventory.getStackInSlot(inpSlot)))
 			{
-				final ItemStack inp = inventory.getStackInSlot(inpSlot);
-				final ItemStack outp = ShredderRecipes.getShredderResult(inp);
+				ItemStack inp = inventory.getStackInSlot(inpSlot);
+				ItemStack outp = ShredderRecipes.getShredderResult(inp);
 				boolean flag = false;
 				
 				for (int outSlot = 9; outSlot < 27; outSlot++)
@@ -215,9 +219,9 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 		return false;
 	}
 	
-	public boolean hasSpace(final ItemStack stack) {
+	public boolean hasSpace(ItemStack stack) {
 		
-		final ItemStack result = ShredderRecipes.getShredderResult(stack);
+		ItemStack result = ShredderRecipes.getShredderResult(stack);
 		
 		if (result != null)
 			for (int i = 9; i < 27; i++) {
@@ -235,12 +239,12 @@ public class TileEntityMachineShredder extends TileEntityMachineBase implements 
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		this.power = i;
 		
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 

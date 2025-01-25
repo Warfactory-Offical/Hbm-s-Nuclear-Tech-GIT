@@ -1,26 +1,23 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
-import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.render.RenderHelper;
 import com.hbm.tileentity.machine.TileEntityMachineCrystallizer;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCrystallizer extends TileEntitySpecialRenderer<TileEntityMachineCrystallizer> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityMachineCrystallizer te) {
+	public boolean isGlobalRenderer(TileEntityMachineCrystallizer te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityMachineCrystallizer crys, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineCrystallizer crys, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -53,15 +50,15 @@ public class RenderCrystallizer extends TileEntitySpecialRenderer<TileEntityMach
         GL11.glPopMatrix();
 	}
 
-	public void renderFill(final TileEntityMachineCrystallizer crys){
-		if(crys.tank.getFluid() == null) return;
+	public void renderFill(TileEntityMachineCrystallizer crys){
+		if(crys.tankNew.getTankType() == null) return;
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
 		GlStateManager.disableTexture2D();
        	GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		
-		RenderHelper.setColor(ModForgeFluids.getFluidColor(crys.tank.getFluid().getFluid()));
+		RenderHelper.setColor(crys.tankNew.getTankType().getColor());
 		ResourceManager.crystallizer.renderPart("Windows");
 
 		

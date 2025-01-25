@@ -22,10 +22,10 @@ public class ParticlePlasmaBlast extends Particle {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/particle/shockwave.png");
 	
-	private final float rotationPitch;
-	private final float rotationYaw;
+	private float rotationPitch;
+	private float rotationYaw;
 	
-	public ParticlePlasmaBlast(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float r, final float g, final float b, final float pitch, final float yaw){
+	public ParticlePlasmaBlast(World worldIn, double posXIn, double posYIn, double posZIn, float r, float g, float b, float pitch, float yaw){
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleMaxAge = 20;
 		this.particleRed = r;
@@ -35,11 +35,11 @@ public class ParticlePlasmaBlast extends Particle {
 		this.rotationYaw = yaw;
 	}
 	
-	public void setMaxAge(final int maxAge) {
+	public void setMaxAge(int maxAge) {
 		this.particleMaxAge = maxAge;
 	}
 	
-	public void setScale(final float scale) {
+	public void setScale(float scale) {
 		this.particleScale = scale;
 	}
 
@@ -49,11 +49,11 @@ public class ParticlePlasmaBlast extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 		
 		GL11.glPushMatrix();
 		GlStateManager.disableLighting();
@@ -66,23 +66,23 @@ public class ParticlePlasmaBlast extends Particle {
 		GlStateManager.glNormal3f(0, 1, 0);
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		
-		final float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-		final float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-		final float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
 
 		GL11.glTranslatef(pX, pY, pZ);
 		GL11.glRotated(this.rotationYaw, 0, 1, 0);
 		GL11.glRotated(this.rotationPitch, 1, 0, 0);
 			
 		this.particleAlpha = 1 - (((float)this.particleAge + partialTicks) / (float)this.particleMaxAge);
-		final float scale = (1 - (float)Math.pow(Math.E, (this.particleAge + partialTicks) * -0.125)) * this.particleScale;
+		float scale = (1 - (float)Math.pow(Math.E, (this.particleAge + partialTicks) * -0.125)) * this.particleScale;
 		GlStateManager.color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
 		
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buf.pos(- 1 * scale, - 0.25, - 1 * scale).tex(1, 1).endVertex();
-		buf.pos(- 1 * scale, - 0.25, + 1 * scale).tex(1, 0).endVertex();
-		buf.pos(+ 1 * scale, - 0.25, + 1 * scale).tex(0, 0).endVertex();
-		buf.pos(+ 1 * scale, - 0.25, - 1 * scale).tex(0, 1).endVertex();
+		buf.pos((double)(- 1 * scale), (double)(- 0.25), (double)(- 1 * scale)).tex(1, 1).endVertex();
+		buf.pos((double)(- 1 * scale), (double)(- 0.25), (double)(+ 1 * scale)).tex(1, 0).endVertex();
+		buf.pos((double)(+ 1 * scale), (double)(- 0.25), (double)(+ 1 * scale)).tex(0, 0).endVertex();
+		buf.pos((double)(+ 1 * scale), (double)(- 0.25), (double)(- 1 * scale)).tex(0, 1).endVertex();
 		tes.draw();
 		
 		GlStateManager.color(1, 1, 1, 1);

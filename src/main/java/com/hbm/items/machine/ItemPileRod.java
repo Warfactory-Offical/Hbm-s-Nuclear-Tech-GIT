@@ -1,28 +1,26 @@
 package com.hbm.items.machine;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemHazard;
-
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemPileRod extends ItemHazard {
 	
-	public ItemPileRod(final String s){
+	public ItemPileRod(String s){
 		super(s);
 	}
 
-	public ItemPileRod(final float radiation, final String s){
+	public ItemPileRod(float radiation, String s){
 		super(radiation, s);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
 		tooltip.add(TextFormatting.YELLOW + "Use on drilled graphite to insert");
 		tooltip.add(TextFormatting.YELLOW + "Use screwdriver to extract");
 		tooltip.add("");

@@ -1,17 +1,10 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.apache.commons.lang3.math.NumberUtils;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.container.ContainerRBMKControlAuto;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.NBTControlPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKControlAuto;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiTextField;
@@ -21,15 +14,20 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIRBMKControlAuto extends GuiInfoContainer {
 	
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_rbmk_control_auto.png");
-	private final TileEntityRBMKControlAuto rod;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_rbmk_control_auto.png");
+	private TileEntityRBMKControlAuto rod;
 	
-	private final GuiTextField[] fields;
+	private GuiTextField[] fields;
 
-	public GUIRBMKControlAuto(final InventoryPlayer invPlayer, final TileEntityRBMKControlAuto tedf) {
+	public GUIRBMKControlAuto(InventoryPlayer invPlayer, TileEntityRBMKControlAuto tedf) {
 		super(new ContainerRBMKControlAuto(invPlayer, tedf));
 		rod = tedf;
 		
@@ -62,7 +60,7 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 124, guiTop + 29, 16, 56, mouseX, mouseY, new String[]{ (int)(rod.level * 100) + "%" } );
@@ -90,7 +88,7 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+	protected void mouseClicked(int x, int y, int i) throws IOException {
 		super.mouseClicked(x, y, i);
 		
 		for(int j = 0; j < 4; j++) {
@@ -100,16 +98,16 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 		if(guiLeft + 28 <= x && guiLeft + 28 + 30 > x && guiTop + 70 < y && guiTop + 70 +10 >= y) {
 			
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			
-			final double[] vals = new double[] {0D ,0D, 0D, 0D};
+			double[] vals = new double[] {0D ,0D, 0D, 0D};
 
 			for(int k = 0; k < 4; k++) {
 				
-				final double clamp = k < 2 ? 100 : 9999;
+				double clamp = k < 2 ? 100 : 9999;
 				
 				if(NumberUtils.isCreatable(fields[k].getText())) {
-					final int j = (int)MathHelper.clamp(Double.parseDouble(fields[k].getText()), 0, clamp);
+					int j = (int)MathHelper.clamp(Double.parseDouble(fields[k].getText()), 0, clamp);
 					fields[k].setText(j + "");
 					vals[k] = j;
 				} else {
@@ -131,7 +129,7 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 			if(guiLeft + 61 <= x && guiLeft + 61 + 22 > x && guiTop + 48 + k * 11 < y && guiTop + 48 + 10 + k * 11 >= y) {
 	
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setInteger("function", k);
 				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, rod.getPos()));
 			}
@@ -139,26 +137,26 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = I18n.format(this.rod.getName());
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
+		String name = I18n.format(this.rod.getName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		final int height = (int)(56 * (1D - rod.level));
+		int height = (int)(56 * (1D - rod.level));
 		
 		if(height > 0)
 			drawTexturedModalRect(guiLeft + 124, guiTop + 29, 176, 56 - height, 8, height);
 		
-		final int f = rod.function.ordinal();
+		int f = rod.function.ordinal();
 		drawTexturedModalRect(guiLeft + 59, guiTop + 27, 184, f * 19, 26, 19);
 		
 		for(int i = 0; i < 4; i++) {
@@ -167,7 +165,7 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void keyTyped(final char c, final int i) throws IOException {
+	protected void keyTyped(char c, int i) throws IOException {
 		
 		for(int j = 0; j < 4; j++) {
 			if(this.fields[j].textboxKeyTyped(c, i))

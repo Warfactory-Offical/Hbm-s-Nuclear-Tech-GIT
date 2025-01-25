@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ItemTemFlakes extends ItemFood {
 
-	public ItemTemFlakes(final int amount, final float saturation, final boolean isWolfFood, final String s) {
+	public ItemTemFlakes(int amount, float saturation, boolean isWolfFood, String s) {
 		super(amount, saturation, isWolfFood);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,12 +21,12 @@ public class ItemTemFlakes extends ItemFood {
 	}
 	
 	@Override
-	protected void onFoodEaten(final ItemStack stack, final World worldIn, final EntityPlayer player) {
+	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
 		player.heal(2.0F);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(stack.getItem() == ModItems.tem_flakes)
 		{
 			tooltip.add("Heals 2HP DISCOUNT FOOD OF TEM!!!");

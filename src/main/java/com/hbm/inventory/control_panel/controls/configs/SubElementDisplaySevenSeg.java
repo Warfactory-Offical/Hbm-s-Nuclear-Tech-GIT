@@ -1,7 +1,8 @@
 package com.hbm.inventory.control_panel.controls.configs;
 
-import com.hbm.inventory.control_panel.*;
-import com.hbm.main.MainRegistry;
+import com.hbm.inventory.control_panel.DataValue;
+import com.hbm.inventory.control_panel.DataValueFloat;
+import com.hbm.inventory.control_panel.GuiControlEdit;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.RenderHelper;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +27,7 @@ public class SubElementDisplaySevenSeg extends SubElementBaseConfig {
     GuiSlider slide_digitCount;
     GuiCheckBox check_isDecimal;
 
-    public SubElementDisplaySevenSeg(final GuiControlEdit gui, final Map<String, DataValue> map) {
+    public SubElementDisplaySevenSeg(GuiControlEdit gui, Map<String, DataValue> map) {
         super(gui);
         this.colorR = map.get("colorR").getNumber();
         this.colorG = map.get("colorG").getNumber();
@@ -37,7 +38,7 @@ public class SubElementDisplaySevenSeg extends SubElementBaseConfig {
 
     @Override
     public Map<String, DataValue> getConfigs() {
-        final Map<String, DataValue> m = new HashMap<>();
+        Map<String, DataValue> m = new HashMap<>();
         m.put("colorR", new DataValueFloat(colorR));
         m.put("colorG", new DataValueFloat(colorG));
         m.put("colorB", new DataValueFloat(colorB));
@@ -48,8 +49,8 @@ public class SubElementDisplaySevenSeg extends SubElementBaseConfig {
 
     @Override
     public void initGui() {
-        final int cX = gui.width/2;
-        final int cY = gui.height/2;
+        int cX = gui.width/2;
+        int cY = gui.height/2;
 
         slide_colorR = gui.addButton(new GuiSlider(gui.currentButtonId(), cX-85, gui.getGuiTop()+70, 80, 15, TextFormatting.RED+"R ", "", 0, 100, colorR*100, false, true));
         slide_colorG = gui.addButton(new GuiSlider(gui.currentButtonId(), cX-85, gui.getGuiTop()+90, 80, 15, TextFormatting.GREEN+"G ", "", 0, 100, colorG*100, false, true));
@@ -70,7 +71,7 @@ public class SubElementDisplaySevenSeg extends SubElementBaseConfig {
     }
 
     @Override
-    public void mouseReleased(final int mouseX, final int mouseY, final int state) {
+    public void mouseReleased(int mouseX, int mouseY, int state) {
         colorR = (float) slide_colorR.sliderValue;
         colorG = (float) slide_colorG.sliderValue;
         colorB = (float) slide_colorB.sliderValue;
@@ -79,7 +80,7 @@ public class SubElementDisplaySevenSeg extends SubElementBaseConfig {
     }
 
     @Override
-    public void enableButtons(final boolean enable) {
+    public void enableButtons(boolean enable) {
         slide_colorR.visible = enable;
         slide_colorR.enabled = enable;
         slide_colorG.visible = enable;

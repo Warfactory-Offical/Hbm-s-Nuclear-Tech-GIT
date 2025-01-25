@@ -17,10 +17,10 @@ public class HbmFluidHandlerItemStackInf implements IFluidHandlerItem, ICapabili
 
 	public static final String FLUID_NBT_KEY = "HbmFluidKey";
 
-	private final ItemStack container;
-	private final int maxDrainAmount;
+	private ItemStack container;
+	private int maxDrainAmount;
 	
-	public HbmFluidHandlerItemStackInf(final ItemStack stack, final int maxDrain){
+	public HbmFluidHandlerItemStackInf(ItemStack stack, int maxDrain){
 		container = stack;
 		this.maxDrainAmount = maxDrain;
 	}
@@ -31,14 +31,14 @@ public class HbmFluidHandlerItemStackInf implements IFluidHandlerItem, ICapabili
 	}
 	
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource != null)
 			return resource.amount;
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		if(container.getItem() == ModItems.inf_water || container.getItem() == ModItems.inf_water_mk2 || container.getItem() == ModItems.inf_water_mk3 || container.getItem() == ModItems.inf_water_mk4)
 			return new FluidStack(FluidRegistry.WATER, maxDrainAmount);
 		if(resource == null)
@@ -47,20 +47,20 @@ public class HbmFluidHandlerItemStackInf implements IFluidHandlerItem, ICapabili
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if(container.getItem() == ModItems.inf_water || container.getItem() == ModItems.inf_water_mk2 || container.getItem() == ModItems.inf_water_mk3 || container.getItem() == ModItems.inf_water_mk4)
 			return new FluidStack(FluidRegistry.WATER, maxDrainAmount);
 		return null;
 	}
 
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY ? (T)this : null;
 	}
 

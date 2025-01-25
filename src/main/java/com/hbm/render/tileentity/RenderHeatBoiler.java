@@ -1,23 +1,21 @@
 package com.hbm.render.tileentity;
 
-import com.hbm.tileentity.machine.TileEntityHeatBoiler;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.ResourceManager;
-
+import com.hbm.tileentity.machine.TileEntityHeatBoiler;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderHeatBoiler extends TileEntitySpecialRenderer<TileEntityHeatBoiler> {
 
     @Override
-    public boolean isGlobalRenderer(final TileEntityHeatBoiler te) {
+    public boolean isGlobalRenderer(TileEntityHeatBoiler te) {
         return true;
     }
 
     @Override
-    public void render(final TileEntityHeatBoiler te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+    public void render(TileEntityHeatBoiler te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();

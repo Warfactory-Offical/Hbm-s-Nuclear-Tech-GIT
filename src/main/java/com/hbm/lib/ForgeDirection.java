@@ -47,7 +47,7 @@ public enum ForgeDirection {
     	{0, 1, 2, 3, 4, 5, 6},
     };
 
-    private ForgeDirection(final int x, final int y, final int z)
+    private ForgeDirection(int x, int y, int z)
     {
         offsetX = x;
         offsetY = y;
@@ -55,7 +55,7 @@ public enum ForgeDirection {
         flag = 1 << ordinal();
     }
 
-    public static ForgeDirection getOrientation(final int id)
+    public static ForgeDirection getOrientation(int id)
     {
         if (id >= 0 && id < VALID_DIRECTIONS.length)
         {
@@ -69,7 +69,7 @@ public enum ForgeDirection {
         return getOrientation(OPPOSITES[ordinal()]);
     }
 
-    public ForgeDirection getRotation(final ForgeDirection axis)
+    public ForgeDirection getRotation(ForgeDirection axis)
     {
     	return getOrientation(ROTATION_MATRIX[axis.ordinal()][ordinal()]);
     }

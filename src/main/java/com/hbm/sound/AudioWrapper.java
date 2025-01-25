@@ -2,20 +2,22 @@ package com.hbm.sound;
 
 public class AudioWrapper {
 	
-	public void updatePosition(final float x, final float y, final float z) { }
+	public void updatePosition(float x, float y, float z) { }
+	public void keepAlive() { }
 	
-	public void updateVolume(final float volume) { }
+	public void updateVolume(float volume) { }
 	
-	public void updatePitch(final float pitch) { }
+	public void updatePitch(float pitch) { }
 	
 	public float getVolume() { return 0F; }
 	
 	public float getPitch() { return 0F; }
 	
-	public void setDoesRepeat(final boolean repeats) { }
+	public void setDoesRepeat(boolean repeats) { }
 	
 	public void startSound() { }
 	
 	public void stopSound() { }
 
+	public boolean isPlaying() { return false; }
 }

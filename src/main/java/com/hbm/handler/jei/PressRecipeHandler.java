@@ -24,7 +24,7 @@ public class PressRecipeHandler implements IRecipeCategory<PressRecipe> {
 	protected final IDrawableStatic progressStatic;
 	protected final IDrawableAnimated progressAnimated;
 	
-	public PressRecipeHandler(final IGuiHelper help) {
+	public PressRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 51, 15, 82, 55);
 		progressStatic = help.createDrawable(gui_rl, 0, 86, 18, 16);
 		progressAnimated = help.createAnimatedDrawable(progressStatic, 20, StartDirection.TOP, false);
@@ -51,13 +51,13 @@ public class PressRecipeHandler implements IRecipeCategory<PressRecipe> {
 	}
 	
 	@Override
-	public void drawExtras(final Minecraft minecraft) {
+	public void drawExtras(Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 1, 20);
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final PressRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, PressRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 1, 37);
 		guiItemStacks.init(1, false, 64, 19);

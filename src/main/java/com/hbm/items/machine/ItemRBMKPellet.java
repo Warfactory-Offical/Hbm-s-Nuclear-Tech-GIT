@@ -1,13 +1,9 @@
 package com.hbm.items.machine;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.modules.ItemHazardModule;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -20,12 +16,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemRBMKPellet extends Item implements IItemHazard {
 	
 	public String fullName = "";
 	ItemHazardModule module;
 
-	public ItemRBMKPellet(final String fullName, final String s) {
+	public ItemRBMKPellet(String fullName, String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.fullName = fullName;
@@ -39,22 +37,22 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	}
 
 	@Override
-	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items){
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab()){
 			for(int i = 0; i < 10; ++i) {
-				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
+				items.add(new ItemStack(this, 1, i));
 			}
 		}
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 
 		tooltip.add(TextFormatting.ITALIC + this.fullName);
 		tooltip.add(TextFormatting.DARK_GRAY + "" + TextFormatting.ITALIC + "Pellet for recycling");
 		
-		final int meta = rectify(stack.getItemDamage());
+		int meta = rectify(stack.getItemDamage());
 		
 		switch(meta % 5) {
 		case 0: tooltip.add(TextFormatting.GOLD + "Brand New"); break;
@@ -71,11 +69,11 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 		this.module.addInformation(stack, tooltip, flagIn);
 	}
 	
-	public static boolean hasXenon(final int meta) {
+	private boolean hasXenon(int meta) {
 		return rectify(meta) >= 5;
 	}
 	
-	public static int rectify(final int meta) {
+	private int rectify(int meta) {
 		return Math.abs(meta) % 10;
 	}
 
@@ -85,7 +83,7 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int i, final boolean b) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
 		
 		if(entity instanceof EntityLivingBase) {
 			updateModule(stack);
@@ -94,16 +92,16 @@ public class ItemRBMKPellet extends Item implements IItemHazard {
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(final EntityItem item) {
+	public boolean onEntityItemUpdate(EntityItem item) {
 		
 		super.onEntityItemUpdate(item);
 		updateModule(item.getItem());
 		return this.module.onEntityItemUpdate(item);
 	}
 	
-	private void updateModule(final ItemStack stack) {
+	private void updateModule(ItemStack stack) {
 		
-		final int index = stack.getItemDamage() % 5;
+		int index = stack.getItemDamage() % 5;
 		float mod = (index * index) / 5F;
 		
 		if(stack.getItemDamage() >= 5) {

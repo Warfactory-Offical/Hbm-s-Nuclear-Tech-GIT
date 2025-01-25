@@ -21,7 +21,7 @@ public class KeypadServerPacket implements IMessage {
 	public KeypadServerPacket() {
 	}
 	
-	public KeypadServerPacket(final BlockPos pos, final int type, final int data) {
+	public KeypadServerPacket(BlockPos pos, int type, int data) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
@@ -30,7 +30,7 @@ public class KeypadServerPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -39,7 +39,7 @@ public class KeypadServerPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -50,13 +50,13 @@ public class KeypadServerPacket implements IMessage {
 	public static class Handler implements IMessageHandler<KeypadServerPacket, IMessage> {
 
 		@Override
-		public IMessage onMessage(final KeypadServerPacket m, final MessageContext ctx) {
-			final BlockPos pos = new BlockPos(m.x, m.y, m.z);
-			final World world = ctx.getServerHandler().player.world;
+		public IMessage onMessage(KeypadServerPacket m, MessageContext ctx) {
+			BlockPos pos = new BlockPos(m.x, m.y, m.z);
+			World world = ctx.getServerHandler().player.world;
 			if(world.isBlockLoaded(pos)){
-				final TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getTileEntity(pos);
 				if(te instanceof IKeypadHandler){
-					final Keypad pad = ((IKeypadHandler) te).getKeypad();
+					Keypad pad = ((IKeypadHandler) te).getKeypad();
 					if(m.type == 0){
 						pad.buttonClicked(m.data);
 					}

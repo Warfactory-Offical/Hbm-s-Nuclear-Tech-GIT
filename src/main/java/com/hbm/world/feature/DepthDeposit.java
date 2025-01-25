@@ -13,25 +13,25 @@ import net.minecraft.world.World;
 
 public class DepthDeposit {
 
-public static void generateConditionOverworld(final World world, final int x, final int yMin, final int yDev, final int z, final int size, final double fill, final Block block, final Random rand, final int chance) {
+public static void generateConditionOverworld(World world, int x, int yMin, int yDev, int z, int size, double fill, Block block, Random rand, int chance) {
 		
 		if(rand.nextInt(chance) == 0)
 			generate(world, x + rand.nextInt(16), yMin + rand.nextInt(yDev), z + rand.nextInt(16), size, fill, block, rand, Blocks.STONE, ModBlocks.stone_depth);
 	}
 
-	public static void generateConditionNether(final World world, final int x, final int yMin, final int yDev, final int z, final int size, final double fill, final Block block, final Random rand, final int chance) {
+	public static void generateConditionNether(World world, int x, int yMin, int yDev, int z, int size, double fill, Block block, Random rand, int chance) {
 		
 		if(rand.nextInt(chance) == 0)
 			generate(world, x + rand.nextInt(16), yMin + rand.nextInt(yDev), z + rand.nextInt(16), size, fill, block, rand, Blocks.NETHERRACK, ModBlocks.stone_depth_nether);
 	}
 
-	public static void generateCondition(final World world, final int x, final int yMin, final int yDev, final int z, final int size, final double fill, final Block block, final Random rand, final int chance, final Block genTarget, final Block filler) {
+	public static void generateCondition(World world, int x, int yMin, int yDev, int z, int size, double fill, Block block, Random rand, int chance, Block genTarget, Block filler) {
 		
 		if(rand.nextInt(chance) == 0)
 			generate(world, x + rand.nextInt(16), yMin + rand.nextInt(yDev), z + rand.nextInt(16), size, fill, block, rand, genTarget, filler);
 	}
 
-	public static void generate(final World world, final int x, final int y, final int z, final int size, final double fill, final Block block, final Random rand, final Block genTarget, final Block filler) {
+	public static void generate(World world, int x, int y, int z, int size, double fill, Block block, Random rand, Block genTarget, Block filler) {
 		
 		for(int i = x - size; i <= x + size; i++) {
 			for(int j = y - size; j <= y + size; j++) {
@@ -40,9 +40,9 @@ public static void generateConditionOverworld(final World world, final int x, fi
 					if(j < 1 || j > 126)
 						continue;
 					
-					final BlockPos pos = new BlockPos(i, j, k);
-					final double len = Vec3.createVectorHelper(x - i, y - j, z - k).length();
-					final Block target = world.getBlockState(pos).getBlock();
+					BlockPos pos = new BlockPos(i, j, k);
+					double len = Vec3.createVectorHelper(x - i, y - j, z - k).length();
+					Block target = world.getBlockState(pos).getBlock();
 					
 					if(target.isReplaceableOreGen(world.getBlockState(pos), world, pos, BlockMatcher.forBlock(genTarget)) || target.isReplaceableOreGen(world.getBlockState(pos), world, pos, BlockMatcher.forBlock(Blocks.BEDROCK))) { //yes you've heard right, bedrock
 						

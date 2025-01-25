@@ -1,33 +1,31 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.ResourceManager;
-import com.hbm.util.I18nUtil;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.RBMKColumn;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.RBMKScreen;
-
+import com.hbm.util.I18nUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class RenderRBMKConsole extends TileEntitySpecialRenderer<TileEntityRBMKConsole> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityRBMKConsole te){
+	public boolean isGlobalRenderer(TileEntityRBMKConsole te){
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityRBMKConsole te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
+	public void render(TileEntityRBMKConsole te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
 		GL11.glPushMatrix();
 		
 		GL11.glTranslatef((float)x + 0.5F, (float)y, (float)z + 0.5F);
@@ -50,24 +48,24 @@ public class RenderRBMKConsole extends TileEntitySpecialRenderer<TileEntityRBMKC
 		GlStateManager.shadeModel(GL11.GL_FLAT);
 
 		///New part
-		final TileEntityRBMKConsole console = te;
+		TileEntityRBMKConsole console = (TileEntityRBMKConsole) te;
 		
-		final Tessellator tess = Tessellator.getInstance();
-		final BufferBuilder buf = tess.getBuffer();
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder buf = tess.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		
 		for(int i = 0; i < console.columns.length; i++) {
 			
-			final RBMKColumn col = console.columns[i];
+			RBMKColumn col = console.columns[i];
 			
 			if(col == null)
 				continue;
 
-			final double kx = -0.37D;
-			final double ky = -(i / 15) * 0.125 + 3.625;
-			final double kz = -(i % 15) * 0.125 + 0.125D * 7;
+			double kx = -0.37D;
+			double ky = -(i / 15) * 0.125 + 3.625;
+			double kz = -(i % 15) * 0.125 + 0.125D * 7;
 			
 			drawColumn(buf, kx, ky, kz, (float)(0.75D + (i % 2) * 0.05D), col.data.getDouble("heat") / col.data.getDouble("maxHeat"));
 			
@@ -83,7 +81,7 @@ public class RenderRBMKConsole extends TileEntitySpecialRenderer<TileEntityRBMKC
 		tess.draw();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-		final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		GL11.glTranslatef(-0.42F, 3.5F, 1.75F);
         GlStateManager.depthMask(false);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -99,21 +97,21 @@ public class RenderRBMKConsole extends TileEntitySpecialRenderer<TileEntityRBMKC
 			
 			GL11.glTranslatef(0, -0.75F * (i / 2), 0);
 			
-			final RBMKScreen screen = console.screens[i];
+			RBMKScreen screen = console.screens[i];
 			String text = screen.display;
 			
 			if(text != null && ! text.isEmpty()) {
 				
-				final String[] parts = text.split("=");
+				String[] parts = text.split("=");
 				
 				if(parts.length == 2) {
 					text = I18nUtil.resolveKey(parts[0], parts[1]);
 				}
 
-				final int width = font.getStringWidth(text);
-				final int height = font.FONT_HEIGHT;
+				int width = font.getStringWidth(text);
+				int height = font.FONT_HEIGHT;
 				
-				final float f3 = Math.min(0.03F, 0.8F / Math.max(width, 1));
+				float f3 = Math.min(0.03F, 0.8F / Math.max(width, 1));
 				GL11.glScalef(f3, -f3, f3);
 				GL11.glNormal3f(0.0F, 0.0F, -1.0F);
 				GL11.glRotatef(90, 0, 1, 0);
@@ -130,33 +128,33 @@ public class RenderRBMKConsole extends TileEntitySpecialRenderer<TileEntityRBMKC
 		GL11.glPopMatrix();
 	}
 
-	private void drawColumn(final BufferBuilder buf, final double x, final double y, final double z, final float color, final double heat) {
+	private void drawColumn(BufferBuilder buf, double x, double y, double z, float color, double heat) {
 		
-		final double width = 0.0625D * 0.75;
-		final float r = (float) (color + ((1 - color) * Math.max(0, heat-0.4)));
-		final float d = (float) (color - (color * Math.max(0, heat-0.6)));
+		double width = 0.0625D * 0.75;
+		float r = (float) (color + ((1 - color) * Math.max(0, heat-0.4)));
+		float d = (float) (color - (color * Math.max(0, heat-0.6)));
 		buf.pos(x, y + width, z - width).color(r, d, d, 1F).endVertex();
 		buf.pos(x, y + width, z + width).color(r, d, d, 1F).endVertex();
 		buf.pos(x, y - width, z + width).color(r, d, d, 1F).endVertex();
 		buf.pos(x, y - width, z - width).color(r, d, d, 1F).endVertex();
 	}
 	
-	private void drawFuel(final BufferBuilder buf, final double x, final double y, final double z, final double enrichment) {
+	private void drawFuel(BufferBuilder buf, double x, double y, double z, double enrichment) {
 		this.drawDot(buf, x, y, z, 0F, 0.25F + (float) (enrichment * 0.75D), 0F);
 	}
 	
-	private void drawControl(final BufferBuilder buf, final double x, final double y, final double z, final double level) {
+	private void drawControl(BufferBuilder buf, double x, double y, double z, double level) {
 		this.drawDot(buf, x, y, z, (float) level, (float) level, 0F);
 	}
 	
-	private void drawControlAuto(final BufferBuilder buf, final double x, final double y, final double z, final double level) {
+	private void drawControlAuto(BufferBuilder buf, double x, double y, double z, double level) {
 		this.drawDot(buf, x, y, z, (float) level, 0F, (float) level);
 	}
 	
-	private void drawDot(final BufferBuilder buf, final double x, final double y, final double z, final float r, final float g, final float b) {
+	private void drawDot(BufferBuilder buf, double x, double y, double z, float r, float g, float b) {
 		
-		final double width = 0.03125D;
-		final double edge = 0.022097D;
+		double width = 0.03125D;
+		double edge = 0.022097D;
 		
 		buf.pos(x, y + width, z).color(r, g, b, 1F).endVertex();
 		buf.pos(x, y + edge, z + edge).color(r, g, b, 1F).endVertex();

@@ -1,5 +1,4 @@
 package com.hbm.entity.missile;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.lib.HBMSoundHandler;
@@ -18,7 +17,7 @@ public class EntityBobmazon extends Entity {
 
 	public ItemStack payload;
 	
-	public EntityBobmazon(final World worldIn) {
+	public EntityBobmazon(World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
         this.setSize(1F, 3F);
@@ -47,7 +46,7 @@ public class EntityBobmazon extends Entity {
 	            this.world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.oldExplosion, SoundCategory.NEUTRAL, 10.0F, 0.5F + this.rand.nextFloat() * 0.1F);
 				
 	            if(payload != null) {
-					final EntityItem pack = new EntityItem(world, posX, posY + 2, posZ, payload);
+					EntityItem pack = new EntityItem(world, posX, posY + 2, posZ, payload);
 					pack.motionX = 0;
 					pack.motionZ = 0;
 					world.spawnEntity(pack);
@@ -62,7 +61,7 @@ public class EntityBobmazon extends Entity {
 		if(world.isRemote) {
 
 
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "exhaust");
 			data.setString("mode", "meteor");
 			data.setInteger("count", 1);
@@ -76,15 +75,15 @@ public class EntityBobmazon extends Entity {
 	}
 	
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 		if(payload != null)
 			compound.setTag("payload", payload.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 		if(compound.hasKey("payload"))
-			payload = ItemStackUtil.itemStackFrom(compound.getCompoundTag("payload"));
+			payload = new ItemStack(compound.getCompoundTag("payload"));
 	}
 
 }

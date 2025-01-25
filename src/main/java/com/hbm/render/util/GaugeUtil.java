@@ -1,14 +1,12 @@
 package com.hbm.render.util;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.lib.RefStrings;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GaugeUtil {
 
@@ -27,7 +25,7 @@ public class GaugeUtil {
 		int height;
 		int count;
 
-		private Gauge(final ResourceLocation texture, final int width, final int height, final int count) {
+		private Gauge(ResourceLocation texture, int width, int height, int count) {
 			this.texture = texture;
 			this.width = width;
 			this.height = height;
@@ -43,16 +41,16 @@ public class GaugeUtil {
 	 * @param z The z-level (from GUI.zLevel)
 	 * @param progress Double from 0-1 how far the gauge has progressed
 	 */
-	public static void renderGauge(final Gauge gauge, final double x, final double y, final double z, final double progress) {
+	public static void renderGauge(Gauge gauge, double x, double y, double z, double progress) {
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(gauge.texture);
 
-		final int frameNum = (int) Math.round((gauge.count - 1) * progress);
-		final double singleFrame = 1D / (double)gauge.count;
-		final double frameOffset = singleFrame * frameNum;
+		int frameNum = (int) Math.round((gauge.count - 1) * progress);
+		double singleFrame = 1D / (double)gauge.count;
+		double frameOffset = singleFrame * frameNum;
 
-		final Tessellator tess = Tessellator.getInstance();
-		final BufferBuilder buf = tess.getBuffer();
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder buf = tess.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		buf.pos(x, 				 y + gauge.height, 	z).tex(0, 	frameOffset + singleFrame).endVertex();
 		buf.pos(x + gauge.width, y + gauge.height,  z).tex(1, 	frameOffset + singleFrame).endVertex();

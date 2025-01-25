@@ -1,19 +1,17 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.LinkedHashMap;
-
 import com.hbm.interfaces.IControlReceiver;
-import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.lib.Library;
+import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKControlManual.RBMKColor;
-import com.hbm.util.I18nUtil;
 import com.hbm.util.BobMathUtil;
-
+import com.hbm.util.I18nUtil;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,16 +20,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.common.Optional;
 
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
-import li.cil.oc.api.network.SimpleComponent;
+import java.util.*;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
 public class TileEntityRBMKConsole extends TileEntityMachineBase implements IControlReceiver, ITickable, SimpleComponent {
@@ -81,12 +75,14 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		for(int i = -7; i <= 7; i++) {
 			for(int j = -7; j <= 7; j++) {
 				
-				final TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
-				final int index = (i + 7) + (j + 7) * 15;
+				TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
+				int index = (i + 7) + (j + 7) * 15;
 				
-				if(te instanceof TileEntityRBMKBase rbmk) {
-
-                    columns[index] = new RBMKColumn(rbmk.getConsoleType(), rbmk.getNBTForConsole());
+				if(te instanceof TileEntityRBMKBase) {
+					
+					TileEntityRBMKBase rbmk = (TileEntityRBMKBase)te;
+					
+					columns[index] = new RBMKColumn(rbmk.getConsoleType(), rbmk.getNBTForConsole());
 					columns[index].data.setDouble("heat", rbmk.heat);
 					columns[index].data.setDouble("maxHeat", rbmk.maxHeat());
 					columns[index].data.setDouble("realSimWater", rbmk.water);
@@ -109,8 +105,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	public void setupScreensAndGraph(){
-		final List<Integer> fuelRods = new ArrayList();
-		final List<Integer> controlRods = new ArrayList();
+		List<Integer> fuelRods = new ArrayList(); 
+		List<Integer> controlRods = new ArrayList();
 		for(int i = 0; i < columns.length; i++){
 			if(columns[i] != null){
 				switch(columns[i].type){
@@ -121,8 +117,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				}
 			}
 		}
-		final Integer[] fuelIndices = fuelRods.toArray(new Integer[fuelRods.size()]);
-		final Integer[] controlIndices = controlRods.toArray(new Integer[controlRods.size()]);
+		Integer[] fuelIndices = fuelRods.toArray(new Integer[fuelRods.size()]);
+		Integer[] controlIndices = controlRods.toArray(new Integer[controlRods.size()]);
 		screens[0] = new RBMKScreen(ScreenType.COL_TEMP, fuelIndices, null);
 		screens[1] = new RBMKScreen(ScreenType.FUEL_TEMP, fuelIndices, null);
 		screens[2] = new RBMKScreen(ScreenType.ROD_EXTRACTION, controlIndices, null);
@@ -141,9 +137,9 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		double value = 0;
 		int count = 0;
 		
-		for(final Integer i : graph.columns) {
+		for(Integer i : graph.columns) {
 			
-			final RBMKColumn col = this.columns[i];
+			RBMKColumn col = this.columns[i];
 			
 			if(col == null)
 				continue;
@@ -186,7 +182,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			}
 		}
 		
-		final double result = value / (double) count;
+		double result = value / (double) count;
 		for(int i = 0; i < graph.dataBuffer.length - 1; i++) {
 			graph.dataBuffer[i] = graph.dataBuffer[i + 1];
 		}
@@ -196,7 +192,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 
 	private void prepareScreenInfo() {
 		
-		for(final RBMKScreen screen : this.screens) {
+		for(RBMKScreen screen : this.screens) {
 			
 			if(screen.type == ScreenType.NONE) {
 				screen.display = null;
@@ -206,9 +202,9 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			double value = 0;
 			int count = 0;
 			
-			for(final Integer i : screen.columns) {
+			for(Integer i : screen.columns) {
 				
-				final RBMKColumn col = this.columns[i];
+				RBMKColumn col = this.columns[i];
 				
 				if(col == null)
 					continue;
@@ -251,7 +247,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				}
 			}
 			
-			final double result = value / (double) count;
+			double result = value / (double) count;
 			String text = ((int)(result * 10)) / 10D + "";
 			
 			switch(screen.type) {
@@ -269,7 +265,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	
 	private void prepareNetworkPack() {
 		
-		final NBTTagCompound data = new NBTTagCompound();
+		NBTTagCompound data = new NBTTagCompound();
 
 		
 		if(this.world.getTotalWorldTime() % 10 == 0) {
@@ -287,7 +283,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			data.setIntArray("buffer", this.graph.dataBuffer);
 
 			for(int i = 0; i < this.screens.length; i++) {
-				final RBMKScreen screen = screens[i];
+				RBMKScreen screen = screens[i];
 				if(screen.display != null) {
 					data.setString("t" + i, screen.display);
 				}
@@ -295,7 +291,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		}
 		
 		for(int i = 0; i < this.screens.length; i++) {
-			final RBMKScreen screen = screens[i];
+			RBMKScreen screen = screens[i];
 			data.setByte("s" + i, (byte) screen.type.ordinal());
 		}
 		data.setByte("g", (byte) graph.type.ordinal());
@@ -304,7 +300,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 	
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		
 		if(data.getBoolean("full")) {
 			this.columns = new RBMKColumn[15 * 15];
@@ -319,41 +315,42 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			this.graph.dataBuffer = data.getIntArray("buffer");
 			
 			for(int i = 0; i < this.screens.length; i++) {
-				final RBMKScreen screen = screens[i];
+				RBMKScreen screen = screens[i];
 				screen.display = data.getString("t" + i);
 			}
 		}
 		
 		for(int i = 0; i < this.screens.length; i++) {
-			final RBMKScreen screen = screens[i];
+			RBMKScreen screen = screens[i];
 			screen.type = ScreenType.values()[data.getByte("s" + i)];
 		}
 		graph.type = ScreenType.values()[data.getByte("g")];
 	}
 
 	@Override
-	public boolean hasPermission(final EntityPlayer player) {
+	public boolean hasPermission(EntityPlayer player) {
 		return Vec3.createVectorHelper(pos.getX() - player.posX, pos.getY() - player.posY, pos.getZ() - player.posZ).length() < 20;
 	}
 
 	@Override
-	public void receiveControl(final NBTTagCompound data) {
+	public void receiveControl(NBTTagCompound data) {
 		
 		if(data.hasKey("level")) {
 			
-			final Set<String> keys = data.getKeySet();
+			Set<String> keys = data.getKeySet();
 			
-			for(final String key : keys) {
+			for(String key : keys) {
 				
 				if(key.startsWith("sel_")) {
 
-					final int x = data.getInteger(key) % 15 - 7;
-					final int z = data.getInteger(key) / 15 - 7;
+					int x = data.getInteger(key) % 15 - 7;
+					int z = data.getInteger(key) / 15 - 7;
 					
-					final TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + z));
+					TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + z));
 					
-					if(te instanceof TileEntityRBMKControlManual rod) {
-                        rod.startingLevel = rod.level;
+					if(te instanceof TileEntityRBMKControlManual) {
+						TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
+						rod.startingLevel = rod.level;
 						rod.setTarget(MathHelper.clamp(data.getDouble("level"), 0, 1));
 						te.markDirty();
 					}
@@ -362,23 +359,23 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		}
 
 		if(data.hasKey("toggle")) {
-			final int slot = data.getByte("toggle");
+			int slot = data.getByte("toggle");
 			if(slot == 99){
-				final int next = this.graph.type.ordinal() + 1;
-				final ScreenType type = ScreenType.values()[next % ScreenType.values().length];
+				int next = this.graph.type.ordinal() + 1;
+				ScreenType type = ScreenType.values()[next % ScreenType.values().length];
 				this.graph.type = type;
 				this.graph.dataBuffer = new int[lookbackLength];
 				Arrays.fill(this.graph.dataBuffer, 0);
 			} else {
-				final int next = this.screens[slot].type.ordinal() + 1;
-				final ScreenType type = ScreenType.values()[next % ScreenType.values().length];
+				int next = this.screens[slot].type.ordinal() + 1;
+				ScreenType type = ScreenType.values()[next % ScreenType.values().length];
 				this.screens[slot].type = type;
 			}
 		}
 		
 		if(data.hasKey("id")) {
-			final int slot = data.getByte("id");
-			final List<Integer> list = new ArrayList();
+			int slot = data.getByte("id");
+			List<Integer> list = new ArrayList();
 			
 			for(int i = 0; i < 15 * 15; i++) {
 				if(data.getBoolean("s" + i)) {
@@ -386,7 +383,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				}
 			}
 
-			final Integer[] cols = list.toArray(new Integer[0]);
+			Integer[] cols = list.toArray(new Integer[0]);
 			if(slot == 99){
 				this.graph.columns = cols;
 			} else {
@@ -406,7 +403,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		return 65536.0D;
 	}
 	
-	public void setTarget(final int x, final int y, final int z) {
+	public void setTarget(int x, int y, int z) {
 		this.targetX = x;
 		this.targetY = y;
 		this.targetZ = z;
@@ -414,7 +411,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.targetX = nbt.getInteger("tX");
@@ -430,7 +427,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("tX", this.targetX);
@@ -452,11 +449,11 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		public ColumnType type;
 		public NBTTagCompound data;
 		
-		public RBMKColumn(final ColumnType type) {
+		public RBMKColumn(ColumnType type) {
 			this.type = type;
 		}
 		
-		public RBMKColumn(final ColumnType type, final NBTTagCompound data) {
+		public RBMKColumn(ColumnType type, NBTTagCompound data) {
 			this.type = type;
 			
 			if(data != null) {
@@ -480,7 +477,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			 * against humanity that I threw the towel. It's not fancy, I get that, please fuck off.
 			 */
 			
-			final List<String> stats = new ArrayList<>();
+			List<String> stats = new ArrayList<>();
 			stats.add(TextFormatting.YELLOW + I18nUtil.resolveKey("rbmk.heat", ((int)((this.data.getDouble("heat") * 10D)) / 10D) + "°C"));
 			switch(this.type) {
 			case HEATEX:
@@ -503,16 +500,16 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			case BOILER:
 				stats.add(TextFormatting.BLUE + I18nUtil.resolveKey("rbmk.boiler.water", this.data.getInteger("water"), this.data.getInteger("maxWater")));
 				stats.add(TextFormatting.WHITE + I18nUtil.resolveKey("rbmk.boiler.steam", this.data.getInteger("steam"), this.data.getInteger("maxSteam")));
-				stats.add(TextFormatting.YELLOW + I18nUtil.resolveKey("rbmk.boiler.type", I18nUtil.resolveKey(FluidRegistry.getFluid(this.data.getString("type")).getUnlocalizedName())));
+				stats.add(TextFormatting.YELLOW + I18nUtil.resolveKey("rbmk.boiler.type", I18nUtil.resolveKey(FluidRegistry.getFluid(this.data.getString("type")).getTranslationKey())));
 				break;
 			case COOLER:
 				stats.add(TextFormatting.AQUA + I18nUtil.resolveKey("rbmk.cooler.cooling", this.data.getInteger("cooled") * 20));
 				stats.add(TextFormatting.DARK_AQUA + I18nUtil.resolveKey("rbmk.cooler.cryo", this.data.getInteger("cryo")));
 				break;
 			case OUTGASSER:
-				final double flux = this.data.getDouble("usedFlux");
-				final double progress = this.data.getDouble("progress");
-				final double maxProgress = this.data.getDouble("maxProgress");
+				double flux = this.data.getDouble("usedFlux");
+				double progress = this.data.getDouble("progress");
+				double maxProgress = this.data.getDouble("maxProgress");
 				int eta = 0;
 				if(flux > 0)
 					eta = (int)((maxProgress-progress)/flux);
@@ -524,7 +521,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				break;
 			case CONTROL:
 				if(this.data.hasKey("color")) {
-					final short col = this.data.getShort("color");
+					short col = this.data.getShort("color");
 					
 					if(col >= 0 && col < RBMKColor.values().length)
 						stats.add(TextFormatting.YELLOW + I18nUtil.resolveKey("rbmk.control." + RBMKColor.values()[col].name().toLowerCase()));
@@ -559,7 +556,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		
 		public int offset;
 		
-		private ColumnType(final int offset) {
+		private ColumnType(int offset) {
 			this.offset = offset;
 		}
 	}
@@ -570,7 +567,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		public String display = null;
 		
 		public RBMKScreen() { }
-		public RBMKScreen(final ScreenType type, final Integer[] columns, final String display) {
+		public RBMKScreen(ScreenType type, Integer[] columns, String display) {
 			this.type = type;
 			this.columns = columns;
 			this.display = display;
@@ -585,12 +582,12 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		public RBMKGraph() {
 			Arrays.fill(this.dataBuffer, 0); 
 		}
-		public RBMKGraph(final ScreenType type, final Integer[] columns) {
+		public RBMKGraph(ScreenType type, Integer[] columns) {
 			this.type = type;
 			this.columns = columns;
 			Arrays.fill(this.dataBuffer, 0); 
 		}
-		public RBMKGraph(final ScreenType type, final Integer[] columns, final int[] dataBuffer) {
+		public RBMKGraph(ScreenType type, Integer[] columns, int[] dataBuffer) {
 			this.type = type;
 			this.columns = columns;
 			this.dataBuffer = dataBuffer;
@@ -598,8 +595,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 	
 	public static enum ScreenType {
-		NONE(0),
-		COL_TEMP(18),
+		NONE(0 * 18),
+		COL_TEMP(1 * 18),
 		FUEL_TEMP(5 * 18),
 		ROD_EXTRACTION(2 * 18),
 		FLUX(6 * 18),
@@ -608,7 +605,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		
 		public int offset;
 		
-		private ScreenType(final int offset) {
+		private ScreenType(int offset) {
 			this.offset = offset;
 		}
 	}
@@ -621,17 +618,18 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	@Callback(direct = true, doc = "getColumnData(x:int, y:int); retrieves data for column @(x,y) 0,0 is in left bottom and y is up and x is right")
-	public Object[] getColumnData(final Context context, final Arguments args) {
-		final int x = args.checkInteger(0) - 7;
-		final int y = -args.checkInteger(1) + 7;
+	public Object[] getColumnData(Context context, Arguments args) {
+		int x = args.checkInteger(0) - 7;
+		int y = -args.checkInteger(1) + 7;
 
-		final int i = (y + 7) * 15 + (x + 7);
+		int i = (y + 7) * 15 + (x + 7);
 
-		final TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
-		if (te instanceof TileEntityRBMKBase column) {
+		TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
+		if (te instanceof TileEntityRBMKBase) {
+			TileEntityRBMKBase column = (TileEntityRBMKBase) te;
 
-            final NBTTagCompound column_data = columns[i].data;
-			final LinkedHashMap<String, Object> data_table = new LinkedHashMap<>();
+			NBTTagCompound column_data = columns[i].data;
+			LinkedHashMap<String, Object> data_table = new LinkedHashMap<>();
 			data_table.put("type", column.getConsoleType().name());
 			data_table.put("hullTemp", column_data.getDouble("heat"));
 			data_table.put("realSimWater", column_data.getDouble("realSimWater"));
@@ -645,29 +643,34 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			data_table.put("coreTemp", column_data.getDouble("c_coreHeat"));
 			data_table.put("coreMaxTemp", column_data.getDouble("c_maxHeat"));
 
-			if(te instanceof TileEntityRBMKRod fuelChannel){
-                data_table.put("fluxSlow", fuelChannel.fluxSlow);
+			if(te instanceof TileEntityRBMKRod){
+				TileEntityRBMKRod fuelChannel = (TileEntityRBMKRod)te;
+				data_table.put("fluxSlow", fuelChannel.fluxSlow);
 				data_table.put("fluxFast", fuelChannel.fluxFast);
 			}
 
-			if(te instanceof TileEntityRBMKBoiler boiler){
-                data_table.put("water", boiler.feed.getFluidAmount());
+			if(te instanceof TileEntityRBMKBoiler){
+				TileEntityRBMKBoiler boiler = (TileEntityRBMKBoiler)te;
+				data_table.put("water", boiler.feed.getFluidAmount());
 				data_table.put("steam", boiler.steam.getFluidAmount());
 			}
 
-			if(te instanceof TileEntityRBMKOutgasser irradiationChannel){
-                data_table.put("fluxProgress", irradiationChannel.progress);
+			if(te instanceof TileEntityRBMKOutgasser){
+				TileEntityRBMKOutgasser irradiationChannel = (TileEntityRBMKOutgasser)te;
+				data_table.put("fluxProgress", irradiationChannel.progress);
 				data_table.put("requiredFlux", irradiationChannel.duration);
 			}
 
-			if(te instanceof TileEntityRBMKCooler coolingChannel){
-                data_table.put("degreesCooledPerTick", coolingChannel.lastCooled);
+			if(te instanceof TileEntityRBMKCooler){
+				TileEntityRBMKCooler coolingChannel = (TileEntityRBMKCooler)te;
+				data_table.put("degreesCooledPerTick", coolingChannel.lastCooled);
 				data_table.put("cryogel", coolingChannel.tank.getFluidAmount());
 			}
 
-			if(te instanceof TileEntityRBMKHeater heaterChannel){
-                data_table.put("coolant", heaterChannel.tanks[0].getFluidAmount());
-				data_table.put("hotcoolant", heaterChannel.tanks[1].getFluidAmount());
+			if(te instanceof TileEntityRBMKHeater){
+				TileEntityRBMKHeater heaterChannel = (TileEntityRBMKHeater)te;
+				data_table.put("coolant", heaterChannel.feed.getFill());
+				data_table.put("hotcoolant", heaterChannel.steam.getFill());
 			}
 
 			return new Object[] {data_table};
@@ -676,9 +679,9 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	@Callback(doc = "getRBMKPos(); retrieves position of connected center rbmk rod")
-	public Object[] getRBMKPos(final Context context, final Arguments args) {
+	public Object[] getRBMKPos(Context context, Arguments args) {
 		if(!(targetX == 0 && targetY== 0 && targetZ==0)){
-			final LinkedHashMap<String, Integer> data_table = new LinkedHashMap<>();
+			LinkedHashMap<String, Integer> data_table = new LinkedHashMap<>();
 			data_table.put("rbmkCenterX", targetX);
 			data_table.put("rbmkCenterY", targetY);
 			data_table.put("rbmkCenterZ", targetZ);
@@ -689,15 +692,16 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	@Callback(doc = "setLevel(level:double); set retraction of all control rods given 0≤level≤1")
-	public Object[] setLevel(final Context context, final Arguments args) {
+	public Object[] setLevel(Context context, Arguments args) {
 		double new_level = args.checkDouble(0);
 		boolean foundRods = false;
 		for(int i = -7; i <= 7; i++) {
 			for(int j = -7; j <= 7; j++) {
-				final TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
+				TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
 	
-				if (te instanceof TileEntityRBMKControlManual rod) {
-                    rod.startingLevel = rod.level;
+				if (te instanceof TileEntityRBMKControlManual) {
+					TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
+					rod.startingLevel = rod.level;
 					new_level = Math.min(1, Math.max(0, new_level));
 
 					rod.setTarget(new_level);
@@ -713,15 +717,16 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	@Callback(doc = "setColumnLevel(x:int, y:int, level:double); set retraction of control rod @(x,y) given 0≤level≤1")
-	public Object[] setColumnLevel(final Context context, final Arguments args) {
-		final int x = args.checkInteger(0) - 7;
-		final int y = -args.checkInteger(1) + 7;
+	public Object[] setColumnLevel(Context context, Arguments args) {
+		int x = args.checkInteger(0) - 7;
+		int y = -args.checkInteger(1) + 7;
 		double new_level = args.checkDouble(2);
 
-		final TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
+		TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
 		
-		if (te instanceof TileEntityRBMKControlManual rod) {
-            rod.startingLevel = rod.level;
+		if (te instanceof TileEntityRBMKControlManual) {
+			TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
+			rod.startingLevel = rod.level;
 			new_level = Math.min(1, Math.max(0, new_level));
 
 			rod.setTarget(new_level);
@@ -732,17 +737,18 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	@Callback(doc = "setColorLevel(color:int, level:double); set retraction of control rods of color given 0≤level≤1. Color is (RED:0, YELLOW:1, GREEN:2, BLUE:3, PURPLE:4)")
-	public Object[] setColorLevel(final Context context, final Arguments args) {
-		final int color = args.checkInteger(0);
+	public Object[] setColorLevel(Context context, Arguments args) {
+		int color = args.checkInteger(0);
 		double new_level = args.checkDouble(1);
 		boolean foundRods = false;
 		if(color >= 0 && color <=4){
 			for(int i = -7; i <= 7; i++) {
 				for(int j = -7; j <= 7; j++) {
-					final TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
+					TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
 
-					if (te instanceof TileEntityRBMKControlManual rod) {
-                        if(rod.isSameColor(color)){
+					if (te instanceof TileEntityRBMKControlManual) {
+						TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
+						if(rod.isSameColor(color)){
 							rod.startingLevel = rod.level;
 							new_level = Math.min(1, Math.max(0, new_level));
 
@@ -762,15 +768,16 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	@Callback(doc = "setColor(x:int, y:int, color:int); set color of control rod @(x,y) where color is (RED:0, YELLOW:1, GREEN:2, BLUE:3, PURPLE:4)")
-	public Object[] setColor(final Context context, final Arguments args) {
-		final int x = args.checkInteger(0) - 7;
-		final int y = -args.checkInteger(1) + 7;
-		final int new_color = args.checkInteger(2);
+	public Object[] setColor(Context context, Arguments args) {
+		int x = args.checkInteger(0) - 7;
+		int y = -args.checkInteger(1) + 7;
+		int new_color = args.checkInteger(2);
 		if(new_color >= 0 && new_color <=4){
-			final TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
+			TileEntity te = world.getTileEntity(new BlockPos(targetX + x, targetY, targetZ + y));
 
-			if (te instanceof TileEntityRBMKControlManual rod) {
-                rod.setColor(new_color);
+			if (te instanceof TileEntityRBMKControlManual) {
+				TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
+				rod.setColor(new_color);
 				te.markDirty();
 				return new Object[] {"Rod at "+(x+7)+","+(7-y)+" set to color "+new_color};
 			}
@@ -780,14 +787,15 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	}
 
 	@Callback(doc = "pressAZ5(); shut down EVERYTHING!!")
-	public Object[] pressAZ5(final Context context, final Arguments args) {
+	public Object[] pressAZ5(Context context, Arguments args) {
 		boolean hasRods = false;
 		for(int i = -7; i <= 7; i++) {
 			for(int j = -7; j <= 7; j++) {
-				final TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
+				TileEntity te = world.getTileEntity(new BlockPos(targetX + i, targetY, targetZ + j));
 		
-				if (te instanceof TileEntityRBMKControlManual rod) {
-                    rod.startingLevel = rod.level;
+				if (te instanceof TileEntityRBMKControlManual) {
+					TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
+					rod.startingLevel = rod.level;
 					rod.setTarget(0);
 					te.markDirty();
 					hasRods = true;

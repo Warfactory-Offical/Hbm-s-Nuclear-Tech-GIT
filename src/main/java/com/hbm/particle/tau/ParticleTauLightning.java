@@ -22,14 +22,14 @@ public class ParticleTauLightning extends ParticleFirstPerson {
 	public float workingAlpha;
 	public float rotationOverLife;
 	
-	public ParticleTauLightning(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale, final float rot) {
+	public ParticleTauLightning(World worldIn, double posXIn, double posYIn, double posZIn, float scale, float rot) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.rotationOverLife = rot;
 		this.particleAngle = rand.nextFloat()*360;
 	}
 	
-	public ParticleTauLightning color(final float colR, final float colG, final float colB, final float colA){
+	public ParticleTauLightning color(float colR, float colG, float colB, float colA){
 		this.particleRed = colR;
 		this.particleGreen = colG;
 		this.particleBlue = colB;
@@ -38,7 +38,7 @@ public class ParticleTauLightning extends ParticleFirstPerson {
 		return this;
 	}
 	
-	public ParticleTauLightning lifetime(final int lifetime){
+	public ParticleTauLightning lifetime(int lifetime){
 		this.particleMaxAge = lifetime;
 		return this;
 	}
@@ -62,7 +62,7 @@ public class ParticleTauLightning extends ParticleFirstPerson {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.tau_lightning);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -71,15 +71,15 @@ public class ParticleTauLightning extends ParticleFirstPerson {
 		GlStateManager.enableBlend();
 		GlStateManager.disableCull();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-		final float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
-		this.workingAlpha = MathHelper.clamp(1-BobMathUtil.remap(MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1)*particleAlpha;
+		float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
+		this.workingAlpha = MathHelper.clamp(1-BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1)*particleAlpha;
 		workingAlpha *= MathHelper.clamp(BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0, 0.2), 0F, 0.2F, 0F, 1F), 0, 1);
 		
-		final float f4 = 0.1F * (this.particleScale+timeScale*5F);
+		float f4 = 0.1F * (this.particleScale+timeScale*5F);
 		
-        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
+        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
         GL11.glTranslated(f5, f6, f7);
         GL11.glScalef(f4, f4, f4);
 		GL11.glRotated(this.particleAngle+timeScale*rotationOverLife, 1, 0, 0);

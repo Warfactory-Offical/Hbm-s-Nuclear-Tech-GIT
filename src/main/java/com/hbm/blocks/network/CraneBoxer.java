@@ -7,7 +7,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.InventoryHelper;
 import com.hbm.tileentity.network.TileEntityCraneBase;
 import com.hbm.tileentity.network.TileEntityCraneBoxer;
-import com.hbm.tileentity.network.TileEntityCraneInserter;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 
 public class CraneBoxer extends BlockCraneBase implements IEnterableBlock {
 
-    public CraneBoxer(final Material materialIn, final String s) {
+    public CraneBoxer(Material materialIn, String s) {
         super(materialIn);
         this.setTranslationKey(s);
         this.setRegistryName(s);
@@ -28,59 +27,59 @@ public class CraneBoxer extends BlockCraneBase implements IEnterableBlock {
     }
 
     @Override
-    public TileEntityCraneBase createNewTileEntity(final World world, final int meta) {
+    public TileEntityCraneBase createNewTileEntity(World world, int meta) {
         return new TileEntityCraneBoxer();
     }
 
     @Override
-    public boolean canItemEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorItem entity) {
-        final BlockPos pos = new BlockPos(x, y, z);
-        final IBlockState state = world.getBlockState(pos);
-        final EnumFacing orientation = state.getValue(BlockHorizontal.FACING);
+    public boolean canItemEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorItem entity) {
+        BlockPos pos = new BlockPos(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing orientation = state.getValue(BlockHorizontal.FACING);
         return dir == orientation;
     }
     @Override
-    public void onItemEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorItem entity) {
-        final BlockPos pos = new BlockPos(x, y, z);
-        final ItemStack toAdd = entity.getItemStack().copy();
+    public void onItemEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorItem entity) {
+        BlockPos pos = new BlockPos(x, y, z);
+        ItemStack toAdd = entity.getItemStack().copy();
         boolean worked = false;
-        final TileEntity tileEntity = world.getTileEntity(pos);
+        TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityCraneBoxer) {
             worked = ((TileEntityCraneBoxer)tileEntity).tryFillTeDirect(toAdd);
 
             if ((toAdd != null && toAdd.getCount() > 0) || !worked) {
-                final EntityItem drop = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, toAdd.copy());
+                EntityItem drop = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, toAdd.copy());
                 world.spawnEntity(drop);
             }
         }
     }
 
     @Override
-    public boolean canPackageEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorPackage entity) {
+    public boolean canPackageEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorPackage entity) {
         return false;
     }
 
     @Override
-    public void onPackageEnter(final World world, final int x, final int y, final int z, final EnumFacing dir, final IConveyorPackage entity) { }
+    public void onPackageEnter(World world, int x, int y, int z, EnumFacing dir, IConveyorPackage entity) { }
 
 
     @Override
-    public boolean hasComparatorInputOverride(final IBlockState blockState) {
+    public boolean hasComparatorInputOverride(IBlockState blockState) {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(final IBlockState blockState, final World world, final BlockPos pos) {
-        final int redstoneSignal = blockState.getComparatorInputOverride(world, pos);
+    public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos) {
+        int redstoneSignal = blockState.getComparatorInputOverride(world, pos);
         return redstoneSignal;
     }
 
     @Override
-    public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
-        final TileEntity tileentity = world.getTileEntity(pos);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity tileentity = world.getTileEntity(pos);
 
         if(tileentity instanceof TileEntityCraneBoxer) {
-            InventoryHelper.dropInventoryItems(world, pos, tileentity);
+            InventoryHelper.dropInventoryItems(world, pos, (TileEntityCraneBoxer) tileentity);
         }
         super.breakBlock(world, pos, state);
     }

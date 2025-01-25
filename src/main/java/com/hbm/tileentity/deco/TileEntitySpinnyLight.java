@@ -1,13 +1,9 @@
 package com.hbm.tileentity.deco;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.hbm.blocks.machine.BlockSpinnyLight;
 import com.hbm.inventory.control_panel.ControlEvent;
 import com.hbm.inventory.control_panel.ControlEventSystem;
 import com.hbm.inventory.control_panel.IControllable;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +13,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TileEntitySpinnyLight extends TileEntity implements IControllable {
 	
@@ -29,24 +28,24 @@ public class TileEntitySpinnyLight extends TileEntity implements IControllable {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		color = EnumDyeColor.values()[compound.getByte("color")];
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setByte("color", (byte) color.ordinal());
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 	
 	@Override
-	public void handleUpdateTag(final NBTTagCompound tag) {
+	public void handleUpdateTag(NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 
@@ -71,18 +70,18 @@ public class TileEntitySpinnyLight extends TileEntity implements IControllable {
 	}
 
 	@Override
-	public void receiveEvent(final BlockPos from, final ControlEvent e){
+	public void receiveEvent(BlockPos from, ControlEvent e){
 		if(e.name.equals("spinny_light_power")){
-			final boolean on = e.vars.get("isOn").getBoolean();
-			final IBlockState state = world.getBlockState(pos);
-			final boolean power = state.getValue(BlockSpinnyLight.POWERED);
+			boolean on = e.vars.get("isOn").getBoolean();
+			IBlockState state = world.getBlockState(pos);
+			boolean power = state.getValue(BlockSpinnyLight.POWERED);
 			if(on && !power){
 				world.setBlockState(pos, state.withProperty(BlockSpinnyLight.POWERED, true));
-				final NBTTagCompound tag = writeToNBT(new NBTTagCompound());
+				NBTTagCompound tag = writeToNBT(new NBTTagCompound());
 				world.getTileEntity(pos).readFromNBT(tag);
 			} else if(!on && power){
 				world.setBlockState(pos, state.withProperty(BlockSpinnyLight.POWERED, false));
-				final NBTTagCompound tag = writeToNBT(new NBTTagCompound());
+				NBTTagCompound tag = writeToNBT(new NBTTagCompound());
 				world.getTileEntity(pos).readFromNBT(tag);
 			}
 		}

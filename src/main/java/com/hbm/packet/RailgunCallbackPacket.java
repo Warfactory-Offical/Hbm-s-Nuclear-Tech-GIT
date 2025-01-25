@@ -22,7 +22,7 @@ public class RailgunCallbackPacket implements IMessage {
 
 	public RailgunCallbackPacket() { }
 
-	public RailgunCallbackPacket(final int x, final int y, final int z, final float pitch, final float yaw)
+	public RailgunCallbackPacket(int x, int y, int z, float pitch, float yaw)
 	{
 		this.x = x;
 		this.y = y;
@@ -32,7 +32,7 @@ public class RailgunCallbackPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -41,7 +41,7 @@ public class RailgunCallbackPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -53,21 +53,23 @@ public class RailgunCallbackPacket implements IMessage {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final RailgunCallbackPacket m, final MessageContext ctx) {
+		public IMessage onMessage(RailgunCallbackPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				try {
-					final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+					TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-					if (te != null && te instanceof TileEntityRailgun gun) {
-
-                        gun.startTime = System.currentTimeMillis();
+					if (te != null && te instanceof TileEntityRailgun) {
+							
+						TileEntityRailgun gun = (TileEntityRailgun) te;
+						
+						gun.startTime = System.currentTimeMillis();
 						gun.lastPitch = gun.pitch;
 						gun.lastYaw = gun.yaw;
 						gun.pitch = m.pitch;
 						gun.yaw = m.yaw;
 					}
 					
-				} catch (final Exception x) { }
+				} catch (Exception x) { }
 			});
 			
 			return null;

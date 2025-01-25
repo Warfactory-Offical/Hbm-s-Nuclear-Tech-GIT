@@ -2,7 +2,6 @@ package com.hbm.blocks.machine.rbmk;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKInlet;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +11,7 @@ import net.minecraft.world.World;
 
 public class RBMKInlet extends BlockContainer {
 
-	public RBMKInlet(final Material mat, final String s) {
+	public RBMKInlet(Material mat, String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -21,12 +20,12 @@ public class RBMKInlet extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityRBMKInlet();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 }

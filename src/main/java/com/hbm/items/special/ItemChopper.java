@@ -1,12 +1,9 @@
 package com.hbm.items.special;
 
-import java.util.List;
-
 import com.hbm.entity.mob.EntityHunterChopper;
 import com.hbm.entity.mob.EntityUFO;
 import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
 import com.hbm.items.ModItems;
-
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -26,9 +23,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemChopper extends Item {
 
-	public ItemChopper(final String s) {
+	public ItemChopper(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 
@@ -36,31 +35,31 @@ public class ItemChopper extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			return EnumActionResult.SUCCESS;
 		} else {
-			final ItemStack stack = player.getHeldItem(hand);
+			ItemStack stack = player.getHeldItem(hand);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
 			
 			//IBlockState blockState = world.getBlockState(pos);
 
-			x += facing.getXOffset();
-			y += facing.getYOffset();
-			z += facing.getZOffset();
-			final double offset = 0.0D;
+			x += facing.getFrontOffsetX();
+			y += facing.getFrontOffsetY();
+			z += facing.getFrontOffsetZ();
+			double offset = 0.0D;
 
 			//Drillgon200: No clue what 11 is supposed to mean. I'll just leave it and hope it doesn't break anything.
 			//if(facing.ordinal() == 1 && blockState.getRenderType() == 11)
 			//	offset = 0.5D;
 
-			final Entity entity = spawnCreature(world, stack.getItemDamage(), x + 0.5D, y + offset, z + 0.5D);
+			Entity entity = spawnCreature(world, stack.getItemDamage(), x + 0.5D, y + offset, z + 0.5D);
 
 			if(entity != null) {
 				if(entity instanceof EntityLivingBase && stack.hasDisplayName()) {
-					entity.setCustomNameTag(stack.getDisplayName());
+					((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
 				}
 
 				if(!player.capabilities.isCreativeMode) {
@@ -73,21 +72,21 @@ public class ItemChopper extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		if(world.isRemote) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 
 		} else {
-			final RayTraceResult movingobjectposition = this.rayTrace(world, player, true);
+			RayTraceResult movingobjectposition = this.rayTrace(world, player, true);
 
 			if(movingobjectposition == null || movingobjectposition.typeOfHit == Type.MISS) {
 				return ActionResult.newResult(EnumActionResult.PASS, stack);
 			} else {
 				if(movingobjectposition.typeOfHit == Type.BLOCK) {
-					final int i = movingobjectposition.getBlockPos().getX();
-					final int j = movingobjectposition.getBlockPos().getY();
-					final int k = movingobjectposition.getBlockPos().getZ();
+					int i = movingobjectposition.getBlockPos().getX();
+					int j = movingobjectposition.getBlockPos().getY();
+					int k = movingobjectposition.getBlockPos().getZ();
 
 					if(!world.canMineBlockBody(player, movingobjectposition.getBlockPos())) {
 						return ActionResult.newResult(EnumActionResult.PASS, stack);
@@ -98,11 +97,11 @@ public class ItemChopper extends Item {
 					}
 
 					if(world.getBlockState(movingobjectposition.getBlockPos()).getBlock() instanceof BlockLiquid) {
-						final Entity entity = spawnCreature(world, stack.getItemDamage(), i, j, k);
+						Entity entity = spawnCreature(world, stack.getItemDamage(), i, j, k);
 
 						if(entity != null) {
 							if(entity instanceof EntityLivingBase && stack.hasDisplayName()) {
-								entity.setCustomNameTag(stack.getDisplayName());
+								((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
 							}
 
 							if(!player.capabilities.isCreativeMode) {
@@ -117,7 +116,7 @@ public class ItemChopper extends Item {
 		}
 	}
 	
-	public Entity spawnCreature(final World world, final int dmg, final double x, double y, final double z) {
+	public Entity spawnCreature(World world, int dmg, double x, double y, double z) {
 		Entity entity = null;
 
 		if(this == ModItems.spawn_chopper)
@@ -134,11 +133,11 @@ public class ItemChopper extends Item {
 		
 		if(entity != null) {
 
-			final EntityLiving entityliving = (EntityLiving) entity;
+			EntityLiving entityliving = (EntityLiving) entity;
 			entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
 			entityliving.rotationYawHead = entityliving.rotationYaw;
 			entityliving.renderYawOffset = entityliving.rotationYaw;
-			entityliving.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(x, y, z)), null);
+			entityliving.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(x, y, z)), (IEntityLivingData) null);
 			world.spawnEntity(entity);
 		}
 
@@ -146,7 +145,7 @@ public class ItemChopper extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(this == ModItems.spawn_worm) {
 			tooltip.add("Without a player in survival mode");
 			tooltip.add("to target, he struggles around a lot.");

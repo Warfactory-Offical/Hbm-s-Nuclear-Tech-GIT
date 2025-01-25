@@ -1,7 +1,6 @@
 package com.hbm.render.util;
 
-import org.lwjgl.opengl.GL11;
-
+import com.hbm.render.amlfrom1710.Vec3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -19,32 +18,37 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
+
+import java.util.*;
 
 public class RenderOverhead {
 
-	public static void renderTag(final EntityLivingBase living, final double x, final double y, final double z, final RenderLivingBase renderer, final String name, final boolean depthTest) {
+	public static void renderTag(EntityLivingBase living, double x, double y, double z, RenderLivingBase renderer, String name, boolean depthTest) {
 
-		final EntityPlayer thePlayer = Minecraft.getMinecraft().player;
+		EntityPlayer thePlayer = Minecraft.getMinecraft().player;
 
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
 
 		if(shouldRenderTag(living)) {
-			final float f = 1.6F;
-			final double distSq = living.getDistanceSq(thePlayer);
-			final float range = living.isSneaking() ? RenderLivingBase.NAME_TAG_RANGE_SNEAK : RenderLivingBase.NAME_TAG_RANGE;
+			float f = 1.6F;
+			double distSq = living.getDistanceSq(thePlayer);
+			float range = living.isSneaking() ? RenderLivingBase.NAME_TAG_RANGE_SNEAK : RenderLivingBase.NAME_TAG_RANGE;
 
 			if(distSq < (double) (range * range)) {
-				final String s = name;
+				String s = name;
 				drawTagAware(living, x, y, z, name, depthTest);
 			}
 		}
 	}
 
-	protected static boolean shouldRenderTag(final EntityLivingBase p_110813_1_) {
+	protected static boolean shouldRenderTag(EntityLivingBase p_110813_1_) {
 		return Minecraft.isGuiEnabled() && p_110813_1_ != Minecraft.getMinecraft().player && !p_110813_1_.isInvisibleToPlayer(Minecraft.getMinecraft().player) && !p_110813_1_.isBeingRidden();
 	}
 
-	protected static void drawTagAware(final EntityLivingBase entity, final double x, final double y, final double z, final String string, final boolean depthTest) {
+	protected static void drawTagAware(EntityLivingBase entity, double x, double y, double z, String string, boolean depthTest) {
 		if(entity.isPlayerSleeping()) {
 			drawTag(entity, string, x, y - 1.5D, z, 64, depthTest);
 		} else {
@@ -52,14 +56,14 @@ public class RenderOverhead {
 		}
 	}
 
-	protected static void drawTag(final Entity entity, final String name, final double x, final double y, final double z, final int dist, final boolean depthTest) {
+	protected static void drawTag(Entity entity, String name, double x, double y, double z, int dist, boolean depthTest) {
 
-		final double distsq = entity.getDistanceSq(Minecraft.getMinecraft().player);
+		double distsq = entity.getDistanceSq(Minecraft.getMinecraft().player);
 
 		if(distsq <= (double) (dist * dist)) {
-			final FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
-			final float f = 1.6F;
-			final float scale = 0.016666668F * f;
+			FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
+			float f = 1.6F;
+			float scale = 0.016666668F * f;
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.0F, (float) y + entity.height + 0.75F, (float) z);
 			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -74,8 +78,8 @@ public class RenderOverhead {
 			GlStateManager.enableBlend();
 			//src alpha, one minus src alpha
 			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-			final Tessellator tessellator = Tessellator.getInstance();
-			final BufferBuilder buf = tessellator.getBuffer();
+			Tessellator tessellator = Tessellator.getInstance();
+			BufferBuilder buf = tessellator.getBuffer();
 			byte heightOffset = 0;
 
 			if(name.equals("deadmau5")) {
@@ -84,12 +88,12 @@ public class RenderOverhead {
 
 			GlStateManager.disableTexture2D();
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-			final int center = fontrenderer.getStringWidth(name) / 2;
+			int center = fontrenderer.getStringWidth(name) / 2;
 			GlStateManager.color(0.0F, 0.0F, 0.0F, 0.25F);
-			buf.pos(-center - 1, -1 + heightOffset, 0.0D).endVertex();
-			buf.pos(-center - 1, 8 + heightOffset, 0.0D).endVertex();
-			buf.pos(center + 1, 8 + heightOffset, 0.0D).endVertex();
-			buf.pos(center + 1, -1 + heightOffset, 0.0D).endVertex();
+			buf.pos((double) (-center - 1), (double) (-1 + heightOffset), 0.0D).endVertex();
+			buf.pos((double) (-center - 1), (double) (8 + heightOffset), 0.0D).endVertex();
+			buf.pos((double) (center + 1), (double) (8 + heightOffset), 0.0D).endVertex();
+			buf.pos((double) (center + 1), (double) (-1 + heightOffset), 0.0D).endVertex();
 			tessellator.draw();
 			GlStateManager.enableTexture2D();
 			fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, heightOffset, 553648127);
@@ -103,12 +107,61 @@ public class RenderOverhead {
 		}
 	}
 
-	public static void renderThermalSight(final float partialTicks) {
+	protected static void drawTag(float offset, double distsq, String name, double x, double y, double z, int dist, boolean depthTest, int color, int shadowColor) {
 
-		final EntityPlayer player = Minecraft.getMinecraft().player;
-		final double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
-		final double y =  player.prevPosY + (player.posY - player.prevPosY) * partialTicks;
-		final double z =  player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
+		if(distsq <= (double) (dist * dist)) {
+			FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
+			float f = 1.6F;
+			float scale = 0.016666668F * f;
+			GL11.glPushMatrix();
+			GL11.glTranslatef((float) x + 0.0F, (float) y + offset, (float) z);
+			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(-Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(Minecraft.getMinecraft().getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+			GL11.glScalef(-scale, -scale, scale);
+			GlStateManager.disableLighting();
+			GlStateManager.depthMask(false);
+			if(depthTest) {
+				GlStateManager.disableDepth();
+			}
+			GlStateManager.enableBlend();
+			//src alpha, one minus src alpha
+			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+			Tessellator tessellator = Tessellator.getInstance();
+			BufferBuilder buf = tessellator.getBuffer();
+			byte heightOffset = 0;
+
+			if(name.equals("deadmau5")) {
+				heightOffset = -10;
+			}
+
+			GlStateManager.disableTexture2D();
+			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+			int center = fontrenderer.getStringWidth(name) / 2;
+			GlStateManager.color(0.0F, 0.0F, 0.0F, 0.25F);
+			buf.pos((double) (-center - 1), (double) (-1 + heightOffset), 0.0D).endVertex();
+			buf.pos((double) (-center - 1), (double) (8 + heightOffset), 0.0D).endVertex();
+			buf.pos((double) (center + 1), (double) (8 + heightOffset), 0.0D).endVertex();
+			buf.pos((double) (center + 1), (double) (-1 + heightOffset), 0.0D).endVertex();
+			tessellator.draw();
+			GlStateManager.enableTexture2D();
+			fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, heightOffset, shadowColor);
+			GlStateManager.enableDepth();
+			GlStateManager.depthMask(true);
+			fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, heightOffset, color);
+			GlStateManager.enableLighting();
+			GlStateManager.disableBlend();
+			GlStateManager.color(1, 1, 1, 1);
+			GL11.glPopMatrix();
+		}
+	}
+
+	public static void renderThermalSight(float partialTicks) {
+
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
+		double y =  player.prevPosY + (player.posY - player.prevPosY) * partialTicks;
+		double z =  player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
 
 		GL11.glPushMatrix();
 		GlStateManager.disableColorMaterial();
@@ -119,13 +172,13 @@ public class RenderOverhead {
 		GlStateManager.disableDepth();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
-		final net.minecraft.client.renderer.Tessellator tess = net.minecraft.client.renderer.Tessellator.getInstance();
-		final BufferBuilder buf = tess.getBuffer();
+		net.minecraft.client.renderer.Tessellator tess = net.minecraft.client.renderer.Tessellator.getInstance();
+		BufferBuilder buf = tess.getBuffer();
 		buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
-		for(final Object o : player.world.loadedEntityList) {
+		for(Object o : player.world.loadedEntityList) {
 
-			final Entity ent = (Entity) o;
+			Entity ent = (Entity) o;
 
 			if(ent == player)
 				continue;
@@ -152,7 +205,7 @@ public class RenderOverhead {
 				continue;
 			}
 
-			final AxisAlignedBB bb = ent.getEntityBoundingBox();
+			AxisAlignedBB bb = ent.getEntityBoundingBox();
 			buf.pos(bb.minX - x, bb.maxY - y, bb.minZ - z).color(r, g, b, 1).endVertex();
 			buf.pos(bb.minX - x, bb.minY - y, bb.minZ - z).color(r, g, b, 1).endVertex();
 			buf.pos(bb.minX - x, bb.maxY - y, bb.minZ - z).color(r, g, b, 1).endVertex();
@@ -187,5 +240,184 @@ public class RenderOverhead {
 		GlStateManager.disableBlend();
 		GlStateManager.enableDepth();
         GL11.glPopMatrix();
+	}
+
+	public static final HashMap<BlockPos, Marker> queuedMarkers = new HashMap();
+	private static final HashMap<BlockPos, Marker> markers = new HashMap();
+
+	public static void renderMarkers(float partialTicks) {
+
+		markers.putAll(queuedMarkers);
+		queuedMarkers.clear();
+
+		if(markers.isEmpty())
+			return;
+
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
+		double y =  player.prevPosY + (player.posY - player.prevPosY) * partialTicks;
+		double z =  player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
+
+		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_COLOR_MATERIAL);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_POINT_SMOOTH);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder buf = tess.getBuffer();
+		buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+
+		Iterator<Map.Entry<BlockPos, Marker>> it = markers.entrySet().iterator();
+		List<Map.Entry<BlockPos, Marker>> tagList = new ArrayList();
+		while(it.hasNext()) {
+			Map.Entry<BlockPos, Marker> entry = it.next();
+			BlockPos pos = entry.getKey();
+			Marker marker = entry.getValue();
+
+			int pX = pos.getX();
+			int pY = pos.getY();
+			int pZ = pos.getZ();
+
+			double minX = marker.minX;
+			double minY = marker.minY;
+			double minZ = marker.minZ;
+			double maxX = marker.maxX;
+			double maxY = marker.maxY;
+			double maxZ = marker.maxZ;
+
+			int r = (marker.color >> 16) & 0xFF;
+			int g = (marker.color >> 8) & 0xFF;
+			int b = marker.color & 0xFF;
+			int a = 255;
+
+			buf.pos(pX + minX - x, pY + maxY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + minY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + maxY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + maxY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + maxY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + minY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + minY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + minY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + minY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + minY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + maxY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + maxY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + maxY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + minY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + maxY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + maxY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + maxY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + minY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + maxY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + maxY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + minY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + maxX - x, pY + minY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + minY - y, pZ + minZ - z).color(r, g, b, a).endVertex();
+			buf.pos(pX + minX - x, pY + minY - y, pZ + maxZ - z).color(r, g, b, a).endVertex();
+
+			tagList.add(entry);
+
+			if(marker.expire > 0 && System.currentTimeMillis() > marker.expire) {
+				it.remove();
+			} else if(marker.maxDist > 0) {
+				double aX = pX + (maxX - minX) / 2D;
+				double aY = pY + (maxY - minY) / 2D;
+				double aZ = pZ + (maxZ - minZ) / 2D;
+				Vec3 vec = Vec3.createVectorHelper(x - aX, y - aY, z - aZ);
+				if(vec.lengthVector() > marker.maxDist) {
+					it.remove();
+				}
+			}
+		}
+
+		tess.draw();
+
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_POINT_SMOOTH);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+		for(Map.Entry<BlockPos, Marker> entry : tagList) {
+
+			BlockPos pos = entry.getKey();
+			Marker marker = entry.getValue();
+
+			int pX = pos.getX();
+			int pY = pos.getY();
+			int pZ = pos.getZ();
+
+			double minX = marker.minX;
+			double minY = marker.minY;
+			double minZ = marker.minZ;
+			double maxX = marker.maxX;
+			double maxY = marker.maxY;
+			double maxZ = marker.maxZ;
+
+			double aX = pX + (maxX - minX) / 2D;
+			double aY = pY + (maxY - minY) / 2D;
+			double aZ = pZ + (maxZ - minZ) / 2D;
+			Vec3 vec = Vec3.createVectorHelper(aX - x, aY - y, aZ - z);
+			double len = vec.xCoord * vec.xCoord + vec.yCoord * vec.yCoord + vec.zCoord * vec.zCoord;
+			double sqrt = Math.sqrt(len);
+			double mult = Math.min(sqrt, 16D);
+			vec.xCoord *= mult / sqrt;
+			vec.yCoord *= mult / sqrt;
+			vec.zCoord *= mult / sqrt;
+			Vec3d look = player.getLookVec();
+			Vec3 diff = vec.normalize();
+			String label = marker.label;
+			if(label == null) {
+				label = "";
+			}
+
+			if(Math.abs(look.x - diff.xCoord) + Math.abs(look.y - diff.yCoord) + Math.abs(look.z - diff.zCoord) < 0.15) {
+				label += (!label.isEmpty() ? " " : "") + ((int) sqrt) + "m";
+			}
+
+			if(!label.isEmpty()) drawTag(1F, len, label, vec.xCoord, vec.yCoord, vec.zCoord, 100, true, marker.color, marker.color);
+		}
+		GL11.glPopMatrix();
+	}
+
+
+	public static class Marker {
+		double minX = 0;
+		double minY = 0;
+		double minZ = 0;
+		double maxX = 1;
+		double maxY = 1;
+		double maxZ = 1;
+
+		int color;
+		String label;
+
+		long expire;
+		double maxDist;
+
+		public Marker(int color) {
+			this.color = color;
+		}
+
+		public Marker setExpire(long expire) {
+			this.expire = expire;
+			return this;
+		}
+
+		public Marker setDist(double maxDist) {
+			this.maxDist = maxDist;
+			return this;
+		}
+
+		public Marker withLabel(String label) {
+			this.label = label;
+			return this;
+		}
 	}
 }

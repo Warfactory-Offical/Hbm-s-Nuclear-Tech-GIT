@@ -27,7 +27,7 @@ import java.util.List;
 
 public class ArmorBJJetpack extends ArmorBJ {
 
-	public ArmorBJJetpack(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
+	public ArmorBJJetpack(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
 		super(material, layer, slot, texture, maxPower, chargeRate, consumption, drain, s);
 	}
 
@@ -36,24 +36,24 @@ public class ArmorBJJetpack extends ArmorBJ {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
 		if(model == null) {
 			model = new ModelArmorBJ(5);
 		}
 		return model;
 	}
 
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		
 		super.onArmorTick(world, player, stack);
 		
-		final IHBMData props = HbmCapability.getData(player);
+		IHBMData props = HbmCapability.getData(player);
 		
 		if(!world.isRemote) {
 			
 			if(hasFSBArmor(player) && props.isJetpackActive()) {
 
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack_bj");
 				data.setInteger("player", player.getEntityId());
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, player.posX, player.posY, player.posZ), new TargetPoint(world.provider.getDimension(), player.posX, player.posY, player.posZ, 100));
@@ -77,10 +77,10 @@ public class ArmorBJJetpack extends ArmorBJ {
 				
 				if(player.motionY < -0.08) {
 					
-					final double mo = player.motionY * -0.4;
+					double mo = player.motionY * -0.4;
 					player.motionY += mo;
 					
-					final Vec3 vec = new Vec3(player.getLookVec());
+					Vec3 vec = new Vec3(player.getLookVec());
 					vec.xCoord *= mo;
 					vec.yCoord *= mo;
 					vec.zCoord *= mo;
@@ -94,7 +94,7 @@ public class ArmorBJJetpack extends ArmorBJ {
     }
     
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		super.addInformation(stack, worldIn, list, flagIn);
 		list.add(TextFormatting.RED + "  + " + I18nUtil.resolveKey("armor.electricJetpack"));
     	list.add(TextFormatting.GRAY + "  + " + I18nUtil.resolveKey("armor.glider"));

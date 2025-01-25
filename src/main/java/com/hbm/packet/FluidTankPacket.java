@@ -29,7 +29,7 @@ public class FluidTankPacket implements IMessage {
 
 	}
 
-	public FluidTankPacket(final int x, final int y, final int z, final FluidTank[] tanks) {
+	public FluidTankPacket(int x, int y, int z, FluidTank[] tanks) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -37,23 +37,23 @@ public class FluidTankPacket implements IMessage {
 		this.length = tanks.length;
 	}
 	
-	public FluidTankPacket(final BlockPos pos, final FluidTank... tanks){
+	public FluidTankPacket(BlockPos pos, FluidTank... tanks){
 		this(pos.getX(), pos.getY(), pos.getZ(), tanks);
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
 		length = buf.readInt();
 		tags = new NBTTagCompound[length];
 		for(int i = 0; i < length; i++){
-			final int amount = buf.readInt();
-			final byte[] bytes = new byte[buf.readInt()];
+			int amount = buf.readInt();
+			byte[] bytes = new byte[buf.readInt()];
 			buf.readBytes(bytes);
-			final String id = new String(bytes);
-			final NBTTagCompound tag = new NBTTagCompound();
+			String id = new String(bytes);
+			NBTTagCompound tag = new NBTTagCompound();
 			if(id.equals("HBM_EMPTY") || FluidRegistry.getFluid(id) == null){
 				tag.setString("Empty", "");
 			} else {
@@ -64,14 +64,14 @@ public class FluidTankPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
 		buf.writeInt(length);
 		for(int i = 0; i < length ; i++){
 			buf.writeInt(tanks[i].getFluidAmount());
-			final byte[] bytes = tanks[i].getFluid() == null ? "HBM_EMPTY".getBytes() : FluidRegistry.getFluidName(tanks[i].getFluid()).getBytes();
+			byte[] bytes = tanks[i].getFluid() == null ? "HBM_EMPTY".getBytes() : FluidRegistry.getFluidName(tanks[i].getFluid()).getBytes();
 			buf.writeInt(bytes.length);
 			buf.writeBytes(bytes);
 		}
@@ -81,10 +81,10 @@ public class FluidTankPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final FluidTankPacket m, final MessageContext ctx) {
+		public IMessage onMessage(FluidTankPacket m, MessageContext ctx) {
 			
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 				if (te != null && te instanceof ITankPacketAcceptor) {
 					((ITankPacketAcceptor)te).recievePacket(m.tags);
 				}

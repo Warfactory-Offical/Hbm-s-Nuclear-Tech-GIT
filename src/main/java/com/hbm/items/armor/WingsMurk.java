@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WingsMurk extends ItemArmor {
 
-	public WingsMurk(final ArmorMaterial material, final String s) {
+	public WingsMurk(ArmorMaterial material, String s) {
 		super(material, -1, EntityEquipmentSlot.CHEST);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -33,7 +33,7 @@ public class WingsMurk extends ItemArmor {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
 		if(model == null) {
 			model = new ModelArmorWings(this == ModItems.wings_murk ? 0 : 1);
 		}
@@ -42,12 +42,12 @@ public class WingsMurk extends ItemArmor {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type){
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type){
 		//Drillgon200: Unused, just so forge doesn't yell in the log
 		return RefStrings.MODID + ":textures/armor/steel_1.png";
 	}
 	
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		
 		if(player.onGround)
 			return;
@@ -66,10 +66,10 @@ public class WingsMurk extends ItemArmor {
 					
 				if(player.motionY < -0.08) {
 
-					final double mo = player.motionY * -0.2;
+					double mo = player.motionY * -0.2;
 					player.motionY += mo;
 
-					final Vec3 vec = new Vec3(player.getLookVec());
+					Vec3 vec = new Vec3(player.getLookVec());
 					vec.xCoord *= mo;
 					vec.yCoord *= mo;
 					vec.zCoord *= mo;
@@ -81,7 +81,7 @@ public class WingsMurk extends ItemArmor {
 			}
 		}
 
-		final IHBMData props = HbmCapability.getData(player);
+		IHBMData props = HbmCapability.getData(player);
 		
 		if(this == ModItems.wings_murk) {
 
@@ -104,9 +104,9 @@ public class WingsMurk extends ItemArmor {
 			
 			if(props.getEnableBackpack()) {
 				
-				final Vec3 orig = new Vec3(player.getLookVec());
-				final Vec3 look = Vec3.createVectorHelper(orig.xCoord, 0, orig.zCoord).normalize();
-				final double mod = player.isSneaking() ? 0.25D : 1D;
+				Vec3 orig = new Vec3(player.getLookVec());
+				Vec3 look = Vec3.createVectorHelper(orig.xCoord, 0, orig.zCoord).normalize();
+				double mod = player.isSneaking() ? 0.25D : 1D;
 				
 				if(player.moveForward != 0) {
 					player.motionX += look.xCoord * 0.35 * player.moveForward * mod;

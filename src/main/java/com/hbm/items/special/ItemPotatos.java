@@ -2,7 +2,6 @@ package com.hbm.items.special;
 
 import com.hbm.items.machine.ItemBattery;
 import com.hbm.lib.HBMSoundHandler;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,23 +11,24 @@ import net.minecraft.world.World;
 
 public class ItemPotatos extends ItemBattery {
 
-	public ItemPotatos(final long dura, final long chargeRate, final long dischargeRate, final String s) {
+	public ItemPotatos(long dura, long chargeRate, long dischargeRate, String s) {
 		super(dura, chargeRate, dischargeRate, s);
 	}
 
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 		if(getCharge(stack) == 0)
     		return;
     	
     	if(getTimer(stack) > 0) {
     		setTimer(stack, getTimer(stack) - 1);
     	} else {
-    		if(entity instanceof EntityPlayer p) {
-
-                if(p.getHeldItemMainhand() == stack || p.getHeldItemOffhand() == stack) {
+    		if(entity instanceof EntityPlayer) {
+    			EntityPlayer p = (EntityPlayer) entity;
+    			
+    			if(p.getHeldItemMainhand() == stack || p.getHeldItemOffhand() == stack) {
     				
-    		    	final float pitch = (float)getCharge(stack) / (float)this.getMaxCharge() * 0.5F + 0.5F;
+    		    	float pitch = (float)getCharge(stack) / (float)this.getMaxCharge() * 0.5F + 0.5F;
     		    	
     				world.playSound(null, p.posX, p.posY, p.posZ, HBMSoundHandler.potatOSRandom, SoundCategory.PLAYERS, 1.0F, pitch);
     				setTimer(stack, 200 + itemRand.nextInt(100));
@@ -38,11 +38,11 @@ public class ItemPotatos extends ItemBattery {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return oldStack.getItem() != newStack.getItem() || oldStack.getMetadata() != newStack.getMetadata();
 	}
 	
-	private static int getTimer(final ItemStack stack) {
+	private static int getTimer(ItemStack stack) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -52,7 +52,7 @@ public class ItemPotatos extends ItemBattery {
 		
 	}
 	
-	private static void setTimer(final ItemStack stack, final int i) {
+	private static void setTimer(ItemStack stack, int i) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}

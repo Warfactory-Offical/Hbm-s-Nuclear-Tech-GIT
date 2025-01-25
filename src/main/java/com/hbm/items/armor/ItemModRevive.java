@@ -11,13 +11,13 @@ import java.util.List;
 
 public class ItemModRevive extends ItemArmorMod {
 
-	public ItemModRevive(final int durability, final String s) {
+	public ItemModRevive(int durability, String s) {
 		super(ArmorModHandler.extra, false, false, true, false, s);
 		this.setMaxDamage(durability);
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		if(this == ModItems.scrumpy) {
 			list.add(TextFormatting.GOLD + "But how did you survive?");
 			list.add(TextFormatting.RED + "I was drunk.");
@@ -41,7 +41,7 @@ public class ItemModRevive extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.GOLD + "  " + stack.getDisplayName() + " (" + (stack.getMaxDamage() - stack.getItemDamage()) + " revives left)");
 	}
 }

@@ -1,14 +1,13 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import java.util.Map;
-
+import com.hbm.entity.projectile.EntityRBMKDebris.DebrisType;
 import com.hbm.inventory.control_panel.DataValue;
 import com.hbm.inventory.control_panel.DataValueFloat;
-import com.hbm.entity.projectile.EntityRBMKDebris.DebrisType;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Map;
 
 public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase {
 
@@ -65,7 +64,7 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase {
 		super.update();
 	}
 	
-	public void setTarget(final double target) {
+	public void setTarget(double target) {
 		this.targetLevel = target;
 	}
 	
@@ -79,7 +78,7 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.level = nbt.getDouble("level");
@@ -87,7 +86,7 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setDouble("level", this.level);
@@ -102,9 +101,9 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase {
 	}
 	
 	@Override
-	public void onMelt(final int reduce) {
+	public void onMelt(int reduce) {
 		
-		final int count = 2 + world.rand.nextInt(2);
+		int count = 2 + world.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.ROD);
@@ -115,7 +114,7 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase {
 
 	@Override
 	public NBTTagCompound getNBTForConsole() {
-		final NBTTagCompound data = new NBTTagCompound();
+		NBTTagCompound data = new NBTTagCompound();
 		data.setDouble("level", this.level);
 		return data;
 	}
@@ -123,7 +122,7 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase {
 	// control panel
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		final Map<String, DataValue> data = super.getQueryData();
+		Map<String, DataValue> data = super.getQueryData();
 
 		data.put("level", new DataValueFloat((float) this.level*100));
 

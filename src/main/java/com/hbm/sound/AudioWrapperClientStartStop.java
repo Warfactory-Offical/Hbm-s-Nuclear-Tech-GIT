@@ -14,7 +14,7 @@ public class AudioWrapperClientStartStop extends AudioWrapperClient {
 	public float ssVol;
 	public float x, y, z;
 	
-	public AudioWrapperClientStartStop(final World world, final SoundEvent source, final SoundEvent start, final SoundEvent stop, final float vol, final SoundCategory cat){
+	public AudioWrapperClientStartStop(World world, SoundEvent source, SoundEvent start, SoundEvent stop, float vol, SoundCategory cat){
 		super(source, cat);
 		if(sound != null){
 			sound.setVolume(vol);
@@ -27,7 +27,7 @@ public class AudioWrapperClientStartStop extends AudioWrapperClient {
 	}
 	
 	@Override
-	public void updatePosition(final float x, final float y, final float z){
+	public void updatePosition(float x, float y, float z){
 		this.x = x;
 		this.y = y;
 		this.z = z;

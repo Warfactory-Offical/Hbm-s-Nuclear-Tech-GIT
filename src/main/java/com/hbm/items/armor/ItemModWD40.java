@@ -19,12 +19,12 @@ import java.util.List;
 
 public class ItemModWD40 extends ItemArmorMod {
 
-	public ItemModWD40(final String s) {
+	public ItemModWD40(String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
-		final String color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.YELLOW);
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.YELLOW);
 
 		list.add(color + "Highly reduces damage taken by armor, +2 HP");
 		list.add("Dropped by 1:500 Cyber Crab");
@@ -33,33 +33,33 @@ public class ItemModWD40 extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		
-		final String color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.YELLOW);
+		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.YELLOW);
 		
 		list.add(color + "  " + stack.getDisplayName() + " (-80% armor wear / +2 HP)");
 	}
 	
 	@Override
-	public void modDamage(final LivingHurtEvent event, final ItemStack armor) {
+	public void modDamage(LivingHurtEvent event, ItemStack armor) {
 		if(!event.getEntityLiving().world.isRemote && armor.getItemDamage() > 0 && event.getEntityLiving().getRNG().nextInt(5) != 0) {
 			armor.setItemDamage(armor.getItemDamage() - 1);
 		}
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getModifiers(final EntityEquipmentSlot slot, final ItemStack armor){
-		final Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
+	public Multimap<String, AttributeModifier> getModifiers(EntityEquipmentSlot slot, ItemStack armor){
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
 		multimap.put(SharedMonsterAttributes.MAX_HEALTH.getName(),
 				new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType.getIndex()], "NTM Armor Mod Health", 4, 0));
 		return multimap;
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
 		if(entity.world.isRemote && entity.hurtTime > 0) {
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaExt");
 			data.setString("mode", "reddust");
 			data.setDouble("posX", entity.posX + (entity.getRNG().nextDouble() - 0.5) * entity.width * 2);

@@ -34,7 +34,7 @@ import java.util.UUID;
 
 public class ArmorDNT extends ArmorFSBPowered {
 
-	public ArmorDNT(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
+	public ArmorDNT(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
 		super(material, layer, slot, texture, maxPower, chargeRate, consumption, drain, s);
 	}
 
@@ -43,7 +43,7 @@ public class ArmorDNT extends ArmorFSBPowered {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
 		if(models == null) {
 			models = new ModelArmorDNT[4];
 
@@ -57,17 +57,17 @@ public class ArmorDNT extends ArmorFSBPowered {
 	private static final UUID speed = UUID.fromString("6ab858ba-d712-485c-bae9-e5e765fc555a");
 
 	@Override
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 
 		super.onArmorTick(world, player, stack);
 		
 		if(this != ModItems.dns_plate)
 			return;
 
-		final IHBMData props = HbmCapability.getData(player);
+		IHBMData props = HbmCapability.getData(player);
 		
 		/// SPEED ///
-		final Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(EntityEquipmentSlot.CHEST, stack);
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(EntityEquipmentSlot.CHEST, stack);
 		multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(speed, "DNT SPEED", 0.25, 0));
 		player.getAttributeMap().removeAttributeModifiers(multimap);
 		
@@ -117,9 +117,9 @@ public class ArmorDNT extends ArmorFSBPowered {
 	}
 	
 	@Override
-	public void handleAttack(final LivingAttackEvent event, final ArmorFSB chestplate) {
+	public void handleAttack(LivingAttackEvent event, ArmorFSB chestplate) {
 
-		final EntityLivingBase e = event.getEntityLiving();
+		EntityLivingBase e = event.getEntityLiving();
 
 		if(ArmorFSB.hasFSBArmor(e)) {
 				
@@ -133,9 +133,9 @@ public class ArmorDNT extends ArmorFSBPowered {
 	}
 	
 	@Override
-	public void handleHurt(final LivingHurtEvent event, final ArmorFSB chestplate) {
+	public void handleHurt(LivingHurtEvent event, ArmorFSB chestplate) {
 
-		final EntityLivingBase e = event.getEntityLiving();
+		EntityLivingBase e = event.getEntityLiving();
 
 		if(ArmorFSB.hasFSBArmor(e)) {
 				
@@ -148,8 +148,8 @@ public class ArmorDNT extends ArmorFSBPowered {
 		}
 	}
 
-	public static String getColor(final long a, final long b){
-		final float fraction = 100F * a/b;
+	public static String getColor(long a, long b){
+		float fraction = 100F * a/b;
 		if(fraction > 75)
 			return "§a";
 		if(fraction > 25)
@@ -158,15 +158,15 @@ public class ArmorDNT extends ArmorFSBPowered {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
-		final long power = getCharge(stack);
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
+		long power = getCharge(stack);
     	list.add("Charge: " + getColor(power, maxPower) + Library.getShortNumber(power) + " §2/ " + Library.getShortNumber(maxPower));
 
 		list.add(TextFormatting.GOLD + I18nUtil.resolveKey("armor.fullSetBonus"));
 
 		if(!effects.isEmpty()) {
 
-			for(final PotionEffect effect : effects) {
+			for(PotionEffect effect : effects) {
 				list.add(TextFormatting.AQUA + "  " + I18n.format(effect.getEffectName()));
 			}
 		}

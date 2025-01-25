@@ -1,15 +1,14 @@
 package com.hbm.tileentity.network;
 
-import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.interfaces.IControlReceiver;
-import com.hbm.tileentity.INBTPacketReceiver;
 import com.hbm.packet.NBTPacket;
 import com.hbm.packet.PacketDispatcher;
-
-import net.minecraft.util.ITickable;
+import com.hbm.render.amlfrom1710.Vec3;
+import com.hbm.tileentity.INBTPacketReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class TileEntityRadioTorchBase extends TileEntity implements ITickable, INBTPacketReceiver, IControlReceiver {
@@ -32,7 +31,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 
 		if(!world.isRemote) {
 			
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isPolling", polling);
 			data.setBoolean("hasMapping", customMap);
 			if(channel != null) 
@@ -47,7 +46,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.polling = nbt.getBoolean("isPolling");
 		this.customMap = nbt.getBoolean("hasMapping");
@@ -60,7 +59,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt.setBoolean("isPolling", polling);
 		nbt.setBoolean("hasMapping", customMap);
 		nbt.setInteger("lastPower", lastState);
@@ -76,7 +75,7 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		this.polling = nbt.getBoolean("isPolling");
 		this.customMap = nbt.getBoolean("hasMapping");
 		this.channel = nbt.getString("channel");
@@ -84,19 +83,19 @@ public class TileEntityRadioTorchBase extends TileEntity implements ITickable, I
 			this.mapping[i] = nbt.getString("mapping" + i);
 	}
 
-	public void networkPack(final NBTTagCompound nbt, final int range) {
+	public void networkPack(NBTTagCompound nbt, int range) {
 		if(!world.isRemote)
 			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, pos), new TargetPoint(this.world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), range));
 	}
 	
 
 	@Override
-	public boolean hasPermission(final EntityPlayer player) {
+	public boolean hasPermission(EntityPlayer player) {
 		return Vec3.createVectorHelper(pos.getX() - player.posX, pos.getY() - player.posY, pos.getZ() - player.posZ).length() < 16;
 	}
 
 	@Override
-	public void receiveControl(final NBTTagCompound data) {
+	public void receiveControl(NBTTagCompound data) {
 		if(data.hasKey("isPolling")) 
 			this.polling = data.getBoolean("isPolling");
 		if(data.hasKey("hasMapping")) 

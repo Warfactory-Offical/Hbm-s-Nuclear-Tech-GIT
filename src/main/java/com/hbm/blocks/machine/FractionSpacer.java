@@ -1,20 +1,19 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.blocks.BlockDummyable;
-import com.hbm.tileentity.machine.TileEntitySpacer;
-
+import com.hbm.tileentity.machine.oil.TileEntitySpacer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class FractionSpacer extends BlockDummyable {
 
-	public FractionSpacer(final Material mat, final String s) {
+	public FractionSpacer(Material mat, String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
+	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
 		if(meta >= 12)
 			return new TileEntitySpacer();
 		return null;

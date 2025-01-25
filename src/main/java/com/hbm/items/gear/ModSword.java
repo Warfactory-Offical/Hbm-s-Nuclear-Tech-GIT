@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ModSword extends ItemSword {
 
-	public ModSword(final ToolMaterial t, final String s){
+	public ModSword(ToolMaterial t, String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -20,7 +20,7 @@ public class ModSword extends ItemSword {
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(this == ModItems.saw)
 			tooltip.add("Prepare for your examination!");
 		if(this == ModItems.bat)

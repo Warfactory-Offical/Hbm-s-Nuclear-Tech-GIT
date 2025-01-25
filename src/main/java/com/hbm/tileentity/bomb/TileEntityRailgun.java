@@ -1,19 +1,18 @@
 package com.hbm.tileentity.bomb;
 
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.config.RadiationConfig;
 import com.hbm.entity.projectile.EntityRailgunBlast;
 import com.hbm.items.ModItems;
+import com.hbm.lib.DirPos;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
-import com.hbm.lib.ForgeDirection;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.RailgunRotationPacket;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable, IEnergyUser {
+public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable, IEnergyReceiverMK2 {
 
 	public ItemStackHandler inventory;
 	public ICapabilityProvider specialProvider;
@@ -66,7 +65,7 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 	public TileEntityRailgun() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -74,12 +73,12 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 		specialProvider = new ICapabilityProvider(){
 
 			@Override
-			public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+			public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 				return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 			}
 
 			@Override
-			public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+			public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 				return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : null;
 			}
 			
@@ -94,11 +93,11 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -108,7 +107,7 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		power = nbt.getLong("power");
@@ -120,7 +119,7 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt.setLong("power", power);
 		nbt.setFloat("pitch", pitch);
 		nbt.setFloat("yaw", yaw);
@@ -144,40 +143,56 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 				if(fireDelay == 0)
 					tryFire();
 			}
-			this.updateConnectionsExcept(world, pos, ForgeDirection.UP);
+			updateConnections();
 			power = Library.chargeTEFromItems(inventory, 0, power, RadiationConfig.railgunBuffer);
 			
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos.getX(), pos.getY(), pos.getZ(), power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
 			PacketDispatcher.wrapper.sendToAllAround(new RailgunRotationPacket(pos.getX(), pos.getY(), pos.getZ(), pitch, yaw), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
 		}
 	}
+
+	private void updateConnections() {
+		for(DirPos pos : getConPos()) {
+			this.trySubscribe(world, pos.getPos().getX(), pos.getPos().getY(), pos.getPos().getZ(), pos.getDir());
+		}
+	}
+
+	private DirPos[] getConPos() {
+		return new DirPos[] {
+				new DirPos(pos.getX(), pos.getY() - 1, pos.getZ(), Library.NEG_Y),
+				new DirPos(pos.getX() + 1, pos.getY(), pos.getZ(), Library.POS_X),
+				new DirPos(pos.getX() - 1, pos.getY(), pos.getZ(), Library.NEG_X),
+				new DirPos(pos.getX(), pos.getY(), pos.getZ() + 1, Library.POS_Z),
+				new DirPos(pos.getX(), pos.getY(), pos.getZ() - 1, Library.NEG_Z)
+		};
+	}
 	
-	public boolean setAngles(final boolean miss) {
+	public boolean setAngles(boolean miss) {
 		
 		if(
 				(inventory.getStackInSlot(1).getItem() == ModItems.designator || inventory.getStackInSlot(1).getItem() == ModItems.designator_range || inventory.getStackInSlot(1).getItem() == ModItems.designator_manual) &&
 				inventory.getStackInSlot(1).getTagCompound() != null) {
 
-    		final int x = inventory.getStackInSlot(1).getTagCompound().getInteger("xCoord");
-    		final int z = inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
+    		int x = inventory.getStackInSlot(1).getTagCompound().getInteger("xCoord");
+    		int z = inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
 
     		Vec3d vec = new Vec3d(x - pos.getX(), 0, z - pos.getZ());
-    		final Vec3d unit = new Vec3d(1, 0, 0);
+    		Vec3d unit = new Vec3d(1, 0, 0);
     		
     		if(miss) {
     			vec = vec.rotateYaw((float) (world.rand.nextGaussian() * Math.PI / 45));
     		}
     		
-    		if(vec.length() < 1 || vec.length() > 9000)
+    		if(vec.lengthVector() < 1 || vec.lengthVector() > 9000)
     			return false;
     		
-    		final double yawUpper = vec.x * unit.x/* + vec.zCoord * unit.zCoord*/; //second side falls away since unit.z is always 0
-    		final double yawLower = vec.length()/* * unit.length()*/; //second side falls away since unit always has length 1
-    		final float yaw = (float) Math.acos(yawUpper / yawLower);
-    		final float pitch = (float) (Math.asin((vec.length() * 9.81) / (300 * 300)) / 2D);
+    		double yawUpper = vec.x * unit.x/* + vec.zCoord * unit.zCoord*/; //second side falls away since unit.z is always 0
+    		double yawLower = vec.lengthVector()/* * unit.length()*/; //second side falls away since unit always has length 1
+    		float yaw = (float) Math.acos(yawUpper / yawLower);
+    		float pitch = (float) (Math.asin((vec.lengthVector() * 9.81) / (300 * 300)) / 2D);
 			
     		float newYaw = (float) (yaw * 180D / Math.PI);
-    		final float newPitch = (float) (pitch * 180D / Math.PI) - 90F;
+    		float newPitch = (float) (pitch * 180D / Math.PI) - 90F;
     		
     		if(vec.z > 0)
     			newYaw = 0 - (float) (yaw * 180D / Math.PI);
@@ -195,10 +210,14 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 	
 	public boolean canFire() {
 		
-		final int required = RadiationConfig.railgunUse;
-
-        return inventory.getStackInSlot(2).getItem() == ModItems.charge_railgun && power >= required;
-    }
+		int required = RadiationConfig.railgunUse;
+		
+		if(inventory.getStackInSlot(2).getItem() == ModItems.charge_railgun && power >= required) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	public void tryFire() {
 		
@@ -220,16 +239,16 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 		vec.rotateAroundZ((float) (pitch * Math.PI / 180D));
 		vec.rotateAroundY((float) (yaw * Math.PI / 180D));
 
-		final double fX = pos.getX() + 0.5 + vec.xCoord;
-		final double fY = pos.getY() + 1 + vec.yCoord;
-		final double fZ = pos.getZ() + 0.5 + vec.zCoord;
+		double fX = pos.getX() + 0.5 + vec.xCoord;
+		double fY = pos.getY() + 1 + vec.yCoord;
+		double fZ = pos.getZ() + 0.5 + vec.zCoord;
 		
 		vec = vec.normalize();
-		final double motionX = vec.xCoord * 15D;
-		final double motionY = vec.yCoord * 15D;
-		final double motionZ = vec.zCoord * 15D;
+		double motionX = vec.xCoord * 15D;
+		double motionY = vec.yCoord * 15D;
+		double motionZ = vec.zCoord * 15D;
 		
-		final EntityRailgunBlast fart = new EntityRailgunBlast(world);
+		EntityRailgunBlast fart = new EntityRailgunBlast(world);
 		fart.posX = fX;
 		fart.posY = fY;
 		fart.posZ = fZ;
@@ -254,17 +273,17 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		this.power = i;
 	}
 
@@ -278,7 +297,7 @@ public class TileEntityRailgun extends TileEntityLoadedBase implements ITickable
 		return RadiationConfig.railgunBuffer;
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		//System.out.println(power * i);
 		//System.out.println(MainRegistry.railgunBuffer);
 		return (power * i) / RadiationConfig.railgunBuffer;

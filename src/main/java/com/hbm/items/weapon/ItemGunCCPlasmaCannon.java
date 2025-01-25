@@ -1,7 +1,6 @@
 package com.hbm.items.weapon;
 
 import com.hbm.handler.GunConfiguration;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -12,13 +11,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGunCCPlasmaCannon extends ItemGunBase {
 
-	public ItemGunCCPlasmaCannon(final GunConfiguration config, final String s) {
+	public ItemGunCCPlasmaCannon(GunConfiguration config, String s) {
 		super(config, s);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onFireClient(final ItemStack stack, final EntityPlayer player, final boolean shouldDoThirdPerson) {
+	public void onFireClient(ItemStack stack, EntityPlayer player, boolean shouldDoThirdPerson) {
 	}
 	
 	@Override
@@ -29,7 +28,7 @@ public class ItemGunCCPlasmaCannon extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHUD(final Pre event, final ElementType type, final EntityPlayer player, final ItemStack stack, final EnumHand hand) {
+	public void renderHUD(Pre event, ElementType type, EntityPlayer player, ItemStack stack, EnumHand hand) {
 		
 	}
 

@@ -1,8 +1,5 @@
 package com.hbm.entity.logic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.config.CompatibilityConfig;
 import com.hbm.config.GeneralConfig;
 import com.hbm.entity.particle.EntityGasFlameFX;
@@ -17,7 +14,6 @@ import com.hbm.lib.ModDamageSource;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.LoopedEntitySoundPacket;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +33,9 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EntityBomber extends Entity implements IChunkLoader, IConstantRenderer {
 
 	public static final DataParameter<Integer> HEALTH = EntityDataManager.createKey(EntityBomber.class, DataSerializers.VARINT);
@@ -50,7 +49,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	
 	public int health = 50;
 	
-	public EntityBomber(final World worldIn) {
+	public EntityBomber(World worldIn) {
 		super(worldIn);
 		
 		this.ignoreFrustumCheck = true;
@@ -63,7 +62,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	}
 	
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(source == ModDamageSource.nuclearBlast)
     		return false;
     	
@@ -89,7 +88,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	
 	private void killBomber() {
         ExplosionLarge.explode(world, posX, posY, posZ, 5, true, false, true);
-    	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.planeShotDown, SoundCategory.HOSTILE, 25.0F, 1.0F, false);
+    	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.planeShotDown, SoundCategory.HOSTILE, 25.0F, 1.0F, false);
     }
 	
 	public boolean isBomberAlive(){
@@ -130,7 +129,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 				this.setDead();
 				
 				ExplosionLarge.explodeFire(world, posX, posY, posZ, 25, true, false, true);
-		    	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.planeCrash, SoundCategory.HOSTILE, 10.0F, 1.0F, true);
+		    	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.planeCrash, SoundCategory.HOSTILE, 10.0F, 1.0F, true);
 				
 				return;
 			}
@@ -145,13 +144,13 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 			}
 			if(type == 3) {
 
-	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
+	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
 				ExplosionChaos.spawnChlorine(world, this.posX, this.posY - 1F, this.posZ, 10, 0.5, 3);
 				
 			} else if(type == 5) {
 				
-	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
-	        	final EntityRocketHoming rocket = new EntityRocketHoming(world);
+	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
+	        	EntityRocketHoming rocket = new EntityRocketHoming(world);
 	        	rocket.setIsCritical(true);
 	        	//rocket.motionX = motionX;
 	        	//rocket.motionZ = motionZ;
@@ -168,8 +167,8 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	        	
 			} else if(type == 6) {
 				
-	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
-	        	final EntityBoxcar rocket = new EntityBoxcar(world);
+	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.missileTakeoff, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
+	        	EntityBoxcar rocket = new EntityBoxcar(world);
 				
 	        	rocket.posX = posX + rand.nextDouble() - 0.5;
 	        	rocket.posY = posY - rand.nextDouble();
@@ -179,14 +178,14 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	        	
 			} else if(type == 7) {
 
-	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
+	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
 				ExplosionChaos.spawnChlorine(world, this.posX, world.getHeight((int)this.posX, (int)this.posZ) + 2, this.posZ, 10, 1, 2);
 				
 			} else {
 				
-	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.bombWhistle, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
+	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.bombWhistle, SoundCategory.HOSTILE, 10.0F, 0.9F + rand.nextFloat() * 0.2F, true);
 	        	
-				final EntityBombletZeta zeta = new EntityBombletZeta(world);
+				EntityBombletZeta zeta = new EntityBombletZeta(world);
 				
 				zeta.rotation();
 				
@@ -209,7 +208,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 		}
 	}
 	
-	public void fac(final World world, final double x, final double y, final double z) {
+	public void fac(World world, double x, double y, double z) {
     	
     	Vec3d vector = new Vec3d(world.rand.nextDouble() - 0.5, 0, world.rand.nextDouble() - 0.5);
     	vector = vector.normalize();
@@ -252,9 +251,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	this.setSize(8.0F, 4.0F);
     }
     
-    public static EntityBomber statFacCarpet(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacCarpet(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 50;
@@ -268,9 +267,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	return bomber;
     }
     
-    public static EntityBomber statFacNapalm(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacNapalm(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 50;
@@ -284,9 +283,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	return bomber;
     }
     
-    public static EntityBomber statFacChlorine(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacChlorine(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 50;
@@ -300,9 +299,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	return bomber;
     }
     
-    public static EntityBomber statFacOrange(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacOrange(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 75;
@@ -316,9 +315,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	return bomber;
     }
     
-    public static EntityBomber statFacABomb(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacABomb(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 60;
@@ -329,7 +328,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	
     	int i = 1;
     	
-    	final int rand = world.rand.nextInt(3);
+    	int rand = world.rand.nextInt(3);
     	
     	switch(rand) {
     	case 0: i = 5; break;
@@ -348,9 +347,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	return bomber;
     }
     
-    public static EntityBomber statFacStinger(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacStinger(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 50;
@@ -366,9 +365,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	return bomber;
     }
     
-    public static EntityBomber statFacBoxcar(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacBoxcar(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 50;
@@ -384,9 +383,9 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     	return bomber;
     }
     
-    public static EntityBomber statFacPC(final World world, final double x, final double y, final double z) {
+    public static EntityBomber statFacPC(World world, double x, double y, double z) {
     	
-    	final EntityBomber bomber = new EntityBomber(world);
+    	EntityBomber bomber = new EntityBomber(world);
     	
     	bomber.timer = 200;
     	bomber.bombStart = 75;
@@ -406,7 +405,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
     List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
     
 	@Override
-	public void init(final Ticket ticket) {
+	public void init(Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -424,11 +423,11 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
         }
 	}
 	
-	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ)
+	public void loadNeighboringChunks(int newChunkX, int newChunkZ)
     {
         if(!world.isRemote && loaderTicket != null)
         {
-            for(final ChunkPos chunk : loadedChunks)
+            for(ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -444,7 +443,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(final ChunkPos chunk : loadedChunks)
+            for(ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -455,12 +454,12 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	protected void entityInit() {
 		init(ForgeChunkManager.requestTicket(MainRegistry.instance, world, Type.ENTITY));
         this.getDataManager().register(STYLE, Byte.valueOf((byte)0));
-        this.getDataManager().register(HEALTH, Integer.valueOf(50));
+        this.getDataManager().register(HEALTH, Integer.valueOf((int)50));
 		
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		ticksExisted = nbt.getInteger("ticksExisted");
 		bombStart = nbt.getInteger("bombStart");
 		bombStop = nbt.getInteger("bombStop");
@@ -474,7 +473,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("ticksExisted", ticksExisted);
 		nbt.setInteger("bombStart", bombStart);
 		nbt.setInteger("bombStop", bombStop);
@@ -486,11 +485,12 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	}
 	
 	protected void rotation() {
-        final float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
         for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
+            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -511,7 +511,7 @@ public class EntityBomber extends Entity implements IChunkLoader, IConstantRende
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(final double distance) {
+	public boolean isInRangeToRenderDist(double distance) {
 		return distance < 500000;
 	}
 

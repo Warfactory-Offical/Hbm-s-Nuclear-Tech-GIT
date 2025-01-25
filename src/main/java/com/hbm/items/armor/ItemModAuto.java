@@ -16,12 +16,12 @@ import java.util.List;
 
 public class ItemModAuto extends ItemArmorMod {
 
-	public ItemModAuto(final String s) {
+	public ItemModAuto(String s) {
 		super(ArmorModHandler.extra, false, true, false, false, s);
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.BLUE + "Imported from Japsterdam.");
 		
 		list.add("");
@@ -29,12 +29,12 @@ public class ItemModAuto extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.BLUE + "  " + stack.getDisplayName());
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		if(!entity.world.isRemote) {
 			
 			if(HbmLivingProps.getDigamma(entity) >= 5F) {

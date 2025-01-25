@@ -1,7 +1,6 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKStorage;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,9 +10,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerRBMKStorage extends Container {
 
-	private final TileEntityRBMKStorage rbmk;
+	private TileEntityRBMKStorage rbmk;
 
-	public ContainerRBMKStorage(final InventoryPlayer invPlayer, final TileEntityRBMKStorage tedf) {
+	public ContainerRBMKStorage(InventoryPlayer invPlayer, TileEntityRBMKStorage tedf) {
 		rbmk = tedf;
 
 		for(int i = 0; i < 3; i++) {
@@ -34,12 +33,12 @@ public class ContainerRBMKStorage extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2) {
+	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2) {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 
 		if(var4 != null && var4.getHasStack()) {
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
 			if(par2 == 0) {
@@ -61,7 +60,7 @@ public class ContainerRBMKStorage extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 }

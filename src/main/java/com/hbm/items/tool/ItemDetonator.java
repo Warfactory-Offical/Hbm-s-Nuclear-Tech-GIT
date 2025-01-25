@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ItemDetonator extends Item {
 
-	public ItemDetonator(final String s) {
+	public ItemDetonator(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -30,7 +30,7 @@ public class ItemDetonator extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.calldet1"));
 		list.add(I18nUtil.resolveKey("desc.calldet2"));
 		if(stack.getTagCompound() == null)
@@ -42,8 +42,8 @@ public class ItemDetonator extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
 		if(stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
@@ -68,17 +68,17 @@ public class ItemDetonator extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
-		final ItemStack stack = player.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+		ItemStack stack = player.getHeldItem(handIn);
 		if(stack.getTagCompound() == null)
 		{
 			if(world.isRemote)
 				player.sendMessage(new TextComponentTranslation("§c"+I18nUtil.resolveKey("chat.posnoseterror")+"§r"));
 		} else {
-			 final int x = stack.getTagCompound().getInteger("x");
-			 final int y = stack.getTagCompound().getInteger("y");
-			 final int z = stack.getTagCompound().getInteger("z");
-			 final BlockPos pos = new BlockPos(x, y, z);
+			 int x = stack.getTagCompound().getInteger("x");
+			 int y = stack.getTagCompound().getInteger("y");
+			 int z = stack.getTagCompound().getInteger("z");
+			 BlockPos pos = new BlockPos(x, y, z);
 			 if(world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() instanceof IBomb)
 			 {
 				world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBleep, SoundCategory.AMBIENT, 1.0F, 1.0F);

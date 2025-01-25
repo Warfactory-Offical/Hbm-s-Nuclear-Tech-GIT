@@ -13,28 +13,31 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class AudioDynamic extends MovingSound {
 
 	public float intendedVolume;
+	public int keepAlive;
+	public int timeSinceKA;;
+	public boolean shouldExpire = false;;
 
-	protected AudioDynamic(final SoundEvent loc, final SoundCategory cat) {
+	protected AudioDynamic(SoundEvent loc, SoundCategory cat) {
 		super(loc, cat);
 		this.repeat = true;
 		this.attenuationType = ISound.AttenuationType.NONE;
 		this.intendedVolume = 10;
 	}
 	
-	public void setPosition(final float x, final float y, final float z) {
+	public void setPosition(float x, float y, float z) {
 		this.xPosF = x;
 		this.yPosF = y;
 		this.zPosF = z;
 	}
 
-	public void setAttenuation(final ISound.AttenuationType type){
+	public void setAttenuation(ISound.AttenuationType type){
 		this.attenuationType = type;
 		volume = intendedVolume;
 	}
 	
 	@Override
 	public void update() {
-		final EntityPlayerSP player = Minecraft.getMinecraft().player;
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
 		float f = 0;
 		if(player != null) {
 			if(attenuationType == ISound.AttenuationType.LINEAR){
@@ -65,15 +68,27 @@ public class AudioDynamic extends MovingSound {
 		Minecraft.getMinecraft().getSoundHandler().stopSound(this);
 	}
 	
-	public void setVolume(final float volume) {
+	public void setVolume(float volume) {
 		this.intendedVolume = volume;
 	}
 	
-	public void setPitch(final float pitch) {
+	public void setPitch(float pitch) {
 		this.pitch = pitch;
 	}
+	public void setKeepAlive(int keepAlive) {
+		this.keepAlive = keepAlive;
+		this.shouldExpire = true;
+	}
+
+	public void keepAlive() {
+		this.timeSinceKA = 0;
+	}
 	
-	public float func(final float f, final float v) {
+	public float func(float f, float v) {
 		return (f / v) * -2 + 2;
+	}
+
+	public boolean isPlaying() {
+		return Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(this);
 	}
 }

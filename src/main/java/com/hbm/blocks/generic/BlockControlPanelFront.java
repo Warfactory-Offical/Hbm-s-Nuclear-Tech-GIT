@@ -178,7 +178,7 @@
 //
 //    @Override
 //    public IBlockState getStateFromMeta(int meta) {
-//        EnumFacing enumfacing = EnumFacing.byIndex(meta);
+//        EnumFacing enumfacing = EnumFacing.getFront(meta);
 //        return this.getDefaultState().withProperty(FACING, enumfacing);
 //    }
 //

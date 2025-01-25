@@ -3,6 +3,7 @@ package com.hbm.hfr.render.loader;
 import com.hbm.render.amlfrom1710.TextureCoordinate;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.render.amlfrom1710.Vertex;
+
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,16 +21,11 @@ public class S_Face {
 	public float normalY;
 	public float normalZ;
 
-	/*public S_Face copy() {	
-		S_Face f = new S_Face();
-		return f;
-	}*/
-
-	public void addFaceForRender(final BufferBuilder tessellator) {
+	public void addFaceForRender(BufferBuilder tessellator) {
 		addFaceForRender(tessellator, 0.0F);
 	}
 
-	public void addFaceForRender(final BufferBuilder tessellator, final float textureOffset) {
+	public void addFaceForRender(BufferBuilder tessellator, float textureOffset) {
 		
 		if (this.faceNormal == null) {
 			this.faceNormal = calculateFaceNormal();
@@ -81,8 +77,8 @@ public class S_Face {
 
 	public Vertex calculateFaceNormal() {
 		
-		final Vec3 v1 = Vec3.createVectorHelper(this.vertices[1].x - this.vertices[0].x, this.vertices[1].y - this.vertices[0].y, this.vertices[1].z - this.vertices[0].z);
-		final Vec3 v2 = Vec3.createVectorHelper(this.vertices[2].x - this.vertices[0].x, this.vertices[2].y - this.vertices[0].y, this.vertices[2].z - this.vertices[0].z);
+		Vec3 v1 = Vec3.createVectorHelper(this.vertices[1].x - this.vertices[0].x, this.vertices[1].y - this.vertices[0].y, this.vertices[1].z - this.vertices[0].z);
+		Vec3 v2 = Vec3.createVectorHelper(this.vertices[2].x - this.vertices[0].x, this.vertices[2].y - this.vertices[0].y, this.vertices[2].z - this.vertices[0].z);
 		Vec3 normalVector = null;
 
 		normalVector = v1.crossProduct(v2).normalize();

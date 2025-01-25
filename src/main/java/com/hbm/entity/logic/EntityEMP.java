@@ -1,17 +1,11 @@
 package com.hbm.entity.logic;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.NoClassDefFoundError;
-
+import api.hbm.energymk2.IEnergyReceiverMK2;
+import cofh.redstoneflux.api.IEnergyProvider;
 import com.hbm.config.CompatibilityConfig;
-import com.hbm.entity.logic.IChunkLoader;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.ParticleBurstPacket;
-
-import api.hbm.energy.IEnergyUser;
-import cofh.redstoneflux.api.IEnergyProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -21,11 +15,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityEMP extends Entity implements IChunkLoader {
 
@@ -33,7 +30,7 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	int life = 10 * 60 * 20;
 	private Ticket loaderTicket;
 
-	public EntityEMP(final World p_i1582_1_) {
+	public EntityEMP(World p_i1582_1_) {
 		super(p_i1582_1_);
 	}
 	
@@ -60,19 +57,19 @@ public class EntityEMP extends Entity implements IChunkLoader {
 		
 		machines = new ArrayList<BlockPos>();
 		
-		final int radius = 100;
+		int radius = 100;
 		
 		for(int x = -radius; x <= radius; x++) {
 			
-			final int x2 = (int) Math.pow(x, 2);
+			int x2 = (int) Math.pow(x, 2);
 			
 			for(int y = -radius; y <= radius; y++) {
 				
-				final int y2 = (int) Math.pow(y, 2);
+				int y2 = (int) Math.pow(y, 2);
 				
 				for(int z = -radius; z <= radius; z++) {
 					
-					final int z2 = (int) Math.pow(z, 2);
+					int z2 = (int) Math.pow(z, 2);
 					
 					if(Math.sqrt(x2 + y2 + z2) <= radius) {
 						add(new BlockPos((int)posX + x, (int)posY + y, (int)posZ + z));
@@ -84,39 +81,39 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	
 	private void shock() {
 		
-		for(final BlockPos pos : machines) {
+		for(BlockPos pos : machines) {
 			emp(pos);
 		}
 	}
 	
-	private void add(final BlockPos pos) {
-		final TileEntity te = world.getTileEntity(pos);
+	private void add(BlockPos pos) {
+		TileEntity te = world.getTileEntity(pos);
 		if(te == null)
 			return;
-		if(te instanceof IEnergyUser) {
+		if(te instanceof IEnergyReceiverMK2) {
 			machines.add(pos);
 		} else {
 			try{
 				if(te instanceof IEnergyProvider) {
 					machines.add(pos);
 				}
-			} catch(final NoClassDefFoundError e){}
+			} catch(NoClassDefFoundError e){}
 		}
 		if(te.hasCapability(CapabilityEnergy.ENERGY, null)){
 			machines.add(pos);
 		}
 	}
 	
-	private void emp(final BlockPos pos) {
+	private void emp(BlockPos pos) {
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		if(te == null)
 			return;
 		boolean flag = false;
 		
-		if (te instanceof IEnergyUser) {
+		if (te instanceof IEnergyReceiverMK2) {
 			
-			((IEnergyUser)te).setPower(0);
+			((IEnergyReceiverMK2)te).setPower(0);
 			flag = true;
 		}
 		try{
@@ -130,9 +127,9 @@ public class EntityEMP extends Entity implements IChunkLoader {
 				((IEnergyProvider)te).extractEnergy(EnumFacing.WEST, ((IEnergyProvider)te).getEnergyStored(EnumFacing.WEST), false);
 				flag = true;
 			}
-		} catch(final NoClassDefFoundError e){}
+		} catch(NoClassDefFoundError e){}
 		if(te != null && te.hasCapability(CapabilityEnergy.ENERGY, null)){
-			final IEnergyStorage handle = te.getCapability(CapabilityEnergy.ENERGY, null);
+			IEnergyStorage handle = te.getCapability(CapabilityEnergy.ENERGY, null);
 			handle.extractEnergy(handle.getEnergyStored(), false);
 			flag = true;
 		}
@@ -151,7 +148,7 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	public void init(final Ticket ticket) {
+	public void init(Ticket ticket) {
 		if(!world.isRemote) {
 			
             if(ticket != null) {
@@ -170,10 +167,10 @@ public class EntityEMP extends Entity implements IChunkLoader {
 
 	List<ChunkPos> loadedChunks = new ArrayList<ChunkPos>();
 	@Override
-	public void loadNeighboringChunks(final int newChunkX, final int newChunkZ) {
+	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
 		if(!world.isRemote && loaderTicket != null)
         {
-            for(final ChunkPos chunk : loadedChunks)
+            for(ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.unforceChunk(loaderTicket, chunk);
             }
@@ -189,7 +186,7 @@ public class EntityEMP extends Entity implements IChunkLoader {
             loadedChunks.add(new ChunkPos(newChunkX - 1, newChunkZ));
             loadedChunks.add(new ChunkPos(newChunkX, newChunkZ - 1));
 
-            for(final ChunkPos chunk : loadedChunks)
+            for(ChunkPos chunk : loadedChunks)
             {
                 ForgeChunkManager.forceChunk(loaderTicket, chunk);
             }
@@ -197,8 +194,8 @@ public class EntityEMP extends Entity implements IChunkLoader {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) { }
+	protected void readEntityFromNBT(NBTTagCompound nbt) { }
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) { }
+	protected void writeEntityToNBT(NBTTagCompound nbt) { }
 }

@@ -26,7 +26,7 @@ public class ParticleLightningFade extends Particle {
 	float width;
 	LightningNode node;
 	
-	public ParticleLightningFade(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final double hitX, final double hitY, final double hitZ, final float width, final LightningGenInfo i) {
+	public ParticleLightningFade(World worldIn, double posXIn, double posYIn, double posZIn, double hitX, double hitY, double hitZ, float width, LightningGenInfo i) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		node = LightningGenerator.generateLightning(new Vec3d(posXIn, posYIn, posZIn), new Vec3d(hitX, hitY, hitZ), i);
 		this.particleMaxAge = 60;
@@ -52,14 +52,14 @@ public class ParticleLightningFade extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableAlpha();
 		GlStateManager.depthMask(false);
-		final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-        final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-        final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+		double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+        double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+        double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
         
         interpPosX = entPosX;
         interpPosY = entPosY;
@@ -69,12 +69,12 @@ public class ParticleLightningFade extends Particle {
         
         ResourceManager.lightning.use();
         ResourceManager.lightning.uniform4f("duck", 1F, 1F, 1F, 1F);
-	    final float ageN = ((float)this.particleAge+partialTicks)/((float)this.particleMaxAge);
+	    float ageN = ((float)this.particleAge+partialTicks)/((float)this.particleMaxAge);
 	    ResourceManager.lightning.uniform1f("fadeoverride", ageN);
         //ResourceManager.test_trail.use();
         //GL20.glUniform4f(GL20.glGetUniformLocation(ResourceManager.test_trail.getShaderId(), "duck"), 1F, 1, 1F, 1F);
-	    final IColorGetter cg = pos -> {
-	    	final float a = MathHelper.clamp((1-pos)-0.5F+ageN*50, 0, 1);
+	    IColorGetter cg = pos -> {
+	    	float a = MathHelper.clamp((1-pos)-0.5F+ageN*50, 0, 1);
 	    	return new float[]{1, 1, 1, a};
 	    };
 	    GlStateManager.enableBlend();

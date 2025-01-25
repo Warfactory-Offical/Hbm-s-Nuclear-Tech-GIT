@@ -19,31 +19,31 @@ public class ParticleDefinition {
 	//whether GL11 blend should be turned on
 	public boolean doesBlend = false;
 
-	public ParticleDefinition setSize(final int width, final int height) {
+	public ParticleDefinition setSize(int width, int height) {
 
 		this.sheetWidth = width;
 		this.sheetHeight = height;
 		return this;
 	}
 
-	public ParticleDefinition setTint(final int tint) {
+	public ParticleDefinition setTint(int tint) {
 
 		return this.setTint(tint, tint);
 	}
 
-	public ParticleDefinition setTint(final int start, final int end) {
+	public ParticleDefinition setTint(int start, int end) {
 
 		this.startTint = start;
 		this.endTint = end;
 		return this;
 	}
 
-	public ParticleDefinition setScale(final double tint) {
+	public ParticleDefinition setScale(double tint) {
 
 		return this.setScale(tint, tint);
 	}
 
-	public ParticleDefinition setScale(final double start, final double end) {
+	public ParticleDefinition setScale(double start, double end) {
 
 		this.startScale = start;
 		this.endScale = end;

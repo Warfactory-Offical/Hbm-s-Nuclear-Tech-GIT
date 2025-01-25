@@ -1,19 +1,18 @@
 package com.hbm.items.machine;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemStamp extends Item {
 
-	public ItemStamp(final String s, final int dura) {
+	public ItemStamp(String s, int dura) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setMaxDamage(dura);
@@ -24,7 +23,7 @@ public class ItemStamp extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(this == ModItems.stamp_iron_circuit ||
 				this == ModItems.stamp_iron_plate ||
 				this == ModItems.stamp_iron_wire ||

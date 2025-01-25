@@ -13,8 +13,12 @@ We welcome attempts at porting stuff though we do not provide support outside co
 
 ### **Want to contribute?**
 
-If you want to contribute make a pull request and I'll review it as soon as possible.
+If you want to contribute - you can make a pull request; I'll review it as soon as possible.
 Every contribution is very much appreciated by me and the players.
+
+### **Planning**
+
+You can see all our NTM-related plans [here.](https://github.com/users/TheSlize/projects/2/views/1)
 
 ### **Build Guide:**
 

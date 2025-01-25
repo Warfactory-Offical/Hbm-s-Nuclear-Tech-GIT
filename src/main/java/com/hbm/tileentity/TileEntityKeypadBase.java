@@ -1,19 +1,17 @@
 package com.hbm.tileentity;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
 import com.hbm.interfaces.IKeypadHandler;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.util.Keypad;
 import com.hbm.util.KeypadClient;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 public class TileEntityKeypadBase extends TileEntity implements ITickable, IKeypadHandler {
 
@@ -38,7 +36,7 @@ public class TileEntityKeypadBase extends TileEntity implements ITickable, IKeyp
 		if(world.isRemote){
 			setupKeypadClient();
 		} else {
-			final NBTTagCompound nbt = keypad.writeToNbt(new NBTTagCompound());
+			NBTTagCompound nbt = keypad.writeToNbt(new NBTTagCompound());
 			keypad = new Keypad(this);
 			keypad.readFromNbt(nbt);
 		}
@@ -46,8 +44,8 @@ public class TileEntityKeypadBase extends TileEntity implements ITickable, IKeyp
 	
 	@SideOnly(Side.CLIENT)
 	public void setupKeypadClient() {
-		final float rot = ForgeDirection.getOrientation(this.getBlockMetadata()).getRotationRadians();
-		final Matrix4f mat = new Matrix4f();
+		float rot = ForgeDirection.getOrientation(this.getBlockMetadata()).getRotationRadians();
+		Matrix4f mat = new Matrix4f();
 		mat.rotate(rot, new Vector3f(0, 1, 0));
 		mat.translate(new Vector3f(0, 0, -0.5F));
 		keypad = new KeypadClient(this, mat);
@@ -74,13 +72,13 @@ public class TileEntityKeypadBase extends TileEntity implements ITickable, IKeyp
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		keypad.writeToNbt(compound);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		keypad.readFromNbt(compound);
 		super.readFromNBT(compound);
 	}

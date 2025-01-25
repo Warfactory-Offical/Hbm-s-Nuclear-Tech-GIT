@@ -1,27 +1,25 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.RenderMiscEffects;
 import com.hbm.tileentity.bomb.TileEntityNukeBalefire;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class RenderNukeFstbmb extends TileEntitySpecialRenderer<TileEntityNukeBalefire> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityNukeBalefire te) {
+	public boolean isGlobalRenderer(TileEntityNukeBalefire te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityNukeBalefire bf, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityNukeBalefire bf, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
@@ -48,8 +46,8 @@ public class RenderNukeFstbmb extends TileEntitySpecialRenderer<TileEntityNukeBa
 	        bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/misc/glintBF.png"));
 	        RenderMiscEffects.renderClassicGlint(bf.getWorld(), partialTicks, ResourceManager.fstbmb, "Balefire", 0.0F, 0.8F, 0.15F, 5, 2F);
 
-	        final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-	        final float f3 = 0.04F;
+	        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+	        float f3 = 0.04F;
 	        GL11.glTranslatef(0.815F, 0.9275F, 0.5F);
 	        GL11.glScalef(f3, -f3, f3);
 	        GL11.glNormal3f(0.0F, 0.0F, -1.0F * f3);

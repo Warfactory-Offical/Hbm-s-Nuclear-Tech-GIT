@@ -4,7 +4,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.InventoryHelper;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityMachineKeyForge;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +17,7 @@ import net.minecraft.world.World;
 
 public class MachineKeyForge extends BlockContainer {
 
-	public MachineKeyForge(final Material materialIn, final String s) {
+	public MachineKeyForge(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -27,16 +26,16 @@ public class MachineKeyForge extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityMachineKeyForge();
 	}
 
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			final TileEntityMachineKeyForge entity = (TileEntityMachineKeyForge) world.getTileEntity(pos);
+			TileEntityMachineKeyForge entity = (TileEntityMachineKeyForge) world.getTileEntity(pos);
 			if(entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_keyforge, world, pos.getX(), pos.getY(), pos.getZ());
 			}
@@ -47,13 +46,13 @@ public class MachineKeyForge extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

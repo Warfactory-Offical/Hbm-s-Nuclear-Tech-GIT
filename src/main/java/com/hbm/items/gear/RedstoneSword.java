@@ -30,7 +30,7 @@ public class RedstoneSword extends ItemSword implements IHasCustomModel {
 	
 	public static final ModelResourceLocation rsModel = new ModelResourceLocation("hbm:redstone_sword", "inventory");
 	
-	public RedstoneSword(final ToolMaterial t, final String s){
+	public RedstoneSword(ToolMaterial t, String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -46,13 +46,13 @@ public class RedstoneSword extends ItemSword implements IHasCustomModel {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
 		list.add("§5§lVery First NTM Item");
 	}
 
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote){
 			return EnumActionResult.PASS;
 		}
@@ -89,7 +89,7 @@ public class RedstoneSword extends ItemSword implements IHasCustomModel {
         {
             ++x;
         }
-        final BlockPos editpos = new BlockPos(x, y, z);
+        BlockPos editpos = new BlockPos(x, y, z);
         if(!player.canPlayerEdit(editpos, facing, player.getHeldItem(hand))){
         	return EnumActionResult.PASS;
         } else {

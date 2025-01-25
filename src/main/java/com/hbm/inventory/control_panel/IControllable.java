@@ -1,11 +1,11 @@
 package com.hbm.inventory.control_panel;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public interface IControllable {
 
@@ -16,7 +16,7 @@ public interface IControllable {
 
 	// here most things respond by sending the out event back
 	// -- a lazy fix for other controls that share a panel not receiving the broadcast event too.
-	default void receiveEvent(final BlockPos from, final ControlEvent e) {}
+	default void receiveEvent(BlockPos from, ControlEvent e) {}
 	
 	public BlockPos getControlPos();
 	public World getControlWorld();

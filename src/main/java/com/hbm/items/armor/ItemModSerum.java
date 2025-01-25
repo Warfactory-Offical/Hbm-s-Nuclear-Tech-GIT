@@ -13,11 +13,11 @@ import java.util.List;
 
 public class ItemModSerum extends ItemArmorMod {
 
-	public ItemModSerum(final String s) {
+	public ItemModSerum(String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.GREEN + "Cures poison and gives strength");
 		list.add("Dropped by 1:100 Cave Spiders");
 		list.add("");
@@ -25,12 +25,12 @@ public class ItemModSerum extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.BLUE + "  " + stack.getDisplayName() + " (replaces poison with strength)");
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		if(!entity.world.isRemote && entity.isPotionActive(MobEffects.POISON)) {
 			entity.removePotionEffect(MobEffects.POISON);
 			entity.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 100, 4));

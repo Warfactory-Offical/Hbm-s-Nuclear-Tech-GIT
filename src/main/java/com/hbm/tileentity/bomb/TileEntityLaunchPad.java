@@ -1,39 +1,36 @@
 package com.hbm.tileentity.bomb;
 
-import com.hbm.lib.Library;
-import com.hbm.lib.ForgeDirection;
-import com.hbm.items.ModItems;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.interfaces.IBomb;
-import com.hbm.packet.AuxGaugePacket;
+import com.hbm.items.ModItems;
+import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
+import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEMissilePacket;
 import com.hbm.tileentity.TileEntityLoadedBase;
-import net.minecraftforge.fml.common.Optional;
-
-import api.hbm.energy.IEnergyUser;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
-import li.cil.oc.api.network.SimpleComponent;
-
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
-public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickable, IEnergyUser, SimpleComponent {
+public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickable, IEnergyReceiverMK2, SimpleComponent {
 
 	public ItemStackHandler inventory;
 
@@ -63,11 +60,11 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -76,7 +73,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		detectPower = power + 1;
 		if (compound.hasKey("inventory"))
@@ -86,7 +83,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -94,7 +91,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 		return super.writeToNBT(compound);
 	}
 
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 
@@ -110,11 +107,11 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	private void updateConnections() {
-		this.trySubscribe(world, pos.add(1, 0, 0), ForgeDirection.EAST);
-		this.trySubscribe(world, pos.add(-1, 0, 0), ForgeDirection.WEST);
-		this.trySubscribe(world, pos.add(0, 0, 1), ForgeDirection.SOUTH);
-		this.trySubscribe(world, pos.add(0, 0, -1), ForgeDirection.NORTH);
-		this.trySubscribe(world, pos.add(0, -1, 0), ForgeDirection.DOWN);
+		this.trySubscribe(world, pos.getX() + 1, pos.getY(), pos.getZ(), ForgeDirection.EAST);
+		this.trySubscribe(world, pos.getX() - 1, pos.getY(), pos.getZ(), ForgeDirection.WEST);
+		this.trySubscribe(world, pos.getX(), pos.getY(), pos.getZ() + 1, ForgeDirection.SOUTH);
+		this.trySubscribe(world, pos.getX(), pos.getY(), pos.getZ() - 1, ForgeDirection.NORTH);
+		this.trySubscribe(world, pos.getX(), pos.getY() -1, pos.getZ(), ForgeDirection.DOWN);
 	}
 
 	private ItemStack detectStack = ItemStack.EMPTY;
@@ -143,7 +140,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 
@@ -164,18 +161,18 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 
-	public boolean setCoords(final int x, final int z){
+	public boolean setCoords(int x, int z){
 		if(!inventory.getStackInSlot(1).isEmpty() && (inventory.getStackInSlot(1).getItem() == ModItems.designator || inventory.getStackInSlot(1).getItem() == ModItems.designator_range || inventory.getStackInSlot(1).getItem() == ModItems.designator_manual)){
-			final NBTTagCompound nbt;
+			NBTTagCompound nbt;
 			if(inventory.getStackInSlot(1).hasTagCompound())
 				nbt = inventory.getStackInSlot(1).getTagCompound();
 			else
@@ -196,16 +193,16 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ITickab
 	}
 
 	@Callback(doc = "setTarget(x:int, z:int); saves coords in target designator item - returns true if it worked")
-	public Object[] setTarget(final Context context, final Arguments args) {
-		final int x = args.checkInteger(0);
-		final int z = args.checkInteger(1);
+	public Object[] setTarget(Context context, Arguments args) {
+		int x = args.checkInteger(0);
+		int z = args.checkInteger(1);
 		
 		return new Object[] {setCoords(x, z)};
 	}
 
 	@Callback(doc = "launch(); tries to launch the rocket")
-	public Object[] launch(final Context context, final Arguments args) {
-		final Block b = world.getBlockState(pos).getBlock();
+	public Object[] launch(Context context, Arguments args) {
+		Block b = world.getBlockState(pos).getBlock();
 		if(b instanceof IBomb){
 			((IBomb)b).explode(world, pos);
 		}

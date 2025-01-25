@@ -1,40 +1,34 @@
 package com.hbm.render.amlfrom1710;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
-import java.util.PriorityQueue;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import java.nio.*;
+import java.util.PriorityQueue;
 
 @SideOnly(Side.CLIENT)
 public class Tessellator
 {
-    private static final int nativeBufferSize = 0x200000;
-    private static final int trivertsInBuffer = (nativeBufferSize / 48) * 6;
+    private static int nativeBufferSize = 0x200000;
+    private static int trivertsInBuffer = (nativeBufferSize / 48) * 6;
     public static boolean renderingWorldRenderer = false;
     public boolean defaultTexture = false;
     private int rawBufferSize = 0;
     public int textureID = 0;
 
     /** The byte buffer used for GL allocation. */
-    private static final ByteBuffer byteBuffer = GLAllocation.createDirectByteBuffer(nativeBufferSize * 4);
+    private static ByteBuffer byteBuffer = GLAllocation.createDirectByteBuffer(nativeBufferSize * 4);
     /** The same memory as byteBuffer, but referenced as an integer buffer. */
-    private static final IntBuffer intBuffer = byteBuffer.asIntBuffer();
+    private static IntBuffer intBuffer = byteBuffer.asIntBuffer();
     /** The same memory as byteBuffer, but referenced as an float buffer. */
-    private static final FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
+    private static FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
     /** The same memory as byteBuffer, but referenced as an short buffer. */
-    private static final ShortBuffer shortBuffer = byteBuffer.asShortBuffer();
+    private static ShortBuffer shortBuffer = byteBuffer.asShortBuffer();
     /** Raw integer array. */
     private int[] rawBuffer;
     /** The number of vertices to be drawn in the next draw call. Reset to 0 between draw calls. */
@@ -80,7 +74,7 @@ public class Tessellator
     private int bufferSize;
     private static final String __OBFID = "CL_00000960";
 
-    private Tessellator(final int p_i1250_1_) {
+    private Tessellator(int p_i1250_1_) {
     }
 
     public Tessellator(){
@@ -105,11 +99,11 @@ public class Tessellator
         return 1;
     }
 
-    public TesselatorVertexState getVertexState(final float p_147564_1_, final float p_147564_2_, final float p_147564_3_)
+    public TesselatorVertexState getVertexState(float p_147564_1_, float p_147564_2_, float p_147564_3_)
     {
-        final int[] aint = new int[this.rawBufferIndex];
-        final PriorityQueue priorityqueue = new PriorityQueue(this.rawBufferIndex, new QuadComparator(this.rawBuffer, p_147564_1_ + (float)this.xOffset, p_147564_2_ + (float)this.yOffset, p_147564_3_ + (float)this.zOffset));
-        final byte b0 = 32;
+        int[] aint = new int[this.rawBufferIndex];
+        PriorityQueue priorityqueue = new PriorityQueue(this.rawBufferIndex, new QuadComparator(this.rawBuffer, p_147564_1_ + (float)this.xOffset, p_147564_2_ + (float)this.yOffset, p_147564_3_ + (float)this.zOffset));
+        byte b0 = 32;
         int i;
 
         for (i = 0; i < this.rawBufferIndex; i += b0)
@@ -119,16 +113,19 @@ public class Tessellator
 
         for (i = 0; !priorityqueue.isEmpty(); i += b0)
         {
-            final int j = ((Integer)priorityqueue.remove()).intValue();
+            int j = ((Integer)priorityqueue.remove()).intValue();
 
-            System.arraycopy(this.rawBuffer, j + 0, aint, i + 0, b0);
+            for (int k = 0; k < b0; ++k)
+            {
+                aint[i + k] = this.rawBuffer[j + k];
+            }
         }
 
         System.arraycopy(aint, 0, this.rawBuffer, 0, aint.length);
         return new TesselatorVertexState(aint, this.rawBufferIndex, this.vertexCount, this.hasTexture, this.hasBrightness, this.hasNormals, this.hasColor);
     }
 
-    public void setVertexState(final TesselatorVertexState p_147565_1_)
+    public void setVertexState(TesselatorVertexState p_147565_1_)
     {
         while (p_147565_1_.getRawBuffer().length > rawBufferSize && rawBufferSize > 0)
         {
@@ -153,7 +150,7 @@ public class Tessellator
     private void reset()
     {
         this.vertexCount = 0;
-        byteBuffer.clear();
+        this.byteBuffer.clear();
         this.rawBufferIndex = 0;
         this.addedVertices = 0;
     }
@@ -170,14 +167,14 @@ public class Tessellator
         startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
     }
     
-    public void startDrawing(final int mode){
+    public void startDrawing(int mode){
         startDrawing(mode, DefaultVertexFormats.POSITION_TEX_NORMAL);
     }
     
     /**
      * Resets tessellator state and prepares for drawing (with the specified draw mode).
      */
-    public void startDrawing(final int glMode, final VertexFormat format)
+    public void startDrawing(int glMode, VertexFormat format)
     {
        /* if (this.isDrawing)
         {
@@ -200,14 +197,14 @@ public class Tessellator
     /**
      * Sets the texture coordinates.
      */
-    public void setTextureUV(final double p_78385_1_, final double p_78385_3_)
+    public void setTextureUV(double p_78385_1_, double p_78385_3_)
     {
         this.hasTexture = true;
         this.textureU = p_78385_1_;
         this.textureV = p_78385_3_;
     }
 
-    public void setBrightness(final int p_78380_1_)
+    public void setBrightness(int p_78380_1_)
     {
         this.hasBrightness = true;
         this.brightness = p_78380_1_;
@@ -216,7 +213,7 @@ public class Tessellator
     /**
      * Sets the RGB values as specified, converting from floats between 0 and 1 to integers from 0-255.
      */
-    public void setColorOpaque_F(final float p_78386_1_, final float p_78386_2_, final float p_78386_3_)
+    public void setColorOpaque_F(float p_78386_1_, float p_78386_2_, float p_78386_3_)
     {
         this.setColorOpaque((int)(p_78386_1_ * 255.0F), (int)(p_78386_2_ * 255.0F), (int)(p_78386_3_ * 255.0F));
     }
@@ -224,7 +221,7 @@ public class Tessellator
     /**
      * Sets the RGBA values for the color, converting from floats between 0 and 1 to integers from 0-255.
      */
-    public void setColorRGBA_F(final float p_78369_1_, final float p_78369_2_, final float p_78369_3_, final float p_78369_4_)
+    public void setColorRGBA_F(float p_78369_1_, float p_78369_2_, float p_78369_3_, float p_78369_4_)
     {
         this.setColorRGBA((int)(p_78369_1_ * 255.0F), (int)(p_78369_2_ * 255.0F), (int)(p_78369_3_ * 255.0F), (int)(p_78369_4_ * 255.0F));
     }
@@ -232,7 +229,7 @@ public class Tessellator
     /**
      * Sets the RGB values as specified, and sets alpha to opaque.
      */
-    public void setColorOpaque(final int p_78376_1_, final int p_78376_2_, final int p_78376_3_)
+    public void setColorOpaque(int p_78376_1_, int p_78376_2_, int p_78376_3_)
     {
         this.setColorRGBA(p_78376_1_, p_78376_2_, p_78376_3_, 255);
     }
@@ -304,7 +301,7 @@ public class Tessellator
         }
     }
 
-    public void func_154352_a(final byte p_154352_1_, final byte p_154352_2_, final byte p_154352_3_)
+    public void func_154352_a(byte p_154352_1_, byte p_154352_2_, byte p_154352_3_)
     {
         this.setColorOpaque(p_154352_1_ & 255, p_154352_2_ & 255, p_154352_3_ & 255);
     }
@@ -312,9 +309,13 @@ public class Tessellator
     /**
      * Adds a vertex specifying both x,y,z and the texture u,v for it.
      */
-    public void addVertexWithUV(final double x, final double y, final double z, final double u, final double v)
+    public void addVertexWithUV(double x, double y, double z, double u, double v)
     {
-        final BufferBuilder buf = net.minecraft.client.renderer.Tessellator.getInstance().getBuffer();
+        BufferBuilder buf = net.minecraft.client.renderer.Tessellator.getInstance().getBuffer();
+        if (buf == null) {
+            System.out.println("BufferBuilder is null");
+            return;
+        }
         buf.pos(x+xOffset, y+yOffset, z+zOffset).tex(u, v);
         if(hasColor)
             buf.color(r, g, b, a);
@@ -329,9 +330,9 @@ public class Tessellator
      * Adds a vertex with the specified x,y,z to the current draw call. It will trigger a draw() if the buffer gets
      * full.
      */
-    public void addVertex(final double x, final double y, final double z)
+    public void addVertex(double x, double y, double z)
     {
-      final BufferBuilder buf = net.minecraft.client.renderer.Tessellator.getInstance().getBuffer();
+      BufferBuilder buf = net.minecraft.client.renderer.Tessellator.getInstance().getBuffer();
       buf.pos(x+xOffset, y+yOffset, z+zOffset);
        if(hasColor)
                buf.color(r, g, b, a);
@@ -382,22 +383,22 @@ public class Tessellator
     /**
      * Sets the color to the given opaque value (stored as byte values packed in an integer).
      */
-    public void setColorOpaque_I(final int p_78378_1_)
+    public void setColorOpaque_I(int p_78378_1_)
     {
-        final int j = p_78378_1_ >> 16 & 255;
-        final int k = p_78378_1_ >> 8 & 255;
-        final int l = p_78378_1_ & 255;
+        int j = p_78378_1_ >> 16 & 255;
+        int k = p_78378_1_ >> 8 & 255;
+        int l = p_78378_1_ & 255;
         this.setColorOpaque(j, k, l);
     }
 
     /**
      * Sets the color to the given color (packed as bytes in integer) and alpha values.
      */
-    public void setColorRGBA_I(final int p_78384_1_, final int p_78384_2_)
+    public void setColorRGBA_I(int p_78384_1_, int p_78384_2_)
     {
-        final int k = p_78384_1_ >> 16 & 255;
-        final int l = p_78384_1_ >> 8 & 255;
-        final int i1 = p_78384_1_ & 255;
+        int k = p_78384_1_ >> 16 & 255;
+        int l = p_78384_1_ >> 8 & 255;
+        int i1 = p_78384_1_ & 255;
         this.setColorRGBA(k, l, i1, p_78384_2_);
     }
 
@@ -414,7 +415,7 @@ public class Tessellator
     /**
      * Sets the normal for the current draw call.
      */
-    public void setNormal(final float x, final float y, final float z)
+    public void setNormal(float x, float y, float z)
     {
         this.hasNormals = true;
       //  byte b0 = (byte)((int)(p_78375_1_ * 127.0F));
@@ -429,7 +430,7 @@ public class Tessellator
     /**
      * Sets the translation for all vertices in the current draw call.
      */
-    public void setTranslation(final double p_78373_1_, final double p_78373_3_, final double p_78373_5_)
+    public void setTranslation(double p_78373_1_, double p_78373_3_, double p_78373_5_)
     {
         this.xOffset = p_78373_1_;
         this.yOffset = p_78373_3_;
@@ -439,10 +440,10 @@ public class Tessellator
     /**
      * Offsets the translation for all vertices in the current draw call.
      */
-    public void addTranslation(final float p_78372_1_, final float p_78372_2_, final float p_78372_3_)
+    public void addTranslation(float p_78372_1_, float p_78372_2_, float p_78372_3_)
     {
-        this.xOffset += p_78372_1_;
-        this.yOffset += p_78372_2_;
-        this.zOffset += p_78372_3_;
+        this.xOffset += (double)p_78372_1_;
+        this.yOffset += (double)p_78372_2_;
+        this.zOffset += (double)p_78372_3_;
     }
 }

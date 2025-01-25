@@ -12,7 +12,7 @@ public class JungleDungeon extends CellularDungeon {
 
 	public boolean hasHole = false;
 	
-	public JungleDungeon(final int width, final int height, final int dimX, final int dimZ, final int tries, final int branches) {
+	public JungleDungeon(int width, int height, int dimX, int dimZ, int tries, int branches) {
 		super(width, height, dimX, dimZ, tries, branches);
 
 		this.floor.add(ModBlocks.brick_jungle.getDefaultState());
@@ -31,7 +31,7 @@ public class JungleDungeon extends CellularDungeon {
 			@Override
 			public void work() {
 
-				final JungleDungeon that = JungleDungeon.this;
+				JungleDungeon that = JungleDungeon.this;
 
 				//A hole has not been made -> this is the bottom floor
 				if(!that.hasHole) {

@@ -1,5 +1,4 @@
 package com.hbm.entity.projectile;
-import com.hbm.util.ItemStackUtil;
 
 import java.util.List;
 
@@ -41,11 +40,11 @@ public class EntityRBMKDebris extends Entity {
 	public float lastRot;
 	private boolean hasSizeSet = false;
 
-	public EntityRBMKDebris(final World world){
+	public EntityRBMKDebris(World world){
 		super(world);
 	}
 
-	public EntityRBMKDebris(final World world, final double x, final double y, final double z, final DebrisType type){
+	public EntityRBMKDebris(World world, double x, double y, double z, DebrisType type){
 		super(world);
 		this.setPosition(x, y, z);
 		this.setType(type);
@@ -63,31 +62,31 @@ public class EntityRBMKDebris extends Entity {
 	}
 
 	@Override
-	public boolean processInitialInteract(final EntityPlayer player, final EnumHand hand){
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand){
 		if(!world.isRemote && !isDead) {
 			switch(this.getType()){
 			case BLANK:
-				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_metal)))
+				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal)))
 					this.setDead();
 				break;
 			case ELEMENT:
-				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_metal)))
+				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal)))
 					this.setDead();
 				break;
 			case FUEL:
-				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_fuel)))
+				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_fuel)))
 					this.setDead();
 				break;
 			case GRAPHITE:
-				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_graphite)))
+				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_graphite)))
 					this.setDead();
 				break;
 			case LID:
-				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.rbmk_lid)))
+				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.rbmk_lid)))
 					this.setDead();
 				break;
 			case ROD:
-				if(player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.debris_metal)))
+				if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal)))
 					this.setDead();
 				break;
 			}
@@ -130,21 +129,21 @@ public class EntityRBMKDebris extends Entity {
 		if(!world.isRemote) {
 			if(motionY > 0) {
 
-				final Vec3 pos = Vec3.createVectorHelper(posX, posY, posZ);
-				final Vec3 next = Vec3.createVectorHelper(posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2);
-				final RayTraceResult mop = world.rayTraceBlocks(pos.toVec3d(), next.toVec3d(), false, false, false);
+				Vec3 pos = Vec3.createVectorHelper(posX, posY, posZ);
+				Vec3 next = Vec3.createVectorHelper(posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2);
+				RayTraceResult mop = world.rayTraceBlocks(pos.toVec3d(), next.toVec3d(), false, false, false);
 
 				if(mop != null && mop.typeOfHit == Type.BLOCK) {
 
-					final int x = mop.getBlockPos().getX();
-					final int y = mop.getBlockPos().getY();
-					final int z = mop.getBlockPos().getZ();
+					int x = mop.getBlockPos().getX();
+					int y = mop.getBlockPos().getY();
+					int z = mop.getBlockPos().getZ();
 
 					for(int i = -1; i <= 1; i++) {
 						for(int j = -1; j <= 1; j++) {
 							for(int k = -1; k <= 1; k++) {
 
-								final int rn = Math.abs(i) + Math.abs(j) + Math.abs(k);
+								int rn = Math.abs(i) + Math.abs(j) + Math.abs(k);
 
 								if(rn <= 1 || rand.nextInt(rn) == 0)
 									world.setBlockToAir(new BlockPos(x + i, y + j, z + k));
@@ -209,7 +208,7 @@ public class EntityRBMKDebris extends Entity {
 		}
 	}
 
-	public void setType(final DebrisType type){
+	public void setType(DebrisType type){
 		this.getDataManager().set(TYPE_ID, type.ordinal());
 	}
 
@@ -218,26 +217,26 @@ public class EntityRBMKDebris extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt){
+	protected void readEntityFromNBT(NBTTagCompound nbt){
 		this.getDataManager().set(TYPE_ID, nbt.getInteger("debtype"));
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt){
+	protected void writeEntityToNBT(NBTTagCompound nbt){
 		nbt.setInteger("debtype", this.getDataManager().get(TYPE_ID));
 	}
 
 	@Override
-	public void move(final MoverType type, double moX, double moY, double moZ){
+	public void move(MoverType type, double moX, double moY, double moZ){
 		this.world.profiler.startSection("move");
 
 		if(this.isInWeb) {
 			this.isInWeb = false;
 		}
 
-		final double initMoX = moX;
-		final double initMoY = moY;
-		final double initMoZ = moZ;
+		double initMoX = moX;
+		double initMoY = moY;
+		double initMoZ = moZ;
 
 		List<AxisAlignedBB> list = this.world.getCollisionBoxes(this, this.getEntityBoundingBox().expand(moX, moY, moZ));
 
@@ -253,58 +252,58 @@ public class EntityRBMKDebris extends Entity {
 			moX = 0.0D;
 		}
 
-		final boolean isGoingDown = this.onGround || initMoY != moY && initMoY < 0.0D;
+		boolean isGoingDown = this.onGround || initMoY != moY && initMoY < 0.0D;
 		int j;
 
 		for(j = 0; j < list.size(); ++j) {
-			moX = list.get(j).calculateXOffset(this.getEntityBoundingBox(), moX);
+			moX = ((AxisAlignedBB)list.get(j)).calculateXOffset(this.getEntityBoundingBox(), moX);
 		}
 
 		this.setEntityBoundingBox(this.getEntityBoundingBox().offset(moX, 0.0D, 0.0D));
 
 		for(j = 0; j < list.size(); ++j) {
-			moZ = list.get(j).calculateZOffset(this.getEntityBoundingBox(), moZ);
+			moZ = ((AxisAlignedBB)list.get(j)).calculateZOffset(this.getEntityBoundingBox(), moZ);
 		}
 
 		this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, moZ));
 
-		final double d10;
-		final double d11;
+		double d10;
+		double d11;
 		int k;
-		final double d12;
+		double d12;
 
 		if(this.stepHeight > 0.0F && isGoingDown && (initMoX != moX || initMoZ != moZ)) {
 			d12 = moX;
 			d10 = moY;
 			d11 = moZ;
 			moX = initMoX;
-			moY = this.stepHeight;
+			moY = (double)this.stepHeight;
 			moZ = initMoZ;
-			final AxisAlignedBB axisalignedbb1 = this.getEntityBoundingBox();
+			AxisAlignedBB axisalignedbb1 = this.getEntityBoundingBox();
 			list = this.world.getCollisionBoxes(this, this.getEntityBoundingBox().expand(initMoX, moY, initMoZ));
 
 			for(k = 0; k < list.size(); ++k) {
-				moY = list.get(k).calculateYOffset(this.getEntityBoundingBox(), moY);
+				moY = ((AxisAlignedBB)list.get(k)).calculateYOffset(this.getEntityBoundingBox(), moY);
 			}
 
 			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, moY, 0.0D));
 
 			for(k = 0; k < list.size(); ++k) {
-				moX = list.get(k).calculateXOffset(this.getEntityBoundingBox(), moX);
+				moX = ((AxisAlignedBB)list.get(k)).calculateXOffset(this.getEntityBoundingBox(), moX);
 			}
 
 			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(moX, 0.0D, 0.0D));
 
 			for(k = 0; k < list.size(); ++k) {
-				moZ = list.get(k).calculateZOffset(this.getEntityBoundingBox(), moZ);
+				moZ = ((AxisAlignedBB)list.get(k)).calculateZOffset(this.getEntityBoundingBox(), moZ);
 			}
 
 			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, moZ));
 
-			moY = -this.stepHeight;
+			moY = (double)(-this.stepHeight);
 
 			for(k = 0; k < list.size(); ++k) {
-				moY = list.get(k).calculateYOffset(this.getEntityBoundingBox(), moY);
+				moY = ((AxisAlignedBB)list.get(k)).calculateYOffset(this.getEntityBoundingBox(), moY);
 			}
 
 			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, moY, 0.0D));
@@ -320,17 +319,17 @@ public class EntityRBMKDebris extends Entity {
 		this.world.profiler.endSection();
 		this.world.profiler.startSection("rest");
 		this.posX = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
-		this.posY = this.getEntityBoundingBox().minY + this.getYOffset();
+		this.posY = this.getEntityBoundingBox().minY + (double)this.getYOffset();
 		this.posZ = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
 		this.collidedHorizontally = initMoX != moX || initMoZ != moZ;
 		this.collidedVertically = initMoY != moY;
 		this.onGround = initMoY != moY && initMoY < 0.0D;
 		this.collided = this.collidedHorizontally || this.collidedVertically;
-		final int j6 = MathHelper.floor(this.posX);
-		final int i1 = MathHelper.floor(this.posY - 0.20000000298023224D);
-		final int k6 = MathHelper.floor(this.posZ);
-		final BlockPos blockpos = new BlockPos(j6, i1, k6);
-		final IBlockState iblockstate = this.world.getBlockState(blockpos);
+		int j6 = MathHelper.floor(this.posX);
+		int i1 = MathHelper.floor(this.posY - 0.20000000298023224D);
+		int k6 = MathHelper.floor(this.posZ);
+		BlockPos blockpos = new BlockPos(j6, i1, k6);
+		IBlockState iblockstate = this.world.getBlockState(blockpos);
 		this.updateFallState(moY, this.onGround, iblockstate, blockpos);
 
 		if(initMoX != moX) {
@@ -350,9 +349,9 @@ public class EntityRBMKDebris extends Entity {
 
 		try {
 			this.doBlockCollisions();
-		} catch(final Throwable throwable) {
-			final CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
-			final CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
+		} catch(Throwable throwable) {
+			CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
+			CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
 			this.addEntityCrashInfo(crashreportcategory);
 			throw new ReportedException(crashreport);
 		}
@@ -362,9 +361,9 @@ public class EntityRBMKDebris extends Entity {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(final double dist){
+	public boolean isInRangeToRenderDist(double dist){
 
-		final int range = 128;
+		int range = 128;
 		return dist < range * range;
 	}
 
@@ -374,6 +373,6 @@ public class EntityRBMKDebris extends Entity {
 		FUEL, //spicy
 		ROD, //solid boron rod
 		GRAPHITE, //spicy rock
-		LID //the all destroying harbinger of annihilation
+		LID; //the all destroying harbinger of annihilation
 	}
 }

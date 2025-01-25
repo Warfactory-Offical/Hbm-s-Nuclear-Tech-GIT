@@ -1,6 +1,6 @@
 package com.hbm.items.armor;
 
-import api.hbm.energy.IBatteryItem;
+import api.hbm.energymk2.IBatteryItem;
 import com.hbm.blocks.machine.ItemSelfcharger;
 import com.hbm.items.gear.ArmorFSB;
 import com.hbm.lib.Library;
@@ -23,7 +23,7 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 	public long consumption;
 	public long drain;
 
-	public ArmorFSBPowered(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
+	public ArmorFSBPowered(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
 		super(material, layer, slot, texture, s);
 		this.maxPower = maxPower;
 		this.chargeRate = chargeRate;
@@ -32,8 +32,8 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 		this.setMaxDamage(1);
 	}
 
-	public static String getColor(final long a, final long b){
-		final float fraction = 100F * a/b;
+	public static String getColor(long a, long b){
+		float fraction = 100F * a/b;
 		if(fraction > 75)
 			return "§a";
 		if(fraction > 25)
@@ -43,19 +43,19 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
-    	final long power = getCharge(stack);
+    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+    	long power = getCharge(stack);
     	list.add("Charge: " + getColor(power, maxPower) + Library.getShortNumber(power) + " §2/ " + Library.getShortNumber(maxPower));
     	super.addInformation(stack, worldIn, list, flagIn);
     }
 
     @Override
-	public boolean isArmorEnabled(final ItemStack stack) {
+	public boolean isArmorEnabled(ItemStack stack) {
 		return getCharge(stack) > 0;
 	}
     
 	@Override
-    public void chargeBattery(final ItemStack stack, final long i) {
+    public void chargeBattery(ItemStack stack, long i) {
     	if(stack.getItem() instanceof ArmorFSBPowered) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", Math.min(this.maxPower, Math.max(0, stack.getTagCompound().getLong("charge") + i)));
@@ -67,7 +67,7 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
     }
 
 	@Override
-    public void setCharge(final ItemStack stack, final long i) {
+    public void setCharge(ItemStack stack, long i) {
     	if(stack.getItem() instanceof ArmorFSBPowered) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", i);
@@ -79,7 +79,7 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
     }
 
 	@Override
-    public void dischargeBattery(final ItemStack stack, final long i) {
+    public void dischargeBattery(ItemStack stack, long i) {
     	if(stack.getItem() instanceof ArmorFSBPowered) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", Math.min(this.maxPower, Math.max(0, stack.getTagCompound().getLong("charge") - i)));
@@ -90,7 +90,7 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
     	}
     }
 
-    private ItemSelfcharger getHeldSCBattery(final EntityLivingBase entity){
+    private ItemSelfcharger getHeldSCBattery(EntityLivingBase entity){
     	if(entity.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemSelfcharger){
     		return (ItemSelfcharger) entity.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem();
     	}
@@ -101,10 +101,10 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
     }
 
 	@Override
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
     	if(this.drain > 0 && ArmorFSB.hasFSBArmor(player)) {
     		long netto_drain = drain;
-    		final ItemSelfcharger sc_battery = this.getHeldSCBattery(player);
+    		ItemSelfcharger sc_battery = this.getHeldSCBattery(player);
     		if(sc_battery != null){
     			netto_drain = netto_drain - (sc_battery.getDischargeRate()/4L);
     		}
@@ -113,7 +113,7 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
     }
 	
 	@Override
-    public long getCharge(final ItemStack stack) {
+    public long getCharge(ItemStack stack) {
     	if(stack.getItem() instanceof ArmorFSBPowered) {
     		if(stack.hasTagCompound()) {
     			return stack.getTagCompound().getLong("charge");
@@ -128,13 +128,13 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
     }
 
 	@Override
-    public boolean showDurabilityBar(final ItemStack stack) {
+    public boolean showDurabilityBar(ItemStack stack) {
 
         return getCharge(stack) < maxPower;
     }
 
 	@Override
-    public double getDurabilityForDisplay(final ItemStack stack) {
+    public double getDurabilityForDisplay(ItemStack stack) {
 
         return 1 - (double)getCharge(stack) / (double)maxPower;
     }
@@ -155,7 +155,7 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 	}
 
 	@Override
-    public void setDamage(final ItemStack stack, final int damage)
+    public void setDamage(ItemStack stack, int damage)
     {
         this.dischargeBattery(stack, damage * consumption);
     }

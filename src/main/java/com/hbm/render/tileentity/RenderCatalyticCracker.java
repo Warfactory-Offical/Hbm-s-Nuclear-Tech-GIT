@@ -1,18 +1,16 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.oil.TileEntityMachineCatalyticCracker;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCatalyticCracker extends TileEntitySpecialRenderer<TileEntityMachineCatalyticCracker> {
 	
 	@Override
-	public void render(final TileEntityMachineCatalyticCracker te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineCatalyticCracker te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
 		GlStateManager.pushMatrix();
 

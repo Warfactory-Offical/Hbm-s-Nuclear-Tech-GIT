@@ -1,18 +1,13 @@
 package com.hbm.render.tileentity;
 
-import java.nio.DoubleBuffer;
-
-import com.hbm.interfaces.IDoor;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.animloader.AnimationWrapper;
 import com.hbm.animloader.AnimationWrapper.EndResult;
 import com.hbm.animloader.AnimationWrapper.EndType;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.interfaces.IDoor;
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntitySlidingBlastDoor;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,18 +15,21 @@ import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.nio.DoubleBuffer;
 
 public class RenderSlidingBlastDoor extends TileEntitySpecialRenderer<TileEntitySlidingBlastDoor> {
 
 	private static DoubleBuffer buf = null;
 	
 	@Override
-	public boolean isGlobalRenderer(final TileEntitySlidingBlastDoor te) {
+	public boolean isGlobalRenderer(TileEntitySlidingBlastDoor te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntitySlidingBlastDoor te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntitySlidingBlastDoor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x+0.5, y, z+0.5);
         
@@ -67,10 +65,10 @@ public class RenderSlidingBlastDoor extends TileEntitySpecialRenderer<TileEntity
 		GL11.glClipPlane(GL11.GL_CLIP_PLANE1, buf);
 		GL11.glPopMatrix();
         
-        final long time = System.currentTimeMillis();
-        final long startTime = te.state.isMovingState() ? te.sysTime : time;
-        final boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
-        final AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.door0_open);
+        long time = System.currentTimeMillis();
+        long startTime = te.state.isMovingState() ? te.sysTime : time;
+        boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
+        AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.door0_open);
         if(reverse){
         	w.reverse();
         }

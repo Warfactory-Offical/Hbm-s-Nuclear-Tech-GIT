@@ -19,42 +19,47 @@ public class SatelliteHorizons extends Satellite {
 		this.satIface = Interfaces.SAT_COORD;
 	}
 
-	public void onOrbit(final World world, final double x, final double y, final double z) {
+	public void onOrbit(World world, double x, double y, double z) {
 
-		for(final EntityPlayer p : world.playerEntities)
+		for(EntityPlayer p : world.playerEntities)
 			AdvancementManager.grantAchievement(p, AdvancementManager.horizonsStart);
 	}
 	
-	public void writeToNBT(final NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt) {
 		nbt.setBoolean("used", used);
 		nbt.setLong("lastOp", lastOp);
 	}
 	
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		used = nbt.getBoolean("used");
 		lastOp = nbt.getLong("lastOp");
 	}
 	
-	public void onCoordAction(final World world, final EntityPlayer player, final int x, final int y, final int z) {
+	public void onCoordAction(World world, EntityPlayer player, int x, int y, int z) {
 		if(used)
 			return;
 		used = true;
 		SatelliteSavedData.getData(world).markDirty();
 		
-		final EntityTom tom = new EntityTom(world);
+		EntityTom tom = new EntityTom(world);
 		tom.setPosition(x + 0.5, 600, z + 0.5);
 		
-		final IChunkProvider provider = world.getChunkProvider();
+		IChunkProvider provider = world.getChunkProvider();
 		provider.provideChunk(x >> 4, z >> 4);
 		
 		world.spawnEntity(tom);
 
-		for(final EntityPlayer p : world.playerEntities)
+		for(EntityPlayer p : world.playerEntities)
 			AdvancementManager.grantAchievement(p, AdvancementManager.horizonsEnd);
 		
 		//not necessary but JUST to make sure
 		if(!world.isRemote) {
 			FMLCommonHandler.instance().getMinecraftServerInstance().sendMessage(new TextComponentTranslation("chat.gerald.detonated"));
 		}
+	}
+
+	@Override
+	public float[] getColor() {
+		return new float[] { 0.0F, 0.0F, 0.0F };
 	}
 }

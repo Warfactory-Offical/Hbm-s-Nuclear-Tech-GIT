@@ -20,7 +20,7 @@ public class Gun20GaugeFactory {
 
 	public static GunConfiguration getShotgunConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 25;
 		config.roundsPerCycle = 1;
@@ -66,7 +66,7 @@ public class Gun20GaugeFactory {
 	
 	public static GunConfiguration getMareConfig() {
 		
-		final GunConfiguration config = getShotgunConfig();
+		GunConfiguration config = getShotgunConfig();
 		
 		config.durability = 2000;
 		config.reloadSound = GunConfiguration.RSOUND_SHOTGUN;
@@ -93,7 +93,7 @@ public class Gun20GaugeFactory {
 	
 	public static GunConfiguration getMareDarkConfig() {
 		
-		final GunConfiguration config = getShotgunConfig();
+		GunConfiguration config = getShotgunConfig();
 		
 		config.durability = 2500;
 		config.reloadSound = GunConfiguration.RSOUND_SHOTGUN;
@@ -120,7 +120,7 @@ public class Gun20GaugeFactory {
 	
 	public static GunConfiguration getBoltConfig() {
 		
-		final GunConfiguration config = getShotgunConfig();
+		GunConfiguration config = getShotgunConfig();
 		
 		config.ammoCap = 1;
 		config.durability = 3000;
@@ -148,7 +148,7 @@ public class Gun20GaugeFactory {
 	
 	public static GunConfiguration getBoltGreenConfig() {
 		
-		final GunConfiguration config = getShotgunConfig();
+		GunConfiguration config = getShotgunConfig();
 		
 		config.ammoCap = 1;
 		config.durability = 2500;
@@ -176,7 +176,7 @@ public class Gun20GaugeFactory {
 	
 	public static GunConfiguration getBoltSaturniteConfig() {
 		
-		final GunConfiguration config = getShotgunConfig();
+		GunConfiguration config = getShotgunConfig();
 		
 		config.ammoCap = 1;
 		config.durability = 4000;
@@ -204,7 +204,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge;
 		bullet.dmgMin = 1;
@@ -215,7 +215,7 @@ public class Gun20GaugeFactory {
 
 	public static BulletConfiguration get20GaugeSlugConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_slug;
 		bullet.dmgMin = 10;
@@ -228,7 +228,7 @@ public class Gun20GaugeFactory {
 
 	public static BulletConfiguration get20GaugeFlechetteConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_flechette;
 		bullet.dmgMin = 3;
@@ -243,7 +243,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeFireConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_incendiary;
 		bullet.dmgMin = 1;
@@ -256,7 +256,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeShrapnelConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_shrapnel;
 		bullet.wear = 15;
@@ -271,7 +271,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeExplosiveConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_explosive;
 		bullet.dmgMin = 6;
@@ -284,7 +284,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeCausticConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_caustic;
 		bullet.dmgMin = 2;
@@ -303,7 +303,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeShockConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_shock;
 		bullet.dmgMin = 4;
@@ -323,7 +323,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeWitherConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_20gauge_wither;
 		bullet.dmgMin = 4;
@@ -337,7 +337,7 @@ public class Gun20GaugeFactory {
 	
 	public static BulletConfiguration get20GaugeSleekConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardAirstrikeConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardAirstrikeConfig();
 
 		bullet.ammo = ModItems.ammo_20gauge_sleek;
 

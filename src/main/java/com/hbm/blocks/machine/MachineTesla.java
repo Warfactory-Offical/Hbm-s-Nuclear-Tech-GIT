@@ -2,7 +2,6 @@ package com.hbm.blocks.machine;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.machine.TileEntityTesla;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +13,7 @@ import net.minecraft.world.World;
 
 public class MachineTesla extends BlockContainer {
 
-	public MachineTesla(final Material materialIn, final String s) {
+	public MachineTesla(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -23,37 +22,37 @@ public class MachineTesla extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityTesla();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 

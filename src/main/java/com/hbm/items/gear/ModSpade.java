@@ -5,7 +5,7 @@ import com.hbm.main.MainRegistry;
 import net.minecraft.item.ItemSpade;
 
 public class ModSpade extends ItemSpade {
-	public ModSpade(final ToolMaterial t, final String s){
+	public ModSpade(ToolMaterial t, String s){
 		
 		super(t);
 		this.setTranslationKey(s);

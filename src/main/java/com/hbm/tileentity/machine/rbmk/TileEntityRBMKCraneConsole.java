@@ -1,48 +1,40 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.capability.HbmCapability;
 import com.hbm.capability.HbmCapability.IHBMData;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
+import com.hbm.inventory.control_panel.*;
 import com.hbm.items.machine.ItemRBMKRod;
-import com.hbm.packet.NBTPacket;
 import com.hbm.lib.ForgeDirection;
-import com.hbm.inventory.control_panel.IControllable;
-import com.hbm.inventory.control_panel.ControlEventSystem;
-import com.hbm.inventory.control_panel.ControlEvent;
-import com.hbm.inventory.control_panel.DataValue;
-import com.hbm.inventory.control_panel.DataValueFloat;
+import com.hbm.packet.NBTPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.INBTPacketReceiver;
-import com.hbm.tileentity.machine.rbmk.IRBMKLoadable;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ITickable;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.common.Optional;
-
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
 public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements ITickable, INBTPacketReceiver, SimpleComponent, IControllable {
@@ -123,7 +115,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 
 					if(this.canTargetInteract()) {
 						if(inventory.getStackInSlot(0).isEmpty()) {
-							final IRBMKLoadable column = getColumnAtPos();
+							IRBMKLoadable column = getColumnAtPos();
 							inventory.setStackInSlot(0, column.provideNext());
 							column.unload();
 						} else {
@@ -170,18 +162,18 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 		}
 
 		//Player input for next update
-		final double xCoord = pos.getX();
-		final double yCoord = pos.getY();
-		final double zCoord = pos.getZ();
+		double xCoord = pos.getX();
+		double yCoord = pos.getY();
+		double zCoord = pos.getZ();
 
-		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		final ForgeDirection side = dir.getRotation(ForgeDirection.UP);
-		final double minX = xCoord + 0.5 - side.offsetX * 1.5;
-		final double maxX = xCoord + 0.5 + side.offsetX * 1.5 + dir.offsetX * 2;
-		final double minZ = zCoord + 0.5 - side.offsetZ * 1.5;
-		final double maxZ = zCoord + 0.5 + side.offsetZ * 1.5 + dir.offsetZ * 2;
+		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection side = dir.getRotation(ForgeDirection.UP);
+		double minX = xCoord + 0.5 - side.offsetX * 1.5;
+		double maxX = xCoord + 0.5 + side.offsetX * 1.5 + dir.offsetX * 2;
+		double minZ = zCoord + 0.5 - side.offsetZ * 1.5;
+		double maxZ = zCoord + 0.5 + side.offsetZ * 1.5 + dir.offsetZ * 2;
 		
-		final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(
+		List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(
 				Math.min(minX, maxX),
 				yCoord,
 				Math.min(minZ, maxZ),
@@ -192,8 +184,8 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 		tiltLeft = 0;
 		
 		if(players.size() > 0 && !isCraneLoading()) {
-			final EntityPlayer player = players.get(0);
-			final IHBMData props = HbmCapability.getData(player);
+			EntityPlayer player = players.get(0);
+			IHBMData props = HbmCapability.getData(player);
 
 			processInput(props.getKeyPressed(EnumKeybind.CRANE_UP),
 				props.getKeyPressed(EnumKeybind.CRANE_DOWN),
@@ -224,7 +216,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 				this.loadedEnrichment = 20;
 			}
 			
-			final NBTTagCompound nbt = new NBTTagCompound();
+			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setBoolean("crane", setUpCrane);
 			
 			if(setUpCrane) { //no need to send any of this if there's NO FUCKING CRANE THERE
@@ -247,7 +239,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 		}
 	}
 
-	public void processInput(final boolean inputUP, final boolean inputDOWN, final boolean inputLEFT, final boolean inputRIGHT){
+	public void processInput(boolean inputUP, boolean inputDOWN, boolean inputLEFT, boolean inputRIGHT){
 		up = inputUP;
 		down = inputDOWN;
 		left = inputLEFT;
@@ -299,7 +291,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	
 	public boolean canTargetInteract() {
 		
-		final IRBMKLoadable column = getColumnAtPos();
+		IRBMKLoadable column = getColumnAtPos();
 		
 		if(column == null)
 			return false;
@@ -313,20 +305,20 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	
 	public IRBMKLoadable getColumnAtPos() {
 		
-		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		final ForgeDirection left = dir.getRotation(ForgeDirection.DOWN);
+		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection left = dir.getRotation(ForgeDirection.DOWN);
 
-		final int x = (int)Math.floor(this.centerX - dir.offsetX * this.posFront - left.offsetX * this.posLeft + 0.5D);
-		final int y = this.centerY - 1;
-		final int z = (int)Math.floor(this.centerZ - dir.offsetZ * this.posFront - left.offsetZ * this.posLeft + 0.5D);
+		int x = (int)Math.floor(this.centerX - dir.offsetX * this.posFront - left.offsetX * this.posLeft + 0.5D);
+		int y = this.centerY - 1;
+		int z = (int)Math.floor(this.centerZ - dir.offsetZ * this.posFront - left.offsetZ * this.posLeft + 0.5D);
 				
-		final Block b = world.getBlockState(new BlockPos(x, y, z)).getBlock();
+		Block b = world.getBlockState(new BlockPos(x, y, z)).getBlock();
 		
 		if(b instanceof RBMKBase) {
 			
-			final int[] pos = ((BlockDummyable)b).findCore(world, x, y, z);
+			int[] pos = ((BlockDummyable)b).findCore(world, x, y, z);
 			if(pos != null) {
-				final TileEntityRBMKBase column = (TileEntityRBMKBase)world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+				TileEntityRBMKBase column = (TileEntityRBMKBase)world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 				if(column instanceof IRBMKLoadable) {
 					return (IRBMKLoadable) column;
 				}
@@ -337,7 +329,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		
 		lastPosFront = posFront;
 		lastPosLeft = posLeft;
@@ -361,7 +353,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 		this.goesDown = nbt.getBoolean("goesDown");
 	}
 	
-	public void setTarget(final int x, final int y, final int z) {
+	public void setTarget(int x, int y, int z) {
 		this.centerX = x;
 		this.centerY = y + RBMKDials.getColumnHeight(world) + 1;
 		this.centerZ = z;
@@ -378,7 +370,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 
 		this.setUpCrane = nbt.getBoolean("crane");
 		this.centerX = nbt.getInteger("centerX");
@@ -398,7 +390,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setBoolean("crane", setUpCrane);
 		nbt.setInteger("centerX", centerX);
@@ -440,7 +432,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveUp(); move the crane up 1 block")
-	public Object[] moveUp(final Context context, final Arguments args) {
+	public Object[] moveUp(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(true, false, false, false);
@@ -453,7 +445,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveDown(); move the crane down 1 block")
-	public Object[] moveDown(final Context context, final Arguments args) {
+	public Object[] moveDown(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(false, true, false, false);
@@ -466,7 +458,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveLeft(); move the crane left 1 block")
-	public Object[] moveLeft(final Context context, final Arguments args) {
+	public Object[] moveLeft(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(false, false, true, false);
@@ -479,7 +471,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveRight(); move the crane right 1 block")
-	public Object[] moveRight(final Context context, final Arguments args) {
+	public Object[] moveRight(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(false, false, false, true);
@@ -492,7 +484,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveUpLeft(); move the crane up and left 1 block")
-	public Object[] moveUpLeft(final Context context, final Arguments args) {
+	public Object[] moveUpLeft(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(true, false, true, false);
@@ -505,7 +497,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveUpRight(); move the crane up and right 1 block")
-	public Object[] moveUpRight(final Context context, final Arguments args) {
+	public Object[] moveUpRight(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(true, false, false, true);
@@ -518,7 +510,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveDownLeft(); move the crane down and left 1 block")
-	public Object[] moveDownLeft(final Context context, final Arguments args) {
+	public Object[] moveDownLeft(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(false, true, true, false);
@@ -531,7 +523,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "moveDownRight(); move the crane down and right 1 block")
-	public Object[] moveDownRight(final Context context, final Arguments args) {
+	public Object[] moveDownRight(Context context, Arguments args) {
 		if(setUpCrane) {
 			if(!isCraneLoading()){
 				processInput(false, true, false, true);
@@ -544,7 +536,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "loadUnload(); starts loading/unloading of items")
-	public Object[] loadUnload(final Context context, final Arguments args) {
+	public Object[] loadUnload(Context context, Arguments args) {
 		if (setUpCrane) {
 			if(!isCraneLoading()){
 				goesDown = true; // Robert, it goes down.
@@ -557,7 +549,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Callback(doc = "getPos(); get the (x, y) crane displacements. 0,0 is at center rbmk column and y is to the front and x is to the right")
-	public Object[] getPos(final Context context, final Arguments args) {
+	public Object[] getPos(Context context, Arguments args) {
 		if (setUpCrane) 
 			return new Object[] {-posLeft, posFront};
 		return new Object[] {"No crane found"};
@@ -567,7 +559,7 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	// control panel
 	@Override
 	public Map<String, DataValue> getQueryData() {
-		final Map<String, DataValue> data = new HashMap<>();
+		Map<String, DataValue> data = new HashMap<>();
 		if (setUpCrane) {
 			data.put("posX", new DataValueFloat((float) -posLeft));
 			data.put("posY", new DataValueFloat((float) posFront));
@@ -576,13 +568,13 @@ public class TileEntityRBMKCraneConsole extends TileEntityMachineBase implements
 	}
 
 	@Override
-	public void receiveEvent(final BlockPos from, final ControlEvent e) {
+	public void receiveEvent(BlockPos from, ControlEvent e) {
 		switch (e.name) {
 			case "rbmk_crane_move": {
-				final boolean up = e.vars.get("up").getBoolean();
-				final boolean down = e.vars.get("down").getBoolean();
-				final boolean left = e.vars.get("left").getBoolean();
-				final boolean right = e.vars.get("right").getBoolean();
+				boolean up = e.vars.get("up").getBoolean();
+				boolean down = e.vars.get("down").getBoolean();
+				boolean left = e.vars.get("left").getBoolean();
+				boolean right = e.vars.get("right").getBoolean();
 
 				if (setUpCrane && !isCraneLoading()) {
 					processInput(up, down, left, right);

@@ -79,12 +79,12 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		return config;
 	}
 	
-	public EntityBulletBase(final World world) {
+	public EntityBulletBase(World world) {
 		super(world);
 		this.setSize(0.5F, 0.5F);
 	}
 
-	public EntityBulletBase(final World world, final int config) {
+	public EntityBulletBase(World world, int config) {
 		super(world);
 		this.config = BulletConfigSyncingUtil.pullConfig(config);
 		this.getDataManager().set(BULLETCONFIG, config);
@@ -97,7 +97,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		this.setSize(0.5F, 0.5F);
 	}
 
-	public EntityBulletBase(final World world, final int config, final EntityLivingBase entity, final EntityLivingBase target, final float motion, final float deviation) {
+	public EntityBulletBase(World world, int config, EntityLivingBase entity, EntityLivingBase target, float motion, float deviation) {
 		super(world);
 
 		this.config = BulletConfigSyncingUtil.pullConfig(config);
@@ -107,16 +107,16 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		this.setSize(0.5F, 0.5F);
 
 		this.posY = entity.posY + entity.getEyeHeight() - 0.10000000149011612D;
-		final double d0 = target.posX - entity.posX;
-		final double d1 = target.getEntityBoundingBox().minY + target.height / 3.0F - this.posY;
-		final double d2 = target.posZ - entity.posZ;
-		final double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+		double d0 = target.posX - entity.posX;
+		double d1 = target.getEntityBoundingBox().minY + target.height / 3.0F - this.posY;
+		double d2 = target.posZ - entity.posZ;
+		double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
 		if (d3 >= 1.0E-7D) {
-			final float f2 = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-			final float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-			final double d4 = d0 / d3;
-			final double d5 = d2 / d3;
+			float f2 = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+			float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+			double d4 = d0 / d3;
+			double d5 = d2 / d3;
 			this.setLocationAndAngles(entity.posX + d4, this.posY, entity.posZ + d5, f2, f3);
 			this.shoot(d0, d1, d2, motion, deviation);
 		}
@@ -125,7 +125,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		this.getDataManager().set(TRAIL, this.config.trail);
 	}
 	
-	public EntityBulletBase(final World world, final int config, final EntityLivingBase entity, final EnumHand hand) {
+	public EntityBulletBase(World world, int config, EntityLivingBase entity, EnumHand hand) {
 		super(world);
 		this.config = BulletConfigSyncingUtil.pullConfig(config);
 		this.getDataManager().set(BULLETCONFIG, config);
@@ -155,7 +155,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		this.getDataManager().set(TRAIL, this.config.trail);
 	}
 
-	public EntityBulletBase(final World world, final int config, final EntityLivingBase entity) {
+	public EntityBulletBase(World world, int config, EntityLivingBase entity) {
 		super(world);
 		this.config = BulletConfigSyncingUtil.pullConfig(config);
 		this.getDataManager().set(BULLETCONFIG, config);
@@ -180,14 +180,14 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		this.getDataManager().set(TRAIL, this.config.trail);
 	}
 	
-	public void overrideStyle(final int style){
+	public void overrideStyle(int style){
 		this.getDataManager().set(STYLE, style);
 	}
 	
 	@Override
-	public void shoot(double moX, double moY, double moZ, final float mult1, final float mult2) {
+	public void shoot(double moX, double moY, double moZ, float mult1, float mult2) {
 
-		final float f2 = MathHelper.sqrt(moX * moX + moY * moY + moZ * moZ);
+		float f2 = MathHelper.sqrt(moX * moX + moY * moY + moZ * moZ);
 		moX /= f2;
 		moY /= f2;
 		moZ /= f2;
@@ -201,27 +201,27 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		this.motionY = moY;
 		this.motionZ = moZ;
 
-		final float f3 = MathHelper.sqrt(moX * moX + moZ * moZ);
+		float f3 = MathHelper.sqrt(moX * moX + moZ * moZ);
 		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(moX, moZ) * 180.0D / Math.PI);
 		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(moY, f3) * 180.0D / Math.PI);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setPositionAndRotationDirect(final double x, final double y, final double z, final float r0, final float r1, final int i, final boolean b) {
+	public void setPositionAndRotationDirect(double x, double y, double z, float r0, float r1, int i, boolean b) {
 		this.setPosition(x, y, z);
 		this.setRotation(r0, r1);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setVelocity(final double x, final double y, final double z) {
+	public void setVelocity(double x, double y, double z) {
 		this.motionX = x;
 		this.motionY = y;
 		this.motionZ = z;
 
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-			final float f = MathHelper.sqrt(x * x + z * z);
+			float f = MathHelper.sqrt(x * x + z * z);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(y, f) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch;
@@ -256,9 +256,9 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		}
 
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-			final float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
-			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, f) * 180.0D / Math.PI);
+			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, (double) f) * 180.0D / Math.PI);
 		}
 
 		/// ZONE 1 START ///
@@ -274,22 +274,22 @@ public class EntityBulletBase extends Entity implements IProjectile {
 
 		Entity victim = null;
 		RayTraceResult victimResult = null;
-		final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(Math.abs(this.motionX * this.config.velocity), Math.abs(this.motionY * this.config.velocity), Math.abs(this.motionZ * this.config.velocity)).grow(1.0D));
+		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(Math.abs(this.motionX * this.config.velocity), Math.abs(this.motionY * this.config.velocity), Math.abs(this.motionZ * this.config.velocity)).grow(1.0D));
 
 		double d0 = 0.0D;
 		int i;
 		float f1;
 
 		for (i = 0; i < list.size(); ++i) {
-			final Entity entity1 = list.get(i);
+			Entity entity1 = (Entity) list.get(i);
 
 			if (entity1.canBeCollidedWith() && (entity1 != this.shooter)) {
 				f1 = 0.3F;
-				final AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(f1);
-				final RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vecOrigin, vecDestination);
+				AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(f1);
+				RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vecOrigin, vecDestination);
 
 				if (movingobjectposition1 != null && movingobjectposition1.typeOfHit != Type.MISS) {
-					final double d1 = vecOrigin.distanceTo(movingobjectposition1.hitVec);
+					double d1 = vecOrigin.distanceTo(movingobjectposition1.hitVec);
 					if (d1 < d0 || d0 == 0.0D) {
 						victim = entity1;
 						victimResult = movingobjectposition1;
@@ -339,10 +339,10 @@ public class EntityBulletBase extends Entity implements IProjectile {
 						if (lastDamage == null)
 							lastDamage = ReflectionHelper.findField(EntityLivingBase.class, "lastDamage", "field_110153_bc");
 
-						final float dmg = damage + lastDamage.getFloat(victim);
+						float dmg = (float) damage + lastDamage.getFloat(victim);
 
 						victim.attackEntityFrom(damagesource, dmg);
-					} catch (final Exception x) {
+					} catch (Exception x) {
 					}
 				}
 				
@@ -350,8 +350,8 @@ public class EntityBulletBase extends Entity implements IProjectile {
 				// handle block collision
 			} else if (world.getBlockState(movement.getBlockPos()).getMaterial() != Material.AIR) {
 
-				final boolean hRic = rand.nextInt(100) < config.HBRC;
-				final boolean doesRic = config.doesRicochet || hRic;
+				boolean hRic = rand.nextInt(100) < config.HBRC;
+				boolean doesRic = config.doesRicochet || hRic;
 
 				if (!config.isSpectral && !doesRic)
 					this.onBlockImpact(movement.getBlockPos(), movement);
@@ -383,11 +383,11 @@ public class EntityBulletBase extends Entity implements IProjectile {
 
 					if (face != null) {
 
-						final Vec3d vel = new Vec3d(motionX, motionY, motionZ);
+						Vec3d vel = new Vec3d(motionX, motionY, motionZ);
 						vel.normalize();
 
-						final boolean lRic = rand.nextInt(100) < config.LBRC;
-						final double angle = Math.abs(BobMathUtil.getCrossAngle(vel, face) - 90);
+						boolean lRic = rand.nextInt(100) < config.LBRC;
+						double angle = Math.abs(BobMathUtil.getCrossAngle(vel, face) - 90);
 
 						if (hRic || (angle <= config.ricochetAngle && lRic)) {
 							switch (movement.sideHit.getAxis()) {
@@ -446,11 +446,12 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		if (this.config.style == BulletConfiguration.STYLE_ROCKET && !world.isRemote)
 			this.world.spawnEntity(new EntityTSmokeFX(world, this.posX, this.posY, this.posZ, 0, 0, 0));
 
-		final float f2;
+		float f2;
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 		f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		for (this.rotationPitch = (float) (Math.atan2(this.motionY, f2) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
-        }
+		for (this.rotationPitch = (float) (Math.atan2(this.motionY, (double) f2) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+			;
+		}
 
 		while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
 			this.prevRotationPitch += 360.0F;
@@ -468,11 +469,11 @@ public class EntityBulletBase extends Entity implements IProjectile {
 			this.setDead();
 
 		if(world.isRemote && !config.vPFX.isEmpty()) {
-			final double motion = Math.min(Vec3.createVectorHelper(motionX, motionY, motionZ).length(), 0.1);
+			double motion = Math.min(Vec3.createVectorHelper(motionX, motionY, motionZ).lengthVector(), 0.1);
 
 			for (double d = 0; d < 1; d += 1 / motion) {
 
-				final NBTTagCompound nbt = new NBTTagCompound();
+				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "vanillaExt");
 				nbt.setString("mode", config.vPFX);
 				nbt.setDouble("posX", (this.lastTickPosX - this.posX) * d + this.posX);
@@ -483,12 +484,12 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		}
 	}
 	
-	private void doHitVFX(@Nullable final BlockPos pos, final RayTraceResult hit){
+	private void doHitVFX(@Nullable BlockPos pos, RayTraceResult hit){
 		if(getDataManager().get(STYLE) == BulletConfiguration.STYLE_TRACER){
-			final NBTTagCompound tag = new NBTTagCompound();
+			NBTTagCompound tag = new NBTTagCompound();
 			tag.setString("type", "bimpact");
 			tag.setByte("hitType", (byte) hit.typeOfHit.ordinal());
-			final Vec3d norm = Library.normalFromRayTrace(hit);
+			Vec3d norm = Library.normalFromRayTrace(hit);
 			tag.setFloat("nX", (float) norm.x);
 			tag.setFloat("nY", (float) norm.y);
 			tag.setFloat("nZ", (float) norm.z);
@@ -496,8 +497,8 @@ public class EntityBulletBase extends Entity implements IProjectile {
 			tag.setFloat("dirY", (float) motionY);
 			tag.setFloat("dirZ", (float) motionZ);
 			if(hit.typeOfHit == Type.BLOCK){
-				final IBlockState blockstate = world.getBlockState(pos);
-				final Block block = blockstate.getBlock();
+				IBlockState blockstate = world.getBlockState(pos);
+				Block block = blockstate.getBlock();
 				tag.setInteger("block", Block.getIdFromBlock(block));
 				tag.setByte("meta", (byte) block.getMetaFromState(blockstate));
 			}
@@ -509,15 +510,15 @@ public class EntityBulletBase extends Entity implements IProjectile {
 	}
 
 	// for when a bullet dies by hitting a block
-	private void onBlockImpact(final BlockPos pos, final RayTraceResult hit) {
+	private void onBlockImpact(BlockPos pos, RayTraceResult hit) {
 		if(config.bImpact != null)
 			config.bImpact.behaveBlockHit(this, pos.getX(), pos.getY(), pos.getZ());
 		if(!world.isRemote){
 			this.setDead();
 		}
 		
-		final IBlockState blockstate = world.getBlockState(pos);
-		final Block block = blockstate.getBlock();
+		IBlockState blockstate = world.getBlockState(pos);
+		Block block = blockstate.getBlock();
 		
 		doHitVFX(pos, hit);
 
@@ -547,7 +548,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		if (config.emp > 3) {
 			if (!this.world.isRemote) {
 
-				final EntityEMPBlast cloud = new EntityEMPBlast(this.world, config.emp);
+				EntityEMPBlast cloud = new EntityEMPBlast(this.world, config.emp);
 				cloud.posX = this.posX;
 				cloud.posY = this.posY + 0.5F;
 				cloud.posZ = this.posZ;
@@ -567,13 +568,13 @@ public class EntityBulletBase extends Entity implements IProjectile {
 
 		if (config.chlorine > 0 && !world.isRemote) {
 			ExplosionChaos.spawnChlorine(world, posX, posY, posZ, config.chlorine, 1.5, 0);
-			world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
+			world.playSound((double) (posX + 0.5F), (double) (posY + 0.5F), (double) (posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
 		}
 
 		if (config.rainbow > 0 && !world.isRemote) {
 			this.world.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 100.0f, this.world.rand.nextFloat() * 0.1F + 0.9F, true);
 
-			final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
+			EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(this.world);
 			entity.posX = this.posX;
 			entity.posY = this.posY;
 			entity.posZ = this.posZ;
@@ -584,7 +585,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 
 			this.world.spawnEntity(entity);
 
-			final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, config.rainbow);
+			EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.world, config.rainbow);
 			cloud.posX = this.posX;
 			cloud.posY = this.posY;
 			cloud.posZ = this.posZ;
@@ -592,7 +593,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 		}
 
 		if (config.nuke > 0 && !world.isRemote) {
-			world.spawnEntity(EntityNukeExplosionMK5.statFac(world, config.nuke, posX, posY, posZ).mute());
+			world.spawnEntity(EntityNukeExplosionMK5.statFac(world, config.nuke, posX, posY, posZ));
 			
 			if(BombConfig.enableNukeClouds) {
 				if(MainRegistry.polaroidID == 11 || rand.nextInt(100) == 0){
@@ -617,13 +618,13 @@ public class EntityBulletBase extends Entity implements IProjectile {
 	}
 
 	// for when a bullet dies by hitting a block
-	private void onRicochet(final BlockPos pos) {
+	private void onRicochet(BlockPos pos) {
 		if(config.bRicochet != null)
 			config.bRicochet.behaveBlockRicochet(this, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	// for when a bullet dies by hitting an entity
-	private void onEntityImpact(final Entity e, final RayTraceResult rt) {
+	private void onEntityImpact(Entity e, RayTraceResult rt) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
@@ -635,7 +636,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 	}
 
 	// for when a bullet hurts an entity, not necessarily dying
-	private void onEntityHurt(final Entity e, final RayTraceResult rt, final boolean doVFX) {
+	private void onEntityHurt(Entity e, RayTraceResult rt, boolean doVFX) {
 		if(doVFX)
 			doHitVFX(null, rt);
 		if(!CompatibilityConfig.isWarDim(world)){
@@ -654,7 +655,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 
 		if (e instanceof EntityLivingBase && config.effects != null && !config.effects.isEmpty() && !world.isRemote) {
 
-			for (final PotionEffect effect : config.effects) {
+			for (PotionEffect effect : config.effects) {
 				((EntityLivingBase) e).addPotionEffect(new PotionEffect(effect));
 			}
 		}
@@ -679,9 +680,9 @@ public class EntityBulletBase extends Entity implements IProjectile {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
 
-		final int cfg = nbt.getInteger("config");
+		int cfg = nbt.getInteger("config");
 		this.config = BulletConfigSyncingUtil.pullConfig(cfg);
 		
 		if(this.config == null) {
@@ -698,7 +699,7 @@ public class EntityBulletBase extends Entity implements IProjectile {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("config", this.getDataManager().get(BULLETCONFIG));
 		nbt.setInteger("overrideStyle", this.getDataManager().get(STYLE));
 		nbt.setFloat("damage", this.overrideDamage);

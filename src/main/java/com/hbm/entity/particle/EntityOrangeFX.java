@@ -10,16 +10,16 @@ import net.minecraft.world.World;
 
 public class EntityOrangeFX extends EntityModFX {
 
-	public EntityOrangeFX(final World world) {
+	public EntityOrangeFX(World world) {
 		super(world, 0, 0, 0);
 	}
 	
-	public EntityOrangeFX(final World p_i1225_1_, final double p_i1225_2_, final double p_i1225_4_, final double p_i1225_6_, final double p_i1225_8_, final double p_i1225_10_, final double p_i1225_12_)
+	public EntityOrangeFX(World p_i1225_1_, double p_i1225_2_, double p_i1225_4_, double p_i1225_6_, double p_i1225_8_, double p_i1225_10_, double p_i1225_12_)
     {
         this(p_i1225_1_, p_i1225_2_, p_i1225_4_, p_i1225_6_, p_i1225_8_, p_i1225_10_, p_i1225_12_, 1.0F);
     }
 
-	public EntityOrangeFX(final World p_i1226_1_, final double p_i1226_2_, final double p_i1226_4_, final double p_i1226_6_, final double p_i1226_8_, final double p_i1226_10_, final double p_i1226_12_, final float p_i1226_14_)
+	public EntityOrangeFX(World p_i1226_1_, double p_i1226_2_, double p_i1226_4_, double p_i1226_6_, double p_i1226_8_, double p_i1226_10_, double p_i1226_12_, float p_i1226_14_)
     {
         super(p_i1226_1_, p_i1226_2_, p_i1226_4_, p_i1226_6_, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -65,9 +65,9 @@ public class EntityOrangeFX extends EntityModFX {
 		
 		this.motionY -= 0.1;
 		
-		final double subdivisions = 4;
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		final MutableBlockPos attackPos = new BlockPos.MutableBlockPos();
+		double subdivisions = 4;
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos attackPos = new BlockPos.MutableBlockPos();
 		for(int i = 0; i < subdivisions; i++) {
 	
 			this.posX += this.motionX/subdivisions;

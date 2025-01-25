@@ -1,12 +1,7 @@
 package com.hbm.blocks.generic;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -22,33 +17,37 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class BlockCanCrate extends Block {
 
-	public BlockCanCrate(final Material materialIn, final String s) {
+	public BlockCanCrate(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		
+
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
-	
+
 	@Override
-	public Block setSoundType(final SoundType sound) {
+	public Block setSoundType(SoundType sound) {
 		return super.setSoundType(sound);
 	}
-	
+
 	@Override
-	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote)
 		{
 			playerIn.sendMessage(new TextComponentTranslation("chat.crate.cansmash"));
 		}
 		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
-	
+
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
-		final List<Item> items = new ArrayList<Item>();
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		List<Item> items = new ArrayList<Item>();
     	items.add(ModItems.canned_beef);
     	items.add(ModItems.canned_tuna);
     	items.add(ModItems.canned_mystery);
@@ -85,48 +84,48 @@ public class BlockCanCrate extends Block {
     	items.add(ModItems.can_breen);
     	items.add(ModItems.can_bepis);
     	items.add(ModItems.pudding);
-    	
+
         return items.get(rand.nextInt(items.size()));
 	}
-	
+
 	@Override
-	public int quantityDropped(final IBlockState state, final int fortune, final Random random) {
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
 		return 5 + random.nextInt(4);
 	}
-	
+
 	@Override
-	public boolean canRenderInLayer(final IBlockState state, final BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
-	
+
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
-	
+
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
+
 }

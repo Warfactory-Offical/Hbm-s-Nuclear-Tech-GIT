@@ -12,10 +12,11 @@ public class Tuple {
 
 	public static class Pair<X,Y> {
 
-		X key;
-		Y value;
+		public X key;
+		public Y value; // because fuck you.
+		// no, fuck you :D
 		
-		public Pair(final X x, final Y y) {
+		public Pair(X x, Y y) {
 			this.key = x;
 			this.value = y;
 		}
@@ -38,23 +39,26 @@ public class Tuple {
 		}
 
 		@Override
-		public boolean equals(final Object obj) {
+		public boolean equals(Object obj) {
 			if(this == obj)
 				return true;
 			if(obj == null)
 				return false;
 			if(getClass() != obj.getClass())
 				return false;
-			final Pair other = (Pair) obj;
+			Pair other = (Pair) obj;
 			if(key == null) {
 				if(other.key != null)
 					return false;
 			} else if(!key.equals(other.key))
 				return false;
 			if(value == null) {
-                return other.value == null;
-			} else return value.equals(other.value);
-        }
+				if(other.value != null)
+					return false;
+			} else if(!value.equals(other.value))
+				return false;
+			return true;
+		}
 	}
 
 	public static class Triplet<X,Y,Z> {
@@ -63,7 +67,7 @@ public class Tuple {
 		Y y;
 		Z z;
 		
-		public Triplet(final X x, final Y y, final Z z) {
+		public Triplet(X x, Y y, Z z) {
 			this.x = x;
 			this.y = y;
 			this.z = z;
@@ -92,14 +96,14 @@ public class Tuple {
 		}
 
 		@Override
-		public boolean equals(final Object obj) {
+		public boolean equals(Object obj) {
 			if(this == obj)
 				return true;
 			if(obj == null)
 				return false;
 			if(getClass() != obj.getClass())
 				return false;
-			final Triplet other = (Triplet) obj;
+			Triplet other = (Triplet) obj;
 			if(x == null) {
 				if(other.x != null)
 					return false;
@@ -111,9 +115,12 @@ public class Tuple {
 			} else if(!y.equals(other.y))
 				return false;
 			if(z == null) {
-                return other.z == null;
-			} else return z.equals(other.z);
-        }
+				if(other.z != null)
+					return false;
+			} else if(!z.equals(other.z))
+				return false;
+			return true;
+		}
 	}
 
 	public static class Quartet<W,X,Y,Z> {
@@ -130,14 +137,14 @@ public class Tuple {
 		}
 
 		@Override
-		public boolean equals(final Object obj) {
+		public boolean equals(Object obj) {
 			if(this == obj)
 				return true;
 			if(obj == null)
 				return false;
 			if(getClass() != obj.getClass())
 				return false;
-			final Quartet other = (Quartet) obj;
+			Quartet other = (Quartet) obj;
 			if(w == null) {
 				if(other.w != null)
 					return false;
@@ -154,16 +161,19 @@ public class Tuple {
 			} else if(!y.equals(other.y))
 				return false;
 			if(z == null) {
-                return other.z == null;
-			} else return z.equals(other.z);
-        }
+				if(other.z != null)
+					return false;
+			} else if(!z.equals(other.z))
+				return false;
+			return true;
+		}
 
 		W w;
 		X x;
 		Y y;
 		Z z;
 		
-		public Quartet(final W w, final X x, final Y y, final Z z) {
+		public Quartet(W w, X x, Y y, Z z) {
 			this.w = w;
 			this.x = x;
 			this.y = y;
@@ -182,6 +192,92 @@ public class Tuple {
 			return this.y;
 		}
 		
+		public Z getZ() {
+			return this.z;
+		}
+	}
+
+	public static class Quintet<V,W,X,Y,Z> {
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((v == null) ? 0 : v.hashCode());
+			result = prime * result + ((w == null) ? 0 : w.hashCode());
+			result = prime * result + ((x == null) ? 0 : x.hashCode());
+			result = prime * result + ((y == null) ? 0 : y.hashCode());
+			result = prime * result + ((z == null) ? 0 : z.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(this == obj)
+				return true;
+			if(obj == null)
+				return false;
+			if(getClass() != obj.getClass())
+				return false;
+			Quintet other = (Quintet) obj;
+			if(v == null) {
+				if(other.v != null)
+					return false;
+			} else if(!v.equals(other.w))
+				return false;
+			if(w == null) {
+				if(other.w != null)
+					return false;
+			} else if(!w.equals(other.w))
+				return false;
+			if(x == null) {
+				if(other.x != null)
+					return false;
+			} else if(!x.equals(other.x))
+				return false;
+			if(y == null) {
+				if(other.y != null)
+					return false;
+			} else if(!y.equals(other.y))
+				return false;
+			if(z == null) {
+				if(other.z != null)
+					return false;
+			} else if(!z.equals(other.z))
+				return false;
+			return true;
+		}
+
+		V v;
+		W w;
+		X x;
+		Y y;
+		Z z;
+
+		public Quintet(V v, W w, X x, Y y, Z z) {
+			this.v = v;
+			this.w = w;
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+
+		public V getV() {
+			return this.v;
+		}
+
+		public W getW() {
+			return this.w;
+		}
+
+		public X getX() {
+			return this.x;
+		}
+
+		public Y getY() {
+			return this.y;
+		}
+
 		public Z getZ() {
 			return this.z;
 		}

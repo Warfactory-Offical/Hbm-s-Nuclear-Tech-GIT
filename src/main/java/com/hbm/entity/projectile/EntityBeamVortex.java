@@ -10,11 +10,11 @@ import net.minecraft.world.World;
 
 public class EntityBeamVortex extends EntityBeamBase {
 
-	public EntityBeamVortex(final World worldIn) {
+	public EntityBeamVortex(World worldIn) {
 		super(worldIn);
 	}
 	
-	public EntityBeamVortex(final World world, final EntityPlayer player) {
+	public EntityBeamVortex(World world, EntityPlayer player) {
 		super(world, player);
 	}
 	
@@ -22,7 +22,7 @@ public class EntityBeamVortex extends EntityBeamBase {
 	public void onUpdate() {
 		if(world.isRemote){
 			if(this.ticksExisted == 1){
-				final EntityPlayer player = this.world.getPlayerEntityByName(this.getDataManager().get(PLAYER_NAME));
+				EntityPlayer player = this.world.getPlayerEntityByName(this.getDataManager().get(PLAYER_NAME));
 				
 			}
 			return;
@@ -33,13 +33,13 @@ public class EntityBeamVortex extends EntityBeamBase {
 		if(this.ticksExisted > 1)
 			return;
 
-		final int range = 100;
+		int range = 100;
 
-		final EntityPlayer player = world.getPlayerEntityByName(this.getDataManager().get(PLAYER_NAME));
+		EntityPlayer player = world.getPlayerEntityByName(this.getDataManager().get(PLAYER_NAME));
 
 		if(player != null) {
 
-			final RayTraceResult pos = Library.rayTrace(player, range, 1, false, true, false);
+			RayTraceResult pos = Library.rayTrace(player, range, 1, false, true, false);
 
 			if(pos == null)
 				return;

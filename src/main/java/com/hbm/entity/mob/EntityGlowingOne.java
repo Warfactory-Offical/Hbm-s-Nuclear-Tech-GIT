@@ -1,27 +1,24 @@
 package com.hbm.entity.mob;
 
-import java.util.List;
-
-import com.hbm.items.ModItems;
-import com.hbm.lib.RefStrings;
 import com.hbm.interfaces.IRadiationImmune;
-import com.hbm.util.ContaminationUtil;
+import com.hbm.items.ModItems;
 import com.hbm.render.amlfrom1710.Vec3;
-
+import com.hbm.util.ContaminationUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class EntityGlowingOne extends EntityZombie implements IRadiationImmune {
 
 	public static final int effectRadius = 16;
 
-	public EntityGlowingOne(final World worldIn) {
+	public EntityGlowingOne(World worldIn) {
 		super(worldIn);
 	}
 
@@ -39,12 +36,12 @@ public class EntityGlowingOne extends EntityZombie implements IRadiationImmune {
     public void onLivingUpdate() {
     	ContaminationUtil.radiate(world, posX, posY, posZ, 16, 50);
 
-		final List<EntityZombie> entities = world.getEntitiesWithinAABB(EntityZombie.class, new AxisAlignedBB(posX, posY, posZ, posX, posY, posZ).grow(effectRadius, effectRadius, effectRadius));
+		List<EntityZombie> entities = world.getEntitiesWithinAABB(EntityZombie.class, new AxisAlignedBB(posX, posY, posZ, posX, posY, posZ).grow(effectRadius, effectRadius, effectRadius));
 		
-		for(final EntityZombie e : entities) {
+		for(EntityZombie e : entities) {
 			
-			final Vec3 vec = Vec3.createVectorHelper(e.posX - posX, (e.posY + e.getEyeHeight()) - posY, e.posZ - posZ);
-			final double len = vec.length();
+			Vec3 vec = Vec3.createVectorHelper(e.posX - posX, (e.posY + e.getEyeHeight()) - posY, e.posZ - posZ);
+			double len = vec.lengthVector();
 			if(len < effectRadius){
 				e.heal((float)(0.02 * (effectRadius-len)));
 			}
@@ -52,24 +49,24 @@ public class EntityGlowingOne extends EntityZombie implements IRadiationImmune {
         super.onLivingUpdate();
     }
 
-    public static void convertInRadiusToGlow(final World world, final double x, final double y, final double z, final double radius){
-    	final List<EntityZombie> entities = world.getEntitiesWithinAABB(EntityZombie.class, new AxisAlignedBB(x, y, z, x, y, z).grow(radius, radius, radius));
+    public static void convertInRadiusToGlow(World world, double x, double y, double z, double radius){
+    	List<EntityZombie> entities = world.getEntitiesWithinAABB(EntityZombie.class, new AxisAlignedBB(x, y, z, x, y, z).grow(radius, radius, radius));
 		
-		for(final EntityZombie e : entities) {
+		for(EntityZombie e : entities) {
 			if(e instanceof EntityGlowingOne)
     			continue;
-			final Vec3 vec = Vec3.createVectorHelper(e.posX - x, (e.posY + e.getEyeHeight()) - y, e.posZ - z);
-			final double len = vec.length();
+			Vec3 vec = Vec3.createVectorHelper(e.posX - x, (e.posY + e.getEyeHeight()) - y, e.posZ - z);
+			double len = vec.lengthVector();
 			if(len < radius){
 				convertToGlow(world, e);
 			}
 		}
     }
 
-    public static void convertToGlow(final World world, final EntityZombie zombie){
+    public static void convertToGlow(World world, EntityZombie zombie){
     	if(zombie instanceof EntityGlowingOne)
     		return;
-    	final EntityGlowingOne glowing = new EntityGlowingOne(world);
+    	EntityGlowingOne glowing = new EntityGlowingOne(world);
     	glowing.setChild(zombie.isChild());
 		glowing.setLocationAndAngles(zombie.posX, zombie.posY, zombie.posZ, zombie.rotationYaw, zombie.rotationPitch);
 
@@ -85,7 +82,7 @@ public class EntityGlowingOne extends EntityZombie implements IRadiationImmune {
     }
 
     @Override
-    protected int getExperiencePoints(final EntityPlayer player){
+    protected int getExperiencePoints(EntityPlayer player){
     	return 200;
     }
 
@@ -100,12 +97,12 @@ public class EntityGlowingOne extends EntityZombie implements IRadiationImmune {
    	}
 
 	@Override
-	public boolean attackEntityAsMob(final Entity x){
+	public boolean attackEntityAsMob(Entity x){
 		return true;
 	}
 
 	@Override
-	protected void dropLoot(final boolean wasRecentlyHit, final int lootingModifier, final DamageSource source) {
+	protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source) {
 		super.dropLoot(wasRecentlyHit, lootingModifier, source);
 		this.dropItem(ModItems.cap_rad, Math.max(1, lootingModifier));
 	}

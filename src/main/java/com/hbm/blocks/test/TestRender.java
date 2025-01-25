@@ -3,7 +3,6 @@ package com.hbm.blocks.test;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.deco.TileEntityTestRender;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +29,7 @@ public class TestRender extends BlockContainer {
 	
 	// Normaler Matrial-Constructor
 	//Drillgon200: I set the unlocalized name and registry name, and add it the all block list so adding a block is easier and only needs one line of code.
-	public TestRender(final Material p_i45394_1_, final String s) {
+	public TestRender(Material p_i45394_1_, String s) {
 		super(p_i45394_1_);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -52,7 +51,7 @@ public class TestRender extends BlockContainer {
 	 * @Override public boolean isOpaqueCube() { return false; }
 	 */
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
@@ -64,18 +63,18 @@ public class TestRender extends BlockContainer {
 	 */
 	// Drillgon200: Tells the block it uses full on special rendering
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	//Drillgon200: Needed so the server doesn't go crazy when you enter a "full block" and try to push you out
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	// Erstellen eines TileEntitys
 	@Override
-	public TileEntity createNewTileEntity(final World var1, final int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityTestRender();
 	}
 
@@ -100,7 +99,7 @@ public class TestRender extends BlockContainer {
 	 * = 0.0625F; this.setBlockBounds(2*f, 0.0F, 2*f, 14*f, 1.0F, 14*f); }
 	 */
 	@Override
-	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return TEST_RENDER_BB;
 	}
 

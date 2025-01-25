@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class ItemMatch extends Item {
 
-	public ItemMatch(final String s) {
+	public ItemMatch(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -23,11 +23,11 @@ public class ItemMatch extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote)
 			return EnumActionResult.PASS;
 		pos = pos.offset(facing);
-        final ItemStack itemstack = player.getHeldItem(hand);
+        ItemStack itemstack = player.getHeldItem(hand);
 
         if (!player.canPlayerEdit(pos, facing, itemstack))
         {

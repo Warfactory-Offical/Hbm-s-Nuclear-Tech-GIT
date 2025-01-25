@@ -1,70 +1,211 @@
 package com.hbm.main;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import com.hbm.config.*;
+import com.hbm.dim.CommandSpaceTP;
+import com.hbm.dim.SolarSystem;
+import com.hbm.entity.item.EntityMovingPackage;
+import com.hbm.entity.projectile.*;
+import com.hbm.handler.*;
+import com.hbm.handler.pollution.PollutionHandler;
+import com.hbm.inventory.*;
+import com.hbm.inventory.fluid.Fluids;
+import com.hbm.items.ItemEnumMulti;
+import com.hbm.tileentity.bomb.*;
+import com.hbm.tileentity.conductor.TileEntityFFDuctBaseMk2;
+import com.hbm.tileentity.machine.storage.TileEntityMassStorage;
+import com.hbm.tileentity.network.*;
+import com.hbm.tileentity.turret.*;
+import com.hbm.world.ModBiomes;
+import com.hbm.world.PlanetGen;
+import com.hbm.world.biome.BiomeGenCraterBase;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import org.apache.logging.log4j.Logger;
+
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockBedrockOreTE.TileEntityBedrockOre;
 import com.hbm.blocks.generic.BlockCrate;
 import com.hbm.blocks.generic.EntityGrenadeTau;
-import com.hbm.blocks.network.energy.BlockCableGauge.TileEntityCableGauge;
 import com.hbm.blocks.network.energy.CableDiode.TileEntityDiode;
+import com.hbm.blocks.network.energy.BlockCableGauge.TileEntityCableGauge;
+import com.hbm.blocks.generic.BlockBedrockOreTE.TileEntityBedrockOre;
 import com.hbm.capability.HbmCapability;
 import com.hbm.capability.HbmLivingCapability;
 import com.hbm.command.CommandHbm;
 import com.hbm.command.CommandRadiation;
-import com.hbm.config.*;
-import com.hbm.creativetabs.*;
-import com.hbm.entity.effect.*;
-import com.hbm.entity.grenade.*;
+import com.hbm.creativetabs.ResourceTab;
+import com.hbm.creativetabs.BlockTab;
+import com.hbm.creativetabs.ConsumableTab;
+import com.hbm.creativetabs.ControlTab;
+import com.hbm.creativetabs.MachineTab;
+import com.hbm.creativetabs.MissileTab;
+import com.hbm.creativetabs.NukeTab;
+import com.hbm.creativetabs.PartsTab;
+import com.hbm.creativetabs.TemplateTab;
+import com.hbm.creativetabs.WeaponTab;
+import com.hbm.entity.effect.EntityBlackHole;
+import com.hbm.entity.effect.EntityCloudFleija;
+import com.hbm.entity.effect.EntityCloudFleijaRainbow;
+import com.hbm.entity.effect.EntityCloudSolinium;
+import com.hbm.entity.effect.EntityCloudTom;
+import com.hbm.entity.effect.EntityEMPBlast;
+import com.hbm.entity.effect.EntityFalloutRain;
+import com.hbm.entity.effect.EntityFalloutUnderGround;
+import com.hbm.entity.effect.EntityNukeTorex;
+import com.hbm.entity.effect.EntityQuasar;
+import com.hbm.entity.effect.EntityRagingVortex;
+import com.hbm.entity.effect.EntitySpear;
+import com.hbm.entity.effect.EntityVortex;
+import com.hbm.entity.grenade.EntityGrenadeASchrab;
+import com.hbm.entity.grenade.EntityGrenadeBlackHole;
+import com.hbm.entity.grenade.EntityGrenadeBreach;
+import com.hbm.entity.grenade.EntityGrenadeBurst;
+import com.hbm.entity.grenade.EntityGrenadeCloud;
+import com.hbm.entity.grenade.EntityGrenadeCluster;
+import com.hbm.entity.grenade.EntityGrenadeElectric;
+import com.hbm.entity.grenade.EntityGrenadeFire;
+import com.hbm.entity.grenade.EntityGrenadeFlare;
+import com.hbm.entity.grenade.EntityGrenadeFrag;
+import com.hbm.entity.grenade.EntityGrenadeGas;
+import com.hbm.entity.grenade.EntityGrenadeGascan;
+import com.hbm.entity.grenade.EntityGrenadeGeneric;
+import com.hbm.entity.grenade.EntityGrenadeIFBouncy;
+import com.hbm.entity.grenade.EntityGrenadeIFBrimstone;
+import com.hbm.entity.grenade.EntityGrenadeIFConcussion;
+import com.hbm.entity.grenade.EntityGrenadeIFGeneric;
+import com.hbm.entity.grenade.EntityGrenadeIFHE;
+import com.hbm.entity.grenade.EntityGrenadeIFHopwire;
+import com.hbm.entity.grenade.EntityGrenadeIFImpact;
+import com.hbm.entity.grenade.EntityGrenadeIFIncendiary;
+import com.hbm.entity.grenade.EntityGrenadeIFMystery;
+import com.hbm.entity.grenade.EntityGrenadeIFNull;
+import com.hbm.entity.grenade.EntityGrenadeIFSpark;
+import com.hbm.entity.grenade.EntityGrenadeIFSticky;
+import com.hbm.entity.grenade.EntityGrenadeIFToxic;
+import com.hbm.entity.grenade.EntityGrenadeLemon;
+import com.hbm.entity.grenade.EntityGrenadeMIRV;
+import com.hbm.entity.grenade.EntityGrenadeMk2;
+import com.hbm.entity.grenade.EntityGrenadeNuclear;
+import com.hbm.entity.grenade.EntityGrenadeNuke;
+import com.hbm.entity.grenade.EntityGrenadePC;
+import com.hbm.entity.grenade.EntityGrenadePlasma;
+import com.hbm.entity.grenade.EntityGrenadePoison;
+import com.hbm.entity.grenade.EntityGrenadePulse;
+import com.hbm.entity.grenade.EntityGrenadeSchrabidium;
+import com.hbm.entity.grenade.EntityGrenadeShrapnel;
+import com.hbm.entity.grenade.EntityGrenadeSmart;
+import com.hbm.entity.grenade.EntityGrenadeStrong;
+import com.hbm.entity.grenade.EntityGrenadeSolinium;
+import com.hbm.entity.grenade.EntityGrenadeZOMG;
 import com.hbm.entity.item.EntityFireworks;
 import com.hbm.entity.item.EntityMovingItem;
-import com.hbm.entity.item.EntityMovingPackage;
-import com.hbm.entity.logic.*;
+import com.hbm.entity.logic.EntityBalefire;
+import com.hbm.entity.logic.EntityBomber;
+import com.hbm.entity.logic.EntityDeathBlast;
+import com.hbm.entity.logic.EntityEMP;
+import com.hbm.entity.logic.EntityNukeExplosionMK3;
+import com.hbm.entity.logic.EntityNukeExplosionMK5;
+import com.hbm.entity.logic.EntityNukeExplosionPlus;
+import com.hbm.entity.logic.EntityTomBlast;
+import com.hbm.entity.logic.IChunkLoader;
 import com.hbm.entity.missile.*;
-import com.hbm.entity.mob.*;
+import com.hbm.entity.mob.EntityCyberCrab;
+import com.hbm.entity.mob.EntityDuck;
+import com.hbm.entity.mob.EntityGlowingOne;
+import com.hbm.entity.mob.EntityFBI;
+import com.hbm.entity.mob.EntityHunterChopper;
+import com.hbm.entity.mob.EntityMaskMan;
+import com.hbm.entity.mob.EntityNuclearCreeper;
+import com.hbm.entity.mob.EntityQuackos;
+import com.hbm.entity.mob.EntityRADBeast;
+import com.hbm.entity.mob.EntityTaintCrab;
+import com.hbm.entity.mob.EntityTaintedCreeper;
+import com.hbm.entity.mob.EntityTeslaCrab;
+import com.hbm.entity.mob.EntityUFO;
 import com.hbm.entity.mob.botprime.EntityBOTPrimeBody;
 import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
-import com.hbm.entity.particle.*;
-import com.hbm.entity.projectile.*;
+import com.hbm.entity.particle.EntityBSmokeFX;
+import com.hbm.entity.particle.EntityChlorineFX;
+import com.hbm.entity.particle.EntityCloudFX;
+import com.hbm.entity.particle.EntityDSmokeFX;
+import com.hbm.entity.particle.EntityGasFX;
+import com.hbm.entity.particle.EntityGasFlameFX;
+import com.hbm.entity.particle.EntityOilSpillFX;
+import com.hbm.entity.particle.EntityOrangeFX;
+import com.hbm.entity.particle.EntityPinkCloudFX;
+import com.hbm.entity.particle.EntitySSmokeFX;
+import com.hbm.entity.particle.EntitySmokeFX;
+import com.hbm.entity.particle.EntityTSmokeFX;
 import com.hbm.entity.siege.SiegeTier;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.forgefluid.FFPipeNetwork;
-import com.hbm.forgefluid.FluidContainerRegistry;
 import com.hbm.forgefluid.FluidTypeHandler;
 import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.handler.*;
 import com.hbm.handler.crt.NTMCraftTweaker;
-import com.hbm.hazard_old.HazardRegistry;
-import com.hbm.inventory.*;
+import com.hbm.hazard.HazardRegistry;
 import com.hbm.inventory.control_panel.ControlEvent;
 import com.hbm.inventory.control_panel.ControlRegistry;
 import com.hbm.items.ModItems;
-import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.HbmWorld;
 import com.hbm.lib.Library;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.potion.HbmDetox;
 import com.hbm.potion.HbmPotion;
+import com.hbm.potion.HbmDetox;
 import com.hbm.saveddata.satellites.Satellite;
-import com.hbm.tileentity.*;
-import com.hbm.tileentity.bomb.*;
+import com.hbm.tileentity.TileEntityDoorGeneric;
+import com.hbm.tileentity.TileEntityKeypadBase;
+import com.hbm.tileentity.TileEntityProxyCombo;
+import com.hbm.tileentity.TileEntityProxyConductor;
+import com.hbm.tileentity.TileEntityProxyEnergy;
+import com.hbm.tileentity.TileEntityProxyInventory;
+import com.hbm.tileentity.TileEntitySlidingBlastDoorKeypad;
+import com.hbm.tileentity.network.energy.TileEntityCableBaseNT;
+import com.hbm.tileentity.network.energy.TileEntityCableSwitch;
+import com.hbm.tileentity.network.energy.TileEntityMachineDetector;
 import com.hbm.tileentity.conductor.TileEntityFFFluidDuctMk2;
-import com.hbm.tileentity.conductor.TileEntityFFFluidDuctMk2Solid;
-import com.hbm.tileentity.conductor.TileEntityFFFluidSuccMk2;
-import com.hbm.tileentity.conductor.TileEntityFFFluidSuccMk2Solid;
-import com.hbm.tileentity.deco.*;
+import com.hbm.tileentity.deco.TileEntityDecoBlock;
+import com.hbm.tileentity.deco.TileEntityDecoBlockAlt;
+import com.hbm.tileentity.deco.TileEntityDecoPoleSatelliteReceiver;
+import com.hbm.tileentity.deco.TileEntityGeysir;
+import com.hbm.tileentity.deco.TileEntityObjTester;
+import com.hbm.tileentity.deco.TileEntitySpinnyLight;
+import com.hbm.tileentity.deco.TileEntityTestRender;
+import com.hbm.tileentity.deco.TileEntityTrappedBrick;
+import com.hbm.tileentity.deco.TileEntityVent;
 import com.hbm.tileentity.machine.*;
-import com.hbm.tileentity.machine.TileEntityMachineReactorLarge.ReactorFuelType;
 import com.hbm.tileentity.machine.oil.*;
+import com.hbm.tileentity.network.energy.*;
+import com.hbm.tileentity.machine.TileEntityMachineReactorLarge.ReactorFuelType;
 import com.hbm.tileentity.machine.pile.TileEntityPileFuel;
 import com.hbm.tileentity.machine.pile.TileEntityPileSource;
-import com.hbm.tileentity.machine.rbmk.*;
-import com.hbm.tileentity.network.*;
-import com.hbm.tileentity.network.energy.*;
-import com.hbm.tileentity.turret.*;
-import com.hbm.util.ItemStackUtil;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKAbsorber;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKBlank;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKBoiler;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKCraneConsole;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKControlAuto;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKControlManual;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKInlet;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKModerator;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKOutgasser;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKOutlet;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKReflector;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKRod;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKRodReaSim;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKStorage;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKCooler;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKHeater;
 import com.hbm.world.feature.SchistStratum;
 import com.hbm.world.generator.CellularDungeonFactory;
+
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -101,14 +242,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 @Mod(modid = RefStrings.MODID, version = RefStrings.VERSION, name = RefStrings.NAME)
 public class MainRegistry {
@@ -220,7 +353,7 @@ public class MainRegistry {
 	Random rand = new Random();
 
 	@EventHandler
-	public void preInit(final FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event) {
 		if(logger == null)
 			logger = event.getModLog();
 
@@ -234,27 +367,31 @@ public class MainRegistry {
 		
 		if(SharedMonsterAttributes.MAX_HEALTH.clampValue(Integer.MAX_VALUE) <= 2000){
 			try{
-				@SuppressWarnings("deprecation") final Field f = ReflectionHelper.findField(RangedAttribute.class, "maximumValue", "field_111118_b");
-				final Field modifiersField = Field.class.getDeclaredField("modifiers");
+				@SuppressWarnings("deprecation")
+				Field f = ReflectionHelper.findField(RangedAttribute.class, "maximumValue", "field_111118_b");
+				Field modifiersField = Field.class.getDeclaredField("modifiers");
 				modifiersField.setAccessible(true);
 				modifiersField.setInt(f, f.getModifiers() & ~Modifier.FINAL);
 				f.set(SharedMonsterAttributes.MAX_HEALTH, Integer.MAX_VALUE);
-			} catch(final Throwable e){}
+			} catch(Throwable e){}
 		}
 		proxy.checkGLCaps();
 		reloadConfig();
 		
 		OreDictManager.registerGroups();
-		final OreDictManager oreMan = new OreDictManager();
+		OreDictManager oreMan = new OreDictManager();
 
 		MinecraftForge.EVENT_BUS.register(oreMan); //OreRegisterEvent
 
 		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
 		MinecraftForge.TERRAIN_GEN_BUS.register(new ModEventHandler());
 		MinecraftForge.ORE_GEN_BUS.register(new ModEventHandler());
+		MinecraftForge.EVENT_BUS.register(new ModEventHandlerImpact());
+		MinecraftForge.TERRAIN_GEN_BUS.register(new ModEventHandlerImpact());
+		MinecraftForge.EVENT_BUS.register(new PollutionHandler());
 		
 		if(event.getSide() == Side.CLIENT) {
-			final HbmKeybinds keyHandler = new HbmKeybinds();
+			HbmKeybinds keyHandler = new HbmKeybinds();
 			MinecraftForge.EVENT_BUS.register(keyHandler);
 		}
 		
@@ -264,6 +401,7 @@ public class MainRegistry {
 
 		CapabilityManager.INSTANCE.register(HbmLivingCapability.IEntityHbmProps.class, new HbmLivingCapability.EntityHbmPropsStorage(), HbmLivingCapability.EntityHbmProps.FACTORY);
 		CapabilityManager.INSTANCE.register(HbmCapability.IHBMData.class, new HbmCapability.HBMDataStorage(), HbmCapability.HBMData.FACTORY);
+		Fluids.init();
 		ModForgeFluids.init();
 		ModItems.preInit();
 		ModBlocks.preInit();
@@ -283,39 +421,43 @@ public class MainRegistry {
 		proxy.preInit(event);
 		Library.initSuperusers();
 		
-		enumArmorMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)));
-		enumArmorMaterialHazmat.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth));
-		enumArmorMaterialHazmat2.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth_red));
-		enumArmorMaterialHazmat3.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.hazmat_cloth_grey));
-		enumArmorMaterialT45.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_titanium));
-		aMatBJ.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_lunar));
-		aMatAJR.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_ajr));
-		aMatHEV.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_hev));
-		enumArmorMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM)));
-		enumArmorMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)));
-		enumArmorMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)));
-		enumArmorMaterialPaa.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
-		enumArmorMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL)));
-		enumArmorMaterialAusIII.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AUSTRALIUM)));
-		enumArmorMaterialSecurity.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_kevlar));
-		enumToolMaterialSchrabidium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM)));
-		enumToolMaterialHammer.setRepairItem(ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
-		enumToolMaterialChainsaw.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)));
-		enumToolMaterialTitanium.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TITANIUM)));
-		enumToolMaterialSteel.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.STEEL)));
-		enumToolMaterialAlloy.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY)));
-		enumToolMaterialCmb.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL)));
-		enumToolMaterialBottleOpener.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_steel));
-		enumToolMaterialDesh.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.DESH)));
-		enumArmorMaterialAsbestos.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.asbestos_cloth));
-		matMeteorite.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_paa));
-		aMatLiquidator.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_lead));
-		aMatFau.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_fau));
-		aMatDNS.setRepairItem(ItemStackUtil.itemStackFrom(ModItems.plate_armor_dnt));
+		enumArmorMaterialSchrabidium.setRepairItem(new ItemStack(ModItems.ingot_schrabidium));
+		enumArmorMaterialHazmat.setRepairItem(new ItemStack(ModItems.hazmat_cloth));
+		enumArmorMaterialHazmat2.setRepairItem(new ItemStack(ModItems.hazmat_cloth_red));
+		enumArmorMaterialHazmat3.setRepairItem(new ItemStack(ModItems.hazmat_cloth_grey));
+		enumArmorMaterialT45.setRepairItem(new ItemStack(ModItems.plate_titanium));
+		aMatBJ.setRepairItem(new ItemStack(ModItems.plate_armor_lunar));
+		aMatAJR.setRepairItem(new ItemStack(ModItems.plate_armor_ajr));
+		aMatHEV.setRepairItem(new ItemStack(ModItems.plate_armor_hev));
+		enumArmorMaterialTitanium.setRepairItem(new ItemStack(ModItems.ingot_titanium));
+		enumArmorMaterialSteel.setRepairItem(new ItemStack(ModItems.ingot_steel));
+		enumArmorMaterialAlloy.setRepairItem(new ItemStack(ModItems.ingot_advanced_alloy));
+		enumArmorMaterialPaa.setRepairItem(new ItemStack(ModItems.plate_paa));
+		enumArmorMaterialCmb.setRepairItem(new ItemStack(ModItems.ingot_combine_steel));
+		enumArmorMaterialAusIII.setRepairItem(new ItemStack(ModItems.ingot_australium));
+		enumArmorMaterialSecurity.setRepairItem(new ItemStack(ModItems.plate_kevlar));
+		enumToolMaterialSchrabidium.setRepairItem(new ItemStack(ModItems.ingot_schrabidium));
+		enumToolMaterialHammer.setRepairItem(new ItemStack(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
+		enumToolMaterialChainsaw.setRepairItem(new ItemStack(ModItems.ingot_steel));
+		enumToolMaterialTitanium.setRepairItem(new ItemStack(ModItems.ingot_titanium));
+		enumToolMaterialSteel.setRepairItem(new ItemStack(ModItems.ingot_steel));
+		enumToolMaterialAlloy.setRepairItem(new ItemStack(ModItems.ingot_advanced_alloy));
+		enumToolMaterialCmb.setRepairItem(new ItemStack(ModItems.ingot_combine_steel));
+		enumToolMaterialBottleOpener.setRepairItem(new ItemStack(ModItems.plate_steel));
+		enumToolMaterialDesh.setRepairItem(new ItemStack(ModItems.ingot_desh));
+		enumArmorMaterialAsbestos.setRepairItem(new ItemStack(ModItems.asbestos_cloth));
+		matMeteorite.setRepairItem(new ItemStack(ModItems.plate_paa));
+		aMatLiquidator.setRepairItem(new ItemStack(ModItems.plate_lead));
+		aMatFau.setRepairItem(new ItemStack(ModItems.plate_armor_fau));
+		aMatDNS.setRepairItem(new ItemStack(ModItems.plate_armor_dnt));
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		GameRegistry.registerTileEntity(TileEntityDummy.class, new ResourceLocation(RefStrings.MODID, "tileentity_dummy"));
 		GameRegistry.registerTileEntity(TileEntityMachineAssembler.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_assembler"));
+		GameRegistry.registerTileEntity(TileEntityMachineAssemfac.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_assemfac"));
+		GameRegistry.registerTileEntity(TileEntityMachineAutocrafter.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_autocrafter"));
+		GameRegistry.registerTileEntity(TileEntityMachinePumpSteam.class, new ResourceLocation(RefStrings.MODID, "tileentity_steam_pump"));
+		GameRegistry.registerTileEntity(TileEntityMachinePumpElectric.class, new ResourceLocation(RefStrings.MODID, "tileentity_electric_pump"));
 		GameRegistry.registerTileEntity(TileEntityDiFurnace.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_difurnace"));
 		GameRegistry.registerTileEntity(TileEntityDiFurnaceRTG.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_difurnace_rtg"));
 		GameRegistry.registerTileEntity(TileEntityMachinePress.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_press"));
@@ -326,15 +468,14 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityDummyPort.class, new ResourceLocation(RefStrings.MODID, "tileentity_dummy_port"));
 		GameRegistry.registerTileEntity(TileEntityNukeMan.class, new ResourceLocation(RefStrings.MODID, "tileentity_nuke_man"));
 		GameRegistry.registerTileEntity(TileEntityNukeFleija.class, new ResourceLocation(RefStrings.MODID, "tileentity_nuke_fleija"));
-		GameRegistry.registerTileEntity(TileEntityMachineCoal.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_coal"));
-		GameRegistry.registerTileEntity(TileEntityMachineGenerator.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_generator"));
-		GameRegistry.registerTileEntity(TileEntityMachineReactorSmall.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_reactor_small"));
 		GameRegistry.registerTileEntity(TileEntityMachineRTG.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_rtg_grey"));
 		GameRegistry.registerTileEntity(TileEntityCableBaseNT.class, new ResourceLocation(RefStrings.MODID, "tileentity_cable"));
 		GameRegistry.registerTileEntity(TileEntityDiode.class, new ResourceLocation(RefStrings.MODID, "tileentity_cable_diode"));
 		GameRegistry.registerTileEntity(TileEntityCableGauge.class, new ResourceLocation(RefStrings.MODID, "tileentity_cable_gauge"));
 		GameRegistry.registerTileEntity(TileEntityBedrockOre.class, new ResourceLocation(RefStrings.MODID, "tileentity_ore_bedrock"));
+		GameRegistry.registerTileEntity(TileEntityMachineDrain.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_fluid_drain"));
 		GameRegistry.registerTileEntity(TileEntityMachineBattery.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_battery"));
+		GameRegistry.registerTileEntity(TileEntityMassStorage.class, new ResourceLocation(RefStrings.MODID, "tileentity_mass_storage"));
 		GameRegistry.registerTileEntity(TileEntityMachineTransformer.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_transformer"));
 		GameRegistry.registerTileEntity(TileEntityConverterHeRf.class, new ResourceLocation(RefStrings.MODID, "tileentity_converter_he_rf"));
 		GameRegistry.registerTileEntity(TileEntityConverterRfHe.class, new ResourceLocation(RefStrings.MODID, "tileentity_converter_rf_he"));
@@ -348,6 +489,8 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityTurretFlamer.class, new ResourceLocation(RefStrings.MODID, "tileentity_turret_flamer"));
 		GameRegistry.registerTileEntity(TileEntityDecoBlock.class, new ResourceLocation(RefStrings.MODID, "tileentity_deco_block"));
 		GameRegistry.registerTileEntity(TileEntityLaunchPad.class, new ResourceLocation(RefStrings.MODID, "tileentity_launch_pad"));
+		GameRegistry.registerTileEntity(TileEntityLaunchPadLarge.class, new ResourceLocation(RefStrings.MODID, "tileentity_launch_pad_large"));
+		GameRegistry.registerTileEntity(TileEntityMachineOreSlopper.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_ore_slopper"));
 		GameRegistry.registerTileEntity(TileEntityMachineBoiler.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_boiler"));
 		GameRegistry.registerTileEntity(TileEntityHeatBoiler.class, new ResourceLocation(RefStrings.MODID, "tileentity_heat_boiler"));
 		GameRegistry.registerTileEntity(TileEntityMachineBoilerElectric.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_boiler_electric"));
@@ -361,11 +504,11 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityMachineUF6Tank.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_uf6_tank"));
 		GameRegistry.registerTileEntity(TileEntityMachinePuF6Tank.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_puf6_tank"));
 		GameRegistry.registerTileEntity(TileEntityRailgun.class, new ResourceLocation(RefStrings.MODID, "tileentity_railgun"));
-		GameRegistry.registerTileEntity(TileEntityMachineReactor.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_reactor"));
 		GameRegistry.registerTileEntity(TileEntityMachineShredder.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_shredder"));
 		GameRegistry.registerTileEntity(TileEntityDummyFluidPort.class, new ResourceLocation(RefStrings.MODID, "tileentity_dummy_fluid_port"));
 		GameRegistry.registerTileEntity(TileEntityMachineFluidTank.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_fluidtank"));
 		GameRegistry.registerTileEntity(TileEntityCableSwitch.class, new ResourceLocation(RefStrings.MODID, "tileentity_cable_switch"));
+		GameRegistry.registerTileEntity(TileEntityMachineVacuumDistill.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_vacuum_distill"));
 		GameRegistry.registerTileEntity(TileEntityMachineRefinery.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_refinery"));
 		GameRegistry.registerTileEntity(TileEntityMachineCyclotron.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_cyclotron"));
 		GameRegistry.registerTileEntity(TileEntityMachineSchrabidiumTransmutator.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_schrabidium_transmutator"));
@@ -377,10 +520,12 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityBlastDoor.class, new ResourceLocation(RefStrings.MODID, "tileentity_blastdoor"));
 		GameRegistry.registerTileEntity(TileEntityCrateIron.class, new ResourceLocation(RefStrings.MODID, "tileentity_crate_iron"));
 		GameRegistry.registerTileEntity(TileEntityCrateSteel.class, new ResourceLocation(RefStrings.MODID, "tileentity_crate_steel"));
+		GameRegistry.registerTileEntity(TileEntityCrateTemplate.class, new ResourceLocation(RefStrings.MODID, "tileentity_crate_template"));
 		GameRegistry.registerTileEntity(TileEntityCrateDesh.class, new ResourceLocation(RefStrings.MODID, "tileentity_crate_desh"));
 		GameRegistry.registerTileEntity(TileEntitySafe.class, new ResourceLocation(RefStrings.MODID, "tileentity_safe"));
 		GameRegistry.registerTileEntity(TileEntityMachineKeyForge.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_key_forge"));
 		GameRegistry.registerTileEntity(TileEntityNukeFurnace.class, new ResourceLocation(RefStrings.MODID, "tileentity_nuke_furnace"));
+		GameRegistry.registerTileEntity(TileEntityOrbitalStation.class, new ResourceLocation(RefStrings.MODID, "tileentity_orbital_station"));
 		GameRegistry.registerTileEntity(TileEntityRtgFurnace.class, new ResourceLocation(RefStrings.MODID, "tileentity_rtg_furnace"));
 		GameRegistry.registerTileEntity(TileEntityMachineSeleniumEngine.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_selenium"));
 		GameRegistry.registerTileEntity(TileEntityReactorControl.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_reactor_control"));
@@ -395,6 +540,9 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityMachinePumpjack.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_pumpjack"));
 		GameRegistry.registerTileEntity(TileEntityMachineFrackingTower.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_fracking_tower"));
 		GameRegistry.registerTileEntity(TileEntityMachineCatalyticCracker.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_catalytic_cracker"));
+		GameRegistry.registerTileEntity(TileEntityMachineCatalyticReformer.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_catalytic_reformer"));
+		GameRegistry.registerTileEntity(TileEntityMachineCoker.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_coker"));
+		GameRegistry.registerTileEntity(TileEntityMachineHydrotreater.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_hydrotreater"));
 		GameRegistry.registerTileEntity(TileEntityMachineGasFlare.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_gas_flare"));
 		GameRegistry.registerTileEntity(TileEntityMachineExcavator.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_excavator"));
 		GameRegistry.registerTileEntity(TileEntityMachineTurbofan.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_turbofan"));
@@ -413,6 +561,9 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityReactorHatch.class, new ResourceLocation(RefStrings.MODID, "tileentity_reactor_hatch"));
 		GameRegistry.registerTileEntity(TileEntityFactoryHatch.class, new ResourceLocation(RefStrings.MODID, "tileentity_factory_hatch"));
 		GameRegistry.registerTileEntity(TileEntityMachineReactorLarge.class, new ResourceLocation(RefStrings.MODID, "tileentity_reactor_large"));
+		GameRegistry.registerTileEntity(TileEntityReactorZirnox.class, new ResourceLocation(RefStrings.MODID, "tileentity_zirnox"));
+		GameRegistry.registerTileEntity(TileEntityZirnoxDestroyed.class, new ResourceLocation(RefStrings.MODID, "tileentity_zirnox_destroyed"));
+		GameRegistry.registerTileEntity(TileEntityWatz.class, new ResourceLocation(RefStrings.MODID, "tileentity_watz"));
 		GameRegistry.registerTileEntity(TileEntityWatzHatch.class, new ResourceLocation(RefStrings.MODID, "tileentity_watz_hatch"));
 		GameRegistry.registerTileEntity(TileEntityWatzCore.class, new ResourceLocation(RefStrings.MODID, "tileentity_watz_core"));
 		GameRegistry.registerTileEntity(TileEntityFWatzHatch.class, new ResourceLocation(RefStrings.MODID, "tileentity_fwatz_hatch"));
@@ -439,8 +590,11 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityMachineSatLinker.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_sat_linker"));
 		GameRegistry.registerTileEntity(TileEntityMachineSatDock.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_sat_dock"));
 		GameRegistry.registerTileEntity(TileEntityMachineDiesel.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_diesel"));
+		GameRegistry.registerTileEntity(TileEntitySawmill.class, new ResourceLocation(RefStrings.MODID, "tileentity_sawmill"));
 		GameRegistry.registerTileEntity(TileEntityForceField.class, new ResourceLocation(RefStrings.MODID, "tileentity_force_field"));
-		GameRegistry.registerTileEntity(TileEntityMachineRadar.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_radar"));
+		GameRegistry.registerTileEntity(TileEntityMachineRadarNT.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_radar"));
+		GameRegistry.registerTileEntity(TileEntityMachineRadarLarge.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_radar_large"));
+		GameRegistry.registerTileEntity(TileEntityMachineRadarScreen.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_radar_screen"));
 		GameRegistry.registerTileEntity(TileEntityDecoPoleSatelliteReceiver.class, new ResourceLocation(RefStrings.MODID, "tileentity_deco_pole_satellite_receiver"));
 		GameRegistry.registerTileEntity(TileEntityDeuteriumExtractor.class, new ResourceLocation(RefStrings.MODID, "tileentity_deuterium_extractor"));
 		GameRegistry.registerTileEntity(TileEntityDeuteriumTower.class, new ResourceLocation(RefStrings.MODID, "tileentity_deuterium_tower"));
@@ -448,7 +602,8 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityObjTester.class, new ResourceLocation(RefStrings.MODID, "tileentity_obj_tester"));
 		GameRegistry.registerTileEntity(TileEntityDecoBlockAlt.class, new ResourceLocation(RefStrings.MODID, "tileentity_deco_block_alt"));
 		GameRegistry.registerTileEntity(TileEntityFFFluidDuctMk2.class, new ResourceLocation(RefStrings.MODID, "tileentity_ff_fludi_duct_mk2"));
-		GameRegistry.registerTileEntity(TileEntityFFFluidDuctMk2Solid.class, new ResourceLocation(RefStrings.MODID, "tileentity_ff_fludi_duct_mk2_solid"));
+		GameRegistry.registerTileEntity(TileEntityPipeBaseNT.class, new ResourceLocation(RefStrings.MODID, "tileentity_pipe_base"));
+		GameRegistry.registerTileEntity(TileEntityFFDuctBaseMk2.class, new ResourceLocation(RefStrings.MODID, "tileentity_ff_fludi_duct_base_mk2"));
 		GameRegistry.registerTileEntity(TileEntityBarrel.class, new ResourceLocation(RefStrings.MODID, "tileentity_barrel"));
 		GameRegistry.registerTileEntity(TileEntityTesla.class, new ResourceLocation(RefStrings.MODID, "tileentity_tesla"));
 		GameRegistry.registerTileEntity(TileEntityCyberCrab.class, new ResourceLocation(RefStrings.MODID, "tileentity_cybercrab"));
@@ -459,8 +614,6 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityCore.class, new ResourceLocation(RefStrings.MODID, "tileentity_core_core"));
 		GameRegistry.registerTileEntity(TileEntitySoyuzCapsule.class, new ResourceLocation(RefStrings.MODID, "tileentity_soyuz_capsule"));
 		GameRegistry.registerTileEntity(TileEntitySoyuzLauncher.class, new ResourceLocation(RefStrings.MODID, "tileentity_soyuz_launcher"));
-		GameRegistry.registerTileEntity(TileEntityFFFluidSuccMk2.class, new ResourceLocation(RefStrings.MODID, "tileentity_ff_succ_mk2"));
-		GameRegistry.registerTileEntity(TileEntityFFFluidSuccMk2Solid.class, new ResourceLocation(RefStrings.MODID, "tileentity_ff_succ_mk2_solid"));
 		GameRegistry.registerTileEntity(TileEntityMachineCrystallizer.class, new ResourceLocation(RefStrings.MODID, "tileentity_acidomatic"));
 		GameRegistry.registerTileEntity(TileEntitySoyuzStruct.class, new ResourceLocation(RefStrings.MODID, "tileentity_soyuz_struct"));
 		GameRegistry.registerTileEntity(TileEntityITERStruct.class, new ResourceLocation(RefStrings.MODID, "tileentity_iter_struct"));
@@ -496,6 +649,7 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityControlPanel.class, new ResourceLocation(RefStrings.MODID, "tileentity_control_panel"));
 		GameRegistry.registerTileEntity(TileEntityCrateTungsten.class, new ResourceLocation(RefStrings.MODID, "tileentity_crate_tungsten"));
 		GameRegistry.registerTileEntity(TileEntityDemonLamp.class, new ResourceLocation(RefStrings.MODID, "tileentity_demon_lamp"));
+		GameRegistry.registerTileEntity(TileEntityTurretArty.class, new ResourceLocation(RefStrings.MODID, "tileentity_turret_arty"));
 		GameRegistry.registerTileEntity(TileEntityTurretChekhov.class, new ResourceLocation(RefStrings.MODID, "tileentity_turret_chekhov"));
 		GameRegistry.registerTileEntity(TileEntityTurretJeremy.class, new ResourceLocation(RefStrings.MODID, "tileentity_turret_jeremy"));
 		GameRegistry.registerTileEntity(TileEntityTurretTau.class, new ResourceLocation(RefStrings.MODID, "tileentity_turret_tau"));
@@ -530,6 +684,8 @@ public class MainRegistry {
 		GameRegistry.registerTileEntity(TileEntityMachineBAT9000.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_bat9000"));
 		GameRegistry.registerTileEntity(TileEntityMachineOrbus.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_orbus"));
 		GameRegistry.registerTileEntity(TileEntityCondenser.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_condenser"));
+		GameRegistry.registerTileEntity(TileEntityMachineLiquefactor.class, new ResourceLocation(RefStrings.MODID, "tileentity_liquefactor"));
+		GameRegistry.registerTileEntity(TileEntityMachineSolidifier.class, new ResourceLocation(RefStrings.MODID, "tileentity_solidifier"));
 		GameRegistry.registerTileEntity(TileEntityChungus.class, new ResourceLocation(RefStrings.MODID, "tileentity_chungus"));
 		GameRegistry.registerTileEntity(TileEntitySpacer.class, new ResourceLocation(RefStrings.MODID, "tileentity_spacer"));
 		GameRegistry.registerTileEntity(TileEntityMachineFractionTower.class, new ResourceLocation(RefStrings.MODID, "tileentity_machine_frac_tower"));
@@ -582,6 +738,7 @@ public class MainRegistry {
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_rocket"), EntityRocket.class, "entity_rocket", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_fire"), EntityFire.class, "entity_fire", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_aa_shell"), EntityAAShell.class, "entity_aa_shell", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_artillery_shell"), EntityArtilleryShell.class, "entity_artillery_shell", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_bomber"), EntityBomber.class, "entity_bomber", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_agent_orange"), EntityOrangeFX.class, "entity_agent_orange", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_pink_cloud_fx"), EntityPinkCloudFX.class, "entity_pink_cloud_fx", i++, MainRegistry.instance, 1000, 1, true);
@@ -656,31 +813,32 @@ public class MainRegistry {
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_grenade_if_hopwire"), EntityGrenadeIFHopwire.class, "entity_grenade_if_hopwire", i++, MainRegistry.instance, 250, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_grenade_if_null"), EntityGrenadeIFNull.class, "entity_grenade_if_null", i++, MainRegistry.instance, 250, 1, true);
 
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_generic"), EntityMissileGeneric.class, "entity_missile_generic", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_incendiary"), EntityMissileIncendiary.class, "entity_missile_incendiary", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_cluster"), EntityMissileCluster.class, "entity_missile_cluster", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_bunker_buster"), EntityMissileBunkerBuster.class, "entity_missile_bunker_buster", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_strong"), EntityMissileStrong.class, "entity_missile_strong", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_incendiary_strong"), EntityMissileIncendiaryStrong.class, "entity_missile_incendiary_strong", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_cluster_strong"), EntityMissileClusterStrong.class, "entity_missile_cluster_strong", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_buster_strong"), EntityMissileBusterStrong.class, "entity_missile_buster_strong", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_emp_strong"), EntityMissileEMPStrong.class, "entity_missile_emp_strong", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_burst"), EntityMissileBurst.class, "entity_missile_burst", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_inferno"), EntityMissileInferno.class, "entity_missile_inferno", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_rain"), EntityMissileRain.class, "entity_missile_rain", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_drill"), EntityMissileDrill.class, "entity_missile_drill", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_n2"), EntityMissileN2.class, "entity_missile_n2", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_nuclear"), EntityMissileNuclear.class, "entity_missile_nuclear", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_mirv"), EntityMissileMirv.class, "entity_missile_mirv", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_endo"), EntityMissileEndo.class, "entity_missile_endo", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_exo"), EntityMissileExo.class, "entity_missile_exo", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_doomsday"), EntityMissileDoomsday.class, "entity_missile_doomsday", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_taint"), EntityMissileTaint.class, "entity_missile_taint", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_micro"), EntityMissileMicro.class, "entity_missile_micro", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_bhole"), EntityMissileBHole.class, "entity_missile_bhole", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_schrab"), EntityMissileSchrabidium.class, "entity_missile_schrab", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_emp"), EntityMissileEMP.class, "entity_missile_emp", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_generic"), EntityMissileTier1.EntityMissileGeneric.class, "entity_missile_generic", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_incendiary"), EntityMissileTier1.EntityMissileIncendiary.class, "entity_missile_incendiary", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_cluster"), EntityMissileTier1.EntityMissileCluster.class, "entity_missile_cluster", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_bunker_buster"), EntityMissileTier1.EntityMissileBunkerBuster.class, "entity_missile_bunker_buster", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_strong"), EntityMissileTier2.EntityMissileStrong.class, "entity_missile_strong", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_incendiary_strong"), EntityMissileTier2.EntityMissileIncendiaryStrong.class, "entity_missile_incendiary_strong", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_cluster_strong"), EntityMissileTier2.EntityMissileClusterStrong.class, "entity_missile_cluster_strong", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_buster_strong"), EntityMissileTier2.EntityMissileBusterStrong.class, "entity_missile_buster_strong", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_emp_strong"), EntityMissileTier2.EntityMissileEMPStrong.class, "entity_missile_emp_strong", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_burst"), EntityMissileTier3.EntityMissileBurst.class, "entity_missile_burst", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_inferno"), EntityMissileTier3.EntityMissileInferno.class, "entity_missile_inferno", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_rain"), EntityMissileTier3.EntityMissileRain.class, "entity_missile_rain", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_drill"), EntityMissileTier3.EntityMissileDrill.class, "entity_missile_drill", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_n2"), EntityMissileTier4.EntityMissileN2.class, "entity_missile_n2", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_nuclear"), EntityMissileTier4.EntityMissileNuclear.class, "entity_missile_nuclear", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_mirv"), EntityMissileTier4.EntityMissileMirv.class, "entity_missile_mirv", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_endo"), EntityMissileTier3.EntityMissileEndo.class, "entity_missile_endo", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_exo"), EntityMissileTier3.EntityMissileExo.class, "entity_missile_exo", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_doomsday"), EntityMissileTier4.EntityMissileDoomsday.class, "entity_missile_doomsday", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_taint"), EntityMissileTier0.EntityMissileTaint.class, "entity_missile_taint", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_micro"), EntityMissileTier0.EntityMissileMicro.class, "entity_missile_micro", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_bhole"), EntityMissileTier0.EntityMissileBHole.class, "entity_missile_bhole", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_schrab"), EntityMissileTier0.EntityMissileSchrabidium.class, "entity_missile_schrab", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_emp"), EntityMissileTier0.EntityMissileEMP.class, "entity_missile_emp", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_ab"), EntityMissileAntiBallistic.class, "entity_missile_ab", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_stealth"), EntityMissileStealth.class, "entity_missile_stealth", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_carrier"), EntityCarrier.class, "entity_carrier", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_booster"), EntityBooster.class, "entity_booster", i++, MainRegistry.instance, 1000, 1, true);
 
@@ -726,16 +884,17 @@ public class MainRegistry {
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_firework_ball"), EntityFireworks.class, "entity_firework_ball", i++, MainRegistry.instance, 1000, 1, true);
 		
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_rbmk_debris"), EntityRBMKDebris.class, "entity_rbmk_debris", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_sawblade"), EntitySawblade.class, "entity_sawblade", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_spear"), EntitySpear.class, "entity_spear", i++, MainRegistry.instance, 1000, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_volcano"), EntityMissileVolcano.class, "entity_missile_volcano", i++, MainRegistry.instance, 1000, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_missile_volcano"), EntityMissileTier4.EntityMissileVolcano.class, "entity_missile_volcano", i++, MainRegistry.instance, 1000, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_ntm_ufo"), EntityUFO.class, "entity_ntm_ufo", i++, MainRegistry.instance, 1000, 1, true, 0x00FFFF, 0x606060);
 		EntityRegistry.registerModEntity(new ResourceLocation(RefStrings.MODID, "entity_digamma_quasar"), EntityQuasar.class, "entity_digamma_quasar", i++, MainRegistry.instance, 1000, 1, true);
 		
 		ForgeChunkManager.setForcedChunkLoadingCallback(this, new LoadingCallback() {
 
 			@Override
-			public void ticketsLoaded(final List<Ticket> tickets, final World world) {
-				for(final Ticket ticket : tickets) {
+			public void ticketsLoaded(List<Ticket> tickets, World world) {
+				for(Ticket ticket : tickets) {
 
 					if(ticket.getEntity() instanceof IChunkLoader) {
 						((IChunkLoader) ticket.getEntity()).init(ticket);
@@ -745,10 +904,11 @@ public class MainRegistry {
 		});
 		
 		registerDispenserBehaviors();
+		TileEntityLaunchPadBase.registerLaunchables();
 	}
 
 	public static void reloadConfig() {
-		final Configuration config = new Configuration(new File(proxy.getDataDir().getPath() + "/config/hbm/hbm.cfg"));
+		Configuration config = new Configuration(new File(proxy.getDataDir().getPath() + "/config/hbm/hbm.cfg"));
 		config.load();
 		GeneralConfig.loadFromConfig(config);
 		MachineConfig.loadFromConfig(config);
@@ -758,6 +918,7 @@ public class MainRegistry {
 		ToolConfig.loadFromConfig(config);
 		WeaponConfig.loadFromConfig(config);
 		MobConfig.loadFromConfig(config);
+		SpaceConfig.loadFromConfig(config);
 		config.save();
 		reloadCompatConfig();
 		WorldConfig.loadFromCompatibilityConfig();
@@ -765,14 +926,14 @@ public class MainRegistry {
 	}
 
 	public static void reloadCompatConfig() {
-		final Configuration config = new Configuration(new File(proxy.getDataDir().getPath() + "/config/hbm/hbm_dimensions.cfg"));
+		Configuration config = new Configuration(new File(proxy.getDataDir().getPath() + "/config/hbm/hbm_dimensions.cfg"));
 		config.load();
 		CompatibilityConfig.loadFromConfig(config);
 		config.save();
 	}
 
 	@EventHandler
-	public void init(final FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event) {
 		ModItems.init();
 		ModBlocks.init();
 		HazmatRegistry.registerHazmats();
@@ -782,10 +943,12 @@ public class MainRegistry {
 	}
 
 	@EventHandler
-	public void postInit(final FMLPostInitializationEvent event) {
+	public void postInit(FMLPostInitializationEvent event) {
 		ModItems.postInit();
 		ModBlocks.postInit();
-		com.hbm.hazard.HazardRegistry.postInit(); // TODO: simplify name when remove old hazard system
+		ModBiomes.init();
+		SolarSystem.init();
+		PlanetGen.init();
 		BlockCrate.setDrops();
 		BedrockOreRegistry.registerBedrockOres();
 		FluidTypeHandler.registerFluidProperties();
@@ -794,48 +957,35 @@ public class MainRegistry {
 		ShredderRecipes.registerOverrides();
 		DiFurnaceRecipes.registerRecipes();
 		DiFurnaceRecipes.registerFuels();
-		CrystallizerRecipes.register();
 		CentrifugeRecipes.register();
 		PressRecipes.registerOverrides();
 		BreederRecipes.registerFuels();
 		BreederRecipes.registerRecipes();
 		AssemblerRecipes.loadRecipes();
-		ChemplantRecipes.registerRecipes();
-		MixerRecipes.copyChemplantRecipes();
-		MixerRecipes.registerRecipes();
-		CrackRecipes.registerRecipes();
 		ExplosionNukeGeneric.loadSoliniumFromFile();
 		CyclotronRecipes.register();
 		HadronRecipes.register();
 		MagicRecipes.register();
 		SILEXRecipes.register();
+		SerializableRecipe.registerAllHandlers();
+		SerializableRecipe.initialize();
 		AnvilRecipes.register();
 		WasteDrumRecipes.registerRecipes();
-		RefineryRecipes.registerFractions();
-		RefineryRecipes.registerRefineryRecipes();
+		RefineryRecipes.registerRefinery();
+		FluidContainerRegistry.register();
 		TileEntityNukeCustom.registerBombItems();
 		ArmorUtil.register();
-		RBMKOutgasserRecipes.registerOverrides();
 		RBMKFuelRecipes.registerRecipes();
 		DFCRecipes.register();
 		SAFERecipes.registerRecipes();
 		StorageDrumRecipes.registerRecipes();
 		NuclearTransmutationRecipes.registerRecipes();
-		HeatRecipes.registerHeatRecipes();
 		EngineRecipes.registerEngineRecipes();
 		FluidCombustionRecipes.registerFluidCombustionRecipes();
 		HbmDetox.init();
 
-		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.lox_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.oxygen, 10000));
-		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.pink_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.kerosene, 10000));
-		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.red_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.diesel, 10000));
-		FluidContainerRegistry.registerContainer(ModItems.iv_xp, ModItems.iv_xp_empty, new FluidStack(ModForgeFluids.experience, 100));
-		FluidContainerRegistry.registerContainer(ModItems.nugget.getItemStack(MaterialMineral.MERCURY), null, new FluidStack(ModForgeFluids.mercury, 125));
-		FluidContainerRegistry.registerContainer(ModItems.bottle_mercury, Items.GLASS_BOTTLE, new FluidStack(ModForgeFluids.mercury, 1000));
-		FluidContainerRegistry.registerContainer(ModItems.particle_hydrogen, ModItems.particle_empty, new FluidStack(ModForgeFluids.hydrogen, 1000));
-		FluidContainerRegistry.registerContainer(ModItems.particle_amat, ModItems.particle_empty, new FluidStack(ModForgeFluids.amat, 1000));
-		FluidContainerRegistry.registerContainer(ModItems.particle_aschrab, ModItems.particle_empty, new FluidStack(ModForgeFluids.aschrab, 1000));
-		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.ore_gneiss_gas), Item.getItemFromBlock(ModBlocks.stone_gneiss), new FluidStack(ModForgeFluids.petroleum, 250));
+		// Load compatibility for OC.
+		CompatHandler.init();
 		
 		//Drillgon200: expand the max entity radius for the hunter chopper
 		if(World.MAX_ENTITY_RADIUS < 5)
@@ -844,7 +994,6 @@ public class MainRegistry {
 		
 		NTMCraftTweaker.applyPostInitActions();
 		AssemblerRecipes.generateList();
-		HeatRecipes.setFluidsForRBMKLoader();
 		if(event.getSide() == Side.CLIENT) {
 			BedrockOreRegistry.registerOreColors();
 			ModForgeFluids.registerFluidColors();
@@ -853,10 +1002,11 @@ public class MainRegistry {
 	}
 
 	@EventHandler
-	public void serverStarting(final FMLServerStartingEvent evt) {
+	public void serverStarting(FMLServerStartingEvent evt) {
 		RBMKDials.createDials(evt.getServer().getEntityWorld());
 		evt.registerServerCommand(new CommandRadiation());
 		evt.registerServerCommand(new CommandHbm());
+		evt.registerServerCommand(new CommandSpaceTP());
 		AdvancementManager.init(evt.getServer());
 		//MUST be initialized AFTER achievements!!
 		BobmazonOfferFactory.reset();
@@ -864,10 +1014,10 @@ public class MainRegistry {
 	}
 
 	private void registerReactorFuels(){
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.URANIUM, ModItems.nugget.getItemStack(MaterialMineral.URANIUM_FUEL));
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.URANIUM, ModItems.ingot.getItemStack(MaterialMineral.URANIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.URANIUM, ModItems.nugget_uranium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.URANIUM, ModItems.ingot_uranium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(81, ReactorFuelType.URANIUM, Item.getItemFromBlock(ModBlocks.block_uranium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.URANIUM, ModItems.billet.getItemStack(MaterialMineral.URANIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.URANIUM, ModItems.billet_uranium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.URANIUM, ModItems.rod_uranium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.URANIUM, ModItems.rod_dual_uranium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.URANIUM, ModItems.rod_quad_uranium_fuel);
@@ -875,10 +1025,10 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(12, ReactorFuelType.URANIUM, ModItems.rod_dual_empty, ModItems.rod_dual_uranium_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(24, ReactorFuelType.URANIUM, ModItems.rod_quad_empty, ModItems.rod_quad_uranium_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.PLUTONIUM, ModItems.nugget.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.PLUTONIUM, ModItems.ingot.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.PLUTONIUM, ModItems.nugget_plutonium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.PLUTONIUM, ModItems.ingot_plutonium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(81, ReactorFuelType.PLUTONIUM, Item.getItemFromBlock(ModBlocks.block_plutonium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.PLUTONIUM, ModItems.billet.getItemStack(MaterialMineral.PLUTONIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.PLUTONIUM, ModItems.billet_plutonium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.PLUTONIUM, ModItems.rod_plutonium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.PLUTONIUM, ModItems.rod_dual_plutonium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.PLUTONIUM, ModItems.rod_quad_plutonium_fuel);
@@ -886,9 +1036,9 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(12, ReactorFuelType.PLUTONIUM, ModItems.rod_dual_empty, ModItems.rod_dual_plutonium_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(24, ReactorFuelType.PLUTONIUM, ModItems.rod_quad_empty, ModItems.rod_quad_plutonium_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.MOX, ModItems.nugget.getItemStack(MaterialMineral.MOX_FUEL));
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.MOX, ModItems.ingot.getItemStack(MaterialMineral.MOX_FUEL));
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.MOX, ModItems.billet.getItemStack(MaterialMineral.MOX_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.MOX, ModItems.nugget_mox_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.MOX, ModItems.ingot_mox_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.MOX, ModItems.billet_mox_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.MOX, ModItems.rod_mox_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.MOX, ModItems.rod_dual_mox_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.MOX, ModItems.rod_quad_mox_fuel);
@@ -896,10 +1046,10 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(12, ReactorFuelType.MOX, ModItems.rod_dual_empty, ModItems.rod_dual_mox_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(24, ReactorFuelType.MOX, ModItems.rod_quad_empty, ModItems.rod_quad_mox_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(10, ReactorFuelType.SCHRABIDIUM, ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
-		TileEntityMachineReactorLarge.registerFuelEntry(90, ReactorFuelType.SCHRABIDIUM, ModItems.ingot.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(10, ReactorFuelType.SCHRABIDIUM, ModItems.nugget_schrabidium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(90, ReactorFuelType.SCHRABIDIUM, ModItems.ingot_schrabidium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(810, ReactorFuelType.SCHRABIDIUM, Item.getItemFromBlock(ModBlocks.block_schrabidium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(60, ReactorFuelType.SCHRABIDIUM, ModItems.billet.getItemStack(MaterialMineral.SCHRABIDIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(60, ReactorFuelType.SCHRABIDIUM, ModItems.billet_schrabidium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(60, ReactorFuelType.SCHRABIDIUM, ModItems.rod_schrabidium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(120, ReactorFuelType.SCHRABIDIUM, ModItems.rod_dual_schrabidium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(240, ReactorFuelType.SCHRABIDIUM, ModItems.rod_quad_schrabidium_fuel);
@@ -907,10 +1057,10 @@ public class MainRegistry {
 		TileEntityMachineReactorLarge.registerWasteEntry(120, ReactorFuelType.SCHRABIDIUM, ModItems.rod_dual_empty, ModItems.rod_dual_schrabidium_fuel_depleted);
 		TileEntityMachineReactorLarge.registerWasteEntry(240, ReactorFuelType.SCHRABIDIUM, ModItems.rod_quad_empty, ModItems.rod_quad_schrabidium_fuel_depleted);
 
-		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.THORIUM, ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL));
-		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.THORIUM, ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(1, ReactorFuelType.THORIUM, ModItems.nugget_thorium_fuel);
+		TileEntityMachineReactorLarge.registerFuelEntry(9, ReactorFuelType.THORIUM, ModItems.ingot_thorium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(81, ReactorFuelType.THORIUM, Item.getItemFromBlock(ModBlocks.block_thorium_fuel));
-		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.THORIUM, ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL));
+		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.THORIUM, ModItems.billet_thorium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(6, ReactorFuelType.THORIUM, ModItems.rod_thorium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(12, ReactorFuelType.THORIUM, ModItems.rod_dual_thorium_fuel);
 		TileEntityMachineReactorLarge.registerFuelEntry(24, ReactorFuelType.THORIUM, ModItems.rod_quad_thorium_fuel);
@@ -922,294 +1072,294 @@ public class MainRegistry {
 	private void registerDispenserBehaviors(){
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_generic, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeGeneric(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_strong, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeStrong(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_frag, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeFrag(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_fire, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeFire(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_cluster, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeCluster(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_flare, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeFlare(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_electric, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeElectric(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_poison, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadePoison(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_gas, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeGas(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_schrabidium, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeSchrabidium(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_nuke, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeNuke(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_nuclear, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeNuclear(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_pulse, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadePulse(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_plasma, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadePlasma(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_tau, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeTau(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_lemon, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeLemon(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_mk2, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeMk2(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_aschrab, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeASchrab(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_zomg, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeZOMG(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_solinium, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeSolinium(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_shrapnel, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeShrapnel(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_black_hole, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeBlackHole(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_gascan, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeGascan(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_cloud, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeCloud(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_pink_cloud, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadePC(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_smart, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeSmart(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_mirv, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeMIRV(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_breach, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeBreach(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_burst, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeBurst(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_generic, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFGeneric(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_he, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFHE(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_bouncy, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFBouncy(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_sticky, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFSticky(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_impact, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFImpact(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_incendiary, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFIncendiary(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_toxic, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFToxic(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_concussion, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFConcussion(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_brimstone, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFBrimstone(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_mystery, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFMystery(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_spark, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFSpark(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_hopwire, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFHopwire(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }
         });
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.grenade_if_null, new BehaviorProjectileDispense() {
 			@Override
-            protected IProjectile getProjectileEntity(final World p_82499_1_, final IPosition p_82499_2_, final ItemStack stack)
+            protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_, ItemStack stack)
             {
                 return new EntityGrenadeIFNull(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
             }

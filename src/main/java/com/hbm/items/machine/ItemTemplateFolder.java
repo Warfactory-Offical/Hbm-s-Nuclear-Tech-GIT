@@ -1,10 +1,7 @@
 package com.hbm.items.machine;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +11,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemTemplateFolder extends Item {
 
-	public ItemTemplateFolder(final String s) {
+	public ItemTemplateFolder(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -24,7 +23,7 @@ public class ItemTemplateFolder extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.templfolder1"));
 		tooltip.add(I18nUtil.resolveKey("desc.templfolder2"));
 		tooltip.add(I18nUtil.resolveKey("desc.templfolder3"));
@@ -32,7 +31,7 @@ public class ItemTemplateFolder extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		if(worldIn.isRemote)
 			playerIn.openGui(MainRegistry.instance, ModItems.guiID_item_folder, worldIn, 0, 0, 0);
 		return super.onItemRightClick(worldIn, playerIn, handIn);

@@ -1,23 +1,18 @@
 package com.hbm.tileentity.machine.oil;
 
-import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachinePumpjack;
 import com.hbm.config.MachineConfig;
 import com.hbm.entity.particle.EntityGasFX;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.items.ModItems;
-import com.hbm.lib.Library;
 import com.hbm.lib.ForgeDirection;
-import com.hbm.packet.FluidTankPacket;
+import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
+import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEPumpjackPacket;
-
-import net.minecraft.init.Blocks;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -49,13 +44,13 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
     }
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.rotation = compound.getFloat("rotation");
 		super.readFromNBT(compound);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setFloat("rotation", rotation);
 		return super.writeToNBT(compound);
 	}
@@ -63,7 +58,7 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void update() {
-		final int timer = MachineConfig.delayPerOperationPumpjack;
+		int timer = MachineConfig.delayPerOperationPumpjack;
 		prevRotation = rotation;
 		age++;
 		age2++;
@@ -73,8 +68,8 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 			age2 -= 20;
 		if(!world.isRemote) {
 			this.updateConnections();
-			final int tank0Amount = tanks[0].getFluidAmount();
-			final int tank1Amount = tanks[1].getFluidAmount();
+			int tank0Amount = tanks[0].getFluidAmount();
+			int tank1Amount = tanks[1].getFluidAmount();
 			if(age2 == 9 || age2 == 19) {
 				fillFluidInit(tanks[0]);
 				fillFluidInit(tanks[1]);
@@ -110,7 +105,7 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 							break;
 						}
 
-						final Block b = world.getBlockState(new BlockPos(pos.getX(), i, pos.getZ())).getBlock();
+						Block b = world.getBlockState(new BlockPos(pos.getX(), i, pos.getZ())).getBlock();
 						if(b == ModBlocks.oil_pipe)
 							continue;
 
@@ -125,8 +120,8 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 						} else if(this.tanks[0].getFluidAmount() < this.tanks[0].getCapacity() && this.tanks[1].getFluidAmount() < this.tanks[1].getCapacity()) {
 							if(succ(pos.getX(), i, pos.getZ()) == 1) {
 
-								final int oilCollected = MachineConfig.oilPerDepositBlockMinPumpjack + ((MachineConfig.oilPerDepositBlockMaxExtraPumpjack > 0) ? world.rand.nextInt(MachineConfig.oilPerDepositBlockMaxExtraPumpjack) : 0);
-								final int gasCollected = MachineConfig.gasPerDepositBlockMinPumpjack + ((MachineConfig.gasPerDepositBlockMaxExtraPumpjack > 0) ? world.rand.nextInt(MachineConfig.gasPerDepositBlockMaxExtraPumpjack) : 0);
+								int oilCollected = MachineConfig.oilPerDepositBlockMinPumpjack + ((MachineConfig.oilPerDepositBlockMaxExtraPumpjack > 0) ? world.rand.nextInt(MachineConfig.oilPerDepositBlockMaxExtraPumpjack) : 0);
+								int gasCollected = MachineConfig.gasPerDepositBlockMinPumpjack + ((MachineConfig.gasPerDepositBlockMaxExtraPumpjack > 0) ? world.rand.nextInt(MachineConfig.gasPerDepositBlockMaxExtraPumpjack) : 0);
 
 								this.tanks[0].fill(new FluidStack(tankTypes[0], oilCollected), true);
 								this.tanks[1].fill(new FluidStack(tankTypes[1], gasCollected), true);
@@ -169,7 +164,7 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 
 			PacketDispatcher.wrapper.sendToAllAround(new TEPumpjackPacket(pos.getX(), pos.getY(), pos.getZ(), rotation, isProgressing), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] { tanks[0], tanks[1] }), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
 			if(tank0Amount != tanks[0].getFluidAmount() || tank1Amount != tanks[1].getFluidAmount()){
 				markDirty();
 			}
@@ -177,13 +172,13 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 	}
 
 	protected void updateConnections() {
-		final ForgeDirection dir = ForgeDirection.getOrientation(world.getBlockState(pos).getValue(MachinePumpjack.FACING).ordinal());
-		final ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+		ForgeDirection dir = ForgeDirection.getOrientation(world.getBlockState(pos).getValue(MachinePumpjack.FACING).ordinal());
+		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 		
-		this.trySubscribe(world, pos.add(rot.offsetX * 2 + dir.offsetX * 2, 0, rot.offsetZ * 2 + dir.offsetZ * 2), dir);
-		this.trySubscribe(world, pos.add(rot.offsetX * 2 + dir.offsetX * 2, 0, rot.offsetZ * 4 - dir.offsetZ * 2), dir.getOpposite());
-		this.trySubscribe(world, pos.add(rot.offsetX * 4 - dir.offsetX * 2, 0, rot.offsetZ * 4 + dir.offsetZ * 2), dir);
-		this.trySubscribe(world, pos.add(rot.offsetX * 4 - dir.offsetX * 2, 0, rot.offsetZ * 2 - dir.offsetZ * 2), dir.getOpposite());
+		this.trySubscribe(world, pos.getX() + rot.offsetX * 2 + dir.offsetX * 2, pos.getY(), pos.getZ() + rot.offsetZ * 2 + dir.offsetZ * 2, dir);
+		this.trySubscribe(world, pos.getX() + rot.offsetX * 2 + dir.offsetX * 2, pos.getY(), pos.getZ() + rot.offsetZ * 4 - dir.offsetZ * 2, dir.getOpposite());
+		this.trySubscribe(world, pos.getX() + rot.offsetX * 4 - dir.offsetX * 2, pos.getY(), pos.getZ() + rot.offsetZ * 4 + dir.offsetZ * 2, dir);
+		this.trySubscribe(world, pos.getX() + rot.offsetX * 4 - dir.offsetX * 2, pos.getY(), pos.getZ() + rot.offsetZ * 2 - dir.offsetZ * 2, dir.getOpposite());
 	}
 
 
@@ -198,7 +193,7 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 	{
 		return 65536.0D;
 	}
-	public void fillFluidInit(final FluidTank tank) {
+	public void fillFluidInit(FluidTank tank) {
 		
 		EnumFacing e = world.getBlockState(pos).getValue(MachinePumpjack.FACING);
 		e = e.rotateY();
@@ -229,7 +224,7 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		if(resource == null){
 			return null;
 		} else if(resource.getFluid() == tankTypes[0]){
@@ -242,7 +237,7 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if(tanks[0].getFluidAmount() > 0){
 			return tanks[0].drain(maxDrain, doDrain);
 		} else if(tanks[1].getFluidAmount() > 0){

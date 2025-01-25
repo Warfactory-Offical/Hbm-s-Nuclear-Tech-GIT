@@ -1,40 +1,38 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.item.TEISRBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderWeaponSauer extends TEISRBase {
 
 	@Override
-	public void renderByItem(final ItemStack itemStackIn) {
+	public void renderByItem(ItemStack itemStackIn) {
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.sauergun_tex);
 
-		final EntityPlayer player = Minecraft.getMinecraft().player;
+		EntityPlayer player = Minecraft.getMinecraft().player;
 		
 		switch(type) {
 
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			final EnumHand hand = type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
+			EnumHand hand = type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
 
-			final double[] recoil = HbmAnimations.getRelevantTransformation("SAUER_RECOIL", hand);
-			final double[] tilt = HbmAnimations.getRelevantTransformation("SAUER_TILT", hand);
-			final double[] cock = HbmAnimations.getRelevantTransformation("SAUER_COCK", hand);
-			final double[] eject = HbmAnimations.getRelevantTransformation("SAUER_SHELL_EJECT", hand);
+			double[] recoil = HbmAnimations.getRelevantTransformation("SAUER_RECOIL", hand);
+			double[] tilt = HbmAnimations.getRelevantTransformation("SAUER_TILT", hand);
+			double[] cock = HbmAnimations.getRelevantTransformation("SAUER_COCK", hand);
+			double[] eject = HbmAnimations.getRelevantTransformation("SAUER_SHELL_EJECT", hand);
 
 
 			if(type == TransformType.FIRST_PERSON_RIGHT_HAND) {
@@ -104,7 +102,7 @@ public class ItemRenderWeaponSauer extends TEISRBase {
 
 			GlStateManager.enableLighting();
 
-			final double s = 0.16;
+			double s = 0.16;
 			GL11.glScaled(s, s, s);
 			GL11.glTranslatef(3.6F, 2.1F, 0.0F);
 			GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);

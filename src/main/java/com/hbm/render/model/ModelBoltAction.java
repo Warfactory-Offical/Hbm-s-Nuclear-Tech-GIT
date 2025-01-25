@@ -1,7 +1,5 @@
 package com.hbm.render.model;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -10,6 +8,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 
 public class ModelBoltAction extends ModelBase {
 
@@ -174,7 +173,7 @@ public class ModelBoltAction extends ModelBase {
 		setRotation(HandleGrip, 0F, 0F, 0F);
 	}
 
-	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5) {
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		Barrel1.render(f5);
@@ -207,11 +206,11 @@ public class ModelBoltAction extends ModelBase {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GlStateManager.disableLighting();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-        final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder buf = tessellator.getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buf = tessellator.getBuffer();
         buf.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
         buf.pos(-32F / 16F, 0 + 4F / 16F, 0).color(0.0F, 1.0F, 0.0F, 1.0F).endVertex();
-        buf.pos(-150, 0, 0).color(0.0F, 1.0F, 0.0F, 1.0F).endVertex();
+        buf.pos(-150, 0, 0).color(0.0F, 1.0F, 0.0F, 1.0F).endVertex();;
         tessellator.draw();
         
         GlStateManager.enableLighting();
@@ -220,7 +219,7 @@ public class ModelBoltAction extends ModelBase {
 		GL11.glPopMatrix();
 	}
 
-	public void renderAnim(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final float rot, final float tran) {
+	public void renderAnim(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, float rot, float tran) {
 
 		LeverTip.rotateAngleX += rot;
 		Lever.rotateAngleX += rot;
@@ -237,13 +236,13 @@ public class ModelBoltAction extends ModelBase {
 		Lever.offsetX -= tran;
 	}
 
-	private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
-	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity) {
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 }

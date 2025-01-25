@@ -17,21 +17,21 @@ public class Vec3s extends FuncRelational {
         z = 0;
     }
 
-    public Vec3s(final int x, final int y, final int z) {
+    public Vec3s(int x, int y, int z) {
         this((short) x, (short) y, (short) z);
     }
 
-    public Vec3s(final short x, final short y, final short z) {
+    public Vec3s(short x, short y, short z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3s set(final int x, final int y, final int z) {
+    public Vec3s set(int x, int y, int z) {
         return set((short) x, (short) y, (short) z);
     }
 
-    public Vec3s set(final short x, final short y, final short z) {
+    public Vec3s set(short x, short y, short z) {
         this.x = x;
         this.y = y;
         this.z = z;

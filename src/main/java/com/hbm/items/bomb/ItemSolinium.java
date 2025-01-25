@@ -11,15 +11,15 @@ import java.util.List;
 
 public class ItemSolinium extends ItemHazard {
 
-	public ItemSolinium(final float radiation, final boolean blinding, final String s) {
+	public ItemSolinium(float radiation, boolean blinding, String s) {
 		super(radiation, false, blinding, s);
 		this.setCreativeTab(MainRegistry.nukeTab);
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.usedin"));
 		list.add(" " + I18nUtil.resolveKey("trait.soliniumbomb"));
-		//super.addInformation(stack, world, list, flagIn);
+		super.addInformation(stack, world, list, flagIn);
 	}
 }

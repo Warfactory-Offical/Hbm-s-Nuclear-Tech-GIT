@@ -28,7 +28,7 @@ public class ParticleTauParticle extends Particle {
 	public float randomness;
 	public float mX, mY, mZ;
 	
-	public ParticleTauParticle(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale, final float randomness, final int timeUntilNextRand, final int timeUntilChangeRand, final float grav) {
+	public ParticleTauParticle(World worldIn, double posXIn, double posYIn, double posZIn, float scale, float randomness, int timeUntilNextRand, int timeUntilChangeRand, float grav) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.motionX = (rand.nextFloat()-0.5)*randomness;
@@ -41,7 +41,7 @@ public class ParticleTauParticle extends Particle {
 		this.timeUntilNextRand = timeUntilNextRand;
 	}
 	
-	public ParticleTauParticle motion(final float mX, final float mY, final float mZ){
+	public ParticleTauParticle motion(float mX, float mY, float mZ){
 		this.motionX += mX;
 		this.motionX += mX;
 		this.motionX += mX;
@@ -51,7 +51,7 @@ public class ParticleTauParticle extends Particle {
 		return this;
 	}
 	
-	public ParticleTauParticle color(final float colR, final float colG, final float colB, final float colA){
+	public ParticleTauParticle color(float colR, float colG, float colB, float colA){
 		this.particleRed = colR;
 		this.particleGreen = colG;
 		this.particleBlue = colB;
@@ -60,7 +60,7 @@ public class ParticleTauParticle extends Particle {
 		return this;
 	}
 	
-	public ParticleTauParticle lifetime(final int lifetime){
+	public ParticleTauParticle lifetime(int lifetime){
 		this.particleMaxAge = lifetime;
 		return this;
 	}
@@ -101,7 +101,7 @@ public class ParticleTauParticle extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.fresnel_ms);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GlStateManager.disableAlpha();
@@ -109,16 +109,16 @@ public class ParticleTauParticle extends Particle {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		RenderHelper.enableStandardItemLighting();
-		final float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
-		final float shrink = MathHelper.clamp(1-BobMathUtil.remap(MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1);
+		float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
+		float shrink = MathHelper.clamp(1-BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1);
 		this.workingAlpha = shrink*particleAlpha;
 		
-		final float f4 = 0.1F * this.particleScale;
+		float f4 = 0.1F * this.particleScale;
         
-        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
-        final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
+        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
         
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
         

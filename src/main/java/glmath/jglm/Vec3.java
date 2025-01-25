@@ -17,14 +17,14 @@ public class Vec3 extends Vec {
     public Vec3() {
     }
 
-    public Vec3(final float[] floatArray) {
+    public Vec3(float[] floatArray) {
         vector = floatArray;
         x = vector[0];
         y = vector[1];
         z = vector[2];
     }
 
-    public Vec3(final float x, final float y, final float z) {
+    public Vec3(float x, float y, float z) {
 
         this.x = x;
         this.y = y;
@@ -32,7 +32,7 @@ public class Vec3 extends Vec {
         vector = new float[]{x, y, z};
     }
     
-    public Vec3(final float f) {
+    public Vec3(float f) {
 
         x = f;
         y = f;
@@ -40,7 +40,7 @@ public class Vec3 extends Vec {
         vector = new float[]{f, f, f};
     }
     
-    public Vec3(final Vec3 v) {
+    public Vec3(Vec3 v) {
 
         x = v.x;
         y = v.y;
@@ -48,7 +48,7 @@ public class Vec3 extends Vec {
         vector = new float[]{x, y, z};
     }
 
-    public Vec3(final float[] floatArray, final int i) {
+    public Vec3(float[] floatArray, int i) {
 
         vector = new float[]{floatArray[i], floatArray[i + 1], floatArray[i + 2]};
         x = vector[0];
@@ -56,7 +56,7 @@ public class Vec3 extends Vec {
         z = vector[2];
     }
 
-    public Vec3(final Vec4 vec4) {
+    public Vec3(Vec4 vec4) {
 
         x = vec4.x;
         y = vec4.y;
@@ -64,29 +64,29 @@ public class Vec3 extends Vec {
         vector = new float[]{x, y, z};
     }
 
-    public static Vec3 getMiddlePoint(final Vec3 p1, final Vec3 p2) {
+    public static Vec3 getMiddlePoint(Vec3 p1, Vec3 p2) {
 
         return new Vec3((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
     }
 
     public Vec3 normalize() {
 
-        final float length = ((float) Math.sqrt(x * x + y * y + z * z));
+        float length = ((float) Math.sqrt(x * x + y * y + z * z));
         
         return length != 0 ? new Vec3(x / length, y / length, z / length) : new Vec3();
     }
 
-    public float dot(final Vec3 vec3) {
+    public float dot(Vec3 vec3) {
 
         return (x * vec3.x + y * vec3.y + z * vec3.z);
     }
 
-    public Vec3 times(final float scalar) {
+    public Vec3 times(float scalar) {
 
         return new Vec3(x * scalar, y * scalar, z * scalar);
     }
 
-    public static Vec3 mix(final Vec3 start, final Vec3 end, final float lerp) {
+    public static Vec3 mix(Vec3 start, Vec3 end, float lerp) {
         
         Vec3 result = end.minus(start);
         
@@ -110,12 +110,12 @@ public class Vec3 extends Vec {
      * @param quat
      * @return
      */
-    public Vec3 times(final Quat quat) {
+    public Vec3 times(Quat quat) {
 
 //        Quat inverse = quat.conjugate();
 //
 //        return inverse.mult(this);
-        final Vec3 q = new Vec3(quat.x, quat.y, quat.z);
+        Vec3 q = new Vec3(quat.x, quat.y, quat.z);
 
         Vec3 t = (q).crossProduct(this);
 
@@ -123,18 +123,18 @@ public class Vec3 extends Vec {
 
         t = t.times(quat.w).plus(q.crossProduct(t));
 
-        final Vec3 v = t.plus(this);
+        Vec3 v = t.plus(this);
 
         return v;
 
 //        return quat.m
     }
 
-    public Vec3 transformQuat(final Quat quat) {
+    public Vec3 transformQuat(Quat quat) {
 
-        final Vec3 result = new Vec3();
+        Vec3 result = new Vec3();
 
-        final Quat i = new Quat();
+        Quat i = new Quat();
 
         // calculate quat * vec
         i.x = quat.w * x + quat.y * z - quat.z * y;
@@ -150,17 +150,17 @@ public class Vec3 extends Vec {
         return result;
     }
 
-    public Vec3 plus(final Vec3 vec3) {
+    public Vec3 plus(Vec3 vec3) {
 
         return new Vec3(x + vec3.x, y + vec3.y, z + vec3.z);
     }
 
-    public Vec3 minus(final Vec3 vec3) {
+    public Vec3 minus(Vec3 vec3) {
 
         return new Vec3(x - vec3.x, y - vec3.y, z - vec3.z);
     }
 
-    public Vec3 crossProduct(final Vec3 vec3) {
+    public Vec3 crossProduct(Vec3 vec3) {
 
         return new Vec3(y * vec3.z - z * vec3.y, z * vec3.x - x * vec3.z, x * vec3.y - y * vec3.x);
     }
@@ -179,7 +179,7 @@ public class Vec3 extends Vec {
         System.out.println("(" + x + ", " + y + ", " + z + ")");
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         System.out.println(title + " (" + x + ", " + y + ", " + z + ")");
     }
 
@@ -188,12 +188,12 @@ public class Vec3 extends Vec {
         return new float[]{x, y, z};
     }
 
-    public float getDistance(final Vec3 v) {
+    public float getDistance(Vec3 v) {
 
         return (float) Math.sqrt(Math.pow(x - v.x, 2) + Math.pow(y - v.y, 2) + Math.pow(z - v.z, 2));
     }
 
-    public boolean isEqual(final Vec3 second) {
+    public boolean isEqual(Vec3 second) {
 
         boolean equal = true;
 

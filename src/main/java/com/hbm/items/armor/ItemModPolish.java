@@ -11,12 +11,12 @@ import java.util.List;
 
 public class ItemModPolish extends ItemArmorMod {
 
-	public ItemModPolish(final String s) {
+	public ItemModPolish(String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.BLUE + "5% chance to nullify damage");
 		list.add("");
 		super.addInformation(stack, worldIn, list, flagIn);
@@ -24,12 +24,12 @@ public class ItemModPolish extends ItemArmorMod {
 	
 
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.BLUE + "  " + stack.getDisplayName() + " (5% chance to nullify damage)");
 	}
 	
 	@Override
-	public void modDamage(final LivingHurtEvent event, final ItemStack armor) {
+	public void modDamage(LivingHurtEvent event, ItemStack armor) {
 		if(event.getEntity().world.rand.nextInt(20) == 0)
 			event.setAmount(0);
 	}

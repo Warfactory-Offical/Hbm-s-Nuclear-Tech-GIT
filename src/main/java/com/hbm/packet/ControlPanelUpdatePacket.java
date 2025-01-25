@@ -30,7 +30,7 @@ public class ControlPanelUpdatePacket implements IMessage {
 	public ControlPanelUpdatePacket(){
 	}
 
-	public ControlPanelUpdatePacket(final BlockPos pos, final List<VarUpdate> toUpdate){
+	public ControlPanelUpdatePacket(BlockPos pos, List<VarUpdate> toUpdate){
 		this.toUpdate = toUpdate;
 		this.x = pos.getX();
 		this.y = pos.getY();
@@ -39,7 +39,7 @@ public class ControlPanelUpdatePacket implements IMessage {
 		this.buffer = new PacketBuffer(Unpooled.buffer());
 	}
 	
-	public ControlPanelUpdatePacket(final BlockPos pos, final NBTTagCompound tag){
+	public ControlPanelUpdatePacket(BlockPos pos, NBTTagCompound tag){
 		this.toUpdate = null;
 		this.x = pos.getX();
 		this.y = pos.getY();
@@ -50,39 +50,39 @@ public class ControlPanelUpdatePacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf){
+	public void fromBytes(ByteBuf buf){
 		if(buffer == null) {
 			buffer = new PacketBuffer(Unpooled.buffer());
 		}
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		final int size = buf.readInt();
+		int size = buf.readInt();
 		if(size == -1){
 			buffer.writeBytes(buf);
 		} else {
 			buffer.writeBytes(buf);
 			toUpdate = new ArrayList<>(size);
 			for(int i = 0; i < size; i++) {
-				final VarUpdate u = new VarUpdate();
+				VarUpdate u = new VarUpdate();
 				u.varListIdx = buffer.readInt();
 				u.varName = buffer.readString(32);
 				toUpdate.add(u);
 			}
 
 			try {
-				final NBTTagCompound tag = buffer.readCompoundTag();
+				NBTTagCompound tag = buffer.readCompoundTag();
 				for(int i = 0; i < size; i++) {
 					toUpdate.get(i).data = DataValue.newFromNBT(tag.getTag("" + i));
 				}
-			} catch(final IOException e) {
+			} catch(IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf){
+	public void toBytes(ByteBuf buf){
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -91,9 +91,9 @@ public class ControlPanelUpdatePacket implements IMessage {
 			buf.writeBytes(buffer);
 		} else {
 			buf.writeInt(toUpdate.size());
-			final NBTTagCompound tag = new NBTTagCompound();
+			NBTTagCompound tag = new NBTTagCompound();
 			int i = 0;
-			for(final VarUpdate u : toUpdate) {
+			for(VarUpdate u : toUpdate) {
 				if (u != null) {
 					buffer.writeInt(u.varListIdx);
 					buffer.writeString(u.varName);
@@ -110,21 +110,21 @@ public class ControlPanelUpdatePacket implements IMessage {
 	public static class Handler implements IMessageHandler<ControlPanelUpdatePacket, IMessage> {
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final ControlPanelUpdatePacket m, final MessageContext ctx){
+		public IMessage onMessage(ControlPanelUpdatePacket m, MessageContext ctx){
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+				BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 				if(te instanceof TileEntityControlPanel) {
-					final ControlPanel control = ((TileEntityControlPanel)te).panel;
+					ControlPanel control = ((TileEntityControlPanel)te).panel;
 					if(m.toUpdate == null){
 						try {
-							final NBTTagCompound tag = m.buffer.readCompoundTag();
+							NBTTagCompound tag = m.buffer.readCompoundTag();
 							control.readFromNBT(tag);
-						} catch(final Exception e) {
+						} catch(Exception e) {
 							e.printStackTrace();
 						}
 					} else {
-						for(final VarUpdate u : m.toUpdate) {
+						for(VarUpdate u : m.toUpdate) {
 							if(u.varName != null) {
 								if(u.varListIdx == -1){
 									if(u.data == null){
@@ -153,7 +153,7 @@ public class ControlPanelUpdatePacket implements IMessage {
 	public static class VarUpdate {
 		public VarUpdate(){
 		}
-		public VarUpdate(final int varListIdx, final String varName, final DataValue data){
+		public VarUpdate(int varListIdx, String varName, DataValue data){
 			this.varListIdx = varListIdx;
 			this.varName = varName;
 			this.data = data;

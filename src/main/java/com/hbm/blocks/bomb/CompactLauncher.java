@@ -1,7 +1,4 @@
 package com.hbm.blocks.bomb;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IBomb;
@@ -10,7 +7,6 @@ import com.hbm.lib.InventoryHelper;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.bomb.TileEntityCompactLauncher;
 import com.hbm.tileentity.machine.TileEntityDummy;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -29,11 +25,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class CompactLauncher extends BlockContainer implements IMultiBlock, IBomb {
 
 	public static final AxisAlignedBB COMPACT_BOX = new AxisAlignedBB(0, 1, 0, 1, 1, 1);
 	
-	public CompactLauncher(final Material materialIn, final String s) {
+	public CompactLauncher(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -42,58 +40,58 @@ public class CompactLauncher extends BlockContainer implements IMultiBlock, IBom
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityCompactLauncher();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(ModBlocks.struct_launcher_core);
 	}
 	
 	@Override
-	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
-		return ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher_core);
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(ModBlocks.struct_launcher_core);
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			final TileEntityCompactLauncher entity = (TileEntityCompactLauncher) world.getTileEntity(pos);
+			TileEntityCompactLauncher entity = (TileEntityCompactLauncher) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_compact_launcher, world, pos.getX(), pos.getY(), pos.getZ());
@@ -105,8 +103,8 @@ public class CompactLauncher extends BlockContainer implements IMultiBlock, IBom
 	}
 	
 	@Override
-	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
-		final TileEntityCompactLauncher te = (TileEntityCompactLauncher) world.getTileEntity(pos);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		TileEntityCompactLauncher te = (TileEntityCompactLauncher) world.getTileEntity(pos);
 		
 		if(!(world.getBlockState(pos.add(1, 0, 1)).getMaterial().isReplaceable() &&
 				world.getBlockState(pos.add(1, 0, 0)).getMaterial().isReplaceable() &&
@@ -120,9 +118,9 @@ public class CompactLauncher extends BlockContainer implements IMultiBlock, IBom
 			return;
 		}
 
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		
 		placeDummy(world, x + 1, y, z + 1, pos, ModBlocks.dummy_port_compact_launcher);
 		placeDummy(world, x + 1, y, z, pos, ModBlocks.dummy_plate_compact_launcher);
@@ -136,31 +134,36 @@ public class CompactLauncher extends BlockContainer implements IMultiBlock, IBom
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 	
-	private void placeDummy(final World world, final int x, final int y, final int z, final BlockPos target, final Block block) {
-		final BlockPos pos = new BlockPos(x, y, z);
+	private void placeDummy(World world, int x, int y, int z, BlockPos target, Block block) {
+		BlockPos pos = new BlockPos(x, y, z);
 		world.setBlockState(pos, block.getDefaultState());
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy dummy) {
-            dummy.target = target;
+		if(te instanceof TileEntityDummy) {
+			TileEntityDummy dummy = (TileEntityDummy)te;
+			dummy.target = target;
 		}
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return COMPACT_BOX;
 	}
 	
 	@Override
-	public void explode(final World world, final BlockPos pos) {
-		final TileEntityCompactLauncher entity = (TileEntityCompactLauncher) world.getTileEntity(pos);
-		if(entity.canLaunch())
+	public BombReturnCode explode(World world, BlockPos pos) {
+		TileEntityCompactLauncher entity = (TileEntityCompactLauncher) world.getTileEntity(pos);
+		if(entity.canLaunch()) {
 			entity.launch();
+			return BombReturnCode.LAUNCHED;
+		}
+
+		return BombReturnCode.ERROR_MISSING_COMPONENT;
 	}
 	
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}

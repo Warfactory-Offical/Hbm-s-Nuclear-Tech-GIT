@@ -1,20 +1,18 @@
 package com.hbm.render.model;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.ModelRendererObj;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 
 public class ModelArmorDigamma extends ModelArmorBase {
 
 	ModelRendererObj cassette;
 	
-	public ModelArmorDigamma(final int type) {
+	public ModelArmorDigamma(int type) {
 		super(type);
 
 		head = new ModelRendererObj(ResourceManager.armor_fau, "Head");
@@ -29,7 +27,7 @@ public class ModelArmorDigamma extends ModelArmorBase {
 	}
 
 	@Override
-	public void render(final Entity par1Entity, final float par2, final float par3, final float par4, final float par5, final float par6, final float par7) {
+	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 		
 		setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 		

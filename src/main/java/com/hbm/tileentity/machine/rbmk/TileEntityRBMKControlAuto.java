@@ -4,7 +4,6 @@ import com.hbm.interfaces.IControlReceiver;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKControlManual.RBMKColor;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
@@ -23,7 +22,7 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 
 	@Override
-	public boolean hasPermission(final EntityPlayer player) {
+	public boolean hasPermission(EntityPlayer player) {
 		return Vec3.createVectorHelper(pos.getX() - player.posX, pos.getY() - player.posY, pos.getZ() - player.posZ).length() < 20;
 	}
 	
@@ -34,8 +33,8 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 			
 			double fauxLevel = 0;
 
-			final double lowerBound = Math.min(this.heatLower, this.heatUpper);
-			final double upperBound = Math.max(this.heatLower, this.heatUpper);
+			double lowerBound = Math.min(this.heatLower, this.heatUpper);
+			double upperBound = Math.max(this.heatLower, this.heatUpper);
 			
 			if(this.heat < lowerBound) {
 				fauxLevel = this.levelLower;
@@ -71,7 +70,7 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.levelLower = nbt.getDouble("levelLower");
@@ -86,7 +85,7 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setDouble("levelLower", levelLower);
@@ -101,10 +100,10 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	}
 
 	@Override
-	public void receiveControl(final NBTTagCompound data) {
+	public void receiveControl(NBTTagCompound data) {
 		
 		if(data.hasKey("function")) {
-			final int c = Math.abs(data.getInteger("function")) % RBMKColor.values().length;
+			int c = Math.abs(data.getInteger("function")) % RBMKColor.values().length;
 			this.function = RBMKFunction.values()[c];
 			
 		} else {

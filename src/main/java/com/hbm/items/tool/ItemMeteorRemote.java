@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ItemMeteorRemote extends Item {
 
-	public ItemMeteorRemote(final String s) {
+	public ItemMeteorRemote(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.canRepair = false;
@@ -29,18 +29,18 @@ public class ItemMeteorRemote extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("item.meteor_remote.desc"));
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		stack.damageItem(1, player);
 
 		if(!world.isRemote)
 		{
-			final EntityMeteor meteor = new EntityMeteor(world);
+			EntityMeteor meteor = new EntityMeteor(world);
 			meteor.posX = player.posX + world.rand.nextInt(201) - 100;
 			meteor.posY = 384;
 			meteor.posZ = player.posZ + world.rand.nextInt(201) - 100;

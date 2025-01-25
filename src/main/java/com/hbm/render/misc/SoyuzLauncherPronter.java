@@ -1,20 +1,18 @@
 package com.hbm.render.misc;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
+import org.lwjgl.opengl.GL11;
 
 public class SoyuzLauncherPronter {
 
-	public static void prontLauncher(final double rot) {
+	public static void prontLauncher(double rot) {
 
 		GL11.glPushMatrix();
 		GlStateManager.disableCull();
-		final TextureManager tex = Minecraft.getMinecraft().getTextureManager();
+		TextureManager tex = Minecraft.getMinecraft().getTextureManager();
 
 		tex.bindTexture(ResourceManager.soyuz_launcher_legs_tex);
 		ResourceManager.soyuz_launcher_legs.renderAll();

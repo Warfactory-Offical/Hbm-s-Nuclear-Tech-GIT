@@ -3,7 +3,6 @@ package com.hbm.blocks.machine.rbmk;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKBoiler;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -15,12 +14,12 @@ import net.minecraft.world.World;
 
 public class RBMKBoiler extends RBMKBase {
 
-	public RBMKBoiler(final String s, final String c){
+	public RBMKBoiler(String s, String c){
 		super(s, c);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		
 		if(meta >= offset)
 			return new TileEntityRBMKBoiler();
@@ -32,12 +31,12 @@ public class RBMKBoiler extends RBMKBase {
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		return openInv(worldIn, pos.getX(), pos.getY(), pos.getZ(), playerIn, ModBlocks.guiID_rbmk_boiler, hand);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	

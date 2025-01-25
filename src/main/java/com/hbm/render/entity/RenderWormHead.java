@@ -1,17 +1,15 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
 import com.hbm.hfr.render.loader.HFRWavefrontObject;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.amlfrom1710.IModelCustom;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderWormHead extends Render<EntityBOTPrimeHead> {
 
@@ -20,13 +18,13 @@ public class RenderWormHead extends Render<EntityBOTPrimeHead> {
 	public static final IModelCustom body = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/mobs/bot_prime_head.obj"));
 	public static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID, "textures/entity/mark_zero_head.png");
 	
-	public RenderWormHead(final RenderManager rendermanagerIn) {
+	public RenderWormHead(RenderManager rendermanagerIn) {
 		super(rendermanagerIn);
 		this.shadowOpaque = 0.0F;
 	}
 	
 	@Override
-	public void doRender(final EntityBOTPrimeHead entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityBOTPrimeHead entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 
@@ -44,7 +42,7 @@ public class RenderWormHead extends Render<EntityBOTPrimeHead> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityBOTPrimeHead entity) {
+	protected ResourceLocation getEntityTexture(EntityBOTPrimeHead entity) {
 		return texture;
 	}
 

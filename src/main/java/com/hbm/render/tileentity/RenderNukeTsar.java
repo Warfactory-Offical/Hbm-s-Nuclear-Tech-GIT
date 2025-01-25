@@ -1,22 +1,20 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.bomb.TileEntityNukeTsar;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderNukeTsar extends TileEntitySpecialRenderer<TileEntityNukeTsar> {
 	
 	@Override
-	public boolean isGlobalRenderer(final TileEntityNukeTsar te) {
+	public boolean isGlobalRenderer(TileEntityNukeTsar te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityNukeTsar te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityNukeTsar te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_LIGHTING);

@@ -1,15 +1,8 @@
 package com.hbm.tileentity.machine;
 
-import com.hbm.blocks.BlockDummyable;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.inventory.HeatRecipes;
-import com.hbm.lib.ForgeDirection;
-import com.hbm.lib.Library;
-import com.hbm.packet.FluidTankPacket;
 import com.hbm.tileentity.INBTPacketReceiver;
-
-import api.hbm.tile.IHeatSource;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -48,7 +41,7 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
 
     }
 
-    public void setTankType(final int idx, final Fluid type){
+    public void setTankType(int idx, Fluid type){
         if(types[idx] != type){
             types[idx] = type;
             if(type != null){
@@ -76,24 +69,24 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
         }
     }
 
-    public void fillFluidInit(final FluidTank tank) {
+    public void fillFluidInit(FluidTank tank) {
 		fillFluid(pos.up(3), tank);
 		fillFluid(pos.down(), tank);
 	}
 	
-	public void fillFluid(final BlockPos pos, final FluidTank tank) {
+	public void fillFluid(BlockPos pos, FluidTank tank) {
 		FFUtils.fillFluid(this, tank, world, pos, 1600000);
 	}
 
     @Override
-    public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing){
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
         return super.getCapability(capability, facing);
     }
 
     @Override
-    public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing){
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
@@ -103,7 +96,7 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
     }
 
     @Override
-    public int fill(final FluidStack resource, final boolean doFill){
+    public int fill(FluidStack resource, boolean doFill){
         if(resource != null && resource.getFluid() == types[0]){
             return tanks[0].fill(resource, doFill);
         }
@@ -111,7 +104,7 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
     }
 
     @Override
-    public FluidStack drain(final FluidStack resource, final boolean doDrain){
+    public FluidStack drain(FluidStack resource, boolean doDrain){
         FluidStack drain = null;
         if(resource.getFluid() == types[1]){
             drain = tanks[1].drain(resource, doDrain);
@@ -120,13 +113,13 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
     }
 
     @Override
-    public FluidStack drain(final int maxDrain, final boolean doDrain){
-        final FluidStack drain = tanks[1].drain(maxDrain, doDrain);
+    public FluidStack drain(int maxDrain, boolean doDrain){
+        FluidStack drain = tanks[1].drain(maxDrain, doDrain);
         return drain;
     }
 
     @Override
-    public void readFromNBT(final NBTTagCompound nbt) {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
         for(int i=0; i<tanks.length; i++){
@@ -139,7 +132,7 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
     }
 
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         for(int i=0; i<tanks.length; i++){
             if(types[i] != null){
@@ -154,7 +147,7 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
 
 
     public void networkPack(){
-        final NBTTagCompound data = new NBTTagCompound();
+        NBTTagCompound data = new NBTTagCompound();
         for(int i=0; i<tanks.length; i++){
             if(types[i] != null){
                 tanks[i].setFluid(new FluidStack(types[i], tanks[i].getFluidAmount()));
@@ -169,7 +162,7 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
     }
 
     @Override
-    public void networkUnpack(final NBTTagCompound nbt) {
+    public void networkUnpack(NBTTagCompound nbt) {
         FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
         for(int i=0; i<tanks.length; i++){
             if(tanks[i].getFluid() != null){
@@ -183,32 +176,19 @@ public class TileEntitySolarBoiler extends TileEntity implements INBTPacketRecei
     }
 
     private void setupTanks() {
-        final Fluid fluid = HeatRecipes.getBoilFluid(types[0]);
-        if (fluid != null) {
-            setTankType(0, types[0]);
-            setTankType(1, fluid);
-        } else {
-            setTankType(0, null);
-            setTankType(1, null);
-        }
+        setTankType(0, types[0]);
+        setTankType(1, types[1]);
     }
 
     private void tryConvert() {
-        if(HeatRecipes.hasBoilRecipe(types[0])) {
-            final Fluid hotFluid = HeatRecipes.getBoilFluid(types[0]);
-            final int heatReq = HeatRecipes.getRequiredHeat(types[0]);
-            final int inputAmount = HeatRecipes.getInputAmountHot(types[0]);
-            final int outputAmount = HeatRecipes.getOutputAmountHot(types[0]);
+
+        int process = heat / 50;
+        process = Math.min(process, tanks[0].getFluidAmount());
+        process = Math.min(process, (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / 100);
             
-            final int inputOps = tanks[0].getFluidAmount() / inputAmount;
-            final int outputOps = (tanks[1].getCapacity() - tanks[1].getFluidAmount()) / outputAmount;
-            final int tempOps = (int) Math.floor(this.heat / heatReq);
-            final int ops = Math.min(inputOps, Math.min(outputOps, tempOps));
-            
-            tanks[0].drain(inputAmount * ops, true);
-            tanks[1].fill(new FluidStack(types[1], outputAmount * ops), true);
-            this.heat -= heatReq * ops;
-        }
+        tanks[0].drain(process, true);
+        tanks[1].fill(new FluidStack(types[1], process * 100), true);
+        heat = 0;
     }
 
     AxisAlignedBB bb = null;

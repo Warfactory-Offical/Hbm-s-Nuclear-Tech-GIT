@@ -1,52 +1,9 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-
 import com.hbm.blocks.generic.EntityGrenadeTau;
-import com.hbm.entity.grenade.EntityGrenadeASchrab;
-import com.hbm.entity.grenade.EntityGrenadeBlackHole;
-import com.hbm.entity.grenade.EntityGrenadeBreach;
-import com.hbm.entity.grenade.EntityGrenadeBurst;
-import com.hbm.entity.grenade.EntityGrenadeCloud;
-import com.hbm.entity.grenade.EntityGrenadeCluster;
-import com.hbm.entity.grenade.EntityGrenadeElectric;
-import com.hbm.entity.grenade.EntityGrenadeFire;
-import com.hbm.entity.grenade.EntityGrenadeFlare;
-import com.hbm.entity.grenade.EntityGrenadeFrag;
-import com.hbm.entity.grenade.EntityGrenadeGas;
-import com.hbm.entity.grenade.EntityGrenadeGascan;
-import com.hbm.entity.grenade.EntityGrenadeGeneric;
-import com.hbm.entity.grenade.EntityGrenadeIFBouncy;
-import com.hbm.entity.grenade.EntityGrenadeIFBrimstone;
-import com.hbm.entity.grenade.EntityGrenadeIFConcussion;
-import com.hbm.entity.grenade.EntityGrenadeIFGeneric;
-import com.hbm.entity.grenade.EntityGrenadeIFHE;
-import com.hbm.entity.grenade.EntityGrenadeIFHopwire;
-import com.hbm.entity.grenade.EntityGrenadeIFImpact;
-import com.hbm.entity.grenade.EntityGrenadeIFIncendiary;
-import com.hbm.entity.grenade.EntityGrenadeIFMystery;
-import com.hbm.entity.grenade.EntityGrenadeIFNull;
-import com.hbm.entity.grenade.EntityGrenadeIFSpark;
-import com.hbm.entity.grenade.EntityGrenadeIFSticky;
-import com.hbm.entity.grenade.EntityGrenadeIFToxic;
-import com.hbm.entity.grenade.EntityGrenadeLemon;
-import com.hbm.entity.grenade.EntityGrenadeMIRV;
-import com.hbm.entity.grenade.EntityGrenadeMk2;
-import com.hbm.entity.grenade.EntityGrenadeNuclear;
-import com.hbm.entity.grenade.EntityGrenadeNuke;
-import com.hbm.entity.grenade.EntityGrenadePC;
-import com.hbm.entity.grenade.EntityGrenadePlasma;
-import com.hbm.entity.grenade.EntityGrenadePoison;
-import com.hbm.entity.grenade.EntityGrenadePulse;
-import com.hbm.entity.grenade.EntityGrenadeSchrabidium;
-import com.hbm.entity.grenade.EntityGrenadeShrapnel;
-import com.hbm.entity.grenade.EntityGrenadeSmart;
-import com.hbm.entity.grenade.EntityGrenadeStrong;
-import com.hbm.entity.grenade.EntityGrenadeSolinium;
-import com.hbm.entity.grenade.EntityGrenadeZOMG;
-import com.hbm.items.ModItems;
 import com.hbm.config.BombConfig;
-
+import com.hbm.entity.grenade.*;
+import com.hbm.items.ModItems;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -59,11 +16,13 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemGrenade extends Item {
 	
 	protected int fuse = 4;
 	
-	public ItemGrenade(final int fuse, final String s) {
+	public ItemGrenade(int fuse, String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 16;
@@ -73,11 +32,11 @@ public class ItemGrenade extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ItemStack stack = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack stack = playerIn.getHeldItem(handIn);
 		if (!playerIn.capabilities.isCreativeMode) {
-			stack.shrink(1);
-        }
+			stack.shrink(1);;
+		}
 
 		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
@@ -89,12 +48,12 @@ public class ItemGrenade extends Item {
 				worldIn.spawnEntity(new EntityGrenadeStrong(worldIn, playerIn, handIn));
 			}
 			if (this == ModItems.grenade_frag) {
-				final EntityGrenadeFrag frag = new EntityGrenadeFrag(worldIn, playerIn, handIn);
+				EntityGrenadeFrag frag = new EntityGrenadeFrag(worldIn, playerIn, handIn);
 				frag.shooter = playerIn;
 				worldIn.spawnEntity(frag);
 			}
 			if (this == ModItems.grenade_fire) {
-				final EntityGrenadeFire fire = new EntityGrenadeFire(worldIn, playerIn, handIn);
+				EntityGrenadeFire fire = new EntityGrenadeFire(worldIn, playerIn, handIn);
 				fire.shooter = playerIn;
 				worldIn.spawnEntity(fire);
 			}
@@ -217,7 +176,7 @@ public class ItemGrenade extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		if (this == ModItems.grenade_schrabidium || this == ModItems.grenade_aschrab || this == ModItems.grenade_cloud) {
 			return EnumRarity.RARE;
 		}
@@ -244,7 +203,7 @@ public class ItemGrenade extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("Fuse: " + translateFuse());
 
 		if (this == ModItems.grenade_if_generic) {
@@ -307,17 +266,17 @@ public class ItemGrenade extends Item {
 		}
 		if (this == ModItems.grenade_solinium) {
 			list.add("§3[Solinium Grenade]§r");
-			list.add(" §eRadius: "+ BombConfig.soliniumRadius /10+"m§r");
+			list.add(" §eRadius: "+(int)BombConfig.soliniumRadius/10+"m§r");
 		}
 		if (this == ModItems.grenade_nuclear) {
 			list.add("§2[Nuclear Grenade]§r");
-			list.add(" §eRadius: "+ BombConfig.fatmanRadius /2+"m§r");
+			list.add(" §eRadius: "+(int)BombConfig.fatmanRadius/2+"m§r");
 			list.add("§2[Fallout]§r");
-			list.add(" §aRadius: "+ (BombConfig.fatmanRadius/2*(1+BombConfig.falloutRange/100)) +"m§r");
+			list.add(" §aRadius: "+(int)(BombConfig.fatmanRadius/2*(1+BombConfig.falloutRange/100))+"m§r");
 		}
 	}
 	
-	public static int getFuseTicks(final Item grenade) {
+	public static int getFuseTicks(Item grenade) {
 		return ((ItemGrenade)grenade).fuse * 20;
 	}
 }

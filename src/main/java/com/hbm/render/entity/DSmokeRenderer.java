@@ -1,10 +1,6 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.hbm.entity.particle.EntityDSmokeFX;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -13,20 +9,22 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class DSmokeRenderer extends Render<EntityDSmokeFX> {
 	public static TextureAtlasSprite[] sprites = new TextureAtlasSprite[8];
 	private TextureAtlasSprite sprite;
 
-	public DSmokeRenderer(final RenderManager renderManager) {
+	public DSmokeRenderer(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(final EntityDSmokeFX p_76986_1_, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_,
-                         final float p_76986_9_) {
+	public void doRender(EntityDSmokeFX p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
+			float p_76986_9_) {
 		if (p_76986_1_ instanceof EntityDSmokeFX) {
-			final EntityDSmokeFX fx = p_76986_1_;
+			EntityDSmokeFX fx = (EntityDSmokeFX) p_76986_1_;
 			sprite = null;
 			if (fx.particleAge <= fx.maxAge && fx.particleAge >= fx.maxAge / 8 * 7) {
 				sprite = sprites[7];
@@ -52,7 +50,7 @@ public class DSmokeRenderer extends Render<EntityDSmokeFX> {
 				sprite = sprites[2];
 			}
 
-			if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8) {
+			if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
 				sprite = sprites[1];
 			}
 
@@ -71,7 +69,7 @@ public class DSmokeRenderer extends Render<EntityDSmokeFX> {
 				//GL11.glScalef(0.5F, 0.5F, 0.5F);
 				//
 				this.bindEntityTexture(p_76986_1_);
-				final Tessellator tessellator = Tessellator.getInstance();
+				Tessellator tessellator = Tessellator.getInstance();
 
 				this.func_77026_a(tessellator, sprite);
 				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -86,22 +84,22 @@ public class DSmokeRenderer extends Render<EntityDSmokeFX> {
 	 * unless you call Render.bindEntityTexture.
 	 */
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityDSmokeFX p_110775_1_) {
+	protected ResourceLocation getEntityTexture(EntityDSmokeFX p_110775_1_) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 	
 
-	private void func_77026_a(final Tessellator tes, final TextureAtlasSprite tex) {
-		final float f = tex.getMinU();
-		final float f1 = tex.getMaxU();
-		final float f2 = tex.getMinV();
-		final float f3 = tex.getMaxV();
-		final float f4 = 1.0F;
-		final float f5 = 0.5F;
-		final float f6 = 0.25F;
+	private void func_77026_a(Tessellator tes, TextureAtlasSprite tex) {
+		float f = tex.getMinU();
+		float f1 = tex.getMaxU();
+		float f2 = tex.getMinV();
+		float f3 = tex.getMaxV();
+		float f4 = 1.0F;
+		float f5 = 0.5F;
+		float f6 = 0.25F;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-		final BufferBuilder buf = tes.getBuffer();
+		BufferBuilder buf = tes.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		//buf.putNormal(0.0F, 1.0F, 0.0F);
 		buf.pos(0.0F - f5, 0.0F - f6, 0.0D).tex(f, f3).endVertex();

@@ -1,11 +1,8 @@
 package com.hbm.items.special;
 
-import java.util.List;
-
-import com.hbm.lib.Library;
 import com.hbm.items.ModItems;
+import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -14,13 +11,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class ItemAMSCore extends Item {
 
 	int powerBase;
 	float heatBase;
 	float fuelBase;
 	
-	public ItemAMSCore(final int powerBase, final float heatBase, final float fuelBase, final String s) {
+	public ItemAMSCore(int powerBase, float heatBase, float fuelBase, String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.powerBase = powerBase;
@@ -31,7 +30,7 @@ public class ItemAMSCore extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if (this == ModItems.ams_core_sing) {
 			list.add("A modified undefined state of spacetime");
 			list.add("used to aid in inter-gluon fusion and");
@@ -87,7 +86,7 @@ public class ItemAMSCore extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		if(this == ModItems.ams_core_thingy)
     	{
     		return EnumRarity.EPIC;
@@ -98,23 +97,28 @@ public class ItemAMSCore extends Item {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(final ItemStack stack) {
-        return this == ModItems.ams_core_thingy && MainRegistry.polaroidID == 11;
-    }
+	public boolean hasEffect(ItemStack stack) {
+		if(this == ModItems.ams_core_thingy && MainRegistry.polaroidID == 11)
+    	{
+    		return true;
+    	}
+    	
+    	return false;
+	}
 	
-	public static int getPowerBase(final ItemStack stack) {
+	public static int getPowerBase(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemAMSCore))
 			return 0;
 		return ((ItemAMSCore)stack.getItem()).powerBase;
     }
     
-    public static float getHeatBase(final ItemStack stack) {
+    public static float getHeatBase(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemAMSCore))
 			return 1F;
 		return ((ItemAMSCore)stack.getItem()).heatBase;
     }
     
-    public static float getFuelBase(final ItemStack stack) {
+    public static float getFuelBase(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemAMSCore))
 			return 1F;
 		return ((ItemAMSCore)stack.getItem()).fuelBase;

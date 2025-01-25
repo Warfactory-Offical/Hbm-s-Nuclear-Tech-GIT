@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Mirror extends Portal {
 
-	public Mirror(final World world, final Vec3d blc, final Vec3d brc, final Vec3d tlc, final Vec3d trc, final EnumFacing dir) {
+	public Mirror(World world, Vec3d blc, Vec3d brc, Vec3d tlc, Vec3d trc, EnumFacing dir) {
 		super(world, blc, brc, tlc, trc, dir);
 	}
 
@@ -23,15 +23,15 @@ public class Mirror extends Portal {
 	public void render() {
 		if (Minecraft.getMinecraft().getRenderViewEntity() == null)
 			return;
-		final Entity oldRenderViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+		Entity oldRenderViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
 		// Drillgon200: simple triangle normal formula. The cross product of two
 		// vectors will always return a vector perpendicular to both of them.
 		// So, we get the the vector from bottom left to bottom right crossed
 		// with the vector from bottom left to top left, then normalize it to
 		// get our normal
-		final Vec3d portalCenter = new Vec3d(bottomLeftCorner.x + (bottomRightCorner.x - bottomLeftCorner.x) / 2, bottomLeftCorner.y + (bottomRightCorner.y - bottomLeftCorner.y) / 2, bottomLeftCorner.z + (bottomRightCorner.z - bottomLeftCorner.z) / 2);
-		final Vec3d portalNormal = new Vec3d(bottomRightCorner.x - bottomLeftCorner.x, bottomRightCorner.y - bottomLeftCorner.y, bottomRightCorner.z - bottomLeftCorner.z).crossProduct(new Vec3d(topLeftCorner.x - bottomLeftCorner.x, topLeftCorner.y - bottomLeftCorner.y, topLeftCorner.z - bottomLeftCorner.z)).normalize();
-		final Vec3d oldRenderPos = oldRenderViewEntity.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks()).subtract(portalCenter);
+		Vec3d portalCenter = new Vec3d(bottomLeftCorner.x + (bottomRightCorner.x - bottomLeftCorner.x) / 2, bottomLeftCorner.y + (bottomRightCorner.y - bottomLeftCorner.y) / 2, bottomLeftCorner.z + (bottomRightCorner.z - bottomLeftCorner.z) / 2);
+		Vec3d portalNormal = new Vec3d(bottomRightCorner.x - bottomLeftCorner.x, bottomRightCorner.y - bottomLeftCorner.y, bottomRightCorner.z - bottomLeftCorner.z).crossProduct(new Vec3d(topLeftCorner.x - bottomLeftCorner.x, topLeftCorner.y - bottomLeftCorner.y, topLeftCorner.z - bottomLeftCorner.z)).normalize();
+		Vec3d oldRenderPos = oldRenderViewEntity.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks()).subtract(portalCenter);
 
 		// Drillgon200: Reflected ray (the position of the mirror's reflection
 		// view entity) is I+V,
@@ -41,10 +41,10 @@ public class Mirror extends Portal {
 		Vec3d newRenderPos = oldRenderPos.add(multVector(multVector(portalNormal, 2), multVector(portalNormal, -1).dotProduct(oldRenderPos)));
 		newRenderPos = newRenderPos.add(portalCenter);
 		// Drillgon200: Do the same thing except with the look vector
-		final Vec3d originalLook = oldRenderViewEntity.getLook(Minecraft.getMinecraft().getRenderPartialTicks());
-		final Vec3d newLook = originalLook.add(multVector(multVector(portalNormal, 2), multVector(portalNormal, -1).dotProduct(originalLook)));
-		final double mirroredYaw = (float) MathHelper.atan2(newLook.x, newLook.z);
-		final float mirroredPitch = (float) Math.asin(newLook.y);
+		Vec3d originalLook = oldRenderViewEntity.getLook(Minecraft.getMinecraft().getRenderPartialTicks());
+		Vec3d newLook = originalLook.add(multVector(multVector(portalNormal, 2), multVector(portalNormal, -1).dotProduct(originalLook)));
+		double mirroredYaw = (float) MathHelper.atan2(newLook.x, newLook.z);
+		float mirroredPitch = (float) Math.asin(newLook.y);
 		this.dummyRenderEntity.setPositionAndRotationDirect(newRenderPos.x, newRenderPos.y, newRenderPos.z, (float) -Math.toDegrees(mirroredYaw), (float) Math.toDegrees(mirroredPitch), 0, true);
 		dummyRenderEntity.lastTickPosX = newRenderPos.x;
 		dummyRenderEntity.lastTickPosY = newRenderPos.y;
@@ -55,11 +55,11 @@ public class Mirror extends Portal {
 		dummyRenderEntity.prevRotationYaw = dummyRenderEntity.rotationYaw;
 		dummyRenderEntity.prevRotationPitch = dummyRenderEntity.rotationPitch;
 		Minecraft.getMinecraft().setRenderViewEntity(dummyRenderEntity);
-		final int i2 = Minecraft.getMinecraft().gameSettings.limitFramerate;
+		int i2 = Minecraft.getMinecraft().gameSettings.limitFramerate;
 		int j = Math.min(Minecraft.getDebugFPS(), i2);
         j = Math.max(j, 60);
-        final long k = System.nanoTime() - System.nanoTime();
-        final long l = Math.max((long)(1000000000 / j / 4) - k, 0L);
+        long k = System.nanoTime() - System.nanoTime();
+        long l = Math.max((long)(1000000000 / j / 4) - k, 0L);
         Minecraft.getMinecraft().entityRenderer.renderWorld(Minecraft.getMinecraft().getRenderPartialTicks(), System.nanoTime() + l);
         GL11.glRotated(180, 0, 1, 0);
         GL11.glRotated(mirroredYaw, 0, 1, 0);
@@ -69,7 +69,7 @@ public class Mirror extends Portal {
 		
 	}
 
-	private Vec3d multVector(final Vec3d vec, final double factor) {
+	private Vec3d multVector(Vec3d vec, double factor) {
 		return new Vec3d(vec.x * factor, vec.y * factor, vec.z * factor);
 	}
 }

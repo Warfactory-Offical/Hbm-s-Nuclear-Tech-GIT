@@ -24,7 +24,7 @@ public class TETurbofanPacket implements IMessage {
 		
 	}
 
-	public TETurbofanPacket(final int x, final int y, final int z, final boolean isRunning)
+	public TETurbofanPacket(int x, int y, int z, boolean isRunning)
 	{
 		this.x = x;
 		this.y = y;
@@ -33,7 +33,7 @@ public class TETurbofanPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -41,7 +41,7 @@ public class TETurbofanPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -52,13 +52,14 @@ public class TETurbofanPacket implements IMessage {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final TETurbofanPacket m, final MessageContext ctx) {
+		public IMessage onMessage(TETurbofanPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityMachineTurbofan gen) {
-
-                    gen.isRunning = m.isRunning;
+				if (te != null && te instanceof TileEntityMachineTurbofan) {
+						
+					TileEntityMachineTurbofan gen = (TileEntityMachineTurbofan) te;
+					gen.isRunning = m.isRunning;
 				}
 			});
 			

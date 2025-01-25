@@ -10,12 +10,12 @@ import java.util.List;
 
 public class ItemModShackles extends ItemArmorMod {
 
-	public ItemModShackles(final String s) {
+	public ItemModShackles(String s) {
 		super(ArmorModHandler.extra, false, false, true, false, s);
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.RED + "You will speak when I ask you to.");
 		list.add(TextFormatting.RED + "You will eat when I tell you to.");
 		list.add(TextFormatting.RED + "" + TextFormatting.BOLD + "You will die when I allow you to.");
@@ -27,7 +27,7 @@ public class ItemModShackles extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.GOLD + "  " + stack.getDisplayName() + " (∞ revives left)");
 	}
 }

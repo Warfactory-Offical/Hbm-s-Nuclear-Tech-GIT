@@ -17,7 +17,7 @@ public class EntityEMPBlast extends Entity {
 	public int age;
     public float scale = 0;
 	
-    public EntityEMPBlast(final World p_i1582_1_) {
+    public EntityEMPBlast(World p_i1582_1_) {
 		super(p_i1582_1_);
         this.setSize(1.5F, 1.5F);
 		this.ignoreFrustumCheck = true;
@@ -26,7 +26,7 @@ public class EntityEMPBlast extends Entity {
     	scale = 0;
 	}
 	
-	public EntityEMPBlast(final World p_i1582_1_, final int maxAge) {
+	public EntityEMPBlast(World p_i1582_1_, int maxAge) {
 		this(p_i1582_1_);
 		this.setMaxAge(maxAge);
 	}
@@ -50,14 +50,14 @@ public class EntityEMPBlast extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 		this.scale = compound.getFloat("scale");
 		this.age = compound.getInteger("age");
 		this.setMaxAge(compound.getInteger("maxage"));
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setFloat("scale", scale);
 		compound.setInteger("age", age);
 		compound.setInteger("maxage", maxAge);
@@ -76,7 +76,7 @@ public class EntityEMPBlast extends Entity {
         return 1.0F;
     }
 	
-	public void setMaxAge(final int i) {
+	public void setMaxAge(int i) {
 		this.getDataManager().set(MAXAGE, i);
 		this.maxAge = i;
 	}

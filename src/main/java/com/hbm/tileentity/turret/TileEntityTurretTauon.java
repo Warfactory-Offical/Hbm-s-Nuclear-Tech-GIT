@@ -1,8 +1,5 @@
 package com.hbm.tileentity.turret;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.handler.BulletConfiguration;
 import com.hbm.lib.HBMSoundHandler;
@@ -10,11 +7,13 @@ import com.hbm.lib.ModDamageSource;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 	
@@ -90,8 +89,8 @@ public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 		if(world.isRemote) {
 			
 			if(this.tPos != null) {
-				final Vec3d pos = this.getTurretPos();
-				final double length = new Vec3d(tPos.x - pos.x, tPos.y - pos.y, tPos.z - pos.z).length();
+				Vec3d pos = this.getTurretPos();
+				double length = new Vec3d(tPos.x - pos.x, tPos.y - pos.y, tPos.z - pos.z).length();
 				this.lastDist = length;
 			}
 			
@@ -118,23 +117,23 @@ public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 		
 		if(timer % 5 == 0) {
 			
-			final BulletConfiguration conf = this.getFirstConfigLoaded();
+			BulletConfiguration conf = this.getFirstConfigLoaded();
 			
 			if(conf != null && this.target != null) {
 				this.target.attackEntityFrom(ModDamageSource.electricity, 30F + world.rand.nextInt(11));
 				this.conusmeAmmo(conf.ammo);
 				this.world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.tauShoot, SoundCategory.BLOCKS, 4.0F, 0.9F + world.rand.nextFloat() * 0.3F);
 				
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setBoolean("shot", true);
 				this.networkPack(data, 250);
 				
-				final Vec3 pos = new Vec3(this.getTurretPos());
-				final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = new Vec3(this.getTurretPos());
+				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
-				final NBTTagCompound dPart = new NBTTagCompound();
+				NBTTagCompound dPart = new NBTTagCompound();
 				dPart.setString("type", "tau");
 				dPart.setByte("count", (byte)5);
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(dPart, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(world.provider.getDimension(), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 50));
@@ -143,7 +142,7 @@ public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt){
+	public void networkUnpack(NBTTagCompound nbt){
 		if(nbt.hasKey("shot"))
 			beam = 3;
 		else

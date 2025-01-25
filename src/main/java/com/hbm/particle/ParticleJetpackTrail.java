@@ -24,11 +24,11 @@ public class ParticleJetpackTrail extends Particle {
 	public List<Vec3d> points = new ArrayList<Vec3d>();
 	public List<Integer> ages = new ArrayList<>();
 	
-	public ParticleJetpackTrail(final World worldIn) {
+	public ParticleJetpackTrail(World worldIn) {
 		super(worldIn, 0, 0, 0);
 	}
 	
-	public void tryAddNewPos(final Vec3d pos){
+	public void tryAddNewPos(Vec3d pos){
 		if(points.size() == 0){
 			points.add(pos);
 			ages.add(0);
@@ -45,7 +45,7 @@ public class ParticleJetpackTrail extends Particle {
 	
 	@Override
 	public void onUpdate() {
-		final Iterator<Vec3d> itr = points.iterator();
+		Iterator<Vec3d> itr = points.iterator();
 		int i = 0;
 		while(itr.hasNext()){
 			itr.next();
@@ -75,7 +75,7 @@ public class ParticleJetpackTrail extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		if(points.size() < 2)
 			return;
 		GL11.glPushMatrix();
@@ -83,16 +83,16 @@ public class ParticleJetpackTrail extends Particle {
 		GlStateManager.disableLighting();
 		GlStateManager.disableTexture2D();
 		GlStateManager.depthMask(false);
-		final int i = this.getBrightnessForRender(partialTicks);
-	    final int j = i >> 16 & 65535;
-	    final int k = i & 65535;
+		int i = this.getBrightnessForRender(partialTicks);
+	    int j = i >> 16 & 65535;
+	    int k = i & 65535;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0);
 		final float end = 0.15F;
 		TrailRenderer2.draw(new Vec3d(interpPosX, interpPosY+entityIn.getEyeHeight(), interpPosZ), points, 0.025F, false, false, t -> {
-			final float a = BobMathUtil.remap01_clamp(t, 0, end) * BobMathUtil.remap01_clamp(t, 1, 1-end);
+			float a = BobMathUtil.remap01_clamp(t, 0, end) * BobMathUtil.remap01_clamp(t, 1, 1-end);
 			return new float[]{0.7F, 0.7F, 0.7F, a*0.7F};
 		});
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);

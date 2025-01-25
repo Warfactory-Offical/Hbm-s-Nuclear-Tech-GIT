@@ -37,7 +37,7 @@ public class TEControlPacket implements IMessage {
 
 	}
 
-	public TEControlPacket(final int x, final int y, final int z, final int hullHeat, final int coreHeat, final int fuel, final int water, final int cool, final int steam, final int maxWater, final int maxCool, final int maxSteam, final int compression, final int rods, final int maxRods, final boolean isOn, final boolean auto, final boolean isLinked) {
+	public TEControlPacket(int x, int y, int z, int hullHeat, int coreHeat, int fuel, int water, int cool, int steam, int maxWater, int maxCool, int maxSteam, int compression, int rods, int maxRods, boolean isOn, boolean auto, boolean isLinked) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -59,7 +59,7 @@ public class TEControlPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -81,7 +81,7 @@ public class TEControlPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -106,15 +106,16 @@ public class TEControlPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final TEControlPacket m, final MessageContext ctx) {
+		public IMessage onMessage(TEControlPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 				try {
 					
-					if(te instanceof TileEntityReactorControl control) {
+					if(te instanceof TileEntityReactorControl) {
+						TileEntityReactorControl control = (TileEntityReactorControl)te;
 
-                        control.hullHeat = m.hullHeat;
+						control.hullHeat = m.hullHeat;
 						control.coreHeat = m.coreHeat;
 						control.fuel = m.fuel;
 						control.water = m.water;
@@ -131,7 +132,7 @@ public class TEControlPacket implements IMessage {
 						control.isLinked = m.isLinked;
 					}
 					
-				} catch (final Exception x) {
+				} catch (Exception x) {
 				}
 			});
 			

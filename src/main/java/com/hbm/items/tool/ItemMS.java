@@ -2,7 +2,6 @@ package com.hbm.items.tool;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-import com.hbm.util.ItemStackUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,7 @@ import java.util.Random;
 
 public class ItemMS extends Item {
 
-	public ItemMS(final String s) {
+	public ItemMS(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -28,31 +27,31 @@ public class ItemMS extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Lost but not forgotten");
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote) {
     		if(world.getBlockState(pos).getBlock() == ModBlocks.ntm_dirt) {
     			
 				world.destroyBlock(pos, false);
 
-    	    	final Random rand = new Random();
-    	    	final List<ItemStack> list = new ArrayList<ItemStack>();
+    	    	Random rand = new Random();
+    	    	List<ItemStack> list = new ArrayList<ItemStack>();
 
-    	    	list.add(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2, 1, 1));
-    	    	list.add(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2, 1, 2));
-    	    	list.add(ItemStackUtil.itemStackFrom(ModItems.ingot_u238m2, 1, 3));
+    	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 1));
+    	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 2));
+    	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 3));
     	    	
-    	    	for(final ItemStack sta : list) {
-    	            final float f = rand.nextFloat() * 0.8F + 0.1F;
-    	            final float f1 = rand.nextFloat() * 0.8F + 0.1F;
-    	            final float f2 = rand.nextFloat() * 0.8F + 0.1F;
-    	            final EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, sta);
+    	    	for(ItemStack sta : list) {
+    	            float f = rand.nextFloat() * 0.8F + 0.1F;
+    	            float f1 = rand.nextFloat() * 0.8F + 0.1F;
+    	            float f2 = rand.nextFloat() * 0.8F + 0.1F;
+    	            EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, sta);
 
-    	            final float f3 = 0.05F;
+    	            float f3 = 0.05F;
     	            entityitem.motionX = (float)rand.nextGaussian() * f3;
     	            entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
     	            entityitem.motionZ = (float)rand.nextGaussian() * f3;

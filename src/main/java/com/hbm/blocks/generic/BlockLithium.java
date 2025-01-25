@@ -1,12 +1,8 @@
 package com.hbm.blocks.generic;
 
-import java.util.List;
-import java.util.Random;
-
+import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.modules.ItemHazardModule;
-import com.hbm.blocks.ModBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,11 +14,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+import java.util.Random;
+
 public class BlockLithium extends Block implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public BlockLithium(final Material materialIn, final String s) {
+	public BlockLithium(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -37,21 +36,21 @@ public class BlockLithium extends Block implements IItemHazard {
 		return module;
 	}
 
-	private boolean touchesWater(final World world, final int x, final int y, final int z) {
+	private boolean touchesWater(World world, int x, int y, int z) {
 
 		if(world.isRemote)
 			return false;
 
-		return world.getBlockState(new BlockPos(x + 1, y, z)).getMaterial() == Material.WATER || 
-				world.getBlockState(new BlockPos(x - 1, y, z)).getMaterial() == Material.WATER || 
-				world.getBlockState(new BlockPos(x, y + 1, z)).getMaterial() == Material.WATER || 
-				world.getBlockState(new BlockPos(x, y - 1, z)).getMaterial() == Material.WATER || 
-				world.getBlockState(new BlockPos(x, y, z + 1)).getMaterial() == Material.WATER || 
+		return world.getBlockState(new BlockPos(x + 1, y, z)).getMaterial() == Material.WATER ||
+				world.getBlockState(new BlockPos(x - 1, y, z)).getMaterial() == Material.WATER ||
+				world.getBlockState(new BlockPos(x, y + 1, z)).getMaterial() == Material.WATER ||
+				world.getBlockState(new BlockPos(x, y - 1, z)).getMaterial() == Material.WATER ||
+				world.getBlockState(new BlockPos(x, y, z + 1)).getMaterial() == Material.WATER ||
 				world.getBlockState(new BlockPos(x, y, z - 1)).getMaterial() == Material.WATER;
 	}
 
 	@Override
-	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		if(touchesWater(world, pos.getX(), pos.getY(), pos.getZ())) {
 			world.destroyBlock(pos, false);
 			world.newExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 15, false, true);
@@ -59,15 +58,15 @@ public class BlockLithium extends Block implements IItemHazard {
 	}
 
 	@Override
-	public void onBlockAdded(final World world, final BlockPos pos, final IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		if(touchesWater(world, pos.getX(), pos.getY(), pos.getZ())) {
 			world.destroyBlock(pos, false);
 			world.newExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 15, false, true);
 		}
 	}
-	
+
 	@Override
-	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add("It's not my fault you didn't pay");
 		tooltip.add("attention in chemistry class.");
@@ -75,11 +74,11 @@ public class BlockLithium extends Block implements IItemHazard {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(final IBlockState stateIn, final World world, final BlockPos pos, final Random rand) {
+	public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
 		if(world.isRainingAt(pos.up())) {
 
-			final float ox = rand.nextFloat();
-			final float oz = rand.nextFloat();
+			float ox = rand.nextFloat();
+			float oz = rand.nextFloat();
 
 			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + ox, pos.getY() + 1, pos.getZ() + oz, 0.0D, 0.0D, 0.0D);
 		}

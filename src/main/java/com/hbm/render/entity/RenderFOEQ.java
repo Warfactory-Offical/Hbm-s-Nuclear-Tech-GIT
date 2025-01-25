@@ -1,25 +1,23 @@
 package com.hbm.render.entity;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityBurningFOEQ;
 import com.hbm.main.ResourceManager;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 public class RenderFOEQ extends Render<EntityBurningFOEQ> {
 
-	public RenderFOEQ(final RenderManager renderManager) {
+	public RenderFOEQ(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityBurningFOEQ e, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityBurningFOEQ e, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_CURRENT_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_LIGHTING_BIT);
         GL11.glTranslatef((float)x, (float)y - 10, (float)z);
@@ -37,7 +35,7 @@ public class RenderFOEQ extends Render<EntityBurningFOEQ> {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_BLEND);
 		
-		final Random rand = new Random(System.currentTimeMillis() / 50);
+		Random rand = new Random(System.currentTimeMillis() / 50);
 
         GL11.glScaled(1.15, 0.75, 1.15);
         GL11.glTranslated(0, -0.5, 0.3);
@@ -72,7 +70,7 @@ public class RenderFOEQ extends Render<EntityBurningFOEQ> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityBurningFOEQ entity) {
+	protected ResourceLocation getEntityTexture(EntityBurningFOEQ entity) {
 		return ResourceManager.sat_foeq_tex;
 	}
 

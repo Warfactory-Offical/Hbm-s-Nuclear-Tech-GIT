@@ -1,14 +1,10 @@
 package com.hbm.blocks.fluid;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
+import com.hbm.saveddata.RadiationSavedData;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
-import com.hbm.saveddata.RadiationSavedData;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -22,11 +18,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
+import java.util.Random;
+
 public class ToxicBlock extends BlockFluidClassic {
 
-	private final DamageSource damageSource;
+	private DamageSource damageSource;
 	
-	public ToxicBlock(final Fluid fluid, final Material material, final DamageSource source, final String s) {
+	public ToxicBlock(Fluid fluid, Material material, DamageSource source, String s) {
 		super(fluid, material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -39,21 +37,21 @@ public class ToxicBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean canDisplace(final IBlockAccess world, final BlockPos pos) {
+	public boolean canDisplace(IBlockAccess world, BlockPos pos) {
 		if(world.getBlockState(pos).getMaterial().isLiquid())
 			return false;
 		return super.canDisplace(world, pos);
 	}
 	
 	@Override
-	public boolean displaceIfPossible(final World world, final BlockPos pos) {
+	public boolean displaceIfPossible(World world, BlockPos pos) {
 		if(world.getBlockState(pos).getMaterial().isLiquid())
 			return false;
 		return super.displaceIfPossible(world, pos);
 	}
 
 	@Override
-	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entityIn) {
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 		entityIn.setInWeb();
 		
 		if(entityIn instanceof EntityLivingBase)
@@ -63,7 +61,7 @@ public class ToxicBlock extends BlockFluidClassic {
 	}
 
 	@Override
-	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if(reactToBlocks(world, pos.east()))
 			world.setBlockState(pos.east(), getRandomSellafite(world));
 		if(reactToBlocks(world, pos.west()))
@@ -82,26 +80,26 @@ public class ToxicBlock extends BlockFluidClassic {
 		super.updateTick(world, pos, state, rand);
 	}
 
-	private IBlockState getRandomSellafite(final World world){
-		final int n = world.rand.nextInt(100);
+	private IBlockState getRandomSellafite(World world){
+		int n = world.rand.nextInt(100);
 		if(n < 2) return ModBlocks.sellafield_core.getStateFromMeta(world.rand.nextInt(4));
 		if(n < 20) return ModBlocks.sellafield_4.getStateFromMeta(world.rand.nextInt(4));
 		if(n < 60) return ModBlocks.sellafield_3.getStateFromMeta(world.rand.nextInt(4));
 		return ModBlocks.sellafield_2.getStateFromMeta(world.rand.nextInt(4));
 	}
 	
-	public boolean reactToBlocks(final World world, final BlockPos pos) {
+	public boolean reactToBlocks(World world, BlockPos pos) {
 		if(!world.isBlockLoaded(pos)) return false;
 		if(world.getBlockState(pos).getMaterial() != ModBlocks.fluidtoxic) {
-			final IBlockState state = world.getBlockState(pos);
+			IBlockState state = world.getBlockState(pos);
 			if(state.getMaterial().isLiquid()) return true;
-            return state.getBlock() instanceof BlockStone;
+			if(state.getBlock() instanceof BlockStone) return true;
 		}
 		return false;
 	}
 	
 	@Override
-	public int tickRate(final World world) {
+	public int tickRate(World world) {
 		return 15;
 	}
 }

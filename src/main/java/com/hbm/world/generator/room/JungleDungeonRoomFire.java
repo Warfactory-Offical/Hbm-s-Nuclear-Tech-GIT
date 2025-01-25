@@ -13,14 +13,14 @@ import net.minecraft.world.World;
 
 public class JungleDungeonRoomFire extends JungleDungeonRoom {
 
-	public JungleDungeonRoomFire(final CellularDungeon parent) {
+	public JungleDungeonRoomFire(CellularDungeon parent) {
 		super(parent);
 	}
 
 	public void generateMain(final World world, final int x, final int y, final int z) {
 		super.generateMain(world, x, y, z);
 
-		final ITimedJob job = new ITimedJob() {
+		ITimedJob job = new ITimedJob() {
 
 			@Override
 			public void work() {
@@ -31,7 +31,7 @@ public class JungleDungeonRoomFire extends JungleDungeonRoom {
 						if(a == 1 && b == 1)
 							continue;
 
-						final Block bl = world.getBlockState(new BlockPos(x + 1 + a, y, z + 1 + b)).getBlock();
+						Block bl = world.getBlockState(new BlockPos(x + 1 + a, y, z + 1 + b)).getBlock();
 
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava || bl == ModBlocks.brick_jungle_trap) {
 							world.setBlockState(new BlockPos(x + 1 + a, y, z + 1 + b), ModBlocks.brick_jungle_trap.getDefaultState().withProperty(TrappedBrick.TYPE, Trap.FIRE.ordinal()), 3);

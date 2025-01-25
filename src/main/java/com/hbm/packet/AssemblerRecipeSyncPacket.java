@@ -1,9 +1,7 @@
 package com.hbm.packet;
-import com.hbm.util.ItemStackUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
@@ -38,10 +36,10 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 	public AssemblerRecipeSyncPacket() {
 	}
 	
-	public AssemblerRecipeSyncPacket(final List<ComparableStack> recipes, final HashSet<ComparableStack> hidden){
+	public AssemblerRecipeSyncPacket(List<ComparableStack> recipes, HashSet<ComparableStack> hidden){
 		this.recipes = new ArrayList<>(recipes.size());
 		for(int i = 0; i < recipes.size(); i ++){
-			final ComparableStack c = recipes.get(i);
+			ComparableStack c = recipes.get(i);
 			if(AssemblerRecipes.recipes.get(c) != null)
 				this.recipes.add(new AssemblerRecipe(AssemblerRecipes.recipes.get(c), c, AssemblerRecipes.time.get(c)));
 		}
@@ -49,115 +47,118 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 	}
 	
 	@Override
-	public void fromBytes(final ByteBuf buf) {
-		final int size = buf.readInt();
+	public void fromBytes(ByteBuf buf) {
+		int size = buf.readInt();
 		recipes = new ArrayList<>(size);
 		for(int i = 0; i < size; i ++){
-			final int inputSize = buf.readByte();
-			final AStack[] inputs = new AStack[inputSize];
+			int inputSize = buf.readByte();
+			AStack[] inputs = new AStack[inputSize];
 			
 			for(int j = 0; j < inputSize; j ++){
-				final byte type = buf.readByte();
+				byte type = buf.readByte();
 				if(type == 0){
-					final int count = buf.readInt();
-					final int id = buf.readInt();
-					final int meta = buf.readInt();
-					final ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
+					int count = buf.readInt();
+					int id = buf.readInt();
+					int meta = buf.readInt();
+					ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
 					try {
 						stack.setTagCompound(CompressedStreamTools.read(new ByteBufInputStream(buf), new NBTSizeTracker(2097152L)));
-					} catch(final IOException e) {
+					} catch(IOException e) {
 						e.printStackTrace();
 					}
 					inputs[j] = new NbtComparableStack(stack);
 				} else if(type == 1){
-					final int count = buf.readInt();
-					final int len = buf.readInt();
-					final byte[] bytes = new byte[len];
+					int count = buf.readInt();
+					int len = buf.readInt();
+					byte[] bytes = new byte[len];
 					buf.readBytes(bytes);
-					final String name = new String(bytes, StandardCharsets.US_ASCII);
+					String name = new String(bytes, Charset.forName("ascii"));
 					inputs[j] = new OreDictStack(name, count);
 				} else if(type == 2){
-					final int count = buf.readInt();
-					final int id = buf.readInt();
-					final int meta = buf.readInt();
-					final ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
-					inputs[j] = ItemStackUtil.comparableStackFrom(stack);
+					int count = buf.readInt();
+					int id = buf.readInt();
+					int meta = buf.readInt();
+					ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
+					inputs[j] = new ComparableStack(stack);
 				}
 			}
-			final int id = buf.readInt();
-			final int meta = buf.readInt();
-			final int count = buf.readInt();
-			final ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
-			final ComparableStack output;
-			final byte type = buf.readByte();
+			int id = buf.readInt();
+			int meta = buf.readInt();
+			int count = buf.readInt();
+			ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
+			ComparableStack output;
+			byte type = buf.readByte();
 			if(type == 1){
 				try {
 					stack.setTagCompound(CompressedStreamTools.read(new ByteBufInputStream(buf), new NBTSizeTracker(2097152L)));
-				} catch(final IOException e) {
+				} catch(IOException e) {
 					e.printStackTrace();
 				}
 				output = new NbtComparableStack(stack);
 			} else {
-				output = ItemStackUtil.comparableStackFrom(stack);
+				output = new ComparableStack(stack);
 			}
 			
-			final int time = buf.readInt();
+			int time = buf.readInt();
 			
 			recipes.add(new AssemblerRecipe(inputs, output, time));
 		}
 		
 		
-		final int hiddenSize = buf.readInt();
+		int hiddenSize = buf.readInt();
 		hidden = new HashSet<>(hiddenSize);
 		for(int i = 0; i < hiddenSize; i ++){
-			final int id = buf.readInt();
-			final int meta = buf.readInt();
-			final int count = buf.readInt();
-			final ItemStack stack = ItemStackUtil.itemStackFrom(Item.getItemById(id), count, meta);
-			final ComparableStack hideStack;
-			final byte type = buf.readByte();
+			int id = buf.readInt();
+			int meta = buf.readInt();
+			int count = buf.readInt();
+			ItemStack stack = new ItemStack(Item.getItemById(id), count, meta);
+			ComparableStack hideStack;
+			byte type = buf.readByte();
 			if(type == 1){
 				try {
 					stack.setTagCompound(CompressedStreamTools.read(new ByteBufInputStream(buf), new NBTSizeTracker(2097152L)));
-				} catch(final IOException e) {
+				} catch(IOException e) {
 					e.printStackTrace();
 				}
 				hideStack = new NbtComparableStack(stack);
 			} else {
-				hideStack = ItemStackUtil.comparableStackFrom(stack);
+				hideStack = new ComparableStack(stack);
 			}
 			hidden.add(hideStack);
 		}
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(recipes.size());
 		for(int i = 0; i < recipes.size(); i ++){
-			final AssemblerRecipe recipe = recipes.get(i);
-			final AStack[] inputs = recipe.in;
-			final ComparableStack output = recipe.out;
+			AssemblerRecipe recipe = recipes.get(i);
+			AStack[] inputs = recipe.in;
+			ComparableStack output = recipe.out;
 			buf.writeByte(inputs.length);
 			for(int j = 0; j < inputs.length; j ++){
-				final AStack stack = inputs[j];
-				if(stack instanceof NbtComparableStack nStack){
-                    buf.writeByte(0);
+				AStack stack = inputs[j];
+				if(stack instanceof NbtComparableStack){
+					NbtComparableStack nStack = (NbtComparableStack)stack;
+					buf.writeByte(0);
 					buf.writeInt(nStack.count());
 					buf.writeInt(Item.getIdFromItem(nStack.item));
 					buf.writeInt(nStack.meta);
 					try {
 						CompressedStreamTools.write(nStack.getStack().getTagCompound(), new ByteBufOutputStream(buf));
-					} catch(final IOException e) {
+					} catch(IOException e) {
 						e.printStackTrace();
 					}
-				} else if(stack instanceof OreDictStack oStack){
-                    buf.writeByte(1);
+				} else if(stack instanceof OreDictStack){
+					OreDictStack oStack = (OreDictStack) stack;
+					buf.writeByte(1);
 					buf.writeInt(oStack.count());
-					final byte[] bytes = oStack.name.getBytes(StandardCharsets.US_ASCII);
+					byte[] bytes = oStack.name.getBytes(Charset.forName("ascii"));
 					buf.writeInt(bytes.length);
 					buf.writeBytes(bytes);
-				} else if(stack instanceof ComparableStack cStack){
-                    buf.writeByte(2);
+				} else if(stack instanceof ComparableStack){
+					ComparableStack cStack = (ComparableStack) stack;
+					buf.writeByte(2);
 					buf.writeInt(cStack.count());
 					buf.writeInt(Item.getIdFromItem(cStack.item));
 					buf.writeInt(cStack.meta);
@@ -170,7 +171,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 				buf.writeByte(1);
 				try {
 					CompressedStreamTools.write(output.getStack().getTagCompound(), new ByteBufOutputStream(buf));
-				} catch(final IOException e) {
+				} catch(IOException e) {
 					e.printStackTrace();
 				}
 			} else {
@@ -181,7 +182,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 		
 		
 		buf.writeInt(hidden.size());
-		for(final ComparableStack stack : hidden){
+		for(ComparableStack stack : hidden){
 			buf.writeInt(Item.getIdFromItem(stack.item));
 			buf.writeInt(stack.meta);
 			buf.writeInt(stack.count());
@@ -189,7 +190,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 				buf.writeByte(1);
 				try {
 					CompressedStreamTools.write(stack.getStack().getTagCompound(), new ByteBufOutputStream(buf));
-				} catch(final IOException e) {
+				} catch(IOException e) {
 					e.printStackTrace();
 				}
 			} else {
@@ -202,7 +203,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final AssemblerRecipeSyncPacket m, final MessageContext ctx) {
+		public IMessage onMessage(AssemblerRecipeSyncPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				AssemblerRecipes.backupRecipes = AssemblerRecipes.recipes;
 				AssemblerRecipes.backupTime = AssemblerRecipes.time;
@@ -214,7 +215,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 				AssemblerRecipes.recipeList = new ArrayList<>(m.recipes.size());
 				AssemblerRecipes.hidden = m.hidden;
 				
-				for(final AssemblerRecipe r : m.recipes){
+				for(AssemblerRecipe r : m.recipes){
 					AssemblerRecipes.recipes.put(r.out, r.in);
 					AssemblerRecipes.time.put(r.out, r.time);
 					AssemblerRecipes.recipeList.add(r.out);
@@ -229,7 +230,7 @@ public class AssemblerRecipeSyncPacket implements IMessage {
 		ComparableStack out;
 		int time;
 		
-		public AssemblerRecipe(final AStack[] in, final ComparableStack out, final int time) {
+		public AssemblerRecipe(AStack[] in, ComparableStack out, int time) {
 			super();
 			this.in = in;
 			this.out = out;

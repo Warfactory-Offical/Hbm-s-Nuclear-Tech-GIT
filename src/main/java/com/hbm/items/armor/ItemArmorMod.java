@@ -29,7 +29,7 @@ public class ItemArmorMod extends ItemCustomLore {
 	public final boolean leggings;
 	public final boolean boots;
 	
-	public ItemArmorMod(final int type, final boolean helmet, final boolean chestplate, final boolean leggings, final boolean boots, final String s) {
+	public ItemArmorMod(int type, boolean helmet, boolean chestplate, boolean leggings, boolean boots, String s) {
 		super(s);
 		this.type = type;
 		this.helmet = helmet;
@@ -39,7 +39,7 @@ public class ItemArmorMod extends ItemCustomLore {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, list, flagIn);
 		list.add(TextFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.applicable"));
 		
@@ -71,30 +71,30 @@ public class ItemArmorMod extends ItemCustomLore {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(stack.getDisplayName());
 	}
 	
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) { }
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) { }
 	
-	public void modDamage(final LivingHurtEvent event, final ItemStack armor) { }
+	public void modDamage(LivingHurtEvent event, ItemStack armor) { }
 	
-	public Multimap<String, AttributeModifier> getModifiers(final EntityEquipmentSlot slot, final ItemStack armor) { return null; }
+	public Multimap<String, AttributeModifier> getModifiers(EntityEquipmentSlot slot, ItemStack armor) { return null; }
 	
 	@SideOnly(Side.CLIENT)
-	public void modRender(final RenderPlayerEvent.Pre event, final ItemStack armor) { }
+	public void modRender(RenderPlayerEvent.Pre event, ItemStack armor) { }
 
-	public void offset(final EntityPlayer player, final EntityPlayer me, final float interp){
-		final float px = (float)(player.prevPosX + (player.posX - player.prevPosX) * interp);
-		final float py = (float)(player.prevPosY + (player.posY - player.prevPosY) * interp);
-		final float pz = (float)(player.prevPosZ + (player.posZ - player.prevPosZ) * interp);
-		final float mx = (float)(me.prevPosX + (me.posX - me.prevPosX) * interp);
-		final float my = (float)(me.prevPosY + (me.posY - me.prevPosY) * interp);
-		final float mz = (float)(me.prevPosZ + (me.posZ - me.prevPosZ) * interp);
+	public void offset(EntityPlayer player, EntityPlayer me, float interp){
+		float px = (float)(player.prevPosX + (player.posX - player.prevPosX) * interp);
+		float py = (float)(player.prevPosY + (player.posY - player.prevPosY) * interp);
+		float pz = (float)(player.prevPosZ + (player.posZ - player.prevPosZ) * interp);
+		float mx = (float)(me.prevPosX + (me.posX - me.prevPosX) * interp);
+		float my = (float)(me.prevPosY + (me.posY - me.prevPosY) * interp);
+		float mz = (float)(me.prevPosZ + (me.posZ - me.prevPosZ) * interp);
 		GL11.glTranslatef(mx-px, my-py, pz-mz);
 	}
 
-	public void copyRot(final ModelBiped model, final ModelBiped body){
+	public void copyRot(ModelBiped model, ModelBiped body){
 	 	model.bipedHead.rotationPointX = body.bipedHead.rotationPointX;
         model.bipedHead.rotationPointY = body.bipedHead.rotationPointY;
         model.bipedHead.rotationPointY = body.bipedHead.rotationPointY;

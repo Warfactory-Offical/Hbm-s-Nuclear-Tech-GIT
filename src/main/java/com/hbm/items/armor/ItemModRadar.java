@@ -16,40 +16,40 @@ import java.util.List;
 public class ItemModRadar extends ItemArmorMod {
 	
 	public int range;
-	public ItemModRadar(final String s, final int range){
+	public ItemModRadar(String s, int range){
 		super(ArmorModHandler.extra, true, false, false, false, s);
 		this.range = range;
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add("§eAlerts when incoming missiles are detected");
 		list.add("§eRange: "+range+"m");
 		super.addInformation(stack, worldIn, list, flagIn);
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor){
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor){
 		list.add("§5  " + stack.getDisplayName() + " (Range: "+range+"m)");
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor){
+	public void modUpdate(EntityLivingBase entity, ItemStack armor){
 		if(entity.ticksExisted % 10 == 0 && isApproachingMissileDetected(entity, this.range)){
 			entity.playSound(HBMSoundHandler.nullRadar, 1.0F, 1.0F);
 		}
 	}
 
-	public boolean isEntityApproaching(final EntityLivingBase entity, final Entity e){
-		final boolean xAxisApproaching = (entity.posX < e.posX  && e.motionX < 0) || (entity.posX > e.posX  && e.motionX > 0);
-		final boolean zAxisApproaching = (entity.posZ < e.posZ && e.motionZ < 0) || (entity.posZ > e.posZ && e.motionZ > 0);
+	public boolean isEntityApproaching(EntityLivingBase entity, Entity e){
+		boolean xAxisApproaching = (entity.posX < e.posX  && e.motionX < 0) || (entity.posX > e.posX  && e.motionX > 0);
+		boolean zAxisApproaching = (entity.posZ < e.posZ && e.motionZ < 0) || (entity.posZ > e.posZ && e.motionZ > 0);
 		return xAxisApproaching && zAxisApproaching;
 	}
 	
-	private boolean isApproachingMissileDetected(final EntityLivingBase entity, final int r) {
+	private boolean isApproachingMissileDetected(EntityLivingBase entity, int r) {
 
-		final List<Entity> list = entity.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(entity.posX - r, 0D, entity.posZ - r, entity.posX + r, 10_000D, entity.posZ + r));
-		for(final Entity e : list) {
+		List<Entity> list = entity.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(entity.posX - r, 0D, entity.posZ - r, entity.posX + r, 10_000D, entity.posZ + r));
+		for(Entity e : list) {
 			
 			if(e instanceof EntityLivingBase && HbmLivingProps.getDigamma((EntityLivingBase) e) > 0.001) {
 				return false;

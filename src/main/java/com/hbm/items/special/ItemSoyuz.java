@@ -1,9 +1,6 @@
 package com.hbm.items.special;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -11,9 +8,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemSoyuz extends Item {
 
-	public ItemSoyuz(final String s) {
+	public ItemSoyuz(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -21,7 +20,7 @@ public class ItemSoyuz extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		if(stack.getItem() == ModItems.missile_soyuz0)
 			return EnumRarity.UNCOMMON;
 		if(stack.getItem() == ModItems.missile_soyuz1)
@@ -32,7 +31,7 @@ public class ItemSoyuz extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Skin:");
 		if(stack.getItem() == ModItems.missile_soyuz0)
 			tooltip.add(TextFormatting.GOLD + "Original");

@@ -1,7 +1,6 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.bomb.TileEntityNukeBoy;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,9 +10,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerNukeBoy extends Container {
 
-private final TileEntityNukeBoy nukeBoy;
+private TileEntityNukeBoy nukeBoy;
 	
-	public ContainerNukeBoy(final InventoryPlayer invPlayer, final TileEntityNukeBoy tedf) {
+	public ContainerNukeBoy(InventoryPlayer invPlayer, TileEntityNukeBoy tedf) {
 		
 		nukeBoy = tedf;
 
@@ -38,14 +37,14 @@ private final TileEntityNukeBoy nukeBoy;
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 4) {
@@ -71,7 +70,7 @@ private final TileEntityNukeBoy nukeBoy;
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return nukeBoy.isUseableByPlayer(player);
 	}
 

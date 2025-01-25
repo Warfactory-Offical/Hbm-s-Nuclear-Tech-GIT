@@ -60,9 +60,9 @@ public class DesertAtom003
 	Block Block28 = ModBlocks.machine_battery;
 	Block Block29 = ModBlocks.machine_electric_furnace_off;
 	
-	public boolean generate_r00(final World world, final Random rand, final int x, final int y, final int z)
+	public boolean generate_r00(World world, Random rand, int x, int y, int z)
     {
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		world.setBlockState(pos.setPos(x + 21, y + 3, z + 12), Block6.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 22, y + 3, z + 12), Block6.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 23, y + 3, z + 12), Block6.getDefaultState(), 3);
@@ -81,7 +81,7 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 36, y + 3, z + 12), Block18.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 37, y + 3, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 12), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 13), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 13), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 3, z + 13), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 3, z + 13), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 13), Blocks.WATER.getDefaultState(), 3);
@@ -112,7 +112,7 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 36, y + 3, z + 13), Block18.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 37, y + 3, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 13), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 14), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 14), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 3, z + 14), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 3, z + 14), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 14), Block5.getDefaultState(), 3);
@@ -144,7 +144,7 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 36, y + 3, z + 14), Block18.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 37, y + 3, z + 14), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 14), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 15), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 15), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 3, z + 15), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 15), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 15), Block5.getDefaultState(), 3);
@@ -174,7 +174,7 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 35, y + 3, z + 15), Block18.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 37, y + 3, z + 15), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 15), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 16), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 16), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 16), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 16), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 16), Block5.getDefaultState(), 3);
@@ -201,7 +201,7 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 34, y + 3, z + 16), Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true), 3);
 		world.setBlockState(pos.setPos(x + 37, y + 3, z + 16), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 16), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 17), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 17), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 3, z + 17), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 3, z + 17), Block6.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 3, z + 17), Block6.getDefaultState(), 3);
@@ -223,7 +223,7 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 34, y + 3, z + 17), Block18.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 35, y + 3, z + 17), Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 17), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 18), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 18), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 3, z + 18), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 3, z + 18), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 3, z + 18), Library.getRandomConcrete().getDefaultState(), 3);
@@ -246,63 +246,63 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 35, y + 3, z + 18), Blocks.GRAVEL.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 36, y + 3, z + 18), Blocks.GRAVEL.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 18), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 19), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 19), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 19), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 20), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 20), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 20), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 20), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 20), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 9, y + 3, z + 20), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 3, z + 20), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 20), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 21), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 21), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 3, z + 21), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 3, z + 21), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 3, z + 21), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 3, z + 21), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 21), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 22), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 22), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 3, z + 22), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 3, z + 22), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 22), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 23), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 23), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 23), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 3, z + 23), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 23), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 24), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 24), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 24), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 3, z + 24), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 24), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 25), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 25), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 25), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 3, z + 25), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 25), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 26), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 26), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 26), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 3, z + 26), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 26), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 27), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 27), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 27), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 3, z + 27), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 27), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 28), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 28), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 3, z + 28), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 3, z + 28), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 28), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 29), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 29), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 4, y + 3, z + 29), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 3, z + 29), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 3, z + 29), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 3, z + 29), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 29), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 30), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 30), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 3, z + 30), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 3, z + 30), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 3, z + 30), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 9, y + 3, z + 30), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 3, z + 30), Block15.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 30), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 31), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 31), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 3, z + 31), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 3, z + 31), ModBlocks.barbed_wire.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 3, z + 31), ModBlocks.barbed_wire.getDefaultState(), 3);
@@ -328,9 +328,9 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 38, y + 3, z + 31), ModBlocks.barbed_wire.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 39, y + 3, z + 31), ModBlocks.barbed_wire.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 3, z + 31), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 32), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 32), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 3, z + 32), ModBlocks.barbed_wire.getStateFromMeta(4), 3);
-		world.setBlockState(pos.setPos(x, y + 3, z + 33), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 3, z + 33), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 3, z + 33), ModBlocks.barbed_wire.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 2, y + 3, z + 33), ModBlocks.barbed_wire.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 3, y + 3, z + 33), ModBlocks.barbed_wire.getDefaultState(), 3);
@@ -434,7 +434,7 @@ public class DesertAtom003
 		world.setBlockState(pos.setPos(x + 36, y + 4, z + 9), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.NORTH), 3);
 		if(world.getBlockState(pos.setPos(x + 36, y + 4, z + 9)).getBlock() == Blocks.CHEST)
 		{
-			WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(5), world.getTileEntity(pos.setPos(x + 36, y + 4, z + 9)), 12);
+			WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(5), (TileEntityChest)world.getTileEntity(pos.setPos(x + 36, y + 4, z + 9)), 12);
 		}
         world.setBlockState(pos.setPos(x + 37, y + 4, z + 9), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 40, y + 4, z + 9), Block5.getDefaultState(), 3);
@@ -1573,7 +1573,7 @@ public class DesertAtom003
 		return true;
 
 	}
-	public boolean generate_r01(final World world, final Random rand, final int x, final int y, final int z, final MutableBlockPos pos)
+	public boolean generate_r01(World world, Random rand, int x, int y, int z, MutableBlockPos pos)
 	{
 
 		world.setBlockState(pos.setPos(x + 8, y + 9, z + 14), Block5.getDefaultState(), 3);
@@ -1747,7 +1747,7 @@ public class DesertAtom003
 		return true;
 
 	}
-	public boolean generate_r02_last(final World world, final Random rand, final int x, final int y, final int z, final MutableBlockPos pos)
+	public boolean generate_r02_last(World world, Random rand, int x, int y, int z, MutableBlockPos pos)
 	{
 
 		world.setBlockState(pos.setPos(x + 8, y + 1, z + 7), Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.NORTH), 3);

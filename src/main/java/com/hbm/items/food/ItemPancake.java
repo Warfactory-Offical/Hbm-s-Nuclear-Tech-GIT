@@ -1,6 +1,6 @@
 package com.hbm.items.food;
 
-import api.hbm.energy.IBatteryItem;
+import api.hbm.energymk2.IBatteryItem;
 import com.hbm.items.ModItems;
 import com.hbm.items.gear.ArmorFSB;
 import net.minecraft.client.util.ITooltipFlag;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ItemPancake extends ItemFood {
 
-	public ItemPancake(final int amount, final float saturation, final boolean isWolfFood, final String s) {
+	public ItemPancake(int amount, float saturation, boolean isWolfFood, String s) {
 		super(amount, saturation, isWolfFood);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,8 +28,8 @@ public class ItemPancake extends ItemFood {
 	}
 
 	@Override
-	protected void onFoodEaten(final ItemStack stack, final World worldIn, final EntityPlayer player) {
-		for(final ItemStack st : player.inventory.armorInventory) {
+	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
+		for(ItemStack st : player.inventory.armorInventory) {
 
     		if(st == null)
     			continue;
@@ -41,7 +41,7 @@ public class ItemPancake extends ItemFood {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if(ArmorFSB.hasFSBArmorIgnoreCharge(player) && player.inventory.armorInventory.get(3).getItem() == ModItems.bj_helmet) {
         	return super.onItemRightClick(world, player, hand);
     	}
@@ -52,7 +52,7 @@ public class ItemPancake extends ItemFood {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("Can be eaten to recharge lunar cybernetic armor");
 		list.add("Not for people with weak molars");
 		list.add("");

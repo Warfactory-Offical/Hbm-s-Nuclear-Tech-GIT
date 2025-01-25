@@ -1,28 +1,13 @@
 package com.hbm.render.entity;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityBulletBase;
 import com.hbm.handler.BulletConfiguration;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.RenderSparks;
-import com.hbm.render.model.ModelBaleflare;
-import com.hbm.render.model.ModelBuckshot;
-import com.hbm.render.model.ModelBullet;
-import com.hbm.render.model.ModelGrenade;
-import com.hbm.render.model.ModelMIRV;
-import com.hbm.render.model.ModelMiniNuke;
-import com.hbm.render.model.ModelRocket;
-
+import com.hbm.render.model.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.Render;
@@ -32,6 +17,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 public class RenderBulletMk2 extends Render<EntityBulletBase> {
 
@@ -39,37 +27,37 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		return new RenderBulletMk2(man);
 	};
 
-	private final ModelBullet bullet;
-	private final ModelBuckshot buckshot;
-	private final ModelRocket rocket;
-	private final ModelGrenade grenade;
-	private final ModelMiniNuke nuke;
-	private final ModelMIRV mirv;
-	private final ModelBaleflare bf;
+	private ModelBullet bullet;
+	private ModelBuckshot buckshot;
+	private ModelRocket rocket;
+	private ModelGrenade grenade;
+	private ModelMiniNuke nuke;
+	private ModelMIRV mirv;
+	private ModelBaleflare bf;
 
-	private final ResourceLocation bullet_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/bullet.png");
-	private final ResourceLocation emplacer = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/emplacer.png");
-	private final ResourceLocation tau = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/tau.png");
-	private final ResourceLocation buckshot_rl = new ResourceLocation(RefStrings.MODID + ":textures/entity/buckshot.png");
-	private final ResourceLocation rocket_rl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocket.png");
-	private final ResourceLocation rocket_he = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketHE.png");
-	private final ResourceLocation rocket_in = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketIncendiary.png");
-	private final ResourceLocation rocket_sh = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketShrapnel.png");
-	private final ResourceLocation rocket_emp = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketEMP.png");
-	private final ResourceLocation rocket_gl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketGlare.png");
-	private final ResourceLocation rocket_sl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketSleek.png");
-	private final ResourceLocation rocket_nu = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketNuclear.png");
-	private final ResourceLocation rocket_phos = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketPhosphorus.png");
-	private final ResourceLocation rocket_can = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketCanister.png");
-	private final ResourceLocation grenade_rl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenade.png");
-	private final ResourceLocation grenade_he = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeHE.png");
-	private final ResourceLocation grenade_in = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeIncendiary.png");
-	private final ResourceLocation grenade_to = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeToxic.png");
-	private final ResourceLocation grenade_sl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeSleek.png");
-	private final ResourceLocation grenade_tr = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeTraining.png");
+	private ResourceLocation bullet_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/bullet.png");
+	private ResourceLocation emplacer = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/emplacer.png");
+	private ResourceLocation tau = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/tau.png");
+	private ResourceLocation buckshot_rl = new ResourceLocation(RefStrings.MODID + ":textures/entity/buckshot.png");
+	private ResourceLocation rocket_rl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocket.png");
+	private ResourceLocation rocket_he = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketHE.png");
+	private ResourceLocation rocket_in = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketIncendiary.png");
+	private ResourceLocation rocket_sh = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketShrapnel.png");
+	private ResourceLocation rocket_emp = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketEMP.png");
+	private ResourceLocation rocket_gl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketGlare.png");
+	private ResourceLocation rocket_sl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketSleek.png");
+	private ResourceLocation rocket_nu = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketNuclear.png");
+	private ResourceLocation rocket_phos = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketPhosphorus.png");
+	private ResourceLocation rocket_can = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelRocketCanister.png");
+	private ResourceLocation grenade_rl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenade.png");
+	private ResourceLocation grenade_he = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeHE.png");
+	private ResourceLocation grenade_in = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeIncendiary.png");
+	private ResourceLocation grenade_to = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeToxic.png");
+	private ResourceLocation grenade_sl = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeSleek.png");
+	private ResourceLocation grenade_tr = new ResourceLocation(RefStrings.MODID + ":textures/entity/ModelGrenadeTraining.png");
 	
 
-	protected RenderBulletMk2(final RenderManager renderManager) {
+	protected RenderBulletMk2(RenderManager renderManager) {
 		super(renderManager);
 		bullet = new ModelBullet();
 		buckshot = new ModelBuckshot();
@@ -81,11 +69,11 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 	}
 
 	@Override
-	public void doRender(final EntityBulletBase bullet, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityBulletBase bullet, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		
-		final int style = bullet.getDataManager().get(EntityBulletBase.STYLE);
-		final int trail = bullet.getDataManager().get(EntityBulletBase.TRAIL);
+		int style = bullet.getDataManager().get(EntityBulletBase.STYLE);
+		int trail = bullet.getDataManager().get(EntityBulletBase.TRAIL);
 		
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		if(style != BulletConfiguration.STYLE_TRACER){
@@ -149,7 +137,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		GL11.glPopMatrix();
 	}
 
-	private void renderBullet(final int type) {
+	private void renderBullet(int type) {
 
 		if (type == 2) {
 			bindTexture(emplacer);
@@ -169,7 +157,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		buckshot.renderAll(0.0625F);
 	}
 
-	private void renderRocket(final int type) {
+	private void renderRocket(int type) {
 
 		switch (type) {
 		case 0:
@@ -215,7 +203,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		rocket.renderAll(0.0625F);
 	}
 
-	private void renderGrenade(final int type) {
+	private void renderGrenade(int type) {
 
 		GL11.glScalef(0.25F, 0.25F, 0.25F);
 
@@ -243,7 +231,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		grenade.renderAll(0.0625F);
 	}
 	
-	private void renderNuke(final int type) {
+	private void renderNuke(int type) {
 
         GL11.glScalef(1.5F, 1.5F, 1.5F);
 		
@@ -269,8 +257,8 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
         GL11.glScalef(1F/16F, 1F/16F, 1F/16F);
         GL11.glScalef(-1, 1, 1);
         
-		final Tessellator tess = Tessellator.getInstance();
-		final BufferBuilder buf = tess.getBuffer();
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder buf = tess.getBuffer();
 		
 		//Drillgon200: Removed all those extra draw calls that just cause extra lag.
 		//back
@@ -332,7 +320,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		GL11.glPopMatrix();
 	}
 	
-	private void renderDart(final int style, final int eID) {
+	private void renderDart(int style, int eID) {
 		
 		
 		float red = 1F;
@@ -344,7 +332,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		case BulletConfiguration.BOLT_LACUNAE: red = 0.25F; green = 0F; blue = 0.75F; break;
 		case BulletConfiguration.BOLT_WORM: red = 0F; green = 1F; blue = 0F; break;
 		case BulletConfiguration.BOLT_ZOMG:
-			final Random rand = new Random((long) eID * eID);
+			Random rand = new Random(eID * eID);
 			red = rand.nextInt(2) * 0.8F;
 			green = rand.nextInt(2) * 0.8F;
 			blue = rand.nextInt(2) * 0.8F;
@@ -365,8 +353,8 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 
         GL11.glScalef(2, 2, 2);
         
-		final Tessellator tess = Tessellator.getInstance();
-		final BufferBuilder buf = tess.getBuffer();
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder buf = tess.getBuffer();
 		
 		//front
 		buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR);
@@ -440,7 +428,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 		GL11.glPopMatrix();
 	}
 	
-	private void renderOrb(final int type) {
+	private void renderOrb(int type) {
 
         GlStateManager.enableCull();
         GlStateManager.disableLighting();
@@ -480,7 +468,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 
 	}
 	
-	private void renderMeteor(final int type) {
+	private void renderMeteor(int type) {
 
         GlStateManager.enableCull();
         GlStateManager.disableLighting();
@@ -497,18 +485,18 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
         GlStateManager.enableLighting();
 	}
 
-	private void renderTracer(Vec3d bulletDirection, final Vec3d bulletPos, final float partialTicks) {
-		final Entity rv = Minecraft.getMinecraft().getRenderViewEntity();
-		final double eyeX = rv.prevPosX + (rv.posX-rv.prevPosX)*partialTicks;
-		final double eyeY = rv.prevPosY + (rv.posY-rv.prevPosY)*partialTicks;
-		final double eyeZ = rv.prevPosZ + (rv.posZ-rv.prevPosZ)*partialTicks;
-		final Vec3d eyePos = new Vec3d(eyeX, eyeY, eyeZ).add(ActiveRenderInfo.getCameraPosition());
-		final Vec3d tan = eyePos.subtract(bulletPos).crossProduct(bulletDirection).normalize().scale(0.05);
+	private void renderTracer(Vec3d bulletDirection, Vec3d bulletPos, float partialTicks) {
+		Entity rv = Minecraft.getMinecraft().getRenderViewEntity();
+		double eyeX = rv.prevPosX + (rv.posX-rv.prevPosX)*partialTicks;
+		double eyeY = rv.prevPosY + (rv.posY-rv.prevPosY)*partialTicks;
+		double eyeZ = rv.prevPosZ + (rv.posZ-rv.prevPosZ)*partialTicks;
+		Vec3d eyePos = new Vec3d(eyeX, eyeY, eyeZ).add(ActiveRenderInfo.getCameraPosition());
+		Vec3d tan = eyePos.subtract(bulletPos).crossProduct(bulletDirection).normalize().scale(0.05);
 		bulletDirection = bulletDirection.scale(10);
 		
 		bindTexture(ResourceManager.fresnel_ms);
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 		GlStateManager.color(1, 0.7F, 0.5F, 1);
 		GlStateManager.disableLighting();
 		GlStateManager.depthMask(false);
@@ -546,7 +534,7 @@ public class RenderBulletMk2 extends Render<EntityBulletBase> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityBulletBase entity) {
+	protected ResourceLocation getEntityTexture(EntityBulletBase entity) {
 		return bullet_rl;
 	}
 

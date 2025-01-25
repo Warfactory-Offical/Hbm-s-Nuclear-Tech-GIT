@@ -1,11 +1,7 @@
 package com.hbm.items.special;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.entity.siege.SiegeTier;
 import com.hbm.items.ModItems;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -17,9 +13,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class ItemSiegeCoin extends Item {
 	
-	public ItemSiegeCoin(final String s) {
+	public ItemSiegeCoin(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.hasSubtypes = true;
@@ -29,22 +27,22 @@ public class ItemSiegeCoin extends Item {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.UNCOMMON;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final CreativeTabs tab, final NonNullList<ItemStack> items){
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
 		if(tab == CreativeTabs.SEARCH || tab == this.getCreativeTab())
 			for(int i = 0; i < SiegeTier.getLength(); i++) {
-				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
+				items.add(new ItemStack(this, 1, i));
 			}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
 		tooltip.add(TextFormatting.YELLOW + "Tier " + (stack.getItemDamage() + 1));
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

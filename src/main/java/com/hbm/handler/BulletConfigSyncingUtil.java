@@ -30,7 +30,7 @@ import com.hbm.items.ModItems;
 
 public class BulletConfigSyncingUtil {
 
-private static final HashMap<Integer, BulletConfiguration> configSet = new HashMap<Integer, BulletConfiguration>();
+private static HashMap<Integer, BulletConfiguration> configSet = new HashMap<Integer, BulletConfiguration>();
 	
 	static int i = 0;
 	
@@ -483,14 +483,14 @@ private static final HashMap<Integer, BulletConfiguration> configSet = new HashM
 		configSet.put(UFO_ROCKET, GunNPCFactory.getRocketUFOConfig());
 	}
 	
-	public static BulletConfiguration pullConfig(final int key) {
+	public static BulletConfiguration pullConfig(int key) {
 		
 		return configSet.get(key);
 	}
 	
-	public static int getKey(final BulletConfiguration config) {
+	public static int getKey(BulletConfiguration config) {
 		
-		for(final Entry<Integer, BulletConfiguration> e : configSet.entrySet()) {
+		for(Entry<Integer, BulletConfiguration> e : configSet.entrySet()) {
 			
 			if(e.getValue() == config)
 				return e.getKey();

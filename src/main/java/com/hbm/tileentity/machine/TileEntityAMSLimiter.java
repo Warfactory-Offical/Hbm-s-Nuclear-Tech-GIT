@@ -11,7 +11,6 @@ import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -62,7 +61,7 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 	public TileEntityAMSLimiter() {
 		inventory = new ItemStackHandler(4){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -80,11 +79,11 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -94,7 +93,7 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		tank.readFromNBT(compound);
 		efficiency = compound.getInteger("efficiency");
@@ -106,7 +105,7 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		tank.writeToNBT(compound);
 		compound.setInteger("efficiency", efficiency);
@@ -237,10 +236,10 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 				
 			} else {
 				//fire particles n stuff
-				final int meta = this.getBlockMetadata();
+				int meta = this.getBlockMetadata();
 				
-				final double pos2 = rand.nextDouble() * 2.5;
-				final double off = 0.25;
+				double pos2 = rand.nextDouble() * 2.5;
+				double off = 0.25;
 				if(meta == 2)
 					world.spawnEntity(new EntityGasFlameFX(world, pos.getX() + 0.5 + off, pos.getY() + 5.5, pos.getZ() + 0.5 - pos2, 0.0, 0.0, 0.0));
 				if(meta == 3)
@@ -262,31 +261,31 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, locked ? 1 : 0, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 			PacketDispatcher.wrapper.sendToAllTracking(new AuxGaugePacket(pos, efficiency, 1), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 		}
 	}
 
-	private float gauss(final float a, final float x) {
+	private float gauss(float a, float x) {
 		
 		//Greater values -> less difference of temperate impact
-		final double amplifier = 0.10;
+		double amplifier = 0.10;
 		
 		return (float) ( (1/Math.sqrt(a * Math.PI)) * Math.pow(Math.E, -1 * Math.pow(x, 2)/amplifier) );
 	}
 	
-	private float calcEffect(final float a, final float x) {
+	private float calcEffect(float a, float x) {
 		return (float) (gauss( 1 / a, x / maxHeat) * Math.sqrt(Math.PI * 2) / (Math.sqrt(2) * Math.sqrt(maxPower)));
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getEfficiencyScaled(final int i) {
+	public int getEfficiencyScaled(int i) {
 		return (efficiency * i) / maxEfficiency;
 	}
 	
-	public int getHeatScaled(final int i) {
+	public int getHeatScaled(int i) {
 		return (heat * i) / maxHeat;
 	}
 
@@ -303,9 +302,11 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 		return 65536.0D;
 	}
 	
-	public boolean isValidFluid(final Fluid fluid){
-        return fluid != null && (fluid == FluidRegistry.WATER || fluid == ModForgeFluids.coolant || fluid == ModForgeFluids.cryogel);
-    }
+	public boolean isValidFluid(Fluid fluid){
+		if(fluid != null && (fluid == FluidRegistry.WATER || fluid == ModForgeFluids.coolant || fluid == ModForgeFluids.cryogel))
+			return true;
+		return false;
+	}
 
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
@@ -313,7 +314,7 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource == null){
 			return 0;
 		} else if ((tank.getFluid() == null && this.isValidFluid(resource.getFluid())) || (tank.getFluid() != null && tank.getFluid().getFluid() == resource.getFluid())){
@@ -323,25 +324,26 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1){
-        } else {
+			return;
+		} else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return true;
 		} else {
@@ -350,7 +352,7 @@ public class TileEntityAMSLimiter extends TileEntity implements ITickable, IFlui
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		} else {

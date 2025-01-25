@@ -1,261 +1,215 @@
 package com.hbm.inventory;
-import com.hbm.items.meta.materials.MaterialMineral;
-import com.hbm.util.ItemStackUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
+import com.hbm.inventory.fluid.FluidStack;
+import com.hbm.inventory.fluid.Fluids;
+import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
-import com.hbm.items.special.ItemHazard;
 import com.hbm.items.machine.ItemFluidIcon;
-
-import static com.hbm.inventory.OreDictManager.*;
+import com.hbm.util.Tuple;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
+import mezz.jei.api.recipe.IIngredientType;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
-public class RBMKOutgasserRecipes {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-	public static LinkedHashMap<ComparableStack, Object[]> rbmkOutgasserRecipes = new LinkedHashMap<ComparableStack, Object[]>();
+import static com.hbm.inventory.OreDictManager.*;
+
+public class RBMKOutgasserRecipes extends SerializableRecipe {
+
+	public static Map<RecipesCommon.AStack, Tuple.Pair<ItemStack, FluidStack>> recipes = new HashMap();
 	public static List<RBMKOutgasserRecipe> jeiRBMKOutgasserRecipes = null;
-	
-	public static void registerOverrides() {
-		addRecipe(240,  LI.dustTiny(), ItemFluidIcon.getStackWithQuantity(ModForgeFluids.tritium, 120));
-		addRecipe(1200, LI.dust(), ItemFluidIcon.getStackWithQuantity(ModForgeFluids.tritium, 800));
-		addRecipe(1500, LI.ingot(), ItemFluidIcon.getStackWithQuantity(ModForgeFluids.tritium, 800));
-		addRecipe(10000, LI.block(), ItemFluidIcon.getStackWithQuantity(ModForgeFluids.tritium, 8000));
-		addRecipe(6000, Blocks.BROWN_MUSHROOM, ItemStackUtil.itemStackFrom(ModBlocks.mush));
-		addRecipe(6000, Blocks.RED_MUSHROOM, ItemStackUtil.itemStackFrom(ModBlocks.mush));
-		addRecipe(18000, Items.MUSHROOM_STEW, ItemStackUtil.itemStackFrom(ModItems.glowing_stew));
-		
-		addRecipe(360000 * ItemHazard.nugget, GOLD.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AU198)));
-		addRecipe(360000 * ItemHazard.powder_tiny, GOLD.dustTiny(), ItemStackUtil.itemStackFrom(ModItems.powder_au198_tiny));
-		addRecipe(360000, GOLD.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AU198)));
-		addRecipe(360000 * ItemHazard.powder, GOLD.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_au198));
-		addRecipe(360000 * ItemHazard.block, GOLD.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_au198));
-		addRecipe(360000 * ItemHazard.powder * ItemHazard.block, ModBlocks.sand_gold, ItemStackUtil.itemStackFrom(ModBlocks.sand_gold198));
-		
-		addRecipe(90000 * ItemHazard.nugget, TH232.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.THORIUM_FUEL)));
-		addRecipe(90000 * ItemHazard.billet, TH232.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.THORIUM_FUEL)));
-		addRecipe(90000, TH232.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.THORIUM_FUEL)));
-		addRecipe(90000 * ItemHazard.block, TH232.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_thorium_fuel));
-		
-		addRecipe(60000 * ItemHazard.nugget, U233.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U235)));
-		addRecipe(60000 * ItemHazard.billet, U233.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.U235)));
-		addRecipe(60000, U233.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.U235)));
-		addRecipe(60000 * ItemHazard.block, U233.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_u235));
-		
-		addRecipe(100000 * ItemHazard.nugget, U235.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM_FUEL)));
-		addRecipe(100000 * ItemHazard.billet, U235.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.NEPTUNIUM_FUEL)));
-		addRecipe(100000, U235.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.NEPTUNIUM_FUEL)));
-		
-		addRecipe(170000 * ItemHazard.nugget, NP237.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU238)));
-		addRecipe(170000 * ItemHazard.billet, NP237.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU238)));
-		addRecipe(170000, NP237.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU238)));
-		addRecipe(170000 * ItemHazard.block, NP237.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_pu238));
-		
-		addRecipe(190000 * ItemHazard.nugget, U238.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU239)));
-		addRecipe(190000 * ItemHazard.billet, U238.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU239)));
-		addRecipe(190000, U238.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU239)));
-		addRecipe(190000 * ItemHazard.block, U238.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_pu239));
-		
-		addRecipe(150000 * ItemHazard.nugget, PU238.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU239)));
-		addRecipe(150000 * ItemHazard.billet, PU238.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU239)));
-		addRecipe(150000, PU238.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU239)));
-		addRecipe(150000 * ItemHazard.block, PU238.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_pu239));
-		
-		addRecipe(210000 * ItemHazard.nugget, PU239.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU240)));
-		addRecipe(210000 * ItemHazard.billet, PU239.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU240)));
-		addRecipe(210000, PU239.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU240)));
-		addRecipe(210000 * ItemHazard.block, PU239.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_pu240));
-		
-		addRecipe(2000000 * ItemHazard.nugget, PU240.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU241)));
-		addRecipe(2000000 * ItemHazard.billet, PU240.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.PU241)));
-		addRecipe(2000000, PU240.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PU241)));
-		
-		addRecipe(6000000 * ItemHazard.nugget, PU241.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AM241)));
-		addRecipe(6000000 * ItemHazard.billet, PU241.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.AM241)));
-		addRecipe(6000000, PU241.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AM241)));
-		
-		addRecipe(750000 * ItemHazard.nugget, AM241.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AM242)));
-		addRecipe(750000 * ItemHazard.billet, AM241.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.AM242)));
-		addRecipe(750000, AM241.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AM242)));
-		
-		addRecipe(690000 * ItemHazard.nugget, SA326.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SOLINIUM)));
-		addRecipe(690000 * ItemHazard.billet, SA326.billet(), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.SOLINIUM)));
-		addRecipe(690000, SA326.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SOLINIUM)));
-		addRecipe(690000 * ItemHazard.block, SA326.block(), ItemStackUtil.itemStackFrom(ModBlocks.block_solinium));
-		
-		addRecipe(50000 * ItemHazard.nugget,CO.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.CO60)));
-		addRecipe(50000 * ItemHazard.powder_tiny, CO.dustTiny(), ItemStackUtil.itemStackFrom(ModItems.powder_co60_tiny));
-		addRecipe(50000, CO.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.CO60)));
-		addRecipe(50000 * ItemHazard.powder, CO.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_co60));
-		
-		addRecipe(55000 * ItemHazard.nugget, SR.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.SR90)));
-		addRecipe(55000, SR.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.SR90)));
-		addRecipe(55000 * ItemHazard.powder, SR.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_sr90));
 
-		addRecipe(45000 * ItemHazard.powder_tiny, I.dustTiny(), ItemStackUtil.itemStackFrom(ModItems.powder_i131_tiny));
-		addRecipe(45000, I.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.I131)));
-		addRecipe(45000 * ItemHazard.powder, I.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_i131));
-		
-		addRecipe(450000 * ItemHazard.nugget, AC.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AC227)));
-		addRecipe(450000, AC.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.AC227)));
-		addRecipe(450000 * ItemHazard.powder, AC.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_ac227));
-		
-		addRecipe(80000, CS.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_cs137));
-		addRecipe(120000, AT.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_at209));
-		
-		addRecipe(120000 * ItemHazard.nugget, ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.AUSTRALIUM_LESSER)));
-		addRecipe(120000 * ItemHazard.billet, ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM), ItemStackUtil.itemStackFrom(ModItems.billet.getItemStack(MaterialMineral.AUSTRALIUM_LESSER)));
-		
-		addRecipe(14000000 * ItemHazard.nugget, PB.nugget(), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PB209)));
-		addRecipe(14000000 * ItemHazard.powder_tiny, PB.dustTiny(), ItemStackUtil.itemStackFrom(ModItems.powder_pb209_tiny));
-		addRecipe(14000000, PB.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.PB209)));
-		addRecipe(14000000 * ItemHazard.powder, PB.dust(), ItemStackUtil.itemStackFrom(ModItems.powder_pb209));
-		
-		addRecipe(1800000, NB.ingot(), ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.TECHNETIUM)));
-		addRecipe(32000, ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM_LESSER), ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.UNOBTAINIUM)));
-		addRecipe(300000, ModItems.scrap, ItemStackUtil.itemStackFrom(ModItems.fallout));
-		addRecipe(3000000, ModBlocks.block_scrap, ItemStackUtil.itemStackFrom(ModBlocks.block_fallout));
-		addRecipe(2000, Blocks.STONE, ItemStackUtil.itemStackFrom(ModBlocks.sellafield_slaked));
-		addRecipe(4000, ModBlocks.sellafield_slaked, ItemStackUtil.itemStackFrom(ModBlocks.sellafield_0));
-		addRecipe(8000, ModBlocks.sellafield_0, ItemStackUtil.itemStackFrom(ModBlocks.sellafield_1));
-		addRecipe(16000, ModBlocks.sellafield_1, ItemStackUtil.itemStackFrom(ModBlocks.sellafield_2));
-		addRecipe(32000, ModBlocks.sellafield_2, ItemStackUtil.itemStackFrom(ModBlocks.sellafield_3));
-		addRecipe(64000, ModBlocks.sellafield_3, ItemStackUtil.itemStackFrom(ModBlocks.sellafield_4));
-		addRecipe(128000, ModBlocks.sellafield_4, ItemStackUtil.itemStackFrom(ModBlocks.sellafield_core));
-		addRecipe(500000, ModBlocks.block_corium_cobble, ItemStackUtil.itemStackFrom(ModBlocks.block_corium));
-		addRecipe(1000000, ModItems.meteorite_sword_bred, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_irradiated));
+	@Override
+	public void registerDefaults() {
+
+		/* lithium to tritium */
+		recipes.put(new RecipesCommon.OreDictStack(LI.block()),		new Tuple.Pair(null, new FluidStack(Fluids.TRITIUM, 10_000)));
+		recipes.put(new RecipesCommon.OreDictStack(LI.ingot()),		new Tuple.Pair(null, new FluidStack(Fluids.TRITIUM, 1_000)));
+		recipes.put(new RecipesCommon.OreDictStack(LI.dust()),		new Tuple.Pair(null, new FluidStack(Fluids.TRITIUM, 1_000)));
+		recipes.put(new RecipesCommon.OreDictStack(LI.dustTiny()),	new Tuple.Pair(null, new FluidStack(Fluids.TRITIUM, 100)));
+
+		/* gold to gold-198 */
+		recipes.put(new RecipesCommon.OreDictStack(GOLD.ingot()),		new Tuple.Pair(new ItemStack(ModItems.ingot_au198), null));
+		recipes.put(new RecipesCommon.OreDictStack(GOLD.nugget()),	new Tuple.Pair(new ItemStack(ModItems.nugget_au198), null));
+		recipes.put(new RecipesCommon.OreDictStack(GOLD.dust()),		new Tuple.Pair(new ItemStack(ModItems.powder_au198), null));
+
+		/* thorium to thorium fuel */
+		recipes.put(new RecipesCommon.OreDictStack(TH232.ingot()),	new Tuple.Pair(new ItemStack(ModItems.ingot_thorium_fuel), null));
+		recipes.put(new RecipesCommon.OreDictStack(TH232.nugget()),	new Tuple.Pair(new ItemStack(ModItems.nugget_thorium_fuel), null));
+		recipes.put(new RecipesCommon.OreDictStack(TH232.billet()),	new Tuple.Pair(new ItemStack(ModItems.billet_thorium_fuel), null));
+
+		/* mushrooms to glowing mushrooms */
+		recipes.put(new ComparableStack(Blocks.BROWN_MUSHROOM),	new Tuple.Pair(new ItemStack(ModBlocks.mush), null));
+		recipes.put(new ComparableStack(Blocks.RED_MUSHROOM),	new Tuple.Pair(new ItemStack(ModBlocks.mush), null));
+		recipes.put(new ComparableStack(Items.MUSHROOM_STEW),	new Tuple.Pair(new ItemStack(ModItems.glowing_stew), null));
+
+		recipes.put(new RecipesCommon.OreDictStack(COAL.gem()),		new Tuple.Pair(DictFrame.fromOne(ModItems.oil_tar, ItemEnums.EnumTarType.COAL, 1), new FluidStack(Fluids.SYNGAS, 50)));
+		recipes.put(new RecipesCommon.OreDictStack(COAL.dust()),		new Tuple.Pair(DictFrame.fromOne(ModItems.oil_tar, ItemEnums.EnumTarType.COAL, 1), new FluidStack(Fluids.SYNGAS, 50)));
+		recipes.put(new RecipesCommon.OreDictStack(COAL.block()),		new Tuple.Pair(DictFrame.fromOne(ModItems.oil_tar, ItemEnums.EnumTarType.COAL, 9), new FluidStack(Fluids.SYNGAS, 500)));
+
+		recipes.put(new ComparableStack(DictFrame.fromOne(ModItems.oil_tar, ItemEnums.EnumTarType.COAL)),	new Tuple.Pair(null, new FluidStack(Fluids.COALOIL, 100)));
+		recipes.put(new ComparableStack(DictFrame.fromOne(ModItems.oil_tar, ItemEnums.EnumTarType.WAX)),	new Tuple.Pair(null, new FluidStack(Fluids.RADIOSOLVENT, 100)));
 	}
 
-	public static void addRecipe(final int requiredFlux, final ItemStack in, final ItemStack out) {
-		rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
-	}
+	public static Tuple.Pair<ItemStack, FluidStack> getOutput(ItemStack input) {
 
-	public static void addRecipe(final int requiredFlux, final Item in, final ItemStack out) {
-		rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
-	}
-	
-	public static void addRecipe(final int requiredFlux, final Block in, final ItemStack out) {
-		rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(in), new Object[] {requiredFlux, out});
-	}
+		ComparableStack comp = new ComparableStack(input).makeSingular();
 
-	public static void addRecipe(final int requiredFlux, final String in, final ItemStack out) {
-		if(!OreDictionary.getOres(in).isEmpty() && OreDictionary.getOres(in).get(0) != null && !OreDictionary.getOres(in).get(0).isEmpty())
-			rbmkOutgasserRecipes.put(ItemStackUtil.comparableStackFrom(OreDictionary.getOres(in).get(0)), new Object[] {requiredFlux, out});
-	}
-
-	public static void addRecipe(final float requiredFlux, final String in, final ItemStack out) {
-		addRecipe((int)requiredFlux, in, out);
-	}
-
-	public static void addRecipe(final float requiredFlux, final Item in, final ItemStack out) {
-		addRecipe((int)requiredFlux, in, out);
-	}
-
-	public static void addRecipe(final float requiredFlux, final ItemStack in, final ItemStack out) {
-		addRecipe((int)requiredFlux, in, out);
-	}
-
-	public static void addRecipe(final float requiredFlux, final Block in, final ItemStack out) {
-		addRecipe((int)requiredFlux, in, out);
-	}
-	
-	public static void removeRecipe(final ItemStack in) {
-		rbmkOutgasserRecipes.remove(ItemStackUtil.comparableStackFrom(in));
-	}
-
-	public static int getRequiredFlux(final ItemStack stack) {
-		
-		if(stack == null || stack.isEmpty())
-			return -1;
-		
-		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
-		if(rbmkOutgasserRecipes.containsKey(comp)){
-			return (int)rbmkOutgasserRecipes.get(comp)[0];
+		if(recipes.containsKey(comp)) {
+			return recipes.get(comp);
 		}
 
-		final String[] dictKeys = comp.getDictKeys();
-		
-		for(final String key : dictKeys) {
-			if(rbmkOutgasserRecipes.containsKey(key)){
-				return (int)rbmkOutgasserRecipes.get(key)[1];
+		String[] dictKeys = comp.getDictKeys();
+
+		for(String key : dictKeys) {
+			RecipesCommon.OreDictStack dict = new RecipesCommon.OreDictStack(key);
+			if(recipes.containsKey(dict)) {
+				return recipes.get(dict);
 			}
 		}
-		return -1;
-	}
 
-	public static ItemStack getOutput(final ItemStack stack) {
-		
-		if(stack == null || stack.getItem() == null)
-			return null;
-
-		final ComparableStack comp = ItemStackUtil.comparableStackFrom(stack).makeSingular();
-		if(rbmkOutgasserRecipes.containsKey(comp)){
-			return (ItemStack)rbmkOutgasserRecipes.get(comp)[1];
-		}
-		
-		final String[] dictKeys = comp.getDictKeys();
-		
-		for(final String key : dictKeys) {
-			
-			if(rbmkOutgasserRecipes.containsKey(key)){
-				return (ItemStack)rbmkOutgasserRecipes.get(key)[1];
-			}
-		}
 		return null;
+	}
+
+	public static HashMap getRecipes() {
+
+		HashMap<Object, Object[]> recipes = new HashMap<Object, Object[]>();
+
+		for(Entry<RecipesCommon.AStack, Tuple.Pair<ItemStack, FluidStack>> entry : RBMKOutgasserRecipes.recipes.entrySet()) {
+
+			RecipesCommon.AStack input = entry.getKey();
+			ItemStack solidOutput = entry.getValue().getKey();
+			FluidStack fluidOutput = entry.getValue().getValue();
+
+			if(solidOutput != null && fluidOutput != null) recipes.put(input, new Object[] {solidOutput, ItemFluidIcon.make(fluidOutput)});
+			if(solidOutput != null && fluidOutput == null) recipes.put(input, new Object[] {solidOutput});
+			if(solidOutput == null && fluidOutput != null) recipes.put(input, new Object[] {ItemFluidIcon.make(fluidOutput)});
+		}
+
+		return recipes;
+	}
+
+	@Override
+	public String getFileName() {
+		return "hbmIrradiation.json";
+	}
+
+	@Override
+	public Object getRecipeObject() {
+		return recipes;
+	}
+
+	@Override
+	public void readRecipe(JsonElement recipe) {
+		JsonObject obj = (JsonObject) recipe;
+
+		RecipesCommon.AStack input = this.readAStack(obj.get("input").getAsJsonArray());
+		ItemStack solidOutput = null;
+		FluidStack fluidOutput = null;
+
+		if(obj.has("solidOutput")) {
+			solidOutput = this.readItemStack(obj.get("solidOutput").getAsJsonArray());
+		}
+
+		if(obj.has("fluidOutput")) {
+			fluidOutput = this.readFluidStack(obj.get("fluidOutput").getAsJsonArray());
+		}
+
+		if(solidOutput != null || fluidOutput != null) {
+			this.recipes.put(input, new Tuple.Pair(solidOutput, fluidOutput));
+		}
+	}
+
+	@Override
+	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
+		Entry<RecipesCommon.AStack, Tuple.Pair<ItemStack, FluidStack>> rec = (Entry<RecipesCommon.AStack, Tuple.Pair<ItemStack, FluidStack>>) recipe;
+
+		writer.name("input");
+		this.writeAStack(rec.getKey(), writer);
+
+		if(rec.getValue().getKey() != null) {
+			writer.name("solidOutput");
+			this.writeItemStack(rec.getValue().getKey(), writer);
+		}
+
+		if(rec.getValue().getValue() != null) {
+			writer.name("fluidOutput");
+			this.writeFluidStack(rec.getValue().getValue(), writer);
+		}
+	}
+
+	@Override
+	public void deleteRecipes() {
+		recipes.clear();
 	}
 
 	public static List<RBMKOutgasserRecipe> getRBMKOutgasserRecipes() {
 		if(jeiRBMKOutgasserRecipes == null){
 			jeiRBMKOutgasserRecipes = new ArrayList<RBMKOutgasserRecipe>();
-			for(final Entry<ComparableStack, Object[]> e : rbmkOutgasserRecipes.entrySet()){
-				jeiRBMKOutgasserRecipes.add(new RBMKOutgasserRecipe(e.getKey().toStack(), (int)e.getValue()[0], (ItemStack)e.getValue()[1]));
+			for(Entry<RecipesCommon.AStack, Tuple.Pair<ItemStack, FluidStack>> e : recipes.entrySet()){
+				jeiRBMKOutgasserRecipes.add(new RBMKOutgasserRecipe(e.getKey(), e.getValue().getKey(), e.getValue().getValue()));
 			}
 		}
 		return jeiRBMKOutgasserRecipes;
 	}
-	
+
 	public static class RBMKOutgasserRecipe implements IRecipeWrapper {
-		
-		private final ItemStack input;
-		private final int requiredFlux;
+
+		private final RecipesCommon.AStack input;
 		private final ItemStack output;
-		
-		public RBMKOutgasserRecipe(final ItemStack input, final int requiredFlux, final ItemStack output) {
+		private final FluidStack fluidOutput;
+
+		public RBMKOutgasserRecipe(RecipesCommon.AStack input, ItemStack output, FluidStack fluidOutput) {
 			this.input = input;
-			this.requiredFlux = requiredFlux;
 			this.output = output;
+			this.fluidOutput = fluidOutput;
 		}
-		
+
+		public static final IIngredientType<FluidStack> NTMFLUID = () -> {
+			return FluidStack.class;
+		};
+
 		@Override
-		public void getIngredients(final IIngredients ingredients) {
-			ingredients.setInput(VanillaTypes.ITEM, input);
-			ingredients.setOutput(VanillaTypes.ITEM, output);
+		public void getIngredients(IIngredients ingredients) {
+			List<List<ItemStack>> inputs = new ArrayList<>();
+			inputs.add(input.getStackList());
+			ingredients.setInputLists(VanillaTypes.ITEM, inputs);
+
+			if (output != null && !output.isEmpty()) {
+				ingredients.setOutput(VanillaTypes.ITEM, output);
+			}
+
+			if (fluidOutput != null && fluidOutput.fill > 0) {
+				ingredients.setOutput(NTMFLUID, fluidOutput);
+			}
 		}
 
 		@Override
-		public void drawInfo(final Minecraft minecraft, final int recipeWidth, final int recipeHeight, final int mouseX, final int mouseY) {
-			final FontRenderer fontRenderer = minecraft.fontRenderer;
-	    	
-	    	fontRenderer.drawString("Flux", 21-12, 33-17, 4210752);
-	    	fontRenderer.drawString(""+requiredFlux, 123-12-fontRenderer.getStringWidth(""+requiredFlux), 34-17, 0x46EA00);
-	    	GlStateManager.color(1, 1, 1, 1);
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+			FontRenderer fontRenderer = minecraft.fontRenderer;
+
+			if (fluidOutput != null && fluidOutput.fill > 0) {
+				fontRenderer.drawString("Fluid", 21 - 12, 33 - 17, 4210752);
+				fontRenderer.drawString(fluidOutput.fill + " mB", 123 - 12 - fontRenderer.getStringWidth(fluidOutput.fill + " mB"), 34 - 17, 0x46EA00);
+			}
+			GlStateManager.color(1, 1, 1, 1);
 		}
 	}
 }

@@ -1,15 +1,11 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Multimap;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.main.MainRegistry;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -36,6 +32,9 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+import java.util.Random;
+
 public class GunLeverActionS extends Item {
 
 	Random rand = new Random();
@@ -43,7 +42,7 @@ public class GunLeverActionS extends Item {
 	public int dmgMin = 8;
 	public int dmgMax = 16;
 	
-	public GunLeverActionS(final String s) {
+	public GunLeverActionS(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -53,16 +52,17 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer player))
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if(!(entityLiving instanceof EntityPlayer))
 			return;
-        int j = this.getMaxItemUseDuration(stack) - timeLeft;
+		EntityPlayer player = (EntityPlayer) entityLiving;
+		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
-		final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.ammo_20gauge));
+		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.ammo_20gauge));
 		MinecraftForge.EVENT_BUS.post(event);
 		j = event.getCharge();
 
-		final boolean flag = player.capabilities.isCreativeMode
+		boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 		if (flag || Library.hasInventoryItem(player.inventory, ModItems.ammo_20gauge)) {
@@ -100,8 +100,8 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected) {
-		final int j = getAnim(stack);
+	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
+		int j = getAnim(stack);
     	
     	if(j > 0) {
     		if(j < 30)
@@ -115,19 +115,19 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(final ItemStack stack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ItemStack stack = playerIn.getHeldItem(handIn);
-		final ArrowNockEvent event = new ArrowNockEvent(playerIn, stack, handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.ammo_12gauge));
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack stack = playerIn.getHeldItem(handIn);
+		ArrowNockEvent event = new ArrowNockEvent(playerIn, stack, handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.ammo_12gauge));
 		MinecraftForge.EVENT_BUS.post(event);
 
 		if(getAnim(stack) == 0)
@@ -136,21 +136,21 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public int getItemEnchantability(final ItemStack stack) {
+	public int getItemEnchantability(ItemStack stack) {
 		return 1;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getItemStackDisplayName(final ItemStack stack) {
+	public String getItemStackDisplayName(ItemStack stack) {
 		if(MainRegistry.polaroidID == 11)
-			return (I18n.format(this.getTranslationKey() + "_2.name")).trim();
+			return ("" + I18n.format(this.getTranslationKey() + "_2.name")).trim();
 		else
-			return (I18n.format(this.getTranslationKey() + ".name")).trim();
+			return ("" + I18n.format(this.getTranslationKey() + ".name")).trim();
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if(MainRegistry.polaroidID == 11)
 			list.add("Vee guilt-tripped me into this.");
 		else
@@ -163,8 +163,8 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 3.5, 0));
 		}
@@ -172,11 +172,11 @@ public class GunLeverActionS extends Item {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return false;
 	}
 	
-	private static int getAnim(final ItemStack stack) {
+	private static int getAnim(ItemStack stack) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -186,7 +186,7 @@ public class GunLeverActionS extends Item {
 		
 	}
 	
-	private static void setAnim(final ItemStack stack, final int i) {
+	private static void setAnim(ItemStack stack, int i) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -195,7 +195,7 @@ public class GunLeverActionS extends Item {
 		
 	}
 	
-	public static float getRotationFromAnim(final ItemStack stack) {
+	public static float getRotationFromAnim(ItemStack stack) {
 		float rad = 0.0174533F;
 		rad *= 7.5F;
 		int i = getAnim(stack);
@@ -210,7 +210,7 @@ public class GunLeverActionS extends Item {
 			return (rad * 10) - (rad * (i - 10));
 	}
 	
-	public static float getOffsetFromAnim(final ItemStack stack) {
+	public static float getOffsetFromAnim(ItemStack stack) {
 		float i = getAnim(stack);
 		
 		if(i < 10)

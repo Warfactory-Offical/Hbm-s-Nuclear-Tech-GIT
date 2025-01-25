@@ -4,7 +4,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.effect.EntityCloudTom;
 import com.hbm.interfaces.IBomb;
 import com.hbm.tileentity.deco.TileEntityObjTester;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -27,7 +26,7 @@ public class TestObjTester extends BlockContainer implements IBomb {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
-	public TestObjTester(final Material materialIn, final String s) {
+	public TestObjTester(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -36,22 +35,22 @@ public class TestObjTester extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityObjTester();
 	}
 	
 	@Override
-	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
 		if(!worldIn.isRemote) {
-	    	final EntityCloudTom tom = new EntityCloudTom(worldIn, 100);
+	    	EntityCloudTom tom = new EntityCloudTom(worldIn, 100);
 	    	tom.setPosition(pos.getX() + 0.5, pos.getY() + 2, pos.getZ() + 0.5);
 	    	worldIn.spawnEntity(tom);
     	}
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote) {
 
     		/*world.setBlockToAir(pos);
@@ -90,7 +89,7 @@ public class TestObjTester extends BlockContainer implements IBomb {
     		//Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleBFGRing(world, pos.getX() + 0.5, pos.getY() + 25, pos.getZ() + 0.5));
     		try {
     			//Minecraft.getMinecraft().effectRenderer.addEffect(new PhysicsTestParticle(world, pos.getX()+2.5, pos.getY() + 3, pos.getZ() + 3));
-    		}catch (final Exception x){
+    		}catch (Exception x){
     			x.printStackTrace();
     		}
     	}
@@ -98,23 +97,23 @@ public class TestObjTester extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, new IProperty[]{FACING});
 	}
 	
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(FACING).getIndex();
+	public int getMetaFromState(IBlockState state) {
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		EnumFacing enumfacing = EnumFacing.byIndex(meta);
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {
@@ -127,18 +126,18 @@ public class TestObjTester extends BlockContainer implements IBomb {
 	
 	
 	@Override
-	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
 
 	@Override
-	public void explode(final World world, final BlockPos pos) {
+	public BombReturnCode explode(World world, BlockPos pos) {
 		if(!world.isRemote) {
     		/*world.setBlockToAir(pos);
     		ExplosionNT ex = new ExplosionNT(world, null, pos.getX() + 0.5, pos.getY() + 2, pos.getZ() + 0.5, 5);
@@ -146,13 +145,13 @@ public class TestObjTester extends BlockContainer implements IBomb {
     		ex.doExplosionA();
     		ex.doExplosionB(false);*/
     	} else {
-    		final TileEntity te = world.getTileEntity(pos);
+    		TileEntity te = world.getTileEntity(pos);
     		if(te instanceof TileEntityObjTester){
     			//((TileEntityObjTester)te).fireAge = 0;
     		}
     		try {
     			//Minecraft.getMinecraft().effectRenderer.addEffect(new PhysicsTestParticle(world, pos.getX()+2.5, pos.getY() + 3, pos.getZ() + 5.55));
-    		}catch (final Exception x){
+    		}catch (Exception x){
     			x.printStackTrace();
     		}
     		//Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLightning(world, pos.getX(), pos.getY()+40, pos.getZ()));
@@ -179,14 +178,16 @@ public class TestObjTester extends BlockContainer implements IBomb {
             }
             RigidBody r = new RigidBody(te.getWorld(), creep.posX, creep.posY, creep.posZ);
             r.addColliders(colliders.toArray(new Collider[colliders.size()]));
-            r.impulseVelocity(new Vec3(0, 1, 0.4), r.globalCentroid.add(0, -0.02, 0));
+            r.impulseVelocity(new Vec3(0, 1, 0.4), r.globalCentroid.addVector(0, -0.02, 0));
             Minecraft.getMinecraft().effectRenderer.addEffect(new PhysicsTestParticle(world, r, creep.posX, creep.posY, creep.posZ));
             r = new RigidBody(te.getWorld(), creep.posX, creep.posY, creep.posZ);
             r.addColliders(colliders2.toArray(new Collider[colliders2.size()]));
-            r.impulseVelocity(new Vec3(0, 0, -0.1), r.globalCentroid.add(0, 0.02, 0));
+            r.impulseVelocity(new Vec3(0, 0, -0.1), r.globalCentroid.addVector(0, 0.02, 0));
             Minecraft.getMinecraft().effectRenderer.addEffect(new PhysicsTestParticle(world, r, creep.posX, creep.posY, creep.posZ));*/
             
     	}
+
+		return BombReturnCode.UNDEFINED;
 	}
 	
 

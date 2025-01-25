@@ -27,7 +27,7 @@ public class ParticleSlicedMob extends Particle {
 	public int cap;
 	public RigidBody body;
 	
-	public ParticleSlicedMob(final World worldIn, final RigidBody body, final int cutMob, final int cap, final ResourceLocation tex, final ResourceLocation capTex, final float capBloom) {
+	public ParticleSlicedMob(World worldIn, RigidBody body, int cutMob, int cap, ResourceLocation tex, ResourceLocation capTex, float capBloom) {
 		super(worldIn, body.globalCentroid.xCoord, body.globalCentroid.yCoord, body.globalCentroid.zCoord);
 		this.body = body;
 		this.cutMob = cutMob;
@@ -58,16 +58,16 @@ public class ParticleSlicedMob extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
 		GlStateManager.enableColorMaterial();
 		GlStateManager.enableRescaleNormal();
 		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
-		final int i = this.getBrightnessForRender(partialTicks);
-        final int j = i >> 16 & 65535;
-        final int k = i & 65535;
+		int i = this.getBrightnessForRender(partialTicks);
+        int j = i >> 16 & 65535;
+        int k = i & 65535;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k, j);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		RenderHelper.resetParticleInterpPos(entityIn, partialTicks);
@@ -77,8 +77,8 @@ public class ParticleSlicedMob extends Particle {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(capTex);
 		GlStateManager.enablePolygonOffset();
 		GlStateManager.doPolygonOffset(-1, -1);
-		final float lx = OpenGlHelper.lastBrightnessX;
-		final float ly = OpenGlHelper.lastBrightnessY;
+		float lx = OpenGlHelper.lastBrightnessX;
+		float ly = OpenGlHelper.lastBrightnessY;
 		if(capBloom > 0){
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		}
@@ -86,7 +86,7 @@ public class ParticleSlicedMob extends Particle {
 		
 		
 		if(capBloom > 0 && GeneralConfig.bloom){
-			final float[] matrix = new float[16];
+			float[] matrix = new float[16];
 			GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER);
 			ClientProxy.AUX_GL_BUFFER.get(matrix);
 			ClientProxy.AUX_GL_BUFFER.rewind();
@@ -100,8 +100,8 @@ public class ParticleSlicedMob extends Particle {
 				Minecraft.getMinecraft().getTextureManager().bindTexture(capTex);
 				GlStateManager.enablePolygonOffset();
 				GlStateManager.disableLighting();
-				final float x = OpenGlHelper.lastBrightnessX;
-				final float y = OpenGlHelper.lastBrightnessY;
+				float x = OpenGlHelper.lastBrightnessX;
+				float y = OpenGlHelper.lastBrightnessY;
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 				GlStateManager.doPolygonOffset(-1, -1);
 				GL11.glCallList(cap);

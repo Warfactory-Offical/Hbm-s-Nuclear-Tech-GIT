@@ -1,25 +1,21 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.tileentity.machine.oil.TileEntityMachineFrackingTower;
 import com.hbm.main.ResourceManager;
-
+import com.hbm.tileentity.machine.oil.TileEntityMachineFrackingTower;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-
-import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class RenderFrackingTower extends TileEntitySpecialRenderer<TileEntityMachineFrackingTower> {
 
         @Override
-    public boolean isGlobalRenderer(final TileEntityMachineFrackingTower te)
+    public boolean isGlobalRenderer(TileEntityMachineFrackingTower te)
     {
         return true;
     }
 
     @Override
-    public void render(final TileEntityMachineFrackingTower te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+    public void render(TileEntityMachineFrackingTower te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
         GlStateManager.pushMatrix();
 

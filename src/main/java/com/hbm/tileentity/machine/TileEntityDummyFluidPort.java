@@ -14,7 +14,7 @@ public class TileEntityDummyFluidPort extends TileEntityDummy implements IFluidH
 	public IFluidTankProperties[] getTankProperties() {
 		if(target == null)
 			return new IFluidTankProperties[]{};
-		final TileEntity te = world.getTileEntity(target);
+		TileEntity te = world.getTileEntity(target);
 		if(te instanceof IFluidHandler){
 			return ((IFluidHandler)te).getTankProperties();
 		}
@@ -22,10 +22,10 @@ public class TileEntityDummyFluidPort extends TileEntityDummy implements IFluidH
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(target == null)
 			return 0;
-		final TileEntity te = world.getTileEntity(target);
+		TileEntity te = world.getTileEntity(target);
 		if(te instanceof IFluidHandler){
 			return ((IFluidHandler)te).fill(resource, doFill);
 		}
@@ -33,10 +33,10 @@ public class TileEntityDummyFluidPort extends TileEntityDummy implements IFluidH
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		if(target == null)
 			return null;
-		final TileEntity te = world.getTileEntity(target);
+		TileEntity te = world.getTileEntity(target);
 		if(te instanceof IFluidHandler){
 			return ((IFluidHandler)te).drain(resource, doDrain);
 		}
@@ -44,10 +44,10 @@ public class TileEntityDummyFluidPort extends TileEntityDummy implements IFluidH
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if(target == null)
 			return null;
-		final TileEntity te = world.getTileEntity(target);
+		TileEntity te = world.getTileEntity(target);
 		if(te instanceof IFluidHandler){
 			return ((IFluidHandler)te).drain(maxDrain, doDrain);
 		}
@@ -55,7 +55,7 @@ public class TileEntityDummyFluidPort extends TileEntityDummy implements IFluidH
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return true;
 		if(target != null && world.getTileEntity(target) != null){
@@ -65,7 +65,7 @@ public class TileEntityDummyFluidPort extends TileEntityDummy implements IFluidH
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if((target == null || world.getTileEntity(target) == null) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		if(target != null && world.getTileEntity(target) != null){

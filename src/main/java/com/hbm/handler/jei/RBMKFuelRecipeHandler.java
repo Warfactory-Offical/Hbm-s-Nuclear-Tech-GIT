@@ -18,7 +18,7 @@ public class RBMKFuelRecipeHandler implements IRecipeCategory<RBMKFuelRecipe> {
 	
 	protected final IDrawable background;
 	
-	public RBMKFuelRecipeHandler(final IGuiHelper help) {
+	public RBMKFuelRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 12, 26, 116, 26);
 	}
 	
@@ -43,8 +43,8 @@ public class RBMKFuelRecipeHandler implements IRecipeCategory<RBMKFuelRecipe> {
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final RBMKFuelRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, RBMKFuelRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 18, 4);
 		

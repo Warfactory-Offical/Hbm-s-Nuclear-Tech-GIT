@@ -29,7 +29,7 @@ public class ReactorRecipeHandler implements IRecipeCategory<ReactorRecipe> {
 	
 	protected ReactorRecipe currentRecipe;
 	
-	public ReactorRecipeHandler(final IGuiHelper help) {
+	public ReactorRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 47, 15, 90, 55);
 		
 		progressStatic = help.createDrawable(gui_rl, 176, 16, 24, 17);
@@ -63,15 +63,15 @@ public class ReactorRecipeHandler implements IRecipeCategory<ReactorRecipe> {
 	}
 
 	@Override
-	public void drawExtras(final Minecraft minecraft) {
+	public void drawExtras(Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 33, 19);
 		fuelAnimated.draw(minecraft, 8, 20);
 	}
 	
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final ReactorRecipe recipeWrapper, final IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, ReactorRecipe recipeWrapper, IIngredients ingredients) {
 		currentRecipe = recipeWrapper;
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 8, 1);
 		guiItemStacks.init(1, false, 68, 19);

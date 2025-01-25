@@ -19,7 +19,7 @@ public class Vec2i extends Veci {
         y = 0;
     }
 
-    public Vec2i(final int[] floatArray) {
+    public Vec2i(int[] floatArray) {
 
         vector = floatArray;
 
@@ -27,36 +27,36 @@ public class Vec2i extends Veci {
         y = vector[1];
     }
 
-    public Vec2i(final int x, final int y) {
+    public Vec2i(int x, int y) {
 
         this.x = x;
         this.y = y;
         vector = new int[]{x, y};
     }
 
-    public Vec2i(final int[] intArray, final int i) {
+    public Vec2i(int[] intArray, int i) {
 
         vector = new int[]{intArray[i], intArray[i + 1]};
         x = vector[0];
         y = vector[1];
     }
 
-    public Vec2i plus(final Vec2i vec2i) {
+    public Vec2i plus(Vec2i vec2i) {
 
         return new Vec2i(x + vec2i.x, y + vec2i.y);
     }
 
-    public Vec2i minus(final Vec2i vec2i) {
+    public Vec2i minus(Vec2i vec2i) {
 
         return new Vec2i(x - vec2i.x, y - vec2i.y);
     }
 
-    public Vec2i times(final int scalar) {
+    public Vec2i times(int scalar) {
 
         return new Vec2i(x * scalar, y * scalar);
     }
 
-    public Vec2 times(final float scalar) {
+    public Vec2 times(float scalar) {
 
         return new Vec2(x * scalar, y * scalar);
     }
@@ -70,7 +70,7 @@ public class Vec2i extends Veci {
         System.out.println("(" + x + ", " + y + ")");
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         System.out.println(title + " (" + x + ", " + y + ")");
     }
 

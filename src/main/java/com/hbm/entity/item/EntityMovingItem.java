@@ -1,49 +1,44 @@
 package com.hbm.entity.item;
-import com.hbm.util.ItemStackUtil;
 
 import api.hbm.block.IConveyorItem;
 import api.hbm.block.IEnterableBlock;
-
-import com.hbm.lib.ForgeDirection;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityMovingItem extends EntityMovingConveyorObject implements IConveyorItem {
 
 	public static final DataParameter<ItemStack> STACK = EntityDataManager.createKey(EntityMovingItem.class, DataSerializers.ITEM_STACK);
 
-	public EntityMovingItem(final World p_i1582_1_) {
+	public EntityMovingItem(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.setSize(0.375F, 0.375F);
 	}
 
-    public void setItemStack(final ItemStack stack) {
+    public void setItemStack(ItemStack stack) {
         this.getDataManager().set(STACK, stack);
     }
 
     public ItemStack getItemStack() {
 
-        final ItemStack stack = this.getDataManager().get(STACK);
-        return stack == null ? ItemStackUtil.itemStackFrom(Blocks.STONE) : stack;
+        ItemStack stack = this.getDataManager().get(STACK);
+        return stack == null ? new ItemStack(Blocks.STONE) : stack;
     }
 
     public boolean canBeCollidedWith() {
         return true;
     }
 
-    public boolean attackEntityFrom(final DamageSource source, final float amount) {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
 
     	if(!world.isRemote) {
 			world.spawnEntity(new EntityItem(world, posX, posY, posZ, this.getItemStack()));
@@ -60,12 +55,12 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
     }
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
 
-        final NBTTagCompound compound = nbt.getCompoundTag("Item");
-        this.setItemStack(ItemStackUtil.itemStackFrom(compound));
+        NBTTagCompound compound = nbt.getCompoundTag("Item");
+        this.setItemStack(new ItemStack(compound));
 
-        final ItemStack stack = this.getDataManager().get(STACK);
+        ItemStack stack = this.getDataManager().get(STACK);
 
         schedule = nbt.getInteger("schedule");
 
@@ -74,7 +69,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
 
         if (this.getItemStack() != null)
         	nbt.setTag("Item", this.getItemStack().writeToNBT(new NBTTagCompound()));
@@ -83,7 +78,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	}
 
 	@Override
-	public void enterBlock(final IEnterableBlock enterable, final BlockPos pos, final EnumFacing dir) {
+	public void enterBlock(IEnterableBlock enterable, BlockPos pos, EnumFacing dir) {
 
 		if(enterable.canItemEnter(world, pos.getX(), pos.getY(), pos.getZ(), dir, this)) {
 			enterable.onItemEnter(world, pos.getX(), pos.getY(), pos.getZ(), dir, this);
@@ -95,7 +90,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	public boolean onLeaveConveyor() {
 
 		this.setDead();
-		final EntityItem item = new EntityItem(world, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, this.getItemStack());
+		EntityItem item = new EntityItem(world, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, this.getItemStack());
 		item.motionX = this.motionX * 2;
 		item.motionY = 0.1;
 		item.motionZ = this.motionZ * 2;
@@ -106,7 +101,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	}
 
 	@Override
-	public ItemStack getPickedResult(final RayTraceResult target){
+	public ItemStack getPickedResult(RayTraceResult target){
 		if(target.entityHit != null && target.entityHit instanceof EntityMovingItem)
 			return ((EntityMovingItem)target.entityHit).getItemStack();
 		return null;

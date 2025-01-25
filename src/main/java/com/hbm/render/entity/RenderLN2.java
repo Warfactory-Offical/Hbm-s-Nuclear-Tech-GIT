@@ -1,16 +1,8 @@
 package com.hbm.render.entity;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import com.hbm.entity.projectile.EntityLN2;
 import com.hbm.items.ModItems;
 import com.hbm.render.RenderHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -22,30 +14,35 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RenderLN2 extends Render<EntityLN2> {
 
 	public static final IRenderFactory<EntityLN2> FACTORY = (RenderManager man) -> {return new RenderLN2(man);};
 	
-	private final Map<Item, TextureAtlasSprite> textures = new HashMap<Item, TextureAtlasSprite>();
+	private Map<Item, TextureAtlasSprite> textures = new HashMap<Item, TextureAtlasSprite>();
 	
-	protected RenderLN2(final RenderManager renderManager) {
+	protected RenderLN2(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityLN2 fx, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityLN2 fx, double x, double y, double z, float entityYaw, float partialTicks) {
 		if(textures.isEmpty()){
-			textures.put(ModItems.ln2_1, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_1, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_2, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_2, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_3, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_3, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_4, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_4, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_5, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_5, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_6, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_6, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_7, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_7, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_8, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_8, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_9, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_9, 1, 0), null, null).getParticleTexture());
-			textures.put(ModItems.ln2_10, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ItemStackUtil.itemStackFrom(ModItems.ln2_10, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_1, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_1, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_2, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_2, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_3, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_3, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_4, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_4, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_5, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_5, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_6, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_6, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_7, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_7, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_8, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_8, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_9, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_9, 1, 0), null, null).getParticleTexture());
+			textures.put(ModItems.ln2_10, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(new ItemStack(ModItems.ln2_10, 1, 0), null, null).getParticleTexture());
 		}
 		TextureAtlasSprite tex = textures.get(ModItems.ln2_1);
 		if(fx.ticksExisted <= fx.maxAge && fx.ticksExisted >= fx.maxAge / 10 * 9)
@@ -88,7 +85,7 @@ public class RenderLN2 extends Render<EntityLN2> {
 			tex = textures.get(ModItems.ln2_3);
 		}
 
-		if(fx.ticksExisted < fx.maxAge / 10 * 2 && fx.ticksExisted >= fx.maxAge / 10)
+		if(fx.ticksExisted < fx.maxAge / 10 * 2 && fx.ticksExisted >= fx.maxAge / 10 * 1)
 		{
 			tex = textures.get(ModItems.ln2_2);
 		}
@@ -116,23 +113,23 @@ public class RenderLN2 extends Render<EntityLN2> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
+	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityLN2 entity) {
+	protected ResourceLocation getEntityTexture(EntityLN2 entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 	
-	private void func_77026_a(final TextureAtlasSprite p_77026_2_)
+	private void func_77026_a(TextureAtlasSprite p_77026_2_)
     {
 		GlStateManager.disableLighting();
-        final float f = p_77026_2_.getMinU();
-        final float f1 = p_77026_2_.getMaxU();
-        final float f2 = p_77026_2_.getMinV();
-        final float f3 = p_77026_2_.getMaxV();
-        final float f4 = 1.0F;
-        final float f5 = 0.5F;
-        final float f6 = 0.25F;
+        float f = p_77026_2_.getMinU();
+        float f1 = p_77026_2_.getMaxU();
+        float f2 = p_77026_2_.getMinV();
+        float f3 = p_77026_2_.getMaxV();
+        float f4 = 1.0F;
+        float f5 = 0.5F;
+        float f6 = 0.25F;
         GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         RenderHelper.startDrawingTexturedQuads();

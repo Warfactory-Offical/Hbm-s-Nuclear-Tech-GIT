@@ -1,14 +1,13 @@
 package com.hbm.render.amlfrom1710;
 
-import java.util.Collection;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Common interface for advanced model loading from files, based on file suffix
@@ -20,15 +19,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class AdvancedModelLoader {
-    private static final Map<String, IModelCustomLoader> instances = Maps.newHashMap();
+    private static Map<String, IModelCustomLoader> instances = Maps.newHashMap();
 
     /**
      * Register a new model handler
      * @param modelHandler The model handler to register
      */
-    public static void registerModelHandler(final IModelCustomLoader modelHandler)
+    public static void registerModelHandler(IModelCustomLoader modelHandler)
     {
-        for (final String suffix : modelHandler.getSuffixes())
+        for (String suffix : modelHandler.getSuffixes())
         {
             instances.put(suffix, modelHandler);
         }
@@ -42,17 +41,17 @@ public class AdvancedModelLoader {
      * @throws ModelFormatException if the underlying model handler cannot parse the model format
      */
     @SuppressWarnings("deprecation")
-	public static IModelCustom loadModel(final ResourceLocation resource) throws IllegalArgumentException, ModelFormatException
+	public static IModelCustom loadModel(ResourceLocation resource) throws IllegalArgumentException, ModelFormatException
     {
-        final String name = resource.getPath();
-        final int i = name.lastIndexOf('.');
+        String name = resource.getResourcePath();
+        int i = name.lastIndexOf('.');
         if (i == -1)
         {
             FMLLog.severe("The resource name %s is not valid", resource);
             throw new IllegalArgumentException("The resource name is not valid");
         }
-        final String suffix = name.substring(i+1);
-        final IModelCustomLoader loader = instances.get(suffix);
+        String suffix = name.substring(i+1);
+        IModelCustomLoader loader = instances.get(suffix);
         if (loader == null)
         {
             FMLLog.severe("The resource name %s is not supported", resource);

@@ -18,7 +18,7 @@ public class ParticleGluonMuzzleSmoke extends ParticleFirstPerson {
 	public float rotationOverLife;
 	public float scaleOverLife;
 	
-	public ParticleGluonMuzzleSmoke(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final int type, final ResourceLocation tex, final float scale, final float rot, final float scaleOverLife) {
+	public ParticleGluonMuzzleSmoke(World worldIn, double posXIn, double posYIn, double posZIn, int type, ResourceLocation tex, float scale, float rot, float scaleOverLife) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.rotationOverLife = rot;
@@ -28,7 +28,7 @@ public class ParticleGluonMuzzleSmoke extends ParticleFirstPerson {
 		this.type = type;
 	}
 	
-	public ParticleGluonMuzzleSmoke color(final float colR, final float colG, final float colB, final float colA){
+	public ParticleGluonMuzzleSmoke color(float colR, float colG, float colB, float colA){
 		this.particleRed = colR;
 		this.particleGreen = colG;
 		this.particleBlue = colB;
@@ -37,7 +37,7 @@ public class ParticleGluonMuzzleSmoke extends ParticleFirstPerson {
 		return this;
 	}
 	
-	public ParticleGluonMuzzleSmoke lifetime(final int lifetime){
+	public ParticleGluonMuzzleSmoke lifetime(int lifetime){
 		this.particleMaxAge = lifetime;
 		return this;
 	}
@@ -65,20 +65,20 @@ public class ParticleGluonMuzzleSmoke extends ParticleFirstPerson {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		//GL11.glPushMatrix();
-		final float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
-		this.workingAlpha = MathHelper.clamp(1-BobMathUtil.remap(MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1)*particleAlpha;
+		float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
+		this.workingAlpha = MathHelper.clamp(1-BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1)*particleAlpha;
 		workingAlpha *= MathHelper.clamp(BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0, 0.2), 0F, 0.2F, 0F, 1F), 0, 1);
 		
-		final float f4 = 0.1F * (this.particleScale+timeScale*5F*scaleOverLife);
+		float f4 = 0.1F * (this.particleScale+timeScale*5F*scaleOverLife);
 		
-        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
+        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks);
         //GL11.glTranslated(f5, f6, f7);
         //GL11.glScalef(f4, f4, f4);
-        final Vec3[] vecs = new Vec3[]{new Vec3(0.5, 0.5, 0), new Vec3(-0.5, 0.5, 0), new Vec3(-0.5, -0.5, 0), new Vec3(0.5, -0.5, 0)};
+        Vec3[] vecs = new Vec3[]{new Vec3(0.5, 0.5, 0), new Vec3(-0.5, 0.5, 0), new Vec3(-0.5, -0.5, 0), new Vec3(0.5, -0.5, 0)};
         for(int i = 0; i < vecs.length; i ++){
         	vecs[i] = vecs[i].mult(f4);
         	vecs[i].rotateAroundZ((float) Math.toRadians(this.particleAngle+timeScale*rotationOverLife));

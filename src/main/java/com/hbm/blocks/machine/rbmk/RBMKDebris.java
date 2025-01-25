@@ -3,7 +3,6 @@ package com.hbm.blocks.machine.rbmk;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.modules.ItemHazardModule;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,7 +12,7 @@ public class RBMKDebris extends Block implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public RBMKDebris(final String s) {
+	public RBMKDebris(String s) {
 		super(Material.IRON);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,22 +27,22 @@ public class RBMKDebris extends Block implements IItemHazard {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state){
+	public boolean isOpaqueCube(IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state){
+	public boolean isNormalCube(IBlockState state){
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state){
+	public boolean isBlockNormalCube(IBlockState state){
 		return false;
 	}
 }

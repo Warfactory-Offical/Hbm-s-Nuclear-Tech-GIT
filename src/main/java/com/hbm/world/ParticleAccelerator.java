@@ -131,16 +131,16 @@ public class ParticleAccelerator {
 		}
 	};
 	
-	public void generate(final World world, final Random rand, final BlockPos pos) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX() - 8;
-		final int y = pos.getY();
-		final int z = pos.getZ() - 8;
+	public void generate(World world, Random rand, BlockPos pos) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX() - 8;
+		int y = pos.getY();
+		int z = pos.getZ() - 8;
 		
 		for(int i = 0; i < 17; i++) {
 			for(int j = 0; j < 6; j++) {
 				for(int k = 0; k < 17; k++) {
-					final String c = array[j][i].substring(k, k + 1);
+					String c = array[j][i].substring(k, k + 1);
 					Block b = Blocks.AIR;
 
 					if(c.equals("M"))//Mese

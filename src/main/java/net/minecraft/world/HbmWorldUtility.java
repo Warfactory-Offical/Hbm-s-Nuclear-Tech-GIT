@@ -2,11 +2,11 @@ package net.minecraft.world;
 
 public class HbmWorldUtility {
 
-	public static void setImmediateScheduledUpdates(final World world, final boolean update){
+	public static void setImmediateScheduledUpdates(World world, boolean update){
 		world.scheduledUpdatesAreImmediate = update;
 	}
 
-	public static World getProviderWorld(final WorldProvider provider){
+	public static World getProviderWorld(WorldProvider provider){
 		return provider.world;
 	}
 }

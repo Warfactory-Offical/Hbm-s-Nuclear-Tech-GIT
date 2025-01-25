@@ -1,7 +1,6 @@
 package com.hbm.entity.mob.ai;
 
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -24,7 +23,7 @@ public class EntityAIBreaking extends EntityAIBase {
 	int digTick = 0;
 	int scanTick = 0;
 
-	public EntityAIBreaking(final EntityLiving entity)
+	public EntityAIBreaking(EntityLiving entity)
 	{
 		this.entityDigger = entity;
 	}
@@ -36,14 +35,14 @@ public class EntityAIBreaking extends EntityAIBase {
 
 		if(target != null && entityDigger.getNavigator().noPath() && entityDigger.getDistance(target) > 1D && (target.onGround || !entityDigger.canEntityBeSeen(target)))
 		{
-			final RayTraceResult mop = GetNextObstical(entityDigger, 2D);
+			RayTraceResult mop = GetNextObstical(entityDigger, 2D);
 
 			if(mop == null || mop.typeOfHit != Type.BLOCK)
 			{
 				return false;
 			}
 
-			final IBlockState block = entityDigger.world.getBlockState(mop.getBlockPos());
+			IBlockState block = entityDigger.world.getBlockState(mop.getBlockPos());
 
 			if(block.getBlockHardness(entityDigger.world, mop.getBlockPos()) >= 0) {
 				markedLoc = new int[]{mop.getBlockPos().getX(), mop.getBlockPos().getY(), mop.getBlockPos().getZ()};
@@ -61,12 +60,12 @@ public class EntityAIBreaking extends EntityAIBase {
 
 		if(markedLoc != null)  {
 
-			final Vec3 vector = Vec3.createVectorHelper(
+			Vec3 vector = Vec3.createVectorHelper(
 					markedLoc[0] - entityDigger.posX,
 					markedLoc[1] - (entityDigger.posY + entityDigger.getEyeHeight()),
 					markedLoc[2] - entityDigger.posZ);
 
-			return entityDigger != null && entityDigger.isEntityAlive() && vector.length() <= 4;
+			return entityDigger != null && entityDigger.isEntityAlive() && vector.lengthVector() <= 4;
 		}
 
 		return false;
@@ -93,23 +92,23 @@ public class EntityAIBreaking extends EntityAIBase {
 			return;
 		}
 
-		final IBlockState block = entityDigger.world.getBlockState(new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2]));
+		IBlockState block = entityDigger.world.getBlockState(new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2]));
 		digTick++;
 
-		final int health = (int) block.getBlockHardness(entityDigger.world, new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2])) / 3;
+		int health = (int) block.getBlockHardness(entityDigger.world, new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2])) / 3;
 
 		if(health < 0) {
 			markedLoc = null;
 			return;
 		}
 
-		final float str = (digTick * 0.05F) / (float)health;
+		float str = (digTick * 0.05F) / (float)health;
 
 		if(str >= 1F)
 		{
 			digTick = 0;
 
-			final boolean canHarvest = false;
+			boolean canHarvest = false;
 			entityDigger.world.destroyBlock(new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2]), canHarvest);
 			markedLoc = null;
 
@@ -119,7 +118,7 @@ public class EntityAIBreaking extends EntityAIBase {
 		{
 			if(digTick % 5 == 0)
 			{
-				final SoundType sound = block.getBlock().getSoundType(block, entityDigger.world, new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2]), entityDigger);
+				SoundType sound = block.getBlock().getSoundType(block, entityDigger.world, new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2]), entityDigger);
 				entityDigger.world.playSound(null, entityDigger.posX, entityDigger.posY, entityDigger.posZ, sound.getBreakSound(), SoundCategory.BLOCKS, sound.volume + 1F, sound.pitch);
 				entityDigger.swingArm(EnumHand.MAIN_HAND);
 				entityDigger.world.sendBlockBreakProgress(entityDigger.getEntityId(), new BlockPos(markedLoc[0], markedLoc[1], markedLoc[2]), (int)(str * 10F));
@@ -138,31 +137,31 @@ public class EntityAIBreaking extends EntityAIBase {
 	 * Rolls through all the points in the bounding box of the entity and raycasts them toward it's current heading to return any blocks that may be obstructing it's path.
 	 * The bigger the entity the longer this calculation will take due to the increased number of points (Generic bipeds should only need 2)
 	 */
-    public RayTraceResult GetNextObstical(final EntityLivingBase entityLiving, final double dist)
+    public RayTraceResult GetNextObstical(EntityLivingBase entityLiving, double dist)
     {
     	// Returns true if something like Iguana Tweaks is nerfing the vanilla picks. This will then cause zombies to ignore the harvestability of blocks when holding picks
-        final float f = 1.0F;
-        final float f1 = entityLiving.prevRotationPitch + (entityLiving.rotationPitch - entityLiving.prevRotationPitch) * f;
-        final float f2 = entityLiving.prevRotationYaw + (entityLiving.rotationYaw - entityLiving.prevRotationYaw) * f;
+        float f = 1.0F;
+        float f1 = entityLiving.prevRotationPitch + (entityLiving.rotationPitch - entityLiving.prevRotationPitch) * f;
+        float f2 = entityLiving.prevRotationYaw + (entityLiving.rotationYaw - entityLiving.prevRotationYaw) * f;
 
-        final int digWidth = MathHelper.ceil(entityLiving.width);
-        final int digHeight = MathHelper.ceil(entityLiving.height);
+        int digWidth = MathHelper.ceil(entityLiving.width);
+        int digHeight = MathHelper.ceil(entityLiving.height);
 
-        final int passMax = digWidth * digWidth * digHeight;
+        int passMax = digWidth * digWidth * digHeight;
 
-        final int x = scanTick%digWidth - (digWidth/2);
-        final int y = scanTick/(digWidth * digWidth);
-        final int z = (scanTick%(digWidth * digWidth))/digWidth - (digWidth/2);
+        int x = scanTick%digWidth - (digWidth/2);
+        int y = scanTick/(digWidth * digWidth);
+        int z = (scanTick%(digWidth * digWidth))/digWidth - (digWidth/2);
 
-		final double rayX = x + entityLiving.posX;
-		final double rayY = y + entityLiving.posY;
-		final double rayZ = z + entityLiving.posZ;
+		double rayX = x + entityLiving.posX;
+		double rayY = y + entityLiving.posY;
+		double rayZ = z + entityLiving.posZ;
 
-		final RayTraceResult mop = RayCastBlocks(entityLiving.world, rayX, rayY, rayZ, f2, f1, dist, false);
+		RayTraceResult mop = RayCastBlocks(entityLiving.world, rayX, rayY, rayZ, f2, f1, dist, false);
 
     	if(mop != null && mop.typeOfHit == Type.BLOCK)
     	{
-    		final IBlockState block = entityLiving.world.getBlockState(mop.getBlockPos());
+    		IBlockState block = entityLiving.world.getBlockState(mop.getBlockPos());
 
     		if(block.getBlockHardness(entityLiving.world, mop.getBlockPos()) >= 0)
     		{
@@ -180,21 +179,21 @@ public class EntityAIBreaking extends EntityAIBase {
     	}
     }
 
-    public static RayTraceResult RayCastBlocks(final World world, final double x, final double y, final double z, final float yaw, final float pitch, final double dist, final boolean liquids)
+    public static RayTraceResult RayCastBlocks(World world, double x, double y, double z, float yaw, float pitch, double dist, boolean liquids)
     {
-        final Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
-        final float f3 = MathHelper.cos(-yaw * 0.017453292F - (float)Math.PI);
-        final float f4 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);
-        final float f5 = -MathHelper.cos(-pitch * 0.017453292F);
-        final float f6 = MathHelper.sin(-pitch * 0.017453292F);
-        final float f7 = f4 * f5;
-        final float f8 = f3 * f5;
-        final double d3 = dist; // Ray Distance
-        final Vec3 vec31 = vec3.add((double)f7 * d3, (double)f6 * d3, (double)f8 * d3);
+        Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
+        float f3 = MathHelper.cos(-yaw * 0.017453292F - (float)Math.PI);
+        float f4 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);
+        float f5 = -MathHelper.cos(-pitch * 0.017453292F);
+        float f6 = MathHelper.sin(-pitch * 0.017453292F);
+        float f7 = f4 * f5;
+        float f8 = f3 * f5;
+        double d3 = dist; // Ray Distance
+        Vec3 vec31 = vec3.addVector((double)f7 * d3, (double)f6 * d3, (double)f8 * d3);
         return RayCastBlocks(world, vec3, vec31, liquids);
     }
 
-    public static RayTraceResult RayCastBlocks(final World world, final Vec3 vector1, final Vec3 vector2, final boolean liquids)
+    public static RayTraceResult RayCastBlocks(World world, Vec3 vector1, Vec3 vector2, boolean liquids)
     {
         return world.rayTraceBlocks(vector1.toVec3d(), vector2.toVec3d(), liquids, !liquids, false);
     }

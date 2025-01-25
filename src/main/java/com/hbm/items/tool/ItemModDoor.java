@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class ItemModDoor extends Item {
 
-	public ItemModDoor(final String s) {
+	public ItemModDoor(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -28,7 +28,7 @@ public class ItemModDoor extends Item {
 		ModItems.ALL_ITEMS.add(this);
 	}
 	
-	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ)
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (facing != EnumFacing.UP)
         {
@@ -36,14 +36,14 @@ public class ItemModDoor extends Item {
         }
         else
         {
-            final IBlockState iblockstate = worldIn.getBlockState(pos);
-            final Block block = iblockstate.getBlock();
+            IBlockState iblockstate = worldIn.getBlockState(pos);
+            Block block = iblockstate.getBlock();
 
             if (!block.isReplaceable(worldIn, pos))
             {
                 pos = pos.offset(facing);
             }
-            final Block block1;
+            Block block1;
 
             if(this == ModItems.door_metal)
             	block1 = ModBlocks.door_metal;
@@ -52,16 +52,16 @@ public class ItemModDoor extends Item {
             else
             	block1 = ModBlocks.door_bunker;
 
-            final ItemStack itemstack = player.getHeldItem(hand);
+            ItemStack itemstack = player.getHeldItem(hand);
 
             if (player.canPlayerEdit(pos, facing, itemstack) && block1.canPlaceBlockAt(worldIn, pos))
             {
-                final EnumFacing enumfacing = EnumFacing.fromAngle(player.rotationYaw);
-                final int i = enumfacing.getXOffset();
-                final int j = enumfacing.getZOffset();
-                final boolean flag = i < 0 && hitZ < 0.5F || i > 0 && hitZ > 0.5F || j < 0 && hitX > 0.5F || j > 0 && hitX < 0.5F;
+                EnumFacing enumfacing = EnumFacing.fromAngle((double)player.rotationYaw);
+                int i = enumfacing.getFrontOffsetX();
+                int j = enumfacing.getFrontOffsetZ();
+                boolean flag = i < 0 && hitZ < 0.5F || i > 0 && hitZ > 0.5F || j < 0 && hitX > 0.5F || j > 0 && hitX < 0.5F;
                 placeDoor(worldIn, pos, enumfacing, block1, flag);
-                final SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
+                SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
                 worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
                 itemstack.shrink(1);
                 return EnumActionResult.SUCCESS;
@@ -73,14 +73,14 @@ public class ItemModDoor extends Item {
         }
     }
 
-    public static void placeDoor(final World worldIn, final BlockPos pos, final EnumFacing facing, final Block door, boolean isRightHinge)
+    public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door, boolean isRightHinge)
     {
-        final BlockPos blockpos = pos.offset(facing.rotateY());
-        final BlockPos blockpos1 = pos.offset(facing.rotateYCCW());
-        final int i = (worldIn.getBlockState(blockpos1).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).isNormalCube() ? 1 : 0);
-        final int j = (worldIn.getBlockState(blockpos).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos.up()).isNormalCube() ? 1 : 0);
-        final boolean flag = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
-        final boolean flag1 = worldIn.getBlockState(blockpos).getBlock() == door || worldIn.getBlockState(blockpos.up()).getBlock() == door;
+        BlockPos blockpos = pos.offset(facing.rotateY());
+        BlockPos blockpos1 = pos.offset(facing.rotateYCCW());
+        int i = (worldIn.getBlockState(blockpos1).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).isNormalCube() ? 1 : 0);
+        int j = (worldIn.getBlockState(blockpos).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos.up()).isNormalCube() ? 1 : 0);
+        boolean flag = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
+        boolean flag1 = worldIn.getBlockState(blockpos).getBlock() == door || worldIn.getBlockState(blockpos.up()).getBlock() == door;
 
         if ((!flag || flag1) && j <= i)
         {
@@ -94,9 +94,9 @@ public class ItemModDoor extends Item {
             isRightHinge = true;
         }
 
-        final BlockPos blockpos2 = pos.up();
-        final boolean flag2 = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos2);
-        final IBlockState iblockstate = door.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, isRightHinge ? BlockDoor.EnumHingePosition.RIGHT : BlockDoor.EnumHingePosition.LEFT).withProperty(BlockDoor.POWERED, Boolean.valueOf(flag2)).withProperty(BlockDoor.OPEN, Boolean.valueOf(flag2));
+        BlockPos blockpos2 = pos.up();
+        boolean flag2 = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos2);
+        IBlockState iblockstate = door.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, isRightHinge ? BlockDoor.EnumHingePosition.RIGHT : BlockDoor.EnumHingePosition.LEFT).withProperty(BlockDoor.POWERED, Boolean.valueOf(flag2)).withProperty(BlockDoor.OPEN, Boolean.valueOf(flag2));
         worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 2);
         worldIn.setBlockState(blockpos2, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
         worldIn.notifyNeighborsOfStateChange(pos, door, false);

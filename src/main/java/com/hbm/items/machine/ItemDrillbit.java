@@ -1,20 +1,19 @@
 package com.hbm.items.machine;
 
-import java.util.List;
-
-import com.hbm.util.I18nUtil;
 import com.hbm.items.ModItems;
-
+import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemDrillbit extends Item {
 
 	public EnumDrillType drillType;
 
-	public ItemDrillbit(final EnumDrillType drillType, final String s) {
+	public ItemDrillbit(EnumDrillType drillType, String s) {
 		this.drillType = drillType;
 		this.setMaxStackSize(1);
 		this.setTranslationKey(s);
@@ -25,8 +24,8 @@ public class ItemDrillbit extends Item {
 	
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
-		final EnumDrillType type = ((ItemDrillbit)stack.getItem()).drillType;
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+		EnumDrillType type = ((ItemDrillbit)stack.getItem()).drillType;
 		if(type == null) return;
 		list.add("§e"+I18nUtil.resolveKey("desc.speed")+" " + ((int) (type.speed * 100)) + "%");
 		list.add("§e"+I18nUtil.resolveKey("desc.tier", type.tier));
@@ -55,7 +54,7 @@ public class ItemDrillbit extends Item {
 		public boolean vein;
 		public boolean silk;
 		
-		private EnumDrillType(final double speed, final int tier, final int fortune, final boolean vein, final boolean silk) {
+		private EnumDrillType(double speed, int tier, int fortune, boolean vein, boolean silk) {
 			this.speed = speed;
 			this.tier = tier;
 			this.fortune = fortune;

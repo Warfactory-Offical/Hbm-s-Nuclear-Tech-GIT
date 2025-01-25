@@ -1,9 +1,9 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.energymk2.IEnergyReceiverMK2;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +14,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityMicrowave extends TileEntityMachineBase implements ITickable, IEnergyUser {
+public class TileEntityMicrowave extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 
 	public long power;
 	public static final long maxPower = 50000;
@@ -37,7 +37,8 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements ITicka
 	public void update() {
 		if(!world.isRemote) {
 
-			this.updateStandardConnections(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 			this.power = Library.chargeTEFromItems(inventory, 2, power, maxPower);
 
 			if(canProcess()) {
@@ -59,7 +60,7 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements ITicka
 				}
 			}
 
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			data.setInteger("time", time);
 			data.setInteger("speed", speed);
@@ -68,28 +69,28 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements ITicka
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		power = data.getLong("power");
 		time = data.getInteger("time");
 		speed = data.getInteger("speed");
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		speed = compound.getInteger("speed");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setInteger("speed", speed);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void handleButtonPacket(final int value, final int meta) {
+	public void handleButtonPacket(int value, int meta) {
 		if(value == 0)
 			speed++;
 
@@ -104,23 +105,23 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
+	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		return i == 0 && !FurnaceRecipes.instance().getSmeltingResult(stack).isEmpty();
 	}
 	
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
 		return slot == 1;
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
 		return e.ordinal() == 0 ? new int[] { 1 } : new int[] { 0 };
 	}
 	
 	private void process() {
 
-		final ItemStack stack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0)).copy();
+		ItemStack stack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0)).copy();
 
 		if(inventory.getStackInSlot(1).isEmpty()) {
 			inventory.setStackInSlot(1, stack);
@@ -143,7 +144,7 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements ITicka
 
 		if(!FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0)).isEmpty()) {
 
-			final ItemStack stack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
+			ItemStack stack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
 
 			if(inventory.getStackInSlot(1).isEmpty())
 				return true;
@@ -157,15 +158,15 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements ITicka
 		return false;
 	}
 	
-	public long getPowerScaled(final int i) {
+	public long getPowerScaled(int i) {
 		return (power * i) / maxPower;
 	}
 
-	public int getProgressScaled(final int i) {
+	public int getProgressScaled(int i) {
 		return (time * i) / maxTime;
 	}
 
-	public int getSpeedScaled(final int i) {
+	public int getSpeedScaled(int i) {
 		return (speed * i) / maxSpeed;
 	}
 
@@ -182,7 +183,7 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements ITicka
 	}
 	
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

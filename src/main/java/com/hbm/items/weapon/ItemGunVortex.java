@@ -1,9 +1,5 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.config.CompatibilityConfig;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.lib.Library;
@@ -14,16 +10,10 @@ import com.hbm.packet.GunAnimationPacket;
 import com.hbm.packet.GunFXPacket;
 import com.hbm.packet.GunFXPacket.FXType;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.particle.vortex.ParticleVortexBeam;
-import com.hbm.particle.vortex.ParticleVortexCircle;
-import com.hbm.particle.vortex.ParticleVortexFireFlash;
-import com.hbm.particle.vortex.ParticleVortexGlow;
-import com.hbm.particle.vortex.ParticleVortexHit;
-import com.hbm.particle.vortex.ParticleVortexParticle;
+import com.hbm.particle.vortex.*;
 import com.hbm.render.RenderHelper;
 import com.hbm.render.anim.HbmAnimations.AnimType;
 import com.hbm.util.BobMathUtil;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
@@ -49,32 +39,35 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class ItemGunVortex extends ItemGunBase {
 
 	@SideOnly(Side.CLIENT)
 	private long lastFireTime;
 	
-	public ItemGunVortex(final GunConfiguration config, final String s) {
+	public ItemGunVortex(GunConfiguration config, String s) {
 		super(config, s);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void spawnProjectile(final World world, final EntityPlayer player, final ItemStack stack, final int config, final EnumHand hand) {
+	protected void spawnProjectile(World world, EntityPlayer player, ItemStack stack, int config, EnumHand hand) {
 		//EntityBeamVortex beam = new EntityBeamVortex(world, player);
 		//world.spawnEntity(beam);
 		//100 blocks is its current max range, but I'm sure that could be increased if necessary.
-		final List<Entity> entsOnBeam = Library.rayTraceEntitiesOnLine(player, 100, 1).getRight();
+		List<Entity> entsOnBeam = Library.rayTraceEntitiesOnLine(player, 100, 1).getRight();
 		
-		for(final Entity e : entsOnBeam){
+		for(Entity e : entsOnBeam){
 			if((e instanceof EntityLivingBase) && CompatibilityConfig.isWarDim(world)){
-				final float dmg = 30;
+				float dmg = 30;
 				try {
 					if (ItemGunBase.hurtResistantTime == null)
 						ItemGunBase.hurtResistantTime = ReflectionHelper.findField(Entity.class, "hurtResistantTime", "field_70172_ad");
 					ItemGunBase.hurtResistantTime.setInt(e, 0);
-				} catch (final Exception x){
+				} catch (Exception x){
 					x.printStackTrace();
 				}
 
@@ -90,7 +83,7 @@ public class ItemGunVortex extends ItemGunBase {
 	//This method should also solve the supershotgun issue where it doesn't fire some of the time (maybe?)
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onFireClient(final ItemStack stack, final EntityPlayer player, final boolean shouldDoThirdPerson) {
+	public void onFireClient(ItemStack stack, EntityPlayer player, boolean shouldDoThirdPerson) {
 		//If I'm going to do more particle systems like this maybe I should write some kind of abstraction around it to make it less messy.
 		NBTTagCompound tag = new NBTTagCompound();
 		Vec3d pos = null;
@@ -100,15 +93,15 @@ public class ItemGunVortex extends ItemGunBase {
 			pos = new Vec3d(0.16, -0.20, 1).rotatePitch(-(float) Math.toRadians(player.rotationPitch)).rotateYaw(-(float) Math.toRadians(player.rotationYawHead));
 		}
 		pos = pos.add(player.getPositionEyes(1F));
-		final Vec3d view = BobMathUtil.getVectorFromAngle(BobMathUtil.getEulerAngles(player.getLookVec()).add(0, 3, 0));
+		Vec3d view = BobMathUtil.getVectorFromAngle(BobMathUtil.getEulerAngles(player.getLookVec()).addVector(0, 3, 0));
 		Vec3d hitPos = null;
 		Vec3d hitNormal = null;
-		final RayTraceResult r = Library.rayTraceIncludeEntities(player, 100, MainRegistry.proxy.partialTicks());
+		RayTraceResult r = Library.rayTraceIncludeEntities(player, 100, MainRegistry.proxy.partialTicks());
 		if(r == null || r.typeOfHit == Type.MISS){
 			hitPos = player.getLook(MainRegistry.proxy.partialTicks()).scale(100).add(pos);
 		} else {
 			hitPos = r.hitVec;
-			hitNormal = new Vec3d(r.sideHit.getXOffset(), r.sideHit.getYOffset(), r.sideHit.getZOffset());
+			hitNormal = new Vec3d(r.sideHit.getFrontOffsetX(), r.sideHit.getFrontOffsetY(), r.sideHit.getFrontOffsetZ());
 		}
 		
 		tag.setString("type", "spark");
@@ -131,39 +124,39 @@ public class ItemGunVortex extends ItemGunBase {
 		tag.setInteger("count", 12);
 		MainRegistry.proxy.effectNT(tag);
 		
-		final ParticleVortexBeam beam = new ParticleVortexBeam(player.world, pos.x, pos.y, pos.z, hitPos.x, hitPos.y, hitPos.z, shouldDoThirdPerson);
+		ParticleVortexBeam beam = new ParticleVortexBeam(player.world, pos.x, pos.y, pos.z, hitPos.x, hitPos.y, hitPos.z, shouldDoThirdPerson);
 		beam.color(0.5F, 0.8F, 0.9F, 2.0F);
 		beam.width(0.125F);
 		Minecraft.getMinecraft().effectRenderer.addEffect(beam);
 		
-		final ParticleVortexFireFlash flash = new ParticleVortexFireFlash(player.world, pos.x, pos.y, pos.z, hitPos.x, hitPos.y, hitPos.z);
+		ParticleVortexFireFlash flash = new ParticleVortexFireFlash(player.world, pos.x, pos.y, pos.z, hitPos.x, hitPos.y, hitPos.z);
 		flash.color(0.5F, 0.8F, 0.9F, 1F);
 		flash.width(0.5F);
 		Minecraft.getMinecraft().effectRenderer.addEffect(flash);
 		
-		final Vec3d line = hitPos.subtract(pos);
-		final int circleParticles = (int) line.length();
+		Vec3d line = hitPos.subtract(pos);
+		int circleParticles = (int) line.length();
 		for(int i = 0; i < circleParticles; i ++){
-			final Vec3d circlePos = line.scale(i/(float)circleParticles).add(pos);
-			final ParticleVortexCircle c = new ParticleVortexCircle(player.world, circlePos.x, circlePos.y, circlePos.z, 0.5F+player.world.rand.nextFloat()*0.3F);
+			Vec3d circlePos = line.scale(i/(float)circleParticles).add(pos);
+			ParticleVortexCircle c = new ParticleVortexCircle(player.world, circlePos.x, circlePos.y, circlePos.z, 0.5F+player.world.rand.nextFloat()*0.3F);
 			c.color(0.5F, 0.8F, 0.9F, 0.15F);
 			c.lifetime((int) (15+(i/(float)circleParticles)*10));
 			Minecraft.getMinecraft().effectRenderer.addEffect(c);
 		}
 		
-		final int extraParticles = (int) line.length();
+		int extraParticles = (int) line.length();
 		for(int i = 0; i < extraParticles; i ++){
-			final Vec3d circlePos = line.scale((i/(float)circleParticles)*0.25).add(pos);
-			final float randX = (float) (player.world.rand.nextGaussian()-0.5) * 0.01F;
-			final float randY = (float) (player.world.rand.nextGaussian()-0.5) * 0.01F;
-			final float randZ = (float) (player.world.rand.nextGaussian()-0.5) * 0.01F;
-			final ParticleVortexParticle c = new ParticleVortexParticle(player.world, circlePos.x+randX, circlePos.y+randY, circlePos.z+randZ, 0.5F);
+			Vec3d circlePos = line.scale((i/(float)circleParticles)*0.25).add(pos);
+			float randX = (float) (player.world.rand.nextGaussian()-0.5) * 0.01F;
+			float randY = (float) (player.world.rand.nextGaussian()-0.5) * 0.01F;
+			float randZ = (float) (player.world.rand.nextGaussian()-0.5) * 0.01F;
+			ParticleVortexParticle c = new ParticleVortexParticle(player.world, circlePos.x+randX, circlePos.y+randY, circlePos.z+randZ, 0.5F);
 			c.color(0.5F, 0.8F, 0.9F, 0.15F);
 			c.lifetime(30);
 			Minecraft.getMinecraft().effectRenderer.addEffect(c);
 		}
 		
-		final ParticleVortexGlow glow = new ParticleVortexGlow(player.world, pos.x, pos.y, pos.z, 2F);
+		ParticleVortexGlow glow = new ParticleVortexGlow(player.world, pos.x, pos.y, pos.z, 2F);
 		glow.color(0.3F, 0.7F, 1F, 0.5F);
 		glow.lifetime(15);
 		Minecraft.getMinecraft().effectRenderer.addEffect(glow);
@@ -204,10 +197,10 @@ public class ItemGunVortex extends ItemGunBase {
 			tag.setFloat("randomVelocity", 0.1F);
 			MainRegistry.proxy.effectNT(tag);
 			
-			final ParticleVortexHit hit = new ParticleVortexHit(player.world, hitPos.x, hitPos.y, hitPos.z, 2.5F+player.world.rand.nextFloat()*0.5F, 90);
+			ParticleVortexHit hit = new ParticleVortexHit(player.world, hitPos.x, hitPos.y, hitPos.z, 2.5F+player.world.rand.nextFloat()*0.5F, 90);
 			hit.color(0.4F, 0.8F, 1F, 0.25F);
 			hit.lifetime(20);
-			final ParticleVortexHit hit2 = new ParticleVortexHit(player.world, hitPos.x, hitPos.y, hitPos.z, 2.5F+player.world.rand.nextFloat()*0.5F, -90);
+			ParticleVortexHit hit2 = new ParticleVortexHit(player.world, hitPos.x, hitPos.y, hitPos.z, 2.5F+player.world.rand.nextFloat()*0.5F, -90);
 			hit2.color(0.4F, 0.8F, 1F, 0.25F);
 			hit2.lifetime(20);
 			Minecraft.getMinecraft().effectRenderer.addEffect(hit);
@@ -226,9 +219,9 @@ public class ItemGunVortex extends ItemGunBase {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHud(final ScaledResolution res, final GuiIngame gui, final ItemStack stack, final float partialTicks) {
-		final float x = res.getScaledWidth()/2;
-		final float y = res.getScaledHeight()/2;
+	public void renderHud(ScaledResolution res, GuiIngame gui, ItemStack stack, float partialTicks) {
+		float x = res.getScaledWidth()/2;
+		float y = res.getScaledHeight()/2;
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.vortex_hud_reticle);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -239,23 +232,23 @@ public class ItemGunVortex extends ItemGunBase {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.vortex_hud_circle);
 		
 		//Running off of system time gives less wonky results than relying on server updating the nbt tag.
-		final long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis();
 
 		//float cooldown = (this.mainConfig.rateOfFire-getDelay(stack)+partialTicks)/(float)this.mainConfig.rateOfFire;
 		//Adding 0.05 so it doesn't start at nothing makes it look better in my opinion. 
 		//It's 55 instead of 50 (50 ms in one tick) because xon lets you fire slightly before the cooldown is over. This extends the cooldown slightly beyond the real one.
-		final float cooldown = MathHelper.clamp((time-lastFireTime)/(float)(mainConfig.rateOfFire*55), 0, 1)+0.05F;
+		float cooldown = MathHelper.clamp((time-lastFireTime)/(float)(mainConfig.rateOfFire*55), 0, 1)+0.05F;
 		final int SUBDIVISIONS = 64;
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 		buf.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_TEX_COLOR);
 		buf.pos(x, y, 0).tex(0.5, 0.5).color(0.4F, 0.9F, 0.9F, 0.4F).endVertex();
 		for(int i = 0; i < SUBDIVISIONS+1; i ++){
 			//Should be quite fast because MathHelper uses a sin table... right?
-			final float ratio = i/(float)SUBDIVISIONS;
-			final float x2 = MathHelper.sin((float) (ratio*Math.PI*2+0.5*Math.PI));
-			final float y2 = MathHelper.cos((float) (ratio*Math.PI*2+0.5*Math.PI));
-			final float alphaMult = 1-ratio < cooldown ? 1 : 0;
+			float ratio = i/(float)SUBDIVISIONS;
+			float x2 = MathHelper.sin((float) (ratio*Math.PI*2+0.5*Math.PI));
+			float y2 = MathHelper.cos((float) (ratio*Math.PI*2+0.5*Math.PI));
+			float alphaMult = 1-ratio < cooldown ? 1 : 0;
 			buf.pos(x+x2*11, y+y2*11, 0).tex(BobMathUtil.remap01(x2, -1, 1), BobMathUtil.remap01(y2, -1, 1)).color(0.4F, 0.9F, 0.9F, 0.4F*alphaMult).endVertex();
 		}
 		tes.draw();

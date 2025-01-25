@@ -1,5 +1,4 @@
 package com.hbm.handler;
-import com.hbm.util.ItemStackUtil;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -48,7 +47,7 @@ public class ArmorModHandler {
 	 * @param mod
 	 * @return
 	 */
-	public static boolean isApplicable(final ItemStack armor, final ItemStack mod) {
+	public static boolean isApplicable(ItemStack armor, ItemStack mod) {
 		
 		if(armor == null || mod == null)
 			return false;
@@ -56,12 +55,14 @@ public class ArmorModHandler {
 		if(!(armor.getItem() instanceof ItemArmor))
 			return false;
 		
-		if(!(mod.getItem() instanceof ItemArmorMod aMod))
+		if(!(mod.getItem() instanceof ItemArmorMod))
 			return false;
 		
-		final EntityEquipmentSlot type = ((ItemArmor)armor.getItem()).armorType;
-
-        return (type == EntityEquipmentSlot.HEAD && aMod.helmet) || (type == EntityEquipmentSlot.CHEST && aMod.chestplate) || (type == EntityEquipmentSlot.LEGS && aMod.leggings) || (type == EntityEquipmentSlot.FEET && aMod.boots);
+		EntityEquipmentSlot type = ((ItemArmor)armor.getItem()).armorType;
+		
+		ItemArmorMod aMod = (ItemArmorMod)mod.getItem();
+		
+		return (type == EntityEquipmentSlot.HEAD && aMod.helmet) || (type == EntityEquipmentSlot.CHEST && aMod.chestplate) || (type == EntityEquipmentSlot.LEGS && aMod.leggings) || (type == EntityEquipmentSlot.FEET && aMod.boots);
 	}
 	
 	/**
@@ -71,24 +72,24 @@ public class ArmorModHandler {
 	 * @param armor
 	 * @param mod
 	 */
-	public static void applyMod(final ItemStack armor, final ItemStack mod) {
+	public static void applyMod(ItemStack armor, ItemStack mod) {
 
 		if(mod == null || mod.isEmpty() || armor == null || armor.isEmpty()) return;
 		
 		if(!armor.hasTagCompound())
 			armor.setTagCompound(new NBTTagCompound());
 		
-		final NBTTagCompound nbt = armor.getTagCompound();
+		NBTTagCompound nbt = armor.getTagCompound();
 		
 		if(!nbt.hasKey(MOD_COMPOUND_KEY))
 			nbt.setTag(MOD_COMPOUND_KEY, new NBTTagCompound());
 		
-		final NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
+		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
 		
-		final ItemArmorMod aMod = (ItemArmorMod)mod.getItem();
-		final int slot = aMod.type;
+		ItemArmorMod aMod = (ItemArmorMod)mod.getItem();
+		int slot = aMod.type;
 		
-		final NBTTagCompound cmp = new NBTTagCompound();
+		NBTTagCompound cmp = new NBTTagCompound();
 		mod.writeToNBT(cmp);
 		
 		mods.setTag(MOD_SLOT_KEY + slot, cmp);
@@ -99,7 +100,7 @@ public class ArmorModHandler {
 	 * @param armor
 	 * @param slot
 	 */
-	public static void removeMod(final ItemStack armor, final int slot) {
+	public static void removeMod(ItemStack armor, int slot) {
 		
 		if(armor == null)
 			return;
@@ -107,15 +108,15 @@ public class ArmorModHandler {
 		if(!armor.hasTagCompound())
 			armor.setTagCompound(new NBTTagCompound());
 		
-		final NBTTagCompound nbt = armor.getTagCompound();
+		NBTTagCompound nbt = armor.getTagCompound();
 		
 		if(!nbt.hasKey(MOD_COMPOUND_KEY))
 			nbt.setTag(MOD_COMPOUND_KEY, new NBTTagCompound());
 		
-		final NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
+		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
 		mods.removeTag(MOD_SLOT_KEY + slot);
 		
-		if(mods.isEmpty())
+		if(mods.hasNoTags())
 			clearMods(armor);
 	}
 	
@@ -124,14 +125,14 @@ public class ArmorModHandler {
 	 * Should be used when the armor piece is put in the armor table slot AFTER the armor pieces have been separated
 	 * @param armor
 	 */
-	public static void clearMods(final ItemStack armor) {
+	public static void clearMods(ItemStack armor) {
 		
 		if(!armor.hasTagCompound())
 			return;
 		
-		final NBTTagCompound nbt = armor.getTagCompound();
+		NBTTagCompound nbt = armor.getTagCompound();
 		nbt.removeTag(MOD_COMPOUND_KEY);
-		if(nbt.isEmpty())
+		if(nbt.hasNoTags())
 			armor.setTagCompound(null);
 	}
 	
@@ -140,7 +141,7 @@ public class ArmorModHandler {
 	 * @param armor
 	 * @return
 	 */
-	public static boolean hasMods(final ItemStack armor) {
+	public static boolean hasMods(ItemStack armor) {
 		
 		if(!armor.hasTagCompound())
 			return false;
@@ -148,23 +149,23 @@ public class ArmorModHandler {
 		return armor.getTagCompound().hasKey(MOD_COMPOUND_KEY);
 	}
 	
-	public static ItemStack[] pryMods(final ItemStack armor) {
+	public static ItemStack[] pryMods(ItemStack armor) {
 		
-		final ItemStack[] slots = new ItemStack[8];
+		ItemStack[] slots = new ItemStack[8];
 
 		if(!hasMods(armor)){
 			Arrays.fill(slots, ItemStack.EMPTY);
 			return slots;
 		}
 		
-		final NBTTagCompound nbt = armor.getTagCompound();
-		final NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
+		NBTTagCompound nbt = armor.getTagCompound();
+		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
 		
 		for(int i = 0; i < 8; i++) {
 			
-			final NBTTagCompound cmp = mods.getCompoundTag(MOD_SLOT_KEY + i);
+			NBTTagCompound cmp = mods.getCompoundTag(MOD_SLOT_KEY + i);
 			
-			final ItemStack stack = ItemStackUtil.itemStackFrom(cmp);
+			ItemStack stack = new ItemStack(cmp);
 			
 			slots[i] = stack;
 		}
@@ -172,14 +173,14 @@ public class ArmorModHandler {
 		return slots;
 	}
 	
-	public static ItemStack pryMod(final ItemStack armor, final int slot){
+	public static ItemStack pryMod(ItemStack armor, int slot){
 		if(!hasMods(armor))
 			return ItemStack.EMPTY;
-		final NBTTagCompound nbt = armor.getTagCompound();
-		final NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
+		NBTTagCompound nbt = armor.getTagCompound();
+		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
 		
-		final NBTTagCompound cmp = mods.getCompoundTag(MOD_SLOT_KEY + slot);
-		final ItemStack stack = ItemStackUtil.itemStackFrom(cmp);
+		NBTTagCompound cmp = mods.getCompoundTag(MOD_SLOT_KEY + slot);
+		ItemStack stack = new ItemStack(cmp);
 		
 		return stack;
 	}

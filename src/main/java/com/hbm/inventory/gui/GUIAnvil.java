@@ -1,13 +1,5 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hbm.util.I18nUtil;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.AnvilRecipes;
 import com.hbm.inventory.AnvilRecipes.AnvilConstructionRecipe;
 import com.hbm.inventory.AnvilRecipes.AnvilOutput;
@@ -18,7 +10,7 @@ import com.hbm.inventory.container.ContainerAnvil;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.AnvilCraftPacket;
 import com.hbm.packet.PacketDispatcher;
-
+import com.hbm.util.I18nUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
@@ -34,21 +26,27 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.oredict.OreDictionary;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUIAnvil extends GuiContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_anvil.png");
 	
-	private final int tier;
-	private final List<AnvilConstructionRecipe> originList = new ArrayList<>();
-	private final List<AnvilConstructionRecipe> recipes = new ArrayList<>();
+	private int tier;
+	private List<AnvilConstructionRecipe> originList = new ArrayList<>();
+	private List<AnvilConstructionRecipe> recipes = new ArrayList<>();
 	int index;
 	int size;
 	int selection;
 	private GuiTextField search;
-	private final EntityPlayer player;
+	private EntityPlayer player;
 
-	public GUIAnvil(final EntityPlayer player, final int tier) {
+	public GUIAnvil(EntityPlayer player, int tier) {
 		super(new ContainerAnvil(player.inventory, tier));
 		
 		this.player = player;
@@ -56,7 +54,7 @@ public class GUIAnvil extends GuiContainer {
 		this.xSize = 176;
 		this.ySize = 222;
 		
-		for(final AnvilConstructionRecipe recipe : AnvilRecipes.getConstruction()) {
+		for(AnvilConstructionRecipe recipe : AnvilRecipes.getConstruction()) {
 			if(recipe.isTierValid(this.tier))
 				this.originList.add(recipe);
 		}
@@ -98,10 +96,10 @@ public class GUIAnvil extends GuiContainer {
 			this.recipes.addAll(this.originList);
 			
 		} else {
-			for(final AnvilConstructionRecipe recipe : this.originList) {
-				final List<String> list = recipeToSearchList(recipe);
+			for(AnvilConstructionRecipe recipe : this.originList) {
+				List<String> list = recipeToSearchList(recipe);
 				
-				for(final String s : list) {
+				for(String s : list) {
 					if(s.contains(search)) {
 						this.recipes.add(recipe);
 						break;
@@ -121,7 +119,7 @@ public class GUIAnvil extends GuiContainer {
 	}
 	
 	@Override
-	protected void mouseClicked(final int x, final int y, final int k) throws IOException {
+	protected void mouseClicked(int x, int y, int k) throws IOException {
 		super.mouseClicked(x, y, k);
 		
 		this.search.mouseClicked(x, y, k);
@@ -164,10 +162,10 @@ public class GUIAnvil extends GuiContainer {
 			if(i >= this.recipes.size())
 				break;
 			
-			final int ind = i - index * 2;
+			int ind = i - index * 2;
 			
-			final int ix = 16 + 18 * (ind / 2);
-			final int iy = 71 + 18 * (ind % 2);
+			int ix = 16 + 18 * (ind / 2);
+			int iy = 71 + 18 * (ind % 2);
 			if(guiLeft + ix <= x && guiLeft + ix + 18 > x && guiTop + iy < y && guiTop + iy + 18 >= y) {
 				
 				if(this.selection != i)
@@ -182,28 +180,28 @@ public class GUIAnvil extends GuiContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int mX, final int mY) {
-		final String name = I18n.format("container.anvil", tier);
+	protected void drawGuiContainerForegroundLayer(int mX, int mY) {
+		String name = I18n.format("container.anvil", tier);
 		this.fontRenderer.drawString(name, 61 - this.fontRenderer.getStringWidth(name) / 2, 8, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 		
 		if(this.selection >= 0) {
 			
-			final AnvilConstructionRecipe recipe = recipes.get(this.selection);
-			final List<String> list = recipeToList(recipe);
+			AnvilConstructionRecipe recipe = recipes.get(this.selection);
+			List<String> list = recipeToList(recipe);
 			int longest = 0;
 			
-			for(final String s : list) {
-				final int length = this.fontRenderer.getStringWidth(s);
+			for(String s : list) {
+				int length = this.fontRenderer.getStringWidth(s);
 				
 				if(length > longest)
 					longest = length;
 			}
 			
-			final double scale = 0.5D;
+			double scale = 0.5D;
 			GL11.glScaled(scale, scale, scale);
 			int offset = 0;
-			for(final String s : list) {
+			for(String s : list) {
 				this.fontRenderer.drawString(s, 260, 50 + offset, 0xffffff);
 				offset += 9;
 			}
@@ -221,22 +219,23 @@ public class GUIAnvil extends GuiContainer {
 	 * @param recipe
 	 * @return
 	 */
-	public List<String> recipeToList(final AnvilConstructionRecipe recipe) {
+	public List<String> recipeToList(AnvilConstructionRecipe recipe) {
 
-		final List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
 		
 		list.add(TextFormatting.YELLOW + I18nUtil.resolveKey("info.template_in_p"));
 		
-		for(final AStack stack : recipe.input) {
+		for(AStack stack : recipe.input) {
 			if(stack instanceof ComparableStack)  {
-				final ItemStack input = ((ComparableStack) stack).toStack();
+				ItemStack input = ((ComparableStack) stack).toStack();
 				list.add(">" + input.getCount() + "x " + input.getDisplayName());
 				
-			} else if(stack instanceof OreDictStack input) {
-                final NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+			} else if(stack instanceof OreDictStack) {
+				OreDictStack input = (OreDictStack) stack;
+				NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
 				
 				if(ores.size() > 0) {
-					final ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
+					ItemStack inStack = ores.get((int) (Math.abs(System.currentTimeMillis() / 1000) % ores.size()));
 					list.add(">" + input.count() + "x " + inStack.getDisplayName());
 					
 				} else {
@@ -248,7 +247,7 @@ public class GUIAnvil extends GuiContainer {
 		list.add("");
 		list.add(TextFormatting.YELLOW + I18nUtil.resolveKey("info.template_out_p"));
 		
-		for(final AnvilOutput stack : recipe.output) {
+		for(AnvilOutput stack : recipe.output) {
 			list.add(">" + stack.stack.getCount() + "x " + stack.stack.getDisplayName() + (stack.chance != 1F ? (" (" + (stack.chance * 100) + "%)" ) : ""));
 		}
 		
@@ -260,20 +259,21 @@ public class GUIAnvil extends GuiContainer {
 	 * @param recipe
 	 * @return
 	 */
-	public List<String> recipeToSearchList(final AnvilConstructionRecipe recipe) {
+	public List<String> recipeToSearchList(AnvilConstructionRecipe recipe) {
 
-		final List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
 		
-		for(final AStack stack : recipe.input) {
+		for(AStack stack : recipe.input) {
 			if(stack instanceof ComparableStack)  {
-				final ItemStack input = ((ComparableStack) stack).toStack();
+				ItemStack input = ((ComparableStack) stack).toStack();
 				list.add(input.getDisplayName().toLowerCase());
 				
-			} else if(stack instanceof OreDictStack input) {
-                final NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
+			} else if(stack instanceof OreDictStack) {
+				OreDictStack input = (OreDictStack) stack;
+				NonNullList<ItemStack> ores = OreDictionary.getOres(input.name);
 				
 				if(ores.size() > 0) {
-					for(final ItemStack ore : ores) {
+					for(ItemStack ore : ores) {
 						list.add(ore.getDisplayName().toLowerCase());
 					}
 					
@@ -281,7 +281,7 @@ public class GUIAnvil extends GuiContainer {
 			}
 		}
 		
-		for(final AnvilOutput stack : recipe.output) {
+		for(AnvilOutput stack : recipe.output) {
 			list.add(stack.stack.getDisplayName().toLowerCase());
 		}
 		
@@ -289,7 +289,7 @@ public class GUIAnvil extends GuiContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks){
+	public void drawScreen(int mouseX, int mouseY, float partialTicks){
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
@@ -297,14 +297,14 @@ public class GUIAnvil extends GuiContainer {
 	int lastSize = 1;
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float inter, final int mX, final int mY) {
+	protected void drawGuiContainerBackgroundLayer(float inter, int mX, int mY) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(texture);
 		
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 		
-		final int slide = MathHelper.clamp(this.lastSize - 42, 0, 1000);
+		int slide = MathHelper.clamp(this.lastSize - 42, 0, 1000);
 		
 		int mul = 1;
 		while(true) {
@@ -341,15 +341,15 @@ public class GUIAnvil extends GuiContainer {
 			if(i >= recipes.size())
 				break;
 			
-			final int ind = i - index * 2;
+			int ind = i - index * 2;
 			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.color(1, 1, 1, 1);
 			RenderHelper.enableGUIStandardItemLighting();
 			GlStateManager.disableLighting();
 			
-			final AnvilConstructionRecipe recipe = recipes.get(i);
-			final ItemStack display = recipe.getDisplay();
+			AnvilConstructionRecipe recipe = recipes.get(i);
+			ItemStack display = recipe.getDisplay();
 			
 			FontRenderer font = null;
 			if (display != null) font = display.getItem().getFontRenderer(display);
@@ -373,7 +373,7 @@ public class GUIAnvil extends GuiContainer {
 	}
 	
 	@Override
-	protected void keyTyped(final char c, final int key) throws IOException {
+	protected void keyTyped(char c, int key) throws IOException {
 		
 		if(this.search.textboxKeyTyped(c, key)) {
 			search(this.search.getText());

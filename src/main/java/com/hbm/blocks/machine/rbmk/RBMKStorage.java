@@ -3,25 +3,23 @@ package com.hbm.blocks.machine.rbmk;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKStorage;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class RBMKStorage extends RBMKBase {
 
-	public RBMKStorage(final String s, final String c){
+	public RBMKStorage(String s, String c){
 		super(s, c);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		
 		if(meta >= offset)
 			return new TileEntityRBMKStorage();
@@ -33,12 +31,12 @@ public class RBMKStorage extends RBMKBase {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		return openInv(worldIn, pos.getX(), pos.getY(), pos.getZ(), playerIn, ModBlocks.guiID_rbmk_storage, hand);
 	}
 }

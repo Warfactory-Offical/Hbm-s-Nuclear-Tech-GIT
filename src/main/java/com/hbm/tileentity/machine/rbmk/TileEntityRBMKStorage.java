@@ -1,11 +1,7 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
-
-import net.minecraft.util.EnumFacing;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements IRBMKLoadable {
 
@@ -37,7 +33,7 @@ public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements 
 		super.update();
 	}
 
-	public void moveItem(final int fromSlot, final int toSlot){
+	public void moveItem(int fromSlot, int toSlot){
 		inventory.setStackInSlot(toSlot, inventory.getStackInSlot(fromSlot).copy());
 		inventory.setStackInSlot(fromSlot, ItemStack.EMPTY);
 	}
@@ -48,22 +44,22 @@ public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements 
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
 		return true;
 	}
 
 	@Override
-	public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
+	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
 		return true;
 	}
 
 	@Override
-	public boolean canLoad(final ItemStack toLoad) {
+	public boolean canLoad(ItemStack toLoad) {
 		return toLoad != null && inventory.getStackInSlot(11).isEmpty();
 	}
 
 	@Override
-	public void load(final ItemStack toLoad) {
+	public void load(ItemStack toLoad) {
 		inventory.setStackInSlot(11, toLoad.copy());
 		this.markDirty();
 	}

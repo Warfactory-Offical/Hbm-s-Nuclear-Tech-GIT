@@ -1,18 +1,15 @@
 package com.hbm.tileentity.machine;
 
-import java.util.List;
-
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.ILaserable;
 import com.hbm.interfaces.ITankPacketAcceptor;
-import com.hbm.lib.ModDamageSource;
 import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.ModDamageSource;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.AuxLongPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -35,7 +32,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITickable, IEnergyUser, IFluidHandler, ILaserable, ITankPacketAcceptor {
+import java.util.List;
+
+public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2, IFluidHandler, ILaserable, ITankPacketAcceptor {
 
 	public long power;
 	public static final long maxPower = 1000000000L;
@@ -57,11 +56,11 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 	@Override
 	public void update() {
 		if (!world.isRemote) {
-			
-			this.updateStandardConnections(world, pos);
+
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 			
 			watts = MathHelper.clamp(watts, 1, 100);
-			final long demand = maxPower * watts / 2000;
+			long demand = maxPower * watts / 2000;
 
 			beam = 0;
 			
@@ -81,7 +80,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 				
 				if(power >= demand) {
 					power -= demand;
-					final long add = watts * 100L;
+					long add = watts * 100;
 					if(add > Long.MAX_VALUE-joules)
 						joules = Long.MAX_VALUE;
 					else
@@ -93,18 +92,18 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 					
 					long out = joules;
 					
-					final EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
+					EnumFacing dir = EnumFacing.getFront(this.getBlockMetadata());
 					for(int i = 1; i <= range; i++) {
 						
 						beam = i;
 		
-						final int x = pos.getX() + dir.getXOffset() * i;
-						final int y = pos.getY() + dir.getYOffset() * i;
-						final int z = pos.getZ() + dir.getZOffset() * i;
+						int x = pos.getX() + dir.getFrontOffsetX() * i;
+						int y = pos.getY() + dir.getFrontOffsetY() * i;
+						int z = pos.getZ() + dir.getFrontOffsetZ() * i;
 						
-						final BlockPos pos1 = new BlockPos(x, y, z);
+						BlockPos pos1 = new BlockPos(x, y, z);
 						
-						final TileEntity te = world.getTileEntity(pos1);
+						TileEntity te = world.getTileEntity(pos1);
 						
 						if(te instanceof ILaserable) {
 							
@@ -117,7 +116,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 							continue;
 						}
 						
-						final IBlockState b = world.getBlockState(pos1);
+						IBlockState b = world.getBlockState(pos1);
 						
 						if(b.getBlock() != Blocks.AIR) {
 							
@@ -127,7 +126,8 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 								break;
 							}
 							
-							@SuppressWarnings("deprecation") final float hardness = b.getBlock().getExplosionResistance(null);
+							@SuppressWarnings("deprecation")
+							float hardness = b.getBlock().getExplosionResistance(null);
 							if(hardness < 10000 && world.rand.nextDouble() < (out * 0.00000001F)/hardness) {
 								world.playSound(null, x + 0.5, y + 0.5, z + 0.5, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
 								world.destroyBlock(pos1, false);
@@ -137,16 +137,16 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 						}
 					}
 					
-					final double blx = Math.min(pos.getX(), pos.getX() + dir.getXOffset() * beam) + 0.2;
-					final double bux = Math.max(pos.getX(), pos.getX() + dir.getXOffset() * beam) + 0.8;
-					final double bly = Math.min(pos.getY(), pos.getY() + dir.getYOffset() * beam) + 0.2;
-					final double buy = Math.max(pos.getY(), pos.getY() + dir.getYOffset() * beam) + 0.8;
-					final double blz = Math.min(pos.getZ(), pos.getZ() + dir.getZOffset() * beam) + 0.2;
-					final double buz = Math.max(pos.getZ(), pos.getZ() + dir.getZOffset() * beam) + 0.8;
+					double blx = Math.min(pos.getX(), pos.getX() + dir.getFrontOffsetX() * beam) + 0.2;
+					double bux = Math.max(pos.getX(), pos.getX() + dir.getFrontOffsetX() * beam) + 0.8;
+					double bly = Math.min(pos.getY(), pos.getY() + dir.getFrontOffsetY() * beam) + 0.2;
+					double buy = Math.max(pos.getY(), pos.getY() + dir.getFrontOffsetY() * beam) + 0.8;
+					double blz = Math.min(pos.getZ(), pos.getZ() + dir.getFrontOffsetZ() * beam) + 0.2;
+					double buz = Math.max(pos.getZ(), pos.getZ() + dir.getFrontOffsetZ() * beam) + 0.8;
 					
-					final List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blx, bly, blz, bux, buy, buz));
+					List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blx, bly, blz, bux, buy, buz));
 					
-					for(final Entity e : list) {
+					for(Entity e : list) {
 						e.attackEntityFrom(ModDamageSource.amsCore, joules*0.000001F);
 						e.setFire(10);
 					}
@@ -170,7 +170,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public boolean canConnect(final ForgeDirection dir) {
+	public boolean canConnect(ForgeDirection dir) {
 		return dir != ForgeDirection.UNKNOWN;
 	}
 
@@ -179,16 +179,16 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 		return "container.dfcEmitter";
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getWattsScaled(final int i) {
+	public int getWattsScaled(int i) {
 		return (watts * i) / 100;
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		this.power = i;
 	}
 
@@ -203,7 +203,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public void addEnergy(final long energy, final EnumFacing dir) {
+	public void addEnergy(long energy, EnumFacing dir) {
 		//do not accept lasers from the front
 		if(dir.getOpposite().ordinal() != this.getBlockMetadata()){
 			if(Long.MAX_VALUE - joules < energy)
@@ -219,19 +219,19 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource != null && resource.getFluid() == ModForgeFluids.cryogel)
 			return tank.fill(resource, doFill);
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 	
@@ -248,7 +248,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		watts = compound.getInteger("watts");
 		joules = compound.getLong("joules");
@@ -259,7 +259,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setInteger("watts", watts);
 		compound.setLong("joules", joules);
@@ -270,18 +270,18 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length == 1)
 			tank.readFromNBT(tags[0]);
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}

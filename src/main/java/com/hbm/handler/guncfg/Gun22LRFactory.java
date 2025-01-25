@@ -13,7 +13,7 @@ public class Gun22LRFactory {
 
 	public static GunConfiguration getUziConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 1;
 		config.roundsPerCycle = 1;
@@ -44,7 +44,7 @@ public class Gun22LRFactory {
 	
 	public static GunConfiguration getSaturniteConfig() {
 		
-		final GunConfiguration config = getUziConfig();
+		GunConfiguration config = getUziConfig();
 		
 		config.durability = 4500;
 		
@@ -62,7 +62,7 @@ public class Gun22LRFactory {
 	static float inaccuracy = 5;
 	public static BulletConfiguration get22LRConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_22lr;
 		bullet.spread *= inaccuracy;
@@ -74,7 +74,7 @@ public class Gun22LRFactory {
 	
 	public static BulletConfiguration get22LRAPConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_22lr_ap;
 		bullet.spread *= inaccuracy;

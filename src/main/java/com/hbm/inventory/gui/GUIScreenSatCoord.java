@@ -1,11 +1,5 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.apache.commons.lang3.math.NumberUtils;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.tool.ItemSatInterface;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.RefStrings;
@@ -13,7 +7,6 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.SatCoordPacket;
 import com.hbm.saveddata.satellites.Satellite.CoordActions;
 import com.hbm.saveddata.satellites.Satellite.Interfaces;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,6 +14,11 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIScreenSatCoord extends GuiScreen {
 	
@@ -35,7 +33,7 @@ public class GUIScreenSatCoord extends GuiScreen {
     private GuiTextField yField;
     private GuiTextField zField;
     
-    public GUIScreenSatCoord(final EntityPlayer player) {
+    public GUIScreenSatCoord(EntityPlayer player) {
     	
     	this.player = player;
     }
@@ -71,7 +69,7 @@ public class GUIScreenSatCoord extends GuiScreen {
         
     }
     
-    protected void mouseClicked(final int i, final int j, final int k) throws IOException
+    protected void mouseClicked(int i, int j, int k) throws IOException
     {
         super.mouseClicked(i, j, k);
     	if(ItemSatInterface.currentSat == null)
@@ -116,7 +114,7 @@ public class GUIScreenSatCoord extends GuiScreen {
     	}
     }
     
-    public void drawScreen(final int mouseX, final int mouseY, final float f) {
+    public void drawScreen(int mouseX, int mouseY, float f) {
         this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
         GlStateManager.enableLighting();
@@ -130,14 +128,14 @@ public class GUIScreenSatCoord extends GuiScreen {
 		return false;
 	}
 	
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
 
         this.xField.drawTextBox();
         if(ItemSatInterface.currentSat != null && ItemSatInterface.currentSat.coordAcs.contains(CoordActions.HAS_Y)) this.yField.drawTextBox();
         this.zField.drawTextBox();
 	}
 
-	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
+	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -166,12 +164,12 @@ public class GUIScreenSatCoord extends GuiScreen {
 	}
 	
 	@Override
-	public void drawBackground(final int tint) {
+	public void drawBackground(int tint) {
 		super.drawDefaultBackground();
 		super.drawBackground(tint);
 	}
 	
-    protected void keyTyped(final char p_73869_1_, final int p_73869_2_) throws IOException {
+    protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException {
     	
 
         if (this.xField.textboxKeyTyped(p_73869_1_, p_73869_2_)) {

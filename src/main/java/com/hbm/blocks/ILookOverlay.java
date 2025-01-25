@@ -1,17 +1,16 @@
 package com.hbm.blocks;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.world.World;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public interface ILookOverlay {
 
@@ -19,14 +18,14 @@ public interface ILookOverlay {
 	public void printHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z);
 
 	@SideOnly(Side.CLIENT)
-	public static void printGeneric(final RenderGameOverlayEvent.Pre event, final String title, final int titleCol, final int bgCol, final List<String> text) {
+	public static void printGeneric(RenderGameOverlayEvent.Pre event, String title, int titleCol, int bgCol, List<String> text) {
 
-		final Minecraft mc = Minecraft.getMinecraft();
-		final ScaledResolution resolution = event.getResolution();
+		Minecraft mc = Minecraft.getMinecraft();
+		ScaledResolution resolution = event.getResolution();
 
 		GL11.glPushMatrix();
 
-		final int pX = resolution.getScaledWidth() / 2 + 8;
+		int pX = resolution.getScaledWidth() / 2 + 8;
 		int pZ = resolution.getScaledHeight() / 2;
 
 		mc.fontRenderer.drawString(title, pX + 1, pZ - 9, bgCol);
@@ -37,7 +36,7 @@ public interface ILookOverlay {
 	
 				int color = 0xFFFFFF;
 				if(line.startsWith("&[")) {
-					final int end = line.lastIndexOf("&]");
+					int end = line.lastIndexOf("&]");
 					color = Integer.parseInt(line.substring(2, end));
 					line = line.substring(end + 2);
 				}
@@ -45,7 +44,7 @@ public interface ILookOverlay {
 				mc.fontRenderer.drawStringWithShadow(line, pX, pZ, color);
 				pZ += 10;
 			}
-		} catch(final Exception ex) {
+		} catch(Exception ex) {
 			mc.fontRenderer.drawStringWithShadow(ex.getClass().getSimpleName(), pX, pZ + 10, 0xff0000);
 		}
 

@@ -1,26 +1,25 @@
 package com.hbm.tileentity.network.energy;
 
-import com.hbm.config.GeneralConfig;
-import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyGenerator;
+import api.hbm.energymk2.IEnergyProviderMK2;
 import cofh.redstoneflux.api.IEnergyReceiver;
-import net.minecraftforge.energy.IEnergyStorage;
+import com.hbm.config.GeneralConfig;
+import com.hbm.lib.ForgeDirection;
+import com.hbm.tileentity.TileEntityLoadedBase;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux")})
-public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEnergyGenerator, IEnergyReceiver, IEnergyStorage {
+public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEnergyProviderMK2, IEnergyReceiver, IEnergyStorage {
 
 	private long subBuffer;
 	private boolean recursionBrake = false;
 
 	//NTM HE
 	@Override
-	public void setPower(final long power) {
+	public void setPower(long power) {
 		subBuffer = power;
 	}
 
@@ -36,38 +35,40 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 
 	//RF
 	@Override
-	public int getEnergyStored(final EnumFacing from) {
+	public int getEnergyStored(EnumFacing from) {
 		return 0;
 	}
 
 	@Override
-	public int getMaxEnergyStored(final EnumFacing from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 		return Integer.MAX_VALUE;
 	}
 
 	@Override
-	public boolean canConnectEnergy(final EnumFacing from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 		return true;
 	}
 
 	@Override
-	public int receiveEnergy(final EnumFacing from, final int maxReceive, final boolean simulate) {
-		if(recursionBrake)
-			return 0;
-		
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+		if(this.tileEntityInvalid) return 0;
+		if(recursionBrake) return 0;
+
 		if(simulate)
-			return 0;
-		
+			return maxReceive;
+
 		recursionBrake = true;
-		
-		final long capacity = (long)(maxReceive / GeneralConfig.conversionRateHeToRF);
+
+		long capacity = maxReceive / 4L;
 		subBuffer = capacity;
-		
-		this.sendPower(world, pos);
-		
+
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			this.tryProvide(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
+		}
+
 		recursionBrake = false;
-		
-		return (int) ((capacity - subBuffer) * GeneralConfig.conversionRateHeToRF);
+
+		return (int) ((capacity - subBuffer) * 4L);
 	}
 
 	//FE
@@ -92,32 +93,34 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	}
 
 	@Override
-	public int extractEnergy(final int maxExtract, final boolean simulate){
+	public int extractEnergy(int maxExtract, boolean simulate){
 		return 0;
 	}
 
 	@Override
-	public int receiveEnergy(final int maxReceive, final boolean simulate){
+	public int receiveEnergy(int maxReceive, boolean simulate){
 		if(recursionBrake)
 			return 0;
-		
+
 		if(simulate)
 			return maxReceive;
-		
+
 		recursionBrake = true;
-		
-		final long capacity = (long)(maxReceive / GeneralConfig.conversionRateHeToRF);
+
+		long capacity = (long)(maxReceive / GeneralConfig.conversionRateHeToRF);
 		subBuffer = capacity;
-		
-		this.sendPower(world, pos);
-		
+
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			this.tryProvide(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
+		}
+
 		recursionBrake = false;
-		
+
 		return (int) ((capacity - subBuffer) * GeneralConfig.conversionRateHeToRF);
 	}
 
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return true;
 		}
@@ -125,7 +128,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	}
 
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return (T) this;
 		}

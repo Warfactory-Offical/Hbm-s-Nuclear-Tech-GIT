@@ -1,12 +1,11 @@
 package com.hbm.inventory.container;
 
+import api.hbm.energymk2.IBatteryItem;
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.inventory.SlotUpgrade;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.tileentity.machine.TileEntityMachineCyclotron;
-
-import api.hbm.energy.IBatteryItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -16,9 +15,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineCyclotron extends Container {
 
-	private final TileEntityMachineCyclotron cyclotron;
+	private TileEntityMachineCyclotron cyclotron;
 	
-	public ContainerMachineCyclotron(final InventoryPlayer invPlayer, final TileEntityMachineCyclotron tile) {
+	public ContainerMachineCyclotron(InventoryPlayer invPlayer, TileEntityMachineCyclotron tile) {
 		cyclotron = tile;
 		
 		//Input
@@ -62,13 +61,13 @@ public class ContainerMachineCyclotron extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer player, final int index)
+    public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot slot = this.inventorySlots.get(index);
+		Slot slot = (Slot) this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			final ItemStack stack = slot.getStack();
+			ItemStack stack = slot.getStack();
 			var3 = stack.copy();
 
 			if(index <= 15) {
@@ -116,7 +115,7 @@ public class ContainerMachineCyclotron extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return cyclotron.isUseableByPlayer(player);
 	}
 	

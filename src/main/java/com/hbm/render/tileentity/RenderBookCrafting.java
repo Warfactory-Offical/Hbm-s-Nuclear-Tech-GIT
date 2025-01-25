@@ -6,11 +6,11 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class RenderBookCrafting extends TileEntitySpecialRenderer<TileEntityBlackBook> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityBlackBook te) {
+	public boolean isGlobalRenderer(TileEntityBlackBook te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityBlackBook te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityBlackBook te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 	}
 }

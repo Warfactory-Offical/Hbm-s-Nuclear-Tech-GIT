@@ -1,13 +1,10 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-
-import com.hbm.config.WeaponConfig;
 import com.hbm.config.BombConfig;
+import com.hbm.config.WeaponConfig;
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
 import com.hbm.entity.logic.EntityNukeExplosionMK3;
 import com.hbm.items.ModItems;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
@@ -17,9 +14,11 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class WeaponizedCell extends Item {
 
-	public WeaponizedCell(final String s) {
+	public WeaponizedCell(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -27,8 +26,8 @@ public class WeaponizedCell extends Item {
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(final EntityItem item) {
-		final World world = item.world;
+	public boolean onEntityItemUpdate(EntityItem item) {
+		World world = item.world;
     	
     	if(item.ticksExisted > BombConfig.riggedStarTicks || item.isBurning()) {
 			
@@ -36,7 +35,7 @@ public class WeaponizedCell extends Item {
 	    		
 	    		world.playSound(null, item.posX, item.posY, item.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, BombConfig.riggedStarRange, world.rand.nextFloat() * 0.1F + 0.9F);
 
-				final EntityNukeExplosionMK3 exp = new EntityNukeExplosionMK3(world);
+				EntityNukeExplosionMK3 exp = new EntityNukeExplosionMK3(world);
 				exp.posX = item.posX;
 				exp.posY = item.posY;
 				exp.posZ = item.posZ;
@@ -48,7 +47,7 @@ public class WeaponizedCell extends Item {
 
 					world.spawnEntity(exp);
 		    		
-		    		final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(world, BombConfig.riggedStarRange);
+		    		EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(world, BombConfig.riggedStarRange);
 		    		cloud.posX = item.posX;
 		    		cloud.posY = item.posY;
 		    		cloud.posZ = item.posZ;
@@ -76,7 +75,7 @@ public class WeaponizedCell extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("A charged energy cell, rigged to explode");
 		tooltip.add("when left on the floor for too long.");
 		tooltip.add("§4[Rigged Star]");

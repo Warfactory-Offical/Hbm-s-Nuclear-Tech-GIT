@@ -22,7 +22,7 @@ public class ParticleBookCircle extends Particle {
 
 	public TileEntityBlackBook te;
 	
-	public ParticleBookCircle(final TileEntityBlackBook te, final double posXIn, final double posYIn, final double posZIn, final float scale) {
+	public ParticleBookCircle(TileEntityBlackBook te, double posXIn, double posYIn, double posZIn, float scale) {
 		super(te.getWorld(), posXIn, posYIn, posZIn);
 		this.te = te;
 		this.particleScale = scale;
@@ -47,7 +47,7 @@ public class ParticleBookCircle extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		GlStateManager.disableLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
@@ -60,24 +60,24 @@ public class ParticleBookCircle extends Particle {
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.SRC_COLOR);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.circle_big);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		final float lifeN = (particleAge+partialTicks) /(float)particleMaxAge;
-		final float fade = MathHelper.clamp(1F-lifeN*1.2F, 0, 1);
+		float lifeN = (float)(particleAge+partialTicks)/(float)particleMaxAge;
+		float fade = MathHelper.clamp(1F-lifeN*1.2F, 0, 1);
 		GlStateManager.color(1F, 0.1F, 0.1F, 1.2F*fade);
 		
-        final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-        final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-        final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+        double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+        double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+        double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
         
         interpPosX = entPosX;
         interpPosY = entPosY;
         interpPosZ = entPosZ;
         
-		final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - entPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - entPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - entPosZ);
+		float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - entPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - entPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - entPosZ);
         GL11.glTranslated(f5, f6, f7);
         
-        final float scale = particleScale;
+        float scale = particleScale;
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		buffer.pos(-0.5*scale, 0, -0.5*scale).tex(0, 0).endVertex();
 		buffer.pos(0.5*scale, 0, -0.5*scale).tex(1, 0).endVertex();

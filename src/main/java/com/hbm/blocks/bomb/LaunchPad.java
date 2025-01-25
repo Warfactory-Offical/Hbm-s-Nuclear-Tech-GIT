@@ -1,43 +1,14 @@
 package com.hbm.blocks.bomb;
 
-import org.apache.logging.log4j.Level;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
-import com.hbm.entity.missile.EntityCarrier;
-import com.hbm.entity.missile.EntityMissileAntiBallistic;
-import com.hbm.entity.missile.EntityMissileBHole;
-import com.hbm.entity.missile.EntityMissileBunkerBuster;
-import com.hbm.entity.missile.EntityMissileBurst;
-import com.hbm.entity.missile.EntityMissileBusterStrong;
-import com.hbm.entity.missile.EntityMissileCluster;
-import com.hbm.entity.missile.EntityMissileClusterStrong;
-import com.hbm.entity.missile.EntityMissileDoomsday;
-import com.hbm.entity.missile.EntityMissileDrill;
-import com.hbm.entity.missile.EntityMissileEMP;
-import com.hbm.entity.missile.EntityMissileEMPStrong;
-import com.hbm.entity.missile.EntityMissileEndo;
-import com.hbm.entity.missile.EntityMissileExo;
-import com.hbm.entity.missile.EntityMissileGeneric;
-import com.hbm.entity.missile.EntityMissileIncendiary;
-import com.hbm.entity.missile.EntityMissileIncendiaryStrong;
-import com.hbm.entity.missile.EntityMissileInferno;
-import com.hbm.entity.missile.EntityMissileMicro;
-import com.hbm.entity.missile.EntityMissileMirv;
-import com.hbm.entity.missile.EntityMissileNuclear;
-import com.hbm.entity.missile.EntityMissileN2;
-import com.hbm.entity.missile.EntityMissileRain;
-import com.hbm.entity.missile.EntityMissileSchrabidium;
-import com.hbm.entity.missile.EntityMissileStrong;
-import com.hbm.entity.missile.EntityMissileTaint;
-import com.hbm.entity.missile.EntityMissileVolcano;
+import com.hbm.entity.missile.*;
 import com.hbm.interfaces.IBomb;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.InventoryHelper;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.bomb.TileEntityLaunchPad;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -52,10 +23,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.Level;
 
 public class LaunchPad extends BlockContainer implements IBomb {
 
-	public LaunchPad(final Material materialIn, final String s) {
+	public LaunchPad(Material materialIn, String s) {
 		super(materialIn);
 		this.setRegistryName(s);
 		this.setTranslationKey(s);
@@ -65,22 +37,22 @@ public class LaunchPad extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityLaunchPad();
 	}
 
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, worldIn.getTileEntity(pos));
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (worldIn.isRemote) {
 			return true;
 		} else if (!playerIn.isSneaking()) {
-			final TileEntityLaunchPad entity = (TileEntityLaunchPad) worldIn.getTileEntity(pos);
+			TileEntityLaunchPad entity = (TileEntityLaunchPad) worldIn.getTileEntity(pos);
 			if (entity != null) {
 				playerIn.openGui(MainRegistry.instance, ModBlocks.guiID_launch_pad, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			}
@@ -91,55 +63,55 @@ public class LaunchPad extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
-		if (worldIn.isBlockPowered(pos) && !worldIn.isRemote) {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (worldIn.isBlockIndirectlyGettingPowered(pos) > 0 && !worldIn.isRemote) {
 			this.explode(worldIn, pos);
 		}
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 
 	@Override
-	public void explode(final World world, final BlockPos pos) {
-		final TileEntityLaunchPad entity = (TileEntityLaunchPad) world.getTileEntity(pos);
-		if(entity.clearingTimer > 0) return;
+	public BombReturnCode explode(World world, BlockPos pos) {
+		TileEntityLaunchPad entity = (TileEntityLaunchPad) world.getTileEntity(pos);
+		if(entity.clearingTimer > 0) return BombReturnCode.UNDEFINED;
 
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 
 		{
 			if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_anti_ballistic || entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_carrier || ((entity.inventory.getStackInSlot(1).getItem() == ModItems.designator || entity.inventory.getStackInSlot(1).getItem() == ModItems.designator_range || entity.inventory.getStackInSlot(1).getItem() == ModItems.designator_manual) && entity.inventory.getStackInSlot(1).getTagCompound() != null)) {
 				int xCoord = entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_anti_ballistic || entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_carrier ? 0 : entity.inventory.getStackInSlot(1).getTagCompound().getInteger("xCoord");
-				final int zCoord = entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_anti_ballistic || entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_carrier ? 0 : entity.inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
+				int zCoord = entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_anti_ballistic || entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_carrier ? 0 : entity.inventory.getStackInSlot(1).getTagCompound().getInteger("zCoord");
 
 				if (xCoord == entity.getPos().getX() && zCoord == entity.getPos().getZ()) {
 					xCoord += 1;
@@ -152,8 +124,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					// EntityMissileGeneric missile = new
 					// EntityMissileGeneric(world, xCoord, zCoord, x + 0.5F, y +
 					// 2F, z + 0.5F);
-					final EntityMissileGeneric missile = new EntityMissileGeneric(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.5D);
+					EntityMissileTier1.EntityMissileGeneric missile = new EntityMissileTier1.EntityMissileGeneric(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.5D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -163,8 +135,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_incendiary && entity.power >= 75000) {
-					final EntityMissileIncendiary missile = new EntityMissileIncendiary(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.5D);
+					EntityMissileTier1.EntityMissileIncendiary missile = new EntityMissileTier1.EntityMissileIncendiary(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.5D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -174,8 +146,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_cluster && entity.power >= 75000) {
-					final EntityMissileCluster missile = new EntityMissileCluster(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.5D);
+					EntityMissileTier1.EntityMissileCluster missile = new EntityMissileTier1.EntityMissileCluster(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.5D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -185,8 +157,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_buster && entity.power >= 75000) {
-					final EntityMissileBunkerBuster missile = new EntityMissileBunkerBuster(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.5D);
+					EntityMissileTier1.EntityMissileBunkerBuster missile = new EntityMissileTier1.EntityMissileBunkerBuster(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.5D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -196,8 +168,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_strong && entity.power >= 75000) {
-					final EntityMissileStrong missile = new EntityMissileStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.25D);
+					EntityMissileTier2.EntityMissileStrong missile = new EntityMissileTier2.EntityMissileStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.25D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -207,8 +179,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_incendiary_strong && entity.power >= 75000) {
-					final EntityMissileIncendiaryStrong missile = new EntityMissileIncendiaryStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.25D);
+					EntityMissileTier2.EntityMissileIncendiaryStrong missile = new EntityMissileTier2.EntityMissileIncendiaryStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.25D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -218,8 +190,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_cluster_strong && entity.power >= 75000) {
-					final EntityMissileClusterStrong missile = new EntityMissileClusterStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.25D);
+					EntityMissileTier2.EntityMissileClusterStrong missile = new EntityMissileTier2.EntityMissileClusterStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.25D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -229,8 +201,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_buster_strong && entity.power >= 75000) {
-					final EntityMissileBusterStrong missile = new EntityMissileBusterStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.25D);
+					EntityMissileTier2.EntityMissileBusterStrong missile = new EntityMissileTier2.EntityMissileBusterStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.25D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -240,7 +212,7 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_burst && entity.power >= 75000) {
-					final EntityMissileBurst missile = new EntityMissileBurst(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					EntityMissileTier3.EntityMissileBurst missile = new EntityMissileTier3.EntityMissileBurst(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -250,7 +222,7 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_inferno && entity.power >= 75000) {
-					final EntityMissileInferno missile = new EntityMissileInferno(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					EntityMissileTier3.EntityMissileInferno missile = new EntityMissileTier3.EntityMissileInferno(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -260,7 +232,7 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_rain && entity.power >= 75000) {
-					final EntityMissileRain missile = new EntityMissileRain(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					EntityMissileTier3.EntityMissileRain missile = new EntityMissileTier3.EntityMissileRain(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -270,7 +242,7 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_drill && entity.power >= 75000) {
-					final EntityMissileDrill missile = new EntityMissileDrill(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					EntityMissileTier3.EntityMissileDrill missile = new EntityMissileTier3.EntityMissileDrill(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -280,8 +252,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_nuclear && entity.power >= 75000) {
-					final EntityMissileNuclear missile = new EntityMissileNuclear(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(0.8D);
+					EntityMissileTier4.EntityMissileNuclear missile = new EntityMissileTier4.EntityMissileNuclear(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 0.8D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -291,8 +263,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_n2 && entity.power >= 75000) {
-					final EntityMissileN2 missile = new EntityMissileN2(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(0.8D);
+					EntityMissileTier4.EntityMissileN2 missile = new EntityMissileTier4.EntityMissileN2(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 0.8D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -302,8 +274,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_endo && entity.power >= 75000) {
-					final EntityMissileEndo missile = new EntityMissileEndo(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(0.8D);
+					EntityMissileTier3.EntityMissileEndo missile = new EntityMissileTier3.EntityMissileEndo(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 0.8D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -313,8 +285,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_exo && entity.power >= 75000) {
-					final EntityMissileExo missile = new EntityMissileExo(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(0.8D);
+					EntityMissileTier3.EntityMissileExo missile = new EntityMissileTier3.EntityMissileExo(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 0.8D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -324,8 +296,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_nuclear_cluster && entity.power >= 75000) {
-					final EntityMissileMirv missile = new EntityMissileMirv(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(0.8D);
+					EntityMissileTier4.EntityMissileMirv missile = new EntityMissileTier4.EntityMissileMirv(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 0.8D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -335,8 +307,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_doomsday && entity.power >= 75000) {
-					final EntityMissileDoomsday missile = new EntityMissileDoomsday(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(0.5D);
+					EntityMissileTier4.EntityMissileDoomsday missile = new EntityMissileTier4.EntityMissileDoomsday(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 0.5D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -346,8 +318,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_taint && entity.power >= 75000) {
-					final EntityMissileTaint missile = new EntityMissileTaint(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(2.0D);
+					EntityMissileTier0.EntityMissileTaint missile = new EntityMissileTier0.EntityMissileTaint(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 2.0D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -357,8 +329,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_micro && entity.power >= 75000) {
-					final EntityMissileMicro missile = new EntityMissileMicro(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(2.0D);
+					EntityMissileTier0.EntityMissileMicro missile = new EntityMissileTier0.EntityMissileMicro(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 2.0D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -368,8 +340,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_bhole && entity.power >= 75000) {
-					final EntityMissileBHole missile = new EntityMissileBHole(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(2.0D);
+					EntityMissileTier0.EntityMissileBHole missile = new EntityMissileTier0.EntityMissileBHole(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 2.0D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -379,8 +351,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_schrabidium && entity.power >= 75000) {
-					final EntityMissileSchrabidium missile = new EntityMissileSchrabidium(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(2.0D);
+					EntityMissileTier0.EntityMissileSchrabidium missile = new EntityMissileTier0.EntityMissileSchrabidium(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 2.0D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -390,8 +362,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_emp && entity.power >= 75000) {
-					final EntityMissileEMP missile = new EntityMissileEMP(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(2.0D);
+					EntityMissileTier0.EntityMissileEMP missile = new EntityMissileTier0.EntityMissileEMP(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 2.0D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -401,8 +373,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_emp_strong && entity.power >= 75000) {
-					final EntityMissileEMPStrong missile = new EntityMissileEMPStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(1.25D);
+					EntityMissileTier2.EntityMissileEMPStrong missile = new EntityMissileTier2.EntityMissileEMPStrong(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 1.25D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -412,8 +384,8 @@ public class LaunchPad extends BlockContainer implements IBomb {
 					entity.clearingTimer = TileEntityLaunchPad.clearingDuraction;
 				}
 				if(entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_volcano) {
-					final EntityMissileVolcano missile = new EntityMissileVolcano(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
-					missile.setAcceleration(0.8D);
+					EntityMissileTier4.EntityMissileVolcano missile = new EntityMissileTier4.EntityMissileVolcano(world, x + 0.5F, y + 1.5F, z + 0.5F, xCoord, zCoord);
+					missile.accelXZ = 0.8D;
 					if (!world.isRemote)
 						world.spawnEntity(missile);
 					entity.power -= 75000;
@@ -424,7 +396,7 @@ public class LaunchPad extends BlockContainer implements IBomb {
 				}
 
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_carrier && entity.power >= 75000) {
-					final EntityCarrier missile = new EntityCarrier(world);
+					EntityCarrier missile = new EntityCarrier(world);
 					missile.posX = x + 0.5F;
 					missile.posY = y + 1.5F;
 					missile.posZ = z + 0.5F;
@@ -444,7 +416,7 @@ public class LaunchPad extends BlockContainer implements IBomb {
 				}
 
 				if (entity.inventory.getStackInSlot(0).getItem() == ModItems.missile_anti_ballistic && entity.power >= 75000) {
-					final EntityMissileAntiBallistic missile = new EntityMissileAntiBallistic(world);
+					EntityMissileAntiBallistic missile = new EntityMissileAntiBallistic(world);
 					missile.posX = x + 0.5F;
 					missile.posY = y + 1.5F;
 					missile.posZ = z + 0.5F;
@@ -460,6 +432,7 @@ public class LaunchPad extends BlockContainer implements IBomb {
 				}
 			}
 		}
+		return BombReturnCode.LAUNCHED;
 	}
 
 }

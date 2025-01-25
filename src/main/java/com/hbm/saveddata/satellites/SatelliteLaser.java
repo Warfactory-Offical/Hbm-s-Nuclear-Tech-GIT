@@ -16,27 +16,32 @@ public class SatelliteLaser extends Satellite {
 		this.satIface = Interfaces.SAT_PANEL;
 	}
 	
-	public void writeToNBT(final NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt) {
 		nbt.setLong("lastOp", lastOp);
 	}
 	
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		lastOp = nbt.getLong("lastOp");
 	}
 	
-	public void onClick(final World world, final int x, final int z) {
+	public void onClick(World world, int x, int z) {
 		
 		if(lastOp + 10000 < System.currentTimeMillis()) {
     		lastOp = System.currentTimeMillis();
     		
-    		final int y = world.getHeight(x, z);
+    		int y = world.getHeight(x, z);
     		
-    		final EntityDeathBlast blast = new EntityDeathBlast(world);
+    		EntityDeathBlast blast = new EntityDeathBlast(world);
     		blast.posX = x;
     		blast.posY = y;
     		blast.posZ = z;
     		
     		world.spawnEntity(blast);
     	}
+	}
+
+	@Override
+	public float[] getColor() {
+		return new float[] { 0.221F, 0.663F, 1.0F };
 	}
 }

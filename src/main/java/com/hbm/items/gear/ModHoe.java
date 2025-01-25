@@ -5,7 +5,7 @@ import com.hbm.main.MainRegistry;
 import net.minecraft.item.ItemHoe;
 
 public class ModHoe extends ItemHoe {
-	public ModHoe(final ToolMaterial t, final String s){
+	public ModHoe(ToolMaterial t, String s){
 		
 		super(t);
 		this.setTranslationKey(s);

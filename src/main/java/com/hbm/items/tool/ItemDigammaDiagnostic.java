@@ -21,7 +21,7 @@ import java.util.List;
 @Optional.InterfaceList({@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles")})
 public class ItemDigammaDiagnostic extends Item implements IBauble {
 
-	public ItemDigammaDiagnostic(final String s) {
+	public ItemDigammaDiagnostic(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -29,7 +29,7 @@ public class ItemDigammaDiagnostic extends Item implements IBauble {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
 		
 		if(!world.isRemote) {
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -39,13 +39,13 @@ public class ItemDigammaDiagnostic extends Item implements IBauble {
 		return super.onItemRightClick(world, player, handIn);
 	}
 
-	public static void playVoices(final World world, final EntityPlayer player){
-		final double x = HbmLivingProps.getDigamma(player);
+	public static void playVoices(World world, EntityPlayer player){
+		double x = HbmLivingProps.getDigamma(player);
 		
 		if(world.getTotalWorldTime() % 10 == 0 && world.rand.nextInt((int)(20/x)) == 0) {
 
 			if(x > 0.01) {
-				final List<Integer> list = new ArrayList<Integer>();
+				List<Integer> list = new ArrayList<Integer>();
 
 				if(0.05 < x && x < 2){
 					list.add(0);
@@ -75,7 +75,7 @@ public class ItemDigammaDiagnostic extends Item implements IBauble {
 					list.add(8);
 				}
 				if(list.size() > 0){
-					final int r = list.get(world.rand.nextInt(list.size()));
+					int r = list.get(world.rand.nextInt(list.size()));
 					
 					if(r > 0){
 						world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.voiceSounds[r-1], SoundCategory.PLAYERS, (float)x*0.04F+0.04F, 1.0F);
@@ -86,7 +86,7 @@ public class ItemDigammaDiagnostic extends Item implements IBauble {
 	}
 
 	@Override
-	public BaubleType getBaubleType(final ItemStack itemstack){
+	public BaubleType getBaubleType(ItemStack itemstack){
 		return BaubleType.TRINKET;
 	}
 }

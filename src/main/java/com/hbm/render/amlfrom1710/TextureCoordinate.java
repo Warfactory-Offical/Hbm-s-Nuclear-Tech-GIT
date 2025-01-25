@@ -4,12 +4,12 @@ public class TextureCoordinate
 {
     public float u, v, w;
 
-    public TextureCoordinate(final float u, final float v)
+    public TextureCoordinate(float u, float v)
     {
         this(u, v, 0F);
     }
 
-    public TextureCoordinate(final float u, final float v, final float w)
+    public TextureCoordinate(float u, float v, float w)
     {
         this.u = u;
         this.v = v;

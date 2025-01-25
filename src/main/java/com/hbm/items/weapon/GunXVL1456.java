@@ -1,15 +1,11 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,11 +25,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
+import java.util.List;
+import java.util.Random;
+
 public class GunXVL1456 extends Item {
 
 	Random rand = new Random();
 	
-	public GunXVL1456(final String s) {
+	public GunXVL1456(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -43,26 +42,27 @@ public class GunXVL1456 extends Item {
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(final ItemStack stack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return false;
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer player))
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if(!(entityLiving instanceof EntityPlayer))
 			return;
-
-        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
+		
+		EntityPlayer player = (EntityPlayer)entityLiving;
+		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
 			player.getHeldItemOffhand().onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 		
-		final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, false);
+		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, false);
 		MinecraftForge.EVENT_BUS.post(event);
 		// if (event.isCanceled()) {
 		// return;
@@ -70,11 +70,11 @@ public class GunXVL1456 extends Item {
         j = event.getCharge() * 2;
 
 		if (player.isSneaking() && j >= 20) {
-			final boolean flag = player.capabilities.isCreativeMode
+			boolean flag = player.capabilities.isCreativeMode
 					|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 			if (flag || Library.hasInventoryItem(player.inventory, ModItems.gun_xvl1456_ammo)) {
-				final EntityBullet entitybullet = new EntityBullet(worldIn, player, 3.0F, j, j + 5, false, "tauDay", player.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+				EntityBullet entitybullet = new EntityBullet(worldIn, player, 3.0F, j, j + 5, false, "tauDay", player.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
 				entitybullet.setDamage(j + rand.nextInt(6));
 
@@ -99,13 +99,13 @@ public class GunXVL1456 extends Item {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, false);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, false);
 		MinecraftForge.EVENT_BUS.post(event);
 		playerIn.setActiveHand(handIn);
 		
@@ -113,19 +113,20 @@ public class GunXVL1456 extends Item {
 	}
 	
 	@Override
-	public void onUsingTick(final ItemStack stack, final EntityLivingBase player1, final int count) {
-		if(!(player1 instanceof EntityPlayer player))
+	public void onUsingTick(ItemStack stack, EntityLivingBase player1, int count) {
+		if(!(player1 instanceof EntityPlayer))
 			return;
-        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
+		EntityPlayer player = (EntityPlayer)player1;
+		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_xvl1456){
 			player.getHeldItemOffhand().getItem().onUsingTick(player.getHeldItemOffhand(), player, count);
 		}
-		final World world = player.world;
+		World world = player.world;
 		if (!player.isSneaking()) {
-			final boolean flag = player.capabilities.isCreativeMode
+			boolean flag = player.capabilities.isCreativeMode
 					|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 			if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.gun_xvl1456_ammo)) && count % 4 == 0) {
 
-				final EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 25, 65, false, "eyyOk", player.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+				EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 25, 65, false, "eyyOk", player.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 				entityarrow.setDamage(25 + rand.nextInt(65 - 25));
 
 				world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.tauShoot, SoundCategory.PLAYERS, 1.0F, 0.8F + (rand.nextFloat() * 0.4F));
@@ -142,7 +143,7 @@ public class GunXVL1456 extends Item {
 			}
 		} else {
 			if (count % 20 == 0 && this.getMaxItemUseDuration(stack) - count != 0) {
-				final boolean flag = player.capabilities.isCreativeMode
+				boolean flag = player.capabilities.isCreativeMode
 						|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 				if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.gun_xvl1456_ammo))) {
 					if (!flag) {
@@ -164,14 +165,14 @@ public class GunXVL1456 extends Item {
 					
 					world.createExplosion(player, player.posX, player.posY, player.posZ, 10.0F, true);
 					player.attackEntityFrom(ModDamageSource.tauBlast, 1000F);
-					player.dropItem(false);
+					((EntityPlayer) player).dropItem(false);
 				}
 			}
 		}
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("Hold right mouse button");
 		list.add("to shoot tauons,");
 		list.add("sneak to charge up for");
@@ -184,8 +185,8 @@ public class GunXVL1456 extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 6, 0));
 		}

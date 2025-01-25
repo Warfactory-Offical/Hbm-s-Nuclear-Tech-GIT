@@ -1,16 +1,9 @@
 package com.hbm.inventory.gui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.lib.RefStrings;
 import com.hbm.main.AdvancementManager;
 import com.hbm.packet.ItemBobmazonPacket;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -26,6 +19,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GUIScreenBobmazon extends GuiScreen {
 	
@@ -39,7 +37,7 @@ public class GUIScreenBobmazon extends GuiScreen {
     List<FolderButton> buttons = new ArrayList<FolderButton>();
     private final EntityPlayer player;
     
-    public GUIScreenBobmazon(final EntityPlayer player, final List<Offer> offers) {
+    public GUIScreenBobmazon(EntityPlayer player, List<Offer> offers) {
     	
     	this.player = player;
 
@@ -57,7 +55,7 @@ public class GUIScreenBobmazon extends GuiScreen {
     		currentPage = getPageCount();
     }
     
-    public void drawScreen(final int mouseX, final int mouseY, final float f)
+    public void drawScreen(int mouseX, int mouseY, float f)
     {
         this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
@@ -90,34 +88,34 @@ public class GUIScreenBobmazon extends GuiScreen {
         	buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18, guiTop + 26 + (27 * 3), 2, "Next"));
     }
 
-    protected void mouseClicked(final int i, final int j, final int k) {
+    protected void mouseClicked(int i, int j, int k) {
     	try {
-    		for(final FolderButton b : buttons)
+    		for(FolderButton b : buttons)
     			if(b.isMouseOnButton(i, j))
     				b.executeAction();
-    	} catch (final Exception ex) {
+    	} catch (Exception ex) {
     		updateButtons();
     	}
     }
 	
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
 
 		this.fontRenderer.drawString(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1)), 
 				guiLeft + this.xSize / 2 - this.fontRenderer.getStringWidth(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1))) / 2, guiTop + 205, 4210752);
 		
-		for(final FolderButton b : buttons)
+		for(FolderButton b : buttons)
 			if(b.isMouseOnButton(i, j))
 				b.drawString(i, j);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
+	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		for(final FolderButton b : buttons)
+		for(FolderButton b : buttons)
 			b.drawButton(b.isMouseOnButton(i, j));
-		for(final FolderButton b : buttons)
+		for(FolderButton b : buttons)
 			b.drawIcon(b.isMouseOnButton(i, j));
         
         for(int d = currentPage * 3; d < Math.min(currentPage * 3 + 3, offers.size()); d++) {
@@ -125,7 +123,7 @@ public class GUIScreenBobmazon extends GuiScreen {
         }
 	}
 	
-    protected void keyTyped(final char p_73869_1_, final int p_73869_2_)
+    protected void keyTyped(char p_73869_1_, int p_73869_2_)
     {
         if (p_73869_2_ == 1 || p_73869_2_ == this.mc.gameSettings.keyBindInventory.getKeyCode())
         {
@@ -143,47 +141,47 @@ public class GUIScreenBobmazon extends GuiScreen {
 		String info;
 		Offer offer;
 		
-		public FolderButton(final int x, final int y, final int t, final String i) {
+		public FolderButton(int x, int y, int t, String i) {
 			xPos = x;
 			yPos = y;
 			type = t;
 			info = i;
 		}
 		
-		public FolderButton(final int x, final int y, final Offer offer) {
+		public FolderButton(int x, int y, Offer offer) {
 			xPos = x;
 			yPos = y;
 			type = 0;
 			this.offer = offer;
 		}
 		
-		public void updateButton(final int mouseX, final int mouseY) {
+		public void updateButton(int mouseX, int mouseY) {
 		}
 		
-		public boolean isMouseOnButton(final int mouseX, final int mouseY) {
+		public boolean isMouseOnButton(int mouseX, int mouseY) {
 			return xPos <= mouseX && xPos + 18 > mouseX && yPos < mouseY && yPos + 18 >= mouseY;
 		}
 		
-		public void drawButton(final boolean b) {
+		public void drawButton(boolean b) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 			drawTexturedModalRect(xPos, yPos, b ? 176 + 18 : 176, type == 1 ? 18 : (type == 2 ? 36 : 0), 18, 18);
 		}
 		
-		public void drawIcon(final boolean b) {
+		public void drawIcon(boolean b) {
 			try {
 		        RenderHelper.enableGUIStandardItemLighting();
 				if(offer != null) {
 					itemRender.renderItemAndEffectIntoGUI(player, offer.offer, xPos + 1, yPos + 1);
 				}
 				RenderHelper.disableStandardItemLighting();
-			} catch(final Exception x) { }
+			} catch(Exception x) { }
 		}
 		
-		public void drawString(final int x, final int y) {
+		public void drawString(int x, int y) {
 			if(info == null || info.isEmpty())
 				return;
 			
-			drawHoveringText(Arrays.asList(info), x, y);
+			drawHoveringText(Arrays.asList(new String[] { info }), x, y);
 		}
 		
 		public void executeAction() {
@@ -216,7 +214,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 		public String comment;
 		public String author;
 		
-		public Offer(final ItemStack offer, final Requirement requirement, final int cost, final int rating, final String comment, final String author) {
+		public Offer(ItemStack offer, Requirement requirement, int cost, int rating, String comment, String author) {
 			this.offer = offer;
 			this.requirement = requirement;
 			this.cost = cost;
@@ -225,7 +223,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 			this.author = author;
 		}
 		
-		public Offer(final ItemStack offer, final Requirement requirement, final int cost) {
+		public Offer(ItemStack offer, Requirement requirement, int cost) {
 			this.offer = offer;
 			this.requirement = requirement;
 			this.cost = cost;
@@ -234,7 +232,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 			this.author = "";
 		}
 		
-		public void drawRequirement(final GUIScreenBobmazon gui, final int x, final int y) {
+		public void drawRequirement(GUIScreenBobmazon gui, int x, int y) {
 			try {
 
 				RenderHelper.enableGUIStandardItemLighting();
@@ -249,7 +247,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 
 				GL11.glPushMatrix();
 				
-				final float scale = 0.65F;
+				float scale = 0.65F;
 				GL11.glScalef(scale, scale, scale);
 				gui.fontRenderer.drawString(I18n.format(offer.getDisplayName()) + count, (int)((x + 20) / scale), (int)((y - 12) / scale), 4210752);
 				
@@ -277,7 +275,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 				}
 		        GlStateManager.enableLighting();
 		        
-			} catch(final Exception ex) { }
+			} catch(Exception ex) { }
 		}
 		
 	}
@@ -291,12 +289,12 @@ public class GUIScreenBobmazon extends GuiScreen {
 		NUCLEAR(AdvancementManager.bobNuclear, "bobnuclear"),
 		HIDDEN(AdvancementManager.bobHidden, "bobhidden");
 		
-		private Requirement(final Advancement achievement, final String advName) {
+		private Requirement(Advancement achievement, String advName) {
 			this.setAchievement(achievement);
 			this.advName = advName;
 		}
 		
-		public boolean fullfills(final EntityPlayerMP player) {
+		public boolean fullfills(EntityPlayerMP player) {
 			
 			return player.getAdvancements().getProgress(getAchievement()).isDone();
 		}
@@ -313,12 +311,12 @@ public class GUIScreenBobmazon extends GuiScreen {
 			return Minecraft.getMinecraft().player.connection.getAdvancementManager().getAdvancementList().getAdvancement(new ResourceLocation(RefStrings.MODID, advName));
 		}
 
-		public void setAchievement(final Advancement achievement) {
+		public void setAchievement(Advancement achievement) {
 			this.achievement = achievement;
 		}
 
 		private Advancement achievement;
-		private final String advName;
+		private String advName;
 	}
 
 }

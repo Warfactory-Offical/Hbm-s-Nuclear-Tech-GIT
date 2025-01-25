@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class ItemLeadBox extends Item {
 
-	public ItemLeadBox(final String s){
+	public ItemLeadBox(String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.partsTab);
@@ -20,12 +20,12 @@ public class ItemLeadBox extends Item {
 	
 	// Without this method, your inventory will NOT work!!!
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 1; // return any value greater than zero
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 	// if(world.isRemote)
 	// 	player.openGui(MainRegistry.instance, ModItems.guiID_item_box, world, 0, 0, 0);
 		return super.onItemRightClick(worldIn, playerIn, handIn);

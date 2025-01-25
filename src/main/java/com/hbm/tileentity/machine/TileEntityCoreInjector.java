@@ -6,7 +6,6 @@ import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -15,9 +14,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -44,14 +43,14 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 
 			beam = 0;
 			
-			final EnumFacing dir = EnumFacing.byIndex(this.getBlockMetadata());
+			EnumFacing dir = EnumFacing.getFront(this.getBlockMetadata());
 			for(int i = 1; i <= range; i++) {
 
-				final int x = pos.getX() + dir.getXOffset() * i;
-				final int y = pos.getY() + dir.getYOffset() * i;
-				final int z = pos.getZ() + dir.getZOffset() * i;
-				final BlockPos pos1 = new BlockPos(x, y, z);
-				final TileEntity te = world.getTileEntity(pos1);
+				int x = pos.getX() + dir.getFrontOffsetX() * i;
+				int y = pos.getY() + dir.getFrontOffsetY() * i;
+				int z = pos.getZ() + dir.getFrontOffsetZ() * i;
+				BlockPos pos1 = new BlockPos(x, y, z);
+				TileEntity te = world.getTileEntity(pos1);
 				
 				if(te instanceof TileEntityCore) {
 					
@@ -72,7 +71,7 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 		}
 	}
 
-	public void fillDFC(final TileEntityCore core){
+	public void fillDFC(TileEntityCore core){
 		Fluid tank0 = null;
 		Fluid tank1 = null;
 		Fluid dfcTank0 = null;
@@ -122,7 +121,7 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource == null)
 			return 0;
 		if(tanks[0].getFluid() == null || tanks[0].getFluid().getFluid() == resource.getFluid()){
@@ -135,17 +134,17 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length == 2){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -165,25 +164,25 @@ public class TileEntityCoreInjector extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey("tanks"))
 			FFUtils.deserializeTankArray(compound.getTagList("tanks", 10), tanks);
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
 		}

@@ -1,34 +1,57 @@
 package com.hbm.lib;
 
+import java.util.Random;
+
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockBedrockOreTE.TileEntityBedrockOre;
 import com.hbm.blocks.generic.BlockStorageCrate;
 import com.hbm.blocks.machine.PinkCloudBroadcaster;
 import com.hbm.blocks.machine.SoyuzCapsule;
-import com.hbm.config.BedrockOreJsonConfig;
-import com.hbm.config.CompatibilityConfig;
+import com.hbm.blocks.generic.BlockBedrockOreTE.TileEntityBedrockOre;
 import com.hbm.config.GeneralConfig;
+import com.hbm.config.CompatibilityConfig;
+import com.hbm.config.BedrockOreJsonConfig;
 import com.hbm.handler.WeightedRandomChestContentFrom1710;
-import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
+import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.tileentity.machine.TileEntitySafe;
 import com.hbm.tileentity.machine.TileEntitySoyuzCapsule;
-import com.hbm.util.ItemStackUtil;
-import com.hbm.world.*;
+import com.hbm.world.Antenna;
+import com.hbm.world.Barrel;
+import com.hbm.world.Bunker;
+import com.hbm.world.CrashedVertibird;
+import com.hbm.world.DesertAtom001;
+import com.hbm.world.Dud;
+import com.hbm.world.Factory;
+import com.hbm.world.Geyser;
+import com.hbm.world.GeyserLarge;
+import com.hbm.world.LibraryDungeon;
+import com.hbm.world.OilBubble;
+import com.hbm.world.OilSandBubble;
+import com.hbm.world.Radio01;
+import com.hbm.world.Relay;
+import com.hbm.world.Satellite;
+import com.hbm.world.Sellafield;
+import com.hbm.world.Silo;
+import com.hbm.world.Spaceship;
+import com.hbm.world.Vertibird;
 import com.hbm.world.dungeon.AncientTomb;
 import com.hbm.world.dungeon.ArcticVault;
 import com.hbm.world.feature.DepthDeposit;
 import com.hbm.world.feature.OilSpot;
 import com.hbm.world.generator.CellularDungeonFactory;
 import com.hbm.world.generator.DungeonToolbox;
+
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.BlockSkull;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
+import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumFacing;
@@ -38,21 +61,19 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
-
-import java.util.Random;
+import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class HbmWorldGen implements IWorldGenerator {
 
-	private int parseInt(final Object e){
+	private int parseInt(Object e){
 		if(e == null)
 			return 0;
 		return (int)e;
 	}
 
 	@Override
-	public void generate(final Random rand, final int chunkX, final int chunkZ, final World world, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
+	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 		try{
 			generateOres(world, rand, chunkX * 16, chunkZ * 16);
 			if(world.getWorldInfo().isMapFeaturesEnabled())
@@ -63,20 +84,20 @@ public class HbmWorldGen implements IWorldGenerator {
 		}
 	}
 
-	public void generateOres(final World world, final Random rand, final int i, final int j){
-		final int dimID = world.provider.getDimension();
+	public void generateOres(World world, Random rand, int i, int j){
+		int dimID = world.provider.getDimension();
 
-		final int dimOilcoalSpawn = parseInt(CompatibilityConfig.oilcoalSpawn.get(dimID));
+		int dimOilcoalSpawn = parseInt(CompatibilityConfig.oilcoalSpawn.get(dimID));
 		if(dimOilcoalSpawn > 0 && rand.nextInt(dimOilcoalSpawn) == 0){
 			DungeonToolbox.generateOre(world, rand, i, j, 1, 64, 32, 32, ModBlocks.ore_coal_oil);
 		}
 
-		final int dimGasbubbleSpawn = parseInt(CompatibilityConfig.gasbubbleSpawn.get(dimID));
+		int dimGasbubbleSpawn = parseInt(CompatibilityConfig.gasbubbleSpawn.get(dimID));
 		if(dimGasbubbleSpawn > 0 && rand.nextInt(dimGasbubbleSpawn) == 0){
 			DungeonToolbox.generateOre(world, rand, i, j, 4, 64, 20, 10, ModBlocks.gas_flammable, Blocks.AIR);
 		}
 
-		final int dimExplosivebubbleSpawn = parseInt(CompatibilityConfig.explosivebubbleSpawn.get(dimID));
+		int dimExplosivebubbleSpawn = parseInt(CompatibilityConfig.explosivebubbleSpawn.get(dimID));
 		if(dimExplosivebubbleSpawn > 0 && rand.nextInt(dimExplosivebubbleSpawn) == 0){
 			DungeonToolbox.generateOre(world, rand, i, j, 4, 64, 20, 10, ModBlocks.gas_explosive, Blocks.AIR);
 		}
@@ -97,9 +118,9 @@ public class HbmWorldGen implements IWorldGenerator {
 			DepthDeposit.generateConditionNether(world, i, 125, 3, j, 7, 0.6D, ModBlocks.ore_depth_nether_nitan, rand, 16);
 			//Smoldering Rock
 			for(int k = 0; k < 30; k++){
-				final int x = i + rand.nextInt(16);
-				final int z = j + rand.nextInt(16);
-				final int d = 16 + rand.nextInt(96);
+				int x = i + rand.nextInt(16);
+				int z = j + rand.nextInt(16);
+				int d = 16 + rand.nextInt(96);
 
 				for(int y = d - 5; y <= d; y++)
 				if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock() == Blocks.AIR && world.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.NETHERRACK)
@@ -159,20 +180,20 @@ public class HbmWorldGen implements IWorldGenerator {
 		DungeonToolbox.generateOre(world, rand, i, j, parseInt(CompatibilityConfig.endTixiteSpawn.get(dimID)), 6, 0, 127, ModBlocks.ore_tikite, Blocks.END_STONE);
 	
 		if(dimID == 0 && GeneralConfig.enable528){
-			final Random colRand = new Random(world.getSeed() + 5);
-			final int colX = (int) (colRand.nextGaussian() * 1500);
-			final int colZ = (int) (colRand.nextGaussian() * 1500);
-			final int colRange = 750;
+			Random colRand = new Random(world.getSeed() + 5);
+			int colX = (int) (colRand.nextGaussian() * 1500);
+			int colZ = (int) (colRand.nextGaussian() * 1500);
+			int colRange = 750;
 			
 			if(GeneralConfig.enable528ColtanDeposit) {
 				for (int k = 0; k < 2; k++) {
 					
 					for(int r = 1; r <= 5; r++) {
-						final int randPosX = i + rand.nextInt(16);
-						final int randPosY = rand.nextInt(25) + 15;
-						final int randPosZ = j + rand.nextInt(16);
+						int randPosX = i + rand.nextInt(16);
+						int randPosY = rand.nextInt(25) + 15;
+						int randPosZ = j + rand.nextInt(16);
 						
-						final int range = colRange / r;
+						int range = colRange / r;
 			
 						if(randPosX <= colX + range && randPosX >= colX - range && randPosZ <= colZ + range && randPosZ >= colZ - range) {
 							(new WorldGenMinable(ModBlocks.ore_coltan.getDefaultState(), 4)).generate(world, rand, new BlockPos(randPosX, randPosY, randPosZ));
@@ -196,18 +217,18 @@ public class HbmWorldGen implements IWorldGenerator {
 	 * @param depth the resolution of the operation, higher numbers call more sine functions
 	 * @return the height value
 	 */
-	private double generateUnruh(final long seed, final int x, final int z, double scale, final int depth) {
+	private double generateUnruh(long seed, int x, int z, double scale, int depth) {
 
 		scale = 1/scale;
 
 		double result = 1;
 
-		final Random rand = new Random(seed);
+		Random rand = new Random(seed);
 
 		for(int i = 0; i < depth; i++) {
 
-			final double offsetX = rand.nextDouble() * Math.PI * 2;
-			final double offsetZ = rand.nextDouble() * Math.PI * 2;
+			double offsetX = rand.nextDouble() * Math.PI * 2;
+			double offsetZ = rand.nextDouble() * Math.PI * 2;
 
 			result += Math.sin(x / Math.pow(2, depth) * scale + offsetX) * Math.sin(z / Math.pow(2, depth) * scale + offsetZ);
 		}
@@ -215,23 +236,23 @@ public class HbmWorldGen implements IWorldGenerator {
 		return result / depth;
 	}
 
-	private void generateAStructure(final World world, final Random rand, final int i, final int j, final WorldGenerator structure, final int chance){
+	private void generateAStructure(World world, Random rand, int i, int j, WorldGenerator structure, int chance){
 		if (chance > 0 && rand.nextInt(chance) == 0) {
-			final int x = i + rand.nextInt(16);
-			final int z = j + rand.nextInt(16);
-			final int y = world.getHeight(x, z);
+			int x = i + rand.nextInt(16);
+			int z = j + rand.nextInt(16);
+			int y = world.getHeight(x, z);
 
 			structure.generate(world, rand, new BlockPos(x, y, z));
 		}
 	}
 
-	private void generateBedrockOre(final World world, final Random rand, final int i, final int j, final int dimID){
-		final int dimBedrockOreFreq = parseInt(BedrockOreJsonConfig.dimOreRarity.get(dimID));
+	private void generateBedrockOre(World world, Random rand, int i, int j, int dimID){
+		int dimBedrockOreFreq = parseInt(BedrockOreJsonConfig.dimOreRarity.get(dimID));
 		if (dimBedrockOreFreq > 0 && rand.nextInt(dimBedrockOreFreq) == 0) {
 			
-			final String oreName = BedrockOreRegistry.rollOreName(dimID, rand);
+			String oreName = BedrockOreRegistry.rollOreName(dimID, rand);
 			if(oreName == null) return;
-			final int sqrsize = 2;
+			int sqrsize = 2;
 			for(int v = sqrsize; v >= -sqrsize; v--) {
 				for(int w = sqrsize; w >= -sqrsize; w--) {
 					for(int y = 6; y >= 0; y--) {
@@ -243,22 +264,22 @@ public class HbmWorldGen implements IWorldGenerator {
 		}
 	}
 	
-	private void placeBedrockOre(final World world, final BlockPos orePos, final String oreName){
+	private void placeBedrockOre(World world, BlockPos orePos, String oreName){
 		if(!isBedrock(world, orePos)) return;
 		world.setBlockState(orePos, ModBlocks.ore_bedrock_block.getDefaultState());
-		final TileEntityBedrockOre bedrockOre = (TileEntityBedrockOre)world.getTileEntity(orePos);
+		TileEntityBedrockOre bedrockOre = (TileEntityBedrockOre)world.getTileEntity(orePos);
 		bedrockOre.setOre(oreName);
 	}
 
-	private boolean isBedrock(final World world, final BlockPos bPos){
+	private boolean isBedrock(World world, BlockPos bPos){
 		return world.getBlockState(bPos).getBlock().isReplaceableOreGen(world.getBlockState(bPos), world, bPos, BlockMatcher.forBlock(Blocks.BEDROCK));
 	}
 
-	private void generateBedrockOil(final World world, final Random rand, final int i, final int j, final int dimID){
-		final int dimBedrockOilFreq = parseInt(CompatibilityConfig.bedrockOilSpawn.get(dimID));
+	private void generateBedrockOil(World world, Random rand, int i, int j, int dimID){
+		int dimBedrockOilFreq = parseInt(CompatibilityConfig.bedrockOilSpawn.get(dimID));
 		if (dimBedrockOilFreq > 0 && rand.nextInt(dimBedrockOilFreq) == 0) {
-			final int randPosX = i + rand.nextInt(16);
-			final int randPosZ = j + rand.nextInt(16);
+			int randPosX = i + rand.nextInt(16);
+			int randPosZ = j + rand.nextInt(16);
 
 			for (int v = 5; v >= -5; v--) {
 				for (int w = 5; w >= -5; w--) {
@@ -275,11 +296,11 @@ public class HbmWorldGen implements IWorldGenerator {
 		}
 	}
 
-	private void generateSellafieldPool(final World world, final Random rand, final int i, final int j, final int dimID){
-		final int dimRadFreq = parseInt(CompatibilityConfig.radfreq.get(dimID));
+	private void generateSellafieldPool(World world, Random rand, int i, int j, int dimID){
+		int dimRadFreq = parseInt(CompatibilityConfig.radfreq.get(dimID));
 		if (dimRadFreq > 0 && rand.nextInt(dimRadFreq) == 0) {
-			final int x = i + rand.nextInt(16);
-			final int z = j + rand.nextInt(16);
+			int x = i + rand.nextInt(16);
+			int z = j + rand.nextInt(16);
 
 			double r = rand.nextInt(15) + 10;
 
@@ -293,14 +314,14 @@ public class HbmWorldGen implements IWorldGenerator {
 		}	
 	}
 
-	private void generateStructures(final World world, final Random rand, int i, int j) {
-		final int dimID = world.provider.getDimension();
+	private void generateStructures(World world, Random rand, int i, int j) {
+		int dimID = world.provider.getDimension();
 		
 		if(GeneralConfig.enableDungeons) {
 			//Drillgon200: Helps with cascading world gen.
 			i += 8;
 			j += 8;
-			final Biome biome = world.getBiome(new BlockPos(i, 0, j));
+			Biome biome = world.getBiome(new BlockPos(i, 0, j));
 			
 			if (biome.getDefaultTemperature() >= 1F && biome.getRainfall() > 1F) {
 				generateAStructure(world, rand, i, j, new Radio01(), parseInt(CompatibilityConfig.radioStructure.get(dimID)));
@@ -337,11 +358,11 @@ public class HbmWorldGen implements IWorldGenerator {
 				generateSellafieldPool(world, rand, i, j, dimID);
 			
 			if (GeneralConfig.enableMines){
-				final int dimMineFreq = parseInt(CompatibilityConfig.minefreq.get(dimID));
+				int dimMineFreq = parseInt(CompatibilityConfig.minefreq.get(dimID));
 			 	if (dimMineFreq > 0 && rand.nextInt(dimMineFreq) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
-					final int y = world.getHeight(x, z);
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
+					int y = world.getHeight(x, z);
 
 					if (world.getBlockState(new BlockPos(x, y-1, z)).isSideSolid(world, new BlockPos(x, y-1, z), EnumFacing.UP)) {
 						world.setBlockState(new BlockPos(x, y, z), ModBlocks.mine_ap.getDefaultState());
@@ -352,34 +373,34 @@ public class HbmWorldGen implements IWorldGenerator {
 				}
 			}
 
-			final int dimBroadcaster = parseInt(CompatibilityConfig.broadcaster.get(dimID));
+			int dimBroadcaster = parseInt(CompatibilityConfig.broadcaster.get(dimID));
 			if (dimBroadcaster > 0 && rand.nextInt(dimBroadcaster) == 0) {
-				final int x = i + rand.nextInt(16);
-				final int z = j + rand.nextInt(16);
-				final int y = world.getHeight(x, z);
+				int x = i + rand.nextInt(16);
+				int z = j + rand.nextInt(16);
+				int y = world.getHeight(x, z);
 
 				if (world.getBlockState(new BlockPos(x, y-1, z)).isSideSolid(world, new BlockPos(x, y-1, z), EnumFacing.UP)){
-					world.setBlockState(new BlockPos(x, y, z), ModBlocks.broadcaster_pc.getDefaultState().withProperty(PinkCloudBroadcaster.FACING, EnumFacing.byIndex(rand.nextInt(4) + 2)), 2);
+					world.setBlockState(new BlockPos(x, y, z), ModBlocks.broadcaster_pc.getDefaultState().withProperty(PinkCloudBroadcaster.FACING, EnumFacing.getFront(rand.nextInt(4) + 2)), 2);
 
 					if (GeneralConfig.enableDebugMode)
 						MainRegistry.logger.info("[Debug] Successfully spawned corrupted broadcaster at x=" + x + " y=" + y + " z=" + z);
 				}
 			}
 
-			final int dimDungeonStructure = parseInt(CompatibilityConfig.dungeonStructure.get(dimID));
+			int dimDungeonStructure = parseInt(CompatibilityConfig.dungeonStructure.get(dimID));
 			if (dimDungeonStructure > 0 && rand.nextInt(dimDungeonStructure) == 0) {
-				final int x = i + rand.nextInt(16);
-				final int y = rand.nextInt(256);
-				final int z = j + rand.nextInt(16);
+				int x = i + rand.nextInt(16);
+				int y = rand.nextInt(256);
+				int z = j + rand.nextInt(16);
 				new LibraryDungeon().generate(world, rand, new BlockPos(x, y, z));
 			}
 
 			if(biome.getRainfall() > 2F){
-				final int dimGeyserWater = parseInt(CompatibilityConfig.geyserWater.get(dimID));
+				int dimGeyserWater = parseInt(CompatibilityConfig.geyserWater.get(dimID));
 				if (dimGeyserWater > 0 && rand.nextInt(dimGeyserWater) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
-					final int y = world.getHeight(x, z);
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
+					int y = world.getHeight(x, z);
 
 					if (world.getBlockState(new BlockPos(x, y - 1, z)).getBlock() == Blocks.GRASS)
 						new Geyser().generate(world, rand, new BlockPos(x, y, z));
@@ -387,52 +408,52 @@ public class HbmWorldGen implements IWorldGenerator {
 			}
 
 			if(biome.getDefaultTemperature() > 1.8F && biome.getRainfall() < 1F){
-				final int dimGeyserChlorine = parseInt(CompatibilityConfig.geyserChlorine.get(dimID));
+				int dimGeyserChlorine = parseInt(CompatibilityConfig.geyserChlorine.get(dimID));
 				if (dimGeyserChlorine > 0 && rand.nextInt(dimGeyserChlorine) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
-					final int y = world.getHeight(x, z);
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
+					int y = world.getHeight(x, z);
 
 					if (world.getBlockState(new BlockPos(x, y - 1, z)).getBlock() == Blocks.SAND)
 						new GeyserLarge().generate(world, rand, new BlockPos(x, y, z));
 				}
 			}
 
-			final int dimGeyserVapor = parseInt(CompatibilityConfig.geyserVapor.get(dimID));
+			int dimGeyserVapor = parseInt(CompatibilityConfig.geyserVapor.get(dimID));
 			if (dimGeyserVapor > 0 && rand.nextInt(dimGeyserVapor) == 0) {
-				final int x = i + rand.nextInt(16);
-				final int z = j + rand.nextInt(16);
-				final int y = world.getHeight(x, z);
+				int x = i + rand.nextInt(16);
+				int z = j + rand.nextInt(16);
+				int y = world.getHeight(x, z);
 
 				if (world.getBlockState(new BlockPos(x, y - 1, z)).getBlock() == Blocks.STONE)
 					world.setBlockState(new BlockPos(x, y - 1, z), ModBlocks.geysir_vapor.getDefaultState());
 			}
 
-			final int dimGeyserNether = parseInt(CompatibilityConfig.geyserNether.get(dimID));
+			int dimGeyserNether = parseInt(CompatibilityConfig.geyserNether.get(dimID));
 			if (dimGeyserNether > 0 && rand.nextInt(dimGeyserNether) == 0) {
-				final int x = i + rand.nextInt(16);
-				final int z = j + rand.nextInt(16);
-				final int d = 16 + rand.nextInt(96);
+				int x = i + rand.nextInt(16);
+				int z = j + rand.nextInt(16);
+				int d = 16 + rand.nextInt(96);
 
 				for(int y = d - 5; y <= d; y++)
 					if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock() == Blocks.AIR && world.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.NETHERRACK)
 						world.setBlockState(new BlockPos(x, y, z), ModBlocks.geysir_nether.getDefaultState());
 			}
 			if(biome.getDefaultTemperature() <= 1F){
-				final int dimCapsuleStructure = parseInt(CompatibilityConfig.capsuleStructure.get(dimID));
+				int dimCapsuleStructure = parseInt(CompatibilityConfig.capsuleStructure.get(dimID));
 				if (dimCapsuleStructure > 0 && rand.nextInt(dimCapsuleStructure) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
-					final int y = world.getHeight(x, z) - 4;
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
+					int y = world.getHeight(x, z) - 4;
 					
 					if(world.getBlockState(new BlockPos(x, y + 1, z)).isSideSolid(world, new BlockPos(x, y + 1, z), EnumFacing.UP)) {
 						
 						world.setBlockState(new BlockPos(x, y, z), ModBlocks.soyuz_capsule.getDefaultState().withProperty(SoyuzCapsule.RUSTY, true), 2);
 						
-						final TileEntitySoyuzCapsule cap = (TileEntitySoyuzCapsule)world.getTileEntity(new BlockPos(x, y, z));
+						TileEntitySoyuzCapsule cap = (TileEntitySoyuzCapsule)world.getTileEntity(new BlockPos(x, y, z));
 						
 						if(cap != null) {
-							cap.inventory.setStackInSlot(rand.nextInt(cap.inventory.getSlots()), ItemStackUtil.itemStackFrom(ModItems.record_glass));
+							cap.inventory.setStackInSlot(rand.nextInt(cap.inventory.getSlots()), new ItemStack(ModItems.record_glass));
 						}
 		
 						if(GeneralConfig.enableDebugMode)
@@ -441,12 +462,12 @@ public class HbmWorldGen implements IWorldGenerator {
 				}
 			}
 			if (rand.nextInt(1000) == 0) {
-				final int x = i + rand.nextInt(16);
-				final int z = j + rand.nextInt(16);
+				int x = i + rand.nextInt(16);
+				int z = j + rand.nextInt(16);
 				
 				boolean done = false;
 				for(int k = 0; k < 256; k++) {
-					final IBlockState state = world.getBlockState(new BlockPos(x, k, z));
+					IBlockState state = world.getBlockState(new BlockPos(x, k, z));
 					if(state.getBlock() == Blocks.LOG && state.getValue(BlockOldLog.VARIANT) == BlockPlanks.EnumType.OAK){
 						world.setBlockState(new BlockPos(x, k, z), ModBlocks.pink_log.getDefaultState());
 						done = true;
@@ -456,14 +477,14 @@ public class HbmWorldGen implements IWorldGenerator {
 					MainRegistry.logger.info("[Debug] Successfully spawned pink tree at x=" + x + " z=" + z);
 			}
 			if(GeneralConfig.enableVaults){
-				final int dimVaultFreq = parseInt(CompatibilityConfig.vaultfreq.get(dimID));
+				int dimVaultFreq = parseInt(CompatibilityConfig.vaultfreq.get(dimID));
 				if (dimVaultFreq > 0 && rand.nextInt(dimVaultFreq) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
-					final int y = world.getHeight(x, z);
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
+					int y = world.getHeight(x, z);
 
 					if (world.getBlockState(new BlockPos(x, y-1, z)).isSideSolid(world, new BlockPos(x, y-1, z), EnumFacing.UP)) {
-						final boolean set = world.setBlockState(new BlockPos(x, y, z), ModBlocks.safe.getDefaultState().withProperty(BlockStorageCrate.FACING, EnumFacing.byIndex(rand.nextInt(4) + 2)), 2);
+						boolean set = world.setBlockState(new BlockPos(x, y, z), ModBlocks.safe.getDefaultState().withProperty(BlockStorageCrate.FACING, EnumFacing.getFront(rand.nextInt(4) + 2)), 2);
 
 						if(set){
 							switch (rand.nextInt(10)) {
@@ -472,7 +493,7 @@ public class HbmWorldGen implements IWorldGenerator {
 							case 2:
 							case 3:
 								WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(10),
-                                        world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(4) + 3);
+										(TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(4) + 3);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setPins(rand.nextInt(999) + 1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setMod(1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).lock();
@@ -481,7 +502,7 @@ public class HbmWorldGen implements IWorldGenerator {
 							case 5:
 							case 6:
 								WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(11),
-                                        world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(3) + 2);
+								(TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(3) + 2);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setPins(rand.nextInt(999) + 1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setMod(0.1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).lock();
@@ -489,14 +510,14 @@ public class HbmWorldGen implements IWorldGenerator {
 							case 7:
 							case 8:
 								WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(12),
-                                        world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(3) + 1);
+										(TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(3) + 1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setPins(rand.nextInt(999) + 1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setMod(0.02);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).lock();
 								break;
 							case 9:
 								WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(13),
-                                        world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(2) + 1);
+										(TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z)), rand.nextInt(2) + 1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setPins(rand.nextInt(999) + 1);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).setMod(0.0);
 								((TileEntitySafe) world.getTileEntity(new BlockPos(x, y, z))).lock();
@@ -509,10 +530,10 @@ public class HbmWorldGen implements IWorldGenerator {
 					}
 				}
 			}
-			final int dimMeteorStructure = parseInt(CompatibilityConfig.meteorStructure.get(dimID));
+			int dimMeteorStructure = parseInt(CompatibilityConfig.meteorStructure.get(dimID));
 			if (dimMeteorStructure > 0 && rand.nextInt(dimMeteorStructure) == 0) {
-				final int x = i + rand.nextInt(16);
-				final int z = j + rand.nextInt(16);
+				int x = i + rand.nextInt(16);
+				int z = j + rand.nextInt(16);
 				
 				CellularDungeonFactory.meteor.generate(world, x, 12, z, rand);
 				
@@ -542,7 +563,7 @@ public class HbmWorldGen implements IWorldGenerator {
 
 					if(world.getBlockState(new BlockPos(sx, y - 1, sz)).isSideSolid(world, new BlockPos(sx, y - 1, sz), EnumFacing.UP)) {
 						world.setBlockState(new BlockPos(sx, y, sz), Blocks.SKULL.getDefaultState().withProperty(BlockSkull.FACING, EnumFacing.UP));
-						final TileEntitySkull skull = (TileEntitySkull)world.getTileEntity(new BlockPos(sx, y, sz));
+						TileEntitySkull skull = (TileEntitySkull)world.getTileEntity(new BlockPos(sx, y, sz));
 						
 						if(skull != null) skull.setSkullRotation(rand.nextInt(16));
 					}
@@ -550,10 +571,10 @@ public class HbmWorldGen implements IWorldGenerator {
 			}
 			
 			if(biome.isHighHumidity() && biome.getDefaultTemperature() < 1.2 && biome.getDefaultTemperature() > 0.8){
-				final int dimJungleStructure = parseInt(CompatibilityConfig.jungleStructure.get(dimID));
+				int dimJungleStructure = parseInt(CompatibilityConfig.jungleStructure.get(dimID));
 				if(dimJungleStructure > 0 && rand.nextInt(dimJungleStructure) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
 
 					CellularDungeonFactory.jungle.generate(world, x, 20, z, world.rand);
 					CellularDungeonFactory.jungle.generate(world, x, 24, z, world.rand);
@@ -562,7 +583,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					if(GeneralConfig.enableDebugMode)
 						MainRegistry.logger.info("[Debug] Successfully spawned jungle dungeon at x=" + x + " y=10 z=" + z);
 
-					final int y = world.getHeight(x, z);
+					int y = world.getHeight(x, z);
 					int columnY = y;
 					for(int y1 = y+1; y1 > 1; y1--){
 						if(!world.getBlockState(new BlockPos(x, y1, z)).getBlock().isReplaceable(world, new BlockPos(x, y1, z)) && world.getBlockState(new BlockPos(x, y1, z)).getBlock().isOpaqueCube(world.getBlockState(new BlockPos(x, y1, z)))){
@@ -577,20 +598,20 @@ public class HbmWorldGen implements IWorldGenerator {
 				}
 			}
 			if(biome.getTempCategory() == Biome.TempCategory.COLD){
-				final int dimArcticStructure = parseInt(CompatibilityConfig.arcticStructure.get(dimID));
+				int dimArcticStructure = parseInt(CompatibilityConfig.arcticStructure.get(dimID));
 				if (dimArcticStructure > 0 && rand.nextInt(dimArcticStructure) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
-					final int y = 16 + rand.nextInt(32);
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
+					int y = 16 + rand.nextInt(32);
 					new ArcticVault().trySpawn(world, x, y, z);
 				}
 			}
 			if(biome.getDefaultTemperature() >= 1.8F){
-				final int dimPyramidStructure = parseInt(CompatibilityConfig.pyramidStructure.get(dimID));
+				int dimPyramidStructure = parseInt(CompatibilityConfig.pyramidStructure.get(dimID));
 				if (dimPyramidStructure > 0 && rand.nextInt(dimPyramidStructure) == 0) {
-					final int x = i + rand.nextInt(16);
-					final int z = j + rand.nextInt(16);
-					final int y = world.getHeight(x, z);
+					int x = i + rand.nextInt(16);
+					int z = j + rand.nextInt(16);
+					int y = world.getHeight(x, z);
 					
 					new AncientTomb().build(world, rand, x, y, z);
 				}
@@ -599,9 +620,9 @@ public class HbmWorldGen implements IWorldGenerator {
 			if(!biome.canRain() && biome.getDefaultTemperature() >= 1.8F) {
 				if(rand.nextInt(600) == 0) {
 					for(int a = 0; a < 1; a++) {
-						final int x = i + rand.nextInt(16);
-						final int z = j + rand.nextInt(16);
-						final int y = world.getHeight(x, z);
+						int x = i + rand.nextInt(16);
+						int z = j + rand.nextInt(16);
+						int y = world.getHeight(x, z);
 
 						OilSandBubble.spawnOil(world, x, y, z, 15 + rand.nextInt(31));
 					}
@@ -610,9 +631,9 @@ public class HbmWorldGen implements IWorldGenerator {
 		}
 		
 		if(rand.nextInt(25) == 0) {
-			final int randPosX = i + rand.nextInt(16);
-			final int randPosY = rand.nextInt(25);
-			final int randPosZ = j + rand.nextInt(16);
+			int randPosX = i + rand.nextInt(16);
+			int randPosY = rand.nextInt(25);
+			int randPosZ = j + rand.nextInt(16);
 
 			OilBubble.spawnOil(world, randPosX, randPosY, randPosZ, 7 + rand.nextInt(9));
 		}
@@ -624,7 +645,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(10000, 250, 10000), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(10000, 250, 10000)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(10000, 250, 10000)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(10000, 250, 10000)), 29);
 					}
 				}
 			}
@@ -633,7 +654,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(0, 250, 10000), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(0, 250, 10000)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(0, 250, 10000)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(0, 250, 10000)), 29);
 					}
 				}
 			}
@@ -642,7 +663,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(-10000, 250, 10000), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(-10000, 250, 10000)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(-10000, 250, 10000)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(-10000, 250, 10000)), 29);
 					}
 				}
 			}
@@ -651,7 +672,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(10000, 250, 0), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(10000, 250, 0)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(10000, 250, 0)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(10000, 250, 0)), 29);
 					}
 				}
 			}
@@ -660,7 +681,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(-10000, 250, 0), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(-10000, 250, 0)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(-10000, 250, 0)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(-10000, 250, 0)), 29);
 					}
 				}
 			}
@@ -669,7 +690,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(10000, 250, -10000), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(10000, 250, -10000)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(10000, 250, -10000)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(10000, 250, -10000)), 29);
 					}
 				}
 			}
@@ -678,7 +699,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(0, 250, -10000), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(0, 250, -10000)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(0, 250, -10000)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(0, 250, -10000)), 29);
 					}
 				}
 			}
@@ -687,7 +708,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(-10000, 250, -10000), Blocks.CHEST.getDefaultState());
 					if (world.getBlockState(new BlockPos(-10000, 250, -10000)).getBlock() == Blocks.CHEST) {
 						WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(9),
-                                world.getTileEntity(new BlockPos(-10000, 250, -10000)), 29);
+								(TileEntityChest) world.getTileEntity(new BlockPos(-10000, 250, -10000)), 29);
 					}
 				}
 			}

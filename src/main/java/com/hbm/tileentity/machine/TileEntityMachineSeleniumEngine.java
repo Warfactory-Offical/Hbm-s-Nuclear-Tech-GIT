@@ -1,35 +1,27 @@
 package com.hbm.tileentity.machine;
 
-import java.util.HashMap;
-
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.ITankPacketAcceptor;
-import com.hbm.items.ModItems;
 import com.hbm.inventory.EngineRecipes;
 import com.hbm.inventory.EngineRecipes.FuelGrade;
-import com.hbm.lib.Library;
+import com.hbm.items.ModItems;
 import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -37,7 +29,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implements ITickable, IEnergyGenerator, IFluidHandler, ITankPacketAcceptor {
+import java.util.HashMap;
+
+public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implements ITickable, IEnergyProviderMK2, IFluidHandler, ITankPacketAcceptor {
 
 	public ItemStackHandler inventory;
 
@@ -63,7 +57,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	public TileEntityMachineSeleniumEngine() {
 		inventory = new ItemStackHandler(14){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -80,11 +74,11 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -93,7 +87,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		this.powerCap = compound.getLong("powerCap");
 		tank.readFromNBT(compound);
@@ -104,7 +98,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setLong("powerCap", powerCap);
 		tank.writeToNBT(compound);
@@ -113,7 +107,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 		return super.writeToNBT(compound);
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / powerCap;
 	}
 	
@@ -121,7 +115,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	public void update() {
 		
 		if (!world.isRemote) {
-			this.sendPower(world, pos.add(0, -1, 0), ForgeDirection.DOWN);
+			this.tryProvide(world, pos.getX(), pos.getY() - 1, pos.getZ(), ForgeDirection.DOWN);
 			
 			pistonCount = countPistons();
 
@@ -174,10 +168,10 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 		return getHEFromFuel(tank.getFluid().getFluid());
 	}
 	
-	public static long getHEFromFuel(final Fluid type) {
+	public static long getHEFromFuel(Fluid type) {
 		if(EngineRecipes.hasFuelRecipe(type)) {
-			final FuelGrade grade = EngineRecipes.getFuelGrade(type);
-			final double efficiency = fuelEfficiency.containsKey(grade) ? fuelEfficiency.get(grade) : 0;
+			FuelGrade grade = EngineRecipes.getFuelGrade(type);
+			double efficiency = fuelEfficiency.containsKey(grade) ? fuelEfficiency.get(grade) : 0;
 			return (long) (EngineRecipes.getEnergy(type) / 1000L * efficiency);
 		}
 		
@@ -209,17 +203,19 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 		}
 	}
 
-	protected boolean inputValidForTank(final int tank, final int slot){
+	protected boolean inputValidForTank(int tank, int slot){
 		if(this.tank != null){
-            return isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
+			if(isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
+				return true;
+			}
 		}
 		return false;
 	}
 	
-	private boolean isValidFluidForTank(final int tank, final FluidStack stack) {
+	private boolean isValidFluidForTank(int tank, FluidStack stack) {
 		if(stack == null || this.tank == null)
 			return false;
-		final Fluid f = stack.getFluid();
+		Fluid f = stack.getFluid();
 
 		if(this.tank.getFluid() != null)
 			return f == this.tank.getFluid().getFluid();
@@ -228,7 +224,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(isValidFluidForTank(-1, resource)){
 			needsUpdate = true;
 			return tank.fill(resource, doFill);
@@ -238,12 +234,12 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 	
@@ -253,15 +249,16 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	}
 	
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1){
-        } else {
+			return;
+		} else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return true;
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -272,7 +269,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -288,7 +285,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

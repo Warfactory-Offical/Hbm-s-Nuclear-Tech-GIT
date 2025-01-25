@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class ItemFilter extends Item {
 	
-	public ItemFilter(final String s, final int durability) {
+	public ItemFilter(String s, int durability) {
 		this.setMaxDamage(durability);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -25,42 +25,43 @@ public class ItemFilter extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		
-		final ItemStack helmet = player.inventory.armorInventory.get(3);
-		final ItemStack stack = player.getHeldItem(hand);
+		ItemStack helmet = player.inventory.armorInventory.get(3);
+		ItemStack stack = player.getHeldItem(hand);
 		if(helmet == null || helmet.isEmpty())
-			return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+			return ActionResult.<ItemStack> newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 		
 		if(!(helmet.getItem() instanceof IGasMask)) {
 			
 			if(ArmorModHandler.hasMods(helmet)) {
-				final ItemStack[] mods = ArmorModHandler.pryMods(helmet);
+				ItemStack[] mods = ArmorModHandler.pryMods(helmet);
 				
 				if(mods[ArmorModHandler.helmet_only] != null) {
-					final ItemStack mask = mods[ArmorModHandler.helmet_only];
+					ItemStack mask = mods[ArmorModHandler.helmet_only];
 					
-					final ItemStack ret = installFilterOn(mask, stack, world, player);
+					ItemStack ret = installFilterOn(mask, stack, world, player);
 					ArmorModHandler.applyMod(helmet, mask);
-					return ActionResult.newResult(EnumActionResult.SUCCESS, ret);
+					return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, ret);
 				}
 			}
 		}
 		
-		return ActionResult.newResult(EnumActionResult.SUCCESS, installFilterOn(helmet, stack, world, player));
+		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, installFilterOn(helmet, stack, world, player));
 	}
 	
-	private ItemStack installFilterOn(final ItemStack helmet, ItemStack filter, final World world, final EntityPlayer player) {
+	private ItemStack installFilterOn(ItemStack helmet, ItemStack filter, World world, EntityPlayer player) {
 		
-		if(!(helmet.getItem() instanceof IGasMask mask)) {
+		if(!(helmet.getItem() instanceof IGasMask)) {
 			return filter;
 		}
-
-        if(!mask.isFilterApplicable(helmet, filter))
+		
+		IGasMask mask = (IGasMask) helmet.getItem();
+		if(!mask.isFilterApplicable(helmet, filter))
 			return filter;
 		
-		final ItemStack copy = filter.copy();
-		final ItemStack current = ArmorUtil.getGasMaskFilter(helmet);
+		ItemStack copy = filter.copy();
+		ItemStack current = ArmorUtil.getGasMaskFilter(helmet);
 		
 		if(current != null) {
 			filter = current;

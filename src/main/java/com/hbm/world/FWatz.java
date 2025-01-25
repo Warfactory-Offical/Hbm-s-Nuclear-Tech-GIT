@@ -290,16 +290,16 @@ public class FWatz {
 		}
 	};
 
-	public void generateHull(final World world, final Random rand, final BlockPos pos) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX() - 9;
-		final int y = pos.getY();
-		final int z = pos.getZ() - 9;
+	public void generateHull(World world, Random rand, BlockPos pos) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX() - 9;
+		int y = pos.getY();
+		int z = pos.getZ() - 9;
 		
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 13; j++) {
 				for(int k = 0; k < 19; k++) {
-					final String c = fwatz[j][i].substring(k, k + 1);
+					String c = fwatz[j][i].substring(k, k + 1);
 					Block b = Blocks.AIR;
 
 					if(c.equals("X"))
@@ -327,18 +327,18 @@ public class FWatz {
 
 	}
 
-	public static boolean checkHull(final World world, final BlockPos pos) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX() - 9;
-		final int y = pos.getY() - 6;
-		final int z = pos.getZ() - 9;
+	public static boolean checkHull(World world, BlockPos pos) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX() - 9;
+		int y = pos.getY() - 6;
+		int z = pos.getZ() - 9;
 		
-		final boolean flag = true;
+		boolean flag = true;
 		
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 13; j++) {
 				for(int k = 0; k < 19; k++) {
-					final String c = fwatz[j][i].substring(k, k + 1);
+					String c = fwatz[j][i].substring(k, k + 1);
 					Block b = Blocks.AIR;
 					boolean flag2 = false;
 
@@ -382,16 +382,16 @@ public class FWatz {
 		return flag;
 	}
 	
-	public static void fillPlasma(final World world, final BlockPos pos) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX() - 9;
-		final int y = pos.getY() - 6;
-		final int z = pos.getZ() - 9;
+	public static void fillPlasma(World world, BlockPos pos) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX() - 9;
+		int y = pos.getY() - 6;
+		int z = pos.getZ() - 9;
 		
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 13; j++) {
 				for(int k = 0; k < 19; k++) {
-					final String c = fwatz[j][i].substring(k, k + 1);
+					String c = fwatz[j][i].substring(k, k + 1);
 
 					if(c.equals("P"))
 						world.setBlockState(mPos.setPos(x + i, y + j, z + k), ModBlocks.fwatz_plasma.getDefaultState());
@@ -400,16 +400,16 @@ public class FWatz {
 		}
 	}
 	
-	public static void emptyPlasma(final World world, final BlockPos pos) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX() - 9;
-		final int y = pos.getY() - 6;
-		final int z = pos.getZ() - 9;
+	public static void emptyPlasma(World world, BlockPos pos) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX() - 9;
+		int y = pos.getY() - 6;
+		int z = pos.getZ() - 9;
 		
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 13; j++) {
 				for(int k = 0; k < 19; k++) {
-					final String c = fwatz[j][i].substring(k, k + 1);
+					String c = fwatz[j][i].substring(k, k + 1);
 
 					if(c.equals("P"))
 						if(world.getBlockState(mPos.setPos(x + i, y + j, z + k)).getBlock() == ModBlocks.fwatz_plasma)
@@ -419,18 +419,18 @@ public class FWatz {
 		}
 	}
 	
-	public static boolean getPlasma(final World world, final BlockPos pos) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX() - 9;
-		final int y = pos.getY() - 6;
-		final int z = pos.getZ() - 9;
+	public static boolean getPlasma(World world, BlockPos pos) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX() - 9;
+		int y = pos.getY() - 6;
+		int z = pos.getZ() - 9;
 		
-		final boolean flag = false;
+		boolean flag = false;
 		
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 13; j++) {
 				for(int k = 0; k < 19; k++) {
-					final String c = fwatz[j][i].substring(k, k + 1);
+					String c = fwatz[j][i].substring(k, k + 1);
 					
 					if(c.equals("P") && world.getBlockState(mPos.setPos(x + i, y + j, z + k)).getBlock() == ModBlocks.fwatz_plasma)
 						return true;

@@ -12,7 +12,7 @@ public class TileEntityFactoryHatch extends TileEntity {
 
 	TileEntity tile;
 
-	private boolean isTEOK(final TileEntity te){
+	private boolean isTEOK(TileEntity te){
 		if(te instanceof TileEntityCoreTitanium)
 			return ((TileEntityCoreTitanium)te).isStructureValid(world);
 		if(te instanceof TileEntityCoreAdvanced)
@@ -20,11 +20,11 @@ public class TileEntityFactoryHatch extends TileEntity {
 		return false;
 	}
 	
-	private TileEntity getTE(final World world, final BlockPos pos) {
-		final EnumFacing e = world.getBlockState(pos).getValue(BlockHorizontal.FACING);
+	private TileEntity getTE(World world, BlockPos pos) {
+		EnumFacing e = world.getBlockState(pos).getValue(BlockHorizontal.FACING);
 		if(e == EnumFacing.NORTH)
 		{
-			final TileEntity te = world.getTileEntity(pos.add(0, 0, 1));
+			TileEntity te = world.getTileEntity(pos.add(0, 0, 1));
 			if(isTEOK(te)){
 				return te;
 			} else {
@@ -33,7 +33,7 @@ public class TileEntityFactoryHatch extends TileEntity {
 		}
 		if(e == EnumFacing.SOUTH)
 		{
-			final TileEntity te = world.getTileEntity(pos.add(0, 0, -1));
+			TileEntity te = world.getTileEntity(pos.add(0, 0, -1));
 			if(isTEOK(te)){
 				return te;
 			} else {
@@ -42,7 +42,7 @@ public class TileEntityFactoryHatch extends TileEntity {
 		}
 		if(e == EnumFacing.WEST)
 		{
-			final TileEntity te = world.getTileEntity(pos.add(1, 0, 0));
+			TileEntity te = world.getTileEntity(pos.add(1, 0, 0));
 			if(isTEOK(te)){
 				return te;
 			} else {
@@ -51,7 +51,7 @@ public class TileEntityFactoryHatch extends TileEntity {
 		}
 		if(e == EnumFacing.EAST)
 		{
-			final TileEntity te = world.getTileEntity(pos.add(-1, 0, 0));
+			TileEntity te = world.getTileEntity(pos.add(-1, 0, 0));
 			if(isTEOK(te)){
 				return te;
 			} else {
@@ -62,7 +62,7 @@ public class TileEntityFactoryHatch extends TileEntity {
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			if(tile == null) {
 				tile = this.getTE(world, pos);
@@ -77,7 +77,7 @@ public class TileEntityFactoryHatch extends TileEntity {
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			if(tile == null) {
 				tile = this.getTE(world, pos);

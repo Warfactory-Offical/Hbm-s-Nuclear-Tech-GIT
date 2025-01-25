@@ -1,27 +1,16 @@
 package com.hbm.entity.mob;
 
-import java.util.List;
-
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.entity.effect.EntityNukeTorex;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.entity.mob.ai.EntityAINuclearCreeperSwell;
+import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
-import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.main.AdvancementManager;
 import com.hbm.util.ContaminationUtil;
-
-import com.hbm.util.ItemStackUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -44,10 +33,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune {
-	private static final DataParameter<Integer> STATE = EntityDataManager.createKey(EntityNuclearCreeper.class, DataSerializers.VARINT);
-	public static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(EntityNuclearCreeper.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(EntityNuclearCreeper.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer> createKey(EntityNuclearCreeper.class, DataSerializers.VARINT);
+	public static final DataParameter<Boolean> POWERED = EntityDataManager.<Boolean> createKey(EntityNuclearCreeper.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> IGNITED = EntityDataManager.<Boolean> createKey(EntityNuclearCreeper.class, DataSerializers.BOOLEAN);
 	/**
 	 * Time when this creeper was last in an active state (Messed up code here,
 	 * probably causes creeper animation to go weird)
@@ -62,7 +53,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	/** Explosion radius for this creeper. */
 	private int explosionRadius = 20;
 
-	public EntityNuclearCreeper(final World p_i1733_1_){
+	public EntityNuclearCreeper(World p_i1733_1_){
 		super(p_i1733_1_);
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAINuclearCreeperSwell(this));
@@ -83,7 +74,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	}
 
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount){
+	public boolean attackEntityFrom(DamageSource source, float amount){
 
 		if(source == ModDamageSource.radiation || source == ModDamageSource.mudPoisoning) {
 			this.heal(amount);
@@ -102,7 +93,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	}
 
 	@Override
-	protected void dropFewItems(final boolean wasRecentlyHit, final int lootingModifier){
+	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier){
 		super.dropFewItems(wasRecentlyHit, lootingModifier);
 
 		if(rand.nextInt(3) == 0)
@@ -113,7 +104,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * Called when the mob is falling. Calculates and applies fall damage.
 	 */
 	@Override
-	public void fall(final float distance, final float damageMultiplier){
+	public void fall(float distance, float damageMultiplier){
 		super.fall(distance, damageMultiplier);
 		this.timeSinceIgnited = (int)(this.timeSinceIgnited + distance * 1.5F);
 
@@ -134,10 +125,10 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	public void writeEntityToNBT(final NBTTagCompound compound){
+	public void writeEntityToNBT(NBTTagCompound compound){
 		super.writeEntityToNBT(compound);
 
-		if(this.dataManager.get(POWERED)) {
+		if((Boolean) this.dataManager.get(POWERED)) {
 			compound.setBoolean("powered", true);
 		}
 
@@ -150,7 +141,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	public void readEntityFromNBT(final NBTTagCompound compound){
+	public void readEntityFromNBT(NBTTagCompound compound){
 		super.readEntityFromNBT(compound);
 		this.dataManager.set(POWERED, compound.getBoolean("powered"));
 
@@ -184,7 +175,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 				this.setCreeperState(1);
 			}
 
-			final int i = this.getCreeperState();
+			int i = this.getCreeperState();
 
 			if(i > 0 && this.timeSinceIgnited == 0) {
 				this.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1.0F * 30 / 75, 0.5F);
@@ -214,7 +205,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * Returns the sound this mob makes when it is hurt.
 	 */
 	@Override
-	protected SoundEvent getHurtSound(final DamageSource damageSourceIn){
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn){
 		return SoundEvents.ENTITY_CREEPER_HURT;
 	}
 
@@ -230,26 +221,26 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * Called when the mob's health reaches 0.
 	 */
 	@Override
-	public void onDeath(final DamageSource p_70645_1_){
+	public void onDeath(DamageSource p_70645_1_){
 		super.onDeath(p_70645_1_);
 
-		final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(10, 10, 10));
+		List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(10, 10, 10));
 
-		for(final EntityPlayer player : players) {
+		for(EntityPlayer player : players) {
 			AdvancementManager.grantAchievement(player, AdvancementManager.bossCreeper);
 		}
 
 		if(p_70645_1_.getTrueSource() instanceof EntitySkeleton || (p_70645_1_.isProjectile() && p_70645_1_.getImmediateSource() instanceof EntityArrow && ((EntityArrow)(p_70645_1_.getImmediateSource())).shootingEntity == null)) {
-			final int i = rand.nextInt(11);
-			final int j = rand.nextInt(3);
+			int i = rand.nextInt(11);
+			int j = rand.nextInt(3);
 			if(i == 0)
-				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.U235), j), 0);
+				this.dropItem(ModItems.nugget_u235, j);
 			if(i == 1)
-				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU238), j), 0);
+				this.dropItem(ModItems.nugget_pu238, j);
 			if(i == 2)
-				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.PU239), j), 0);
+				this.dropItem(ModItems.nugget_pu239, j);
 			if(i == 3)
-				this.entityDropItem(ItemStackUtil.itemStackFrom(ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM), j), 0);
+				this.dropItem(ModItems.nugget_neptunium, j);
 			if(i == 4)
 				this.dropItem(ModItems.man_core, 1);
 			if(i == 5) {
@@ -285,7 +276,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	}
 
 	@Override
-	public boolean attackEntityAsMob(final Entity p_70652_1_){
+	public boolean attackEntityAsMob(Entity p_70652_1_){
 		return true;
 	}
 
@@ -301,7 +292,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * when it is ignited.
 	 */
 	@SideOnly(Side.CLIENT)
-	public float getCreeperFlashIntensity(final float p_70831_1_){
+	public float getCreeperFlashIntensity(float p_70831_1_){
 		return (this.lastActiveTime + (this.timeSinceIgnited - this.lastActiveTime) * p_70831_1_) / (this.fuseTime - 2);
 	}
 
@@ -320,7 +311,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	/**
 	 * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
 	 */
-	public void setCreeperState(final int i) {
+	public void setCreeperState(int i) {
 		this.dataManager.set(STATE, i);
 	}
 
@@ -328,7 +319,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * Called when a lightning bolt hits the entity.
 	 */
 	@Override
-	public void onStruckByLightning(final EntityLightningBolt p_70077_1_){
+	public void onStruckByLightning(EntityLightningBolt p_70077_1_){
 		super.onStruckByLightning(p_70077_1_);
 		this.dataManager.set(POWERED, Boolean.TRUE);
 	}
@@ -338,8 +329,8 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	 * gets into the saddle on a pig.
 	 */
 	@Override
-	protected boolean processInteract(final EntityPlayer player, final EnumHand hand){
-		final ItemStack itemstack = player.inventory.getCurrentItem();
+	protected boolean processInteract(EntityPlayer player, EnumHand hand){
+		ItemStack itemstack = player.inventory.getCurrentItem();
 
 		if(itemstack!= null && itemstack.getItem() == Items.FLINT_AND_STEEL) {
 			this.world.playSound(null, this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
@@ -358,7 +349,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 	private void explode(){
 		if(!this.world.isRemote) {
 
-			final boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
+			boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
 
 			if(this.getPowered()) {
 				EntityNukeTorex.statFac(world, posX, posY, posZ, 70);
@@ -388,7 +379,7 @@ public class EntityNuclearCreeper extends EntityMob implements IRadiationImmune 
 		this.dataManager.set(IGNITED, Boolean.TRUE);
 	}
 
-	public void setPowered(final boolean power){
+	public void setPowered(boolean power){
 		this.dataManager.set(POWERED, power);
 	}
 }

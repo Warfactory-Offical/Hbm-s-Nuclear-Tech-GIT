@@ -12,7 +12,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerOilburner extends Container {
     private final TileEntityHeaterOilburner heater;
 
-    public ContainerOilburner(final InventoryPlayer player, final TileEntityHeaterOilburner heater) {
+    public ContainerOilburner(InventoryPlayer player, TileEntityHeaterOilburner heater) {
         this.heater = heater;
 
         // In
@@ -22,7 +22,7 @@ public class ContainerOilburner extends Container {
         // Fluid ID
         this.addSlotToContainer(new SlotItemHandler(heater.inventory, 2, 44, 71));
 
-        final int offset = 37;
+        int offset = 37;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
@@ -36,17 +36,17 @@ public class ContainerOilburner extends Container {
     }
 
     @Override
-    public boolean canInteractWith(final EntityPlayer playerIn) {
+    public boolean canInteractWith(EntityPlayer playerIn) {
         return heater.isUseableByPlayer(playerIn);
     }
 
     @Override
-    public ItemStack transferStackInSlot(final EntityPlayer playerIn, final int index) {
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack stack = ItemStack.EMPTY;
-        final Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
-            final ItemStack originalStack = slot.getStack();
+            ItemStack originalStack = slot.getStack();
             stack = originalStack.copy();
 
             if (index <= 2) {

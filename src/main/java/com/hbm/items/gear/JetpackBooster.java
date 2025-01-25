@@ -32,12 +32,12 @@ public class JetpackBooster extends JetpackBase {
 	private ModelJetPack model;
 	public static int maxFuel = 750;
 
-	public JetpackBooster(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final Fluid fuel, final int maxFuel, final String s) {
+	public JetpackBooster(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, Fluid fuel, int maxFuel, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn, fuel, maxFuel, s);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("High-powered vectorized jetpack.");
 		tooltip.add("Highly increased fuel consumption.");
 		super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -45,13 +45,13 @@ public class JetpackBooster extends JetpackBase {
 
 
 	@Override
-	public boolean isValidArmor(final ItemStack stack, final EntityEquipmentSlot armorType, final Entity entity) {
+	public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
 		return armorType == EntityEquipmentSlot.CHEST;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		if (armorSlot == EntityEquipmentSlot.CHEST) {
 			if (model == null) {
 				this.model = new ModelJetPack();
@@ -63,20 +63,20 @@ public class JetpackBooster extends JetpackBase {
 	}
 	
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return "hbm:textures/armor/JetPack.png";
 	}
 
 	@Override
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack stack) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
     	
-		final IHBMData props = HbmCapability.getData(player);
+		IHBMData props = HbmCapability.getData(player);
 
 		if(!world.isRemote) {
 
 			if(getFuel(stack) > 0 && props.isJetpackActive()) {
 
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack");
 				data.setInteger("player", player.getEntityId());
 				data.setInteger("mode", 1);
@@ -87,7 +87,7 @@ public class JetpackBooster extends JetpackBase {
 			if(player.motionY < 0.6D)
 				player.motionY += 0.1D;
 
-			final Vec3d look = player.getLookVec();
+			Vec3d look = player.getLookVec();
 
 			if(Vec3.createVectorHelper(player.motionX, player.motionY, player.motionZ).length() < 5) {
 				player.motionX += look.x * 0.25;

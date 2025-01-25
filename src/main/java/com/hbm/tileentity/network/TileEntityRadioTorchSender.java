@@ -1,16 +1,12 @@
 package com.hbm.tileentity.network;
 
-import com.hbm.tileentity.network.RTTYSystem;
-
-import net.minecraft.block.state.IBlockState;
-
 public class TileEntityRadioTorchSender extends TileEntityRadioTorchBase {
 
 	@Override
 	public void update() {
 		
 		if(!world.isRemote) {
-			final int redstonePower = world.getRedstonePowerFromNeighbors(pos);
+			int redstonePower = world.isBlockIndirectlyGettingPowered(pos);
 
 			boolean shouldSend = this.polling;
 			if(redstonePower != this.lastState) {

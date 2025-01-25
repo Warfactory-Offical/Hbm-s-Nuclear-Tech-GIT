@@ -1,7 +1,6 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.items.machine.ItemTurretBiometry;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +27,7 @@ public class TileEntityMachineTeleLinker extends TileEntity implements ITickable
 	public TileEntityMachineTeleLinker() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -36,12 +35,12 @@ public class TileEntityMachineTeleLinker extends TileEntity implements ITickable
 		dropProvider = new ICapabilityProvider(){
 
 			@Override
-			public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+			public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 				return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 			}
 
 			@Override
-			public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+			public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 				return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : null;
 			}
 			
@@ -56,11 +55,11 @@ public class TileEntityMachineTeleLinker extends TileEntity implements ITickable
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -70,14 +69,14 @@ public class TileEntityMachineTeleLinker extends TileEntity implements ITickable
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
@@ -88,7 +87,7 @@ public class TileEntityMachineTeleLinker extends TileEntity implements ITickable
 		{
 			if(inventory.getStackInSlot(0).getItem() instanceof ItemTurretBiometry && inventory.getStackInSlot(1).getItem() instanceof ItemTurretBiometry) {
 				
-				final String[] names = ItemTurretBiometry.getNames(inventory.getStackInSlot(0));
+				String[] names = ItemTurretBiometry.getNames(inventory.getStackInSlot(0));
 				
 				if(names != null)
 					for(int i = 0; i < names.length; i++)

@@ -21,9 +21,9 @@ public class HugeMush extends WorldGenerator {
     }
 
     @Override
-	public boolean generate(final World world, final Random rand, final BlockPos pos1)
+	public boolean generate(World world, Random rand, BlockPos pos1)
     {
-    	final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+    	MutableBlockPos pos = new BlockPos.MutableBlockPos();
     	pos.setPos(pos1);
     	for(int i = -1; i < 2; i++)
     	{

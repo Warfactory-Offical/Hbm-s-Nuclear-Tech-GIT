@@ -1,10 +1,8 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineNukeFurnace;
 import com.hbm.inventory.BreederRecipes;
 import com.hbm.util.ContaminationUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -34,7 +32,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 	public TileEntityNukeFurnace() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -49,11 +47,11 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -62,16 +60,16 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 		}
 	}
 	
-	public boolean hasItemPower(final ItemStack itemStack) {
+	public boolean hasItemPower(ItemStack itemStack) {
 		return getItemPower(itemStack) > 0;
 	}
 	
-	private static int getItemPower(final ItemStack stack) {
+	private static int getItemPower(ItemStack stack) {
 		if(stack == null) {
 			return 0;
 		} else {
 
-			final int[] power = BreederRecipes.getFuelValue(stack);
+			int[] power = BreederRecipes.getFuelValue(stack);
 
 			if(power == null){
 				return (int)(Math.max(0, Math.sqrt(ContaminationUtil.getStackRads(stack))-7));
@@ -82,7 +80,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		dualPower = compound.getShort("powerTime");
 		dualCookTime = compound.getShort("CookTime");
 		if(compound.hasKey("inventory"))
@@ -91,18 +89,18 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setShort("powerTime", (short) dualPower);
 		compound.setShort("cookTime", (short) dualCookTime);
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
-	public int getDiFurnaceProgressScaled(final int i) {
+	public int getDiFurnaceProgressScaled(int i) {
 		return (dualCookTime * i) / processingSpeed;
 	}
 	
-	public int getPowerRemainingScaled(final int i) {
+	public int getPowerRemainingScaled(int i) {
 		return (dualPower * i) / maxPower;
 	}
 	
@@ -111,7 +109,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 		{
 			return false;
 		}
-        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
+        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
 		if(itemStack == null || itemStack.isEmpty())
 		{
 			return false;
@@ -135,7 +133,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 	
 	private void processItem() {
 		if(canProcess()) {
-	        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
+	        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
 			
 			if(inventory.getStackInSlot(2).isEmpty())
 			{
@@ -148,7 +146,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 			{
 				if(inventory.getStackInSlot(i).isEmpty())
 				{
-					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem().setFull3D()));
+					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem().setFull3D()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}
@@ -184,7 +182,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 				if(!inventory.getStackInSlot(0).isEmpty())
 				{
 					flag1 = true;
-					final ItemStack container = inventory.getStackInSlot(0).getItem().getContainerItem(inventory.getStackInSlot(0));
+					ItemStack container = inventory.getStackInSlot(0).getItem().getContainerItem(inventory.getStackInSlot(0));
 					inventory.getStackInSlot(0).shrink(1);
 					if(inventory.getStackInSlot(0).isEmpty())
 					{
@@ -207,9 +205,14 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 				dualCookTime = 0;
 			}
 			
-			boolean trigger = !hasPower() || !canProcess() || this.dualCookTime != 0;
-
-            if(trigger)
+			boolean trigger = true;
+			
+			if(hasPower() && canProcess() && this.dualCookTime == 0)
+			{
+				trigger = false;
+			}
+			
+			if(trigger)
             {
                 flag1 = true;
                 MachineNukeFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
@@ -223,12 +226,12 @@ public class TileEntityNukeFurnace extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 }

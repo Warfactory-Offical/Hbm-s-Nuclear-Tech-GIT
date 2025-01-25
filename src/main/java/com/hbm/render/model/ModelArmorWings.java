@@ -1,14 +1,12 @@
 package com.hbm.render.model;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.ModelRendererObj;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class ModelArmorWings extends ModelArmorBase {
 
@@ -17,7 +15,7 @@ public class ModelArmorWings extends ModelArmorBase {
 	ModelRendererObj wingRB;
 	ModelRendererObj wingRT;
 	
-	public ModelArmorWings(final int type) {
+	public ModelArmorWings(int type) {
 		super(type);
 
 		wingLB = new ModelRendererObj(ResourceManager.armor_wings, "LeftBase");
@@ -37,7 +35,7 @@ public class ModelArmorWings extends ModelArmorBase {
 	}
 
 	@Override
-	public void render(final Entity entity, final float par2, final float par3, final float par4, final float par5, final float par6, final float par7) {
+	public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 		
 		setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
 		//body.copyTo(wingLB);
@@ -49,17 +47,17 @@ public class ModelArmorWings extends ModelArmorBase {
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(this.getTexture());
 		
-		final double px = 0.0625D;
+		double px = 0.0625D;
 
 		double rot = Math.sin((entity.ticksExisted) * 0.2D) * 20;
 		double rot2 = Math.sin((entity.ticksExisted) * 0.2D - Math.PI * 0.5) * 50 + 30;
 		
-		final int pivotSideOffset = 1;
-		final int pivotFrontOffset = 5;
-		final int pivotZOffset = 3;
-		final int tipSideOffset = 16;
-		final int tipZOffset = 2;
-		final double inwardAngle = 10D;
+		int pivotSideOffset = 1;
+		int pivotFrontOffset = 5;
+		int pivotZOffset = 3;
+		int tipSideOffset = 16;
+		int tipZOffset = 2;
+		double inwardAngle = 10D;
 		
 		GL11.glPushMatrix();
 

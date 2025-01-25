@@ -9,7 +9,7 @@ public class DataValueEnum<T extends Enum<T>> extends DataValue {
 	public Class<T> enumClass;
 
 	@SuppressWarnings("unchecked")
-	public DataValueEnum(final Enum<T> e){
+	public DataValueEnum(Enum<T> e){
 		value = e;
 		if(e != null)
 			enumClass = (Class<T>)e.getClass();
@@ -22,7 +22,7 @@ public class DataValueEnum<T extends Enum<T>> extends DataValue {
 
 	@Override
 	public boolean getBoolean(){
-		return value.toString().equalsIgnoreCase("true");
+		return value.toString().toLowerCase().equals("true") ? true : false;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class DataValueEnum<T extends Enum<T>> extends DataValue {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E extends Enum<E>> E getEnum(final Class<E> clazz){
+	public <E extends Enum<E>> E getEnum(Class<E> clazz){
 		if(clazz == enumClass) {
 			return (E)value;
 		} else {
@@ -51,7 +51,7 @@ public class DataValueEnum<T extends Enum<T>> extends DataValue {
 
 	@Override
 	public NBTBase writeToNBT(){
-		final NBTTagCompound tag = new NBTTagCompound();
+		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("clazz", enumClass.getName());
 		tag.setInteger("ordinal", value.ordinal());
 		return tag;
@@ -59,11 +59,11 @@ public class DataValueEnum<T extends Enum<T>> extends DataValue {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void readFromNBT(final NBTBase nbt){
-		final NBTTagCompound tag = (NBTTagCompound)nbt;
+	public void readFromNBT(NBTBase nbt){
+		NBTTagCompound tag = (NBTTagCompound)nbt;
 		try {
 			this.enumClass = (Class<T>)Class.forName(tag.getString("clazz"));
-		} catch(final ClassNotFoundException e) {
+		} catch(ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 		this.value = this.enumClass.getEnumConstants()[tag.getInteger("ordinal")];

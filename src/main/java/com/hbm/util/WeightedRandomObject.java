@@ -8,7 +8,7 @@ public class WeightedRandomObject extends WeightedRandom.Item {
 	
 	Object item;
 
-	public WeightedRandomObject(final Object o, final int weight) {
+	public WeightedRandomObject(Object o, int weight) {
 		super(weight);
 		item = o;
 	}

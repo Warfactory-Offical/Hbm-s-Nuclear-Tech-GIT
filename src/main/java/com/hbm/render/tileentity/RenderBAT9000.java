@@ -1,60 +1,47 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.forgefluid.FFUtils;
-import com.hbm.forgefluid.FluidTypeHandler;
-import com.hbm.forgefluid.FluidTypeHandler.FluidProperties;
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
 import com.hbm.main.ResourceManager;
+import com.hbm.render.amlfrom1710.Tessellator;
 import com.hbm.render.misc.DiamondPronter;
 import com.hbm.render.misc.EnumSymbol;
 import com.hbm.tileentity.machine.TileEntityMachineBAT9000;
-
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.fluids.Fluid;
+import org.lwjgl.opengl.GL11;
 
 public class RenderBAT9000 extends TileEntitySpecialRenderer<TileEntityMachineBAT9000> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityMachineBAT9000 te){
+	public boolean isGlobalRenderer(TileEntityMachineBAT9000 te){
 		return true;
 	}
 
 	@Override
-	public void render(final TileEntityMachineBAT9000 bat, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
+	public void render(TileEntityMachineBAT9000 bat, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
-		GlStateManager.enableLighting();
-		GlStateManager.disableCull();
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 
 		bindTexture(ResourceManager.bat9000_tex);
 
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
 		ResourceManager.bat9000.renderAll();
-		GlStateManager.shadeModel(GL11.GL_FLAT);
+		GL11.glShadeModel(GL11.GL_FLAT);
 
-		Fluid type = null;
-		if(bat.tank.getFluid() != null)
-			type = bat.tank.getFluid().getFluid();
+		FluidType type = bat.tankNew.getTankType();
 
-		if(type != null) {
+		if(type != null && type != Fluids.NONE) {
 
 			RenderHelper.disableStandardItemLighting();
 			GL11.glPushMatrix();
-			final FluidProperties props = FluidTypeHandler.getProperties(type);
-			final int poison = props.poison;
-			final int flammability = props.flammability;
-			final int reactivity = props.reactivity;
-			final EnumSymbol symbol = props.symbol;
+			int poison = type.poison;
+			int flammability = type.flammability;
+			int reactivity = type.reactivity;
+			EnumSymbol symbol = type.symbol;
 
 			GL11.glRotatef(45, 0, 1, 0);
 
@@ -69,58 +56,46 @@ public class RenderBAT9000 extends TileEntitySpecialRenderer<TileEntityMachineBA
 			}
 			GL11.glPopMatrix();
 			RenderHelper.enableStandardItemLighting();
-
-			GlStateManager.disableCull();
-			GlStateManager.disableLighting();
-			FFUtils.setColorFromFluid(type);
-			
-			final float scale = (float)bat.tank.getFluidAmount()/bat.tank.getCapacity();
-			
-			final float lby = OpenGlHelper.lastBrightnessY;
-			final float lbx = OpenGlHelper.lastBrightnessX;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (15*type.getLuminosity()) +15, lby);
-			
-			final TextureAtlasSprite sprite = FFUtils.getTextureFromFluid(type);
-			final float u = sprite.getMinU();
-			final float v = sprite.getMinV();
-			final float mU = sprite.getMaxU();
-			final float mV = sprite.getInterpolatedV(scale*16);
-			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-			final Tessellator tess = Tessellator.getInstance();
-			final BufferBuilder buf = tess.getBuffer();
-
-			final double height = bat.tank.getFluidAmount() * 1.5D / bat.tank.getCapacity();
-			final double off = 2.2;
-
-			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-			buf.pos(-off, 1.5, -0.5).tex(u, v).endVertex();
-			buf.pos(-off, 1.5 + height, -0.5).tex(u, mV).endVertex();
-			buf.pos(-off, 1.5 + height, 0.5).tex(mU, mV).endVertex();
-			buf.pos(-off, 1.5, 0.5).tex(mU, v).endVertex();
-
-			buf.pos(off, 1.5, -0.5).tex(u, v).endVertex();
-			buf.pos(off, 1.5 + height, -0.5).tex(u, mV).endVertex();
-			buf.pos(off, 1.5 + height, 0.5).tex(mU, mV).endVertex();
-			buf.pos(off, 1.5, 0.5).tex(mU, v).endVertex();
-
-			buf.pos(-0.5, 1.5, -off).tex(u, v).endVertex();
-			buf.pos(-0.5, 1.5 + height, -off).tex(u, mV).endVertex();
-			buf.pos(0.5, 1.5 + height, -off).tex(mU, mV).endVertex();
-			buf.pos(0.5, 1.5, -off).tex(mU, v).endVertex();
-
-			buf.pos(-0.5, 1.5, off).tex(u, v).endVertex();
-			buf.pos(-0.5, 1.5 + height, off).tex(u, mV).endVertex();
-			buf.pos(0.5, 1.5 + height, off).tex(mU, mV).endVertex();
-			buf.pos(0.5, 1.5, off).tex(mU, v).endVertex();
-
-			tess.draw();
-
-			GlStateManager.color(1, 1, 1, 1);
-			GlStateManager.enableLighting();
-			
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lbx, lby);
 		}
+
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glColor3f(1F, 1F, 1F);
+		Tessellator tess = Tessellator.instance;
+
+		double height = bat.tankNew.getFill() * 1.5D / bat.tankNew.getMaxFill();
+		double off = 2.2;
+
+		tess.startDrawingQuads();
+		tess.setColorOpaque_I(type.getColor());
+
+		tess.addVertex(-off, 1.5, -0.5);
+		tess.addVertex(-off, 1.5 + height, -0.5);
+		tess.addVertex(-off, 1.5 + height, 0.5);
+		tess.addVertex(-off, 1.5, 0.5);
+
+		tess.addVertex(off, 1.5, -0.5);
+		tess.addVertex(off, 1.5 + height, -0.5);
+		tess.addVertex(off, 1.5 + height, 0.5);
+		tess.addVertex(off, 1.5, 0.5);
+
+		tess.addVertex(-0.5, 1.5, -off);
+		tess.addVertex(-0.5, 1.5 + height, -off);
+		tess.addVertex(0.5, 1.5 + height, -off);
+		tess.addVertex(0.5, 1.5, -off);
+
+		tess.addVertex(-0.5, 1.5, off);
+		tess.addVertex(-0.5, 1.5 + height, off);
+		tess.addVertex(0.5, 1.5 + height, off);
+		tess.addVertex(0.5, 1.5, off);
+
+		tess.draw();
+
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+
 		GL11.glPopMatrix();
 	}
 }

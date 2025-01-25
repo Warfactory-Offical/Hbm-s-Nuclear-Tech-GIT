@@ -20,10 +20,10 @@ import net.minecraft.item.ItemStack;
 public class DFC {
 	
 	private static class ActionAddRecipe implements IAction{
-		private final ItemStack input;
-		private final ItemStack output;
+		private ItemStack input;
+		private ItemStack output;
 		private long spark = 0;
-		public ActionAddRecipe(final IItemStack input, final IItemStack output, final long spark){
+		public ActionAddRecipe(IItemStack input, IItemStack output, long spark){
 			this.input = CraftTweakerMC.getItemStack(input);
 			this.output = CraftTweakerMC.getItemStack(output);
 			this.spark = spark;
@@ -51,16 +51,16 @@ public class DFC {
 	}
 
 	@ZenMethod
-	public static void addRecipe(final IItemStack input, final IItemStack output, final long spark){
+	public static void addRecipe(IItemStack input, IItemStack output, long spark){
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(input, output, spark));
 	}
 
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private final ItemStack input;
+		private ItemStack input;
 
-		public ActionRemoveRecipe(final IItemStack input){
+		public ActionRemoveRecipe(IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);
 		}
 		@Override
@@ -78,7 +78,7 @@ public class DFC {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(final IItemStack input){
+	public static void removeRecipe(IItemStack input){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(input));
 	}
 

@@ -23,10 +23,10 @@ abstract class matrixTransform extends funcMatrix {
      * @param z
      * @return
      */
-    public Mat4 rotation(final float radAngle, final float x, final float y, final float z) {
-        final float c = (float) Math.cos(radAngle);
-        final float s = (float) Math.sin(radAngle);
-        final float t = (float) (1.0 - c);
+    public Mat4 rotation(float radAngle, float x, float y, float z) {
+        float c = (float) Math.cos(radAngle);
+        float s = (float) Math.sin(radAngle);
+        float t = (float) (1.0 - c);
         m00 = c + x * x * t;
         m11 = c + y * y * t;
         m22 = c + z * z * t;
@@ -52,11 +52,11 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat4) this;
     }
 
-    public Mat4 rotate(final float angle, final Vec3 v) {
+    public Mat4 rotate(float angle, Vec3 v) {
         return rotate(angle, v.x, v.y, v.z, (Mat4) this);
     }
 
-    public Mat4 rotate(final float angle, final float x, final float y, final float z) {
+    public Mat4 rotate(float angle, float x, float y, float z) {
         return rotate(angle, x, y, z, (Mat4) this);
     }
 
@@ -70,35 +70,32 @@ abstract class matrixTransform extends funcMatrix {
      * @param res
      * @return
      */
-    public Mat4 rotate(final float angle, final float x, final float y, final float z, final Mat4 res) {
-        final float s = (float) Math.sin(angle);
-        final float c = (float) Math.cos(angle);
-        final float C = 1.0f - c;
+    public Mat4 rotate(float angle, float x, float y, float z, Mat4 res) {
+        float s = (float) Math.sin(angle);
+        float c = (float) Math.cos(angle);
+        float C = 1.0f - c;
         // rotation matrix elements: m30, m31, m32, m03, m13, m23 = 0, m33 = 1
-        final float xx = x * x;
-        float xy = x * y;
-        final float xz = x * z;
-        final float yy = y * y;
-        final float yz = y * z;
-        final float zz = z * z;
-        final float rm00 = xx * C + c;
-        final float rm01 = xy * C + z * s;
-        final float rm02 = xz * C - y * s;
-        final float rm10 = xy * C - z * s;
-        final float rm11 = yy * C + c;
-        final float rm12 = yz * C + x * s;
-        final float rm20 = xz * C + y * s;
-        final float rm21 = yz * C - x * s;
-        final float rm22 = zz * C + c;
+        float xx = x * x, xy = x * y, xz = x * z;
+        float yy = y * y, yz = y * z;
+        float zz = z * z;
+        float rm00 = xx * C + c;
+        float rm01 = xy * C + z * s;
+        float rm02 = xz * C - y * s;
+        float rm10 = xy * C - z * s;
+        float rm11 = yy * C + c;
+        float rm12 = yz * C + x * s;
+        float rm20 = xz * C + y * s;
+        float rm21 = yz * C - x * s;
+        float rm22 = zz * C + c;
         // add temporaries for dependent values
-        final float nm00 = m00 * rm00 + m10 * rm01 + m20 * rm02;
-        final float nm01 = m01 * rm00 + m11 * rm01 + m21 * rm02;
-        final float nm02 = m02 * rm00 + m12 * rm01 + m22 * rm02;
-        final float nm03 = m03 * rm00 + m13 * rm01 + m23 * rm02;
-        final float nm10 = m00 * rm10 + m10 * rm11 + m20 * rm12;
-        final float nm11 = m01 * rm10 + m11 * rm11 + m21 * rm12;
-        final float nm12 = m02 * rm10 + m12 * rm11 + m22 * rm12;
-        final float nm13 = m03 * rm10 + m13 * rm11 + m23 * rm12;
+        float nm00 = m00 * rm00 + m10 * rm01 + m20 * rm02;
+        float nm01 = m01 * rm00 + m11 * rm01 + m21 * rm02;
+        float nm02 = m02 * rm00 + m12 * rm01 + m22 * rm02;
+        float nm03 = m03 * rm00 + m13 * rm01 + m23 * rm02;
+        float nm10 = m00 * rm10 + m10 * rm11 + m20 * rm12;
+        float nm11 = m01 * rm10 + m11 * rm11 + m21 * rm12;
+        float nm12 = m02 * rm10 + m12 * rm11 + m22 * rm12;
+        float nm13 = m03 * rm10 + m13 * rm11 + m23 * rm12;
         // set non-dependent values directly
         res.m20 = m00 * rm20 + m10 * rm21 + m20 * rm22;
         res.m21 = m01 * rm20 + m11 * rm21 + m21 * rm22;
@@ -120,17 +117,16 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public Mat4 rotateX(final double ang) {
+    public Mat4 rotateX(double ang) {
         return rotateX((float) ang, (Mat4) this);
     }
 
-    public Mat4 rotateX(final float ang) {
+    public Mat4 rotateX(float ang) {
         return rotateX(ang, (Mat4) this);
     }
 
-    public Mat4 rotateX(final float ang, final Mat4 res) {
-        final float sin;
-        final float cos;
+    public Mat4 rotateX(float ang, Mat4 res) {
+        float sin, cos;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -144,15 +140,15 @@ abstract class matrixTransform extends funcMatrix {
             cos = (float) Math.cos(ang);
             sin = (float) Math.sin(ang);
         }
-        final float rm11 = +cos;
-        final float rm12 = +sin;
-        final float rm21 = -sin;
-        final float rm22 = +cos;
+        float rm11 = +cos;
+        float rm12 = +sin;
+        float rm21 = -sin;
+        float rm22 = +cos;
         // add temporaries for dependent values
-        final float nm10 = m10 * rm11 + m20 * rm12;
-        final float nm11 = m11 * rm11 + m21 * rm12;
-        final float nm12 = m12 * rm11 + m22 * rm12;
-        final float nm13 = m13 * rm11 + m23 * rm12;
+        float nm10 = m10 * rm11 + m20 * rm12;
+        float nm11 = m11 * rm11 + m21 * rm12;
+        float nm12 = m12 * rm11 + m22 * rm12;
+        float nm13 = m13 * rm11 + m23 * rm12;
         // set non-dependent values directly
         res.m20 = m10 * rm21 + m20 * rm22;
         res.m21 = m11 * rm21 + m21 * rm22;
@@ -174,17 +170,16 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public Mat4 rotateY(final double ang) {
+    public Mat4 rotateY(double ang) {
         return rotateY((float) ang, (Mat4) this);
     }
 
-    public Mat4 rotateY(final float ang) {
+    public Mat4 rotateY(float ang) {
         return rotateY(ang, (Mat4) this);
     }
 
-    public Mat4 rotateY(final float ang, final Mat4 res) {
-        final float cos;
-        final float sin;
+    public Mat4 rotateY(float ang, Mat4 res) {
+        float cos, sin;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -198,15 +193,15 @@ abstract class matrixTransform extends funcMatrix {
             cos = (float) Math.cos(ang);
             sin = (float) Math.sin(ang);
         }
-        final float rm00 = cos;
-        final float rm02 = -sin;
-        final float rm20 = sin;
-        final float rm22 = cos;
+        float rm00 = cos;
+        float rm02 = -sin;
+        float rm20 = sin;
+        float rm22 = cos;
         // add temporaries for dependent values
-        final float nm00 = m00 * rm00 + m20 * rm02;
-        final float nm01 = m01 * rm00 + m21 * rm02;
-        final float nm02 = m02 * rm00 + m22 * rm02;
-        final float nm03 = m03 * rm00 + m23 * rm02;
+        float nm00 = m00 * rm00 + m20 * rm02;
+        float nm01 = m01 * rm00 + m21 * rm02;
+        float nm02 = m02 * rm00 + m22 * rm02;
+        float nm03 = m03 * rm00 + m23 * rm02;
         // set non-dependent values directly
         res.m20 = m00 * rm20 + m20 * rm22;
         res.m21 = m01 * rm20 + m21 * rm22;
@@ -228,17 +223,16 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public Mat4 rotateZ(final double ang) {
+    public Mat4 rotateZ(double ang) {
         return rotateZ((float) ang, (Mat4) this);
     }
 
-    public Mat4 rotateZ(final float ang) {
+    public Mat4 rotateZ(float ang) {
         return rotateZ(ang, (Mat4) this);
     }
 
-    public Mat4 rotateZ(final float ang, final Mat4 res) {
-        final float sin;
-        final float cos;
+    public Mat4 rotateZ(float ang, Mat4 res) {
+        float sin, cos;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -252,16 +246,16 @@ abstract class matrixTransform extends funcMatrix {
             cos = (float) Math.cos(ang);
             sin = (float) Math.sin(ang);
         }
-        final float rm00 = cos;
-        final float rm01 = sin;
-        final float rm10 = -sin;
-        final float rm11 = cos;
+        float rm00 = cos;
+        float rm01 = sin;
+        float rm10 = -sin;
+        float rm11 = cos;
 
         // add temporaries for dependent values
-        final float nm00 = m00 * rm00 + m10 * rm01;
-        final float nm01 = m01 * rm00 + m11 * rm01;
-        final float nm02 = m02 * rm00 + m12 * rm01;
-        final float nm03 = m03 * rm00 + m13 * rm01;
+        float nm00 = m00 * rm00 + m10 * rm01;
+        float nm01 = m01 * rm00 + m11 * rm01;
+        float nm02 = m02 * rm00 + m12 * rm01;
+        float nm03 = m03 * rm00 + m13 * rm01;
         // set non-dependent values directly
         res.m10 = m00 * rm10 + m10 * rm11;
         res.m11 = m01 * rm10 + m11 * rm11;
@@ -283,9 +277,9 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public Mat4 rotationX(final float ang) {
-        final float cos = (float) Math.cos(ang);
-        final float sin = (float) Math.sin(ang);
+    public Mat4 rotationX(float ang) {
+        float cos = (float) Math.cos(ang);
+        float sin = (float) Math.sin(ang);
         m00 = 1.0f;
         m01 = 0.0f;
         m02 = 0.0f;
@@ -305,9 +299,9 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat4) this;
     }
 
-    public Mat4 rotationY(final float ang) {
-        final float cos = (float) Math.cos(ang);
-        final float sin = (float) Math.sin(ang);
+    public Mat4 rotationY(float ang) {
+        float cos = (float) Math.cos(ang);
+        float sin = (float) Math.sin(ang);
         m00 = cos;
         m01 = 0.0f;
         m02 = -sin;
@@ -327,9 +321,9 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat4) this;
     }
 
-    public Mat4 rotationZ(final float ang) {
-        final float cos = (float) Math.cos(ang);
-        final float sin = (float) Math.sin(ang);
+    public Mat4 rotationZ(float ang) {
+        float cos = (float) Math.cos(ang);
+        float sin = (float) Math.sin(ang);
         m00 = cos;
         m01 = sin;
         m02 = 0.0f;
@@ -349,27 +343,27 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat4) this;
     }
 
-    public Mat4 scale(final float[] f) {
+    public Mat4 scale(float[] f) {
         return scale(f[0], f[1], f[2]);
     }
 
-    public Mat4 scale(final float s) {
+    public Mat4 scale(float s) {
         return scale(s, s, s);
     }
 
-    public Mat4 scale(final Vec3 v) {
+    public Mat4 scale(Vec3 v) {
         return scale(v.x, v.y, v.z);
     }
 
-    public Mat4 scale(final Vec3 v, final Mat4 res) {
+    public Mat4 scale(Vec3 v, Mat4 res) {
         return scale(v.x, v.y, v.z, res);
     }
 
-    public Mat4 scale(final float x, final float y, final float z) {
+    public Mat4 scale(float x, float y, float z) {
         return scale(x, y, z, (Mat4) this);
     }
 
-    public Mat4 scale(final float x, final float y, final float z, final Mat4 res) {
+    public Mat4 scale(float x, float y, float z, Mat4 res) {
         res.m00 = m00 * x;
         res.m01 = m01 * x;
         res.m02 = m02 * x;
@@ -389,15 +383,15 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public Mat4 translation(final Vec3 v) {
+    public Mat4 translation(Vec3 v) {
         return translation((Mat4) this, v.x, v.y, v.z);
     }
 
-    public Mat4 translation(final float x, final float y, final float z) {
+    public Mat4 translation(float x, float y, float z) {
         return translation((Mat4) this, x, y, z);
     }
 
-    public static Mat4 translation(final Mat4 result, final float x, final float y, final float z) {
+    public static Mat4 translation(Mat4 result, float x, float y, float z) {
         result.m00 = 1.0f;
         result.m01 = 0.0f;
         result.m02 = 0.0f;
@@ -417,23 +411,23 @@ abstract class matrixTransform extends funcMatrix {
         return result;
     }
 
-    public Mat4 translate(final Vec3 v) {
+    public Mat4 translate(Vec3 v) {
         return translate((Mat4) this, v.x, v.y, v.z);
     }
 
-    public Mat4 translate(final float[] t) {
+    public Mat4 translate(float[] t) {
         return translate((Mat4) this, t[0], t[1], t[2]);
     }
 
-    public Mat4 translate(final float x, final float y, final float z) {
+    public Mat4 translate(float x, float y, float z) {
         return translate((Mat4) this, x, y, z);
     }
 
-    public Mat4 translate(final Mat4 res, final Vec3 v) {
+    public Mat4 translate(Mat4 res, Vec3 v) {
         return translate(res, v.x, v.y, v.z);
     }
 
-    public Mat4 translate(final Mat4 res, final float x, final float y, final float z) {
+    public Mat4 translate(Mat4 res, float x, float y, float z) {
         // translation matrix elements: m00, m11, m22, m33 = 1
         // m30 = x, m31 = y, m32 = z, all others = 0
         res.m30 = res.m00 * x + res.m10 * y + res.m20 * z + res.m30;
@@ -443,23 +437,23 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat4) this;
     }
 
-    public Mat4 lookAt(final Vec3 eye, final Vec3 center, final Vec3 up) {
+    public Mat4 lookAt(Vec3 eye, Vec3 center, Vec3 up) {
         return Glm.lookAt(eye, center, up, (Mat4) this);
     }
 
-    public static Mat4 lookAt(final Vec3 eye, final Vec3 center, final Vec3 up, final Mat4 res) {
+    public static Mat4 lookAt(Vec3 eye, Vec3 center, Vec3 up, Mat4 res) {
         return Glm.lookAt(eye, center, up, res);
     }
 
-    public Mat4 ortho(final float left, final float right, final float bottom, final float top, final float zNear, final float zFar) {
+    public Mat4 ortho(float left, float right, float bottom, float top, float zNear, float zFar) {
         return Glm.ortho((Mat4) this, left, right, bottom, top, zNear, zFar);
     }
 
-    public Mat4 perspective(final float fovy, final float aspect, final float zNear, final float zFar) {
+    public Mat4 perspective(float fovy, float aspect, float zNear, float zFar) {
         return Glm.perspective(fovy, aspect, zNear, zFar, (Mat4) this);
     }
 
-    public Mat4 perspectiveFov(final float fov, final float width, final float height, final float zNear, final float zFar) {
+    public Mat4 perspectiveFov(float fov, float width, float height, float zNear, float zFar) {
         return Glm.perspectiveFov(fov, width, height, zNear, zFar, (Mat4) this);
     }
 }

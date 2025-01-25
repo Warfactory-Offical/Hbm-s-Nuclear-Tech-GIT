@@ -1,15 +1,13 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.lib.RefStrings;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.render.model.ModelBigSword;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderBigSword extends TEISRBase {
 
@@ -20,7 +18,7 @@ public class ItemRenderBigSword extends TEISRBase {
 	}
 
 	@Override
-	public void renderByItem(final ItemStack itemStackIn) {
+	public void renderByItem(ItemStack itemStackIn) {
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:

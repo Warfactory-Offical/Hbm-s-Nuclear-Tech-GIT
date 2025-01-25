@@ -1,25 +1,23 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.render.RenderHelper;
 import com.hbm.render.util.SmallBlockPronter;
 import com.hbm.tileentity.machine.TileEntityPlasmaStruct;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderPlasmaMultiblock extends TileEntitySpecialRenderer<TileEntityPlasmaStruct> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityPlasmaStruct te) {
+	public boolean isGlobalRenderer(TileEntityPlasmaStruct te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityPlasmaStruct te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityPlasmaStruct te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 
 		GL11.glTranslatef((float)x + 0.5F, (float)y-1, (float)z + 0.5F);

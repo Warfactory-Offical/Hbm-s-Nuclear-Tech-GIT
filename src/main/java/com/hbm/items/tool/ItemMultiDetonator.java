@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ItemMultiDetonator extends Item {
 
-	public ItemMultiDetonator(final String s) {
+	public ItemMultiDetonator(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -31,7 +31,7 @@ public class ItemMultiDetonator extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.callmultdet1"));
 		list.add(I18nUtil.resolveKey("desc.calldet2"));
 		list.add(I18nUtil.resolveKey("desc.callmultdet2"));
@@ -41,7 +41,7 @@ public class ItemMultiDetonator extends Item {
 			list.add("§e"+I18nUtil.resolveKey("chat.posnoset")+"§r");
 		} else {
 			
-			final int[][] locs = getLocations(stack);
+			int[][] locs = getLocations(stack);
 			
 			for(int i = 0; i < locs[0].length; i++) {
 				list.add("§a" + I18nUtil.resolveKey("chat.possetaxyz", (i+1), locs[0][i], locs[1][i], locs[2][i]));
@@ -50,8 +50,8 @@ public class ItemMultiDetonator extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
 		if(stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
@@ -75,8 +75,8 @@ public class ItemMultiDetonator extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		if(stack.getTagCompound() == null || getLocations(stack) == null)
 		{
 			if(world.isRemote)
@@ -85,16 +85,16 @@ public class ItemMultiDetonator extends Item {
 		} else {
 			
 			if(!player.isSneaking()) {
-				final int[][] locs = getLocations(stack);
+				int[][] locs = getLocations(stack);
 				
 				int succ = 0;
 				
 				for (int i = 0; i < locs[0].length; i++) {
 	
-					final int x = locs[0][i];
-					final int y = locs[1][i];
-					final int z = locs[2][i];
-					final BlockPos pos = new BlockPos(x, y, z);
+					int x = locs[0][i];
+					int y = locs[1][i];
+					int z = locs[2][i];
+					BlockPos pos = new BlockPos(x, y, z);
 					if (world.getBlockState(pos).getBlock() instanceof IBomb) {
 						world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBleep, SoundCategory.AMBIENT, 1.0F, 1.0F);
 						if (!world.isRemote) {
@@ -129,27 +129,27 @@ public class ItemMultiDetonator extends Item {
 		return super.onItemRightClick(world, player, hand);
 	}
 	
-	private static void addLocation(final ItemStack stack, final int x, final int y, final int z){
+	private static void addLocation(ItemStack stack, int x, int y, int z){
 		if(stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
 		}
 
-		final int[] xs = stack.getTagCompound().getIntArray("xValues");
-		final int[] ys = stack.getTagCompound().getIntArray("yValues");
-		final int[] zs = stack.getTagCompound().getIntArray("zValues");
+		int[] xs = stack.getTagCompound().getIntArray("xValues");
+		int[] ys = stack.getTagCompound().getIntArray("yValues");
+		int[] zs = stack.getTagCompound().getIntArray("zValues");
 		
 		stack.getTagCompound().setIntArray("xValues", ArrayUtils.add(xs, x));
 		stack.getTagCompound().setIntArray("yValues", ArrayUtils.add(ys, y));
 		stack.getTagCompound().setIntArray("zValues", ArrayUtils.add(zs, z));
 	}
 	
-	public static int[][] getLocations(final ItemStack stack){
+	public static int[][] getLocations(ItemStack stack){
 		if(!stack.hasTagCompound())
 			return null;
-		final int[] xs = stack.getTagCompound().getIntArray("xValues");
-		final int[] ys = stack.getTagCompound().getIntArray("yValues");
-		final int[] zs = stack.getTagCompound().getIntArray("zValues");
+		int[] xs = stack.getTagCompound().getIntArray("xValues");
+		int[] ys = stack.getTagCompound().getIntArray("yValues");
+		int[] zs = stack.getTagCompound().getIntArray("zValues");
 
 		if(xs == null || ys == null || zs == null || xs.length == 0 || ys.length == 0 || zs.length == 0) {
 			return null;

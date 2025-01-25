@@ -1,7 +1,6 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.particle.book.ParticleBookCircle;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -35,7 +34,7 @@ public class TileEntityBlackBook extends TileEntity implements ITickable {
 			end = false;
 			effectTime ++;
 			if(effectTime == 1){
-				final ParticleBookCircle b = new ParticleBookCircle(this, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, 3);
+				ParticleBookCircle b = new ParticleBookCircle(this, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, 3);
 				Minecraft.getMinecraft().effectRenderer.addEffect(b);
 			}
 			if(effectTime >= 100){

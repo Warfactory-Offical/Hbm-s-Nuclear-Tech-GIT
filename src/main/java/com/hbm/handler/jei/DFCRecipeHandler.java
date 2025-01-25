@@ -22,7 +22,7 @@ public class DFCRecipeHandler implements IRecipeCategory<DFCRecipe> {
 	
 	protected final IDrawable background;
 	
-	public DFCRecipeHandler(final IGuiHelper help) {
+	public DFCRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 0, 0, 134, 52);
 	}
 	
@@ -47,12 +47,12 @@ public class DFCRecipeHandler implements IRecipeCategory<DFCRecipe> {
 	}
 	
 	@Override
-	public void drawExtras(final Minecraft minecraft) {
+	public void drawExtras(Minecraft minecraft) {
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final DFCRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, DFCRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 59, 30);
 		guiItemStacks.init(1, false, 95, 30);

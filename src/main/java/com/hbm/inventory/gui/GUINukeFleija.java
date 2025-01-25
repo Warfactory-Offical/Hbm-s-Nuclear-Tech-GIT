@@ -1,24 +1,22 @@
 package com.hbm.inventory.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.container.ContainerNukeFleija;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.bomb.TileEntityNukeFleija;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GUINukeFleija extends GuiContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/fleijaSchematic.png");
-	private final TileEntityNukeFleija testNuke;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/fleijaSchematic.png");
+	private TileEntityNukeFleija testNuke;
 	
-	public GUINukeFleija(final InventoryPlayer invPlayer, final TileEntityNukeFleija tedf) {
+	public GUINukeFleija(InventoryPlayer invPlayer, TileEntityNukeFleija tedf) {
 		super(new ContainerNukeFleija(invPlayer, tedf));
 		testNuke = tedf;
 		
@@ -27,15 +25,15 @@ public class GUINukeFleija extends GuiContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
-		final String name = this.testNuke.hasCustomInventoryName() ? this.testNuke.getInventoryName() : I18n.format(this.testNuke.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+		String name = this.testNuke.hasCustomInventoryName() ? this.testNuke.getInventoryName() : I18n.format(this.testNuke.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		this.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -99,7 +97,7 @@ public class GUINukeFleija extends GuiContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
 	}

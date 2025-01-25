@@ -18,7 +18,7 @@ public class StorageDrumRecipeHandler implements IRecipeCategory<StorageDrumReci
 	
 	protected final IDrawable background;
 	
-	public StorageDrumRecipeHandler(final IGuiHelper help) {
+	public StorageDrumRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 38, 29, 99, 27);
 	}
 	
@@ -43,8 +43,8 @@ public class StorageDrumRecipeHandler implements IRecipeCategory<StorageDrumReci
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final StorageDrumRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, StorageDrumRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 5, 5);
 		guiItemStacks.init(1, false, 78, 6);

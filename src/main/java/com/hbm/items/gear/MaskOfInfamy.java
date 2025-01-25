@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class MaskOfInfamy extends ItemArmor {
 
-	public MaskOfInfamy(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
+	public MaskOfInfamy(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -18,7 +18,7 @@ public class MaskOfInfamy extends ItemArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return (RefStrings.MODID + ":textures/armor/MaskOfInfamy.png");
 	}
 

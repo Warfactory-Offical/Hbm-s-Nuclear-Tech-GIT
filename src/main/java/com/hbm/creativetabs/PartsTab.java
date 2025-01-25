@@ -1,6 +1,4 @@
 package com.hbm.creativetabs;
-import com.hbm.items.meta.materials.MaterialMineral;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 
@@ -10,16 +8,16 @@ import net.minecraft.item.ItemStack;
 
 public class PartsTab extends CreativeTabs {
 
-	public PartsTab(final int index, final String label) {
+	public PartsTab(int index, String label) {
 		super(index, label);
 	}
 
 	@Override
-	public ItemStack createIcon() {
-		if(ModItems.ingot.getItemStack(MaterialMineral.URANIUM) != null){
-			return ItemStackUtil.itemStackFrom(ModItems.ingot.getItemStack(MaterialMineral.URANIUM));
+	public ItemStack getTabIconItem() {
+		if(ModItems.ingot_uranium != null){
+			return new ItemStack(ModItems.ingot_uranium);
 		}
-		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
+		return new ItemStack(Items.IRON_PICKAXE);
 	}
 
 }

@@ -1,11 +1,5 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.apache.commons.lang3.math.NumberUtils;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.inventory.container.ContainerCoreEmitter;
@@ -14,7 +8,6 @@ import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxButtonPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityCoreEmitter;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiTextField;
@@ -23,16 +16,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUICoreEmitter extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/dfc/gui_emitter.png");
-	private final TileEntityCoreEmitter emitter;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/dfc/gui_emitter.png");
+	private TileEntityCoreEmitter emitter;
     private GuiTextField field;
 
     protected short saveButtonCoolDown = 0;
 	
-	public GUICoreEmitter(final EntityPlayer invPlayer, final TileEntityCoreEmitter tedf) {
+	public GUICoreEmitter(EntityPlayer invPlayer, TileEntityCoreEmitter tedf) {
 		super(new ContainerCoreEmitter(invPlayer, tedf));
 		emitter = tedf;
 		
@@ -53,15 +51,15 @@ public class GUICoreEmitter extends GuiInfoContainer {
         this.field.setText(String.valueOf(emitter.watts));
 	}
 	
-	public void syncTextField(final int watts){
+	public void syncTextField(int watts){
 		this.field.setText(String.valueOf(watts));
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		final String[] output = new String[] { "Output: " + Library.getShortNumber(emitter.prev) + "SPK" };
+		String[] output = new String[] { "Output: " + Library.getShortNumber(emitter.prev) + "SPK" };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 14, 8, 39, mouseX, mouseY, output);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 13, guiTop + 20, 16, 52, emitter.tank, ModForgeFluids.cryogel);
@@ -69,14 +67,14 @@ public class GUICoreEmitter extends GuiInfoContainer {
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
-	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+	protected void mouseClicked(int x, int y, int i) throws IOException {
     	super.mouseClicked(x, y, i);
         this.field.mouseClicked(x, y, i);
 
     	if(guiLeft + 124 <= x && guiLeft + 124 + 18 > x && guiTop + 56 < y && guiTop + 56 + 18 >= y) {
     		
     		if(saveButtonCoolDown == 0 && NumberUtils.isCreatable(field.getText())) {
-    			final int j = MathHelper.clamp(Integer.parseInt(field.getText()), 1, 100);
+    			int j = MathHelper.clamp(Integer.parseInt(field.getText()), 1, 100);
     			field.setText(j + "");
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 	    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(emitter.getPos(), j, 0));
@@ -91,16 +89,16 @@ public class GUICoreEmitter extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = I18n.format(this.emitter.getInventoryName());
+	protected void drawGuiContainerForegroundLayer( int i, int j) {
+		String name = I18n.format(this.emitter.getInventoryName());
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		
-		final String inventory = I18n.format("container.inventory");
+		String inventory = I18n.format("container.inventory");
 		this.fontRenderer.drawString(inventory, this.xSize - 8 - this.fontRenderer.getStringWidth(inventory), this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -113,10 +111,10 @@ public class GUICoreEmitter extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft + 151, guiTop + 56, 192, 0, 18, 18);
 		}
 
-		final int emitterWatts = emitter.getWattsScaled(35);
+		int emitterWatts = emitter.getWattsScaled(35);
 		drawTexturedModalRect(guiLeft + 81, guiTop + 52 - emitterWatts, 176, 87 - emitterWatts, 4, emitterWatts);
 		
-		final int i = (int) emitter.getPowerScaled(52);
+		int i = (int) emitter.getPowerScaled(52);
 		drawTexturedModalRect(guiLeft + 49, guiTop + 73 - i, 176, 52 - i, 16, i);
 
 		if(emitter.isOn && emitter.power > 500000)
@@ -132,7 +130,7 @@ public class GUICoreEmitter extends GuiInfoContainer {
         FFUtils.drawLiquid(emitter.tank, guiLeft, guiTop, zLevel, 16, 52, 13, 101);
 	}
 	
-    protected void keyTyped(final char p_73869_1_, final int p_73869_2_) throws IOException
+    protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException
     {
         if (this.field.textboxKeyTyped(p_73869_1_, p_73869_2_)) { }
         else {

@@ -1,30 +1,27 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.Library;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyGenerator;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITickable, IEnergyGenerator {
+public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITickable, IEnergyProviderMK2 {
 
 	public long power;
 	public static final long maxPower = 100000;
 	public int gen = 0;
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		return super.writeToNBT(compound);
 	}
@@ -32,8 +29,12 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITicka
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			final long prevPower = power;
-			this.sendPower(world, pos);
+			long prevPower = power;
+			this.tryProvide(world, pos.getX() + 1, pos.getY(), pos.getZ(), Library.POS_X);
+			this.tryProvide(world, pos.getX() - 1, pos.getY(), pos.getZ(), Library.NEG_X);
+			this.tryProvide(world, pos.getX(), pos.getY(), pos.getZ() + 1, Library.POS_Z);
+			this.tryProvide(world, pos.getX(), pos.getY(), pos.getZ() - 1, Library.NEG_Z);
+			this.tryProvide(world, pos.getX(), pos.getY() - 1, pos.getZ(), Library.NEG_Y);
 
 			if(world.getTotalWorldTime() % 20 == 0)
 				gen = checkStructure() * 15;
@@ -66,7 +67,7 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITicka
 		return h - pos.getY() - 1;
 	}
 	
-	public boolean checkSegment(final int y) {
+	public boolean checkSegment(int y) {
 		
 		//   BBB
 		//   BAB
@@ -89,7 +90,7 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements ITicka
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

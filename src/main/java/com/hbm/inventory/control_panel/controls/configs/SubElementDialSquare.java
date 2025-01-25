@@ -1,7 +1,6 @@
 package com.hbm.inventory.control_panel.controls.configs;
 
 import com.hbm.inventory.control_panel.DataValue;
-import com.hbm.inventory.control_panel.DataValueFloat;
 import com.hbm.inventory.control_panel.DataValueString;
 import com.hbm.inventory.control_panel.GuiControlEdit;
 import net.minecraft.client.Minecraft;
@@ -16,22 +15,22 @@ public class SubElementDialSquare extends SubElementBaseConfig {
 
     GuiTextField textField;
 
-    public SubElementDialSquare(final GuiControlEdit gui, final Map<String, DataValue> map) {
+    public SubElementDialSquare(GuiControlEdit gui, Map<String, DataValue> map) {
         super(gui);
         this.text = map.get("label").toString();
     }
 
     @Override
     public Map<String, DataValue> getConfigs() {
-        final Map<String, DataValue> m = new HashMap<>();
+        Map<String, DataValue> m = new HashMap<>();
         m.put("label", new DataValueString(text));
         return m;
     }
 
     @Override
     public void initGui() {
-        final int cX = gui.width/2;
-        final int cY = gui.height/2;
+        int cX = gui.width/2;
+        int cY = gui.height/2;
 
         textField = new GuiTextField(gui.currentButtonId(), Minecraft.getMinecraft().fontRenderer, cX-10, gui.getGuiTop()+70, 120, 20);
         textField.setText(text);
@@ -52,19 +51,19 @@ public class SubElementDialSquare extends SubElementBaseConfig {
     }
 
     @Override
-    protected void mouseClicked(final int mouseX, final int mouseY, final int button) {
+    protected void mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
         this.textField.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
-    protected void keyTyped(final char typedChar, final int keyCode) {
+    protected void keyTyped(char typedChar, int keyCode) {
         super.keyTyped(typedChar, keyCode);
         this.textField.textboxKeyTyped(typedChar, keyCode);
     }
 
     @Override
-    public void enableButtons(final boolean enable) {
+    public void enableButtons(boolean enable) {
         textField.setEnabled(enable);
         textField.setVisible(enable);
     }

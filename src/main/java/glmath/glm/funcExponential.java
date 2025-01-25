@@ -11,16 +11,16 @@ package glmath.glm;
  */
 abstract class funcExponential extends FuncCommon {
 
-    public static float exp(final float x) {
+    public static float exp(float x) {
         return (float) Math.exp(x);
     }
 
-    public static float exp2(final float x) {
+    public static float exp2(float x) {
         return (float) Math.pow(2, x);
     }
 
     public static float inverseSqrt(float x) {
-        final float xhalf = 0.5f * x;
+        float xhalf = 0.5f * x;
         int i = Float.floatToIntBits(x);
         i = 0x5f3759df - (i >> 1);
         x = Float.intBitsToFloat(i);
@@ -28,19 +28,19 @@ abstract class funcExponential extends FuncCommon {
         return x;
     }
 
-    public static float log(final float x) {
+    public static float log(float x) {
         return (float) Math.log(x);
     }
 
-    public static int log2(final int value) {
+    public static int log2(int value) {
         return (int) (Math.log(value) / Math.log(2));
     }
 
-    public static float pow(final float x, final float y) {
+    public static float pow(float x, float y) {
         return (float) Math.pow(x, y);
     }
 
-    public static float sqrt(final float x) {
+    public static float sqrt(float x) {
         return (float) Math.sqrt(x);
     }
 }

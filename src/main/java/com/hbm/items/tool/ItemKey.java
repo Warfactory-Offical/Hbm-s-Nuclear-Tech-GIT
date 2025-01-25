@@ -2,7 +2,7 @@ package com.hbm.items.tool;
 
 public class ItemKey extends ItemKeyPin {
 
-	public ItemKey(final String s) {
+	public ItemKey(String s) {
 		super(s);
 	}
 

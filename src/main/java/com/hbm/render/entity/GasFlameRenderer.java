@@ -1,15 +1,8 @@
 package com.hbm.render.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.hbm.entity.particle.EntityGasFlameFX;
 import com.hbm.items.ModItems;
 import com.hbm.render.RenderHelper;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -20,6 +13,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GasFlameRenderer extends Render<EntityGasFlameFX> {
 
@@ -28,12 +26,12 @@ public class GasFlameRenderer extends Render<EntityGasFlameFX> {
 	
 	public static final IRenderFactory<EntityGasFlameFX> FACTORY = (RenderManager manage) -> {return new GasFlameRenderer(manage);};
 	
-	protected GasFlameRenderer(final RenderManager renderManager) {
+	protected GasFlameRenderer(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityGasFlameFX fx, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityGasFlameFX fx, double x, double y, double z, float entityYaw, float partialTicks) {
 
 		if(textures.size() == 0){
 			textures.put(ModItems.gasflame1, RenderHelper.getItemTexture(ModItems.gasflame1));
@@ -69,7 +67,7 @@ public class GasFlameRenderer extends Render<EntityGasFlameFX> {
 			renderItem = ModItems.gasflame3;
 		}
 
-		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8) {
+		if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
 			renderItem = ModItems.gasflame2;
 		}
 
@@ -77,7 +75,7 @@ public class GasFlameRenderer extends Render<EntityGasFlameFX> {
 			renderItem = ModItems.gasflame1;
 		}
 
-		final TextureAtlasSprite icon = textures.get(renderItem);
+		TextureAtlasSprite icon = textures.get(renderItem);
 
 		if (icon != null) {
 			GL11.glPushMatrix();
@@ -92,7 +90,7 @@ public class GasFlameRenderer extends Render<EntityGasFlameFX> {
 			GL11.glScalef(0.35F, 0.35F, 0.35F);
 			//
 			this.bindEntityTexture(fx);
-			final Tessellator tessellator = Tessellator.getInstance();
+			Tessellator tessellator = Tessellator.getInstance();
 
 			this.func_77026_a(tessellator, icon);
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -101,14 +99,14 @@ public class GasFlameRenderer extends Render<EntityGasFlameFX> {
 		}
 	}
 	
-	private void func_77026_a(final Tessellator tes, final TextureAtlasSprite p_77026_2_) {
-		final float f = p_77026_2_.getMinU();
-		final float f1 = p_77026_2_.getMaxU();
-		final float f2 = p_77026_2_.getMinV();
-		final float f3 = p_77026_2_.getMaxV();
-		final float f4 = 1.0F;
-		final float f5 = 0.5F;
-		final float f6 = 0.25F;
+	private void func_77026_a(Tessellator tes, TextureAtlasSprite p_77026_2_) {
+		float f = p_77026_2_.getMinU();
+		float f1 = p_77026_2_.getMaxU();
+		float f2 = p_77026_2_.getMinV();
+		float f3 = p_77026_2_.getMaxV();
+		float f4 = 1.0F;
+		float f5 = 0.5F;
+		float f6 = 0.25F;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		RenderHelper.startDrawingTexturedQuads(tes);
@@ -121,10 +119,10 @@ public class GasFlameRenderer extends Render<EntityGasFlameFX> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
+	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityGasFlameFX entity) {
+	protected ResourceLocation getEntityTexture(EntityGasFlameFX entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

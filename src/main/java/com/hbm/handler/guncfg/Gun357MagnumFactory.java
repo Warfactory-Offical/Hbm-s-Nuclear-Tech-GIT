@@ -16,7 +16,7 @@ public class Gun357MagnumFactory {
 
 public static GunConfiguration getBaseConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 10;
 		config.roundsPerCycle = 1;
@@ -37,7 +37,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverIronConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 2000;
 		
@@ -53,7 +53,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 3500;
 		
@@ -69,7 +69,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverSaturniteConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 3500;
 		
@@ -85,7 +85,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverLeadConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 2000;
 		
@@ -101,7 +101,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverGoldConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 2500;
 		
@@ -117,7 +117,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverCursedConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.rateOfFire = 7;
 		config.ammoCap = 17;
@@ -136,7 +136,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverSchrabidiumConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 7500;
 		config.firingSound = HBMSoundHandler.schrabidiumShoot;
@@ -153,7 +153,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverNightmareConfig() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 4000;
 		config.firingSound = HBMSoundHandler.schrabidiumShoot;
@@ -170,7 +170,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static GunConfiguration getRevolverNightmare2Config() {
 		
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 		
 		config.durability = 4000;
 		config.firingSound = HBMSoundHandler.schrabidiumShoot;
@@ -193,7 +193,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevIronConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_iron_ammo;
 		bullet.dmgMin = 2;
@@ -204,7 +204,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevSteelConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_ammo;
 		bullet.dmgMin = 3;
@@ -215,7 +215,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevLeadConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_lead_ammo;
 		bullet.dmgMin = 2;
@@ -229,7 +229,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevGoldConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_gold_ammo;
 		bullet.dmgMin = 10;
@@ -240,7 +240,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevDeshConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_357_desh;
 		bullet.dmgMin = 15;
@@ -251,7 +251,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevSchrabidiumConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_schrabidium_ammo;
 		bullet.dmgMin = 1000000;
@@ -263,7 +263,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevCursedConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_cursed_ammo;
 		bullet.dmgMin = 12;
@@ -274,7 +274,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevNightmareConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_nightmare_ammo;
 		bullet.dmgMin = 1;
@@ -285,7 +285,7 @@ public static GunConfiguration getBaseConfig() {
 	
 	public static BulletConfiguration getRevNightmare2Config() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.gun_revolver_nightmare2_ammo;
 		bullet.spread *= 10;

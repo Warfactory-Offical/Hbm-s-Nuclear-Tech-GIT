@@ -1,13 +1,9 @@
 package com.hbm.blocks.generic;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.tileentity.deco.TileEntityTrappedBrick;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -33,47 +29,51 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class TrappedBrick extends BlockContainer {
 
 	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
-	
-	public TrappedBrick(final Material materialIn, final String s) {
+
+	public TrappedBrick(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		
+
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		if(Trap.get(meta).type == TrapType.DETECTOR)
 			return new TileEntityTrappedBrick();
 		return null;
 	}
-	
+
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
-	
+
 	@Override
-	public void addInformation(final ItemStack stack, final World player, final List<String> list, final ITooltipFlag advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag advanced) {
 		list.add(Trap.get(stack.getItemDamage()).toString());
 	}
-	
-	@Override
-	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity) {
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
-		final int meta = world.getBlockState(pos).getValue(TYPE);
 
-    	if(world.isRemote || Trap.get(meta).type != TrapType.ON_STEP || !(entity instanceof EntityPlayer player)) {
+	@Override
+	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		int meta = world.getBlockState(pos).getValue(TYPE);
+
+    	if(world.isRemote || Trap.get(meta).type != TrapType.ON_STEP || !(entity instanceof EntityPlayer)) {
     		return;
     	}
 
-        switch(Trap.get(meta)) {
+    	EntityPlayer player = (EntityPlayer)entity;
+
+		switch(Trap.get(meta)) {
 		case FIRE:
 			if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock().isReplaceable(world, new BlockPos(x, y + 1, z)))
 				world.setBlockState(new BlockPos(x, y + 1, z), Blocks.FIRE.getDefaultState());
@@ -81,8 +81,8 @@ public class TrappedBrick extends BlockContainer {
 		case SPIKES:
 			if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock().isReplaceable(world, new BlockPos(x, y + 1, z)))
 				world.setBlockState(new BlockPos(x, y + 1, z), ModBlocks.spikes.getDefaultState());
-			final List<Entity> targets = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y + 1, z, x + 1, y + 2, z + 1));
-			for(final Entity e : targets)
+			List<Entity> targets = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y + 1, z, x + 1, y + 2, z + 1));
+			for(Entity e : targets)
 				e.attackEntityFrom(ModDamageSource.spikes, 10);
 			world.playSound(null, x + 0.5, y + 1.5, z + 0.5, HBMSoundHandler.slicer, SoundCategory.HOSTILE, 1.0F, 1.0F);
 			break;
@@ -101,7 +101,7 @@ public class TrappedBrick extends BlockContainer {
 						if(world.rand.nextBoolean())
 							continue;
 
-						final Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
+						Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
 							world.setBlockState(new BlockPos(x + a, y + b, z + c), ModBlocks.brick_jungle_ooze.getDefaultState());
 						}
@@ -117,7 +117,7 @@ public class TrappedBrick extends BlockContainer {
 						if(world.rand.nextBoolean())
 							continue;
 
-						final Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
+						Block bl = world.getBlockState(new BlockPos(x + a, y + b, z + c)).getBlock();
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
 							world.setBlockState(new BlockPos(x + a, y + b, z + c), ModBlocks.brick_jungle_mystic.getDefaultState());
 						}
@@ -138,31 +138,31 @@ public class TrappedBrick extends BlockContainer {
 		world.playSound(null, x + 0.5D, y + 0.5D, z + 0.5D, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		world.setBlockState(new BlockPos(x, y, z), ModBlocks.brick_jungle.getDefaultState());
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, TYPE);
 	}
-	
+
 	@Override
-	public int getMetaFromState(final IBlockState state) {
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(TYPE);
 	}
-	
+
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
+	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(TYPE, meta);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(final CreativeTabs tab, final NonNullList<ItemStack> items) {
-		if(tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH)
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if(tab == this.getCreativeTabToDisplayOn() || tab == CreativeTabs.SEARCH)
 			for (int i = 0; i < Trap.values().length; ++i) {
-				items.add(ItemStackUtil.itemStackFrom(this, 1, i));
+				items.add(new ItemStack(this, 1, i));
 			}
 	}
-	
+
 	public static enum TrapType {
 		ON_STEP,
 		DETECTOR
@@ -188,11 +188,11 @@ public class TrappedBrick extends BlockContainer {
 
 		public TrapType type;
 
-		private Trap(final TrapType type) {
+		private Trap(TrapType type) {
 			this.type = type;
 		}
 
-		public static Trap get(final int i) {
+		public static Trap get(int i) {
 
 			if(i >= 0 && i < Trap.values().length)
 				return Trap.values()[i];

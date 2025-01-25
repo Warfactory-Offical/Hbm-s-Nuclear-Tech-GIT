@@ -1,5 +1,4 @@
 package com.hbm.handler.jei;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
@@ -25,7 +24,6 @@ import com.hbm.inventory.gui.GUIMachineCyclotron;
 import com.hbm.inventory.gui.GUIMachineEPress;
 import com.hbm.inventory.gui.GUIMachineGasCent;
 import com.hbm.inventory.gui.GUIMachinePress;
-import com.hbm.inventory.gui.GUIMachineReactor;
 import com.hbm.inventory.gui.GUIMachineRefinery;
 import com.hbm.inventory.gui.GUIMachineShredder;
 import com.hbm.inventory.gui.GUISILEX;
@@ -96,69 +94,69 @@ public class JEIConfig implements IModPlugin {
 	public static final String TRANSMUTATION = "hbm.transmutation";
 
 	@Override
-	public void register(final IModRegistry registry) {
+	public void register(IModRegistry registry) {
 		if(!GeneralConfig.jei)
 			return;
 		registry.addRecipeRegistryPlugin(new HbmJeiRegistryPlugin());
 
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_electric_furnace_off), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.furnace_iron), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.furnace_steel), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_arc_furnace_off), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.factory_titanium_furnace), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.factory_advanced_furnace), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_microwave), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_nuke_furnace_off), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_rtg_furnace_off), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.crate_tungsten), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_electric_furnace_off), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.furnace_iron), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.furnace_steel), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_arc_furnace_off), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.factory_titanium_furnace), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.factory_advanced_furnace), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_microwave), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_nuke_furnace_off), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_rtg_furnace_off), VanillaRecipeCategoryUid.SMELTING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.crate_tungsten), VanillaRecipeCategoryUid.SMELTING);
 		
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_assembler), ASSEMBLY);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_chemplant), CHEMPLANT);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_chemfac), CHEMPLANT);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_mixer), MIXER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_cyclotron), CYCLOTRON);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_schrabidium_transmutator), TRANSMUTATION);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_press), PRESS);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_epress), PRESS);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_difurnace_off), ALLOY);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_difurnace_rtg_off), ALLOY);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_boiler_off), BOILER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_boiler_electric_off), BOILER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_boiler_rtg_off), BOILER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_solar_boiler), BOILER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.heat_boiler), BOILER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.rbmk_heater), BOILER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_centrifuge), CENTRIFUGE);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_combine_factory), CMB);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_gascent), GAS_CENT);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_reactor), REACTOR);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_waste_drum), WASTEDRUM);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_storage_drum), STORAGEDRUM);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_refinery), REFINERY);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_catalytic_cracker), CRACKING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_fraction_tower), FRACTIONING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_shredder), SHREDDER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_fluidtank), FLUIDS);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_crystallizer), CRYSTALLIZER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_assembler), ASSEMBLY);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_assemfac), ASSEMBLY);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_chemplant), CHEMPLANT);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_chemfac), CHEMPLANT);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_mixer), MIXER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_cyclotron), CYCLOTRON);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_schrabidium_transmutator), TRANSMUTATION);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_press), PRESS);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_epress), PRESS);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_difurnace_off), ALLOY);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_difurnace_rtg_off), ALLOY);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_boiler_off), BOILER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_boiler_electric_off), BOILER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_boiler_rtg_off), BOILER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_solar_boiler), BOILER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.heat_boiler), BOILER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.rbmk_heater), BOILER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_centrifuge), CENTRIFUGE);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_combine_factory), CMB);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_gascent), GAS_CENT);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_waste_drum), WASTEDRUM);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_storage_drum), STORAGEDRUM);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_refinery), REFINERY);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_catalytic_cracker), CRACKING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_fraction_tower), FRACTIONING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_shredder), SHREDDER);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_fluidtank), FLUIDS);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_crystallizer), CRYSTALLIZER);
 		//This recipe catalyst doesn't work, since the book of is blacklisted.
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.book_of_), BOOK);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.iter), FUSION_BYPRODUCT);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.hadron_core), HADRON);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.machine_silex), SILEX);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_nano), SILEX_RADIO);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_pentacene), SILEX_MICRO);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_co2), SILEX_IR);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_bismuth), SILEX_VISIBLE);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_cmb), SILEX_UV);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_dem), SILEX_XRAY);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_bale), SILEX_GAMMA);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModItems.laser_crystal_digamma), SILEX_DIGAMMA);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.anvil_iron), SMITHING);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.anvil_steel), ANVIL);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.rbmk_outgasser), RBMKOUTGASSER);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(Blocks.CRAFTING_TABLE), RBMKFUEL);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.fwatz_core), SAFE_REACTOR);
-		registry.addRecipeCatalyst(ItemStackUtil.itemStackFrom(ModBlocks.crate_tungsten), DFC);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.book_of_), BOOK);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.iter), FUSION_BYPRODUCT);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.hadron_core), HADRON);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.machine_silex), SILEX);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_nano), SILEX_RADIO);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_pentacene), SILEX_MICRO);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_co2), SILEX_IR);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_bismuth), SILEX_VISIBLE);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_cmb), SILEX_UV);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_dem), SILEX_XRAY);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_bale), SILEX_GAMMA);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.laser_crystal_digamma), SILEX_DIGAMMA);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.anvil_iron), SMITHING);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.anvil_steel), ANVIL);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.rbmk_outgasser), RBMKOUTGASSER);
+		registry.addRecipeCatalyst(new ItemStack(Blocks.CRAFTING_TABLE), RBMKFUEL);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.fwatz_core), SAFE_REACTOR);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.crate_tungsten), DFC);
 		
 		// registry.addRecipes(ItemAssemblyTemplate.recipes, ASSEMBLY);
 		registry.addRecipes(JeiRecipes.getChemistryRecipes(), CHEMPLANT);
@@ -213,7 +211,6 @@ public class JEIConfig implements IModPlugin {
 		registry.addRecipeClickArea(GUIMachineCentrifuge.class, 35, 9, 106, 40, CENTRIFUGE);
 		registry.addRecipeClickArea(GUIMachineCMBFactory.class, 111, 35, 21, 14, CMB);
 		registry.addRecipeClickArea(GUIMachineGasCent.class, 118, 36, 51, 13, GAS_CENT);
-		registry.addRecipeClickArea(GUIMachineReactor.class, 80, 35, 21, 14, REACTOR);
 		registry.addRecipeClickArea(GUIMachineRefinery.class, 79, 71, 71, 17, REFINERY);
 		registry.addRecipeClickArea(GUIMachineShredder.class, 43, 89, 53, 17, SHREDDER);
 		registry.addRecipeClickArea(GUICrystallizer.class, 79, 40, 29, 26, CRYSTALLIZER);
@@ -226,77 +223,74 @@ public class JEIConfig implements IModPlugin {
 		registry.addRecipeClickArea(GUIRBMKOutgasser.class, 64, 53, 48, 16, RBMKOUTGASSER);
 		registry.addRecipeClickArea(GUIMachineSchrabidiumTransmutator.class, 64, 56, 66, 31, TRANSMUTATION);
 
-		final IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
+		IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
 
 		// Some things are even beyond my control...or are they?
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.memory));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModItems.memory));
 
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.machine_coal_on));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.machine_electric_furnace_on));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.machine_arc_furnace_on));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.machine_difurnace_on));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.machine_nuke_furnace_on));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.machine_rtg_furnace_on));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.reinforced_lamp_on));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.statue_elb));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.statue_elb_g));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.statue_elb_w));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.statue_elb_f));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.cheater_virus));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.cheater_virus_seed));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.euphemium_helmet));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.euphemium_plate));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.euphemium_legs));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.euphemium_boots));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.apple_euphemium));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.ingot_euphemium));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.nugget_euphemium));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.euphemium_kit));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.euphemium_stopper));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.watch));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.rod_quad_euphemium));
-		// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.rod_euphemium));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.bobmazon_hidden));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.machine_electric_furnace_on));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.machine_arc_furnace_on));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.machine_difurnace_on));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.machine_nuke_furnace_on));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.machine_rtg_furnace_on));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.reinforced_lamp_on));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.statue_elb));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.statue_elb_g));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.statue_elb_w));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.statue_elb_f));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.cheater_virus));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.cheater_virus_seed));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.euphemium_helmet));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.euphemium_plate));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.euphemium_legs));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.euphemium_boots));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.apple_euphemium));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.ingot_euphemium));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.nugget_euphemium));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModItems.euphemium_kit));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.euphemium_stopper));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.watch));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.rod_quad_euphemium));
+		// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.rod_euphemium));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModItems.bobmazon_hidden));
 		if(MainRegistry.polaroidID != 11) {
-			blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.book_secret));
-			// blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.book_of_));
-			blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModItems.ams_core_thingy));
+			blacklist.addIngredientToBlacklist(new ItemStack(ModItems.book_secret));
+			// blacklist.addIngredientToBlacklist(new ItemStack(ModItems.book_of_));
+			blacklist.addIngredientToBlacklist(new ItemStack(ModItems.ams_core_thingy));
 		}
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_assembler));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_centrifuge));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_chemplant));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_cyclotron));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_flare));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_fluidtank));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_pumpjack));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_refinery));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_turbofan));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_well));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_ams_base));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_ams_emitter));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_ams_limiter));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_reactor_small));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_assembler));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_chemplant));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_cyclotron));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_flare));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_fluidtank));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_pumpjack));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_refinery));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_turbofan));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_well));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_ams_base));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_ams_emitter));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_ams_limiter));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_port_reactor_small));
-		blacklist.addIngredientToBlacklist(ItemStackUtil.itemStackFrom(ModBlocks.dummy_block_silo_hatch));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_assembler));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_centrifuge));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_chemplant));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_cyclotron));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_flare));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_fluidtank));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_pumpjack));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_refinery));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_turbofan));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_well));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_ams_base));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_ams_emitter));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_ams_limiter));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_assembler));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_chemplant));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_cyclotron));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_flare));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_fluidtank));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_pumpjack));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_refinery));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_turbofan));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_well));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_ams_base));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_ams_emitter));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_port_ams_limiter));
+		blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.dummy_block_silo_hatch));
 	}
 
 	@Override
-	public void registerCategories(final IRecipeCategoryRegistration registry) {
+	public void registerCategories(IRecipeCategoryRegistration registry) {
 		if(!GeneralConfig.jei)
 			return;
-		final IGuiHelper help = registry.getJeiHelpers().getGuiHelper();
+		IGuiHelper help = registry.getJeiHelpers().getGuiHelper();
 		registry.addRecipeCategories(new AnvilRecipeHandler(help),
 				new SmithingRecipeHandler(help),
 				new PressRecipeHandler(help),
@@ -338,29 +332,29 @@ public class JEIConfig implements IModPlugin {
 	}
 
 	@Override
-	public void registerItemSubtypes(final ISubtypeRegistry subtypeRegistry) {
+	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
 		if(!GeneralConfig.jei)
 			return;
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.cell, (final ItemStack stack) -> {
-			final FluidStack fluid = FluidUtil.getFluidContained(stack);
-			return ModItems.cell.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.cell, (ItemStack stack) -> {
+			FluidStack fluid = FluidUtil.getFluidContained(stack);
+			return ModItems.cell.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getTranslationKey() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_barrel_full, (final ItemStack stack) -> {
-			final FluidStack fluid = FluidUtil.getFluidContained(stack);
-			return ModItems.fluid_barrel_full.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_barrel_full, (ItemStack stack) -> {
+			FluidStack fluid = FluidUtil.getFluidContained(stack);
+			return ModItems.fluid_barrel_full.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getTranslationKey() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_tank_full, (final ItemStack stack) -> {
-			final FluidStack fluid = FluidUtil.getFluidContained(stack);
-			return ModItems.fluid_tank_full.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_tank_full, (ItemStack stack) -> {
+			FluidStack fluid = FluidUtil.getFluidContained(stack);
+			return ModItems.fluid_tank_full.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getTranslationKey() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.canister_generic, (final ItemStack stack) -> {
-			final FluidStack fluid = FluidUtil.getFluidContained(stack);
-			return ModItems.canister_generic.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getUnlocalizedName() + fluid.amount);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.canister_generic, (ItemStack stack) -> {
+			FluidStack fluid = FluidUtil.getFluidContained(stack);
+			return ModItems.canister_generic.getTranslationKey() + (fluid == null ? "empty" : fluid.getFluid().getTranslationKey() + fluid.amount);
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.missile_custom, (final ItemStack stack) -> {
-			return ModItems.missile_custom.getTranslationKey() + "w" + ItemCustomMissile.readFromNBT(stack, "warhead") + "f" + ItemCustomMissile.readFromNBT(stack, "fuselage") + "s" + ItemCustomMissile.readFromNBT(stack, "stability") + "t" + ItemCustomMissile.readFromNBT(stack, "thruster");
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.missile_custom, (ItemStack stack) -> {
+			return ModItems.missile_custom.getTranslationKey() + "w" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "warhead")) + "f" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "fuselage")) + "s" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "stability")) + "t" + Integer.toString(ItemCustomMissile.readFromNBT(stack, "thruster"));
 		});
-		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_icon, (final ItemStack stack) -> {
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.fluid_icon, (ItemStack stack) -> {
 			if(stack.hasTagCompound()) {
 				String s = "";
 				if(stack.getTagCompound().hasKey("type"))
@@ -372,6 +366,6 @@ public class JEIConfig implements IModPlugin {
 	}
 
 	@Override
-	public void onRuntimeAvailable(final IJeiRuntime jeiRuntime) {
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 	}
 }

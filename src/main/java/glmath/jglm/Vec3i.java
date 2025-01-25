@@ -17,14 +17,14 @@ public class Vec3i extends Veci {
     public Vec3i() {
     }
 
-    public Vec3i(final int[] intArray) {
+    public Vec3i(int[] intArray) {
         vector = intArray;
         x = vector[0];
         y = vector[1];
         z = vector[2];
     }
 
-    public Vec3i(final int x, final int y, final int z) {
+    public Vec3i(int x, int y, int z) {
 
         this.x = x;
         this.y = y;
@@ -32,7 +32,7 @@ public class Vec3i extends Veci {
         vector = new int[]{x, y, z};
     }
 
-    public Vec3i(final int[] floatArray, final int i) {
+    public Vec3i(int[] floatArray, int i) {
 
         vector = new int[]{floatArray[i], floatArray[i + 1], floatArray[i + 2]};
         x = vector[0];

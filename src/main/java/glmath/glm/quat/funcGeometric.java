@@ -13,18 +13,18 @@ import glmath.glm.vec._3.Vec3;
  */
 abstract class funcGeometric extends funcCommon {
 
-    public Quat angleAxis(final float angle, final Vec3 v) {
+    public Quat angleAxis(float angle, Vec3 v) {
         return Quat.angleAxis(angle, v, (Quat) this);
     }
 
-    public static Quat angleAxis_(final float degAngle, final Vec3 v) {
+    public static Quat angleAxis_(float degAngle, Vec3 v) {
         return Quat.angleAxis(degAngle, v, new Quat());
     }
 
-    public static Quat angleAxis(final float degAngle, final Vec3 v, final Quat res) {
+    public static Quat angleAxis(float degAngle, Vec3 v, Quat res) {
 
-        final float a = degAngle;
-        final float s = (float) Math.sin(Math.toRadians(a) * 0.5f);
+        float a = degAngle;
+        float s = (float) Math.sin(Math.toRadians(a) * 0.5f);
 
         res.w = (float) Math.cos(Math.toRadians(a) * 0.5f);
         res.x = v.x * s;
@@ -34,11 +34,11 @@ abstract class funcGeometric extends funcCommon {
         return res;
     }
 
-    public float dot(final Quat q) {
+    public float dot(Quat q) {
         return w * q.w + x * q.x + y * q.y + z * q.z;
     }
 
-    public static float dot(final Quat q1, final Quat q2) {
+    public static float dot(Quat q1, Quat q2) {
         return q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
     }
 
@@ -46,7 +46,7 @@ abstract class funcGeometric extends funcCommon {
         return length((Quat) this);
     }
 
-    public static float length(final Quat q) {
+    public static float length(Quat q) {
         return (float) Math.sqrt(dot(q, q));
     }
 
@@ -58,16 +58,16 @@ abstract class funcGeometric extends funcCommon {
         return Quat.normalize((Quat) this, new Quat());
     }
 
-    public Quat normalize(final Quat res) {
+    public Quat normalize(Quat res) {
         return Quat.normalize((Quat) this, res);
     }
 
-    public static Quat normalize(final Quat q, final Quat res) {
-        final float len = length(q);
+    public static Quat normalize(Quat q, Quat res) {
+        float len = length(q);
         if (len <= 0) { // Problem
             return new Quat(1, 0, 0, 0);
         }
-        final float oneOverLen = 1 / len;
+        float oneOverLen = 1 / len;
         return res.set(q.w * oneOverLen, q.x * oneOverLen, q.y * oneOverLen, q.z * oneOverLen);
     }
 }

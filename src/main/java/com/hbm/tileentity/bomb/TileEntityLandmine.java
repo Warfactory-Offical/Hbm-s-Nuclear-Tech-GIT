@@ -1,11 +1,8 @@
 package com.hbm.tileentity.bomb;
 
-import java.util.List;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.Landmine;
 import com.hbm.lib.HBMSoundHandler;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +14,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class TileEntityLandmine extends TileEntity implements ITickable {
 
 	private boolean isPrimed = false;
@@ -24,7 +23,7 @@ public class TileEntityLandmine extends TileEntity implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			final Block block = world.getBlockState(pos).getBlock();
+			Block block = world.getBlockState(pos).getBlock();
 			double range = 1;
 			double height = 1;
 
@@ -42,10 +41,10 @@ public class TileEntityLandmine extends TileEntity implements ITickable {
 				range = 2.5D;
 			}
 	
-			final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - range, pos.getY() - height, pos.getZ() - range, pos.getX() + range, pos.getY() + height, pos.getZ() + range));
+			List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - range, pos.getY() - height, pos.getZ() - range, pos.getX() + range, pos.getY() + height, pos.getZ() + range));
 	
 			boolean flag = false;
-			for (final Entity e : list) {
+			for (Entity e : list) {
 	
 				if (e instanceof EntityLivingBase) {
 	
@@ -69,13 +68,13 @@ public class TileEntityLandmine extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		isPrimed = compound.getBoolean("primed");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setBoolean("primed", isPrimed);
 		return super.writeToNBT(compound);
 	}

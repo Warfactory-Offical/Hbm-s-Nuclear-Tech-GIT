@@ -25,6 +25,9 @@ public class WorldConfig {
 	public static int gasbubbleSpawn = 4;
 	public static int explosivebubbleSpawn = 8;
 	public static int cobaltSpawn = 2;
+	public static int dunaOilSpawn = 100;
+	public static int eveGasSpawn = 100;
+	public static int laytheOilSpawn = 100;
 	
 	public static int ironClusterSpawn = 4;
 	public static int titaniumClusterSpawn = 2;
@@ -70,7 +73,7 @@ public class WorldConfig {
 	public static int meteorShowerChance = 20 * 60 * 5;
 	public static int meteorShowerDuration = 6000;
 
-	public static int convertToInt(final Object e){
+	public static int convertToInt(Object e){
 		if(e == null)
 			return 0;
 		return (int)e;
@@ -130,6 +133,9 @@ public class WorldConfig {
 		barrelStructure = convertToInt(CompatibilityConfig.barrelStructure.get(0));
 		broadcaster = convertToInt(CompatibilityConfig.broadcaster.get(0));
 		minefreq = convertToInt(CompatibilityConfig.minefreq.get(0));
+		dunaOilSpawn = convertToInt(CompatibilityConfig.dunaOilSpawn.get(0));
+		laytheOilSpawn = convertToInt(CompatibilityConfig.laytheOilSpawn.get(0));
+		eveGasSpawn = convertToInt(CompatibilityConfig.eveGasSpawn.get(0));
 		radfreq = convertToInt(CompatibilityConfig.radfreq.get(0));
 		vaultfreq = convertToInt(CompatibilityConfig.vaultfreq.get(0));
 		geyserWater = convertToInt(CompatibilityConfig.geyserWater.get(0));

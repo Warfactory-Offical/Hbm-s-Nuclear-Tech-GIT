@@ -25,7 +25,7 @@ public class EntityBombletZeta extends EntityThrowable implements IConstantRende
 
 	public int type = 0;
 
-	public EntityBombletZeta(final World p_i1582_1_) {
+	public EntityBombletZeta(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 	}
@@ -52,30 +52,30 @@ public class EntityBombletZeta extends EntityThrowable implements IConstantRende
 		this.motionY -= 0.05D;
         
         this.rotation();
-        final BlockPos pos = new BlockPos((int)this.posX, (int)this.posY, (int)this.posZ);
+        BlockPos pos = new BlockPos((int)this.posX, (int)this.posY, (int)this.posZ);
         if(this.world.getBlockState(pos).getBlock() != Blocks.AIR)
         {
     		if(!this.world.isRemote)
     		{
     			if(type == 0) {
     				ExplosionLarge.explode(world, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 5.0F, true, false, false);
-    	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.bombDet, SoundCategory.HOSTILE, 25.0F, 0.8F + rand.nextFloat() * 0.4F, true);
+    	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.bombDet, SoundCategory.HOSTILE, 25.0F, 0.8F + rand.nextFloat() * 0.4F, true);
     			}
     			if(type == 1) {
     				ExplosionLarge.explode(world, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 2.5F, false, false, false);
     				ExplosionChaos.burn(world, pos, 9);
     				ExplosionChaos.flameDeath(world, pos, 14);
-    	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, HBMSoundHandler.bombDet, SoundCategory.HOSTILE, 25.0F, 1.0F, true);
+    	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), HBMSoundHandler.bombDet, SoundCategory.HOSTILE, 25.0F, 1.0F, true);
     	        	
     	        	for(int i = 0; i < 5; i++)
     	        		ExplosionLarge.spawnBurst(world, this.posX + 0.5F, this.posY + 1.0F, this.posZ + 0.5F, rand.nextInt(10) + 15, rand.nextFloat() * 2 + 2);
     			}
     			if(type == 2) {
-    	        	world.playSound(posX + 0.5F, posY + 0.5F, posZ + 0.5F, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
+    	        	world.playSound((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.HOSTILE, 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F, true);
     				ExplosionChaos.spawnChlorine(world, this.posX + 0.5F - motionX, this.posY + 0.5F - motionY, this.posZ + 0.5F - motionZ, 75, 2, 0);
     			}
     			if(type == 4) {
-    				world.spawnEntity(EntityNukeExplosionMK5.statFac(world, (int) (BombConfig.fatmanRadius * 1.5), posX, posY, posZ).mute());
+    				world.spawnEntity(EntityNukeExplosionMK5.statFac(world, (int) (BombConfig.fatmanRadius * 1.5), posX, posY, posZ));
     				
     				if(BombConfig.enableNukeClouds) {
 						EntityNukeTorex.statFac(world, this.posX, this.posY, this.posZ, (int) (BombConfig.fatmanRadius * 1.5));
@@ -88,11 +88,12 @@ public class EntityBombletZeta extends EntityThrowable implements IConstantRende
 	}
 	
 	public void rotation() {
-        final float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
         for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
+            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -112,12 +113,12 @@ public class EntityBombletZeta extends EntityThrowable implements IConstantRende
 	}
 
 	@Override
-	protected void onImpact(final RayTraceResult p_70184_1_) {
+	protected void onImpact(RayTraceResult p_70184_1_) {
 	}
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(final double distance)
+    public boolean isInRangeToRenderDist(double distance)
     {
         return distance < 25000;
     }

@@ -1,10 +1,7 @@
 package com.hbm.items.special;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemPolaroid extends Item {
 
-	public ItemPolaroid(final String s) {
+	public ItemPolaroid(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.consumableTab);
@@ -25,7 +24,7 @@ public class ItemPolaroid extends Item {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected) {
+	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
 		if(entity instanceof EntityPlayer)
     		if(((EntityPlayer)entity).getHealth() < 10F) {
     			((EntityPlayer) entity).addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 2));
@@ -33,7 +32,7 @@ public class ItemPolaroid extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("Fate chosen");
 		list.add("");
 		switch(MainRegistry.polaroidID) {

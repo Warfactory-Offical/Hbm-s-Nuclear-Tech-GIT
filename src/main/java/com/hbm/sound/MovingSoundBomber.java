@@ -17,7 +17,7 @@ public class MovingSoundBomber extends MovingSound {
 	public static List<MovingSoundBomber> globalSoundList = new ArrayList<MovingSoundBomber>();
 	public EntityBomber bomber;
 	
-	public MovingSoundBomber(final SoundEvent soundIn, final SoundCategory categoryIn, final EntityBomber bomber) {
+	public MovingSoundBomber(SoundEvent soundIn, SoundCategory categoryIn, EntityBomber bomber) {
 		super(soundIn, categoryIn);
 		this.bomber = bomber;
 		globalSoundList.add(this);
@@ -35,9 +35,9 @@ public class MovingSoundBomber extends MovingSound {
 			this.yPosF = (float)bomber.posY;
 			this.zPosF = (float)bomber.posZ;
 			
-			final EntityPlayerSP player = Minecraft.getMinecraft().player;
+			EntityPlayerSP player = Minecraft.getMinecraft().player;
 			float f = 0;
-			final float iVolume = 150;
+			float iVolume = 150;
 			if(player != null) {
 				f = (float)Math.sqrt(Math.pow(xPosF - player.posX, 2) + Math.pow(yPosF - player.posY, 2) + Math.pow(zPosF - player.posZ, 2));
 				volume = (f / iVolume) * -2 + 2;
@@ -58,15 +58,15 @@ public class MovingSoundBomber extends MovingSound {
 		globalSoundList.remove(this);
 	}
 	
-	public void setPitch(final float f) {
+	public void setPitch(float f) {
 		this.pitch = f;
 	}
 	
-	public void setVolume(final float f) {
+	public void setVolume(float f) {
 		this.volume = f;
 	}
 	
-	public void setDone(final boolean b) {
+	public void setDone(boolean b) {
 		this.donePlaying = b;
 	}
 }

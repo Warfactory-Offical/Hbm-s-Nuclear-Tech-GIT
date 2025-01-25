@@ -1,12 +1,14 @@
 package com.hbm.main;
 
+import org.apache.logging.log4j.Level;
+
 import com.hbm.lib.RefStrings;
+
 import net.minecraft.advancements.Advancement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
 
 public class AdvancementManager {
 
@@ -25,6 +27,7 @@ public class AdvancementManager {
 	public static Advancement achFOEQ;
 	public static Advancement achFiend;
 	public static Advancement achFiend2;
+	public static Advancement achGoFish;
 	public static Advancement bobMetalworks;
 	public static Advancement bobAssembly;
 	public static Advancement bobChemistry;
@@ -33,6 +36,8 @@ public class AdvancementManager {
 	public static Advancement bobHidden;
 	public static Advancement achStratum;
 	public static Advancement achMeltdown;
+	public static Advancement achZIRNOXBoom;
+	public static Advancement achDriveFail;
 	public static Advancement achOmega12;
 	public static Advancement digammaSee;
 	public static Advancement digammaFeel;
@@ -50,8 +55,8 @@ public class AdvancementManager {
 	public static Advancement bossWorm;
 	public static Advancement bossUFO;
 
-	public static void init(final MinecraftServer serv){
-		final net.minecraft.advancements.AdvancementManager adv = serv.getAdvancementManager();
+	public static void init(MinecraftServer serv){
+		net.minecraft.advancements.AdvancementManager adv = serv.getAdvancementManager();
 		
 		root = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "root"));
 		achSpace = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "space"));
@@ -74,6 +79,7 @@ public class AdvancementManager {
 		achStratum = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "achstratum"));
 		achMeltdown = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "achmeltdown"));
 		achOmega12 = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "achomega12"));
+		achGoFish = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "achgofish"));
 		digammaSee = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "digammasee"));
 		digammaFeel = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "digammafeel"));
 		digammaKnow = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "digammaknow"));
@@ -82,6 +88,8 @@ public class AdvancementManager {
 		achSomeWounds = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "achsomewounds"));
 		progress_dfc = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "progress_dfc"));
 		progress_rbmk_boom = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "progress_rbmk_boom"));
+		achZIRNOXBoom = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "achZIRNOXBoom"));
+		achDriveFail = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "achDriveFail"));
 		
 		bossCreeper = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "bosscreeper"));
 		bossMeltdown = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "bossmeltdown"));
@@ -90,22 +98,22 @@ public class AdvancementManager {
 		bossUFO = adv.getAdvancement(new ResourceLocation(RefStrings.MODID, "bossufo"));
 	}
 	
-	public static void grantAchievement(final EntityPlayerMP player, final Advancement a){
+	public static void grantAchievement(EntityPlayerMP player, Advancement a){
 		if(a == null){
 			MainRegistry.logger.log(Level.ERROR, "Failed to grant null advancement! This should never happen.");
 			return;
 		}
-		for(final String s : player.getAdvancements().getProgress(a).getRemaningCriteria()){
+		for(String s : player.getAdvancements().getProgress(a).getRemaningCriteria()){
 			player.getAdvancements().grantCriterion(a, s);
 		}
 	}
 	
-	public static void grantAchievement(final EntityPlayer player, final Advancement a){
+	public static void grantAchievement(EntityPlayer player, Advancement a){
 		if(player instanceof EntityPlayerMP)
 			grantAchievement((EntityPlayerMP)player, a);
 	}
 	
-	public static boolean hasAdvancement(final EntityPlayer player, final Advancement a){
+	public static boolean hasAdvancement(EntityPlayer player, Advancement a){
 		if(a == null){
 			MainRegistry.logger.log(Level.ERROR, "Failed to test null advancement! This should never happen.");
 			return false;

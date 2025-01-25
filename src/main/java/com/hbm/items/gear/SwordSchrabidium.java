@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
 public class SwordSchrabidium extends ItemSword {
-	public SwordSchrabidium(final ToolMaterial t, final String s){
+	public SwordSchrabidium(ToolMaterial t, String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -16,7 +16,7 @@ public class SwordSchrabidium extends ItemSword {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 }

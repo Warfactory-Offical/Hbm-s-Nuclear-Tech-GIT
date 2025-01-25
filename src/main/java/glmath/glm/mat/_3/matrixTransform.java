@@ -13,7 +13,7 @@ import glmath.glm.vec._3.Vec3;
  */
 abstract class matrixTransform extends funcMatrix {
 
-    public Mat3 rotation(final float ang, final Vec3 v) {
+    public Mat3 rotation(float ang, Vec3 v) {
         return rotation(ang, v.x, v.y, v.z);
     }
 
@@ -26,13 +26,11 @@ abstract class matrixTransform extends funcMatrix {
      * @param z
      * @return
      */
-    public Mat3 rotation(final float ang, final float x, final float y, final float z) {
-        final float cos = (float) Math.cos(ang);
-        final float sin = (float) Math.sin(ang);
-        final float C = 1.0f - cos;
-        final float xy = x * y;
-        float xz = x * z;
-        final float yz = y * z;
+    public Mat3 rotation(float ang, float x, float y, float z) {
+        float cos = (float) Math.cos(ang);
+        float sin = (float) Math.sin(ang);
+        float C = 1.0f - cos;
+        float xy = x * y, xz = x * z, yz = y * z;
         m00 = cos + x * x * C;
         m10 = xy * C - z * sin;
         m20 = xz * C + y * sin;
@@ -45,11 +43,11 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat3) this;
     }
 
-    public Mat3 rotate(final float angle, final Vec3 v) {
+    public Mat3 rotate(float angle, Vec3 v) {
         return rotate(angle, v.x, v.y, v.z, (Mat3) this);
     }
 
-    public Mat3 rotate(final float angle, final float x, final float y, final float z) {
+    public Mat3 rotate(float angle, float x, float y, float z) {
         return rotate(angle, x, y, z, (Mat3) this);
     }
 
@@ -63,36 +61,33 @@ abstract class matrixTransform extends funcMatrix {
      * @param res
      * @return
      */
-    public Mat3 rotate(final float ang, final float x, final float y, final float z, final Mat3 res) {
-        final float sin = (float) Math.sin(ang);
-        final float cos = (float) Math.cos(ang);
-        final float invCos = 1.0f - cos;
+    public Mat3 rotate(float ang, float x, float y, float z, Mat3 res) {
+        float sin = (float) Math.sin(ang);
+        float cos = (float) Math.cos(ang);
+        float invCos = 1.0f - cos;
 
         // rotation matrix elements:
         // m30, m31, m32, m03, m13, m23 = 0
-        final float xx = x * x;
-        float xy = x * y;
-        final float xz = x * z;
-        final float yy = y * y;
-        final float yz = y * z;
-        final float zz = z * z;
-        final float rm00 = xx * invCos + cos;
-        final float rm01 = xy * invCos + z * sin;
-        final float rm02 = xz * invCos - y * sin;
-        final float rm10 = xy * invCos - z * sin;
-        final float rm11 = yy * invCos + cos;
-        final float rm12 = yz * invCos + x * sin;
-        final float rm20 = xz * invCos + y * sin;
-        final float rm21 = yz * invCos - x * sin;
-        final float rm22 = zz * invCos + cos;
+        float xx = x * x, xy = x * y, xz = x * z;
+        float yy = y * y, yz = y * z;
+        float zz = z * z;
+        float rm00 = xx * invCos + cos;
+        float rm01 = xy * invCos + z * sin;
+        float rm02 = xz * invCos - y * sin;
+        float rm10 = xy * invCos - z * sin;
+        float rm11 = yy * invCos + cos;
+        float rm12 = yz * invCos + x * sin;
+        float rm20 = xz * invCos + y * sin;
+        float rm21 = yz * invCos - x * sin;
+        float rm22 = zz * invCos + cos;
 
         // add temporaries for dependent values
-        final float nm00 = m00 * rm00 + m10 * rm01 + m20 * rm02;
-        final float nm01 = m01 * rm00 + m11 * rm01 + m21 * rm02;
-        final float nm02 = m02 * rm00 + m12 * rm01 + m22 * rm02;
-        final float nm10 = m00 * rm10 + m10 * rm11 + m20 * rm12;
-        final float nm11 = m01 * rm10 + m11 * rm11 + m21 * rm12;
-        final float nm12 = m02 * rm10 + m12 * rm11 + m22 * rm12;
+        float nm00 = m00 * rm00 + m10 * rm01 + m20 * rm02;
+        float nm01 = m01 * rm00 + m11 * rm01 + m21 * rm02;
+        float nm02 = m02 * rm00 + m12 * rm01 + m22 * rm02;
+        float nm10 = m00 * rm10 + m10 * rm11 + m20 * rm12;
+        float nm11 = m01 * rm10 + m11 * rm11 + m21 * rm12;
+        float nm12 = m02 * rm10 + m12 * rm11 + m22 * rm12;
         // set non-dependent values directly
         res.m20 = m00 * rm20 + m10 * rm21 + m20 * rm22;
         res.m21 = m01 * rm20 + m11 * rm21 + m21 * rm22;
@@ -108,17 +103,16 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public Mat3 rotateX(final double ang) {
+    public Mat3 rotateX(double ang) {
         return rotateX((float) ang, (Mat3) this);
     }
 
-    public Mat3 rotateX(final float ang) {
+    public Mat3 rotateX(float ang) {
         return rotateX(ang, (Mat3) this);
     }
 
-    public Mat3 rotateX(final float ang, final Mat3 res) {
-        final float sin;
-        final float cos;
+    public Mat3 rotateX(float ang, Mat3 res) {
+        float sin, cos;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -132,15 +126,15 @@ abstract class matrixTransform extends funcMatrix {
             cos = (float) Math.cos(ang);
             sin = (float) Math.sin(ang);
         }
-        final float rm11 = +cos;
-        final float rm21 = -sin;
-        final float rm12 = +sin;
-        final float rm22 = +cos;
+        float rm11 = +cos;
+        float rm21 = -sin;
+        float rm12 = +sin;
+        float rm22 = +cos;
 
         // add temporaries for dependent values
-        final float nm10 = m10 * rm11 + m20 * rm12;
-        final float nm11 = m11 * rm11 + m21 * rm12;
-        final float nm12 = m12 * rm11 + m22 * rm12;
+        float nm10 = m10 * rm11 + m20 * rm12;
+        float nm11 = m11 * rm11 + m21 * rm12;
+        float nm12 = m12 * rm11 + m22 * rm12;
         // set non-dependent values directly
         res.m20 = m10 * rm21 + m20 * rm22;
         res.m21 = m11 * rm21 + m21 * rm22;
@@ -156,17 +150,16 @@ abstract class matrixTransform extends funcMatrix {
         return res;
     }
 
-    public Mat3 rotateY(final double ang) {
+    public Mat3 rotateY(double ang) {
         return rotateY((float) ang, (Mat3) this);
     }
 
-    public Mat3 rotateY(final float ang) {
+    public Mat3 rotateY(float ang) {
         return rotateY(ang, (Mat3) this);
     }
 
-    public Mat3 rotateY(final float ang, final Mat3 dest) {
-        final float sin;
-        final float cos;
+    public Mat3 rotateY(float ang, Mat3 dest) {
+        float sin, cos;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -180,15 +173,15 @@ abstract class matrixTransform extends funcMatrix {
             cos = (float) Math.cos(ang);
             sin = (float) Math.sin(ang);
         }
-        final float rm00 = cos;
-        final float rm20 = sin;
-        final float rm02 = -sin;
-        final float rm22 = cos;
+        float rm00 = cos;
+        float rm20 = sin;
+        float rm02 = -sin;
+        float rm22 = cos;
 
         // add temporaries for dependent values
-        final float nm00 = m00 * rm00 + m20 * rm02;
-        final float nm01 = m01 * rm00 + m21 * rm02;
-        final float nm02 = m02 * rm00 + m22 * rm02;
+        float nm00 = m00 * rm00 + m20 * rm02;
+        float nm01 = m01 * rm00 + m21 * rm02;
+        float nm02 = m02 * rm00 + m22 * rm02;
         // set non-dependent values directly
         dest.m20 = m00 * rm20 + m20 * rm22;
         dest.m21 = m01 * rm20 + m21 * rm22;
@@ -204,17 +197,16 @@ abstract class matrixTransform extends funcMatrix {
         return dest;
     }
 
-    public Mat3 rotateZ(final double ang) {
+    public Mat3 rotateZ(double ang) {
         return rotateZ((float) ang, (Mat3) this);
     }
 
-    public Mat3 rotateZ(final float ang) {
+    public Mat3 rotateZ(float ang) {
         return rotateZ(ang, (Mat3) this);
     }
 
-    public Mat3 rotateZ(final float ang, final Mat3 dest) {
-        final float sin;
-        final float cos;
+    public Mat3 rotateZ(float ang, Mat3 dest) {
+        float sin, cos;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -228,15 +220,15 @@ abstract class matrixTransform extends funcMatrix {
             cos = (float) Math.cos(ang);
             sin = (float) Math.sin(ang);
         }
-        final float rm00 = cos;
-        final float rm10 = -sin;
-        final float rm01 = sin;
-        final float rm11 = cos;
+        float rm00 = cos;
+        float rm10 = -sin;
+        float rm01 = sin;
+        float rm11 = cos;
 
         // add temporaries for dependent values
-        final float nm00 = m00 * rm00 + m10 * rm01;
-        final float nm01 = m01 * rm00 + m11 * rm01;
-        final float nm02 = m02 * rm00 + m12 * rm01;
+        float nm00 = m00 * rm00 + m10 * rm01;
+        float nm01 = m01 * rm00 + m11 * rm01;
+        float nm02 = m02 * rm00 + m12 * rm01;
         // set non-dependent values directly
         dest.m10 = m00 * rm10 + m10 * rm11;
         dest.m11 = m01 * rm10 + m11 * rm11;
@@ -252,9 +244,8 @@ abstract class matrixTransform extends funcMatrix {
         return dest;
     }
 
-    public Mat3 rotationX(final float ang) {
-        final float cos;
-        final float sin;
+    public Mat3 rotationX(float ang) {
+        float cos, sin;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -280,9 +271,8 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat3) this;
     }
 
-    public Mat3 rotationY(final float ang) {
-        final float sin;
-        final float cos;
+    public Mat3 rotationY(float ang) {
+        float sin, cos;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;
@@ -308,9 +298,8 @@ abstract class matrixTransform extends funcMatrix {
         return (Mat3) this;
     }
 
-    public Mat3 rotationZ(final float ang) {
-        final float sin;
-        final float cos;
+    public Mat3 rotationZ(float ang) {
+        float sin, cos;
         if (ang == (float) Math.PI || ang == -(float) Math.PI) {
             cos = -1.0f;
             sin = 0.0f;

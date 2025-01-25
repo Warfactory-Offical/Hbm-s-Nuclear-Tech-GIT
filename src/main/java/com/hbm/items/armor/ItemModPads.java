@@ -18,14 +18,14 @@ public class ItemModPads extends ItemArmorMod {
 
 	float damageMod;
 	
-	public ItemModPads(final float damageMod, final String s) {
+	public ItemModPads(float damageMod, String s) {
 		super(ArmorModHandler.boots_only, false, false, false, true, s);
 		this.damageMod = damageMod;
 	}
 	
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		if(damageMod != 1F)
 			list.add(TextFormatting.RED + "-" + Math.round((1F - damageMod) * 100) + "% fall damage");
 		
@@ -37,7 +37,7 @@ public class ItemModPads extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		
 		if(this == ModItems.pads_static)
 			list.add(TextFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (-" + Math.round((1F - damageMod) * 100) + "% fall dmg / passive charge)");
@@ -46,33 +46,37 @@ public class ItemModPads extends ItemArmorMod {
 	}
 
 	@Override
-	public void modDamage(final LivingHurtEvent event, final ItemStack armor) {
+	public void modDamage(LivingHurtEvent event, ItemStack armor) {
 		
 		if(event.getSource() == DamageSource.FALL)
 			event.setAmount(event.getAmount() * damageMod);
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		if(!entity.world.isRemote && this == ModItems.pads_static && entity instanceof EntityPlayer player) {
-
-            if(player.distanceWalkedModified != player.prevDistanceWalkedModified) {
+		if(!entity.world.isRemote && this == ModItems.pads_static && entity instanceof EntityPlayer) {
+			
+			EntityPlayer player = (EntityPlayer) entity;
+			
+			if(player.distanceWalkedModified != player.prevDistanceWalkedModified) {
 				
 				if(ArmorFSB.hasFSBArmorIgnoreCharge(player)) {
 					
 					for(int i = 0; i < 4; i++) {
 						
-						final ItemStack stack = player.inventory.armorInventory.get(i);
+						ItemStack stack = player.inventory.armorInventory.get(i);
 						
-						if(stack.getItem() instanceof ArmorFSBPowered powered) {
-
-                            long charge = powered.drain / 2;
+						if(stack.getItem() instanceof ArmorFSBPowered) {
+							
+							ArmorFSBPowered powered = (ArmorFSBPowered) stack.getItem();
+							
+							long charge = powered.drain / 2;
 							
 							if(charge == 0)
 								charge = powered.consumption / 40;
 							
-							final long power = Math.min(powered.maxPower, powered.getCharge(stack) + charge);
+							long power = Math.min(powered.maxPower, powered.getCharge(stack) + charge);
 							powered.setCharge(stack, power);
 						}
 					}

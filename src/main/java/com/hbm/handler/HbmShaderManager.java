@@ -100,7 +100,7 @@ public class HbmShaderManager {
 	// public static FloatBuffer testBuf1;
 	// public static FloatBuffer testBuf2;
 
-	public static void addRenderForGauss(final Runnable r) {
+	public static void addRenderForGauss(Runnable r) {
 		gaussRenderers.add(r);
 	}
 
@@ -139,7 +139,7 @@ public class HbmShaderManager {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, gaussFbo.framebufferObject);
 		GL30.glBlitFramebuffer(0, 0, gaussFbo.framebufferWidth, gaussFbo.framebufferHeight, 0, 0, gaussFbo.framebufferWidth, gaussFbo.framebufferHeight, GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
 
-		for(final Runnable r : gaussRenderers)
+		for(Runnable r : gaussRenderers)
 			r.run();
 		gaussRenderers.clear();
 
@@ -180,7 +180,7 @@ public class HbmShaderManager {
 		useShader(combine);
 		GL20.glUniform1i(GL20.glGetUniformLocation(combine, "mcImage"), 2);
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
-		final int tex = GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE);
+		int tex = GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.getMinecraft().getFramebuffer().framebufferTexture);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		gaussFbo.framebufferRender(Minecraft.getMinecraft().getFramebuffer().framebufferWidth, Minecraft.getMinecraft().displayHeight);
@@ -201,13 +201,13 @@ public class HbmShaderManager {
 	}
 
 	public static void stealDepthBuffer() {
-		final Framebuffer mainBuf = Minecraft.getMinecraft().getFramebuffer();
+		Framebuffer mainBuf = Minecraft.getMinecraft().getFramebuffer();
 		gaussFbo.bindFramebuffer(false);
 		OpenGlHelper.glFramebufferRenderbuffer(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, OpenGlHelper.GL_RENDERBUFFER, mainBuf.depthBuffer);
 		mainBuf.bindFramebuffer(false);
 	}
 
-	public static void renderFBOAlpha(final Framebuffer buf, final int width, final int height) {
+	public static void renderFBOAlpha(Framebuffer buf, int width, int height) {
 		if(OpenGlHelper.isFramebufferEnabled()) {
 
 			GlStateManager.colorMask(true, true, true, false);
@@ -216,7 +216,7 @@ public class HbmShaderManager {
 
 			GlStateManager.matrixMode(5889);
 			GlStateManager.loadIdentity();
-			GlStateManager.ortho(0.0D, width, height, 0.0D, 1000.0D, 3000.0D);
+			GlStateManager.ortho(0.0D, (double) width, (double) height, 0.0D, 1000.0D, 3000.0D);
 			GlStateManager.matrixMode(5888);
 
 			GlStateManager.loadIdentity();
@@ -229,17 +229,17 @@ public class HbmShaderManager {
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			buf.bindFramebufferTexture();
-			final float f = (float) width;
-			final float f1 = (float) height;
-			final float f2 = (float) buf.framebufferWidth / (float) buf.framebufferTextureWidth;
-			final float f3 = (float) buf.framebufferHeight / (float) buf.framebufferTextureHeight;
-			final Tessellator tessellator = Tessellator.getInstance();
-			final BufferBuilder bufferbuilder = tessellator.getBuffer();
+			float f = (float) width;
+			float f1 = (float) height;
+			float f2 = (float) buf.framebufferWidth / (float) buf.framebufferTextureWidth;
+			float f3 = (float) buf.framebufferHeight / (float) buf.framebufferTextureHeight;
+			Tessellator tessellator = Tessellator.getInstance();
+			BufferBuilder bufferbuilder = tessellator.getBuffer();
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-			bufferbuilder.pos(0.0D, f1, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
-			bufferbuilder.pos(f, f1, 0.0D).tex(f2, 0.0D).color(255, 255, 255, 255).endVertex();
-			bufferbuilder.pos(f, 0.0D, 0.0D).tex(f2, f3).color(255, 255, 255, 255).endVertex();
-			bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, f3).color(255, 255, 255, 255).endVertex();
+			bufferbuilder.pos(0.0D, (double) f1, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
+			bufferbuilder.pos((double) f, (double) f1, 0.0D).tex((double) f2, 0.0D).color(255, 255, 255, 255).endVertex();
+			bufferbuilder.pos((double) f, 0.0D, 0.0D).tex((double) f2, (double) f3).color(255, 255, 255, 255).endVertex();
+			bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, (double) f3).color(255, 255, 255, 255).endVertex();
 			tessellator.draw();
 			buf.unbindFramebufferTexture();
 			GlStateManager.depthMask(true);
@@ -269,7 +269,7 @@ public class HbmShaderManager {
 			SimpleTexture tex = new SimpleTexture(new ResourceLocation(RefStrings.MODID, "textures/misc/perlin1.png"));
 			try {
 				tex.loadTexture(Minecraft.getMinecraft().getResourceManager());
-			} catch(final IOException e) {
+			} catch(IOException e) {
 				e.printStackTrace();
 			}
 			noise1 = tex.getGlTextureId();
@@ -279,7 +279,7 @@ public class HbmShaderManager {
 			tex = new SimpleTexture(new ResourceLocation(RefStrings.MODID, "textures/misc/perlin2.png"));
 			try {
 				tex.loadTexture(Minecraft.getMinecraft().getResourceManager());
-			} catch(final IOException e) {
+			} catch(IOException e) {
 				e.printStackTrace();
 			}
 			noise2 = tex.getGlTextureId();
@@ -289,12 +289,12 @@ public class HbmShaderManager {
 		}
 	}
 
-	private static int createShader(final String frag, final String vert) {
-		final int prog = OpenGlHelper.glCreateProgram();
+	private static int createShader(String frag, String vert) {
+		int prog = OpenGlHelper.glCreateProgram();
 		if(prog == 0)
 			return 0;
-		final int vertexShader = createVertexShader("/assets/" + RefStrings.MODID + "/shaders/" + vert);
-		final int fragShader = createFragShader("/assets/" + RefStrings.MODID + "/shaders/" + frag);
+		int vertexShader = createVertexShader("/assets/" + RefStrings.MODID + "/shaders/" + vert);
+		int fragShader = createFragShader("/assets/" + RefStrings.MODID + "/shaders/" + frag);
 		OpenGlHelper.glAttachShader(prog, vertexShader);
 		OpenGlHelper.glAttachShader(prog, fragShader);
 
@@ -314,7 +314,7 @@ public class HbmShaderManager {
 		return prog;
 	}
 
-	private static int createFragShader(final String shaderSource) {
+	private static int createFragShader(String shaderSource) {
 		int shader = 0;
 		try {
 			shader = OpenGlHelper.glCreateShader(FRAG);
@@ -328,14 +328,14 @@ public class HbmShaderManager {
 				throw new RuntimeException("Error creating shader: " + shaderSource);
 			}
 			return shader;
-		} catch(final Exception x) {
+		} catch(Exception x) {
 			OpenGlHelper.glDeleteShader(shader);
 			x.printStackTrace();
 			return -1;
 		}
 	}
 
-	private static int createVertexShader(final String shaderSource) {
+	private static int createVertexShader(String shaderSource) {
 		int shader = 0;
 		try {
 			shader = OpenGlHelper.glCreateShader(VERT);
@@ -349,15 +349,16 @@ public class HbmShaderManager {
 				throw new RuntimeException("Error creating shader: " + shaderSource);
 			}
 			return shader;
-		} catch(final Exception x) {
+		} catch(Exception x) {
 			OpenGlHelper.glDeleteShader(shader);
 			x.printStackTrace();
 			return -1;
 		}
 	}
 
-	public static ByteBuffer readFileToBuf(final String file) throws IOException {
-		final InputStream in = ShaderManager.class.getResourceAsStream(file);
+	public static ByteBuffer readFileToBuf(String file) throws IOException {
+
+		InputStream in = ShaderManager.class.getResourceAsStream(file);
 
 		byte[] bytes = null;
 		try {
@@ -365,13 +366,10 @@ public class HbmShaderManager {
 		} finally {
 			IOUtils.closeQuietly(in);
 		}
-
-		//DO NOT REMOVE THE CAST
 		return (ByteBuffer) BufferUtils.createByteBuffer(bytes.length).put(bytes).position(0);
 	}
 
-
-	public static void glValidateProgram(final int prog) {
+	public static void glValidateProgram(int prog) {
 		if(arbShaders) {
 			ARBShaderObjects.glValidateProgramARB(prog);
 		} else {
@@ -379,21 +377,21 @@ public class HbmShaderManager {
 		}
 	}
 
-	public static boolean shouldUseShader(final int shader) {
+	public static boolean shouldUseShader(int shader) {
 		return OpenGlHelper.shadersSupported && GeneralConfig.useShaders;
 	}
 	
-	public static boolean shouldUseShader2(final int shader) {
+	public static boolean shouldUseShader2(int shader) {
 		return OpenGlHelper.shadersSupported && GeneralConfig.useShaders2;
 	}
 
-	public static void useShader(final int shader) {
+	public static void useShader(int shader) {
 		if(!shouldUseShader(shader))
 			return;
 		OpenGlHelper.glUseProgram(shader);
 	}
 	
-	public static void useShader2(final int shader) {
+	public static void useShader2(int shader) {
 		if(!shouldUseShader2(shader))
 			return;
 		OpenGlHelper.glUseProgram(shader);
@@ -413,7 +411,7 @@ public class HbmShaderManager {
 		GL20.glUniform2f(GL20.glGetUniformLocation(dissolve, "noiseScroll"), 0.01F, 0.01F);
 	}
 	
-	public static void useWormShader(final float offset){
+	public static void useWormShader(float offset){
 		useShader2(bfg_worm);
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, noise1);
@@ -422,7 +420,7 @@ public class HbmShaderManager {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL20.glUniform1i(GL20.glGetUniformLocation(bfg_worm, "noise"), 2);
 		GL20.glUniform1i(GL20.glGetUniformLocation(bfg_worm, "bigNoise"), 3);
-		final float worldTime = Minecraft.getMinecraft().world.getTotalWorldTime() + Minecraft.getMinecraft().getRenderPartialTicks() + offset;
+		float worldTime = Minecraft.getMinecraft().world.getTotalWorldTime() + Minecraft.getMinecraft().getRenderPartialTicks() + offset;
 		GL20.glUniform1f(GL20.glGetUniformLocation(bfg_worm, "worldTime"), worldTime/4);
 	}
 
@@ -439,16 +437,16 @@ public class HbmShaderManager {
 		FloatSupplier ints;
 		String name;
 
-		public Uniform(final String name, final FloatSupplier ints) {
+		public Uniform(String name, FloatSupplier ints) {
 			this.name = name;
 			this.ints = ints;
 		}
 
-		public static Uniform createUniform(final String name, final FloatSupplier ints) {
+		public static Uniform createUniform(String name, FloatSupplier ints) {
 			return new Uniform(name, ints);
 		}
 
-		public void assign(final int shader) {
+		public void assign(int shader) {
 			if(arbShaders) {
 				ARBShaderObjects.glUniform1fARB(OpenGlHelper.glGetUniformLocation(shader, name), ints.getAsFloat());
 			} else {
@@ -462,8 +460,10 @@ public class HbmShaderManager {
 		public float getAsFloat();
 	}
 
-	public static boolean isActiveShader(final int prog) {
-        return GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM) == prog;
-    }
+	public static boolean isActiveShader(int prog) {
+		if(GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM) == prog)
+			return true;
+		return false;
+	}
 
 }

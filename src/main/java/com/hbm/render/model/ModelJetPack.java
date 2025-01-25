@@ -1,7 +1,5 @@
 package com.hbm.render.model;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -24,9 +22,9 @@ public class ModelJetPack extends ModelBiped {
 		textureWidth = 32;
 		textureHeight = 32;
 
-		final float x = 0F;
-		final float y = 0F;
-		final float z = -2F;
+		float x = 0F;
+		float y = 0F;
+		float z = -2F;
 		
 		JetPack = new ModelRenderer(this, 0, 0);
 		JetPack.setRotationPoint(x, y, z);
@@ -98,7 +96,7 @@ public class ModelJetPack extends ModelBiped {
 
 	
 	@Override
-	public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5) {
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		//super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		/*Tank1.render(f5);
@@ -112,16 +110,21 @@ public class ModelJetPack extends ModelBiped {
 		JetPack.render(f5);
 	}
 
-	private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
 	@Override
-	public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity entity) {
-		if (entity instanceof EntityPlayer player) {
-            this.isSneak = player.isSneaking();
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			if (player.isSneaking()) {
+				this.isSneak = true;
+			} else {
+				this.isSneak = false;
+			}
 			/*ItemStack itemstack = player.inventory.getCurrentItem();
 			this.heldItemRight = itemstack != null ? 1 : 0;
 
@@ -146,7 +149,7 @@ public class ModelJetPack extends ModelBiped {
 		this.JetPack.rotateAngleZ = this.bipedBody.rotateAngleZ;
 	}
 
-	protected void convertToChild(final ModelRenderer parParent, final ModelRenderer parChild) {
+	protected void convertToChild(ModelRenderer parParent, ModelRenderer parChild) {
 		parChild.rotationPointX -= parParent.rotationPointX;
 		parChild.rotationPointY -= parParent.rotationPointY;
 		parChild.rotationPointZ -= parParent.rotationPointZ;

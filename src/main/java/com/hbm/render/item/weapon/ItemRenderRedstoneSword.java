@@ -1,12 +1,5 @@
 package com.hbm.render.item.weapon;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.vecmath.Matrix4f;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -15,6 +8,11 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.vecmath.Matrix4f;
+import java.util.Collections;
+import java.util.List;
 
 public class ItemRenderRedstoneSword implements IBakedModel {	
 	public ItemRenderRedstoneSword() {
@@ -22,7 +20,7 @@ public class ItemRenderRedstoneSword implements IBakedModel {
 
 
 	@Override
-	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
+	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
 		
 		return Collections.emptyList();
 	}
@@ -53,7 +51,7 @@ public class ItemRenderRedstoneSword implements IBakedModel {
 	}
 	
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(final TransformType cameraTransformType) {
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
 		ItemRedstoneSwordRender.INSTANCE.type = cameraTransformType;
 		return IBakedModel.super.handlePerspective(cameraTransformType);
 	}

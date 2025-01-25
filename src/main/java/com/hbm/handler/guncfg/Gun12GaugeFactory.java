@@ -24,7 +24,7 @@ public class Gun12GaugeFactory {
 
 	public static GunConfiguration getUboinikConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 8;
 		config.roundsPerCycle = 1;
@@ -56,7 +56,7 @@ public class Gun12GaugeFactory {
 	
 	public static GunConfiguration getShottyConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 26;
 		config.roundsPerCycle = 2;
@@ -118,7 +118,7 @@ public class Gun12GaugeFactory {
 	}
 	
 	public static GunConfiguration getJShotgunConfig(){
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 8;
 		config.roundsPerCycle = 1;
@@ -161,7 +161,7 @@ public class Gun12GaugeFactory {
 	
 	public static BulletConfiguration get12GaugeConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_12gauge;
 		bullet.dmgMin = 1;
@@ -172,7 +172,7 @@ public class Gun12GaugeFactory {
 	
 	public static BulletConfiguration get12GaugeFireConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_12gauge_incendiary;
 		bullet.wear = 15;
@@ -185,7 +185,7 @@ public class Gun12GaugeFactory {
 	
 	public static BulletConfiguration get12GaugeShrapnelConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_12gauge_shrapnel;
 		bullet.wear = 15;
@@ -200,7 +200,7 @@ public class Gun12GaugeFactory {
 	
 	public static BulletConfiguration get12GaugeDUConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_12gauge_du;
 		bullet.wear = 20;
@@ -214,7 +214,7 @@ public class Gun12GaugeFactory {
 	
 	public static BulletConfiguration get12GaugeAMConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBuckshotConfig();
 		
 		bullet.ammo = ModItems.ammo_12gauge_marauder;
 		bullet.wear = 20;
@@ -225,7 +225,7 @@ public class Gun12GaugeFactory {
 		bullet.bHurt = new IBulletHurtBehavior() {
 
 			@Override
-			public void behaveEntityHurt(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHurt(EntityBulletBase bullet, Entity hit) {
 				
 				if(hit instanceof EntityLivingBase)
 					((EntityLivingBase)hit).addPotionEffect(new PotionEffect(HbmPotion.bang, 20, 0));
@@ -237,7 +237,7 @@ public class Gun12GaugeFactory {
 	}
 	public static BulletConfiguration get12GaugeSleekConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardAirstrikeConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardAirstrikeConfig();
 
 		bullet.ammo = ModItems.ammo_12gauge_sleek;
 

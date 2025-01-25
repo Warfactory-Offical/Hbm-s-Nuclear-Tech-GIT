@@ -1,15 +1,14 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
+import api.hbm.energymk2.IBatteryItem;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.blocks.machine.MachineElectricFurnace;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IBatteryItem;
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -18,7 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
-public class TileEntityMachineElectricFurnace extends TileEntityMachineBase implements ITickable, IEnergyUser {
+public class TileEntityMachineElectricFurnace extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 
 	public int dualCookTime;
 	public long power;
@@ -38,7 +37,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 		return "container.electricFurnace";
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -48,7 +47,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		this.dualCookTime = compound.getInteger("cookTime");
 		if(compound.hasKey("inventory"))
@@ -57,7 +56,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setInteger("cookTime", dualCookTime);
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -65,38 +64,44 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
-		final int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+		int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
+	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		if(i == 0)
 			if(stack.getItem() instanceof IBatteryItem)
 				return true;
-
-        return i == 1;
-    }
+		
+		if(i == 1)
+			return true;
+		
+		return false;
+	}
 	
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
 		return isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
 		if(slot == 0)
 			if (itemStack.getItem() instanceof IBatteryItem && ((IBatteryItem)itemStack.getItem()).getCharge(itemStack) == 0)
 				return true;
-        return slot == 2;
-    }
+		if(slot == 2)
+			return true;
+		
+		return false;
+	}
 	
-	public int getDiFurnaceProgressScaled(final int i) {
+	public int getDiFurnaceProgressScaled(int i) {
 		return (dualCookTime * i) / processingSpeed;
 	}
 	
-	public long getPowerRemainingScaled(final long i) {
+	public long getPowerRemainingScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
@@ -113,7 +118,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 		{
 			return false;
 		}
-        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
+        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
         
 		if(itemStack == null || itemStack.isEmpty())
 		{
@@ -138,7 +143,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	
 	private void processItem() {
 		if(canProcess()) {
-	        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
+	        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(1));
 			
 			if(inventory.getStackInSlot(2).isEmpty())
 			{
@@ -151,7 +156,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 			{
 				if(inventory.getStackInSlot(2).isEmpty())
 				{
-					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem()));
+					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}
@@ -168,9 +173,10 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 		boolean flag1 = false;
 		
 		if(!world.isRemote)
-		{			
-			this.updateStandardConnections(world, pos);
-			final long prevPower = power;
+		{
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
+			long prevPower = power;
 			if(hasPower() && canProcess())
 			{
 				dualCookTime++;
@@ -187,9 +193,14 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 				dualCookTime = 0;
 			}
 			
-			boolean trigger = !hasPower() || !canProcess() || this.dualCookTime != 0;
-
-            if(trigger)
+			boolean trigger = true;
+			
+			if(hasPower() && canProcess() && this.dualCookTime == 0)
+			{
+				trigger = false;
+			}
+			
+			if(trigger)
             {
                 flag1 = true;
                 MachineElectricFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
@@ -210,7 +221,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

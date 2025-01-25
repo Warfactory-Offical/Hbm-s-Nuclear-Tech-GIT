@@ -1,27 +1,25 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemGunBase;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.item.TEISRBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderWeaponQuadro extends TEISRBase {
 
 	@Override
-	public void renderByItem(final ItemStack item) {
+	public void renderByItem(ItemStack item) {
 		GlStateManager.disableCull();
 
-		final EntityPlayer player = Minecraft.getMinecraft().player;
+		EntityPlayer player = Minecraft.getMinecraft().player;
 
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
@@ -56,10 +54,10 @@ public class ItemRenderWeaponQuadro extends TEISRBase {
 					GL11.glRotated(-5, 0, 1, 0);
 				}
 
-				final double[] recoil = HbmAnimations.getRelevantTransformation("QUADRO_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				double[] recoil = HbmAnimations.getRelevantTransformation("QUADRO_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glTranslated(0, 0, recoil[2]);
 
-				final double[] reload = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_ROTATE", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				double[] reload = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_ROTATE", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glRotated(reload[2], 1, 0, 0);
 			}
 			break;
@@ -97,7 +95,7 @@ public class ItemRenderWeaponQuadro extends TEISRBase {
 
 				GL11.glTranslated(0, -1, 0);
 
-				final double[] push = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_PUSH", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				double[] push = HbmAnimations.getRelevantTransformation("QUADRO_RELOAD_PUSH", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 				GL11.glTranslated(0, 3, 0);
 				GL11.glRotated(push[1] * 30, 1, 0, 0);
 				GL11.glTranslated(0, -3, 0);

@@ -1,8 +1,4 @@
 package com.hbm.blocks.bomb;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.Random;
-import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.BombConfig;
@@ -13,13 +9,12 @@ import com.hbm.interfaces.IBomb;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.bomb.TileEntityLandmine;
-
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -34,10 +29,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 public class Landmine extends BlockContainer implements IBomb {
 
 	public static boolean safeMode = false;
-	private static final Random rand = new Random();
+	private static Random rand = new Random();
 	
 	public static final float f = 0.0625F;
 	public static final AxisAlignedBB AP_BOX = new AxisAlignedBB(6 * f, 0.0F, 6 * f, 10 * f, 2 * f, 10 * f);
@@ -45,7 +43,7 @@ public class Landmine extends BlockContainer implements IBomb {
 	public static final AxisAlignedBB SHRAP_BOX = new AxisAlignedBB(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
 	public static final AxisAlignedBB FAT_BOX = new AxisAlignedBB(5 * f, 0.0F, 4 * f, 11 * f, 6 * f, 12 * f);
 	
-	public Landmine(final Material materialIn, final String s) {
+	public Landmine(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -54,17 +52,17 @@ public class Landmine extends BlockContainer implements IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityLandmine();
 	}
 	
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		if(this == ModBlocks.mine_ap){
 			return AP_BOX;
 		} else if(this == ModBlocks.mine_he){
@@ -79,27 +77,31 @@ public class Landmine extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public boolean canPlaceBlockAt(final World worldIn, final BlockPos pos) {
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 		return worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP) || worldIn.getBlockState(pos.down()).getBlock() instanceof BlockFence;
 	}
 	
 	@Override
-	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
-		if (world.isBlockPowered(pos))
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (world.isBlockIndirectlyGettingPowered(pos) > 0)
         {
         	explode(world, pos);
         }
         
-		boolean flag = !world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && !(world.getBlockState(pos.down()).getBlock() instanceof BlockFence);
+		boolean flag = false;
 
-        if (flag) {
+		if (!world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && !(world.getBlockState(pos.down()).getBlock() instanceof BlockFence)) {
+			flag = true;
+		}
+
+		if (flag) {
 			this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
 			world.setBlockToAir(pos);
 		}
 	}
 	
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		if (!safeMode) {
 			explode(worldIn, pos);
 		}
@@ -107,20 +109,20 @@ public class Landmine extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (player.getHeldItemMainhand().getItem() == ModItems.defuser || player.getHeldItemOffhand().getItem() == ModItems.defuser || player.getHeldItemMainhand().getItem() == ModItems.defuser_desh || player.getHeldItemOffhand().getItem() == ModItems.defuser_desh) {
 
 			safeMode = true;
 			world.setBlockToAir(pos);
 
-			final ItemStack itemstack = ItemStackUtil.itemStackFrom(this, 1);
-			final float f = world.rand.nextFloat() * 0.6F + 0.2F;
-			final float f1 = world.rand.nextFloat() * 0.2F;
-			final float f2 = world.rand.nextFloat() * 0.6F + 0.2F;
+			ItemStack itemstack = new ItemStack(this, 1);
+			float f = world.rand.nextFloat() * 0.6F + 0.2F;
+			float f1 = world.rand.nextFloat() * 0.2F;
+			float f2 = world.rand.nextFloat() * 0.6F + 0.2F;
 			
-			final EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1 + 1, pos.getZ() + f2, itemstack);
+			EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1 + 1, pos.getZ() + f2, itemstack);
 
-			final float f3 = 0.05F;
+			float f3 = 0.05F;
 			entityitem.motionX = (float) world.rand.nextGaussian() * f3;
 			entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
 			entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
@@ -136,51 +138,51 @@ public class Landmine extends BlockContainer implements IBomb {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		if(this == ModBlocks.mine_fat){
 			tooltip.add("§2[Nuclear Mine]§r");
 			tooltip.add(" §eRadius: "+BombConfig.fatmanRadius+"m§r");
 			tooltip.add("§2[Fallout]§r");
-			tooltip.add(" §aRadius: "+ BombConfig.fatmanRadius *(1+BombConfig.falloutRange/100)+"m§r");
+			tooltip.add(" §aRadius: "+(int)BombConfig.fatmanRadius*(1+BombConfig.falloutRange/100)+"m§r");
 		}
 	}
 
 	@Override
-	public void explode(final World world, final BlockPos pos) {
+	public BombReturnCode explode(World world, BlockPos pos) {
 		if(!world.isRemote) {
-			final int x = pos.getX();
-			final int y = pos.getY();
-			final int z = pos.getZ();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
 			Landmine.safeMode = true;
 			world.destroyBlock(pos, false);
 			Landmine.safeMode = false;
@@ -206,5 +208,7 @@ public class Landmine extends BlockContainer implements IBomb {
 	            }
 			}
 		}
+
+		return BombReturnCode.DETONATED;
 	}
 }

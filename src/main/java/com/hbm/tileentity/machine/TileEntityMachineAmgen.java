@@ -1,31 +1,28 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.lib.Library;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.saveddata.RadiationSavedData;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
 
-public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITickable, IEnergyGenerator {
+public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITickable, IEnergyProviderMK2 {
 
 	public long power;
 	public long maxPower = 500;
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		return super.writeToNBT(compound);
 	}
@@ -33,7 +30,7 @@ public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITic
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			final long prevPower = power;
+			long prevPower = power;
 
 			if(this.getBlockType() == ModBlocks.machine_amgen) {
 				power += RadiationSavedData.getData(world).getRadNumFromCoord(pos);
@@ -70,7 +67,8 @@ public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITic
 			if(power > maxPower)
 				power = maxPower;
 
-			this.sendPower(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.tryProvide(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 			if(prevPower != power)
 				markDirty();
 		}
@@ -82,7 +80,7 @@ public class TileEntityMachineAmgen extends TileEntityLoadedBase implements ITic
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

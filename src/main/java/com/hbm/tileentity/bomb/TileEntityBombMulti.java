@@ -1,7 +1,6 @@
 package com.hbm.tileentity.bomb;
 
 import com.hbm.items.ModItems;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -25,7 +24,7 @@ public class TileEntityBombMulti extends TileEntity {
 	public TileEntityBombMulti() {
 		inventory = new ItemStackHandler(6){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -40,11 +39,11 @@ public class TileEntityBombMulti extends TileEntity {
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -54,25 +53,30 @@ public class TileEntityBombMulti extends TileEntity {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
 	public boolean isLoaded(){
-
-        return inventory.getStackInSlot(0).getItem() == Item.getItemFromBlock(Blocks.TNT) &&
-                inventory.getStackInSlot(1).getItem() == Item.getItemFromBlock(Blocks.TNT) &&
-                inventory.getStackInSlot(3).getItem() == Item.getItemFromBlock(Blocks.TNT) &&
-                inventory.getStackInSlot(4).getItem() == Item.getItemFromBlock(Blocks.TNT);
-    }
+		
+		if(inventory.getStackInSlot(0).getItem() == Item.getItemFromBlock(Blocks.TNT) && 
+				inventory.getStackInSlot(1).getItem() == Item.getItemFromBlock(Blocks.TNT) && 
+				inventory.getStackInSlot(3).getItem() == Item.getItemFromBlock(Blocks.TNT) && 
+				inventory.getStackInSlot(4).getItem() == Item.getItemFromBlock(Blocks.TNT))
+		{
+			return true;
+		}
+			
+		return false;
+	}
 	
 	public int return2type() {
 
@@ -168,12 +172,12 @@ public class TileEntityBombMulti extends TileEntity {
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 }

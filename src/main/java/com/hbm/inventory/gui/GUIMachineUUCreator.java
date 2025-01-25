@@ -1,31 +1,29 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.inventory.container.ContainerMachineUUCreator;
-import com.hbm.lib.RefStrings;
 import com.hbm.lib.Library;
+import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxButtonPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityMachineUUCreator;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIMachineUUCreator extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_uu_creator.png");
-	private final TileEntityMachineUUCreator uu_creator;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_uu_creator.png");
+	private TileEntityMachineUUCreator uu_creator;
 	
-	public GUIMachineUUCreator(final InventoryPlayer invPlayer, final TileEntityMachineUUCreator tedf) {
+	public GUIMachineUUCreator(InventoryPlayer invPlayer, TileEntityMachineUUCreator tedf) {
 		super(new ContainerMachineUUCreator(invPlayer, tedf));
 		uu_creator = tedf;
 		
@@ -34,7 +32,7 @@ public class GUIMachineUUCreator extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 142, guiTop + 22, 16, 60, uu_creator.tank, ModForgeFluids.uu_matter);
@@ -42,7 +40,7 @@ public class GUIMachineUUCreator extends GuiInfoContainer {
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+	protected void mouseClicked(int x, int y, int i) throws IOException {
     	super.mouseClicked(x, y, i);
 
     	if(guiLeft + 79 <= x && guiLeft + 79 + 18 > x && guiTop + 60 < y && guiTop + 60 + 18 >= y) {
@@ -55,8 +53,8 @@ public class GUIMachineUUCreator extends GuiInfoContainer {
     }
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.uu_creator.hasCustomInventoryName() ? this.uu_creator.getInventoryName() : I18n.format(this.uu_creator.getInventoryName());
+	protected void drawGuiContainerForegroundLayer( int i, int j) {
+		String name = this.uu_creator.hasCustomInventoryName() ? this.uu_creator.getInventoryName() : I18n.format(this.uu_creator.getInventoryName());
 		
 		this.fontRenderer.drawString("Produced UU", 56, 26, 0xE700FF);
 
@@ -73,7 +71,7 @@ public class GUIMachineUUCreator extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -81,7 +79,7 @@ public class GUIMachineUUCreator extends GuiInfoContainer {
 
 		if(uu_creator.isOn)
 			drawTexturedModalRect(guiLeft + 79, guiTop + 60, 176, 60, 18, 18);
-		final int i = uu_creator.getPowerScaled(60);
+		int i = uu_creator.getPowerScaled(60);
 		drawTexturedModalRect(guiLeft + 19, guiTop + 83 - i, 176, 60 - i, 16, i);
 		FFUtils.drawLogLiquid(uu_creator.tank, guiLeft, guiTop, zLevel, 16, 60, 141, 111);
 	}

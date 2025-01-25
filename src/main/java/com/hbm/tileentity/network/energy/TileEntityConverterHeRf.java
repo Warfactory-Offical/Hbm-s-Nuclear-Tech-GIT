@@ -1,24 +1,21 @@
 package com.hbm.tileentity.network.energy;
 
-import java.lang.NoSuchMethodError;
-
-import com.hbm.tileentity.TileEntityLoadedBase;
-import com.hbm.config.GeneralConfig;
-import com.hbm.lib.ForgeDirection;
-
-import api.hbm.energy.IEnergyConnector;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
+import com.hbm.config.GeneralConfig;
+import com.hbm.lib.ForgeDirection;
+import com.hbm.tileentity.TileEntityLoadedBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyProvider", modid = "redstoneflux")})
-public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITickable, IEnergyConnector, IEnergyProvider, IEnergyStorage {
+public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITickable, IEnergyReceiverMK2, IEnergyProvider, IEnergyStorage {
 
 	//Thanks to the great people of Fusion Warfare for helping me with the original implementation of the RF energy API
 	
@@ -29,45 +26,47 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	@Override
 	public void update() {
 		if (!world.isRemote) {
-			this.updateStandardConnections(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 		}
 	}
 	//RF
 	@Override
-	public boolean canConnectEnergy(final EnumFacing from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 		return true;
 	}
 
 	@Override
-	public int extractEnergy(final EnumFacing from, final int maxExtract, final boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 		return 0;
 	}
 
 	@Override
-	public int getEnergyStored(final EnumFacing from) {
+	public int getEnergyStored(EnumFacing from) {
 		return 0;
 	}
 
 	@Override
-	public int getMaxEnergyStored(final EnumFacing from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 		return 0;
 	}
 
 	private boolean recursionBrake = false;
 
 	@Optional.Method(modid="redstoneflux")
-	public int transferToRFMachine(final TileEntity entity, final int rf, final EnumFacing dir){
-		if(entity != null && entity instanceof IEnergyReceiver receiver) {
-
-            return receiver.receiveEnergy(dir, rf, false);
+	public int transferToRFMachine(TileEntity entity, int rf, EnumFacing dir){
+		if(entity != null && entity instanceof IEnergyReceiver) {
+				
+			IEnergyReceiver receiver = (IEnergyReceiver) entity;
+			return receiver.receiveEnergy(dir, rf, false);
 		}
 		return 0;
 	}
 
-	public int transferToFEMachine(final TileEntity entity, final int fe, final EnumFacing dir){
+	public int transferToFEMachine(TileEntity entity, int fe, EnumFacing dir){
 		if(entity != null && entity.hasCapability(CapabilityEnergy.ENERGY, dir)) {
 			
-			final IEnergyStorage storage = entity.getCapability(CapabilityEnergy.ENERGY, dir);
+			IEnergyStorage storage = entity.getCapability(CapabilityEnergy.ENERGY, dir);
 			if(storage.canReceive()){
 				return storage.receiveEnergy(fe, false);
 			}
@@ -77,7 +76,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 
 	//NTM
 	@Override
-	public long transferPower(final long power) {
+	public long transferPower(long power) {
 		
 		if(recursionBrake)
 			return power;
@@ -89,15 +88,15 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 		int transfer = 0;
 		int totalTransferred = 0;
 		boolean skipRF = false;
-		for(final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
-			final TileEntity entity = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
+			TileEntity entity = world.getTileEntity(pos.add(dir.offsetX, dir.offsetY, dir.offsetZ));
 			if(!skipRF){
 				try{
 					transfer = transferToRFMachine(entity, toRF, dir.getOpposite().toEnumFacing());
 					totalTransferred += transfer;
 					toRF -= transfer; //to prevent energy duping
-				} catch(final NoSuchMethodError e){
+				} catch(NoSuchMethodError e){
 					skipRF = true;
 				} //RF not
 			}
@@ -117,6 +116,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	public long getPower() {
 		return 0;
 	}
+	@Override public void setPower(long power) { }
 
 	@Override
 	public long getMaxPower() {
@@ -124,14 +124,14 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	}
 
 	private long lastTransfer = 0;
-	
+
 	@Override
-	public long getTransferWeight() {
-		
+	public long getReceiverSpeed() {
+
 		if(lastTransfer > 0) {
 			return lastTransfer * 2;
 		} else {
-			return 10000;
+			return getMaxPower();
 		}
 	}
 
@@ -157,17 +157,17 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	}
 
 	@Override
-	public int extractEnergy(final int maxExtract, final boolean simulate){
+	public int extractEnergy(int maxExtract, boolean simulate){
 		return 0;
 	}
 
 	@Override
-	public int receiveEnergy(final int maxReceive, final boolean simulate){
+	public int receiveEnergy(int maxReceive, boolean simulate){
 		return 0;
 	}
 
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing){
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return true;
 		}
@@ -175,7 +175,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements ITi
 	}
 
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing){
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
 		if(capability == CapabilityEnergy.ENERGY){
 			return (T) this;
 		}

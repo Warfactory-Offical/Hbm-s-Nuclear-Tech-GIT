@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.TileEntityRtgFurnace;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,10 +12,10 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerRtgFurnace extends Container {
 	
-	private final TileEntityRtgFurnace diFurnace;
+	private TileEntityRtgFurnace diFurnace;
 	private int dualCookTime;
 	
-	public ContainerRtgFurnace(final InventoryPlayer invPlayer, final TileEntityRtgFurnace tedf) {
+	public ContainerRtgFurnace(InventoryPlayer invPlayer, TileEntityRtgFurnace tedf) {
 		dualCookTime = 0;
 		
 		diFurnace = tedf;
@@ -44,20 +43,20 @@ public class ContainerRtgFurnace extends Container {
 	}
 	
 	@Override
-	public void addListener(final IContainerListener crafting) {
+	public void addListener(IContainerListener crafting) {
 		super.addListener(crafting);
 		crafting.sendWindowProperty(this, 0, this.diFurnace.dualCookTime);
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 4) {
@@ -85,7 +84,7 @@ public class ContainerRtgFurnace extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 	
@@ -95,7 +94,7 @@ public class ContainerRtgFurnace extends Container {
 		
 		for(int i = 0; i < this.listeners.size(); i++)
 		{
-			final IContainerListener par1 = this.listeners.get(i);
+			IContainerListener par1 = (IContainerListener)this.listeners.get(i);
 			
 			if(this.dualCookTime != this.diFurnace.dualCookTime)
 			{
@@ -107,7 +106,7 @@ public class ContainerRtgFurnace extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(final int i, final int j) {
+	public void updateProgressBar(int i, int j) {
 		if(i == 0)
 		{
 			diFurnace.dualCookTime = j;

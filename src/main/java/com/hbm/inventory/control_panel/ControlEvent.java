@@ -1,10 +1,10 @@
 package com.hbm.inventory.control_panel;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ControlEvent {
 
@@ -13,77 +13,77 @@ public class ControlEvent {
 	public String name;
 	public Map<String, DataValue> vars = new HashMap<>();
 	
-	public ControlEvent(final String name){
+	public ControlEvent(String name){
 		this.name = name;
 	}
 	
-	public ControlEvent setVar(final String key, final DataValue val){
+	public ControlEvent setVar(String key, DataValue val){
 		vars.put(key, val);
 		return this;
 	}
 	
-	public ControlEvent setVar(final String key, final float f){
+	public ControlEvent setVar(String key, float f){
 		vars.put(key, new DataValueFloat(f));
 		return this;
 	}
 	
-	public ControlEvent setVar(final String key, final boolean b){
+	public ControlEvent setVar(String key, boolean b){
 		vars.put(key, new DataValueFloat(b ? 1 : 0));
 		return this;
 	}
 	
-	public ControlEvent setVar(final String key, final String str){
+	public ControlEvent setVar(String key, String str){
 		vars.put(key, new DataValueString(str));
 		return this;
 	}
 	
-	public <E extends Enum<E>> ControlEvent setVar(final String key, final E enm){
+	public <E extends Enum<E>> ControlEvent setVar(String key, E enm){
 		vars.put(key, new DataValueEnum<E>(enm));
 		return this;
 	}
 	
 	public ControlEvent copy(){
-		final ControlEvent evt = new ControlEvent(name);
+		ControlEvent evt = new ControlEvent(name);
 		//Set default values
-		for(final Entry<String, DataValue> def : vars.entrySet()){
+		for(Entry<String, DataValue> def : vars.entrySet()){
 			evt.vars.put(def.getKey(), def.getValue());
 		}
 		return evt;
 	}
 	
-	public NBTTagCompound writeToNBT(final NBTTagCompound tag){
+	public NBTTagCompound writeToNBT(NBTTagCompound tag){
 		tag.setString("name", this.name);
-		final NBTTagCompound vars = new NBTTagCompound();
-		for(final Entry<String, DataValue> e : this.vars.entrySet()){
+		NBTTagCompound vars = new NBTTagCompound();
+		for(Entry<String, DataValue> e : this.vars.entrySet()){
 			vars.setTag(e.getKey(), e.getValue().writeToNBT());
 		}
 		tag.setTag("vars", vars);
 		return tag;
 	}
 	
-	public static ControlEvent readFromNBT(final NBTTagCompound tag){
-		final ControlEvent evt = ControlEvent.newEvent(tag.getString("name"));
-		final NBTTagCompound vars = tag.getCompoundTag("vars");
-		for(final String k : vars.getKeySet()){
-			final DataValue val = DataValue.newFromNBT(vars.getTag(k));
+	public static ControlEvent readFromNBT(NBTTagCompound tag){
+		ControlEvent evt = ControlEvent.newEvent(tag.getString("name"));
+		NBTTagCompound vars = tag.getCompoundTag("vars");
+		for(String k : vars.getKeySet()){
+			DataValue val = DataValue.newFromNBT(vars.getTag(k));
 			if(val != null)
 				evt.vars.put(k, val);
 		}
 		return evt;
 	}
 	
-	public static ControlEvent newEvent(final String name){
+	public static ControlEvent newEvent(String name){
 		return getRegisteredEvent(name).copy();
 	}
 	
-	public static ControlEvent getRegisteredEvent(final String name){
-		final ControlEvent e = REGISTRY.get(name);
+	public static ControlEvent getRegisteredEvent(String name){
+		ControlEvent e = REGISTRY.get(name);
 		if(e == null)
 			throw new RuntimeException("Unregistered control event: " + name);
 		return e;
 	}
 	
-	public static void register(final ControlEvent c){
+	public static void register(ControlEvent c){
 		REGISTRY.put(c.name, c);
 	}
 	

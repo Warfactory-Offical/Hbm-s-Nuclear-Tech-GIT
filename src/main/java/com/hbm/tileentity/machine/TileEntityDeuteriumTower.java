@@ -1,16 +1,12 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.blocks.BlockDummyable;
-import com.hbm.lib.DirPos;
-import com.hbm.lib.ForgeDirection;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
-
-import net.minecraft.tileentity.TileEntity;
+import com.hbm.lib.DirPos;
+import com.hbm.lib.ForgeDirection;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,15 +22,15 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 	@Override
 	protected void updateConnections() {
 
-		for(final DirPos pos : getConPos()) {
-			this.trySubscribe(world, pos.getPos(), pos.getDir());
+		for(DirPos pos : getConPos()) {
+			this.trySubscribe(world, pos.getPos().getX(), pos.getPos().getY(), pos.getPos().getZ(), pos.getDir());
 		}
 	}
 	
 	@Override
-	public void fillFluidInit(final FluidTank tank) {
+	public void fillFluidInit(FluidTank tank) {
 
-		for(final DirPos pos : getConPos()) {
+		for(DirPos pos : getConPos()) {
 			FFUtils.fillFluid(this, tank, world, pos.getPos(), 5000);
 		}
 	}
@@ -42,8 +38,8 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 	
 	private DirPos[] getConPos() {
 		
-		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		final ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
 		return new DirPos[] {
 				new DirPos(pos.add(-dir.offsetX * 2, 0, -dir.offsetZ * 2), dir.getOpposite()),

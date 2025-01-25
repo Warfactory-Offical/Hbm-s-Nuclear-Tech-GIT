@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class ItemDyatlov extends Item {
 
-	public ItemDyatlov(final String s){
+	public ItemDyatlov(String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -22,16 +22,18 @@ public class ItemDyatlov extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(!world.isRemote) {
 			
-			if(world.getBlockState(pos).getBlock() instanceof RBMKBase rbmk) {
-
-                final int[] pos1 = rbmk.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+			if(world.getBlockState(pos).getBlock() instanceof RBMKBase) {
+				
+				RBMKBase rbmk = (RBMKBase)world.getBlockState(pos).getBlock();
+				
+				int[] pos1 = rbmk.findCore(world, pos.getX(), pos.getY(), pos.getZ());
 				
 				if(pos1 != null) {
 					
-					final TileEntity te = world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
+					TileEntity te = world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
 					
 					if(te instanceof TileEntityRBMKBase) {
 

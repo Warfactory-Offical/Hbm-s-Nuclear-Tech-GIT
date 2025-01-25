@@ -24,21 +24,21 @@ public class Vec4u8 {
         w = 0;
     }
     
-    public Vec4u8(final Vec4 v) {
+    public Vec4u8(Vec4 v) {
         x = (byte) v.x;
         y = (byte) v.y;
         z = (byte) v.z;
         w = (byte) v.w;
     }
 
-    public Vec4u8(final byte x, final byte y, final byte z, final byte w) {
+    public Vec4u8(byte x, byte y, byte z, byte w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Vec4u8(final float x, final float y, final float z, final float w) {
+    public Vec4u8(float x, float y, float z, float w) {
         this.x = (byte) x;
         this.y = (byte) y;
         this.z = (byte) z;
@@ -49,7 +49,7 @@ public class Vec4u8 {
         return toBa(new byte[4]);
     }
 
-    public byte[] toBa(final byte[] byteArray) {
+    public byte[] toBa(byte[] byteArray) {
         byteArray[0] = x;
         byteArray[1] = y;
         byteArray[2] = z;

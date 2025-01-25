@@ -15,12 +15,12 @@ public class TileEntityRBMKRodReaSim extends TileEntityRBMKRod {
 	}
 	
 	@Override
-	protected void spreadFlux(final NType type, final double fluxOut) {
+	protected void spreadFlux(NType type, double fluxOut) {
 
-		final int range = RBMKDials.getReaSimRange(world);
-		final int count = RBMKDials.getReaSimCount(world);
+		int range = RBMKDials.getReaSimRange(world);
+		int count = RBMKDials.getReaSimCount(world);
 		
-		final Vec3 dir = Vec3.createVectorHelper(1, 0, 0);
+		Vec3 dir = Vec3.createVectorHelper(1, 0, 0);
 		
 		for(int i = 1; i < count; i++) {
 			

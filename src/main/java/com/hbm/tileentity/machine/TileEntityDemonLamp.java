@@ -1,12 +1,9 @@
 package com.hbm.tileentity.machine;
 
-import java.util.List;
-
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class TileEntityDemonLamp extends TileEntity implements ITickable {
 
 	@Override
@@ -28,28 +27,28 @@ public class TileEntityDemonLamp extends TileEntity implements ITickable {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void radiate(final World world, final int x, final int y, final int z){
+	private void radiate(World world, int x, int y, int z){
 
-		final float rads = 100000F;
-		final double range = 25D;
+		float rads = 100000F;
+		double range = 25D;
 
-		final List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5).grow(range, range, range));
-		for(final EntityLivingBase e : entities) {
+		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5).grow(range, range, range));
+		for(EntityLivingBase e : entities) {
 
 			Vec3 vec = Vec3.createVectorHelper(e.posX - (x + 0.5), (e.posY + e.getEyeHeight()) - (y + 0.5), e.posZ - (z + 0.5));
-			final double len = vec.length();
+			double len = vec.lengthVector();
 			vec = vec.normalize();
 
 			float res = 0;
 
 			for(int i = 1; i < len; i++) {
 
-				final int ix = (int)Math.floor(x + 0.5 + vec.xCoord * i);
-				final int iy = (int)Math.floor(y + 0.5 + vec.yCoord * i);
-				final int iz = (int)Math.floor(z + 0.5 + vec.zCoord * i);
+				int ix = (int)Math.floor(x + 0.5 + vec.xCoord * i);
+				int iy = (int)Math.floor(y + 0.5 + vec.yCoord * i);
+				int iz = (int)Math.floor(z + 0.5 + vec.zCoord * i);
 				
-				final BlockPos pos = new BlockPos(ix, iy, iz);
-				final IBlockState state = world.getBlockState(pos);
+				BlockPos pos = new BlockPos(ix, iy, iz);
+				IBlockState state = world.getBlockState(pos);
 				res += state.getBlock().getExplosionResistance(null);
 			}
 
@@ -57,7 +56,7 @@ public class TileEntityDemonLamp extends TileEntity implements ITickable {
 				res = 1;
 
 			float eRads = rads;
-			eRads /= res;
+			eRads /= (float)res;
 			eRads /= (float)(len * len);
 
 			ContaminationUtil.contaminate(e, HazardType.RADIATION, ContaminationType.CREATIVE, eRads);

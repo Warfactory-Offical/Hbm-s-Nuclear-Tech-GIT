@@ -8,7 +8,7 @@ public interface IRBMKFluxReceiver {
 		
 		public String unlocalized;
 		
-		private NType(final String loc) {
+		private NType(String loc) {
 			this.unlocalized = loc;
 		}
 	}

@@ -1,6 +1,5 @@
 package com.hbm.inventory.gui;
 
-import com.hbm.forgefluid.FFUtils;
 import com.hbm.inventory.container.ContainerHeaterHeatex;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.NBTControlPacket;
@@ -19,7 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 public class GUIHeaterHeatex extends GuiInfoContainer {
     private final static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_heatex.png");
@@ -27,7 +25,7 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     private GuiTextField fieldCycles;
     private GuiTextField fieldDelay;
 
-    public GUIHeaterHeatex(final InventoryPlayer invPlayer, final TileEntityHeaterHeatex tedf) {
+    public GUIHeaterHeatex(InventoryPlayer invPlayer, TileEntityHeaterHeatex tedf) {
         super(new ContainerHeaterHeatex(invPlayer, tedf));
         heater = tedf;
 
@@ -49,7 +47,7 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
         this.fieldDelay.setText(String.valueOf(heater.tickDelay));
     }
 
-    protected void initText(final GuiTextField field) {
+    protected void initText(GuiTextField field) {
         field.setTextColor(0x00ff00);
         field.setDisabledTextColour(0x00ff00);
         field.setEnableBackgroundDrawing(false);
@@ -57,11 +55,11 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     }
 
     @Override
-    public void drawScreen(final int x, final int y, final float f) {
+    public void drawScreen(int x, int y, float f) {
         super.drawScreen(x, y, f);
 
-        FFUtils.renderTankInfo(this, x, y, guiLeft + 44, guiTop + 36, 16, 52, heater.tanks[0], heater.tankTypes[0]);
-        FFUtils.renderTankInfo(this, x, y, guiLeft + 116, guiTop + 36, 16, 52, heater.tanks[1], heater.tankTypes[1]);
+        heater.tanksNew[0].renderTankInfo(this, x, y, guiLeft + 44, guiTop + 36, 16, 52);
+        heater.tanksNew[1].renderTankInfo(this, x, y, guiLeft + 116, guiTop + 36, 16, 52);
 
         if (guiLeft + 70 <= x && guiLeft + 70 + 36 > x && guiTop + 26 < y && guiTop + 26 + 18 >= y) {
             drawHoveringText(Arrays.asList("Amount per cycle"), x, y);
@@ -74,28 +72,28 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-        final String name = I18n.format(this.heater.getInventoryName());
+    protected void drawGuiContainerForegroundLayer(int i, int j) {
+        String name = I18n.format(this.heater.getInventoryName());
         this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(final float interp, final int x, final int y) {
+    protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
         super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-        FFUtils.drawLiquid(heater.tanks[0], guiLeft, guiTop, this.zLevel, 16, 52, 44, 116);
-        FFUtils.drawLiquid(heater.tanks[1], guiLeft, guiTop, this.zLevel, 16, 52, 116, 116);
+        heater.tanksNew[0].renderTank(guiLeft + 44, guiTop + 88, this.zLevel, 16, 52);
+        heater.tanksNew[1].renderTank(guiLeft + 116, guiTop + 88, this.zLevel, 16, 52);
 
         this.fieldCycles.drawTextBox();
         this.fieldDelay.drawTextBox();
     }
 
     @Override
-    protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+    protected void mouseClicked(int x, int y, int i) throws IOException {
         super.mouseClicked(x, y, i);
 
         this.fieldCycles.mouseClicked(x, y, i);
@@ -103,19 +101,19 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
     }
 
     @Override
-    protected void keyTyped(final char c, final int i) throws IOException {
-        final BlockPos heaterPos = heater.getPos();
+    protected void keyTyped(char c, int i) throws IOException {
+        BlockPos heaterPos = heater.getPos();
 
         if (this.fieldCycles.textboxKeyTyped(c, i)) {
-            final int cyc = Math.max(NumberUtils.toInt(this.fieldCycles.getText()), 1);
-            final NBTTagCompound data = new NBTTagCompound();
+            int cyc = Math.max(NumberUtils.toInt(this.fieldCycles.getText()), 1);
+            NBTTagCompound data = new NBTTagCompound();
             data.setInteger("toCool", cyc);
             PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, heaterPos.getX(), heaterPos.getY(), heaterPos.getZ()));
             return;
         }
         if (this.fieldDelay.textboxKeyTyped(c, i)) {
-            final int delay = Math.max(NumberUtils.toInt(this.fieldDelay.getText()), 1);
-            final NBTTagCompound data = new NBTTagCompound();
+            int delay = Math.max(NumberUtils.toInt(this.fieldDelay.getText()), 1);
+            NBTTagCompound data = new NBTTagCompound();
             data.setInteger("delay", delay);
             PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, heaterPos.getX(), heaterPos.getY(), heaterPos.getZ()));
             return;

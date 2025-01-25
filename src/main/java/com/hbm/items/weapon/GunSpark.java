@@ -1,14 +1,10 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-import java.util.Random;
-
 import com.hbm.entity.projectile.EntitySparkBeam;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -26,6 +22,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
+import java.util.List;
+import java.util.Random;
+
 public class GunSpark extends Item {
 
 	Random rand = new Random();
@@ -33,7 +32,7 @@ public class GunSpark extends Item {
 	public int dmgMin = 12;
 	public int dmgMax = 24;
 
-	public GunSpark(final String s) {
+	public GunSpark(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.weaponTab);
@@ -47,10 +46,10 @@ public class GunSpark extends Item {
 	 * world, entityplayer, itemInUseCount
 	 */
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World world, final EntityLivingBase entityLiving, final int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 		if (entityLiving instanceof EntityPlayer) {
-			final ArrowLooseEvent event = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, world, j, true);
+			ArrowLooseEvent event = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, world, j, true);
 			MinecraftForge.EVENT_BUS.post(event);
 			j = event.getCharge();
 		}
@@ -62,7 +61,7 @@ public class GunSpark extends Item {
 			}
 			hasAmmo = Library.hasInventoryItem(((EntityPlayer) entityLiving).inventory, ModItems.gun_spark_ammo);
 		}
-		final boolean flag = creative || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+		boolean flag = creative || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 		if (flag || hasAmmo) {
 			float f = j / 20.0F;
 			f = (f * f + f * 2.0F) / 3.0F;
@@ -85,7 +84,7 @@ public class GunSpark extends Item {
 					Library.consumeInventoryItem(((EntityPlayer) entityLiving).inventory, ModItems.gun_spark_ammo);
 			}
 
-			final EntitySparkBeam beam = new EntitySparkBeam(world, entityLiving, 3F, entityLiving.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+			EntitySparkBeam beam = new EntitySparkBeam(world, entityLiving, 3F, entityLiving.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 			beam.setDamage(dmgMin + rand.nextInt(dmgMax - dmgMin));
 			if (!world.isRemote)
 				world.spawnEntity(beam);
@@ -96,7 +95,7 @@ public class GunSpark extends Item {
 	 * How long it takes to use or consume an item
 	 */
 	@Override
-	public int getMaxItemUseDuration(final ItemStack p_77626_1_) {
+	public int getMaxItemUseDuration(ItemStack p_77626_1_) {
 		return 72000;
 	}
 
@@ -105,7 +104,7 @@ public class GunSpark extends Item {
 	 * is being used
 	 */
 	@Override
-	public EnumAction getItemUseAction(final ItemStack p_77661_1_) {
+	public EnumAction getItemUseAction(ItemStack p_77661_1_) {
 		return EnumAction.BOW;
 	}
 
@@ -115,8 +114,8 @@ public class GunSpark extends Item {
 	 */
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, true);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, true);
 		MinecraftForge.EVENT_BUS.post(event);
 
 		playerIn.setActiveHand(handIn);
@@ -124,7 +123,7 @@ public class GunSpark extends Item {
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return false;
 	}
 
@@ -138,7 +137,7 @@ public class GunSpark extends Item {
 	}
 
 	@Override
-	public void addInformation(final ItemStack itemstack, final World world, final List<String> list, final ITooltipFlag bool) {
+	public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag bool) {
 
 		list.add("'magic does not compute'");
 		list.add("'aeiou'");

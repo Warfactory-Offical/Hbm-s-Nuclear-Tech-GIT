@@ -3,7 +3,6 @@ package com.hbm.blocks.generic;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
 import com.hbm.items.ModItems;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -15,22 +14,22 @@ import net.minecraft.world.World;
 
 public class BlockBallsSpawner extends Block {
 
-	public BlockBallsSpawner(final Material materialIn, final String s) {
+	public BlockBallsSpawner(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		
+
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
-	
+
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() == ModItems.mech_key) {
 			player.getHeldItem(hand).shrink(1);
 
 			if(!world.isRemote) {
 
-				final EntityBOTPrimeHead bot = new EntityBOTPrimeHead(world);
+				EntityBOTPrimeHead bot = new EntityBOTPrimeHead(world);
 				bot.setPositionAndRotation(pos.getX() + 0.5, 300, pos.getZ() + 0.5, 0, 0);
 				bot.motionY = -1.0;
 				bot.onInitialSpawn(world.getDifficultyForLocation(pos), null);

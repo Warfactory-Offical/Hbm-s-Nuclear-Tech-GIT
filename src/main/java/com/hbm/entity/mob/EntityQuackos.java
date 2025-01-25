@@ -2,7 +2,6 @@ package com.hbm.entity.mob;
 
 import com.hbm.entity.particle.EntityBSmokeFX;
 import com.hbm.lib.HBMSoundHandler;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,12 +22,12 @@ public class EntityQuackos extends EntityDuck {
 	/**
      *  BOW
      */
-	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS));
 	
 	/**
      *  BOW
      */
-	public EntityQuackos(final World worldIn) {
+	public EntityQuackos(World worldIn) {
 		super(worldIn);
 		this.setSize(0.3F * 25, 0.7F * 25);
 		this.ignoreFrustumCheck = true;
@@ -54,7 +53,7 @@ public class EntityQuackos extends EntityDuck {
      *  BOW
      */
 	@Override
-	protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return HBMSoundHandler.megaquacc;
 	}
 	
@@ -62,7 +61,7 @@ public class EntityQuackos extends EntityDuck {
      *  BOW
      */
 	@Override
-	protected SoundEvent getFallSound(final int heightIn) {
+	protected SoundEvent getFallSound(int heightIn) {
 		return HBMSoundHandler.megaquacc;
 	}
 	
@@ -78,7 +77,7 @@ public class EntityQuackos extends EntityDuck {
      *  BOW
      */
 	@Override
-	public void setHealth(final float health) {
+	public void setHealth(float health) {
 		if(health < this.getHealth()){
 			return;
 		}
@@ -101,7 +100,7 @@ public class EntityQuackos extends EntityDuck {
      *  BOW
      */
 	@Override
-	public boolean processInteract(final EntityPlayer player, final EnumHand hand) {
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
 		if(super.processInteract(player, hand)){
 			return true;
 		} else if(!this.world.isRemote && this.getPassengers().size() == 0) {
@@ -117,7 +116,7 @@ public class EntityQuackos extends EntityDuck {
      *  BOW
      */
 	@Override
-	public void addTrackingPlayer(final EntityPlayerMP player) {
+	public void addTrackingPlayer(EntityPlayerMP player) {
 		super.addTrackingPlayer(player);
 		bossInfo.addPlayer(player);
 	}
@@ -126,7 +125,7 @@ public class EntityQuackos extends EntityDuck {
      *  BOW
      */
 	@Override
-	public void removeTrackingPlayer(final EntityPlayerMP player) {
+	public void removeTrackingPlayer(EntityPlayerMP player) {
 		super.removeTrackingPlayer(player);
 		bossInfo.removePlayer(player);
 	}
@@ -137,7 +136,7 @@ public class EntityQuackos extends EntityDuck {
 	public void despawn() {
 		if(!world.isRemote) {
 			for(int i = 0; i < 150; i++) {
-				final EntityBSmokeFX fx = new EntityBSmokeFX(world);
+				EntityBSmokeFX fx = new EntityBSmokeFX(world);
 				fx.setPositionAndRotation(posX + rand.nextDouble() * 20 - 10, posY + rand.nextDouble() * 25, posZ + rand.nextDouble() * 20 - 10, 0, 0);
 				world.spawnEntity(fx);
 			}
@@ -157,12 +156,12 @@ public class EntityQuackos extends EntityDuck {
      *  BOW
      */
 	@Override
-	public void updatePassenger(final Entity passenger) {
+	public void updatePassenger(Entity passenger) {
 		super.updatePassenger(passenger);
-		final float f = MathHelper.sin(this.renderYawOffset * (float)Math.PI / 180.0F);
-        final float f1 = MathHelper.cos(this.renderYawOffset * (float)Math.PI / 180.0F);
-        final float f2 = 0.1F;
-        final float f3 = 0.0F;
+		float f = MathHelper.sin(this.renderYawOffset * (float)Math.PI / 180.0F);
+        float f1 = MathHelper.cos(this.renderYawOffset * (float)Math.PI / 180.0F);
+        float f2 = 0.1F;
+        float f3 = 0.0F;
         passenger.setPosition(this.posX + (double)(f2 * f), this.posY + (double)(this.height - 0.125F) + passenger.getYOffset() + (double)f3, this.posZ - (double)(f2 * f1));
 
         if (passenger instanceof EntityLivingBase) {

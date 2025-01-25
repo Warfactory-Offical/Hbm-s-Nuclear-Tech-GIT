@@ -1,5 +1,4 @@
 package com.hbm.creativetabs;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemCustomMissile;
@@ -12,20 +11,20 @@ import net.minecraft.util.text.TextFormatting;
 
 public class MissileTab extends CreativeTabs {
 
-	public MissileTab(final int index, final String label) {
+	public MissileTab(int index, String label) {
 		super(index, label);
 	}
 
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getTabIconItem() {
 		if(ModItems.missile_nuclear != null){
-			return ItemStackUtil.itemStackFrom(ModItems.missile_nuclear);
+			return new ItemStack(ModItems.missile_nuclear);
 		}
-		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
+		return new ItemStack(Items.IRON_PICKAXE);
 	}
 
 	@Override
-	public void displayAllRelevantItems(final NonNullList<ItemStack> list) {
+	public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 		super.displayAllRelevantItems(list);
 		
 		list.add(ItemCustomMissile.buildMissile(

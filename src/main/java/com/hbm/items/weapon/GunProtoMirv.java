@@ -1,15 +1,11 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityMiniNuke;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,9 +24,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
+import java.util.List;
+import java.util.UUID;
+
 public class GunProtoMirv extends Item {
 
-	public GunProtoMirv(final String s) {
+	public GunProtoMirv(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.weaponTab);
@@ -41,22 +40,23 @@ public class GunProtoMirv extends Item {
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer player))
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if(!(entityLiving instanceof EntityPlayer))
 			return;
-        if (entityLiving.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) == stack && !entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty() && entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.gun_proto) {
+		EntityPlayer player = (EntityPlayer) entityLiving;
+		if (entityLiving.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) == stack && !entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty() && entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.gun_proto) {
 			entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 		
-		final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, false);
+		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, false);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.isCanceled()) {
 			return;
 		}
 		j = event.getCharge();
 
-		final boolean flag = player.capabilities.isCreativeMode
+		boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 		boolean f1 = false;
@@ -77,7 +77,7 @@ public class GunProtoMirv extends Item {
 					f = 25.0F;
 				}
 	
-				final EntityMiniNuke entityarrow = new EntityMiniNuke(worldIn, player, 3.0F, player.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+				EntityMiniNuke entityarrow = new EntityMiniNuke(worldIn, player, 3.0F, player.getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 	
 				entityarrow.setIsCritical(true);
 				entityarrow.gravity = 0.3;
@@ -104,24 +104,24 @@ public class GunProtoMirv extends Item {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(final ItemStack stack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		playerIn.setActiveHand(handIn);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(UUID.fromString("91AEAA56-376B-4498-935B-2F7F68070635"), "Weapon modifier", -0.3, 1));
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 4, 0));
@@ -130,7 +130,7 @@ public class GunProtoMirv extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("Excessive, who's being excessive!?");
 		list.add("");
 		list.add("Ammo: Mini Nukes");

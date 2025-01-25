@@ -45,7 +45,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class EntityEffectHandler {
-	public static void onUpdate(final EntityLivingBase entity) {
+	public static void onUpdate(EntityLivingBase entity) {
 		
 		if(!entity.world.isRemote) {
 			
@@ -55,8 +55,8 @@ public class EntityEffectHandler {
 			}
 			
 			if(entity instanceof EntityPlayerMP) {
-				final NBTTagCompound data = new NBTTagCompound();
-				final IEntityHbmProps props = HbmLivingProps.getData(entity);
+				NBTTagCompound data = new NBTTagCompound();
+				IEntityHbmProps props = HbmLivingProps.getData(entity);
 				props.saveNBTData(data);
 				PacketDispatcher.wrapper.sendTo(new ExtPropPacket(data), (EntityPlayerMP) entity);
 			}
@@ -69,15 +69,15 @@ public class EntityEffectHandler {
 		handleLungDisease(entity);
 	}
 	
-	private static void handleContamination(final EntityLivingBase entity) {
+	private static void handleContamination(EntityLivingBase entity) {
 		
 		if(entity.world.isRemote)
 			return;
 		
-		final List<ContaminationEffect> contamination = HbmLivingProps.getCont(entity);
-		final List<ContaminationEffect> rem = new ArrayList<>();
+		List<ContaminationEffect> contamination = HbmLivingProps.getCont(entity);
+		List<ContaminationEffect> rem = new ArrayList<>();
 		
-		for(final ContaminationEffect con : contamination) {
+		for(ContaminationEffect con : contamination) {
 			ContaminationUtil.contaminate(entity, HazardType.RADIATION, con.ignoreArmor ? ContaminationType.RAD_BYPASS : ContaminationType.CREATIVE, con.getRad());
 			
 			con.time--;
@@ -89,23 +89,23 @@ public class EntityEffectHandler {
 		contamination.removeAll(rem);
 	}
 	
-	private static void handleRadiation(final EntityLivingBase entity) {
+	private static void handleRadiation(EntityLivingBase entity) {
 		
 		if(ContaminationUtil.isRadImmune(entity))
 			return;
 		
-		final World world = entity.world;
+		World world = entity.world;
 		
-		final RadiationSavedData data = RadiationSavedData.getData(world);
+		RadiationSavedData data = RadiationSavedData.getData(world);
 		
 		if(!world.isRemote) {
-			final int ix = MathHelper.floor(entity.posX);
-			final int iy = MathHelper.floor(entity.posY);
-			final int iz = MathHelper.floor(entity.posZ);
+			int ix = (int)MathHelper.floor(entity.posX);
+			int iy = (int)MathHelper.floor(entity.posY);
+			int iz = (int)MathHelper.floor(entity.posZ);
 
 			float rad = data.getRadNumFromCoord(new BlockPos(ix, iy, iz));
 			
-			final Object dimRad = CompatibilityConfig.dimensionRad.get(world.provider.getDimension());
+			Object dimRad = CompatibilityConfig.dimensionRad.get(world.provider.getDimension());
 			if(dimRad != null) {
 				if(rad < (float)dimRad) {
 					// TODO: Can we use sealed rad pockets to protect against dim rads?
@@ -125,12 +125,12 @@ public class EntityEffectHandler {
 			if(entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode)
 				return;
 			
-			final Random rand = new Random(entity.getEntityId());
-			final int r600 = rand.nextInt(600);
-			final int r1200 = rand.nextInt(1200);
+			Random rand = new Random(entity.getEntityId());
+			int r600 = rand.nextInt(600);
+			int r1200 = rand.nextInt(1200);
 			
 			if(HbmLivingProps.getRadiation(entity) > 600 && (world.getTotalWorldTime() + r600) % 600 < 20 && canVomit(entity)) {
-				final NBTTagCompound nbt = new NBTTagCompound();
+				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "vomit");
 				nbt.setString("mode", "blood");
 				nbt.setInteger("count", 25);
@@ -144,7 +144,7 @@ public class EntityEffectHandler {
 
 			} else if(HbmLivingProps.getRadiation(entity) > 200 && (world.getTotalWorldTime() + r1200) % 1200 < 20 && canVomit(entity)) {
 				
-				final NBTTagCompound nbt = new NBTTagCompound();
+				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "vomit");
 				nbt.setString("mode", "normal");
 				nbt.setInteger("count", 15);
@@ -159,7 +159,7 @@ public class EntityEffectHandler {
 			
 			if(HbmLivingProps.getRadiation(entity) > 900 && (world.getTotalWorldTime() + rand.nextInt(10)) % 10 == 0) {
 				
-				final NBTTagCompound nbt = new NBTTagCompound();
+				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "sweat");
 				nbt.setInteger("count", 1);
 				nbt.setInteger("block", Block.getIdFromBlock(Blocks.REDSTONE_BLOCK));
@@ -168,11 +168,11 @@ public class EntityEffectHandler {
 			
 			}
 		} else {
-			final float radiation = HbmLivingProps.getRadiation(entity);
+			float radiation = HbmLivingProps.getRadiation(entity);
 			
 			if(entity instanceof EntityPlayer && radiation > 600) {
 				
-				final NBTTagCompound nbt = new NBTTagCompound();
+				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "radiation");
 				nbt.setInteger("count", radiation > 900 ? 4 : radiation > 800 ? 2 : 1);
 				MainRegistry.proxy.effectNT(nbt);
@@ -180,20 +180,20 @@ public class EntityEffectHandler {
 		}
 	}
 	
-	private static void handleDigamma(final EntityLivingBase entity) {
+	private static void handleDigamma(EntityLivingBase entity) {
 		
 		if(!entity.world.isRemote) {
 			
-			final float digamma = HbmLivingProps.getDigamma(entity);
+			float digamma = HbmLivingProps.getDigamma(entity);
 			
 			if(digamma < 0.01F)
 				return;
 			
-			final int chance = Math.max(10 - (int)(digamma), 1);
+			int chance = Math.max(10 - (int)(digamma), 1);
 			
 			if(chance == 1 || entity.getRNG().nextInt(chance) == 0) {
 				
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "sweat");
 				data.setInteger("count", 1);
 				data.setInteger("block", Block.getIdFromBlock(Blocks.SOUL_SAND));
@@ -203,21 +203,22 @@ public class EntityEffectHandler {
 		}
 	}
 	
-	private static void handleContagion(final EntityLivingBase entity) {
+	private static void handleContagion(EntityLivingBase entity) {
 		
-		final World world = entity.world;
+		World world = entity.world;
 		
 		if(!entity.world.isRemote) {
 			
-			final Random rand = entity.getRNG();
-			final int minute = 60 * 20;
-			final int hour = 60 * minute;
+			Random rand = entity.getRNG();
+			int minute = 60 * 20;
+			int hour = 60 * minute;
 			
-			final int contagion = HbmLivingProps.getContagion(entity);
+			int contagion = HbmLivingProps.getContagion(entity);
 			
-			if(entity instanceof EntityPlayer player) {
-
-                final int randSlot = rand.nextInt(player.inventory.mainInventory.size());
+			if(entity instanceof EntityPlayer) {
+				
+				EntityPlayer player = (EntityPlayer) entity;
+				int randSlot = rand.nextInt(player.inventory.mainInventory.size());
 				ItemStack stack = player.inventory.getStackInSlot(randSlot);
 				
 				if(rand.nextInt(100) == 0) {
@@ -248,20 +249,21 @@ public class EntityEffectHandler {
 				//aerial transmission only happens once a second 5 minutes into the contagion
 				if(contagion < (2 * hour + 55 * minute) && contagion % 20 == 0) {
 					
-					final double range = entity.isWet() ? 16D : 2D; //avoid rain, just avoid it
+					double range = entity.isWet() ? 16D : 2D; //avoid rain, just avoid it
 					
-					final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().grow(range, range, range));
+					List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().grow(range, range, range));
 					
-					for(final Entity ent : list) {
+					for(Entity ent : list) {
 						
-						if(ent instanceof EntityLivingBase living) {
-                            if(HbmLivingProps.getContagion(living) <= 0 && !ArmorUtil.checkForHazmatOnly(living) && !ArmorRegistry.hasProtection(living, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.BACTERIA)) {
+						if(ent instanceof EntityLivingBase) {
+							EntityLivingBase living = (EntityLivingBase) ent;
+							if(HbmLivingProps.getContagion(living) <= 0 && !ArmorUtil.checkForHazmatOnly(living) && !ArmorRegistry.hasProtection(living, EntityEquipmentSlot.HEAD, ArmorRegistry.HazardClass.BACTERIA)) {
 								HbmLivingProps.setContagion(living, 3 * hour);
 							}
 						}
 						
 						if(ent instanceof EntityItem) {
-							final ItemStack stack = ((EntityItem)ent).getItem();
+							ItemStack stack = ((EntityItem)ent).getItem();
 							
 							if(!stack.hasTagCompound())
 								stack.setTagCompound(new NBTTagCompound());
@@ -277,7 +279,7 @@ public class EntityEffectHandler {
 				}
 				
 				//two hours in, give 'em the full blast
-				if(contagion < hour && rand.nextInt(100) == 0) {
+				if(contagion < 1 * hour && rand.nextInt(100) == 0) {
 					entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100, 0));
 					entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 300, 4));
 				}
@@ -289,7 +291,7 @@ public class EntityEffectHandler {
 
 				//T-30 minutes, start vomiting
 				if(contagion < 30 * minute && (contagion + entity.getEntityId()) % 200 < 20 && canVomit(entity)) {
-					final NBTTagCompound nbt = new NBTTagCompound();
+					NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setString("type", "vomit");
 					nbt.setString("mode", "blood");
 					nbt.setInteger("count", 25);
@@ -313,7 +315,7 @@ public class EntityEffectHandler {
 		}
 	}
 	
-	private static void handleLungDisease(final EntityLivingBase entity) {
+	private static void handleLungDisease(EntityLivingBase entity) {
 		
 		if(entity.world.isRemote)
 			return;
@@ -325,33 +327,33 @@ public class EntityEffectHandler {
 			return;
 		} else {
 			
-			final int bl = HbmLivingProps.getBlackLung(entity);
+			int bl = HbmLivingProps.getBlackLung(entity);
 			
 			if(bl > 0 && bl < EntityHbmProps.maxBlacklung * 0.25)
 				HbmLivingProps.setBlackLung(entity, HbmLivingProps.getBlackLung(entity) - 1);
 		}
 
-		final double blacklung = Math.min(HbmLivingProps.getBlackLung(entity), EntityHbmProps.maxBlacklung);
-		final double asbestos = Math.min(HbmLivingProps.getAsbestos(entity), EntityHbmProps.maxAsbestos);
+		double blacklung = Math.min(HbmLivingProps.getBlackLung(entity), EntityHbmProps.maxBlacklung);
+		double asbestos = Math.min(HbmLivingProps.getAsbestos(entity), EntityHbmProps.maxAsbestos);
 		
-		final boolean coughs = blacklung / EntityHbmProps.maxBlacklung > 0.25D || asbestos / EntityHbmProps.maxAsbestos > 0.25D;
+		boolean coughs = blacklung / EntityHbmProps.maxBlacklung > 0.25D || asbestos / EntityHbmProps.maxAsbestos > 0.25D;
 		
 		if(!coughs)
 			return;
 
-		final boolean coughsCoal = blacklung / EntityHbmProps.maxBlacklung > 0.5D;
-		final boolean coughsALotOfCoal = blacklung / EntityHbmProps.maxBlacklung > 0.8D;
-		final boolean coughsBlood = asbestos / EntityHbmProps.maxAsbestos > 0.75D || blacklung / EntityHbmProps.maxBlacklung > 0.75D;
+		boolean coughsCoal = blacklung / EntityHbmProps.maxBlacklung > 0.5D;
+		boolean coughsALotOfCoal = blacklung / EntityHbmProps.maxBlacklung > 0.8D;
+		boolean coughsBlood = asbestos / EntityHbmProps.maxAsbestos > 0.75D || blacklung / EntityHbmProps.maxBlacklung > 0.75D;
 
-		final double blacklungDelta = 1D - (blacklung / (double)EntityHbmProps.maxBlacklung);
-		final double asbestosDelta = 1D - (asbestos / (double)EntityHbmProps.maxAsbestos);
+		double blacklungDelta = 1D - (blacklung / (double)EntityHbmProps.maxBlacklung);
+		double asbestosDelta = 1D - (asbestos / (double)EntityHbmProps.maxAsbestos);
 		
-		final double total = 1 - (blacklungDelta * asbestosDelta);
+		double total = 1 - (blacklungDelta * asbestosDelta);
 		
-		final int freq = Math.max((int) (1000 - 950 * total), 20);
+		int freq = Math.max((int) (1000 - 950 * total), 20);
 		
-		final World world = entity.world;
-		final Random rand = new Random(entity.getEntityId());
+		World world = entity.world;
+		Random rand = new Random(entity.getEntityId());
 
 		if(total > 0.8D) {
 			entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 6));
@@ -378,7 +380,7 @@ public class EntityEffectHandler {
 			world.playSound(null, entity.posX, entity.posY, entity.posZ, HBMSoundHandler.cough, SoundCategory.PLAYERS, 1.0F, 1.0F);
 			
 			if(coughsBlood) {
-				final NBTTagCompound nbt = new NBTTagCompound();
+				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "vomit");
 				nbt.setString("mode", "blood");
 				nbt.setInteger("count", 5);
@@ -387,7 +389,7 @@ public class EntityEffectHandler {
 			}
 			
 			if(coughsCoal) {
-				final NBTTagCompound nbt = new NBTTagCompound();
+				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "vomit");
 				nbt.setString("mode", "smoke");
 				nbt.setInteger("count", coughsALotOfCoal ? 50 : 10);
@@ -397,7 +399,8 @@ public class EntityEffectHandler {
 		}
 	}
 
-	private static boolean canVomit(final Entity e) {
-        return !e.isCreatureType(EnumCreatureType.WATER_CREATURE, false);
-    }
+	private static boolean canVomit(Entity e) {
+		if(e.isCreatureType(EnumCreatureType.WATER_CREATURE, false)) return false;
+		return true;
+	}
 }

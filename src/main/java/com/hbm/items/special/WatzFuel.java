@@ -1,11 +1,11 @@
 package com.hbm.items.special;
 
-import java.util.List;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class WatzFuel extends ItemHazard {
 
@@ -27,7 +27,7 @@ public class WatzFuel extends ItemHazard {
 	 * @param heatMultiplier
 	 * @param decayMultiplier
 	 */
-	public WatzFuel(final float radiation, final boolean blinding, final int lifeTime, final int power, final float powerMultiplier, final int heat, final float heatMultiplier, final float decayMultiplier, final String s) {
+	public WatzFuel(float radiation, boolean blinding, int lifeTime, int power, float powerMultiplier, int heat, float heatMultiplier, float decayMultiplier, String s) {
 		super(radiation, false, blinding, s);
 		this.irad = radiation;
 		this.iblind = blinding;
@@ -42,14 +42,14 @@ public class WatzFuel extends ItemHazard {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
-//		if(this.irad > 0F){
-//			list.add("§a[Radioactive]§r");
-//			list.add("§e" + this.irad + " RAD/s§r");
-//		}
-//		if(this.iblind){
-//			list.add("§3[Blinding]§r");
-//		}
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
+		if(this.irad > 0F){
+			list.add("§a[Radioactive]§r");
+			list.add("§e" + this.irad + " RAD/s§r");
+		}
+		if(this.iblind){
+			list.add("§3[Blinding]§r");
+		}
 		list.add("Max age:          " + this.lifeTime/100 + " ticks");
 		list.add("Power per tick:  " + (power) + "HE");
 		list.add("Power multiplier: " + (powerMultiplier >= 1 ? "+" : "") + (Math.round(powerMultiplier * 1000) * .10 - 100) + "%");
@@ -58,14 +58,14 @@ public class WatzFuel extends ItemHazard {
 		list.add("Decay multiplier: " + (decayMultiplier >= 1 ? "+" : "") + (Math.round(decayMultiplier * 1000) * .10 - 100) + "%");
 	}
 	
-	public static void setLifeTime(final ItemStack stack, final int time) {
+	public static void setLifeTime(ItemStack stack, int time) {
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		
 		stack.getTagCompound().setInteger("life", time);
 	}
 	
-	public static void updateDamage(final ItemStack stack) {
+	public static void updateDamage(ItemStack stack) {
 		
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
@@ -73,7 +73,7 @@ public class WatzFuel extends ItemHazard {
 		stack.setItemDamage((int)((double)getLifeTime(stack) / (double)((WatzFuel)stack.getItem()).lifeTime * 100D));
 	}
 	
-	public static int getLifeTime(final ItemStack stack) {
+	public static int getLifeTime(ItemStack stack) {
 		if(!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;

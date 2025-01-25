@@ -26,22 +26,22 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 public class BossSpawnHandler {
 
-	public static void rollTheDice(final World world) {
+	public static void rollTheDice(World world) {
 
 		if(MobConfig.enableMaskman) {
 			if(world.getTotalWorldTime() % MobConfig.maskmanDelay == 0) {
 
 				if(world.rand.nextInt(MobConfig.maskmanChance) == 0 && !world.playerEntities.isEmpty() && world.provider.isSurfaceWorld()) {	//33% chance only if there is a player online
 
-					final EntityPlayer player = world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));	//choose a random player
+					EntityPlayer player = (EntityPlayer) world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));	//choose a random player
 					
 					
 					if(ContaminationUtil.getRads(player) >= MobConfig.maskmanMinRad && (world.getHeight((int)player.posX, (int)player.posZ) > player.posY + 3 || !MobConfig.maskmanUnderground)) {	//if the player has more than 50 RAD and is underground
 						player.sendMessage(new TextComponentString("The mask man is about to claim another victim.").setStyle(new Style().setColor(TextFormatting.RED)));
 						
-						final double spawnX = player.posX + world.rand.nextGaussian() * 20;
-						final double spawnZ = player.posZ + world.rand.nextGaussian() * 20;
-						final double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
+						double spawnX = player.posX + world.rand.nextGaussian() * 20;
+						double spawnZ = player.posZ + world.rand.nextGaussian() * 20;
+						double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
 
 						trySpawn(world, (float)spawnX, (float)spawnY, (float)spawnZ, new EntityMaskMan(world));
 					}
@@ -55,17 +55,17 @@ public class BossSpawnHandler {
 
 				if(world.rand.nextInt(MobConfig.raidChance) == 0 && !world.playerEntities.isEmpty() && world.provider.isSurfaceWorld()) {
 
-					final EntityPlayer player = world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
+					EntityPlayer player = (EntityPlayer) world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
 					player.sendMessage(new TextComponentString("FBI, OPEN UP!").setStyle(new Style().setColor(TextFormatting.RED)));
 					
-					final Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);
+					Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);
 					vec.rotateAroundY((float)(Math.PI * 2) * world.rand.nextFloat());
 
 					for(int i = 0; i < MobConfig.raidAmount; i++) {
 
-						final double spawnX = player.posX + vec.xCoord + world.rand.nextGaussian() * 5;
-						final double spawnZ = player.posZ + vec.zCoord + world.rand.nextGaussian() * 5;
-						final double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
+						double spawnX = player.posX + vec.xCoord + world.rand.nextGaussian() * 5;
+						double spawnZ = player.posZ + vec.zCoord + world.rand.nextGaussian() * 5;
+						double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
 
 						trySpawn(world, (float)spawnX, (float)spawnY, (float)spawnZ, new EntityFBI(world));
 					}
@@ -79,19 +79,19 @@ public class BossSpawnHandler {
 				
 				if(world.rand.nextInt(MobConfig.raidChance) == 0 && !world.playerEntities.isEmpty() && world.provider.isSurfaceWorld()) {
 					
-					final EntityPlayer player = world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
+					EntityPlayer player = (EntityPlayer) world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
 					
 					if(player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getLong("fbiMark") < world.getTotalWorldTime()) {
 						player.sendMessage(new TextComponentString("FBI, OPEN UP!").setStyle(new Style().setColor(TextFormatting.RED)));
 						
-						final Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);
+						Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);
 						vec.rotateAroundY((float)(Math.PI * 2) * world.rand.nextFloat());
 						
 						for(int i = 0; i < MobConfig.raidAmount; i++) {
 	
-							final double spawnX = player.posX + vec.xCoord + world.rand.nextGaussian() * 5;
-							final double spawnZ = player.posZ + vec.zCoord + world.rand.nextGaussian() * 5;
-							final double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
+							double spawnX = player.posX + vec.xCoord + world.rand.nextGaussian() * 5;
+							double spawnZ = player.posZ + vec.zCoord + world.rand.nextGaussian() * 5;
+							double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
 							
 							trySpawn(world, (float)spawnX, (float)spawnY, (float)spawnZ, new EntityFBI(world));
 						}
@@ -106,24 +106,24 @@ public class BossSpawnHandler {
 
 				if(world.rand.nextInt(MobConfig.elementalChance) == 0 && !world.playerEntities.isEmpty() && world.provider.isSurfaceWorld()) {
 
-					final EntityPlayer player = world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
+					EntityPlayer player = (EntityPlayer) world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
 
 					if(player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getBoolean("radMark")) {
 
 						player.sendMessage(new TextComponentString("You hear a faint clicking...").setStyle(new Style().setColor(TextFormatting.YELLOW)));
 						player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", false);
 
-						final Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);
+						Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);
 
 						for(int i = 0; i < MobConfig.elementalAmount; i++) {
 
 							vec.rotateAroundY((float)(Math.PI * 2) * world.rand.nextFloat());
 
-							final double spawnX = player.posX + vec.xCoord + world.rand.nextGaussian();
-							final double spawnZ = player.posZ + vec.zCoord + world.rand.nextGaussian();
-							final double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
+							double spawnX = player.posX + vec.xCoord + world.rand.nextGaussian();
+							double spawnZ = player.posZ + vec.zCoord + world.rand.nextGaussian();
+							double spawnY = world.getHeight((int)spawnX, (int)spawnZ);
 
-							final EntityRADBeast rad = new EntityRADBeast(world);
+							EntityRADBeast rad = new EntityRADBeast(world);
 
 							if(i == 0)
 								rad.makeLeader();
@@ -140,10 +140,10 @@ public class BossSpawnHandler {
 		}
 	}
 	
-	private static void trySpawn(final World world, final float x, final float y, final float z, final EntityLiving e) {
+	private static void trySpawn(World world, float x, float y, float z, EntityLiving e) {
 
 		e.setLocationAndAngles(x, y, z, world.rand.nextFloat() * 360.0F, 0.0F);
-		final Result canSpawn = ForgeEventFactory.canEntitySpawn(e, world, x, y, z, null);
+		Result canSpawn = ForgeEventFactory.canEntitySpawn(e, world, x, y, z, null);
 
 		if (canSpawn == Result.ALLOW || canSpawn == Result.DEFAULT) {
 			world.spawnEntity(e);
@@ -152,27 +152,27 @@ public class BossSpawnHandler {
 		}
 	}
 	
-	public static void markFBI(final EntityPlayer player) {
+	public static void markFBI(EntityPlayer player) {
 		if(!player.world.isRemote)
 			player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setLong("fbiMark", player.world.getTotalWorldTime() + 20 * 60 * 20);
 	}
 	
 	public static int meteorShower = 0;
-	private static void meteorUpdate(final World world) {
-		final int dimID = world.provider.getDimension();
-		final int dimMeteorShowerChance = parseOInt(CompatibilityConfig.meteorShowerChance.get(dimID));
-		final int dimMeteorStrikeChance = parseOInt(CompatibilityConfig.meteorStrikeChance.get(dimID));
+	private static void meteorUpdate(World world) {
+		int dimID = world.provider.getDimension();
+		int dimMeteorShowerChance = parseOInt(CompatibilityConfig.meteorShowerChance.get(dimID));
+		int dimMeteorStrikeChance = parseOInt(CompatibilityConfig.meteorStrikeChance.get(dimID));
 		if(dimMeteorShowerChance > 0 && dimMeteorStrikeChance > 0){
 			if(world.rand.nextInt(meteorShower > 0 ? dimMeteorShowerChance : dimMeteorStrikeChance) == 0) {
 				if(!world.playerEntities.isEmpty()) {
-					final EntityPlayer p = world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
+					EntityPlayer p = (EntityPlayer) world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
 					if(p != null && p.dimension == 0) {
 						boolean repell = false;
 						boolean strike = true;
 
-						final ItemStack armor = p.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+						ItemStack armor = p.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 						if(armor != null && ArmorModHandler.hasMods(armor)) {
-							final ItemStack mod = ArmorModHandler.pryMods(armor)[ArmorModHandler.helmet_only];
+							ItemStack mod = ArmorModHandler.pryMods(armor)[ArmorModHandler.helmet_only];
 							
 							if(mod != null) {
 								if(mod.getItem() == ModItems.protection_charm) {
@@ -197,7 +197,7 @@ public class BossSpawnHandler {
 			}
 
 			if(world.rand.nextInt(dimMeteorStrikeChance * 100) == 0 && GeneralConfig.enableMeteorShowers) {
-				final int dimMeteorShowerDuration = parseOInt(CompatibilityConfig.meteorShowerDuration.get(dimID));
+				int dimMeteorShowerDuration = parseOInt(CompatibilityConfig.meteorShowerDuration.get(dimID));
 				meteorShower = (int) (dimMeteorShowerDuration * (0.75 + 0.25 * world.rand.nextFloat()));
 
 				if(GeneralConfig.enableDebugMode)
@@ -206,8 +206,8 @@ public class BossSpawnHandler {
 		}
 	}
 
-	public static void spawnMeteorAtPlayer(final EntityPlayer p, final boolean repell) {
-		final EntityMeteor meteor = new EntityMeteor(p.world);
+	public static void spawnMeteorAtPlayer(EntityPlayer p, boolean repell) {
+		EntityMeteor meteor = new EntityMeteor(p.world);
 		meteor.posX = p.posX + p.world.rand.nextInt(201) - 100;
 		meteor.posY = 384;
 		meteor.posZ = p.posZ + p.world.rand.nextInt(201) - 100;
@@ -223,7 +223,7 @@ public class BossSpawnHandler {
 		p.world.spawnEntity(meteor);
 	}
 
-	private static int parseOInt(final Object o){
+	private static int parseOInt(Object o){
 		if(o == null)
 			return 0;
 		return (int)o;

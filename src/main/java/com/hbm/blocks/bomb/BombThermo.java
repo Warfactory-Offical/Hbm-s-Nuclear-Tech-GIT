@@ -3,7 +3,6 @@ package com.hbm.blocks.bomb;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.explosion.ExplosionThermo;
 import com.hbm.interfaces.IBomb;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,7 +12,7 @@ import net.minecraft.world.World;
 
 public class BombThermo extends Block implements IBomb {
 
-	public BombThermo(final Material materialIn, final String s) {
+	public BombThermo(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -22,8 +21,8 @@ public class BombThermo extends Block implements IBomb {
 	}
 	
 	@Override
-	public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
-		if (!worldIn.isRemote && worldIn.isBlockPowered(pos))
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (!worldIn.isRemote && worldIn.isBlockIndirectlyGettingPowered(pos) > 0)
         {
 			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
         	if(this == ModBlocks.therm_endo)
@@ -45,9 +44,7 @@ public class BombThermo extends Block implements IBomb {
 	
 
 	@Override
-	public void explode(final World world, final BlockPos pos) {
-		if(world.isRemote)
-			return;
+	public BombReturnCode explode(World world, BlockPos pos) {
 		world.setBlockState(pos, Blocks.AIR.getDefaultState());
     	if(this == ModBlocks.therm_endo)
     	{
@@ -62,6 +59,7 @@ public class BombThermo extends Block implements IBomb {
     	}
     	
     	world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
+		return BombReturnCode.DETONATED;
 	}
 
 }

@@ -1,20 +1,19 @@
 package com.hbm.items.special;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemFuel extends Item {
 
-	private final int burntime;
+	private int burntime;
 	
-	public ItemFuel(final String s, final int burntime){
+	public ItemFuel(String s, int burntime){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.controlTab);
@@ -24,12 +23,12 @@ public class ItemFuel extends Item {
 	}
 	
 	@Override
-	public int getItemBurnTime(final ItemStack itemStack) {
+	public int getItemBurnTime(ItemStack itemStack) {
 		return burntime;
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if(this == ModItems.dust)
 		{
 			if(MainRegistry.polaroidID == 11)

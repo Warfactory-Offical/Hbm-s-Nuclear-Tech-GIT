@@ -20,7 +20,7 @@ public class FluidRecipeHandler implements IRecipeCategory<FluidRecipe> {
 	
 	protected final IDrawable background;
 	
-	public FluidRecipeHandler(final IGuiHelper help) {
+	public FluidRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 38, 29, 99, 27);
 	}
 	
@@ -45,10 +45,10 @@ public class FluidRecipeHandler implements IRecipeCategory<FluidRecipe> {
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final FluidRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, FluidRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
-		final boolean inverse = recipeWrapper instanceof FluidRecipeInverse;
+		boolean inverse = recipeWrapper instanceof FluidRecipeInverse;
 		
 		guiItemStacks.init(0, inverse, 5, 5);
 		guiItemStacks.init(1, !inverse, 78, 6);

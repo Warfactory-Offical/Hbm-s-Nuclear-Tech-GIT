@@ -2,7 +2,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.deco.TileEntityDecoPoleSatelliteReceiver;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -24,68 +23,68 @@ import net.minecraft.world.World;
 public class DecoPoleSatelliteReceiver extends BlockContainer {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	
-	public DecoPoleSatelliteReceiver(final Material materialIn, final String s) {
+
+	public DecoPoleSatelliteReceiver(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
-		
+
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityDecoPoleSatelliteReceiver();
 	}
-	
+
 	@Override
-	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
 	}
-	
+
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
-	
+
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, new IProperty[]{FACING});
 	}
-	
+
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(FACING).getIndex();
+	public int getMetaFromState(IBlockState state) {
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
-	
+
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		EnumFacing enumfacing = EnumFacing.byIndex(meta);
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {
@@ -94,18 +93,18 @@ public class DecoPoleSatelliteReceiver extends BlockContainer {
 
         return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
-	
-	
-	
+
+
+
 	@Override
-	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
 	}
-	
+
 	@Override
-	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
 
 }

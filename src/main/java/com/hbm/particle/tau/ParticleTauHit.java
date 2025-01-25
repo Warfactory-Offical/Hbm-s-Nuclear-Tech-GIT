@@ -26,11 +26,11 @@ public class ParticleTauHit extends Particle {
 	float pitch;
 	Vec3d norm;
 	
-	public ParticleTauHit(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale, final Vec3d normal) {
+	public ParticleTauHit(World worldIn, double posXIn, double posYIn, double posZIn, float scale, Vec3d normal) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.particleMaxAge = (int) (50*scale);
-		final Vec3d angles = BobMathUtil.getEulerAngles(normal);
+		Vec3d angles = BobMathUtil.getEulerAngles(normal);
 		yaw = (float) angles.x;
 		pitch = (float) angles.y;
 		this.norm = normal;
@@ -45,8 +45,8 @@ public class ParticleTauHit extends Particle {
 		}
 		if(particleAge == 1){
 			for(int i = 0; i < 2 + rand.nextInt(2); i ++){
-				final Vec3d randPos = new Vec3d(rand.nextFloat()-0.5, 0, rand.nextFloat()-0.5).rotatePitch(pitch).rotateYaw(yaw).scale(0.05);
-				final ParticleTauParticle p = new ParticleTauParticle(world, posX+randPos.x, posY+randPos.y, posZ+randPos.z, 0.2F, 0.01F, 1, 6, 0F);
+				Vec3d randPos = new Vec3d(rand.nextFloat()-0.5, 0, rand.nextFloat()-0.5).rotatePitch(pitch).rotateYaw(yaw).scale(0.05);
+				ParticleTauParticle p = new ParticleTauParticle(world, posX+randPos.x, posY+randPos.y, posZ+randPos.z, 0.2F, 0.01F, 1, 6, 0F);
 				p.motion((float)norm.x*0.015F, (float)norm.y*0.015F, (float)norm.z*0.015F);
 				p.lifetime(20);
 				p.color(0.9F, 0.6F, 0.1F, 1F);
@@ -54,7 +54,7 @@ public class ParticleTauHit extends Particle {
 			}
 			for(int i = 0; i < 2 + rand.nextInt(3); i ++){
 				Vec3d randPos = new Vec3d(rand.nextFloat()-0.5, 0, rand.nextFloat()-0.5).rotatePitch(pitch).rotateYaw(yaw).scale(0.05);
-				final ParticleTauParticle p = new ParticleTauParticle(world, posX+randPos.x, posY+randPos.y, posZ+randPos.z, 0.15F, 0.1F, 2, 6, 0.05F);
+				ParticleTauParticle p = new ParticleTauParticle(world, posX+randPos.x, posY+randPos.y, posZ+randPos.z, 0.15F, 0.1F, 2, 6, 0.05F);
 				randPos = randPos.scale(2);
 				p.motion((float)norm.x*0.35F+(float)randPos.x, (float)norm.y*0.35F+(float)randPos.y, (float)norm.z*0.35F+(float)randPos.z);
 				p.lifetime(30);
@@ -75,7 +75,7 @@ public class ParticleTauHit extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		GlStateManager.disableLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
@@ -88,21 +88,21 @@ public class ParticleTauHit extends Particle {
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.fresnel_ms);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		final float lifeN = (particleAge+partialTicks) /(float)particleMaxAge;
-		final float fade = MathHelper.clamp(1F-lifeN*1.2F, 0, 1);
+		float lifeN = (float)(particleAge+partialTicks)/(float)particleMaxAge;
+		float fade = MathHelper.clamp(1F-lifeN*1.2F, 0, 1);
 		GlStateManager.color(0.9F, 0.6F, 0.1F, 1.2F*fade);
 		
-        final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-        final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-        final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+        double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+        double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+        double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
         
         interpPosX = entPosX;
         interpPosY = entPosY;
         interpPosZ = entPosZ;
         
-		final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - entPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - entPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - entPosZ);
+		float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - entPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - entPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - entPosZ);
         GL11.glTranslated(f5, f6, f7);
         
         GL11.glRotated(yaw, 0, 1, 0);

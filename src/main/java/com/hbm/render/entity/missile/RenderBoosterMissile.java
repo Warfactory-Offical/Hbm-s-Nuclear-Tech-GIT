@@ -1,26 +1,24 @@
 package com.hbm.render.entity.missile;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.missile.EntityBooster;
 import com.hbm.main.ResourceManager;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderBoosterMissile extends Render<EntityBooster> {
 
 	public static final IRenderFactory<EntityBooster> FACTORY = (RenderManager man) -> {return new RenderBoosterMissile(man);};
 	
-	protected RenderBoosterMissile(final RenderManager renderManager) {
+	protected RenderBoosterMissile(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityBooster entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityBooster entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
         GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -38,7 +36,7 @@ public class RenderBoosterMissile extends Render<EntityBooster> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityBooster entity) {
+	protected ResourceLocation getEntityTexture(EntityBooster entity) {
 		return ResourceManager.missileBooster_tex;
 	}
 

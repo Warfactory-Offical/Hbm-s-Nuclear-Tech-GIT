@@ -22,7 +22,7 @@ public class TEAssemblerPacket implements IMessage {
 		
 	}
 
-	public TEAssemblerPacket(final BlockPos pos, final boolean bool)
+	public TEAssemblerPacket(BlockPos pos, boolean bool)
 	{
 		this.x = pos.getX();
 		this.y = pos.getY();
@@ -31,7 +31,7 @@ public class TEAssemblerPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -39,7 +39,7 @@ public class TEAssemblerPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -49,14 +49,15 @@ public class TEAssemblerPacket implements IMessage {
 	public static class Handler implements IMessageHandler<TEAssemblerPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(final TEAssemblerPacket m, final MessageContext ctx) {
+		public IMessage onMessage(TEAssemblerPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+				BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 
-				if (te != null && te instanceof TileEntityMachineAssembler gen) {
-
-                    gen.isProgressing = m.progress;
+				if (te != null && te instanceof TileEntityMachineAssembler) {
+						
+					TileEntityMachineAssembler gen = (TileEntityMachineAssembler) te;
+					gen.isProgressing = m.progress;
 				}
 			});
 			

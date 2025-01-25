@@ -24,26 +24,26 @@ public class ItemModTesla extends ItemArmorMod {
 	private ModelBackTesla modelTesla;
 	public List<double[]> targets = new ArrayList<>();
 	
-	public ItemModTesla(final String s) {
+	public ItemModTesla(String s) {
 		super(ArmorModHandler.plate_only, false, true, false, false, s);
 	}
     
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.YELLOW + "Zaps nearby entities (requires full electric set)");
 		list.add("");
 		super.addInformation(stack, worldIn, list, flagIn);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.YELLOW + stack.getDisplayName() + " (zaps nearby entities)");
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		if(!entity.world.isRemote && entity instanceof EntityPlayer && armor.getItem() instanceof ArmorFSBPowered && ArmorFSBPowered.hasFSBArmor(entity)) {
+		if(!entity.world.isRemote && entity instanceof EntityPlayer && armor.getItem() instanceof ArmorFSBPowered && ArmorFSBPowered.hasFSBArmor((EntityPlayer)entity)) {
 			targets = TileEntityTesla.zap(entity.world, entity.posX, entity.posY + 1.25, entity.posZ, 5, entity);
 			
 			if(targets != null && !targets.isEmpty() && entity.getRNG().nextInt(5) == 0) {
@@ -53,22 +53,22 @@ public class ItemModTesla extends ItemArmorMod {
 	}
 
 	@Override
-	public void modRender(final Pre event, final ItemStack armor){
+	public void modRender(Pre event, ItemStack armor){
 		if(this.modelTesla == null) {
 			this.modelTesla = new ModelBackTesla();
 		}
 		
-		final EntityPlayer player = event.getEntityPlayer();
+		EntityPlayer player = event.getEntityPlayer();
 
 		modelTesla.isSneak = player.isSneaking();
 		
-		final float interp = event.getPartialRenderTick();
-		final float yaw = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset)*interp;
-		final float yawWrapped = MathHelper.wrapDegrees(yaw+180);
-		final float pitch = player.rotationPitch;
+		float interp = event.getPartialRenderTick();
+		float yaw = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset)*interp;
+		float yawWrapped = MathHelper.wrapDegrees(yaw+180);
+		float pitch = player.rotationPitch;
 
-		final EntityPlayer me = MainRegistry.proxy.me();
-		final boolean isMe = player == me;
+		EntityPlayer me = MainRegistry.proxy.me();
+		boolean isMe = player == me;
 		if(!isMe){
 			GL11.glPushMatrix();
 			offset(player, me, interp);

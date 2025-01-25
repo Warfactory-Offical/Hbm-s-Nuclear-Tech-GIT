@@ -4,12 +4,10 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.BlockSiloHatch;
 import com.hbm.blocks.machine.DummyBlockSiloHatch;
 import com.hbm.handler.RadiationSystemNT;
-import com.hbm.lib.HBMSoundHandler;
 import com.hbm.interfaces.IAnimatedDoor;
+import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEDoorAnimationPacket;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -34,7 +32,7 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 	public void update() {
 		if(!world.isRemote){
 			if(!this.isLocked()){
-				final boolean rs = world.isBlockPowered(pos);
+				boolean rs = world.isBlockIndirectlyGettingPowered(pos) > 0;
 				if(rs){
 					tryOpen();
 				} else {
@@ -55,11 +53,11 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 				timer ++;
 				if(state == DoorState.CLOSING){
 					if(timer == 1){
-						final BlockPos hydrolics = pos.offset(facing, 5);
+						BlockPos hydrolics = pos.offset(facing, 5);
 						this.world.playSound(null, hydrolics.getX(), hydrolics.getY(), hydrolics.getZ(), HBMSoundHandler.siloclose, SoundCategory.BLOCKS, 3F, 1F);
 					}
 					if(timer == 50){
-						final BlockPos mid = pos.offset(facing, 3);
+						BlockPos mid = pos.offset(facing, 3);
 						for(int i = -1; i <= 1; i ++){
 							for(int j = -1; j <= 1; j ++){
 								placeDummy(mid.add(i, 0, j));
@@ -78,11 +76,11 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 					}
 				} else if(state == DoorState.OPENING){
 					if(timer == 1){
-						final BlockPos hydrolics = pos.offset(facing, 5);
+						BlockPos hydrolics = pos.offset(facing, 5);
 						this.world.playSound(null, hydrolics.getX(), hydrolics.getY(), hydrolics.getZ(), HBMSoundHandler.siloopen, SoundCategory.BLOCKS, 4F, 1F);
 					}
 					if(timer == 70){
-						final BlockPos mid = pos.offset(facing, 3);
+						BlockPos mid = pos.offset(facing, 3);
 						for(int i = -1; i <= 1; i ++){
 							for(int j = -1; j <= 1; j ++){
 								removeDummy(mid.add(i, 0, j));
@@ -125,23 +123,24 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 		}
 	}
 
-	public boolean placeDummy(final BlockPos pos) {
+	public boolean placeDummy(BlockPos pos) {
 		
 		if(!world.getBlockState(pos).getBlock().isReplaceable(world, pos))
 			return false;
 		
 		world.setBlockState(pos, ModBlocks.dummy_block_silo_hatch.getDefaultState());
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy dummy) {
-            dummy.target = this.pos;
+		if(te instanceof TileEntityDummy) {
+			TileEntityDummy dummy = (TileEntityDummy)te;
+			dummy.target = this.pos;
 		}
 		
 		return true;
 	}
 	
-	public void removeDummy(final BlockPos pos) {
+	public void removeDummy(BlockPos pos) {
 		if(world.getBlockState(pos).getBlock() == ModBlocks.dummy_block_silo_hatch) {
 			DummyBlockSiloHatch.safeBreak = true;
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -150,13 +149,13 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		state = DoorState.values()[compound.getByte("state")];
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setByte("state", (byte) state.ordinal());
 		return super.writeToNBT(compound);
 	}
@@ -208,7 +207,7 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 	}
 
 	@Override
-	public void handleNewState(final DoorState newState) {
+	public void handleNewState(DoorState newState) {
 		if(this.state != newState){
 			if(this.state.isStationaryState() && newState.isMovingState()){
 				sysTime = System.currentTimeMillis();

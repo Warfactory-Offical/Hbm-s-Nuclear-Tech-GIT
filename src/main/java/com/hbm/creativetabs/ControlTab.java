@@ -1,12 +1,11 @@
 package com.hbm.creativetabs;
-import com.hbm.util.ItemStackUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.items.ModItems;
 
-import api.hbm.energy.IBatteryItem;
+import api.hbm.energymk2.IBatteryItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -14,45 +13,49 @@ import net.minecraft.util.NonNullList;
 
 public class ControlTab extends CreativeTabs {
 
-	public ControlTab(final int index, final String label) {
+	public ControlTab(int index, String label) {
 		super(index, label);
 	}
 
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getTabIconItem() {
 		if(ModItems.pellet_rtg != null){
-			return ItemStackUtil.itemStackFrom(ModItems.pellet_rtg);
+			return new ItemStack(ModItems.pellet_rtg);
 		}
-		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE, 1);
+		return new ItemStack(Items.IRON_PICKAXE, 1);
 	}
 	
 	@Override
-	public void displayAllRelevantItems(final NonNullList<ItemStack> list) {
+	public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 		super.displayAllRelevantItems(list);
-		final List<ItemStack> batteries = new ArrayList<>();
+		List<ItemStack> batteries = new ArrayList<>();
 
-		for(final Object o : list) {
+		for(Object o : list) {
 
-			if(o instanceof ItemStack stack) {
+			if(o instanceof ItemStack) {
 
-                if(stack.getItem() instanceof IBatteryItem) {
+				ItemStack stack = (ItemStack) o;
+
+				if(stack.getItem() instanceof IBatteryItem) {
 					batteries.add(stack);
 				}
 			}
 		}
 
-		for(final ItemStack stack : batteries) {
+		for(ItemStack stack : batteries) {
 
-			if(!(stack.getItem() instanceof IBatteryItem battery)) //shouldn't happen but just to make sure
+			if(!(stack.getItem() instanceof IBatteryItem)) //shouldn't happen but just to make sure
 				continue;
 
-            final ItemStack empty = stack.copy();
-			final ItemStack full = stack.copy();
+			IBatteryItem battery = (IBatteryItem) stack.getItem();
+
+			ItemStack empty = stack.copy();
+			ItemStack full = stack.copy();
 
 			battery.setCharge(empty, 0);
 			battery.setCharge(full, battery.getMaxCharge());
 
-			final int index = list.indexOf(stack);
+			int index = list.indexOf(stack);
 
 			list.remove(index);
 			list.add(index, full);

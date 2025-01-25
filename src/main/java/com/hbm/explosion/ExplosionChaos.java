@@ -52,25 +52,25 @@ import net.minecraft.world.World;
 public class ExplosionChaos {
 
 	private final static Random random = new Random();
-	private static final Random rand = new Random();
+	private static Random rand = new Random();
 
-	public static void explode(final World world, final int x, final int y, final int z, final int bombStartStrength) {
+	public static void explode(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		final int r = bombStartStrength;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		int r = bombStartStrength;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for(int xx = -r; xx < r; xx++) {
-			final int X = xx + x;
-			final int XX = xx * xx;
+			int X = xx + x;
+			int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				final int Y = yy + y;
-				final int YY = XX + yy * yy;
+				int Y = yy + y;
+				int YY = XX + yy * yy;
 				for(int zz = -r; zz < r; zz++) {
-					final int Z = zz + z;
-					final int ZZ = YY + zz * zz;
+					int Z = zz + z;
+					int ZZ = YY + zz * zz;
 					if(ZZ < r22) {
 						destruction(world, pos.setPos(X, Y, Z));
 					}
@@ -79,9 +79,9 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void destruction(final World world, final BlockPos pos) {
+	public static void destruction(World world, BlockPos pos) {
 
-		final Block b = world.getBlockState(pos).getBlock();
+		Block b = world.getBlockState(pos).getBlock();
 		if(b == Blocks.BEDROCK || b == ModBlocks.reinforced_brick || b == ModBlocks.reinforced_sand || b == ModBlocks.reinforced_glass || b == ModBlocks.reinforced_lamp_on || b == ModBlocks.reinforced_lamp_off) {
 
 		} else {
@@ -89,7 +89,7 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void spawnExplosion(final World world, final int x, final int y, final int z, final int bound) {
+	public static void spawnExplosion(World world, int x, int y, int z, int bound) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
@@ -166,37 +166,37 @@ public class ExplosionChaos {
 
 	// Drillgon200: Descriptive method names anyone?
 	// Alcater: Ill write this down - maybe ill need it later. c stands for cloudPoisoning
-	public static void c(final World world, final int x, final int y, final int z, int bombStartStrength) {
+	public static void c(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final float f = bombStartStrength;
-		final int i;
-		final int j;
-		final int k;
+		float f = bombStartStrength;
+		int i;
+		int j;
+		int k;
 		double d5;
 		double d6;
 		double d7;
-		final double wat = bombStartStrength * 2;
+		double wat = bombStartStrength * 2;
 
 		bombStartStrength *= 2.0F;
 		i = MathHelper.floor(x - wat - 1.0D);
 		j = MathHelper.floor(x + wat + 1.0D);
 		k = MathHelper.floor(y - wat - 1.0D);
-		final int i2 = MathHelper.floor(y + wat + 1.0D);
-		final int l = MathHelper.floor(z - wat - 1.0D);
-		final int j2 = MathHelper.floor(z + wat + 1.0D);
-		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
+		int i2 = MathHelper.floor(y + wat + 1.0D);
+		int l = MathHelper.floor(z - wat - 1.0D);
+		int j2 = MathHelper.floor(z + wat + 1.0D);
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
 
 		for(int i1 = 0; i1 < list.size(); ++i1) {
-			final Entity entity = list.get(i1);
-			final double d4 = entity.getDistance(x, y, z) / bombStartStrength;
+			Entity entity = (Entity) list.get(i1);
+			double d4 = entity.getDistance(x, y, z) / bombStartStrength;
 
 			if(d4 <= 1.0D) {
 				d5 = entity.posX - x;
 				d6 = entity.posY + entity.getEyeHeight() - y;
 				d7 = entity.posZ - z;
-				final double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
+				double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
 				if(d9 < wat) {
 
 					if(entity instanceof EntityPlayer) {
@@ -210,10 +210,11 @@ public class ExplosionChaos {
 
 					if(!(entity instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer) entity))) {
 
-						if(entity instanceof EntityLivingBase livi){
-                            if(livi.isPotionActive(HbmPotion.taint)) {
+						if(entity instanceof EntityLivingBase){
+							EntityLivingBase livi = (EntityLivingBase)entity;
+							if(livi.isPotionActive(HbmPotion.taint)) {
 								livi.removePotionEffect(HbmPotion.taint);
-								livi.addPotionEffect(new PotionEffect(HbmPotion.mutation, 60 * 60 * 20, 0, false, true));
+								livi.addPotionEffect(new PotionEffect(HbmPotion.mutation, 1 * 60 * 60 * 20, 0, false, true));
 							} else {
 								if(ArmorRegistry.hasProtection(livi, EntityEquipmentSlot.HEAD, HazardClass.BACTERIA)){
 									ArmorUtil.damageGasMaskFilter(livi, 1);
@@ -239,25 +240,25 @@ public class ExplosionChaos {
 	 * @param z
 	 * @param bound
 	 */
-	public static void flameDeath(final World world, final BlockPos pos, final int bound) {
+	public static void flameDeath(World world, BlockPos pos, int bound) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos(pos);
-		final MutableBlockPos mPosUp = new BlockPos.MutableBlockPos(pos.up());
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos(pos);
+		MutableBlockPos mPosUp = new BlockPos.MutableBlockPos(pos.up());
 
-		final int r = bound;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		int r = bound;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for(int xx = -r; xx < r; xx++) {
-			final int X = xx + pos.getX();
-			final int XX = xx * xx;
+			int X = xx + pos.getX();
+			int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				final int Y = yy + pos.getY();
-				final int YY = XX + yy * yy;
+				int Y = yy + pos.getY();
+				int YY = XX + yy * yy;
 				for(int zz = -r; zz < r; zz++) {
-					final int Z = zz + pos.getZ();
-					final int ZZ = YY + zz * zz;
+					int Z = zz + pos.getZ();
+					int ZZ = YY + zz * zz;
 					if(ZZ < r22) {
 						mPos.setPos(X, Y, Z);
 						mPosUp.setPos(X, Y + 1, Z);
@@ -280,25 +281,25 @@ public class ExplosionChaos {
 	 * @param z
 	 * @param bound
 	 */
-	public static void burn(final World world, final BlockPos pos, final int bound) {
+	public static void burn(World world, BlockPos pos, int bound) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos(pos);
-		final MutableBlockPos mPosUp = new BlockPos.MutableBlockPos(pos.up());
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos(pos);
+		MutableBlockPos mPosUp = new BlockPos.MutableBlockPos(pos.up());
 
-		final int r = bound;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		int r = bound;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for(int xx = -r; xx < r; xx++) {
-			final int X = xx + pos.getX();
-			final int XX = xx * xx;
+			int X = xx + pos.getX();
+			int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				final int Y = yy + pos.getY();
-				final int YY = XX + yy * yy;
+				int Y = yy + pos.getY();
+				int YY = XX + yy * yy;
 				for(int zz = -r; zz < r; zz++) {
-					final int Z = zz + pos.getZ();
-					final int ZZ = YY + zz * zz;
+					int Z = zz + pos.getZ();
+					int ZZ = YY + zz * zz;
 					if(ZZ < r22) {
 						mPos.setPos(X, Y, Z);
 						mPosUp.setPos(X, Y + 1, Z);
@@ -312,7 +313,7 @@ public class ExplosionChaos {
 
 	}
 
-	public static void spawnChlorine(final World world, final double x, final double y, final double z, final int count, final double speed, final int type) {
+	public static void spawnChlorine(World world, double x, double y, double z, int count, double speed, int type) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
@@ -337,37 +338,37 @@ public class ExplosionChaos {
 		}
 	}
 	// Alcater: pc for pinkCouldPoisoning
-	public static void pc(final World world, final int x, final int y, final int z, int bombStartStrength) {
+	public static void pc(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final float f = bombStartStrength;
-		final int i;
-		final int j;
-		final int k;
+		float f = bombStartStrength;
+		int i;
+		int j;
+		int k;
 		double d5;
 		double d6;
 		double d7;
-		final double wat = bombStartStrength * 2;
+		double wat = bombStartStrength * 2;
 
 		bombStartStrength *= 2.0F;
 		i = MathHelper.floor(x - wat - 1.0D);
 		j = MathHelper.floor(x + wat + 1.0D);
 		k = MathHelper.floor(y - wat - 1.0D);
-		final int i2 = MathHelper.floor(y + wat + 1.0D);
-		final int l = MathHelper.floor(z - wat - 1.0D);
-		final int j2 = MathHelper.floor(z + wat + 1.0D);
-		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
+		int i2 = MathHelper.floor(y + wat + 1.0D);
+		int l = MathHelper.floor(z - wat - 1.0D);
+		int j2 = MathHelper.floor(z + wat + 1.0D);
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
 
 		for(int i1 = 0; i1 < list.size(); ++i1) {
-			final Entity entity = list.get(i1);
-			final double d4 = entity.getDistance(x, y, z) / bombStartStrength;
+			Entity entity = (Entity) list.get(i1);
+			double d4 = entity.getDistance(x, y, z) / bombStartStrength;
 
 			if(d4 <= 1.0D) {
 				d5 = entity.posX - x;
 				d6 = entity.posY + entity.getEyeHeight() - y;
 				d7 = entity.posZ - z;
-				final double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
+				double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
 				if(d9 < wat) {
 
 					if(entity instanceof EntityPlayer) {
@@ -393,47 +394,48 @@ public class ExplosionChaos {
 	}
 
 	//Alcater: used by grenades and Chlorine seal gas blocks
-	public static void poison(final World world, final int x, final int y, final int z, int bombStartStrength) {
+	public static void poison(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final float f = bombStartStrength;
-		final int i;
-		final int j;
-		final int k;
+		float f = bombStartStrength;
+		int i;
+		int j;
+		int k;
 		double d5;
 		double d6;
 		double d7;
-		final double wat = bombStartStrength * 2;
+		double wat = bombStartStrength * 2;
 
 		bombStartStrength *= 2.0F;
 		i = MathHelper.floor(x - wat - 1.0D);
 		j = MathHelper.floor(x + wat + 1.0D);
 		k = MathHelper.floor(y - wat - 1.0D);
-		final int i2 = MathHelper.floor(y + wat + 1.0D);
-		final int l = MathHelper.floor(z - wat - 1.0D);
-		final int j2 = MathHelper.floor(z + wat + 1.0D);
-		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
+		int i2 = MathHelper.floor(y + wat + 1.0D);
+		int l = MathHelper.floor(z - wat - 1.0D);
+		int j2 = MathHelper.floor(z + wat + 1.0D);
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
 
 		for(int i1 = 0; i1 < list.size(); ++i1) {
-			final Entity entity = list.get(i1);
-			final double d4 = entity.getDistance(x, y, z) / bombStartStrength;
+			Entity entity = (Entity) list.get(i1);
+			double d4 = entity.getDistance(x, y, z) / bombStartStrength;
 
 			if(d4 <= 1.0D) {
 				d5 = entity.posX - x;
 				d6 = entity.posY + entity.getEyeHeight() - y;
 				d7 = entity.posZ - z;
-				final double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
+				double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
 				if(d9 < wat) {
-					if(!(entity instanceof EntityLivingBase entityLiving))
+					if(!(entity instanceof EntityLivingBase))
 						continue;
-
-                    if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.NERVE_AGENT)) {
+					
+					EntityLivingBase entityLiving = (EntityLivingBase) entity;
+					if(ArmorRegistry.hasAllProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.NERVE_AGENT)) {
 						ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 					} else {
 						entityLiving.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * 20, 0));
 						entityLiving.addPotionEffect(new PotionEffect(MobEffects.POISON, 20 * 20, 2));
-						entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, 20, 1));
+						entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, 1 * 20, 1));
 						entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 30 * 20, 1));
 						entityLiving.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 30 * 20, 2));
 					}
@@ -444,11 +446,11 @@ public class ExplosionChaos {
 		bombStartStrength = (int) f;
 	}
 
-	public static void cluster(final World world, final int x, final int y, final int z, final int count, final double gravity) {
+	public static void cluster(World world, int x, int y, int z, int count, double gravity) {
 		 cluster(world, x, y, z, count, gravity, 5);
 	}
 
-	public static void cluster(final World world, final int x, final int y, final int z, final int count, final double gravity, final int size) {
+	public static void cluster(World world, int x, int y, int z, int count, double gravity, int size) {
 
 		double mx = 0;
 		double my = 0;
@@ -466,16 +468,16 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void miniMirv(final World world, final double x, final double y, final double z) {
-		final double modifier = 1.25;
-		final double zeta = Math.sqrt(2) / 2;
-		final EntityMiniNuke mirv1 = new EntityMiniNuke(world);
-		final EntityMiniNuke mirv2 = new EntityMiniNuke(world);
-		final EntityMiniNuke mirv3 = new EntityMiniNuke(world);
-		final EntityMiniNuke mirv4 = new EntityMiniNuke(world);
-		final double vx1 = 1;
-		final double vy1 = rand.nextDouble() * -1;
-		final double vz1 = 0;
+	public static void miniMirv(World world, double x, double y, double z) {
+		double modifier = 1.25;
+		double zeta = Math.sqrt(2) / 2;
+		EntityMiniNuke mirv1 = new EntityMiniNuke(world);
+		EntityMiniNuke mirv2 = new EntityMiniNuke(world);
+		EntityMiniNuke mirv3 = new EntityMiniNuke(world);
+		EntityMiniNuke mirv4 = new EntityMiniNuke(world);
+		double vx1 = 1;
+		double vy1 = rand.nextDouble() * -1;
+		double vz1 = 0;
 
 		mirv1.posX = x;
 		mirv1.posY = y;
@@ -510,16 +512,16 @@ public class ExplosionChaos {
 		mirv4.motionZ = -vx1 * modifier;
 		world.spawnEntity(mirv4);
 
-		final EntityMiniNuke mirv5 = new EntityMiniNuke(world);
-		final EntityMiniNuke mirv6 = new EntityMiniNuke(world);
-		final EntityMiniNuke mirv7 = new EntityMiniNuke(world);
-		final EntityMiniNuke mirv8 = new EntityMiniNuke(world);
+		EntityMiniNuke mirv5 = new EntityMiniNuke(world);
+		EntityMiniNuke mirv6 = new EntityMiniNuke(world);
+		EntityMiniNuke mirv7 = new EntityMiniNuke(world);
+		EntityMiniNuke mirv8 = new EntityMiniNuke(world);
 		// double vx2 = vx1 < theta ? vx1 + theta : vx1 - theta;
 		// double vy2 = vy1;
 		// double vz2 = Math.sqrt(Math.pow(1, 2) - Math.pow(vx2, 2));
-		final double vx2 = zeta;
-		final double vy2 = vy1;
-		final double vz2 = zeta;
+		double vx2 = zeta;
+		double vy2 = vy1;
+		double vz2 = zeta;
 
 		mirv5.posX = x;
 		mirv5.posY = y;
@@ -555,23 +557,23 @@ public class ExplosionChaos {
 		world.spawnEntity(mirv8);
 	}
 
-	public static void explodeZOMG(final World world, final int x, final int y, final int z, final int bombStartStrength) {
+	public static void explodeZOMG(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		final int r = bombStartStrength;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		int r = bombStartStrength;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for(int xx = -r; xx < r; xx++) {
-			final int X = xx + x;
-			final int XX = xx * xx;
+			int X = xx + x;
+			int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				final int Y = yy + y;
-				final int YY = XX + yy * yy;
+				int Y = yy + y;
+				int YY = XX + yy * yy;
 				for(int zz = -r; zz < r; zz++) {
-					final int Z = zz + z;
-					final int ZZ = YY + zz * zz;
+					int Z = zz + z;
+					int ZZ = YY + zz * zz;
 					if(ZZ < r22) {
 						pos.setPos(X, Y, Z);
 						if(!(world.getBlockState(pos).getBlock() == Blocks.BEDROCK && Y <= 0))
@@ -582,7 +584,7 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void frag(final World world, final int x, final int y, final int z, final int count, final boolean flame, final Entity shooter) {
+	public static void frag(World world, int x, int y, int z, int count, boolean flame, Entity shooter) {
 
 		double d1 = 0;
 		double d2 = 0;
@@ -620,7 +622,7 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void schrab(final World world, final int x, final int y, final int z, final int count, final int gravity) {
+	public static void schrab(World world, int x, int y, int z, int count, int gravity) {
 
 		double d1 = 0;
 		double d2 = 0;
@@ -647,22 +649,22 @@ public class ExplosionChaos {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void pulse(final World world, final int x, final int y, final int z, final int bombStartStrength) {
+	public static void pulse(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final int r = bombStartStrength;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		int r = bombStartStrength;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for(int xx = -r; xx < r; xx++) {
-			final int X = xx + x;
-			final int XX = xx * xx;
+			int X = xx + x;
+			int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				final int Y = yy + y;
-				final int YY = XX + yy * yy;
+				int Y = yy + y;
+				int YY = XX + yy * yy;
 				for(int zz = -r; zz < r; zz++) {
-					final int Z = zz + z;
-					final int ZZ = YY + zz * zz;
+					int Z = zz + z;
+					int ZZ = YY + zz * zz;
 					if(ZZ < r22) {
 						if(world.getBlockState(new BlockPos(X, Y, Z)).getBlock().getExplosionResistance(null) <= 70)
 							pDestruction(world, X, Y, Z);
@@ -672,33 +674,33 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void pDestruction(final World world, final int x, final int y, final int z) {
-		final BlockPos pos = new BlockPos(x, y, z);
-		final IBlockState state = world.getBlockState(pos);
-		final EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, state);
+	public static void pDestruction(World world, int x, int y, int z) {
+		BlockPos pos = new BlockPos(x, y, z);
+		IBlockState state = world.getBlockState(pos);
+		EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, (double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), state);
 		world.spawnEntity(entityfallingblock);
 	}
 
-	public static void plasma(final World world, final int x, final int y, final int z, final int radius) {
+	public static void plasma(World world, int x, int y, int z, int radius) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		final int r = radius;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		int r = radius;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for(int xx = -r; xx < r; xx++) {
-			final int X = xx + x;
-			final int XX = xx * xx;
+			int X = xx + x;
+			int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				final int Y = yy + y;
-				final int YY = XX + yy * yy;
+				int Y = yy + y;
+				int YY = XX + yy * yy;
 				for(int zz = -r; zz < r; zz++) {
-					final int Z = zz + z;
-					final int ZZ = YY + zz * zz;
+					int Z = zz + z;
+					int ZZ = YY + zz * zz;
 					if(ZZ < r22 + world.rand.nextInt(r22 / 2)) {
 						pos.setPos(X, Y, Z);						
-						final Block block =world.getBlockState(pos).getBlock();
+						Block block =world.getBlockState(pos).getBlock();
 						if(block.getExplosionResistance(null) > 0.1F) continue;
 						if(block != Blocks.BEDROCK && world.getBlockState(pos).getBlock() != ModBlocks.statue_elb
 													&& world.getBlockState(pos).getBlock() != ModBlocks.statue_elb_g
@@ -712,7 +714,7 @@ public class ExplosionChaos {
 	}
 
 	// Drillgon200: This method name irks me.
-	public static void tauMeSinPi(final World world, final double x, final double y, final double z, final int count, final Entity shooter, final EntityGrenadeTau tau) {
+	public static void tauMeSinPi(World world, double x, double y, double z, int count, Entity shooter, EntityGrenadeTau tau) {
 
 		double d1 = 0;
 		double d2 = 0;
@@ -757,7 +759,7 @@ public class ExplosionChaos {
 	}
 
 	// Drillgon200: You know what? I'm changing this one.
-	public static void zomg(final World world, final double x, final double y, final double z, final int count, final Entity shooter, final EntityGrenadeZOMG zomg) {
+	public static void zomg(World world, double x, double y, double z, int count, Entity shooter, EntityGrenadeZOMG zomg) {
 
 		double d1 = 0;
 		double d2 = 0;
@@ -781,7 +783,7 @@ public class ExplosionChaos {
 				d3 *= -1;
 			}
 
-			final EntityRainbow entityZomg = new EntityRainbow(world, (EntityPlayer) shooter, 1F, 10000, 100000, zomg);
+			EntityRainbow entityZomg = new EntityRainbow(world, (EntityPlayer) shooter, 1F, 10000, 100000, zomg);
 
 			entityZomg.motionX = d1;// * 5;
 			entityZomg.motionY = d2;// * 5;
@@ -793,13 +795,13 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void spawnVolley(final World world, final double x, final double y, final double z, final int count, final double speed) {
+	public static void spawnVolley(World world, double x, double y, double z, int count, double speed) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
 		for(int i = 0; i < count; i++) {
 
-			final EntityModFX fx = new EntityOrangeFX(world, x, y, z, 0.0, 0.0, 0.0);
+			EntityModFX fx = new EntityOrangeFX(world, x, y, z, 0.0, 0.0, 0.0);
 
 			fx.motionX = rand.nextGaussian() * speed;
 			fx.motionZ = rand.nextGaussian() * speed;
@@ -810,29 +812,29 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void floater(final World world, final BlockPos pos, final int radi, final int height) {
+	public static void floater(World world, BlockPos pos, int radi, int height) {
 		floater(world, pos.getX(), pos.getY(), pos.getZ(), radi, height);
 	}
 
-	public static void floater(final World world, final int x, final int y, final int z, final int radi, final int height) {
+	public static void floater(World world, int x, int y, int z, int radi, int height) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		IBlockState save;
 
-		final int r = radi;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		int r = radi;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for(int xx = -r; xx < r; xx++) {
-			final int X = xx + x;
-			final int XX = xx * xx;
+			int X = xx + x;
+			int XX = xx * xx;
 			for(int yy = -r; yy < r; yy++) {
-				final int Y = yy + y;
-				final int YY = XX + yy * yy;
+				int Y = yy + y;
+				int YY = XX + yy * yy;
 				for(int zz = -r; zz < r; zz++) {
-					final int Z = zz + z;
-					final int ZZ = YY + zz * zz;
+					int Z = zz + z;
+					int ZZ = YY + zz * zz;
 					if(ZZ < r22) {
 						pos.setPos(X, Y, Z);
 						save = world.getBlockState(pos);
@@ -847,33 +849,33 @@ public class ExplosionChaos {
 
 	}
 
-	public static void move(final World world, final BlockPos pos, final int radius, final int a, final int b, final int c) {
+	public static void move(World world, BlockPos pos, int radius, int a, int b, int c) {
 		move(world, pos.getX(), pos.getY(), pos.getZ(), radius, a, b, c);
 	}
 
-	public static void move(final World world, final int x, final int y, final int z, int radius, final int a, final int b, final int c) {
-		final float f = radius;
-		final int i;
-		final int j;
-		final int k;
+	public static void move(World world, int x, int y, int z, int radius, int a, int b, int c) {
+		float f = radius;
+		int i;
+		int j;
+		int k;
 		double d5;
 		double d6;
 		double d7;
-		final double wat = radius;
+		double wat = radius;
 		int rand = 0;
 
 		radius *= 2.0F;
 		i = MathHelper.floor(x - wat - 1.0D);
 		j = MathHelper.floor(x + wat + 1.0D);
 		k = MathHelper.floor(y - wat - 1.0D);
-		final int i2 = MathHelper.floor(y + wat + 1.0D);
-		final int l = MathHelper.floor(z - wat - 1.0D);
-		final int j2 = MathHelper.floor(z + wat + 1.0D);
-		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
+		int i2 = MathHelper.floor(y + wat + 1.0D);
+		int l = MathHelper.floor(z - wat - 1.0D);
+		int j2 = MathHelper.floor(z + wat + 1.0D);
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
 
 		for(int i1 = 0; i1 < list.size(); ++i1) {
-			final Entity entity = list.get(i1);
-			final double d4 = entity.getDistance(x, y, z) / radius;
+			Entity entity = (Entity) list.get(i1);
+			double d4 = entity.getDistance(x, y, z) / radius;
 
 			if(d4 <= 1.0D) {
 				d5 = entity.posX - x;
@@ -882,17 +884,17 @@ public class ExplosionChaos {
 				if(entity instanceof EntityLiving && !(entity instanceof EntitySheep)) {
 					rand = random.nextInt(2);
 					if(rand == 0) {
-						entity.setCustomNameTag("Dinnerbone");
+						((EntityLiving) entity).setCustomNameTag("Dinnerbone");
 					} else {
-						entity.setCustomNameTag("Grumm");
+						((EntityLiving) entity).setCustomNameTag("Grumm");
 					}
 				}
 
 				if(entity instanceof EntitySheep) {
-					entity.setCustomNameTag("jeb_");
+					((EntityLiving) entity).setCustomNameTag("jeb_");
 				}
 
-				final double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
+				double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
 				if(d9 < wat) {
 					entity.setPosition(entity.posX += a, entity.posY += b, entity.posZ += c);
 				}
@@ -902,20 +904,20 @@ public class ExplosionChaos {
 		radius = (int) f;
 	}
 
-	public static void levelDown(final World world, final int x, final int y, final int z, final int radius) {
+	public static void levelDown(World world, int x, int y, int z, int radius) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		if(!world.isRemote)
 			for(int i = x - radius; i <= x + radius; i++)
 				for(int j = z - radius; j <= z + radius; j++) {
 
-					final IBlockState b = world.getBlockState(pos.setPos(i, y, j));
-					final float k = b.getBlockHardness(world, pos.setPos(i, y, j));
+					IBlockState b = world.getBlockState(pos.setPos(i, y, j));
+					float k = b.getBlockHardness(world, pos.setPos(i, y, j));
 					if(k < 6000 && k > 0 && b.getBlock() != Blocks.AIR) {
 
-						final EntityRubble rubble = new EntityRubble(world);
+						EntityRubble rubble = new EntityRubble(world);
 						rubble.posX = i + 0.5F;
 						rubble.posY = y;
 						rubble.posZ = j + 0.5F;
@@ -930,13 +932,13 @@ public class ExplosionChaos {
 				}
 	}
 
-	public static void decontaminate(final World world, final BlockPos pos) {
+	public static void decontaminate(World world, BlockPos pos) {
 		// Bridged
 		// if (!world.isRemote) {
 
-		final Random random = new Random();
-		final IBlockState b = world.getBlockState(pos);
-		final Block bblock = b.getBlock();
+		Random random = new Random();
+		IBlockState b = world.getBlockState(pos);
+		Block bblock = b.getBlock();
 
 		if(bblock == ModBlocks.waste_earth && random.nextInt(3) != 0) {
 			world.setBlockState(pos, Blocks.GRASS.getDefaultState());
@@ -1036,23 +1038,23 @@ public class ExplosionChaos {
 
 	}
 	
-	public static void hardenVirus(final World world, final int x, final int y, final int z, final int bombStartStrength) {
+	public static void hardenVirus(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		final int r = bombStartStrength;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		int r = bombStartStrength;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for (int xx = -r; xx < r; xx++) {
-			final int X = xx + x;
-			final int XX = xx * xx;
+			int X = xx + x;
+			int XX = xx * xx;
 			for (int yy = -r; yy < r; yy++) {
-				final int Y = yy + y;
-				final int YY = XX + yy * yy;
+				int Y = yy + y;
+				int YY = XX + yy * yy;
 				for (int zz = -r; zz < r; zz++) {
-					final int Z = zz + z;
-					final int ZZ = YY + zz * zz;
+					int Z = zz + z;
+					int ZZ = YY + zz * zz;
 					if (ZZ < r22) {
 						if (world.getBlockState(pos.setPos(X, Y, Z)).getBlock() == ModBlocks.crystal_virus)
 							world.setBlockState(pos.setPos(X, Y, Z), ModBlocks.crystal_hardened.getDefaultState());
@@ -1062,23 +1064,23 @@ public class ExplosionChaos {
 		}
 	}
 
-	public static void spreadVirus(final World world, final int x, final int y, final int z, final int bombStartStrength) {
+	public static void spreadVirus(World world, int x, int y, int z, int bombStartStrength) {
 		if(!CompatibilityConfig.isWarDim(world)){
 			return;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		final int r = bombStartStrength;
-		final int r2 = r * r;
-		final int r22 = r2 / 2;
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		int r = bombStartStrength;
+		int r2 = r * r;
+		int r22 = r2 / 2;
 		for (int xx = -r; xx < r; xx++) {
-			final int X = xx + x;
-			final int XX = xx * xx;
+			int X = xx + x;
+			int XX = xx * xx;
 			for (int yy = -r; yy < r; yy++) {
-				final int Y = yy + y;
-				final int YY = XX + yy * yy;
+				int Y = yy + y;
+				int YY = XX + yy * yy;
 				for (int zz = -r; zz < r; zz++) {
-					final int Z = zz + z;
-					final int ZZ = YY + zz * zz;
+					int Z = zz + z;
+					int ZZ = YY + zz * zz;
 					if (ZZ < r22) {
 						if (rand.nextInt(15) == 0 && world.getBlockState(pos.setPos(X, Y, Z)).getBlock() != Blocks.AIR)
 							world.setBlockState(pos.setPos(X, Y, Z), ModBlocks.cheater_virus_seed.getDefaultState());

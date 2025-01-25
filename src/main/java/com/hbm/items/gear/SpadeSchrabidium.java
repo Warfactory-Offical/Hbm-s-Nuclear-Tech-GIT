@@ -7,7 +7,7 @@ import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 
 public class SpadeSchrabidium extends ItemSpade {
-	public SpadeSchrabidium(final ToolMaterial t, final String s){
+	public SpadeSchrabidium(ToolMaterial t, String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -16,7 +16,7 @@ public class SpadeSchrabidium extends ItemSpade {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 }

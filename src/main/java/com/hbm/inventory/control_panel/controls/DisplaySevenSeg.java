@@ -20,11 +20,11 @@ import java.util.Map;
 
 public class DisplaySevenSeg extends Control {
 
-    private final float[] color = new float[] {1, 1, 1};
+    private float[] color = new float[] {1, 1, 1};
     private int digitCount = 1;
     private boolean isDecimal = false;
 
-    public DisplaySevenSeg(final String name, final ControlPanel panel) {
+    public DisplaySevenSeg(String name, ControlPanel panel) {
         super(name, panel);
         vars.put("value", new DataValueFloat(0));
         configMap.put("colorR", new DataValueFloat(color[0]));
@@ -46,16 +46,16 @@ public class DisplaySevenSeg extends Control {
 
     @Override
     public float[] getBox() {
-        final float width = getSize()[0];
-        final float length = getSize()[1];
+        float width = getSize()[0];
+        float length = getSize()[1];
         return new float[] {posX - (width*digitCount-((digitCount-1)*.125F)) + width, posY, posX + width, posY + length};
     }
 
     @Override
-    public void applyConfigs(final Map<String, DataValue> configs) {
+    public void applyConfigs(Map<String, DataValue> configs) {
         super.applyConfigs(configs);
 
-        for (final Map.Entry<String, DataValue> e : configMap.entrySet()) {
+        for (Map.Entry<String, DataValue> e : configMap.entrySet()) {
             switch (e.getKey()) {
                 case "colorR" : {
                     color[0] = e.getValue().getNumber();
@@ -97,22 +97,22 @@ public class DisplaySevenSeg extends Control {
     public void render() {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.ctrl_display_seven_seg_tex);
-        final Tessellator tes = Tessellator.instance;
+        Tessellator tes = Tessellator.instance;
 
-        final IModelCustom model = getModel();
+        IModelCustom model = getModel();
 
         int value = Math.max(0, (int) getVar("value").getNumber()); //TODO: negative config
 
-        final float lX = OpenGlHelper.lastBrightnessX;
-        final float lY = OpenGlHelper.lastBrightnessY;
+        float lX = OpenGlHelper.lastBrightnessX;
+        float lY = OpenGlHelper.lastBrightnessY;
 
-        final int base = (isDecimal)? 10 : 16;
+        int base = (isDecimal)? 10 : 16;
 
         for (int i=0; i < digitCount; i++) {
-            final byte character = chars[value % base];
+            byte character = chars[value % base];
             value /= base;
 
-            final float t_off = i * getSize()[0] - i * (i>0? .125F : 0);
+            float t_off = i * getSize()[0] - i * (i>0? .125F : 0);
 
             tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
             tes.setTranslation(posX-t_off, 0, posY);
@@ -131,8 +131,8 @@ public class DisplaySevenSeg extends Control {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 
             for (int j = 0; j < 7; j++) {
-                final boolean enabled = (character & (1 << j)) != 0;
-                final float cMul = (enabled) ? 1 : 0.1F;
+                boolean enabled = (character & (1 << j)) != 0;
+                float cMul = (enabled) ? 1 : 0.1F;
 
                 tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
                 tes.setTranslation(posX-t_off, 0, posY);
@@ -166,11 +166,11 @@ public class DisplaySevenSeg extends Control {
     }
 
     @Override
-    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
+    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
     }
 
     @Override
-    public Control newControl(final ControlPanel panel) {
+    public Control newControl(ControlPanel panel) {
         return new DisplaySevenSeg(name, panel);
     }
 }

@@ -24,7 +24,7 @@ public class SILEXRecipeHandler implements IRecipeCategory<SILEXRecipe> {
 	
 	private SILEXRecipe currentDrawHack;
 	
-	public SILEXRecipeHandler(final IGuiHelper help){
+	public SILEXRecipeHandler(IGuiHelper help){
 		background = help.createDrawable(gui_rl, 3, 3, 170, 80);
 	}
 	
@@ -49,14 +49,14 @@ public class SILEXRecipeHandler implements IRecipeCategory<SILEXRecipe> {
 	}
 	
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final SILEXRecipe recipeWrapper, final IIngredients ingredients){
+	public void setRecipe(IRecipeLayout recipeLayout, SILEXRecipe recipeWrapper, IIngredients ingredients){
 		currentDrawHack = recipeWrapper;
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 13, 31);
 		
-		final int rec_size = recipeWrapper.outputs.size();
-		final int sep = rec_size > 6 ? 4 : rec_size > 4 ? 3 : 2;
+		int rec_size = recipeWrapper.outputs.size();
+		int sep = rec_size > 6 ? 4 : rec_size > 4 ? 3 : 2;
 		for(int i = 0; i < rec_size; i ++){
 			if(i < sep) {
 				guiItemStacks.init(i+1, false, 72, 28 + i * 18 - 9 * ((Math.min(rec_size, sep) + 1) / 2));

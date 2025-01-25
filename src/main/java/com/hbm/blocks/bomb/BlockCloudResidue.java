@@ -1,26 +1,23 @@
 package com.hbm.blocks.bomb;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class BlockCloudResidue extends Block {
 
-	public BlockCloudResidue(final Material materialIn, final String s) {
+	public BlockCloudResidue(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -29,14 +26,14 @@ public class BlockCloudResidue extends Block {
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 	
-	public static boolean hasPosNeightbour(final World world, final BlockPos pos) {
-		final Block b0 = world.getBlockState(pos.add(1, 0, 0)).getBlock();
-		final Block b1 = world.getBlockState(pos.add(0, 1, 0)).getBlock();
-		final Block b2 = world.getBlockState(pos.add(0, 0, 1)).getBlock();
-		final Block b3 = world.getBlockState(pos.add(-1, 0, 0)).getBlock();
-		final Block b4 = world.getBlockState(pos.add(0, -1, 0)).getBlock();
-		final Block b5 = world.getBlockState(pos.add(0, 0, -1)).getBlock();
-		final boolean b = b0.isNormalCube(world.getBlockState(pos.add(1, 0, 0)), world, pos)
+	public static boolean hasPosNeightbour(World world, BlockPos pos) {
+		Block b0 = world.getBlockState(pos.add(1, 0, 0)).getBlock();
+		Block b1 = world.getBlockState(pos.add(0, 1, 0)).getBlock();
+		Block b2 = world.getBlockState(pos.add(0, 0, 1)).getBlock();
+		Block b3 = world.getBlockState(pos.add(-1, 0, 0)).getBlock();
+		Block b4 = world.getBlockState(pos.add(0, -1, 0)).getBlock();
+		Block b5 = world.getBlockState(pos.add(0, 0, -1)).getBlock();
+		boolean b = b0.isNormalCube(world.getBlockState(pos.add(1, 0, 0)), world, pos)
 				|| b1.isNormalCube(world.getBlockState(pos.add(0, 1, 0)), world, pos)
 				|| b2.isNormalCube(world.getBlockState(pos.add(0, 0, 1)), world, pos)
 				|| b3.isNormalCube(world.getBlockState(pos.add(-1, 0, 0)), world, pos)
@@ -46,12 +43,12 @@ public class BlockCloudResidue extends Block {
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World worldIn, final BlockPos pos) {
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
 		return new AxisAlignedBB(pos, pos);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(final IBlockState blockState, final IBlockAccess worldIn, final BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -61,28 +58,28 @@ public class BlockCloudResidue extends Block {
 	}
 
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean canPlaceBlockAt(final World worldIn, final BlockPos pos) {
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 		return hasPosNeightbour(worldIn, pos);
 	}
 
 	@Override
-	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		if (!BlockCloudResidue.hasPosNeightbour(world, pos) && !world.isRemote) {
 			world.setBlockToAir(pos);
 		}
 	}
 
 	@Override
-	public MapColor getMapColor(final IBlockState state, final IBlockAccess worldIn, final BlockPos pos) {
+	public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		return MapColor.RED;
 	}
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		if(rand.nextInt(25) == 1){
 			return ModItems.powder_cloud;
 		}

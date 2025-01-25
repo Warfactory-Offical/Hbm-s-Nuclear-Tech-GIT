@@ -4,7 +4,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.BossSpawnHandler;
 import com.hbm.tileentity.TileEntityProxyInventory;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKRod;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -18,13 +17,13 @@ public class RBMKRod extends RBMKBase {
 
 	public boolean moderated = false;
 	
-	public RBMKRod(final boolean moderated, final String s, final String c) {
+	public RBMKRod(boolean moderated, String s, String c) {
 		super(s, c);
 		this.moderated = moderated;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		
 		if(meta >= offset)
 			return new TileEntityRBMKRod();
@@ -36,13 +35,13 @@ public class RBMKRod extends RBMKBase {
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		BossSpawnHandler.markFBI(playerIn);
 		return openInv(worldIn, pos.getX(), pos.getY(), pos.getZ(), playerIn, ModBlocks.guiID_rbmk_rod, hand);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	

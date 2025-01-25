@@ -13,7 +13,7 @@ public class Gun5mmFactory {
 
 public static GunConfiguration getMinigunConfig() {
 		
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 		
 		config.rateOfFire = 1;
 		config.roundsPerCycle = 5;
@@ -40,7 +40,7 @@ public static GunConfiguration getMinigunConfig() {
 	
 	public static GunConfiguration get53Config() {
 		
-		final GunConfiguration config = getMinigunConfig();
+		GunConfiguration config = getMinigunConfig();
 		
 		config.name = "CZ53 Personal Minigun";
 		config.manufacturer = "Rockwell International Corporation";
@@ -50,7 +50,7 @@ public static GunConfiguration getMinigunConfig() {
 	
 	public static GunConfiguration get57Config() {
 		
-		final GunConfiguration config = getMinigunConfig();
+		GunConfiguration config = getMinigunConfig();
 
 		config.durability = 15000;
 		config.name = "CZ57 Avenger Minigun";
@@ -61,7 +61,7 @@ public static GunConfiguration getMinigunConfig() {
 	
 	public static GunConfiguration getLacunaeConfig() {
 		
-		final GunConfiguration config = getMinigunConfig();
+		GunConfiguration config = getMinigunConfig();
 
 		config.durability = 25000;
 		config.name = "Auntie Lacunae";
@@ -80,7 +80,7 @@ public static GunConfiguration getMinigunConfig() {
 	static float inaccuracy = 10;
 	public static BulletConfiguration get5mmConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_5mm;
 		bullet.spread *= inaccuracy;
@@ -92,7 +92,7 @@ public static GunConfiguration getMinigunConfig() {
 	
 	public static BulletConfiguration get5mmExplosiveConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_5mm_explosive;
 		bullet.spread *= inaccuracy;
@@ -106,7 +106,7 @@ public static GunConfiguration getMinigunConfig() {
 	
 	public static BulletConfiguration get5mmDUConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_5mm_du;
 		bullet.spread *= inaccuracy;
@@ -120,7 +120,7 @@ public static GunConfiguration getMinigunConfig() {
 	
 	public static BulletConfiguration get5mmStarConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_5mm_star;
 		bullet.spread *= inaccuracy;

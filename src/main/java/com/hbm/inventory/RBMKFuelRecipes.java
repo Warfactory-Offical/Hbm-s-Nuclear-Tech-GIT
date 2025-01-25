@@ -1,16 +1,12 @@
 package com.hbm.inventory;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.LinkedHashMap;
-import java.util.Random;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemRBMKRod;
-import com.hbm.inventory.RecipesCommon.ComparableStack;
-
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.LinkedHashMap;
+import java.util.Random;
 
 public class RBMKFuelRecipes {
 	public static Random rand = new Random();
@@ -51,7 +47,7 @@ public class RBMKFuelRecipes {
 		addRod(ModItems.rbmk_fuel_drx);
 	}
 
-	public static void addRod(final ItemRBMKRod rod){
+	public static void addRod(ItemRBMKRod rod){
 		for(int e = 0; e<5; e++){
 			addRecipe(makeRBMKRod(rod, e, false), makeRBMKPellet(makeRBMKRod(rod, e, false)));
 		}
@@ -60,12 +56,12 @@ public class RBMKFuelRecipes {
 		}
 	}
 
-	public static void addRecipe(final ItemStack input, final ItemStack output){
+	public static void addRecipe(ItemStack input, ItemStack output){
 		recipes.put(input, output);
 	}
 
-	public static ItemStack makeRBMKRod(final ItemRBMKRod rod, final int enrichment, final boolean xenon){
-		final ItemStack fuelRod = ItemStackUtil.itemStackFrom(rod);
+	public static ItemStack makeRBMKRod(ItemRBMKRod rod, int enrichment, boolean xenon){
+		ItemStack fuelRod = new ItemStack(rod);
 		ItemRBMKRod.setCoreHeat(fuelRod, 20D+rand.nextDouble()*29.9D);
 		ItemRBMKRod.setHullHeat(fuelRod, 20D+rand.nextDouble()*29.9D);
 		ItemRBMKRod.setPoison(fuelRod, xenon ? 50D+rand.nextDouble()*50D : rand.nextDouble()*49.9D);
@@ -73,10 +69,10 @@ public class RBMKFuelRecipes {
 		return fuelRod;
 	}
 
-	public static ItemStack makeRBMKPellet(final ItemStack rod){
-		final ItemStack result = ItemStackUtil.itemStackFrom(((ItemRBMKRod)rod.getItem()).pellet, 8);
-		final int enrichment = 4 - MathHelper.clamp((int)Math.ceil(ItemRBMKRod.getEnrichment(rod) * 5 - 1), 0, 4);
-		final int meta = enrichment + (ItemRBMKRod.getPoisonLevel(rod) >= 0.5D ? 5 : 0);
+	public static ItemStack makeRBMKPellet(ItemStack rod){
+		ItemStack result = new ItemStack(((ItemRBMKRod)rod.getItem()).pellet, 8);
+		int enrichment = 4 - MathHelper.clamp((int)Math.ceil(ItemRBMKRod.getEnrichment(rod) * 5 - 1), 0, 4);
+		int meta = enrichment + (ItemRBMKRod.getPoisonLevel(rod) >= 0.5D ? 5 : 0);
 		result.setItemDamage(meta);
 		return result;
 	}

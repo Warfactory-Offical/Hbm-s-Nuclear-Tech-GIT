@@ -1,16 +1,14 @@
 package com.hbm.render.entity.projectile;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityRBMKDebris;
 import com.hbm.entity.projectile.EntityRBMKDebris.DebrisType;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ResourceManager;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderRBMKDebris extends Render<EntityRBMKDebris> {
 
@@ -23,21 +21,21 @@ public class RenderRBMKDebris extends Render<EntityRBMKDebris> {
 	private static final ResourceLocation tex_blank = new ResourceLocation(RefStrings.MODID + ":textures/blocks/rbmk/rbmk_blank.png");
 	private static final ResourceLocation tex_graphite = new ResourceLocation(RefStrings.MODID + ":textures/blocks/block_graphite.png");
 
-	protected RenderRBMKDebris(final RenderManager renderManager){
+	protected RenderRBMKDebris(RenderManager renderManager){
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(final EntityRBMKDebris entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks){
+	public void doRender(EntityRBMKDebris entity, double x, double y, double z, float entityYaw, float partialTicks){
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y + 0.125D, z);
 		
-		final EntityRBMKDebris debris = entity;
+		EntityRBMKDebris debris = (EntityRBMKDebris)entity;
 
 		GL11.glRotatef(debris.getEntityId() % 360, 0, 1, 0); //rotate based on entity ID to add unique randomness
 		GL11.glRotatef(debris.lastRot + (debris.rot - debris.lastRot) * partialTicks, 1, 1, 1);
 		
-		final DebrisType type = debris.getType();
+		DebrisType type = debris.getType();
 		
 		switch(type) {
 		case BLANK: bindTexture(tex_blank); ResourceManager.deb_blank.renderAll(); break;
@@ -53,7 +51,7 @@ public class RenderRBMKDebris extends Render<EntityRBMKDebris> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityRBMKDebris entity){
+	protected ResourceLocation getEntityTexture(EntityRBMKDebris entity){
 		return tex_base;
 	}
 

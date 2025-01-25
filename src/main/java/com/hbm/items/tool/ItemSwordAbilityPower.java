@@ -1,6 +1,6 @@
 package com.hbm.items.tool;
 
-import api.hbm.energy.IBatteryItem;
+import api.hbm.energymk2.IBatteryItem;
 import com.hbm.lib.Library;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
 	public long chargeRate;
 	public long consumption;
 	
-	public ItemSwordAbilityPower(final float damage, final double attackSpeed, final double movement, final ToolMaterial material, final long maxPower, final long chargeRate, final long consumption, final String s) {
+	public ItemSwordAbilityPower(float damage, double attackSpeed, double movement, ToolMaterial material, long maxPower, long chargeRate, long consumption, String s) {
 		super(damage, attackSpeed, movement, material, s);
 		this.maxPower = maxPower;
 		this.chargeRate = chargeRate;
@@ -25,12 +25,12 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
 		this.setMaxDamage(1);
 	}
 
-    public ItemSwordAbilityPower(final float damage, final double movement, final ToolMaterial material, final long maxPower, final long chargeRate, final long consumption, final String s) {
+    public ItemSwordAbilityPower(float damage, double movement, ToolMaterial material, long maxPower, long chargeRate, long consumption, String s) {
         this(damage, -2.4, movement, material, maxPower, chargeRate, consumption, s);
     }
 	
 	@Override
-	public void chargeBattery(final ItemStack stack, final long i) {
+	public void chargeBattery(ItemStack stack, long i) {
     	if(stack.getItem() instanceof ItemSwordAbilityPower) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", stack.getTagCompound().getLong("charge") + i);
@@ -42,7 +42,7 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
     }
 
 	@Override
-    public void setCharge(final ItemStack stack, final long i) {
+    public void setCharge(ItemStack stack, long i) {
     	if(stack.getItem() instanceof ItemSwordAbilityPower) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", i);
@@ -54,7 +54,7 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
     }
 
 	@Override
-    public void dischargeBattery(final ItemStack stack, final long i) {
+    public void dischargeBattery(ItemStack stack, long i) {
     	if(stack.getItem() instanceof ItemSwordAbilityPower) {
     		if(stack.hasTagCompound()) {
     			stack.getTagCompound().setLong("charge", stack.getTagCompound().getLong("charge") - i);
@@ -69,7 +69,7 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
     }
 
 	@Override
-    public long getCharge(final ItemStack stack) {
+    public long getCharge(ItemStack stack) {
     	if(stack.getItem() instanceof ItemSwordAbilityPower) {
     		if(stack.hasTagCompound()) {
     			return stack.getTagCompound().getLong("charge");
@@ -88,8 +88,8 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
 		return 0;
 	}
 
-    public static String getColor(final long a, final long b){
-        final float fraction = 100F * a/b;
+    public static String getColor(long a, long b){
+        float fraction = 100F * a/b;
         if(fraction > 75)
             return "§a";
         if(fraction > 25)
@@ -99,24 +99,24 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
-        final long power = getCharge(stack);
+    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+        long power = getCharge(stack);
         list.add("Charge: " + getColor(power, maxPower) + Library.getShortNumber(power) + " §2/ " + Library.getShortNumber(maxPower));
         super.addInformation(stack, worldIn, list, flagIn);
     }
     
     @Override
-    public boolean showDurabilityBar(final ItemStack stack) {
+    public boolean showDurabilityBar(ItemStack stack) {
     	return getCharge(stack) < maxPower;
     }
     
     @Override
-    public double getDurabilityForDisplay(final ItemStack stack) {
+    public double getDurabilityForDisplay(ItemStack stack) {
     	return 1 - (double)getCharge(stack) / (double)maxPower;
     }
     
     @Override
-    protected boolean canOperate(final ItemStack stack) {
+    protected boolean canOperate(ItemStack stack) {
     	return getCharge(stack) >= this.consumption;
     }
     
@@ -131,7 +131,7 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
     }
 
     @Override
-    public void setDamage(final ItemStack stack, final int damage) {
+    public void setDamage(ItemStack stack, int damage) {
     	this.dischargeBattery(stack, damage * consumption);
     }
     

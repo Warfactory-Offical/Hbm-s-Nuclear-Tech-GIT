@@ -18,22 +18,22 @@ public class Vec4s extends FuncRelational {
         w = 0;
     }
 
-    public Vec4s(final int x, final int y, final int z, final int w) {
+    public Vec4s(int x, int y, int z, int w) {
         this((short) x, (short) y, (short) z, (short) w);
     }
 
-    public Vec4s(final short x, final short y, final short z, final short w) {
+    public Vec4s(short x, short y, short z, short w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Vec4s set(final int x, final int y, final int z, final int w) {
+    public Vec4s set(int x, int y, int z, int w) {
         return set((short) x, (short) y, (short) z, (short) w);
     }
 
-    public Vec4s set(final short x, final short y, final short z, final short w) {
+    public Vec4s set(short x, short y, short z, short w) {
         this.x = x;
         this.y = y;
         this.z = z;

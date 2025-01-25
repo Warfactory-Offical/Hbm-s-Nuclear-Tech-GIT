@@ -29,7 +29,7 @@ public class ItemFoodHazard extends ItemFood implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public ItemFoodHazard(final int amount, final float saturation, final boolean isWolfFood, final String s){
+	public ItemFoodHazard(int amount, float saturation, boolean isWolfFood, String s){
 		super(amount, saturation, isWolfFood);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -45,13 +45,13 @@ public class ItemFoodHazard extends ItemFood implements IItemHazard {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected){
+	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected){
 		if(entity instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase) entity, stack.getCount(), itemSlot, isSelected, ((EntityLivingBase)entity).getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
 		if(this == ModItems.bomb_waffle) {
             list.add("60s of Insanity");
             list.add("§4[DEMON CORE]§r");
@@ -83,17 +83,17 @@ public class ItemFoodHazard extends ItemFood implements IItemHazard {
     	}
 
 		this.module.addInformation(stack, list, flagIn);
-		//super.addInformation(stack, world, list, flagIn);
+		super.addInformation(stack, world, list, flagIn);
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(final EntityItem item){
+	public boolean onEntityItemUpdate(EntityItem item){
 		super.onEntityItemUpdate(item);
 		return super.onEntityItemUpdate(item);
 	}
 
 	@Override
-	protected void onFoodEaten(final ItemStack stack, final World worldIn, final EntityPlayer player) {
+	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
 		if(stack.getItem() == ModItems.bomb_waffle){
 			player.setFire(60 * 20);
 			player.motionY = -2;
@@ -175,7 +175,7 @@ public class ItemFoodHazard extends ItemFood implements IItemHazard {
 			player.attackEntityFrom(ModDamageSource.lead, 10F);
 		}
 		if(stack.getItem() == ModItems.apple_lead2){
-			player.addPotionEffect(new PotionEffect(HbmPotion.radx, 60 * 20, 40));
+			player.addPotionEffect(new PotionEffect(HbmPotion.radx, 1 * 60 * 20, 40));
 			player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 15 * 60 * 20, 2));
 			player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 2 * 60 * 20, 0));
 			player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 30 * 20, 0));
@@ -185,7 +185,7 @@ public class ItemFoodHazard extends ItemFood implements IItemHazard {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		if(stack.getItem() == ModItems.apple_schrabidium || stack.getItem() == ModItems.apple_lead){
     		return EnumRarity.UNCOMMON;
     	}
@@ -203,7 +203,7 @@ public class ItemFoodHazard extends ItemFood implements IItemHazard {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(final ItemStack stack) {
+	public boolean hasEffect(ItemStack stack) {
 		return stack.getItem() == ModItems.apple_schrabidium2 || stack.getItem() == ModItems.apple_lead2;
 	}
 }

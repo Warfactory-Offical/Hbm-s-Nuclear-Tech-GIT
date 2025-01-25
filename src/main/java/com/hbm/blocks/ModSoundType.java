@@ -5,7 +5,7 @@ import net.minecraft.util.SoundEvent;
 
 public class ModSoundType extends SoundType {
 
-	public ModSoundType(final SoundEvent sound, final float volumeIn, final float pitchIn){
+	public ModSoundType(SoundEvent sound, float volumeIn, float pitchIn){
 		super(volumeIn, pitchIn, sound, sound, sound, sound, sound);
 	}
 	

@@ -1,19 +1,5 @@
 package com.hbm.hfr.render.loader;
 
-import com.hbm.render.amlfrom1710.IModelCustom;
-import com.hbm.render.amlfrom1710.ModelFormatException;
-import com.hbm.render.amlfrom1710.TextureCoordinate;
-import com.hbm.render.amlfrom1710.Vertex;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,16 +8,32 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.lwjgl.opengl.GL11;
+
+import com.hbm.render.amlfrom1710.IModelCustom;
+import com.hbm.render.amlfrom1710.ModelFormatException;
+import com.hbm.render.amlfrom1710.TextureCoordinate;
+import com.hbm.render.amlfrom1710.Vertex;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 public class HFRWavefrontObject implements IModelCustom
 {
-    private static final Pattern vertexPattern = Pattern.compile("(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
-    private static final Pattern vertexNormalPattern = Pattern.compile("(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
-    private static final Pattern textureCoordinatePattern = Pattern.compile("(vt( (\\-){0,1}\\d+\\.\\d+){2,3} *\\n)|(vt( (\\-){0,1}\\d+(\\.\\d+)?){2,3} *$)");
-    private static final Pattern face_V_VT_VN_Pattern = Pattern.compile("(f( \\d+/\\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+/\\d+){3,4} *$)");
-    private static final Pattern face_V_VT_Pattern = Pattern.compile("(f( \\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+){3,4} *$)");
-    private static final Pattern face_V_VN_Pattern = Pattern.compile("(f( \\d+//\\d+){3,4} *\\n)|(f( \\d+//\\d+){3,4} *$)");
-    private static final Pattern face_V_Pattern = Pattern.compile("(f( \\d+){3,4} *\\n)|(f( \\d+){3,4} *$)");
-    private static final Pattern groupObjectPattern = Pattern.compile("([go]( [\\w\\d\\.]+) *\\n)|([go]( [\\w\\d\\.]+) *$)");
+    private static Pattern vertexPattern = Pattern.compile("(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
+    private static Pattern vertexNormalPattern = Pattern.compile("(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
+    private static Pattern textureCoordinatePattern = Pattern.compile("(vt( (\\-){0,1}\\d+\\.\\d+){2,3} *\\n)|(vt( (\\-){0,1}\\d+(\\.\\d+)?){2,3} *$)");
+    private static Pattern face_V_VT_VN_Pattern = Pattern.compile("(f( \\d+/\\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+/\\d+){3,4} *$)");
+    private static Pattern face_V_VT_Pattern = Pattern.compile("(f( \\d+/\\d+){3,4} *\\n)|(f( \\d+/\\d+){3,4} *$)");
+    private static Pattern face_V_VN_Pattern = Pattern.compile("(f( \\d+//\\d+){3,4} *\\n)|(f( \\d+//\\d+){3,4} *$)");
+    private static Pattern face_V_Pattern = Pattern.compile("(f( \\d+){3,4} *\\n)|(f( \\d+){3,4} *$)");
+    private static Pattern groupObjectPattern = Pattern.compile("([go]( [\\w\\d\\.]+) *\\n)|([go]( [\\w\\d\\.]+) *$)");
 
     private static Matcher vertexMatcher, vertexNormalMatcher, textureCoordinateMatcher;
     private static Matcher face_V_VT_VN_Matcher, face_V_VT_Matcher, face_V_VN_Matcher, face_V_Matcher;
@@ -42,30 +44,30 @@ public class HFRWavefrontObject implements IModelCustom
     public ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<TextureCoordinate>();
     public ArrayList<S_GroupObject> groupObjects = new ArrayList<S_GroupObject>();
     private S_GroupObject currentGroupObject;
-    private final String fileName;
+    private String fileName;
 
-    public HFRWavefrontObject(final ResourceLocation resource) throws ModelFormatException
+    public HFRWavefrontObject(ResourceLocation resource) throws ModelFormatException
     {
         this.fileName = resource.toString();
 
         try
         {
-            final IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resource);
+            IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resource);
             loadObjModel(res.getInputStream());
         }
-        catch (final IOException e)
+        catch (IOException e)
         {
             throw new ModelFormatException("IO Exception reading model format", e);
         }
     }
 
-    public HFRWavefrontObject(final String filename, final InputStream inputStream) throws ModelFormatException
+    public HFRWavefrontObject(String filename, InputStream inputStream) throws ModelFormatException
     {
         this.fileName = filename;
         loadObjModel(inputStream);
     }
 
-    private void loadObjModel(final InputStream inputStream) throws ModelFormatException
+    private void loadObjModel(InputStream inputStream) throws ModelFormatException
     {
         BufferedReader reader = null;
 
@@ -87,7 +89,7 @@ public class HFRWavefrontObject implements IModelCustom
                 }
                 else if (currentLine.startsWith("v "))
                 {
-                    final Vertex vertex = parseVertex(currentLine, lineCount);
+                    Vertex vertex = parseVertex(currentLine, lineCount);
                     if (vertex != null)
                     {
                         vertices.add(vertex);
@@ -95,7 +97,7 @@ public class HFRWavefrontObject implements IModelCustom
                 }
                 else if (currentLine.startsWith("vn "))
                 {
-                    final Vertex vertex = parseVertexNormal(currentLine, lineCount);
+                    Vertex vertex = parseVertexNormal(currentLine, lineCount);
                     if (vertex != null)
                     {
                         vertexNormals.add(vertex);
@@ -103,7 +105,7 @@ public class HFRWavefrontObject implements IModelCustom
                 }
                 else if (currentLine.startsWith("vt "))
                 {
-                    final TextureCoordinate textureCoordinate = parseTextureCoordinate(currentLine, lineCount);
+                    TextureCoordinate textureCoordinate = parseTextureCoordinate(currentLine, lineCount);
                     if (textureCoordinate != null)
                     {
                         textureCoordinates.add(textureCoordinate);
@@ -117,7 +119,7 @@ public class HFRWavefrontObject implements IModelCustom
                         currentGroupObject = new S_GroupObject("Default");
                     }
 
-                    final S_Face face = parseFace(currentLine, lineCount);
+                    S_Face face = parseFace(currentLine, lineCount);
 
                     if (face != null)
                     {
@@ -126,7 +128,7 @@ public class HFRWavefrontObject implements IModelCustom
                 }
                 else if (currentLine.startsWith("g ") | currentLine.startsWith("o "))
                 {
-                	final S_GroupObject group = parseGroupObject(currentLine, lineCount);
+                	S_GroupObject group = parseGroupObject(currentLine, lineCount);
 
                     if (group != null)
                     {
@@ -142,7 +144,7 @@ public class HFRWavefrontObject implements IModelCustom
 
             groupObjects.add(currentGroupObject);
         }
-        catch (final IOException e)
+        catch (IOException e)
         {
             throw new ModelFormatException("IO Exception reading model format", e);
         }
@@ -152,7 +154,7 @@ public class HFRWavefrontObject implements IModelCustom
             {
                 reader.close();
             }
-            catch (final IOException e)
+            catch (IOException e)
             {
                 // hush
             }
@@ -161,7 +163,7 @@ public class HFRWavefrontObject implements IModelCustom
             {
                 inputStream.close();
             }
-            catch (final IOException e)
+            catch (IOException e)
             {
                 // hush
             }
@@ -172,8 +174,8 @@ public class HFRWavefrontObject implements IModelCustom
     @SideOnly(Side.CLIENT)
     public void renderAll()
     {
-        final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder buf = tessellator.getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buf = tessellator.getBuffer();
 
         if (currentGroupObject != null)
         {
@@ -189,9 +191,9 @@ public class HFRWavefrontObject implements IModelCustom
     }
 
     @SideOnly(Side.CLIENT)
-    public void tessellateAll(final Tessellator tessellator)
+    public void tessellateAll(Tessellator tessellator)
     {
-        for (final S_GroupObject groupObject : groupObjects)
+        for (S_GroupObject groupObject : groupObjects)
         {
             groupObject.render(tessellator);
         }
@@ -199,11 +201,11 @@ public class HFRWavefrontObject implements IModelCustom
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderOnly(final String... groupNames)
+    public void renderOnly(String... groupNames)
     {
-        for (final S_GroupObject groupObject : groupObjects)
+        for (S_GroupObject groupObject : groupObjects)
         {
-            for (final String groupName : groupNames)
+            for (String groupName : groupNames)
             {
                 if (groupName.equalsIgnoreCase(groupObject.name))
                 {
@@ -215,10 +217,10 @@ public class HFRWavefrontObject implements IModelCustom
     
 
     @SideOnly(Side.CLIENT)
-    public void tessellateOnly(final Tessellator tessellator, final String... groupNames) {
-        for (final S_GroupObject groupObject : groupObjects)
+    public void tessellateOnly(Tessellator tessellator, String... groupNames) {
+        for (S_GroupObject groupObject : groupObjects)
         {
-            for (final String groupName : groupNames)
+            for (String groupName : groupNames)
             {
                 if (groupName.equalsIgnoreCase(groupObject.name))
                 {
@@ -230,9 +232,9 @@ public class HFRWavefrontObject implements IModelCustom
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderPart(final String partName)
+    public void renderPart(String partName)
     {
-        for (final S_GroupObject groupObject : groupObjects)
+        for (S_GroupObject groupObject : groupObjects)
         {
             if (partName.equalsIgnoreCase(groupObject.name))
             {
@@ -242,8 +244,8 @@ public class HFRWavefrontObject implements IModelCustom
     }
 
     @SideOnly(Side.CLIENT)
-    public void tessellatePart(final Tessellator tessellator, final String partName) {
-        for (final S_GroupObject groupObject : groupObjects)
+    public void tessellatePart(Tessellator tessellator, String partName) {
+        for (S_GroupObject groupObject : groupObjects)
         {
             if (partName.equalsIgnoreCase(groupObject.name))
             {
@@ -254,16 +256,16 @@ public class HFRWavefrontObject implements IModelCustom
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderAllExcept(final String... excludedGroupNames)
+    public void renderAllExcept(String... excludedGroupNames)
     {
-        for (final S_GroupObject groupObject : groupObjects)
+        for (S_GroupObject groupObject : groupObjects)
         {
             boolean skipPart=false;
-            for (final String excludedGroupName : excludedGroupNames)
+            for (String excludedGroupName : excludedGroupNames)
             {
-                if (excludedGroupName.equalsIgnoreCase(groupObject.name)) {
-                    skipPart = true;
-                    break;
+                if (excludedGroupName.equalsIgnoreCase(groupObject.name))
+                {
+                    skipPart=true;
                 }
             }
             if(!skipPart)
@@ -274,17 +276,17 @@ public class HFRWavefrontObject implements IModelCustom
     }
 
     @SideOnly(Side.CLIENT)
-    public void tessellateAllExcept(final Tessellator tessellator, final String... excludedGroupNames)
+    public void tessellateAllExcept(Tessellator tessellator, String... excludedGroupNames)
     {
         boolean exclude;
-        for (final S_GroupObject groupObject : groupObjects)
+        for (S_GroupObject groupObject : groupObjects)
         {
             exclude=false;
-            for (final String excludedGroupName : excludedGroupNames)
+            for (String excludedGroupName : excludedGroupNames)
             {
-                if (excludedGroupName.equalsIgnoreCase(groupObject.name)) {
-                    exclude = true;
-                    break;
+                if (excludedGroupName.equalsIgnoreCase(groupObject.name))
+                {
+                    exclude=true;
                 }
             }
             if(!exclude)
@@ -294,14 +296,14 @@ public class HFRWavefrontObject implements IModelCustom
         }
     }
 
-    private Vertex parseVertex(String line, final int lineCount) throws ModelFormatException
+    private Vertex parseVertex(String line, int lineCount) throws ModelFormatException
     {
-        final Vertex vertex = null;
+        Vertex vertex = null;
 
         if (isValidVertexLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
-            final String[] tokens = line.split(" ");
+            String[] tokens = line.split(" ");
 
             try
             {
@@ -314,7 +316,7 @@ public class HFRWavefrontObject implements IModelCustom
                     return new Vertex(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
                 }
             }
-            catch (final NumberFormatException e)
+            catch (NumberFormatException e)
             {
                 throw new ModelFormatException(String.format("Number formatting error at line %d",lineCount), e);
             }
@@ -327,21 +329,21 @@ public class HFRWavefrontObject implements IModelCustom
         return vertex;
     }
 
-    private Vertex parseVertexNormal(String line, final int lineCount) throws ModelFormatException
+    private Vertex parseVertexNormal(String line, int lineCount) throws ModelFormatException
     {
-        final Vertex vertexNormal = null;
+        Vertex vertexNormal = null;
 
         if (isValidVertexNormalLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
-            final String[] tokens = line.split(" ");
+            String[] tokens = line.split(" ");
 
             try
             {
                 if (tokens.length == 3)
                     return new Vertex(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
             }
-            catch (final NumberFormatException e)
+            catch (NumberFormatException e)
             {
                 throw new ModelFormatException(String.format("Number formatting error at line %d",lineCount), e);
             }
@@ -354,14 +356,14 @@ public class HFRWavefrontObject implements IModelCustom
         return vertexNormal;
     }
 
-    private TextureCoordinate parseTextureCoordinate(String line, final int lineCount) throws ModelFormatException
+    private TextureCoordinate parseTextureCoordinate(String line, int lineCount) throws ModelFormatException
     {
-        final TextureCoordinate textureCoordinate = null;
+        TextureCoordinate textureCoordinate = null;
 
         if (isValidTextureCoordinateLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
-            final String[] tokens = line.split(" ");
+            String[] tokens = line.split(" ");
 
             try
             {
@@ -370,7 +372,7 @@ public class HFRWavefrontObject implements IModelCustom
                 else if (tokens.length == 3)
                     return new TextureCoordinate(Float.parseFloat(tokens[0]), 1 - Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
             }
-            catch (final NumberFormatException e)
+            catch (NumberFormatException e)
             {
                 throw new ModelFormatException(String.format("Number formatting error at line %d",lineCount), e);
             }
@@ -383,7 +385,7 @@ public class HFRWavefrontObject implements IModelCustom
         return textureCoordinate;
     }
 
-    private S_Face parseFace(final String line, final int lineCount) throws ModelFormatException
+    private S_Face parseFace(String line, int lineCount) throws ModelFormatException
     {
     	S_Face face = null;
 
@@ -391,8 +393,8 @@ public class HFRWavefrontObject implements IModelCustom
         {
             face = new S_Face();
 
-            final String trimmedLine = line.substring(line.indexOf(" ") + 1);
-            final String[] tokens = trimmedLine.split(" ");
+            String trimmedLine = line.substring(line.indexOf(" ") + 1);
+            String[] tokens = trimmedLine.split(" ");
             String[] subTokens = null;
 
             if (tokens.length == 3)
@@ -493,13 +495,13 @@ public class HFRWavefrontObject implements IModelCustom
         return face;
     }
 
-    private S_GroupObject parseGroupObject(final String line, final int lineCount) throws ModelFormatException
+    private S_GroupObject parseGroupObject(String line, int lineCount) throws ModelFormatException
     {
     	S_GroupObject group = null;
 
         if (isValidGroupObjectLine(line))
         {
-            final String trimmedLine = line.substring(line.indexOf(" ") + 1);
+            String trimmedLine = line.substring(line.indexOf(" ") + 1);
 
             if (trimmedLine.length() > 0)
             {
@@ -514,7 +516,7 @@ public class HFRWavefrontObject implements IModelCustom
         return group;
     }
 
-    private static boolean isValidVertexLine(final String line)
+    private static boolean isValidVertexLine(String line)
     {
         if (vertexMatcher != null)
         {
@@ -525,7 +527,7 @@ public class HFRWavefrontObject implements IModelCustom
         return vertexMatcher.matches();
     }
 
-    private static boolean isValidVertexNormalLine(final String line)
+    private static boolean isValidVertexNormalLine(String line)
     {
         if (vertexNormalMatcher != null)
         {
@@ -536,7 +538,7 @@ public class HFRWavefrontObject implements IModelCustom
         return vertexNormalMatcher.matches();
     }
 
-    private static boolean isValidTextureCoordinateLine(final String line)
+    private static boolean isValidTextureCoordinateLine(String line)
     {
         if (textureCoordinateMatcher != null)
         {
@@ -547,7 +549,7 @@ public class HFRWavefrontObject implements IModelCustom
         return textureCoordinateMatcher.matches();
     }
 
-    private static boolean isValidFace_V_VT_VN_Line(final String line)
+    private static boolean isValidFace_V_VT_VN_Line(String line)
     {
         if (face_V_VT_VN_Matcher != null)
         {
@@ -558,7 +560,7 @@ public class HFRWavefrontObject implements IModelCustom
         return face_V_VT_VN_Matcher.matches();
     }
 
-    private static boolean isValidFace_V_VT_Line(final String line)
+    private static boolean isValidFace_V_VT_Line(String line)
     {
         if (face_V_VT_Matcher != null)
         {
@@ -569,7 +571,7 @@ public class HFRWavefrontObject implements IModelCustom
         return face_V_VT_Matcher.matches();
     }
 
-    private static boolean isValidFace_V_VN_Line(final String line)
+    private static boolean isValidFace_V_VN_Line(String line)
     {
         if (face_V_VN_Matcher != null)
         {
@@ -580,7 +582,7 @@ public class HFRWavefrontObject implements IModelCustom
         return face_V_VN_Matcher.matches();
     }
 
-    private static boolean isValidFace_V_Line(final String line)
+    private static boolean isValidFace_V_Line(String line)
     {
         if (face_V_Matcher != null)
         {
@@ -591,12 +593,12 @@ public class HFRWavefrontObject implements IModelCustom
         return face_V_Matcher.matches();
     }
 
-    private static boolean isValidFaceLine(final String line)
+    private static boolean isValidFaceLine(String line)
     {
         return isValidFace_V_VT_VN_Line(line) || isValidFace_V_VT_Line(line) || isValidFace_V_VN_Line(line) || isValidFace_V_Line(line);
     }
 
-    private static boolean isValidGroupObjectLine(final String line)
+    private static boolean isValidGroupObjectLine(String line)
     {
         if (groupObjectMatcher != null)
         {
@@ -607,6 +609,10 @@ public class HFRWavefrontObject implements IModelCustom
         return groupObjectMatcher.matches();
     }
 
+    public WavefrontObjVBO asVBO() {
+        return new WavefrontObjVBO(this);
+    }
+
     @Override
     public String getType()
     {
@@ -615,22 +621,22 @@ public class HFRWavefrontObject implements IModelCustom
 
     //TODO implement
 	@Override
-	public void tessellateAll(final com.hbm.render.amlfrom1710.Tessellator tes){
+	public void tessellateAll(com.hbm.render.amlfrom1710.Tessellator tes){
 		throw new RuntimeException("Tessellate not supported on HFR model");
 	}
 
 	@Override
-	public void tessellatePart(final com.hbm.render.amlfrom1710.Tessellator tes, final String name){
+	public void tessellatePart(com.hbm.render.amlfrom1710.Tessellator tes, String name){
 		throw new RuntimeException("Tessellate not supported on HFR model");
 	}
 
 	@Override
-	public void tessellateOnly(final com.hbm.render.amlfrom1710.Tessellator tes, final String... names){
+	public void tessellateOnly(com.hbm.render.amlfrom1710.Tessellator tes, String... names){
 		throw new RuntimeException("Tessellate not supported on HFR model");
 	}
 
 	@Override
-	public void tessellateAllExcept(final com.hbm.render.amlfrom1710.Tessellator tes, final String... excluded){
+	public void tessellateAllExcept(com.hbm.render.amlfrom1710.Tessellator tes, String... excluded){
 		throw new RuntimeException("Tessellate not supported on HFR model");
 	}
 }

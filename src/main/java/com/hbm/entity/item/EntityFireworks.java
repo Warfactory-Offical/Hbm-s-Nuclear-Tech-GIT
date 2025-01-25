@@ -2,7 +2,6 @@ package com.hbm.entity.item;
 
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.init.SoundEvents;
@@ -17,11 +16,11 @@ public class EntityFireworks extends Entity {
 	int color;
 	int character;
 	
-	public EntityFireworks(final World worldIn) {
+	public EntityFireworks(World worldIn) {
 		super(worldIn);
 	}
 	
-	public EntityFireworks(final World world, final double x, final double y, final double z, final int color, final int character) {
+	public EntityFireworks(World world, double x, double y, double z, int color, int character) {
 		super(world);
 		this.setPositionAndRotation(x, y, z, 0.0F, 0.0F);
 		this.color = color;
@@ -43,7 +42,7 @@ public class EntityFireworks extends Entity {
 				this.world.playSound(null, posX, posY, posZ, SoundEvents.ENTITY_FIREWORK_BLAST, SoundCategory.NEUTRAL, 20, 1F + this.rand.nextFloat() * 0.2F);
 
 				this.setDead();
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "fireworks");
 				data.setInteger("color", color);
 				data.setInteger("char", character);
@@ -57,14 +56,14 @@ public class EntityFireworks extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 		this.character = compound.getInteger("char");
 		this.color = compound.getInteger("color");
 		this.ticksExisted = compound.getInteger("ticksExisted");
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setInteger("char", character);
 		compound.setInteger("color", color);
 		compound.setInteger("ticksExisted", ticksExisted);

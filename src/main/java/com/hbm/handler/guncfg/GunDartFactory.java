@@ -8,7 +8,6 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.interfaces.IBulletHurtBehavior;
 import com.hbm.items.ModItems;
-import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.items.weapon.ItemGunDart;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
@@ -25,7 +24,7 @@ public class GunDartFactory {
 
 	public static GunConfiguration getDarterConfig() {
 
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 1;
 		config.roundsPerCycle = 1;
@@ -55,7 +54,7 @@ public class GunDartFactory {
 
 	public static BulletConfiguration getGPSConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_dart;
 		bullet.velocity = 5.0F;
@@ -72,19 +71,21 @@ public class GunDartFactory {
 		bullet.bHurt = new IBulletHurtBehavior() {
 
 			@Override
-			public void behaveEntityHurt(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHurt(EntityBulletBase bullet, Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
 
 				if(hit instanceof EntityPlayer) {
 
-					if(Library.hasInventoryItem(((EntityPlayer) hit).inventory, ModItems.ingot.getItemStack(MaterialMineral.METEORITE_FORGED)))
+					if(Library.hasInventoryItem(((EntityPlayer) hit).inventory, ModItems.ingot_meteorite_forged))
 						return;
 
-					if(bullet.shooter instanceof EntityPlayer shooter) {
+					if(bullet.shooter instanceof EntityPlayer) {
 
-                        for(final EnumHand hand : EnumHand.values())
+						EntityPlayer shooter = (EntityPlayer) bullet.shooter;
+
+						for(EnumHand hand : EnumHand.values())
 							if(shooter.getHeldItem(hand) != null && shooter.getHeldItem(hand).getItem() == ModItems.gun_darter) {
 								ItemGunDart.writePlayer(shooter.getHeldItem(hand), (EntityPlayer)hit);
 								shooter.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);

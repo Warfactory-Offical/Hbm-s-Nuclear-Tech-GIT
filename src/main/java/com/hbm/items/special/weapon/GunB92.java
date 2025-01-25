@@ -1,37 +1,36 @@
 	package com.hbm.items.special.weapon;
 
-import java.util.List;
-import java.util.Random;
+    import com.google.common.collect.Multimap;
+    import com.hbm.entity.effect.EntityCloudFleijaRainbow;
+    import com.hbm.entity.logic.EntityNukeExplosionMK3;
+    import com.hbm.entity.projectile.EntityExplosiveBeam;
+    import com.hbm.interfaces.IHasCustomModel;
+    import com.hbm.items.ModItems;
+    import com.hbm.lib.HBMSoundHandler;
+    import com.hbm.main.MainRegistry;
+    import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+    import net.minecraft.client.util.ITooltipFlag;
+    import net.minecraft.entity.Entity;
+    import net.minecraft.entity.EntityLivingBase;
+    import net.minecraft.entity.ai.attributes.AttributeModifier;
+    import net.minecraft.entity.player.EntityPlayer;
+    import net.minecraft.init.SoundEvents;
+    import net.minecraft.inventory.EntityEquipmentSlot;
+    import net.minecraft.item.EnumAction;
+    import net.minecraft.item.EnumRarity;
+    import net.minecraft.item.Item;
+    import net.minecraft.item.ItemStack;
+    import net.minecraft.nbt.NBTTagCompound;
+    import net.minecraft.util.ActionResult;
+    import net.minecraft.util.EnumHand;
+    import net.minecraft.util.SoundCategory;
+    import net.minecraft.util.text.TextFormatting;
+    import net.minecraft.world.World;
+    import net.minecraftforge.common.MinecraftForge;
+    import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
-import com.google.common.collect.Multimap;
-import com.hbm.entity.effect.EntityCloudFleijaRainbow;
-import com.hbm.entity.logic.EntityNukeExplosionMK3;
-import com.hbm.entity.projectile.EntityExplosiveBeam;
-import com.hbm.interfaces.IHasCustomModel;
-import com.hbm.items.ModItems;
-import com.hbm.lib.HBMSoundHandler;
-import com.hbm.main.MainRegistry;
-
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+    import java.util.List;
+    import java.util.Random;
 
 public class GunB92 extends Item implements IHasCustomModel {
 
@@ -42,7 +41,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 	public int dmgMin = 16;
 	public int dmgMax = 28;
 
-	public GunB92(final String s) {
+	public GunB92(String s) {
 
 		this.maxStackSize = 1;
 		this.setTranslationKey(s);
@@ -52,19 +51,19 @@ public class GunB92 extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) == stack && !entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty() && entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.gun_b92) {
 			entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		if (!entityLiving.isSneaking()) {
 			int j = this.getMaxItemUseDuration(stack) - timeLeft;
 			if (entityLiving instanceof EntityPlayer) {
-				final ArrowLooseEvent evt = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, worldIn, j, false);
+				ArrowLooseEvent evt = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, worldIn, j, false);
 				MinecraftForge.EVENT_BUS.post(evt);
 				j = evt.getCharge();
 			}
 
-			final boolean flag = true;
+			boolean flag = true;
 
 			if (flag) {
 				float f = j / 20.0F;
@@ -79,7 +78,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 				}
 				if (!worldIn.isRemote)
 					for (int i = 0; i < getPower(stack); i++) {
-						final EntityExplosiveBeam entityarrow1;
+						EntityExplosiveBeam entityarrow1;
 						entityarrow1 = new EntityExplosiveBeam(worldIn, entityLiving, 3.0F, entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND) == stack);
 						float divergence = i * 0.2F;
 
@@ -109,9 +108,9 @@ public class GunB92 extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int i, final boolean b) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
 
-		final int j = getAnim(stack);
+		int j = getAnim(stack);
 		if (j > 0) {
 			{
 				if (j < 30) {
@@ -131,7 +130,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 						if (!world.isRemote) {
 							world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 100.0f, world.rand.nextFloat() * 0.1F + 0.9F);
 
-							final EntityNukeExplosionMK3 exp = new EntityNukeExplosionMK3(world);
+							EntityNukeExplosionMK3 exp = new EntityNukeExplosionMK3(world);
 							exp.posX = entity.posX;
 							exp.posY = entity.posY;
 							exp.posZ = entity.posZ;
@@ -144,7 +143,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 
 								world.spawnEntity(exp);
 
-								final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(world, 50);
+								EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(world, 50);
 								cloud.posX = entity.posX;
 								cloud.posY = entity.posY;
 								cloud.posZ = entity.posZ;
@@ -163,7 +162,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 	 * How long it takes to use or consume an item
 	 */
 	@Override
-	public int getMaxItemUseDuration(final ItemStack p_77626_1_) {
+	public int getMaxItemUseDuration(ItemStack p_77626_1_) {
 		return 72000;
 	}
 
@@ -172,13 +171,13 @@ public class GunB92 extends Item implements IHasCustomModel {
 	 * is being used
 	 */
 	@Override
-	public EnumAction getItemUseAction(final ItemStack p_77661_1_) {
+	public EnumAction getItemUseAction(ItemStack p_77661_1_) {
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ItemStack stack = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack stack = playerIn.getHeldItem(handIn);
 		if (!playerIn.isSneaking() && getPower(stack) > 0) {
 
 			if (GunB92.getAnim(stack) == 0) {
@@ -203,7 +202,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if (MainRegistry.polaroidID == 11) {
 			list.add("A weapon that came from the stars.");
 			list.add("It screams for murder.");
@@ -231,20 +230,20 @@ public class GunB92 extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return false;
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(final EntityEquipmentSlot equipmentSlot) {
-		final Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
+	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
+		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 		// multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new
 		// AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 3.5,
 		// 0));
 		return multimap;
 	}
 
-	private static int getAnim(final ItemStack stack) {
+	private static int getAnim(ItemStack stack) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -254,7 +253,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 
 	}
 
-	private static void setAnim(final ItemStack stack, final int i) {
+	private static void setAnim(ItemStack stack, int i) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -263,7 +262,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 
 	}
 
-	private static int getPower(final ItemStack stack) {
+	private static int getPower(ItemStack stack) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -273,7 +272,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 
 	}
 
-	private static void setPower(final ItemStack stack, final int i) {
+	private static void setPower(ItemStack stack, int i) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -282,7 +281,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 
 	}
 
-	public static float getRotationFromAnim(final ItemStack stack, final float partialTicks) {
+	public static float getRotationFromAnim(ItemStack stack, float partialTicks) {
 		float rad = 0.0174533F;
 		rad *= 7.5F;
 		int i = getAnim(stack);
@@ -298,7 +297,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 		return rad * 5;
 	}
 
-	public static float getOffsetFromAnim(final ItemStack stack, final float partialTicks) {
+	public static float getOffsetFromAnim(ItemStack stack, float partialTicks) {
 		float i = getAnim(stack);
 		if (i < 10)
 			return 0;
@@ -310,7 +309,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 			return 2 - ((i + partialTicks) / 10);
 	}
 
-	public static float getTransFromAnim(final ItemStack stack, final float partialTicks) {
+	public static float getTransFromAnim(ItemStack stack, float partialTicks) {
 		float i = getAnim(stack);
 		if (i < 10)
 			return 0;
@@ -326,7 +325,7 @@ public class GunB92 extends Item implements IHasCustomModel {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack p_77613_1_) {
+	public EnumRarity getRarity(ItemStack p_77613_1_) {
 
 		return EnumRarity.UNCOMMON;
 	}

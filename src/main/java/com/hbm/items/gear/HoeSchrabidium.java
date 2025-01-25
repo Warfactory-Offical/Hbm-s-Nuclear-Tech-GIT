@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public class HoeSchrabidium extends ItemHoe {
 
-	public HoeSchrabidium(final ToolMaterial t, final String s){
+	public HoeSchrabidium(ToolMaterial t, String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -17,7 +17,7 @@ public class HoeSchrabidium extends ItemHoe {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 }

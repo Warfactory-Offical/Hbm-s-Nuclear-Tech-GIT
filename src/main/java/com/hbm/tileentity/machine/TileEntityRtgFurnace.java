@@ -1,21 +1,15 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineRtgFurnace;
 import com.hbm.items.machine.ItemRTGPellet;
 import com.hbm.tileentity.TileEntityMachineBase;
-import com.hbm.items.ModItems;
 import com.hbm.util.RTGUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITickable {
 
@@ -46,11 +40,11 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -63,7 +57,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		dualCookTime = compound.getShort("CookTime");
 		if(compound.hasKey("inventory"))
 			this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
@@ -71,13 +65,13 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setShort("cookTime", (short) dualCookTime);
 		compound.setTag("inventory", this.inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
-	public int getDiFurnaceProgressScaled(final int i) {
+	public int getDiFurnaceProgressScaled(int i) {
 		return (dualCookTime * i) / processingSpeed;
 	}
 	
@@ -86,7 +80,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 		{
 			return false;
 		}
-        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
+        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
 		if(itemStack == null || itemStack.isEmpty())
 		{
 			return false;
@@ -110,7 +104,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	
 	private void processItem() {
 		if(canProcess()) {
-	        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
+	        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getStackInSlot(0));
 			
 			if(this.inventory.getStackInSlot(4).isEmpty())
 			{
@@ -123,7 +117,7 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 			{
 				if(this.inventory.getStackInSlot(i).isEmpty())
 				{
-					this.inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(this.inventory.getStackInSlot(i).getItem()));
+					this.inventory.setStackInSlot(i, new ItemStack(this.inventory.getStackInSlot(i).getItem()));
 				}else{
 					this.inventory.getStackInSlot(i).shrink(1);
 				}
@@ -163,9 +157,14 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 			}else{
 				dualCookTime = 0;
 			}
-			boolean trigger = !hasPower() || !canProcess() || this.dualCookTime != 0;
-
-            if(trigger)
+			boolean trigger = true;
+			
+			if(hasPower() && canProcess() && this.dualCookTime == 0)
+			{
+				trigger = false;
+			}
+			
+			if(trigger)
             {
                 flag1 = true;
                 MachineRtgFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
@@ -179,32 +178,38 @@ public class TileEntityRtgFurnace extends TileEntityMachineBase implements ITick
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
-		final int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+		int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
 		if(slot < 4){
 			if(!(itemStack.getItem() instanceof ItemRTGPellet)){
 				return true;
 			}
 		}
-        return slot == 4;
-    }
+		if(slot == 4){
+			return true;
+		}
+		return false;
+	}
 
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
+	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		if(0 < i && i < 4){
 			if(stack.getItem() instanceof ItemRTGPellet)
 				return true;
 		}
-        return i == 0;
-    }
+		if(i == 0){
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 

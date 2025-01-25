@@ -9,9 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -23,7 +21,7 @@ import java.util.Map;
 
 public class SliderVertical extends Control {
 
-    public SliderVertical(final String name, final ControlPanel panel) {
+    public SliderVertical(String name, ControlPanel panel) {
         super(name, panel);
         vars.put("value", new DataValueFloat(0));
     }
@@ -42,10 +40,10 @@ public class SliderVertical extends Control {
     public void render() {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.ctrl_slider_vertical_tex);
-        final Tessellator tes = Tessellator.instance;
-        final IModelCustom model = getModel();
+        Tessellator tes = Tessellator.instance;
+        IModelCustom model = getModel();
 
-        final int position = (int) Math.abs(getVar("value").getNumber()) % 6;
+        int position = (int) Math.abs(getVar("value").getNumber()) % 6;
 
         tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         tes.setTranslation(posX, 0, posY);
@@ -61,8 +59,8 @@ public class SliderVertical extends Control {
         model.tessellatePart(tes, "slider");
         tes.draw();
 
-        final float lX = OpenGlHelper.lastBrightnessX;
-        final float lY = OpenGlHelper.lastBrightnessY;
+        float lX = OpenGlHelper.lastBrightnessX;
+        float lY = OpenGlHelper.lastBrightnessY;
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 
@@ -97,30 +95,30 @@ public class SliderVertical extends Control {
     }
 
     @Override
-    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
-        final NodeSystem ctrl_press = new NodeSystem(this);
+    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
+        NodeSystem ctrl_press = new NodeSystem(this);
         {
-            final Map<String, DataValue> vars = new HashMap<>(receiveEvents.get(0).vars);
+            Map<String, DataValue> vars = new HashMap<>(receiveEvents.get(0).vars);
             vars.put("from index", new DataValueFloat(0));
-            final NodeInput node0 = new NodeInput(170, 100, "Event Data").setVars(vars);
+            NodeInput node0 = new NodeInput(170, 100, "Event Data").setVars(vars);
             ctrl_press.addNode(node0);
-            final NodeGetVar node1 = new NodeGetVar(170, 150, this).setData("value", false);
+            NodeGetVar node1 = new NodeGetVar(170, 150, this).setData("value", false);
             ctrl_press.addNode(node1);
-            final NodeConditional node2 = new NodeConditional(230, 110);
+            NodeConditional node2 = new NodeConditional(230, 110);
             node2.inputs.get(0).setData(node0, 1, true);
             node2.inputs.get(1).setDefault(new DataValueFloat(-1));
             node2.inputs.get(2).setDefault(new DataValueFloat(1));
             ctrl_press.addNode(node2);
-            final NodeMath node3 = new NodeMath(290, 130).setData(NodeMath.Operation.ADD);
+            NodeMath node3 = new NodeMath(290, 130).setData(NodeMath.Operation.ADD);
             node3.inputs.get(0).setData(node2, 0, true);
             node3.inputs.get(1).setData(node1, 0, true);
             ctrl_press.addNode(node3);
-            final NodeMath node4 = new NodeMath(350, 130).setData(NodeMath.Operation.CLAMP);
+            NodeMath node4 = new NodeMath(350, 130).setData(NodeMath.Operation.CLAMP);
             node4.inputs.get(0).setData(node3, 0, true);
             node4.inputs.get(1).setDefault(new DataValueFloat(0));
             node4.inputs.get(2).setDefault(new DataValueFloat(5));
             ctrl_press.addNode(node4);
-            final NodeSetVar node5 = new NodeSetVar(410, 110, this).setData("value", false);
+            NodeSetVar node5 = new NodeSetVar(410, 110, this).setData("value", false);
             node5.inputs.get(0).setData(node4, 0, true);
             ctrl_press.addNode(node5);
         }
@@ -128,7 +126,7 @@ public class SliderVertical extends Control {
     }
 
     @Override
-    public Control newControl(final ControlPanel panel) {
+    public Control newControl(ControlPanel panel) {
         return new SliderVertical(name, panel);
     }
 

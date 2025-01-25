@@ -13,20 +13,20 @@ import java.util.List;
 
 public class ItemFleija extends ItemHazard {
 
-	public ItemFleija(final float radiation, final boolean blinding, final String s) {
+	public ItemFleija(float radiation, boolean blinding, String s) {
 		super(radiation, false, blinding, s);
 		this.setCreativeTab(MainRegistry.nukeTab);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.usedin"));
 		list.add(" "+ I18nUtil.resolveKey("tile.nuke_fleija.name"));
-		//super.addInformation(stack, world, list, flagIn);
+		super.addInformation(stack, world, list, flagIn);
 	}
 	
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		if(this == ModItems.fleija_propellant)
     	{
         	return EnumRarity.RARE;

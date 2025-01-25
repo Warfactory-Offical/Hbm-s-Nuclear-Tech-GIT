@@ -3,7 +3,6 @@ package com.hbm.tileentity.machine;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.SoyuzLauncher;
 import com.hbm.lib.ForgeDirection;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -139,7 +138,7 @@ public class TileEntitySoyuzStruct extends TileEntity implements ITickable {
 
 		/// GENERATE LAUNCHER ///
 
-		final ForgeDirection dir = ForgeDirection.EAST;
+		ForgeDirection dir = ForgeDirection.EAST;
 
 		world.setBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), Blocks.AIR.getDefaultState());
 		world.setBlockState(new BlockPos(pos.getX(), pos.getY() + SoyuzLauncher.height, pos.getZ()), ModBlocks.soyuz_launcher.getDefaultState().withProperty(SoyuzLauncher.META, dir.ordinal() + SoyuzLauncher.offset), 3);

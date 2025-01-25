@@ -5,28 +5,19 @@ import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.entity.projectile.EntityChopperMine;
 import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
-import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -55,7 +46,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 	
 	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
 	
-	public EntityHunterChopper(final World worldIn) {
+	public EntityHunterChopper(World worldIn) {
 		super(worldIn);
 		this.setSize(8.25F, 3.0F);
 		this.isImmuneToFire = true;
@@ -64,7 +55,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 	}
 	
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if (this.isEntityInvulnerable(source) || !(source == ModDamageSource.nuclearBlast || source == ModDamageSource.blackhole || source.isExplosion()  || ModDamageSource.getIsTau(source) || ModDamageSource.getIsSubatomic(source) || ModDamageSource.getIsDischarge(source))) {
 			return false;
 		} else if(amount >= this.getHealth()) {
@@ -84,9 +75,9 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 		}
 
 		for (int j = 0; j < 3; j++) {
-			final double d0 = rand.nextDouble() / 20 * rand.nextInt(2) == 0 ? -1 : 1;
-			final double d1 = rand.nextDouble() / 20 * rand.nextInt(2) == 0 ? -1 : 1;
-			final double d2 = rand.nextDouble() / 20 * rand.nextInt(2) == 0 ? -1 : 1;
+			double d0 = rand.nextDouble() / 20 * rand.nextInt(2) == 0 ? -1 : 1;
+			double d1 = rand.nextDouble() / 20 * rand.nextInt(2) == 0 ? -1 : 1;
+			double d2 = rand.nextDouble() / 20 * rand.nextInt(2) == 0 ? -1 : 1;
 
 			for (int i = 0; i < 8; i++)
 				if(this.world.isRemote)
@@ -123,9 +114,9 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 			this.world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.nullChopper, SoundCategory.HOSTILE, 10.0F, 0.5F);
 
 			this.prevAttackCounter = this.attackCounter;
-			final double d0 = this.waypointX - this.posX;
-			final double d1 = this.waypointY - this.posY;
-			final double d2 = this.waypointZ - this.posZ;
+			double d0 = this.waypointX - this.posX;
+			double d1 = this.waypointY - this.posY;
+			double d2 = this.waypointZ - this.posZ;
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
 			if (d3 < 1.0D || d3 > 3600.0D) {
@@ -173,18 +164,18 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 				}
 			}
 
-			final double d4 = 64.0D;
+			double d4 = 64.0D;
 
 			if (this.targetedEntity != null && this.targetedEntity.getDistanceSq(this) < d4 * d4) {
-				final double d8 = 2.0D;
-				final Vec3d vec3 = this.getLook(1.0F);
-				final double xStart = this.posX + vec3.x * d8;
-				final double yStart = this.posY - 0.5;
-				final double zStart = this.posZ + vec3.z * d8;
-				final double d5 = this.targetedEntity.posX - xStart;
-				final double d6 = this.targetedEntity.getEntityBoundingBox().minY + this.targetedEntity.height / 2.0F
+				double d8 = 2.0D;
+				Vec3d vec3 = this.getLook(1.0F);
+				double xStart = this.posX + vec3.x * d8;
+				double yStart = this.posY - 0.5;
+				double zStart = this.posZ + vec3.z * d8;
+				double d5 = this.targetedEntity.posX - xStart;
+				double d6 = this.targetedEntity.getEntityBoundingBox().minY + this.targetedEntity.height / 2.0F
 						- yStart;
-				final double d7 = this.targetedEntity.posZ - zStart;
+				double d7 = this.targetedEntity.posZ - zStart;
 
 				++this.attackCounter;
 				if (attackCounter >= 200) {
@@ -195,10 +186,10 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 					world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.osiprShoot, SoundCategory.HOSTILE, 10.0F, 1.0F);
 					// EntityLargeFireball entitylargefireball = new
 					// EntityLargeFireball(this.world, this, d5, d6, d7);
-					final EntityBullet entityarrow = new EntityBullet(this.world, this, 3.0F, 35, 45, false, "chopper", EnumHand.MAIN_HAND);
-					final Vec3 vec2 = Vec3.createVectorHelper(d5 - 1 + rand.nextInt(3), d6 - 1 + rand.nextInt(3),
+					EntityBullet entityarrow = new EntityBullet(this.world, this, 3.0F, 35, 45, false, "chopper", EnumHand.MAIN_HAND);
+					Vec3 vec2 = Vec3.createVectorHelper(d5 - 1 + rand.nextInt(3), d6 - 1 + rand.nextInt(3),
 							d7 - 1 + rand.nextInt(3)).normalize();
-					final double motion = 3;
+					double motion = 3;
 					entityarrow.motionX = vec2.xCoord * motion;
 					entityarrow.motionY = vec2.yCoord * motion;
 					entityarrow.motionZ = vec2.zCoord * motion;
@@ -223,16 +214,16 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 				this.mineDropCounter++;
 				if (mineDropCounter > 100 && rand.nextInt(15) == 0) {
 		    		world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.chopperDrop, SoundCategory.HOSTILE, 15.0F, 1.0F);
-					final EntityChopperMine mine = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 0, -0.3, 0, this);
+					EntityChopperMine mine = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 0, -0.3, 0, this);
 					this.mineDropCounter = 0;
 					this.world.spawnEntity(mine);
 					
 					if(rand.nextInt(3) == 0)
 					{
-						final EntityChopperMine mine1 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 1, -0.3, 0, this);
-						final EntityChopperMine mine2 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 0, -0.3, 1, this);
-						final EntityChopperMine mine3 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, -1, -0.3, 0, this);
-						final EntityChopperMine mine4 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 0, -0.3, -1, this);
+						EntityChopperMine mine1 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 1, -0.3, 0, this);
+						EntityChopperMine mine2 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 0, -0.3, 1, this);
+						EntityChopperMine mine3 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, -1, -0.3, 0, this);
+						EntityChopperMine mine4 = new EntityChopperMine(world, this.posX, this.posY - 0.5, this.posZ, 0, -0.3, -1, this);
 						this.world.spawnEntity(mine1);
 						this.world.spawnEntity(mine2);
 						this.world.spawnEntity(mine3);
@@ -283,7 +274,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 				this.world.playSound(null, this.posX, this.posY, this.posZ, HBMSoundHandler.nullCrashing, SoundCategory.HOSTILE, 10.0F, 0.5F);
 		}
 		if (this.targetedEntity == null) {
-			final float f3 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			float f3 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			if (this.rotationYaw - (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI) >= 10)
 				this.prevRotationYaw = this.rotationYaw -= 10;
 			if (this.rotationYaw - (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI) <= -10)
@@ -293,7 +284,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, f3) * 180.0D / Math.PI);
 		} else {
 			
-			final float f3 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			float f3 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			if (this.rotationYaw - (float) (Math.atan2(this.posX - targetedEntity.posX, this.posZ - targetedEntity.posZ) * 180.0D / Math.PI) >= 10)
 				this.prevRotationYaw = this.rotationYaw -= 10;
 			if (this.rotationYaw - (float) (Math.atan2(this.posX - targetedEntity.posX, this.posZ - targetedEntity.posZ) * 180.0D / Math.PI) <= -10)
@@ -323,11 +314,11 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
 	}
 	
-	private boolean isCourseTraversable(final double p_70790_1_, final double p_70790_3_, final double p_70790_5_, final double p_70790_7_) {
-		final double d4 = (this.waypointX - this.posX) / p_70790_7_;
-		final double d5 = (this.waypointY - this.posY) / p_70790_7_;
-		final double d6 = (this.waypointZ - this.posZ) / p_70790_7_;
-		final AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+	private boolean isCourseTraversable(double p_70790_1_, double p_70790_3_, double p_70790_5_, double p_70790_7_) {
+		double d4 = (this.waypointX - this.posX) / p_70790_7_;
+		double d5 = (this.waypointY - this.posY) / p_70790_7_;
+		double d6 = (this.waypointZ - this.posZ) / p_70790_7_;
+		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 
 		for (int i = 1; i < p_70790_7_; ++i) {
 			axisalignedbb.offset(d4, d5, d6);
@@ -341,19 +332,19 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 	}
 	
 	@Override
-	public void addTrackingPlayer(final EntityPlayerMP player) {
+	public void addTrackingPlayer(EntityPlayerMP player) {
 		super.addTrackingPlayer(player);
 		bossInfo.addPlayer(player);
 	}
 	
 	@Override
-	public void removeTrackingPlayer(final EntityPlayerMP player) {
+	public void removeTrackingPlayer(EntityPlayerMP player) {
 		super.removeTrackingPlayer(player);
 		bossInfo.removePlayer(player);
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return null;
 	}
 	
@@ -379,7 +370,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 
 		this.dropItem(ModItems.combine_scrap, rand.nextInt(8) + 1);
 		this.dropItem(ModItems.plate_combine_steel, rand.nextInt(5) + 1);
-		this.dropItem(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN, rand.nextInt(3) + 1));
+		this.dropItem(ModItems.wire_magnetized_tungsten, rand.nextInt(3) + 1);
 	}
 	
 	@Override
@@ -400,7 +391,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(final double distance) {
+	public boolean isInRangeToRenderDist(double distance) {
 		return distance < 25000;
 	}
 	
@@ -412,28 +403,22 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
     }
     
     public void dropDamageItem() {
-    	final int i = rand.nextInt(10);
+    	int i = rand.nextInt(10);
 
     	if(i < 6)
 			this.dropItem(ModItems.combine_scrap, 1);
     	else if(i > 7)
 			this.dropItem(ModItems.plate_combine_steel, 1);
     	else
-			this.dropItem(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN,3));
+			this.dropItem(ModItems.wire_magnetized_tungsten, 1);
     }
 
-	public void setIsDying(final boolean b) {
+	public void setIsDying(boolean b) {
 		this.getDataManager().set(DYING, b);
 	}
 
 	public boolean getIsDying() {
 		return this.getDataManager().get(DYING);
 	}
-
-
-	public EntityItem dropItem(ItemStack itemIn)
-	{
-		return this.entityDropItem(itemIn, 0);
-	}
-
+	
 }

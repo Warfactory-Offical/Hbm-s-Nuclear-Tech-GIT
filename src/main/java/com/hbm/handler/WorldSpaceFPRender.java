@@ -28,15 +28,15 @@ public class WorldSpaceFPRender {
 	//public static List<Particle> particles = new ArrayList<>(); 
 	
 	@SubscribeEvent
-	public static void renderHand(final RenderHandEvent e) {
-		if(true)
+	public static void renderHand(RenderHandEvent e) {
+		if(true || !shouldCustomRender)
 			return;
 		e.setCanceled(true);
 	}
 	
 	@SubscribeEvent
-	public static void doDepthRender(final CameraSetup e){
-		if(true)
+	public static void doDepthRender(CameraSetup e){
+		if(true || Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || !shouldCustomRender)
 			return;
 			
 		GlStateManager.matrixMode(GL11.GL_PROJECTION);
@@ -64,8 +64,8 @@ public class WorldSpaceFPRender {
 		GlStateManager.matrixMode(GL11.GL_MODELVIEW);
 	}
 
-	public static void doHandRendering(final RenderWorldLastEvent e) {
-		if(true)
+	public static void doHandRendering(RenderWorldLastEvent e) {
+		if(true || Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || !shouldCustomRender)
 			return;
 		
 		GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
@@ -116,9 +116,9 @@ public class WorldSpaceFPRender {
 	}
 	
 	@SubscribeEvent
-	public static void worldTick(final TickEvent.ClientTickEvent e){
-		if(true) {
-        }
+	public static void worldTick(TickEvent.ClientTickEvent e){
+		if(true || e.phase == Phase.END || Minecraft.getMinecraft().world == null)
+			return;
 		/*Random rand = Minecraft.getMinecraft().world.rand;
 		if(ticksActive >= 0){
 			ticksActive ++;

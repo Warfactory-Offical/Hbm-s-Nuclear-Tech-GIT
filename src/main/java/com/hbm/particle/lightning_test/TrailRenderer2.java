@@ -48,11 +48,11 @@ public class TrailRenderer2 {
 		GLCompat.bindBuffer(GLCompat.GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	
-	public static void draw(final Vec3d playerPos, final List<Vec3d> points, final float scale){
+	public static void draw(Vec3d playerPos, List<Vec3d> points, float scale){
 		draw(playerPos, points, scale, false, false, null);
 	}
 	
-	public static void draw(final Vec3d playerPos, final List<Vec3d> points, final float scale, final boolean fadeEnd, final boolean fadeEnd2, @Nullable final IColorGetter c){
+	public static void draw(Vec3d playerPos, List<Vec3d> points, float scale, boolean fadeEnd, boolean fadeEnd2, @Nullable IColorGetter c){
 		generateAndBindVao(playerPos, points, scale, fadeEnd, fadeEnd2, c);
 		drawGeneratedVao();
 		unbindVao();
@@ -62,17 +62,17 @@ public class TrailRenderer2 {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, (currentPointCount-1)*12, GL11.GL_UNSIGNED_INT, 0);
 	}
 	
-	public static void generateAndBindVao(final Vec3d playerPos, final List<Vec3d> points, final float scale, final boolean fadeEnd, final boolean fadeEnd2, @Nullable final IColorGetter c){
+	public static void generateAndBindVao(Vec3d playerPos, List<Vec3d> points, float scale, boolean fadeEnd, boolean fadeEnd2, @Nullable IColorGetter c){
 		if(!init){
 			init = true;
 			init();
 		}
 		currentPointCount = points.size();
-		final int size = BYTES_PER_VERTEX * (points.size()*3+2);
+		int size = BYTES_PER_VERTEX * (points.size()*3+2);
 		if(size > aux_buf.capacity()){
 			aux_buf = GLAllocation.createDirectByteBuffer(size);
 		}
-		final Vec3d first = points.get(0);
+		Vec3d first = points.get(0);
 		Vec3d cross = points.get(1).subtract(first).crossProduct(playerPos.subtract(first)).normalize().scale(scale * (fadeEnd ? 0.1F : 1));
 		if(c != null){
 			color = c.color(0);
@@ -82,23 +82,23 @@ public class TrailRenderer2 {
 		putVertex(first.add(cross), 0F, 1F);
 		putVertex(first.add(cross.scale(-1)), 0F, 0F);
 		for(int i = 1; i < points.size(); i ++){
-			final Vec3d last = points.get(i-1);
-			final Vec3d current = points.get(i);
+			Vec3d last = points.get(i-1);
+			Vec3d current = points.get(i);
 			Vec3d next = points.get(i);
 			if(i < points.size()-1){
 				next = points.get(i+1);
 			}
-			final Vec3d toNext = points.get(i).subtract(last);
-			final Vec3d tangent = next.subtract(last);
+			Vec3d toNext = points.get(i).subtract(last);
+			Vec3d tangent = next.subtract(last);
 			
-			final float iN = (float)(i)/(float)(points.size()-1);
+			float iN = (float)(i)/(float)(points.size()-1);
 			float bruh = 1-MathHelper.clamp((iN-0.8F)*5, 0, 1);
 			if(fadeEnd)
 				bruh *= MathHelper.clamp(iN*5, 0, 1);
 			if(!fadeEnd2)
 				bruh = 1;
 			cross = tangent.crossProduct(playerPos.subtract(last)).normalize().scale(scale*Math.max(bruh, 0.1));
-			final float uMiddle = (i-0.5F) /(float)(points.size()-1);
+			float uMiddle = (float)(i-0.5F)/(float)(points.size()-1);
 			if(c != null){
 				color = c.color(uMiddle);
 			}
@@ -115,12 +115,12 @@ public class TrailRenderer2 {
 		GLCompat.bufferData(GLCompat.GL_ARRAY_BUFFER, aux_buf, GLCompat.GL_DYNAMIC_DRAW);
 		
 		for(int i = 0; i < points.size()-1; i ++){
-			final int offset = i*3;
-			aux_buf.putInt(offset);
+			int offset = i*3;
+			aux_buf.putInt(0+offset);
 			aux_buf.putInt(2+offset);
 			aux_buf.putInt(1+offset);
 			
-			aux_buf.putInt(offset);
+			aux_buf.putInt(0+offset);
 			aux_buf.putInt(3+offset);
 			aux_buf.putInt(2+offset);
 			
@@ -153,7 +153,7 @@ public class TrailRenderer2 {
 		GLCompat.bindBuffer(GLCompat.GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	
-	private static void putVertex(final Vec3d pos, final float texU, final float texV){
+	private static void putVertex(Vec3d pos, float texU, float texV){
 		aux_buf.putFloat((float) pos.x);
 		aux_buf.putFloat((float) pos.y);
 		aux_buf.putFloat((float) pos.z);

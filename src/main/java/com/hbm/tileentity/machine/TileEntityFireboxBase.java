@@ -1,13 +1,11 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
+import api.hbm.tile.IHeatSource;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.modules.ModuleBurnTime;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.tile.IHeatSource;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,7 +48,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 				for(int i = 0; i < 2; i++) {
 					if(inventory.getStackInSlot(i) != null) {
 						
-						final int fuel = (int) (getModule().getBurnTime(inventory.getStackInSlot(i)) * getTimeMult());
+						int fuel = (int) (getModule().getBurnTime(inventory.getStackInSlot(i)) * getTimeMult());
 						
 						if(fuel > 0) {
 							this.maxBurnTime = this.burnTime = fuel;
@@ -58,9 +56,9 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 							inventory.getStackInSlot(i).shrink(1);
 
 							if(inventory.getStackInSlot(i).getCount() == 0) {
-								final ItemStack copy = inventory.getStackInSlot(0).copy();
+								ItemStack copy = inventory.getStackInSlot(0).copy();
 								if(copy.getItem().getContainerItem() != null)
-									inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(copy.getItem().getContainerItem()));
+									inventory.setStackInSlot(i, new ItemStack(copy.getItem().getContainerItem()));
 							}
 
 							this.wasOn = true;
@@ -87,7 +85,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 				this.burnHeat = 0;
 			}
 			
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("maxBurnTime", this.maxBurnTime);
 			data.setInteger("burnTime", this.burnTime);
 			data.setInteger("burnHeat", this.burnHeat);
@@ -97,7 +95,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 			this.networkPack(data, 50);
 		} else {
 			this.prevDoorAngle = this.doorAngle;
-			final float swingSpeed = (doorAngle / 10F) + 3;
+			float swingSpeed = (doorAngle / 10F) + 3;
 			
 			if(this.playersUsing > 0) {
 				this.doorAngle += swingSpeed;
@@ -108,10 +106,10 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 			this.doorAngle = MathHelper.clamp(this.doorAngle, 0F, 135F);
 			
 			if(wasOn && world.getTotalWorldTime() % 5 == 0) {
-				final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-				final double x = pos.getX() + 0.5 + dir.offsetX;
-				final double y = pos.getY() + 0.25;
-				final double z = pos.getZ() + 0.5 + dir.offsetZ;
+				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+				double x = pos.getX() + 0.5 + dir.offsetX;
+				double y = pos.getY() + 0.25;
+				double z = pos.getZ() + 0.5 + dir.offsetZ;
 				world.spawnParticle(EnumParticleTypes.FLAME, wasOn, x + world.rand.nextDouble() * 0.5 - 0.25, y + world.rand.nextDouble() * 0.25, z + world.rand.nextDouble() * 0.5 - 0.25, 0, 0, 0);
 			}
 		}
@@ -123,18 +121,18 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 	public abstract int getMaxHeat();
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
 		return new int[] { 0, 1 };
 	}
 	
 	
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
 		return getModule().getBurnTime(itemStack) > 0;
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		this.maxBurnTime = nbt.getInteger("maxBurnTime");
 		this.burnTime = nbt.getInteger("burnTime");
 		this.burnHeat = nbt.getInteger("burnHeat");
@@ -144,7 +142,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.maxBurnTime = nbt.getInteger("maxBurnTime");
@@ -154,7 +152,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		nbt.setInteger("maxBurnTime", maxBurnTime);
 		nbt.setInteger("burnTime", burnTime);
@@ -169,7 +167,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 	}
 
 
-	public void useUpHeat(final int heat) {
+	public void useUpHeat(int heat) {
 		this.heatEnergy = Math.max(0, this.heatEnergy - heat);
 	}
 	

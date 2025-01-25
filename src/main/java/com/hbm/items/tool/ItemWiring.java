@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ItemWiring extends Item {
 
-	public ItemWiring(final String s) {
+	public ItemWiring(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -31,20 +31,20 @@ public class ItemWiring extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 	
-		final Block b = world.getBlockState(pos).getBlock();
+		Block b = world.getBlockState(pos).getBlock();
 		BlockPos core = pos;
 		if(b instanceof BlockDummyable) {
-			final int[] corePos = ((BlockDummyable)b).findCore(world, pos.getX(), pos.getY(), pos.getZ());
+			int[] corePos = ((BlockDummyable)b).findCore(world, pos.getX(), pos.getY(), pos.getZ());
 		
 			if(corePos != null) {
 				core = new BlockPos(corePos[0], corePos[1], corePos[2]);
 			}
 		}
 
-		final TileEntity te = world.getTileEntity(core);
-		final ItemStack stack = player.getHeldItem(hand);
+		TileEntity te = world.getTileEntity(core);
+		ItemStack stack = player.getHeldItem(hand);
 		if (te != null && te instanceof TileEntityPylonBase) {
 			if(player.isSneaking()) { //if sneak then set a other wise connect to b
 				if (!stack.hasTagCompound())
@@ -58,45 +58,53 @@ public class ItemWiring extends Item {
 					player.sendMessage(new TextComponentTranslation("chat.wiring.start", pos.getX(), pos.getY(), pos.getZ()));
 			} else {
 				if (stack.hasTagCompound()) {
-					final int x1 = stack.getTagCompound().getInteger("x");
-					final int y1 = stack.getTagCompound().getInteger("y");
-					final int z1 = stack.getTagCompound().getInteger("z");
+					int x1 = stack.getTagCompound().getInteger("x");
+					int y1 = stack.getTagCompound().getInteger("y");
+					int z1 = stack.getTagCompound().getInteger("z");
 					
-					final TileEntityPylonBase thisPylon = (TileEntityPylonBase)te;
-					final BlockPos newPos = new BlockPos(x1, y1, z1);
+					TileEntityPylonBase thisPylon = (TileEntityPylonBase)te;
+					BlockPos newPos = new BlockPos(x1, y1, z1);
 					if(!this.isLengthValid(pos.getX(), pos.getY(), pos.getZ(), x1, y1, z1, thisPylon.getMaxWireLength())){
 						if (world.isRemote){
-							final BlockPos vector = newPos.subtract(pos);
-							final int distance = (int)MathHelper.sqrt(vector.getX() * vector.getX() + vector.getY() * vector.getY() + vector.getZ() * vector.getZ());
+							BlockPos vector = newPos.subtract(pos);
+							int distance = (int)MathHelper.sqrt(vector.getX() * vector.getX() + vector.getY() * vector.getY() + vector.getZ() * vector.getZ());
 							player.sendMessage(new TextComponentTranslation("chat.wiring.tofar", distance, thisPylon.getMaxWireLength()));
 						}
 					} else if(pos == newPos){
 						if (world.isRemote)
 							player.sendMessage(new TextComponentTranslation("chat.wiring.noself"));
 					} else{
-						final Block a = world.getBlockState(newPos).getBlock();
+						Block a = world.getBlockState(newPos).getBlock();
 						BlockPos coreB = newPos;
 						if(a instanceof BlockDummyable) {
-							final int[] corePosB = ((BlockDummyable)a).findCore(world, newPos.getX(), newPos.getY(), newPos.getZ());
+							int[] corePosB = ((BlockDummyable)a).findCore(world, newPos.getX(), newPos.getY(), newPos.getZ());
 						
 							if(corePosB != null) {
 								coreB = new BlockPos(corePosB[0], corePosB[1], corePosB[2]);
 							}
 						}
-						final TileEntity target = world.getTileEntity(coreB);
-						if(target instanceof TileEntityPylonBase targetPylon) {
+						TileEntity target = world.getTileEntity(coreB);
+						if(target instanceof TileEntityPylonBase) {
 
-                            if(TileEntityPylonBase.canConnect(thisPylon, targetPylon)){
-								thisPylon.addConnection(targetPylon.getPos());
-								targetPylon.addConnection(thisPylon.getPos());
+							TileEntityPylonBase targetPylon = (TileEntityPylonBase) target;
 
-								if (world.isRemote)
-									player.sendMessage(new TextComponentTranslation("chat.wiring.connected"));
-							}else{
-								if(thisPylon.getConnectionType() != targetPylon.getConnectionType()){
+							switch (TileEntityPylonBase.canConnect(thisPylon, targetPylon)) {
+								case 0:
+									thisPylon.addConnection(targetPylon.getPos().getX(), target.getPos().getY(), target.getPos().getZ());
+									targetPylon.addConnection(thisPylon.getPos().getX(), thisPylon.getPos().getY(), thisPylon.getPos().getZ());
+									if (world.isRemote)
+										player.sendMessage(new TextComponentTranslation("chat.wiring.connected"));
+									break;
+								case 1:
 									if (world.isRemote)
 										player.sendMessage(new TextComponentTranslation("chat.wiring.notcompatible"));
-								}
+									break;
+								case 2:
+									player.sendMessage(new TextComponentTranslation("chat.wiring.noself"));
+									break;
+								case 3:
+									player.sendMessage(new TextComponentTranslation("chat.wiring.tofar"));
+									break;
 							}
 						}
 					}
@@ -111,12 +119,12 @@ public class ItemWiring extends Item {
 				}
 			} else {
 				if(stack.hasTagCompound() && world.isRemote) {
-					final int x1 = stack.getTagCompound().getInteger("x");
-					final int y1 = stack.getTagCompound().getInteger("y");
-					final int z1 = stack.getTagCompound().getInteger("z");
+					int x1 = stack.getTagCompound().getInteger("x");
+					int y1 = stack.getTagCompound().getInteger("y");
+					int z1 = stack.getTagCompound().getInteger("z");
 
-					final BlockPos vector = new BlockPos(x1, y1, z1).subtract(pos);
-					final int distance = (int)MathHelper.sqrt(vector.getX() * vector.getX() + vector.getY() * vector.getY() + vector.getZ() * vector.getZ());
+					BlockPos vector = new BlockPos(x1, y1, z1).subtract(pos);
+					int distance = (int)MathHelper.sqrt(vector.getX() * vector.getX() + vector.getY() * vector.getY() + vector.getZ() * vector.getZ());
 					
 					player.sendMessage(new TextComponentTranslation("chat.wiring.measure", distance));
 				}
@@ -127,11 +135,11 @@ public class ItemWiring extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (stack.getTagCompound() != null) {
-			final int x1 = stack.getTagCompound().getInteger("x");
-			final int y1 = stack.getTagCompound().getInteger("y");
-			final int z1 = stack.getTagCompound().getInteger("z");
+			int x1 = stack.getTagCompound().getInteger("x");
+			int y1 = stack.getTagCompound().getInteger("y");
+			int z1 = stack.getTagCompound().getInteger("z");
 			tooltip.add(I18nUtil.resolveKey("desc.wiring.start", x1, y1, z1));
 		} else {
 			tooltip.add(I18nUtil.resolveKey("desc.wiring.1"));
@@ -142,8 +150,8 @@ public class ItemWiring extends Item {
 		}
 	}
 	
-	public boolean isLengthValid(final int x1, final int y1, final int z1, final int x2, final int y2, final int z2, final int length) {
-		final double l = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+	public boolean isLengthValid(int x1, int y1, int z1, int x2, int y2, int z2, double length) {
+		double l = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
 		
 		return l <= length;
 	}

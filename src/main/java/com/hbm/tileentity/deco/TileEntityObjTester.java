@@ -5,7 +5,6 @@ import com.hbm.main.MainRegistry;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.PacketSpecialDeath;
 import com.hbm.particle.gluon.ParticleGluonFlare;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,14 +23,14 @@ public class TileEntityObjTester extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		final RayTraceResult r = Library.rayTraceIncludeEntities(world, new Vec3d(this.pos).add(0, 2, 0.5), new Vec3d(this.pos).add(12, 2, 0.5), null);
+		RayTraceResult r = Library.rayTraceIncludeEntities(world, new Vec3d(this.pos).addVector(0, 2, 0.5), new Vec3d(this.pos).addVector(12, 2, 0.5), null);
 		if(world.isRemote) {
-			if(0L == 0){
+			if(world.getTotalWorldTime() %1 == 0){
 				if(r != null && r.hitVec != null){
-					final ParticleGluonFlare flare = new ParticleGluonFlare(world, r.hitVec.x-0.1, r.hitVec.y, r.hitVec.z);
+					ParticleGluonFlare flare = new ParticleGluonFlare(world, r.hitVec.x-0.1, r.hitVec.y, r.hitVec.z);
 					Minecraft.getMinecraft().effectRenderer.addEffect(flare);
 				} else {
-					final ParticleGluonFlare flare = new ParticleGluonFlare(world, pos.getX() + 10.9, pos.getY() + 2, pos.getZ() + 0.5);
+					ParticleGluonFlare flare = new ParticleGluonFlare(world, pos.getX() + 10.9, pos.getY() + 2, pos.getZ() + 0.5);
 					Minecraft.getMinecraft().effectRenderer.addEffect(flare);
 				}
 				
@@ -41,8 +40,9 @@ public class TileEntityObjTester extends TileEntity implements ITickable {
 			}
 			MainRegistry.proxy.spawnParticle(pos.getX(), pos.getY(), pos.getZ(), "bfg_fire", new float[]{fireAge});
 		} else {
-			if(r != null && r.typeOfHit == Type.ENTITY && r.entityHit instanceof EntityLivingBase ent){
-                ent.setHealth(ent.getHealth()-2);
+			if(r != null && r.typeOfHit == Type.ENTITY && r.entityHit instanceof EntityLivingBase){
+				EntityLivingBase ent = ((EntityLivingBase)r.entityHit);
+				ent.setHealth(ent.getHealth()-2);
 				PacketDispatcher.wrapper.sendToAllTracking(new PacketSpecialDeath(ent, 1), ent);
 				//Why doesn't the player count as tracking itself? I don't know.
 				if(ent instanceof EntityPlayerMP){

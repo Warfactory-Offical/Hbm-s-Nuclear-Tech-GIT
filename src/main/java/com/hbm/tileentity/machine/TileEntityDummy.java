@@ -1,7 +1,6 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.interfaces.IMultiBlock;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -27,7 +26,7 @@ public class TileEntityDummy extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		if(target != null){
 			compound.setInteger("tx", target.getX());
@@ -38,12 +37,12 @@ public class TileEntityDummy extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if(compound.hasKey("tx")){
-			final int x = compound.getInteger("tx");
-			final int y = compound.getInteger("ty");
-			final int z = compound.getInteger("tz");
+			int x = compound.getInteger("tx");
+			int y = compound.getInteger("ty");
+			int z = compound.getInteger("tz");
 			this.target = new BlockPos(x, y, z);
 		} else {
 			this.target = null;

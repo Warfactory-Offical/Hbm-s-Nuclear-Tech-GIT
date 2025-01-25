@@ -1,15 +1,12 @@
 package com.hbm.blocks.machine;
 
-import java.util.List;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.main.MainRegistry;
-import com.hbm.tileentity.TileEntityProxyEnergy;
 import com.hbm.tileentity.TileEntityProxyCombo;
+import com.hbm.tileentity.TileEntityProxyEnergy;
 import com.hbm.tileentity.machine.TileEntityMachineMiningLaser;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -22,14 +19,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
+import java.util.List;
+
 public class MachineMiningLaser extends BlockDummyable {
 
-	public MachineMiningLaser(final Material mat, final String s) {
+	public MachineMiningLaser(Material mat, String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
+	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
 
 		if(meta >= 12)
 			return new TileEntityMachineMiningLaser();
@@ -57,12 +56,12 @@ public class MachineMiningLaser extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
 
-			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
 			if(pos == null)
 				return false;
@@ -75,7 +74,7 @@ public class MachineMiningLaser extends BlockDummyable {
 	}
 
 	@Override
-	protected void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
+	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 
 		super.fillSpace(world, x, y, z, dir, o);
 
@@ -91,7 +90,7 @@ public class MachineMiningLaser extends BlockDummyable {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add("3x3x3 Multiblock");
 		tooltip.add("Only placeable on a ceiling.");
 	}

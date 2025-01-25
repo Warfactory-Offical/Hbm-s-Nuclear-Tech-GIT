@@ -7,7 +7,7 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 
 public class AxeSchrabidium extends ItemAxe {
-	public AxeSchrabidium(final ToolMaterial t, final String s){
+	public AxeSchrabidium(ToolMaterial t, String s){
 		super(t, t.getAttackDamage(), -3.2F);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -17,7 +17,7 @@ public class AxeSchrabidium extends ItemAxe {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 }

@@ -4,19 +4,18 @@ import com.hbm.entity.projectile.EntityBulletBase;
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 
 public class EntityAIMaskmanMinigun extends EntityAIBase {
 
-	private final EntityCreature owner;
+	private EntityCreature owner;
     private EntityLivingBase target;
     int delay;
     int timer;
 	
-    public EntityAIMaskmanMinigun(final EntityCreature owner, final boolean checkSight, final boolean nearbyOnly, final int delay) {
+    public EntityAIMaskmanMinigun(EntityCreature owner, boolean checkSight, boolean nearbyOnly, int delay) {
 		this.owner = owner;
 		this.delay = delay;
 		timer = delay;
@@ -24,14 +23,14 @@ public class EntityAIMaskmanMinigun extends EntityAIBase {
     
 	@Override
 	public boolean shouldExecute() {
-		final EntityLivingBase entity = this.owner.getAttackTarget();
+		EntityLivingBase entity = this.owner.getAttackTarget();
 
         if(entity == null) {
             return false;
 
         } else {
             this.target = entity;
-            final double dist = Vec3.createVectorHelper(target.posX - owner.posX, target.posY - owner.posY, target.posZ - owner.posZ).length();
+            double dist = Vec3.createVectorHelper(target.posX - owner.posX, target.posY - owner.posY, target.posZ - owner.posZ).lengthVector();
             return dist > 5 && dist < 10;
         }
 	}
@@ -48,7 +47,7 @@ public class EntityAIMaskmanMinigun extends EntityAIBase {
 		if(timer <= 0) {
 			timer = delay;
 
-			final EntityBulletBase bullet = new EntityBulletBase(owner.world, BulletConfigSyncingUtil.MASKMAN_BULLET, owner, target, 1.0F, 0);
+			EntityBulletBase bullet = new EntityBulletBase(owner.world, BulletConfigSyncingUtil.MASKMAN_BULLET, owner, target, 1.0F, 0);
 			owner.world.spawnEntity(bullet);
 			owner.playSound(HBMSoundHandler.calShoot, 1.0F, 1.0F);
 		}

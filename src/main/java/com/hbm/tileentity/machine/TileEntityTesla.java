@@ -1,14 +1,13 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.mob.EntityCyberCrab;
 import com.hbm.entity.mob.EntityNuclearCreeper;
 import com.hbm.entity.mob.EntityTaintCrab;
 import com.hbm.entity.mob.EntityTeslaCrab;
 import com.hbm.handler.ArmorUtil;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
@@ -16,8 +15,6 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TETeslaPacket;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -34,7 +31,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityTesla extends TileEntityMachineBase implements ITickable, IEnergyUser {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TileEntityTesla extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 
 	public long power;
 	public static final long maxPower = 100000;
@@ -56,7 +56,8 @@ public class TileEntityTesla extends TileEntityMachineBase implements ITickable,
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			this.updateStandardConnections(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 			this.targets.clear();
 			
 			if(world.getBlockState(pos.down()).getBlock() == ModBlocks.meteor_battery)
@@ -65,9 +66,9 @@ public class TileEntityTesla extends TileEntityMachineBase implements ITickable,
 			if(power >= 5000) {
 				power -= 5000;
 
-				final double dx = pos.getX() + 0.5;
-				final double dy = pos.getY() + offset;
-				final double dz = pos.getZ() + 0.5;
+				double dx = pos.getX() + 0.5;
+				double dy = pos.getY() + offset;
+				double dz = pos.getZ() + 0.5;
 				
 				this.targets = zap(world, dx, dy, dz, range, null);
 			}
@@ -76,20 +77,20 @@ public class TileEntityTesla extends TileEntityMachineBase implements ITickable,
 		}
 	}
 
-	public static List<double[]> zap(final World worldObj, final double x, final double y, final double z, final double radius, final Entity source) {
+	public static List<double[]> zap(World worldObj, double x, double y, double z, double radius, Entity source) {
 
-		final List<double[]> ret = new ArrayList<double[]>();
+		List<double[]> ret = new ArrayList<double[]>();
 		
-		final List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
+		List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 		
-		for(final EntityLivingBase e : targets) {
+		for(EntityLivingBase e : targets) {
 			
 			if(e instanceof EntityOcelot || e == source)
 				continue;
 			
-			final Vec3 vec = Vec3.createVectorHelper(e.posX - x, e.posY + e.height / 2 - y, e.posZ - z);
+			Vec3 vec = Vec3.createVectorHelper(e.posX - x, e.posY + e.height / 2 - y, e.posZ - z);
 			
-			if(vec.length() > range)
+			if(vec.lengthVector() > range)
 				continue;
 
 			if(Library.isObstructed(worldObj, x, y, z, e.posX, e.posY + e.height / 2, e.posZ))
@@ -122,7 +123,7 @@ public class TileEntityTesla extends TileEntityMachineBase implements ITickable,
 			}
 			
 			if(e instanceof EntityNuclearCreeper) {
-				e.getDataManager().set(EntityNuclearCreeper.POWERED, true);
+				((EntityNuclearCreeper)e).getDataManager().set(EntityNuclearCreeper.POWERED, true);
 			}
 			
 			double offset = 0;
@@ -137,7 +138,7 @@ public class TileEntityTesla extends TileEntityMachineBase implements ITickable,
 	}
 	
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

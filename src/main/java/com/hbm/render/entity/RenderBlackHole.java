@@ -1,24 +1,17 @@
 package com.hbm.render.entity;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.effect.EntityBlackHole;
 import com.hbm.entity.effect.EntityRagingVortex;
 import com.hbm.entity.effect.EntityVortex;
-import com.hbm.forgefluid.FFUtils;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ClientProxy;
 import com.hbm.render.amlfrom1710.AdvancedModelLoader;
 import com.hbm.render.amlfrom1710.IModelCustom;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -26,6 +19,9 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 public class RenderBlackHole extends Render<EntityBlackHole> {
 
@@ -39,13 +35,13 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 	protected ResourceLocation swirl = new ResourceLocation(RefStrings.MODID, "textures/entity/bhole.png");
 	protected ResourceLocation disc = new ResourceLocation(RefStrings.MODID, "textures/entity/bholeDisc.png");
 
-	protected RenderBlackHole(final RenderManager renderManager){
+	protected RenderBlackHole(RenderManager renderManager){
 		super(renderManager);
 		blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
 	}
 
 	@Override
-	public void doRender(final EntityBlackHole entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks){
+	public void doRender(EntityBlackHole entity, double x, double y, double z, float entityYaw, float partialTicks){
 		if(!ClientProxy.renderingConstant)
 			return;
 		GL11.glPushMatrix();
@@ -53,7 +49,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 
-		final float size = entity.getDataManager().get(EntityBlackHole.SIZE);
+		float size = entity.getDataManager().get(EntityBlackHole.SIZE);
 
 		GL11.glScalef(size, size, size);
 
@@ -82,9 +78,9 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		return this.disc;
 	}
 
-	protected void renderDisc(final EntityBlackHole entity, final float interp){
+	protected void renderDisc(EntityBlackHole entity, float interp){
 
-		final float glow = 0.75F;
+		float glow = 0.75F;
 
 		bindTexture(discTex());
 
@@ -98,20 +94,20 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 0.0F);
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 
-		final int count = 16;
+		int count = 16;
 
-		final Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
+		Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 
-		final float[] color = {0, 0, 0, 0};
+		float[] color = {0, 0, 0, 0};
 		for(int k = 0; k < steps(); k++) {
 
 			GL11.glPushMatrix();
 			GL11.glRotatef((entity.ticksExisted + interp % 360) * -((float)Math.pow(k + 1, 1.25)), 0, 1, 0);
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			final double s = 3 - k * 0.175D;
+			double s = 3 - k * 0.175D;
 
 			for(int j = 0; j < 2; j++) {
 
@@ -164,10 +160,10 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		return 15;
 	}
 
-	protected void setColorFromIteration(final int iteration, final float alpha, final float[] col){
+	protected void setColorFromIteration(int iteration, float alpha, float[] col){
 
 		if(iteration < 5) {
-			final float g = 0.125F + iteration * (1F / 10F);
+			float g = 0.125F + iteration * (1F / 10F);
 			col[0] = 1;
 			col[1] = g;
 			col[2] = 0;
@@ -184,10 +180,10 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		}
 
 		if(iteration > 5) {
-			final int i = iteration - 6;
-			final float r = 1.0F - i * (1F / 9F);
-			final float g = 1F - i * (1F / 9F);
-			final float b = i * (1F / 5F);
+			int i = iteration - 6;
+			float r = 1.0F - i * (1F / 9F);
+			float g = 1F - i * (1F / 9F);
+			float b = i * (1F / 5F);
 			col[0] = r;
 			col[1] = g;
 			col[2] = b;
@@ -195,7 +191,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		}
 	}
 
-	protected void renderSwirl(final EntityBlackHole entity, final float interp){
+	protected void renderSwirl(EntityBlackHole entity, float interp){
 
 		float glow = 0.75F;
 
@@ -214,15 +210,15 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		GlStateManager.depthMask(false);
 		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 0.0F);
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-		final Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
+		Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 
-		final double s = 3;
-		final int count = 16;
+		double s = 3;
+		int count = 16;
 
-		final float[] color = {0, 0, 0, 0};
+		float[] color = {0, 0, 0, 0};
 		
 		//swirl, inner part (solid)
 		for(int j = 0; j < 2; j++) {
@@ -317,10 +313,10 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		GL11.glPopMatrix();
 	}
 
-	protected void renderJets(final EntityBlackHole entity, final float interp){
+	protected void renderJets(EntityBlackHole entity, float interp){
 
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 
 		GL11.glPushMatrix();
 		GL11.glRotatef(entity.getEntityId() % 90 - 45, 1, 0, 0);
@@ -339,7 +335,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 
 			buf.pos(0, 0, 0).color(1, 1, 1, 0.35F).endVertex();
 
-			final Vec3 jet = Vec3.createVectorHelper(0.5, 0, 0);
+			Vec3 jet = Vec3.createVectorHelper(0.5, 0, 0);
 
 			for(int i = 0; i <= 12; i++) {
 				buf.pos(jet.xCoord, 10 * j, jet.zCoord).color(1.0F, 1.0F, 1.0F, 0.0F).endVertex();
@@ -357,16 +353,16 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		GL11.glPopMatrix();
 	}
 
-	protected void renderFlare(final EntityBlackHole entity){
+	protected void renderFlare(EntityBlackHole entity){
 
 		GL11.glPushMatrix();
 		GL11.glScalef(0.2F, 0.2F, 0.2F);
 
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 		RenderHelper.disableStandardItemLighting();
-		final int j = 75;
-		final float f1 = (j + 2.0F) / 200.0F;
+		int j = 75;
+		float f1 = (j + 2.0F) / 200.0F;
 		float f2 = 0.0F;
 		int count = 250;
 
@@ -376,7 +372,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 			f2 = (f1 - 0.8F) / 0.2F;
 		}
 
-		final Random random = new Random(432L);
+		Random random = new Random(432L);
 		GlStateManager.disableTexture2D();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		GlStateManager.enableBlend();
@@ -385,7 +381,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		GlStateManager.enableCull();
 		GlStateManager.depthMask(false);
 
-		final float[] color = {0, 0, 0, 0};
+		float[] color = {0, 0, 0, 0};
 		for(int i = 0; i < count; i++) {
 			GL11.glRotatef(random.nextFloat() * 360.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(random.nextFloat() * 360.0F, 0.0F, 1.0F, 0.0F);
@@ -394,14 +390,14 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 			GL11.glRotatef(random.nextFloat() * 360.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(random.nextFloat() * 360.0F + f1 * 90.0F, 0.0F, 0.0F, 1.0F);
 			buf.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
-			final float f3 = random.nextFloat() * 20.0F + 5.0F + f2 * 10.0F;
-			final float f4 = random.nextFloat() * 2.0F + 1.0F + f2 * 2.0F;
+			float f3 = random.nextFloat() * 20.0F + 5.0F + f2 * 10.0F;
+			float f4 = random.nextFloat() * 2.0F + 1.0F + f2 * 2.0F;
 			setColorFull(entity, color);
 			buf.pos(0.0D, 0.0D, 0.0D).color(color[0], color[1], color[2], color[3]).endVertex();
 			setColorNone(entity, color);
 			buf.pos(-0.866D * f4, f3, -0.5F * f4).color(color[0], color[1], color[2], color[3]).endVertex();
 			buf.pos(0.866D * f4, f3, -0.5F * f4).color(color[0], color[1], color[2], color[3]).endVertex();
-			buf.pos(0.0D, f3, f4).color(color[0], color[1], color[2], color[3]).endVertex();
+			buf.pos(0.0D, f3, 1.0F * f4).color(color[0], color[1], color[2], color[3]).endVertex();
 			buf.pos(-0.866D * f4, f3, -0.5F * f4).color(color[0], color[1], color[2], color[3]).endVertex();
 			tes.draw();
 		}
@@ -417,7 +413,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		GL11.glPopMatrix();
 	}
 
-	protected void setColorFull(final EntityBlackHole e, final float[] color){
+	protected void setColorFull(EntityBlackHole e, float[] color){
 		if(e instanceof EntityVortex) {
 			com.hbm.render.RenderHelper.unpackColor(0x3898b3, color);
 		} else if(e instanceof EntityRagingVortex) {
@@ -428,7 +424,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 		color[3] = 1;
 	}
 
-	protected void setColorNone(final EntityBlackHole e, final float[] color){
+	protected void setColorNone(EntityBlackHole e, float[] color){
 		if(e instanceof EntityVortex) {
 			com.hbm.render.RenderHelper.unpackColor(0x3898b3, color);
 		} else if(e instanceof EntityRagingVortex) {
@@ -440,7 +436,7 @@ public class RenderBlackHole extends Render<EntityBlackHole> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityBlackHole entity){
+	protected ResourceLocation getEntityTexture(EntityBlackHole entity){
 		return hole;
 	}
 

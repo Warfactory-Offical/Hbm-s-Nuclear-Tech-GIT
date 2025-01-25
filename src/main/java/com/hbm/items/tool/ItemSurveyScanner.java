@@ -6,7 +6,6 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.util.I18nUtil;
-import com.hbm.util.ItemStackUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -28,7 +27,7 @@ import java.util.List;
 
 public class ItemSurveyScanner extends Item {
 
-	public ItemSurveyScanner(final String s) {
+	public ItemSurveyScanner(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -36,13 +35,13 @@ public class ItemSurveyScanner extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.surveyscanner.1"));
 		tooltip.add(I18nUtil.resolveKey("desc.surveyscanner.2"));
 		tooltip.add(I18nUtil.resolveKey("desc.surveyscanner.3", (getMode(stack) == 0 ? I18nUtil.resolveKey("desc.surveyscanner.resources") : I18nUtil.resolveKey("desc.surveyscanner.structures"))));
 	}
 	
-	public int getMode(final ItemStack stack) {
+	public int getMode(ItemStack stack) {
 		if(!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
 			stack.getTagCompound().setInteger("mode", 0);
@@ -52,27 +51,27 @@ public class ItemSurveyScanner extends Item {
 		}
 	}
 	
-	public void setMode(final ItemStack stack, final int mode) {
+	public void setMode(ItemStack stack, int mode) {
 		if(!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		stack.getTagCompound().setInteger("mode", mode);
 	}
 	
-	public int getLevel(final IBlockState state, final int i) {
-		final Block b = state.getBlock();
+	public int getLevel(IBlockState state, int i) {
+		Block b = state.getBlock();
 		if(i == 0) {
 			if(b == ModBlocks.ore_bedrock_block) return 1000;
-			final ItemStack stack = ItemStackUtil.itemStackFrom(b, 1, b.getMetaFromState(state));
+			ItemStack stack = new ItemStack(b, 1, b.getMetaFromState(state));
 			if(stack.isEmpty())
 				return 0;
-			final int[] ids = OreDictionary.getOreIDs(stack);
+			int[] ids = OreDictionary.getOreIDs(stack);
 				
 			for(int j = 0; j < ids.length; j++) {
 					
-				final String s = OreDictionary.getOreName(ids[j]);
+				String s = OreDictionary.getOreName(ids[j]);
 					
-				if(s.length() > 3 && s.startsWith("ore"))
+				if(s.length() > 3 && s.substring(0, 3).equals("ore"))
 					return 1;
 			}
 		} else {
@@ -90,10 +89,10 @@ public class ItemSurveyScanner extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		if(player.isSneaking()) {
-			final int mode = getMode(stack);
+			int mode = getMode(stack);
 			setMode(stack, (mode == 1 ? 0 : 1));
 	    	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
@@ -104,14 +103,14 @@ public class ItemSurveyScanner extends Item {
 			
 		} else {
 
-			final int x = (int)player.posX;
-			final int y = (int)player.posY;
-			final int z = (int)player.posZ;
-			final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-			final int mode = getMode(stack);
+			int x = (int)player.posX;
+			int y = (int)player.posY;
+			int z = (int)player.posZ;
+			MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+			int mode = getMode(stack);
 			int level = 0;
-			final int range = 25;
-			final int samples = 500;
+			int range = 25;
+			int samples = 500;
 
 			int lx = 0;
 			int lz = 0;
@@ -137,7 +136,7 @@ public class ItemSurveyScanner extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		//Alcater: o_o DAMN an Easteregg
 		if(world.getBlockState(pos).getBlock() == ModBlocks.block_beryllium && Library.hasInventoryItem(player.inventory, ModItems.entanglement_kit)) {
     		player.changeDimension(1);

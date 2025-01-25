@@ -2,7 +2,6 @@ package com.hbm.blocks.machine;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IFluidVisualConnectable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -21,7 +20,7 @@ public class BlockReactor extends Block implements IFluidVisualConnectable {
 
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
-	public BlockReactor(final Material materialIn, final String s) {
+	public BlockReactor(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -30,12 +29,12 @@ public class BlockReactor extends Block implements IFluidVisualConnectable {
 	}
 
 	@Override
-	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(this != ModBlocks.reactor_element)
 			return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 
 		if(playerIn.isSneaking()) {
-			if(!state.getValue(ACTIVATED)) {
+			if(state.getValue(ACTIVATED) == false) {
 				worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true), 3);
 			} else {
 				worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false), 3);
@@ -48,27 +47,27 @@ public class BlockReactor extends Block implements IFluidVisualConnectable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return this.getDefaultState().withProperty(ACTIVATED, false);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, ACTIVATED);
+		return new BlockStateContainer(this, new IProperty[] { ACTIVATED });
 	}
 
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(ACTIVATED) ? 1 : 0;
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(ACTIVATED) == true ? 1 : 0;
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
+	public IBlockState getStateFromMeta(int meta) {
 		return meta == 0 ? this.getDefaultState().withProperty(ACTIVATED, false) : this.getDefaultState().withProperty(ACTIVATED, true);
 	}
 
 	@Override
-	public boolean shouldConnect(final Fluid f) {
+	public boolean shouldConnect(Fluid f) {
 		return this == ModBlocks.reactor_conductor;
 	}
 

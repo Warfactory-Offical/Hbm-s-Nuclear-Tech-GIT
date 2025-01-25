@@ -21,7 +21,7 @@ public class SmithingRecipeHandler implements IRecipeCategory<SmithingRecipe> {
 	
 	private SmithingRecipe currentDrawHack;
 	
-	public SmithingRecipeHandler(final IGuiHelper help){
+	public SmithingRecipeHandler(IGuiHelper help){
 		background = help.createDrawable(gui_rl, 43, 34, 133-43, 52-34);
 	}
 	
@@ -46,16 +46,16 @@ public class SmithingRecipeHandler implements IRecipeCategory<SmithingRecipe> {
 	}
 	
 	@Override
-	public void drawExtras(final Minecraft minecraft){
+	public void drawExtras(Minecraft minecraft){
 		if(currentDrawHack != null){
 			minecraft.fontRenderer.drawString(I18nUtil.resolveKey("desc.tier", currentDrawHack.tier), 30, -12, 0x40404040);
 		}
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final SmithingRecipe recipeWrapper, final IIngredients ingredients){
+	public void setRecipe(IRecipeLayout recipeLayout, SmithingRecipe recipeWrapper, IIngredients ingredients){
 		currentDrawHack = recipeWrapper;
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		guiItemStacks.init(0, true, 0, 0);
 		guiItemStacks.init(1, true, 36, 0);
 		guiItemStacks.init(2, false, 72, 0);

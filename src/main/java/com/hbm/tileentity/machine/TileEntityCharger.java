@@ -1,22 +1,22 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.energymk2.IBatteryItem;
+import api.hbm.energymk2.IEnergyReceiverMK2;
+import com.hbm.blocks.machine.MachineCharger;
+import com.hbm.lib.ForgeDirection;
+import com.hbm.tileentity.INBTPacketReceiver;
+import com.hbm.tileentity.TileEntityLoadedBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hbm.blocks.machine.MachineCharger;
-import com.hbm.tileentity.INBTPacketReceiver;
-import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IBatteryItem;
-import api.hbm.energy.IEnergyUser;
-import net.minecraft.util.ITickable;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.AxisAlignedBB;
-
-public class TileEntityCharger extends TileEntityLoadedBase implements ITickable, IEnergyUser, INBTPacketReceiver {
+public class TileEntityCharger extends TileEntityLoadedBase implements ITickable, IEnergyReceiverMK2, INBTPacketReceiver {
 	
 	public static final int range = 3;
 
@@ -33,13 +33,14 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 
 	@Override
 	public void update() {
+		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite();
 		
 		if(!world.isRemote) {
-			final MachineCharger c = (MachineCharger)world.getBlockState(pos).getBlock();
+			MachineCharger c = (MachineCharger)world.getBlockState(pos).getBlock();
 			this.maxChargeRate = c.maxThroughput;
 			this.pointingUp = c.pointingUp;
 
-			this.updateStandardConnections(world, pos);
+			this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY(), pos.getZ() + dir.offsetZ, dir);
 			
 			players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + (pointingUp ? range : -range), pos.getZ() + 1));
 			
@@ -47,13 +48,14 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 			totalEnergy = 0;
 			charge = 0;
 			
-			for(final EntityPlayer player : players) {
-				final InventoryPlayer inv = player.inventory;
+			for(EntityPlayer player : players) {
+				InventoryPlayer inv = player.inventory;
 				for(int i = 0; i < inv.getSizeInventory(); i ++){
 					
-					final ItemStack stack = inv.getStackInSlot(i);
-					if(stack != null && stack.getItem() instanceof IBatteryItem battery) {
-                        totalCapacity += battery.getMaxCharge();
+					ItemStack stack = inv.getStackInSlot(i);
+					if(stack != null && stack.getItem() instanceof IBatteryItem) {
+						IBatteryItem battery = (IBatteryItem) stack.getItem();
+						totalCapacity += battery.getMaxCharge();
 						totalEnergy += battery.getCharge(stack);
 						charge += Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
 					}
@@ -66,7 +68,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 				lastOp--;
 			}
 			
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("o", isOn);
 			data.setBoolean("u", pointingUp);
 			data.setLong("m", totalCapacity);
@@ -79,7 +81,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		this.isOn = nbt.getBoolean("o");
 		this.pointingUp = nbt.getBoolean("u");
 		this.totalCapacity = nbt.getLong("m");
@@ -99,7 +101,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 	}
 
 	@Override
-	public void setPower(final long power) { }
+	public void setPower(long power) { }
 	
 	@Override
 	public long transferPower(long power) {
@@ -109,16 +111,17 @@ public class TileEntityCharger extends TileEntityLoadedBase implements ITickable
 		
 		actualCharge = 0;
 		long chargeBudget = maxChargeRate;
-		for(final EntityPlayer player : players) {
-			final InventoryPlayer inv = player.inventory;
+		for(EntityPlayer player : players) {
+			InventoryPlayer inv = player.inventory;
 			for(int i = 0; i < inv.getSizeInventory(); i ++){
 
 				if(chargeBudget > 0 && power > 0){
-					final ItemStack stack = inv.getStackInSlot(i);
+					ItemStack stack = inv.getStackInSlot(i);
 					
-					if(stack != null && stack.getItem() instanceof IBatteryItem battery) {
-
-                        long toCharge = Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
+					if(stack != null && stack.getItem() instanceof IBatteryItem) {
+						IBatteryItem battery = (IBatteryItem) stack.getItem();
+						
+						long toCharge = Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
 						toCharge = Math.min(toCharge, chargeBudget);
 						toCharge = Math.min(toCharge, power);
 						battery.chargeBattery(stack, toCharge);

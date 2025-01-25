@@ -1,22 +1,16 @@
 package com.hbm.inventory.gui;
-import com.hbm.util.ItemStackUtil;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
+import com.hbm.blocks.ModBlocks;
+import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.items.tool.ItemSatInterface;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.SatLaserPacket;
-import com.hbm.blocks.ModBlocks;
-import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.render.RenderHelper;
 import com.hbm.saveddata.satellites.Satellite.InterfaceActions;
 import com.hbm.saveddata.satellites.Satellite.Interfaces;
-
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -26,12 +20,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class GUIScreenSatInterface extends GuiScreen {
 	
@@ -44,7 +41,7 @@ public class GUIScreenSatInterface extends GuiScreen {
     int x;
     int z;
     
-    public GUIScreenSatInterface(final EntityPlayer player) {
+    public GUIScreenSatInterface(EntityPlayer player) {
     	
     	this.player = player;
     }
@@ -52,7 +49,7 @@ public class GUIScreenSatInterface extends GuiScreen {
     public void updateScreen() {
     }
 
-    protected void mouseClicked(final int i, final int j, final int k) {
+    protected void mouseClicked(int i, int j, int k) {
     	
     	if(ItemSatInterface.currentSat != null && ItemSatInterface.currentSat.ifaceAcs.contains(InterfaceActions.CAN_CLICK)) {
 
@@ -60,14 +57,14 @@ public class GUIScreenSatInterface extends GuiScreen {
     			
     			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(HBMSoundHandler.techBleep, 1.0F));
     			
-    			final int x = this.x - guiLeft + i - 8 - 100;
-    			final int z = this.z - guiTop + j - 8 - 100;
+    			int x = this.x - guiLeft + i - 8 - 100;
+    			int z = this.z - guiTop + j - 8 - 100;
     			PacketDispatcher.wrapper.sendToServer(new SatLaserPacket(x, z, ItemSatInterface.getFreq(player.getHeldItemMainhand())));
     		}
     	}
     }
     
-    public void drawScreen(final int mouseX, final int mouseY, final float f)
+    public void drawScreen(int mouseX, int mouseY, float f)
     {
         this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
@@ -77,7 +74,7 @@ public class GUIScreenSatInterface extends GuiScreen {
     }
     
     @Override
-    public void drawBackground(final int tint) {
+    public void drawBackground(int tint) {
     	super.drawDefaultBackground();
     	super.drawBackground(tint);
     }
@@ -97,20 +94,20 @@ public class GUIScreenSatInterface extends GuiScreen {
 		return false;
 	}
 	
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
 
     	if(ItemSatInterface.currentSat != null && ItemSatInterface.currentSat.ifaceAcs.contains(InterfaceActions.SHOW_COORDS)) {
     		
     		if(i >= this.guiLeft + 8 && i < this.guiLeft + 208 && j >= this.guiTop + 8 && j < this.guiTop + 208 && player != null) {
 
-    			final int x = this.x - guiLeft + i - 8 - 100;
-    			final int z = this.z - guiTop + j - 8 - 100;
-    			drawHoveringText(Arrays.asList(x + " / " + z), i, j);
+    			int x = this.x - guiLeft + i - 8 - 100;
+    			int z = this.z - guiTop + j - 8 - 100;
+    			drawHoveringText(Arrays.asList(new String[] { x + " / " + z }), i, j);
     		}
     	}
 	}
 
-	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
+	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -154,12 +151,12 @@ public class GUIScreenSatInterface extends GuiScreen {
 	
 	private void drawMap() {
 		
-		final World world = player.world;
+		World world = player.world;
 		
 		for(int i = -100; i < 100; i++) {
-			final int x = this.x + i;
-			final int z = this.z + scanPos - 100;
-			final int y = world.getHeight(x, z) - 1;
+			int x = this.x + i;
+			int z = this.z + scanPos - 100;
+			int y = world.getHeight(x, z) - 1;
 			map[i + 100][scanPos] = world.getBlockState(new BlockPos(x, y, z)).getMaterial().getMaterialMapColor().colorValue;
 		}
 		prontMap();
@@ -168,15 +165,15 @@ public class GUIScreenSatInterface extends GuiScreen {
 	
 	private void drawScan() {
 		
-		final World world = player.world;
+		World world = player.world;
 		
 		for(int i = -100; i < 100; i++) {
-			final int x = this.x + i;
-			final int z = this.z + scanPos - 100;
+			int x = this.x + i;
+			int z = this.z + scanPos - 100;
 			
 			for(int j = (int)player.posY; j >= 0; j--) {
-				final IBlockState state = world.getBlockState(new BlockPos(x, j, z));
-				final int c = getColorFromBlock(ItemStackUtil.itemStackFrom(state.getBlock(), 1, state.getBlock().getMetaFromState(state)));
+				IBlockState state = world.getBlockState(new BlockPos(x, j, z));
+				int c = getColorFromBlock(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)));
 				
 				if(c != 0) {
 					map[i + 100][scanPos] = c;
@@ -188,13 +185,13 @@ public class GUIScreenSatInterface extends GuiScreen {
 		progresScan();
 	}
 	
-	private int getColorFromBlock(final ItemStack stack) {
+	private int getColorFromBlock(ItemStack stack) {
 		
 		if(stack == null || stack.getItem() == null || stack.isEmpty())
 			return 0;
 
 		int color = 0;
-		for(final int id : OreDictionary.getOreIDs(stack)){
+		for(int id : OreDictionary.getOreIDs(stack)){
 			color = BedrockOreRegistry.getOreScanColor(OreDictionary.getOreName(id));
 			if(color != 0) return color;
 		}
@@ -206,14 +203,14 @@ public class GUIScreenSatInterface extends GuiScreen {
 	
 	private void drawRadar() {
 		
-		final List<Entity> entities = player.world.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.posX - 100, 0, player.posZ - 100, player.posX + 100, 5000, player.posZ + 100));
+		List<Entity> entities = player.world.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.posX - 100, 0, player.posZ - 100, player.posX + 100, 5000, player.posZ + 100));
 		
 		if(!entities.isEmpty()) {
-			for(final Entity e : entities) {
+			for(Entity e : entities) {
 				
 				if(e.width * e.width * e.height >= 0.5D) {
-					final int x = (int)((e.posX - this.x) / ((double)100 * 2 + 1) * (200D - 8D)) - 4;
-					final int z = (int)((e.posZ - this.z) / ((double)100 * 2 + 1) * (200D - 8D)) - 4 - 9;
+					int x = (int)((e.posX - this.x) / ((double)100 * 2 + 1) * (200D - 8D)) - 4;
+					int z = (int)((e.posZ - this.z) / ((double)100 * 2 + 1) * (200D - 8D)) - 4 - 9;
 					
 					int t = 5;
 					
@@ -256,7 +253,7 @@ public class GUIScreenSatInterface extends GuiScreen {
 		drawTexturedModalRect((this.width - 121) / 2, (this.height - 12) / 2, 0, 216, 121, 12);
 	}
 	
-    protected void keyTyped(final char p_73869_1_, final int p_73869_2_)
+    protected void keyTyped(char p_73869_1_, int p_73869_2_)
     {
         if (p_73869_2_ == 1 || p_73869_2_ == this.mc.gameSettings.keyBindInventory.getKeyCode())
         {

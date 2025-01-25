@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -116,8 +115,8 @@ public class HbmShaderManager2 {
     	GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER);
     	GL11.glPopMatrix();
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, ClientProxy.AUX_GL_BUFFER2);
-		final Matrix4f view = new Matrix4f();
-		final Matrix4f proj = new Matrix4f();
+		Matrix4f view = new Matrix4f();
+		Matrix4f proj = new Matrix4f();
 		view.load(ClientProxy.AUX_GL_BUFFER);
 		proj.load(ClientProxy.AUX_GL_BUFFER2);
 		ClientProxy.AUX_GL_BUFFER.rewind();
@@ -148,7 +147,7 @@ public class HbmShaderManager2 {
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
 			GLCompat.framebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthTexture, 0);
-			final int bruh = OpenGlHelper.glCheckFramebufferStatus(OpenGlHelper.GL_FRAMEBUFFER);
+			int bruh = OpenGlHelper.glCheckFramebufferStatus(OpenGlHelper.GL_FRAMEBUFFER);
 			if(bruh != OpenGlHelper.GL_FRAMEBUFFER_COMPLETE){
 				System.out.println("Failed to create depth texture framebuffer! This is an error!");
 			}
@@ -199,7 +198,7 @@ public class HbmShaderManager2 {
 		Minecraft.getMinecraft().getFramebuffer().bindFramebuffer(true);
 	}
 	
-	public static void distort(final float strength, final Runnable render){
+	public static void distort(float strength, Runnable render){
 		distortionBuffer.bindFramebuffer(false);
 		ResourceManager.heat_distortion_new.use();
 		GLCompat.uniform1f(GLCompat.getUniformLocation(ResourceManager.heat_distortion_new.getShaderId(), "amount"), strength);
@@ -222,9 +221,8 @@ public class HbmShaderManager2 {
 			renderFboTriangle(bloomBuffers[i*2], bloomBuffers[i*2+1].framebufferWidth, bloomBuffers[i*2+1].framebufferHeight);
 			
 			GlStateManager.blendFunc(SourceFactor.ONE, DestFactor.ONE);
-			final int tWidth;
-            final int tHeight;
-            if(i == 0){
+			int tWidth, tHeight;
+			if(i == 0){
 				Minecraft.getMinecraft().getFramebuffer().bindFramebuffer(true);
 				tWidth = Minecraft.getMinecraft().getFramebuffer().framebufferWidth;
 				tHeight = Minecraft.getMinecraft().getFramebuffer().framebufferHeight;
@@ -282,7 +280,7 @@ public class HbmShaderManager2 {
 	
 	public static void recreateBloomFBOs(){
 		if(bloomBuffers != null)
-			for(final Framebuffer buf : bloomBuffers){
+			for(Framebuffer buf : bloomBuffers){
 				buf.deleteFramebuffer();
 			}
 		if(bloomData != null)
@@ -321,11 +319,11 @@ public class HbmShaderManager2 {
 		}
 	}
 	
-	public static void renderFboTriangle(final Framebuffer buf){
+	public static void renderFboTriangle(Framebuffer buf){
 		renderFboTriangle(buf, buf.framebufferWidth, buf.framebufferHeight);
 	}
 	
-	public static void renderFboTriangle(final Framebuffer buf, final int width, final int height){
+	public static void renderFboTriangle(Framebuffer buf, int width, int height){
 		GlStateManager.colorMask(true, true, true, false);
         GlStateManager.disableDepth();
         GlStateManager.depthMask(false);
@@ -338,8 +336,8 @@ public class HbmShaderManager2 {
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         buf.bindFramebufferTexture();
-        final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder bufferbuilder = tessellator.getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX);
         bufferbuilder.pos(-1, -1, 0.0D).tex(0, 0).endVertex();
         bufferbuilder.pos(3, -1, 0.0D).tex(2, 0).endVertex();
@@ -392,21 +390,21 @@ public class HbmShaderManager2 {
         buf = new Framebuffer(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, false);
     }*/
 	
-    public static Shader loadShader(final ResourceLocation file) {
+    public static Shader loadShader(ResourceLocation file) {
     	return loadShader(file, null);
     }
     
-	public static Shader loadShader(final ResourceLocation file, final Consumer<Integer> attribBinder) {
+	public static Shader loadShader(ResourceLocation file, Consumer<Integer> attribBinder) {
 		if(!GeneralConfig.useShaders2){
 			return new Shader(0);
 		}
 		int vertexShader = 0;
 		int fragmentShader = 0;
 		try {
-			final int program = GLCompat.createProgram();
+			int program = GLCompat.createProgram();
 			
 			vertexShader = GLCompat.createShader(GLCompat.GL_VERTEX_SHADER);
-			GLCompat.shaderSource(vertexShader, readFileToBuf(new ResourceLocation(file.getNamespace(), file.getPath() + ".vert")));
+			GLCompat.shaderSource(vertexShader, readFileToBuf(new ResourceLocation(file.getNamespace(), file.getResourcePath() + ".vert")));
 			GLCompat.compileShader(vertexShader);
 			if(GLCompat.getShaderi(vertexShader, GLCompat.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 				MainRegistry.logger.error(GLCompat.getShaderInfoLog(vertexShader, GLCompat.GL_INFO_LOG_LENGTH));
@@ -414,7 +412,7 @@ public class HbmShaderManager2 {
 			}
 			
 			fragmentShader = GLCompat.createShader(GLCompat.GL_FRAGMENT_SHADER);
-			GLCompat.shaderSource(fragmentShader, readFileToBuf(new ResourceLocation(file.getNamespace(), file.getPath() + ".frag")));
+			GLCompat.shaderSource(fragmentShader, readFileToBuf(new ResourceLocation(file.getNamespace(), file.getResourcePath() + ".frag")));
 			GLCompat.compileShader(fragmentShader);
 			if(GLCompat.getShaderi(fragmentShader, GLCompat.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 				MainRegistry.logger.error(GLCompat.getShaderInfoLog(fragmentShader, GLCompat.GL_INFO_LOG_LENGTH));
@@ -435,7 +433,7 @@ public class HbmShaderManager2 {
 			GLCompat.deleteShader(fragmentShader);
 			
 			return new Shader(program);
-		} catch(final Exception x) {
+		} catch(Exception x) {
 			GLCompat.deleteShader(vertexShader);
 			GLCompat.deleteShader(fragmentShader);
 			x.printStackTrace();
@@ -443,11 +441,11 @@ public class HbmShaderManager2 {
 		return new Shader(0);
 	}
 
-	private static ByteBuffer readFileToBuf(final ResourceLocation file) throws IOException {
-		final InputStream in = Minecraft.getMinecraft().getResourceManager().getResource(file).getInputStream();
-		final byte[] bytes = IOUtils.toByteArray(in);
+	private static ByteBuffer readFileToBuf(ResourceLocation file) throws IOException {
+		InputStream in = Minecraft.getMinecraft().getResourceManager().getResource(file).getInputStream();
+		byte[] bytes = IOUtils.toByteArray(in);
 		IOUtils.closeQuietly(in);
-		final ByteBuffer buf = BufferUtils.createByteBuffer(bytes.length);
+		ByteBuffer buf = BufferUtils.createByteBuffer(bytes.length);
 		buf.put(bytes);
 		buf.rewind();
 		return buf;
@@ -459,15 +457,17 @@ public class HbmShaderManager2 {
 	
 	public static class Shader {
 
-		private final int shader;
-		private final List<Uniform> uniforms = new ArrayList<>(2);
+		private int shader;
+		private List<Uniform> uniforms = new ArrayList<>(2);
 		
-		public Shader(final int shader) {
+		public Shader(int shader) {
 			this.shader = shader;
 		}
 		
-		public Shader withUniforms(final Uniform... uniforms){
-            Collections.addAll(this.uniforms, uniforms);
+		public Shader withUniforms(Uniform... uniforms){
+			for(Uniform u : uniforms){
+				this.uniforms.add(u);
+			}
 			return this;
 		}
 		
@@ -475,7 +475,7 @@ public class HbmShaderManager2 {
 			if(shader == 0)
 				return;
 			GLCompat.useProgram(shader);
-			for(final Uniform u : uniforms){
+			for(Uniform u : uniforms){
 				u.apply(this);
 			}
 		}
@@ -484,43 +484,43 @@ public class HbmShaderManager2 {
 			return shader;
 		}
 		
-		public void uniform1i(final String name, final int v0){
+		public void uniform1i(String name, int v0){
 			if(shader == 0)
 				return;
 			GLCompat.uniform1i(GLCompat.getUniformLocation(shader, name), v0);
 		}
 		
-		public void uniform1f(final String name, final float v0){
+		public void uniform1f(String name, float v0){
 			if(shader == 0)
 				return;
 			GLCompat.uniform1f(GLCompat.getUniformLocation(shader, name), v0);
 		}
 		
-		public void uniform2f(final String name, final float v0, final float v1){
+		public void uniform2f(String name, float v0, float v1){
 			if(shader == 0)
 				return;
 			GLCompat.uniform2f(GLCompat.getUniformLocation(shader, name), v0, v1);
 		}
 		
-		public void uniform3f(final String name, final float v0, final float v1, final float v2){
+		public void uniform3f(String name, float v0, float v1, float v2){
 			if(shader == 0)
 				return;
 			GLCompat.uniform3f(GLCompat.getUniformLocation(shader, name), v0, v1, v2);
 		}
 		
-		public void uniform4f(final String name, final float v0, final float v1, final float v2, final float v3){
+		public void uniform4f(String name, float v0, float v1, float v2, float v3){
 			if(shader == 0)
 				return;
 			GLCompat.uniform4f(GLCompat.getUniformLocation(shader, name), v0, v1, v2, v3);
 		}
 		
-		public void uniformMatrix3(final String name, final boolean transpose, final FloatBuffer matrix){
+		public void uniformMatrix3(String name, boolean transpose, FloatBuffer matrix){
 			if(shader == 0)
 				return;
 			GLCompat.uniformMatrix3(GLCompat.getUniformLocation(shader, name), transpose, matrix);
 		}
 		
-		public void uniformMatrix4(final String name, final boolean transpose, final FloatBuffer matrix){
+		public void uniformMatrix4(String name, boolean transpose, FloatBuffer matrix){
 			if(shader == 0)
 				return;
 			GLCompat.uniformMatrix4(GLCompat.getUniformLocation(shader, name), transpose, matrix);

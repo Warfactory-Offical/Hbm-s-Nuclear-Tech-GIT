@@ -18,7 +18,7 @@ public class WasteDrumRecipeHandler implements IRecipeCategory<WasteDrumRecipe> 
 	
 	protected final IDrawable background;
 	
-	public WasteDrumRecipeHandler(final IGuiHelper help) {
+	public WasteDrumRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 38, 29, 99, 27);
 	}
 	
@@ -43,8 +43,8 @@ public class WasteDrumRecipeHandler implements IRecipeCategory<WasteDrumRecipe> 
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final WasteDrumRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, WasteDrumRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 5, 5);
 		guiItemStacks.init(1, false, 78, 6);

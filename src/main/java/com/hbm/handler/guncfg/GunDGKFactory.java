@@ -7,7 +7,7 @@ public class GunDGKFactory {
 
 	public static BulletConfiguration getDGKConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		bullet.ammo = ModItems.ammo_dgk;
 		return bullet;
 	}

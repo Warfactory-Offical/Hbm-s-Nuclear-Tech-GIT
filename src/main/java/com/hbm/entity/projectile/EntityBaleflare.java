@@ -59,7 +59,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	/** The amount of knockback an arrow applies when it hits a mob. */
 	private int knockbackStrength;
 
-	public EntityBaleflare(final World p_i1753_1_)
+	public EntityBaleflare(World p_i1753_1_)
     {
         super(p_i1753_1_);
         if(p_i1753_1_.isRemote)
@@ -67,7 +67,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
         this.setSize(0.5F, 0.5F);
     }
 
-	public EntityBaleflare(final World p_i1754_1_, final double p_i1754_2_, final double p_i1754_4_, final double p_i1754_6_)
+	public EntityBaleflare(World p_i1754_1_, double p_i1754_2_, double p_i1754_4_, double p_i1754_6_)
     {
         super(p_i1754_1_);
         if(p_i1754_1_.isRemote)
@@ -76,7 +76,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
         this.setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
     }
 
-	public EntityBaleflare(final World p_i1755_1_, final EntityLivingBase p_i1755_2_, final EntityLivingBase p_i1755_3_, final float p_i1755_4_, final float p_i1755_5_)
+	public EntityBaleflare(World p_i1755_1_, EntityLivingBase p_i1755_2_, EntityLivingBase p_i1755_3_, float p_i1755_4_, float p_i1755_5_)
     {
         super(p_i1755_1_);
         if(p_i1755_1_.isRemote)
@@ -89,24 +89,24 @@ public class EntityBaleflare extends Entity implements IProjectile {
         }
 
         this.posY = p_i1755_2_.posY + p_i1755_2_.getEyeHeight() - 0.10000000149011612D;
-        final double d0 = p_i1755_3_.posX - p_i1755_2_.posX;
-        final double d1 = p_i1755_3_.getEntityBoundingBox().minY + p_i1755_3_.height / 3.0F - this.posY;
-        final double d2 = p_i1755_3_.posZ - p_i1755_2_.posZ;
-        final double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+        double d0 = p_i1755_3_.posX - p_i1755_2_.posX;
+        double d1 = p_i1755_3_.getEntityBoundingBox().minY + p_i1755_3_.height / 3.0F - this.posY;
+        double d2 = p_i1755_3_.posZ - p_i1755_2_.posZ;
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
         if (d3 >= 1.0E-7D)
         {
-            final float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            final float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-            final double d4 = d0 / d3;
-            final double d5 = d2 / d3;
+            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+            float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+            double d4 = d0 / d3;
+            double d5 = d2 / d3;
             this.setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
-            final float f4 = (float)d3 * 0.2F;
+            float f4 = (float)d3 * 0.2F;
             this.shoot(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
         }
     }
 
-	public EntityBaleflare(final World p_i1756_1_, final EntityLivingBase p_i1756_2_, final float p_i1756_3_, final EnumHand hand)
+	public EntityBaleflare(World p_i1756_1_, EntityLivingBase p_i1756_2_, float p_i1756_3_, EnumHand hand)
     {
         super(p_i1756_1_);
         if(p_i1756_1_.isRemote)
@@ -139,7 +139,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
         this.shoot(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
     }
 
-	public EntityBaleflare(final World world, final int x, final int y, final int z, final double mx, final double my, final double mz, final double grav) {
+	public EntityBaleflare(World world, int x, int y, int z, double mx, double my, double mz, double grav) {
         super(world);
     	this.posX = x + 0.5F;
     	this.posY = y + 0.5F;
@@ -162,8 +162,8 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	 * direction.
 	 */
 	@Override
-	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, final float p_70186_7_, final float p_70186_8_) {
-		final float f2 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
+	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_,float p_70186_8_) {
+		float f2 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
 		p_70186_1_ /= f2;
 		p_70186_3_ /= f2;
 		p_70186_5_ /= f2;
@@ -179,7 +179,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 		this.motionX = p_70186_1_;
 		this.motionY = p_70186_3_;
 		this.motionZ = p_70186_5_;
-		final float f3 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
+		float f3 = MathHelper.sqrt(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
 		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(p_70186_1_, p_70186_5_) * 180.0D / Math.PI);
 		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(p_70186_3_, f3) * 180.0D / Math.PI);
 		this.ticksInGround = 0;
@@ -191,7 +191,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setPositionAndRotationDirect(final double p_70056_1_, final double p_70056_3_, final double p_70056_5_, final float p_70056_7_, final float p_70056_8_, final int p_70056_9_, final boolean b) {
+	public void setPositionAndRotationDirect(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_, boolean b) {
 		this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
 		this.setRotation(p_70056_7_, p_70056_8_);
 	}
@@ -201,13 +201,13 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setVelocity(final double p_70016_1_, final double p_70016_3_, final double p_70016_5_) {
+	public void setVelocity(double p_70016_1_, double p_70016_3_, double p_70016_5_) {
 		this.motionX = p_70016_1_;
 		this.motionY = p_70016_3_;
 		this.motionZ = p_70016_5_;
 
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-			final float f = MathHelper.sqrt(p_70016_1_ * p_70016_1_ + p_70016_5_ * p_70016_5_);
+			float f = MathHelper.sqrt(p_70016_1_ * p_70016_1_ + p_70016_5_ * p_70016_5_);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(p_70016_1_, p_70016_5_) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(p_70016_3_, f) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch;
@@ -227,17 +227,17 @@ public class EntityBaleflare extends Entity implements IProjectile {
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            final float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(this.motionY, f) * 180.0D / Math.PI);
         }
 
-        final BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
-        final IBlockState blockstate = world.getBlockState(pos);
+        BlockPos pos = new BlockPos(this.field_145791_d, this.field_145792_e, this.field_145789_f);
+        IBlockState blockstate = world.getBlockState(pos);
 
         if (blockstate.getMaterial() != Material.AIR)
         {
-        	final AxisAlignedBB axisalignedbb = blockstate.getCollisionBoundingBox(this.world, pos);
+        	AxisAlignedBB axisalignedbb = blockstate.getCollisionBoundingBox(this.world, pos);
         	
             if (axisalignedbb != null && axisalignedbb.contains(new Vec3d(this.posX, this.posY, this.posZ)))
             {
@@ -252,7 +252,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 
         if (this.inGround)
         {
-            final int j = blockstate.getBlock().getMetaFromState(blockstate);
+            int j = blockstate.getBlock().getMetaFromState(blockstate);
 
             if (blockstate.getBlock() == this.field_145790_g && j == this.inData)
             {
@@ -262,7 +262,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
                 {
                     if (!this.world.isRemote)
                     {
-            			final EntityBalefire bf = new EntityBalefire(world);
+            			EntityBalefire bf = new EntityBalefire(world);
             			bf.posX = this.posX;
             			bf.posY = this.posY;
             			bf.posZ = this.posZ;
@@ -298,24 +298,24 @@ public class EntityBaleflare extends Entity implements IProjectile {
             }
 
             Entity entity = null;
-            final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(this.motionX, this.motionY, this.motionZ).grow(1.0D));
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(this.motionX, this.motionY, this.motionZ).grow(1.0D));
             double d0 = 0.0D;
             int i;
             float f1;
 
             for (i = 0; i < list.size(); ++i)
             {
-                final Entity entity1 = list.get(i);
+                Entity entity1 = (Entity)list.get(i);
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f1 = 0.3F;
-                    final AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(f1);
-                    final RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(f1);
+                    RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
                     {
-                        final double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
+                        double d1 = vec31.distanceTo(movingobjectposition1.hitVec);
 
                         if (d1 < d0 || d0 == 0.0D)
                         {
@@ -331,8 +331,9 @@ public class EntityBaleflare extends Entity implements IProjectile {
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer entityplayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
             {
+                EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
 
                 if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
                 {
@@ -373,8 +374,9 @@ public class EntityBaleflare extends Entity implements IProjectile {
 
                     if (movingobjectposition.entityHit.attackEntityFrom(damagesource, k))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase entitylivingbase)
+                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
                         {
+                            EntityLivingBase entitylivingbase = (EntityLivingBase)movingobjectposition.entityHit;
 
                             if (this.knockbackStrength > 0)
                             {
@@ -401,8 +403,8 @@ public class EntityBaleflare extends Entity implements IProjectile {
                 }
                 else
                 {
-                	final BlockPos newPos = movingobjectposition.getBlockPos();
-                	final IBlockState newState = world.getBlockState(newPos);
+                	BlockPos newPos = movingobjectposition.getBlockPos();
+                	IBlockState newState = world.getBlockState(newPos);
                 	
                     this.field_145791_d = movingobjectposition.getBlockPos().getX();
                     this.field_145792_e = movingobjectposition.getBlockPos().getY();
@@ -436,6 +438,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 
             for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
+                ;
             }
 
             while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -496,7 +499,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	public void writeEntityToNBT(final NBTTagCompound p_70014_1_) {
+	public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
 		p_70014_1_.setShort("xTile", (short) this.field_145791_d);
 		p_70014_1_.setShort("yTile", (short) this.field_145792_e);
 		p_70014_1_.setShort("zTile", (short) this.field_145789_f);
@@ -513,7 +516,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	public void readEntityFromNBT(final NBTTagCompound p_70037_1_) {
+	public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
 		this.field_145791_d = p_70037_1_.getShort("xTile");
 		this.field_145792_e = p_70037_1_.getShort("yTile");
 		this.field_145789_f = p_70037_1_.getShort("zTile");
@@ -543,7 +546,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 		return false;
 	}
 
-	public void setDamage(final double p_70239_1_) {
+	public void setDamage(double p_70239_1_) {
 		this.damage = p_70239_1_;
 	}
 
@@ -554,7 +557,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	/**
 	 * Sets the amount of knockback the arrow applies when it hits a mob.
 	 */
-	public void setKnockbackStrength(final int p_70240_1_) {
+	public void setKnockbackStrength(int p_70240_1_) {
 		this.knockbackStrength = p_70240_1_;
 	}
 
@@ -570,7 +573,7 @@ public class EntityBaleflare extends Entity implements IProjectile {
 	 * Whether the arrow has a stream of critical hit particles flying behind
 	 * it.
 	 */
-	public void setIsCritical(final boolean crit) {
+	public void setIsCritical(boolean crit) {
 		this.getDataManager().set(CRITICAL, crit);
 	}
 

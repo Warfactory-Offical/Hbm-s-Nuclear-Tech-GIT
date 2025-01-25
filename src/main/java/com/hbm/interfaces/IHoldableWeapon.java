@@ -13,8 +13,8 @@ public interface IHoldableWeapon {
 	public Crosshair getCrosshair();
 	
 	@SideOnly(Side.CLIENT)
-	public default boolean hasCustomHudElement(){return false;}
-
-    @SideOnly(Side.CLIENT)
-	public default void renderHud(final ScaledResolution res, final GuiIngame gui, final ItemStack stack, final float partialTicks){}
+	public default boolean hasCustomHudElement(){return false;};
+	
+	@SideOnly(Side.CLIENT)
+	public default void renderHud(ScaledResolution res, GuiIngame gui, ItemStack stack, float partialTicks){};
 }

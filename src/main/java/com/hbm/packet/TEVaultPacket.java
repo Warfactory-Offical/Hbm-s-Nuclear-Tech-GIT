@@ -28,7 +28,7 @@ public class TEVaultPacket implements IMessage {
 
 	}
 
-	public TEVaultPacket(final int x, final int y, final int z, final int state, final long sysTime, final int type) {
+	public TEVaultPacket(int x, int y, int z, int state, long sysTime, int type) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -38,7 +38,7 @@ public class TEVaultPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -48,7 +48,7 @@ public class TEVaultPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -61,25 +61,27 @@ public class TEVaultPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final TEVaultPacket m, final MessageContext ctx) {
-			final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+		public IMessage onMessage(TEVaultPacket m, MessageContext ctx) {
+			TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 			try {
-				if (te != null && te instanceof TileEntityVaultDoor vault) {
+				if (te != null && te instanceof TileEntityVaultDoor) {
 
-                    vault.state = IDoor.DoorState.values()[m.state];
+					TileEntityVaultDoor vault = (TileEntityVaultDoor) te;
+					vault.state = IDoor.DoorState.values()[m.state];
 					if(m.sysTime == 1)
 						vault.sysTime = System.currentTimeMillis();
 					vault.type = m.type;
 				}
 				
-				if (te != null && te instanceof TileEntityBlastDoor vault) {
+				if (te != null && te instanceof TileEntityBlastDoor) {
 
-                    vault.state = IDoor.DoorState.values()[m.state];
+					TileEntityBlastDoor vault = (TileEntityBlastDoor) te;
+					vault.state = IDoor.DoorState.values()[m.state];
 					if(m.sysTime == 1)
 						vault.sysTime = System.currentTimeMillis();
 				}
-			} catch (final Exception x) {
+			} catch (Exception x) {
 			}
 			return null;
 		}

@@ -1,15 +1,10 @@
 package com.hbm.blocks;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import com.hbm.handler.MultiblockHandlerXR;
+import com.hbm.interfaces.ICopiable;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.InventoryHelper;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -17,24 +12,37 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockDummyable extends BlockContainer {
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public abstract class BlockDummyable extends BlockContainer implements ICustomBlockHighlight, ICopiable {
 
 	//Drillgon200: I'm far to lazy to figure out what all the meta values should be translated to in properties
 	public static final PropertyInteger META = PropertyInteger.create("meta", 0, 15);
 	
-	public BlockDummyable(final Material materialIn, final String s) {
+	public BlockDummyable(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -57,7 +65,7 @@ public abstract class BlockDummyable extends BlockContainer {
 	public static boolean safeRem = false;
 	
 	@Override
-	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		if(world.isRemote || safeRem)
     		return;
     	
@@ -67,15 +75,15 @@ public abstract class BlockDummyable extends BlockContainer {
     	if(metadata >= extra)
     		metadata -= extra;
     	
-    	final ForgeDirection dir = ForgeDirection.getOrientation(metadata).getOpposite();
-    	final Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock();
+    	ForgeDirection dir = ForgeDirection.getOrientation(metadata).getOpposite();
+    	Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock();
     	if(b.getClass() != this.getClass()) {
     		world.setBlockToAir(pos);
     	}
 	}
 	
 	@Override
-	public void updateTick(final World world, final BlockPos pos, final IBlockState state, final Random rand) {
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		super.updateTick(world, pos, state, rand);
 		if(world.isRemote)
     		return;
@@ -86,24 +94,24 @@ public abstract class BlockDummyable extends BlockContainer {
     	if(metadata >= extra)
     		metadata -= extra;
     	
-    	final ForgeDirection dir = ForgeDirection.getOrientation(metadata).getOpposite();
-    	final Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock();
+    	ForgeDirection dir = ForgeDirection.getOrientation(metadata).getOpposite();
+    	Block b = world.getBlockState(new BlockPos(pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ)).getBlock();
     	
     	if(b.getClass() != this.getClass()) {
     		world.setBlockToAir(pos);
     	}
 	}
 	
-	public int[] findCore(final IBlockAccess world, final int x, final int y, final int z) {
+	public int[] findCore(IBlockAccess world, int x, int y, int z) {
     	positions.clear();
     	return findCoreRec(world, x, y, z);
     }
     
     List<BlockPos> positions = new ArrayList<BlockPos>();
-    public int[] findCoreRec(final IBlockAccess world, final int x, final int y, final int z) {
+    public int[] findCoreRec(IBlockAccess world, int x, int y, int z) {
     	
-    	final BlockPos pos = new BlockPos(x, y, z);
-    	final IBlockState state = world.getBlockState(pos);
+    	BlockPos pos = new BlockPos(x, y, z);
+    	IBlockState state = world.getBlockState(pos);
     	
     	if(state.getBlock().getClass() != this.getClass())
     		return null;
@@ -121,7 +129,7 @@ public abstract class BlockDummyable extends BlockContainer {
     	if(positions.contains(pos))
     		return null;
 
-    	final ForgeDirection dir = ForgeDirection.getOrientation(metadata).getOpposite();
+    	ForgeDirection dir = ForgeDirection.getOrientation(metadata).getOpposite();
     	
     	positions.add(pos);
     	
@@ -129,16 +137,17 @@ public abstract class BlockDummyable extends BlockContainer {
     }
     
     @Override
-    public void onBlockPlacedBy(final World world, BlockPos pos, final IBlockState state, final EntityLivingBase player, final ItemStack itemStack) {
-    	if(!(player instanceof EntityPlayer pl))
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
+    	if(!(player instanceof EntityPlayer))
 			return;
 		
     	world.setBlockToAir(pos);
-
-        final EnumHand hand = pl.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+    	
+		EntityPlayer pl = (EntityPlayer) player;
+		EnumHand hand = pl.getHeldItemMainhand() == itemStack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 		
-		final int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		final int o = -getOffset();
+		int i = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		int o = -getOffset();
 		pos = new BlockPos(pos.getX(), pos.getY() + getHeightOffset(), pos.getZ());
 		
 		ForgeDirection dir = ForgeDirection.NORTH;
@@ -162,20 +171,20 @@ public abstract class BlockDummyable extends BlockContainer {
 		
 		dir = getDirModified(dir);
 		
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		
 		if(!checkRequirement(world, x, y, z, dir, o)) {
 			if(!pl.capabilities.isCreativeMode) {
-				final ItemStack stack = pl.inventory.mainInventory.get(pl.inventory.currentItem);
-				final Item item = Item.getItemFromBlock(this);
+				ItemStack stack = pl.inventory.mainInventory.get(pl.inventory.currentItem);
+				Item item = Item.getItemFromBlock(this);
 				
 				if(stack.isEmpty()) {
-					pl.inventory.mainInventory.set(pl.inventory.currentItem, ItemStackUtil.itemStackFrom(this));
+					pl.inventory.mainInventory.set(pl.inventory.currentItem, new ItemStack(this));
 				} else {
 					if(stack.getItem() != item || stack.getCount() == stack.getMaxStackSize()) {
-						pl.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(this));
+						pl.inventory.addItemStackToInventory(new ItemStack(this));
 					} else {
 						pl.getHeldItem(hand).grow(1);
 					}
@@ -195,12 +204,12 @@ public abstract class BlockDummyable extends BlockContainer {
 
     	super.onBlockPlacedBy(world, pos, state, player, itemStack);
     }
-    protected boolean standardOpenBehavior(final World world, final int x, final int y, final int z, final EntityPlayer player, final int id) {
+    protected boolean standardOpenBehavior(World world, int x, int y, int z, EntityPlayer player, int id) {
 		
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			final int[] pos = this.findCore(world, x, y, z);
+			int[] pos = this.findCore(world, x, y, z);
 
 			if(pos == null)
 				return false;
@@ -211,26 +220,26 @@ public abstract class BlockDummyable extends BlockContainer {
 			return true;
 		}
 	}
-    protected ForgeDirection getDirModified(final ForgeDirection dir) {
+    protected ForgeDirection getDirModified(ForgeDirection dir) {
 		return dir;
 	}
     
-    protected boolean checkRequirement(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
+    protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		return MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir);
 	}
 	
-	protected void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
+	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), this, dir);
 	}
 	
 	//"upgrades" regular dummy blocks to ones with the extra flag
-	public void makeExtra(final World world, final int x, final int y, final int z) {
-		final BlockPos pos = new BlockPos(x, y, z);
+	public void makeExtra(World world, int x, int y, int z) {
+		BlockPos pos = new BlockPos(x, y, z);
 		if(world.getBlockState(pos).getBlock() != this)
 			return;
 		
-		final int meta = world.getBlockState(pos).getValue(META);
+		int meta = world.getBlockState(pos).getValue(META);
 		
 		if(meta > 5)
 			return;
@@ -242,12 +251,12 @@ public abstract class BlockDummyable extends BlockContainer {
 	}
 	
 	//Drillgon200: Removes the extra. I could have sworn there was already a method for this, but I can't find it.
-	public void removeExtra(final World world, final int x, final int y, final int z) {
-		final BlockPos pos = new BlockPos(x, y, z);
+	public void removeExtra(World world, int x, int y, int z) {
+		BlockPos pos = new BlockPos(x, y, z);
 		if(world.getBlockState(pos).getBlock() != this)
 			return;
 		
-		final int meta = world.getBlockState(pos).getValue(META);
+		int meta = world.getBlockState(pos).getValue(META);
 		
 		if(meta <= 5 || meta >= 12)
 			return;
@@ -259,12 +268,12 @@ public abstract class BlockDummyable extends BlockContainer {
 	}
 		
 	//checks if the dummy metadata is within the extra range
-	public boolean hasExtra(final int meta) {
+	public boolean hasExtra(int meta) {
 		return meta > 5 && meta < 12;
 	}
 	
 	@Override
-	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		int i = state.getValue(META);
 		if(i >= 12) {
 			//ForgeDirection d = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z) - offset);
@@ -274,8 +283,8 @@ public abstract class BlockDummyable extends BlockContainer {
 	    	if(i >= extra)
 	    		i -= extra;
 
-	    	final ForgeDirection dir = ForgeDirection.getOrientation(i).getOpposite();
-			final int[] pos1 = findCore(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ);
+	    	ForgeDirection dir = ForgeDirection.getOrientation(i).getOpposite();
+			int[] pos1 = findCore(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ);
 			
 			if(pos1 != null) {
 
@@ -286,48 +295,77 @@ public abstract class BlockDummyable extends BlockContainer {
 		InventoryHelper.dropInventoryItems(world, pos, world.getTileEntity(pos));
 		super.breakBlock(world, pos, state);
 	}
+
+	public boolean useDetailedHitbox() {
+		return !bounding.isEmpty();
+	}
+
+	public List<AxisAlignedBB> bounding = new ArrayList();
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean isActualState) {
+
+		if(!this.useDetailedHitbox()) {
+			super.addCollisionBoxToList(state, world, pos, entityBox, list, entityIn, isActualState);
+			return;
+		}
+
+		int[] corePos = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+
+		if(corePos == null)
+			return;
+		IBlockState coreState = world.getBlockState(new BlockPos(corePos[0], corePos[1], corePos[2]));
+
+		for(AxisAlignedBB aabb :this.bounding) {
+			AxisAlignedBB boxlet = getAABBRotationOffset(aabb, corePos[0] + 0.5, corePos[1], corePos[2] + 0.5, ForgeDirection.getOrientation(coreState.getBlock().getMetaFromState(state) - this.offset).getRotation(ForgeDirection.UP));
+
+			if(entityBox.intersects(boxlet)) {
+				list.add(boxlet);
+			}
+		}
+	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	@Override
-	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, META);
+		return new BlockStateContainer(this, new IProperty[]{META});
 	}
 	
 	@Override
-	public int getMetaFromState(final IBlockState state) {
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(META);
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
+	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(META, meta);
 	}
 	
@@ -336,6 +374,81 @@ public abstract class BlockDummyable extends BlockContainer {
 	
 	public int getHeightOffset() {
 		return 0;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldDrawHighlight(World world, BlockPos pos) {
+		return !this.bounding.isEmpty();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawHighlight(DrawBlockHighlightEvent event, World world, BlockPos pos) {
+
+		int[] posC = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+		if(posC == null) return;
+
+		int coreX = posC[0];
+		int coreY = posC[1];
+		int coreZ = posC[2];
+
+		EntityPlayer player = event.getPlayer();
+		float interp = event.getPartialTicks();
+		double dX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) interp;
+		double dY = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) interp;
+		double dZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)interp;
+		float exp = 0.002F;
+
+		int meta = world.getBlockState(new BlockPos(coreX, coreY, coreZ)).getBlock().getMetaFromState(world.getBlockState(new BlockPos(coreX, coreY, coreZ)));
+
+		ICustomBlockHighlight.setup();
+		for(AxisAlignedBB aabb : this.bounding) RenderGlobal.drawSelectionBoundingBox(getAABBRotationOffset(aabb.expand(exp, exp, exp), 0, 0, 0, ForgeDirection.getOrientation(meta - offset).getRotation(ForgeDirection.UP)).offset(coreX - dX + 0.5, coreY - dY, coreZ - dZ + 0.5), 0,0,0,1.0F);
+		ICustomBlockHighlight.cleanup();
+	}
+
+	@Override
+	public NBTTagCompound getSettings(World world, int x, int y, int z) {
+		int[] pos = findCore(world, x, y, z);
+		TileEntity tile = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		if (tile instanceof ICopiable)
+			return ((ICopiable) tile).getSettings(world, pos[0], pos[1], pos[2]);
+		else
+			return null;
+	}
+
+	@Override
+	public void pasteSettings(NBTTagCompound nbt, int index, World world, EntityPlayer player, int x, int y, int z) {
+		int[] pos = findCore(world, x, y, z);
+		TileEntity tile = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		if (tile instanceof ICopiable)
+			((ICopiable) tile).pasteSettings(nbt, index, world, player, pos[0], pos[1], pos[2]);
+	}
+
+	@Override
+	public String[] infoForDisplay(World world, int x, int y, int z) {
+		int[] pos = findCore(world, x, y, z);
+		TileEntity tile = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		if (tile instanceof ICopiable)
+			return ((ICopiable) tile).infoForDisplay(world, x, y, z);
+		return null;
+	}
+
+	public static AxisAlignedBB getAABBRotationOffset(AxisAlignedBB aabb, double x, double y, double z, ForgeDirection dir) {
+
+		AxisAlignedBB newBox = null;
+
+		if(dir == ForgeDirection.NORTH) newBox = new AxisAlignedBB(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
+		if(dir == ForgeDirection.EAST) newBox = new AxisAlignedBB(-aabb.maxZ, aabb.minY, aabb.minX, -aabb.minZ, aabb.maxY, aabb.maxX);
+		if(dir == ForgeDirection.SOUTH) newBox = new AxisAlignedBB(-aabb.maxX, aabb.minY, -aabb.maxZ, -aabb.minX, aabb.maxY, -aabb.minZ);
+		if(dir == ForgeDirection.WEST) newBox = new AxisAlignedBB(aabb.minZ, aabb.minY, -aabb.maxX, aabb.maxZ, aabb.maxY, -aabb.minX);
+
+		if(newBox != null) {
+			newBox.offset(x, y, z);
+			return newBox;
+		}
+
+		return new AxisAlignedBB(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ).offset(x + 0.5, y + 0.5, z + 0.5);
 	}
 
 }

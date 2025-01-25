@@ -1,17 +1,15 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.render.model.ModelPip;
 import com.hbm.render.model.ModelSpark;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderOverkill extends TEISRBase {
 
@@ -54,7 +52,7 @@ public class ItemRenderOverkill extends TEISRBase {
 
 	//Drillgon200: Oh god this class is messy. I'm going to stop using the same item renderer to render every powerful gun.
 	@Override
-	public void renderByItem(final ItemStack stack) {
+	public void renderByItem(ItemStack stack) {
 		if (stack.getItem() == ModItems.gun_revolver_pip)
 			Minecraft.getMinecraft().renderEngine.bindTexture(pipLoc);
 		if (stack.getItem() == ModItems.gun_revolver_nopip)

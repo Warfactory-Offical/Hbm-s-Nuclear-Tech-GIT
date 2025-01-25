@@ -1,24 +1,19 @@
 package com.hbm.tileentity.machine;
 
-import java.util.Random;
-
+import com.hbm.interfaces.ILaserable;
+import com.hbm.inventory.DFCRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemKeyPin;
-import com.hbm.lib.HBMSoundHandler;
-import com.hbm.interfaces.ILaserable;
-import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemCrucible;
+import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.AuxParticlePacket;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.inventory.DFCRecipes;
 import com.hbm.tileentity.INBTPacketReceiver;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
@@ -26,11 +21,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.Random;
+
 public class TileEntityCrateTungsten extends TileEntityLockableBase implements ITickable, ILaserable, INBTPacketReceiver {
 
 	public ItemStackHandler inventory;
 
-	private final Random rand = new Random();
+	private Random rand = new Random();
 
 	public int heatTimer = 0;
 	public int age = 0;
@@ -39,13 +36,13 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 	public TileEntityCrateTungsten() {
 		inventory = new ItemStackHandler(27){
 			@Override
-			protected void onContentsChanged(final int slot){
+			protected void onContentsChanged(int slot){
 				markDirty();
 			}
 		};
 	}
 
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -53,12 +50,12 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 		}
 	}
 
-	public boolean canAccess(final EntityPlayer player) {
+	public boolean canAccess(EntityPlayer player) {
 		
 		if(!this.isLocked() || player == null) {
 			return true;
 		} else {
-			final ItemStack stack = player.getHeldItemMainhand();
+			ItemStack stack = player.getHeldItemMainhand();
 			
 			if(stack.getItem() instanceof ItemKeyPin && ItemKeyPin.getPins(stack) == this.lock) {
 	        	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockOpen, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -93,20 +90,20 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 	}
 
 	public void networkPack() {
-		final NBTTagCompound data = new NBTTagCompound();
+		NBTTagCompound data = new NBTTagCompound();
 		data.setInteger("timer", this.heatTimer);
 		data.setLong("spk", this.joules);
 		INBTPacketReceiver.networkPack(this, data, 150);
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		this.heatTimer = data.getInteger("timer");
 		this.joules = data.getLong("spk");
 	}
 
 	@Override
-	public void addEnergy(final long energy, final EnumFacing dir) {
+	public void addEnergy(long energy, EnumFacing dir) {
 		heatTimer = 5;
 		
 		for(int i = 0; i < inventory.getSlots(); i++) {
@@ -117,7 +114,7 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(i));
 
 			long requiredEnergy = DFCRecipes.getRequiredFlux(inventory.getStackInSlot(i));
-			final int count = inventory.getStackInSlot(i).getCount();
+			int count = inventory.getStackInSlot(i).getCount();
 			requiredEnergy *= 0.9D;
 			if(requiredEnergy > -1 && energy > requiredEnergy){
 				if(0.001D > count * rand.nextDouble() * ((double)requiredEnergy/(double)energy)){
@@ -129,7 +126,7 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 				ItemCrucible.charge(inventory.getStackInSlot(i));
 			
 			if(result != null && !result.isEmpty()){
-				final int size = inventory.getStackInSlot(i).getCount();
+				int size = inventory.getStackInSlot(i).getCount();
 			
 				if(result.getCount() * size <= result.getMaxStackSize()) {
 					inventory.setStackInSlot(i, result.copy());
@@ -141,7 +138,7 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		if(compound.hasKey("heatTimer"))
@@ -150,19 +147,19 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		compound.setInteger("heatTimer", this.heatTimer);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 }

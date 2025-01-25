@@ -1,5 +1,4 @@
 package com.hbm.creativetabs;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.ModItems;
 
@@ -9,17 +8,17 @@ import net.minecraft.item.ItemStack;
 
 public class TemplateTab extends CreativeTabs {
 
-	public TemplateTab(final int index, final String label) {
+	public TemplateTab(int index, String label) {
 		super(index, label);
 		this.setBackgroundImageName("item_search.png");
 	}
 
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack getTabIconItem() {
 		if(ModItems.assembly_template != null){
-			return ItemStackUtil.itemStackFrom(ModItems.assembly_template);
+			return new ItemStack(ModItems.assembly_template);
 		}
-		return ItemStackUtil.itemStackFrom(Items.IRON_PICKAXE);
+		return new ItemStack(Items.IRON_PICKAXE);
 	}
 	
 	@Override

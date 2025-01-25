@@ -20,19 +20,19 @@ public class GunAnimationPacket implements IMessage {
 
 	public GunAnimationPacket() { }
 
-	public GunAnimationPacket(final int type, final EnumHand hand) {
+	public GunAnimationPacket(int type, EnumHand hand) {
 		this.type = type;
 		this.hand = hand;
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		type = buf.readInt();
 		hand = buf.readInt() > 0 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(type);
 		buf.writeInt(hand == EnumHand.MAIN_HAND ? 0 : 1);
 	}
@@ -41,11 +41,11 @@ public class GunAnimationPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final GunAnimationPacket m, final MessageContext ctx) {
+		public IMessage onMessage(GunAnimationPacket m, MessageContext ctx) {
 
 			try {
-				final EntityPlayer player = Minecraft.getMinecraft().player;
-				final ItemStack stack = player.getHeldItem(m.hand);
+				EntityPlayer player = Minecraft.getMinecraft().player;
+				ItemStack stack = player.getHeldItem(m.hand);
 				int slot = player.inventory.currentItem;
 				if(m.hand == EnumHand.OFF_HAND)
 					slot = 9;
@@ -60,10 +60,10 @@ public class GunAnimationPacket implements IMessage {
 					return null;
 				
 				
-				final AnimType type = AnimType.values()[m.type];
+				AnimType type = AnimType.values()[m.type];
 				((ItemGunBase) stack.getItem()).startAnim(player, stack, slot, type);
 
-			} catch(final Exception x) { }
+			} catch(Exception x) { }
 
 			return null;
 		}

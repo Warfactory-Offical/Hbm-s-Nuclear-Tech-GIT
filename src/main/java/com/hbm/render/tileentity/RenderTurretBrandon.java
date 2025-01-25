@@ -1,18 +1,16 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.turret.TileEntityTurretBrandon;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
 
 public class RenderTurretBrandon extends RenderTurretBase<TileEntityTurretBrandon> {
 
 	@Override
-	public void render(final TileEntityTurretBrandon turret, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
-		final Vec3d pos = turret.getHorizontalOffset();
+	public void render(TileEntityTurretBrandon turret, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+		Vec3d pos = turret.getHorizontalOffset();
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + pos.x, y, z + pos.z);
@@ -24,7 +22,7 @@ public class RenderTurretBrandon extends RenderTurretBase<TileEntityTurretBrando
 
 		bindTexture(ResourceManager.turret_base_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");
-		final double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
+		double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
 		
 		GL11.glTranslated(0, 1.5, 0);
 		GL11.glRotated(pitch, 0, 0, 1);

@@ -4,7 +4,6 @@ import com.hbm.forgefluid.FFUtils;
 import com.hbm.inventory.container.ContainerMachineFrackingTower;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.oil.TileEntityMachineFrackingTower;
-import com.hbm.tileentity.machine.oil.TileEntityMachinePumpjack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,10 +12,10 @@ import org.lwjgl.opengl.GL11;
 
 public class GUIMachineFrackingTower extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_fracking_tower.png");
-	private final TileEntityMachineFrackingTower frackingTower;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_fracking_tower.png");
+	private TileEntityMachineFrackingTower frackingTower;
 
-	public GUIMachineFrackingTower(final InventoryPlayer invPlayer, final TileEntityMachineFrackingTower tedf) {
+	public GUIMachineFrackingTower(InventoryPlayer invPlayer, TileEntityMachineFrackingTower tedf) {
 		super(new ContainerMachineFrackingTower(invPlayer, tedf));
 		frackingTower = tedf;
 
@@ -25,7 +24,7 @@ public class GUIMachineFrackingTower extends GuiInfoContainer {
 	}
 
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 70 - 52, 34, 52, frackingTower.tanks[0], frackingTower.tankTypes[0]);
@@ -37,30 +36,30 @@ public class GUIMachineFrackingTower extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.frackingTower.hasCustomInventoryName() ? this.frackingTower.getInventoryName() : I18n.format(this.frackingTower.getInventoryName());
+	protected void drawGuiContainerForegroundLayer( int i, int j) {
+		String name = this.frackingTower.hasCustomInventoryName() ? this.frackingTower.getInventoryName() : I18n.format(this.frackingTower.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		final int i = (int)frackingTower.getPowerScaled(53);
+		int i = (int)frackingTower.getPowerScaled(53);
 		drawTexturedModalRect(guiLeft + 8, guiTop + 70 - i, 176, 52 - i, 16, i);
 
-		final int k = frackingTower.warning;
+		int k = frackingTower.warning;
 		if(k == 2)
 			drawTexturedModalRect(guiLeft + 43, guiTop + 17, 176, 52, 18, 18);
 		if(k == 1)
 			drawTexturedModalRect(guiLeft + 43, guiTop + 17, 194, 52, 18, 18);
 
-		final int l = frackingTower.warning2;
+		int l = frackingTower.warning2;
 		if(l == 1)
 			drawTexturedModalRect(guiLeft + 43, guiTop + 80, 212, 52, 18, 18);
 		if(l == 2)

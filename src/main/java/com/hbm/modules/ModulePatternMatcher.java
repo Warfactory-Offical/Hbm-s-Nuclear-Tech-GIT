@@ -17,11 +17,11 @@ public class ModulePatternMatcher {
         this.modes = new String[1];
     }
 
-    public ModulePatternMatcher(final int count) {
+    public ModulePatternMatcher(int count) {
         this.modes = new String[count];
     }
 
-    public void initPatternSmart(final World world, final ItemStack stack, final int i) {
+    public void initPatternSmart(World world, ItemStack stack, int i) {
 
         if(world.isRemote) return;
 
@@ -30,7 +30,7 @@ public class ModulePatternMatcher {
             return;
         }
 
-        final List<String> names = ItemStackUtil.getOreDictNames(stack);
+        List<String> names = ItemStackUtil.getOreDictNames(stack);
 
         if(iterateAndCheck(names, i ,"ingot")) return;
         if(iterateAndCheck(names, i ,"block")) return;
@@ -45,9 +45,9 @@ public class ModulePatternMatcher {
         }
     }
 
-    private boolean iterateAndCheck(final List<String> names, final int i, final String prefix) {
+    private boolean iterateAndCheck(List<String> names, int i, String prefix) {
 
-        for(final String s : names) {
+        for(String s : names) {
             if(s.startsWith(prefix)) {
                 modes[i] = s;
                 return true;
@@ -57,7 +57,7 @@ public class ModulePatternMatcher {
         return false;
     }
 
-    public void initPatternStandard(final World world, final ItemStack stack, final int i) {
+    public void initPatternStandard(World world, ItemStack stack, int i) {
 
         if(world.isRemote) return;
 
@@ -73,7 +73,7 @@ public class ModulePatternMatcher {
         }
     }
 
-    public void nextMode(final World world, final ItemStack pattern, final int i) {
+    public void nextMode(World world, ItemStack pattern, int i) {
 
         if(world.isRemote) return;
 
@@ -88,7 +88,7 @@ public class ModulePatternMatcher {
             modes[i] = MODE_WILDCARD;
         } else if(MODE_WILDCARD.equals(modes[i])) {
 
-            final List<String> names = ItemStackUtil.getOreDictNames(pattern);
+            List<String> names = ItemStackUtil.getOreDictNames(pattern);
 
             if(names.isEmpty()) {
                 modes[i] = MODE_EXACT;
@@ -97,7 +97,7 @@ public class ModulePatternMatcher {
             }
         } else {
 
-            final List<String> names = ItemStackUtil.getOreDictNames(pattern);
+            List<String> names = ItemStackUtil.getOreDictNames(pattern);
 
             if(names.size() < 2 || modes[i].equals(names.get(names.size() - 1))) {
                 modes[i] = MODE_EXACT;
@@ -114,12 +114,12 @@ public class ModulePatternMatcher {
         }
     }
 
-    public boolean isValidForFilter(final ItemStack f, final int index, final ItemStack i) {
+    public boolean isValidForFilter(ItemStack f, int index, ItemStack i) {
 
         String mode = modes[index];
-        final ItemStack filter = f.copy();
+        ItemStack filter = f.copy();
         filter.setCount(1);
-        final ItemStack input = i.copy();
+        ItemStack input = i.copy();
         input.setCount(1);
         
         if(mode == null) {
@@ -130,12 +130,12 @@ public class ModulePatternMatcher {
             case MODE_EXACT: return input.isItemEqual(filter) && ItemStack.areItemStackTagsEqual(input, filter);
             case MODE_WILDCARD: return input.getItem() == filter.getItem() && ItemStack.areItemStackTagsEqual(input, filter);
             default:
-                final List<String> keys = ItemStackUtil.getOreDictNames(input);
+                List<String> keys = ItemStackUtil.getOreDictNames(input);
                 return keys.contains(mode);
         }
     }
 
-    public void readFromNBT(final NBTTagCompound nbt) {
+    public void readFromNBT(NBTTagCompound nbt) {
 
         for(int i = 0; i < modes.length; i++) {
             if(nbt.hasKey("mode" + i)) {
@@ -146,7 +146,7 @@ public class ModulePatternMatcher {
         }
     }
 
-    public void writeToNBT(final NBTTagCompound nbt) {
+    public void writeToNBT(NBTTagCompound nbt) {
 
         for(int i = 0; i < modes.length; i++) {
             if(modes[i] != null) {

@@ -16,26 +16,26 @@ public class EntityBeamBase extends Entity {
 
 	public static final DataParameter<String> PLAYER_NAME = EntityDataManager.createKey(EntityBeamBase.class, DataSerializers.STRING);
 	
-	public EntityBeamBase(final World worldIn) {
+	public EntityBeamBase(World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 	}
 
-	public EntityBeamBase(final World world, final EntityPlayer player) {
+	public EntityBeamBase(World world, EntityPlayer player) {
 		super(world);
 
 		this.ignoreFrustumCheck = true;
 		this.getDataManager().set(PLAYER_NAME, player.getDisplayName().getUnformattedText());
 
-		final Vec3 vec = new Vec3(player.getLookVec());
+		Vec3 vec = new Vec3(player.getLookVec());
 		vec.rotateAroundY(-90F);
-		final float l = 0.075F;
+		float l = 0.075F;
 		vec.xCoord *= l;
 		vec.yCoord *= l;
 		vec.zCoord *= l;
 
-		final Vec3 vec0 = new Vec3(player.getLookVec());
-		final float d = 0.1F;
+		Vec3 vec0 = new Vec3(player.getLookVec());
+		float d = 0.1F;
 		vec0.xCoord *= d;
 		vec0.yCoord *= d;
 		vec0.zCoord *= d;
@@ -49,11 +49,11 @@ public class EntityBeamBase extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 	}
 	
 	@Override

@@ -11,33 +11,33 @@ package glmath.glm.vec._3;
  */
 abstract class funcGeometric extends funcCommon {
 
-    public Vec3 cross(final Vec3 y) {
+    public Vec3 cross(Vec3 y) {
         return cross(y, (Vec3) this);
     }
 
-    public Vec3 cross_(final Vec3 y) {
+    public Vec3 cross_(Vec3 y) {
         return cross(y, new Vec3());
     }
 
-    public Vec3 cross(final Vec3 y, final Vec3 res) {
+    public Vec3 cross(Vec3 y, Vec3 res) {
         return cross((Vec3) this, y, res);
     }
 
-    public static Vec3 cross(final Vec3 x, final Vec3 y, final Vec3 res) {
+    public static Vec3 cross(Vec3 x, Vec3 y, Vec3 res) {
         return res.set(
                 x.y * y.z - y.y * x.z,
                 x.z * y.x - y.z * x.x,
                 x.x * y.y - y.x * x.y);
     }
 
-    public float dot(final Vec3 y) {
+    public float dot(Vec3 y) {
         return dot((Vec3) this, y);
     }
 
-    public static float dot(final Vec3 x, final Vec3 y) {
-        final float tX = x.x * y.x;
-        final float tY = x.y * y.y;
-        final float tZ = x.z * y.z;
+    public static float dot(Vec3 x, Vec3 y) {
+        float tX = x.x * y.x;
+        float tY = x.y * y.y;
+        float tZ = x.z * y.z;
         return tX + tY + tZ;
     }
 
@@ -60,8 +60,8 @@ abstract class funcGeometric extends funcCommon {
      * @param res will hold the result
      * @return
      */
-    public Vec3 normalize(final Vec3 res) {
-        final float invLength = (float) (1.0 / Math.sqrt(x * x + y * y + z * z));
+    public Vec3 normalize(Vec3 res) {
+        float invLength = (float) (1.0 / Math.sqrt(x * x + y * y + z * z));
         res.x = x * invLength;
         res.y = y * invLength;
         res.z = z * invLength;

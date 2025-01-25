@@ -1,15 +1,13 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.render.RenderHelper;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.ResourceManager;
+import com.hbm.render.RenderHelper;
 import com.hbm.tileentity.machine.TileEntityMachineExcavator;
-
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class RenderExcavator extends TileEntitySpecialRenderer<TileEntityMachineExcavator> {
 	
@@ -17,12 +15,12 @@ public class RenderExcavator extends TileEntitySpecialRenderer<TileEntityMachine
 	public static final ResourceLocation gravel = new ResourceLocation("minecraft:textures/blocks/gravel.png");
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityMachineExcavator te) {
+	public boolean isGlobalRenderer(TileEntityMachineExcavator te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityMachineExcavator drill, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineExcavator drill, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GlStateManager.enableLighting();
@@ -41,7 +39,7 @@ public class RenderExcavator extends TileEntitySpecialRenderer<TileEntityMachine
 		bindTexture(ResourceManager.excavator_tex);
 		ResourceManager.excavator.renderPart("Main");
 		
-		final float crusher = drill.prevCrusherRotation + (drill.crusherRotation - drill.prevCrusherRotation) * partialTicks;
+		float crusher = drill.prevCrusherRotation + (drill.crusherRotation - drill.prevCrusherRotation) * partialTicks;
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, 2.0F, 2.8125F);
 		GL11.glRotatef(-crusher, 1, 0, 0);
@@ -75,9 +73,9 @@ public class RenderExcavator extends TileEntitySpecialRenderer<TileEntityMachine
 			bindTexture(cobble);
 			double widthX = 0.125;
 			double widthZ = 0.125;
-			final double speed = 250D;
-			final double dropU = -System.currentTimeMillis() % speed / speed;
-			final double dropL = dropU + 4;
+			double speed = 250D;
+			double dropU = -System.currentTimeMillis() % speed / speed;
+			double dropL = dropU + 4;
 			RenderHelper.startDrawingTexturedQuads();
 			RenderHelper.addVertexWithUV(widthX, 3, 2.5 + widthZ, 0, dropU);
 			RenderHelper.addVertexWithUV(-widthX, 3, 2.5 + widthZ, 1, dropU);
@@ -100,11 +98,11 @@ public class RenderExcavator extends TileEntitySpecialRenderer<TileEntityMachine
 			RenderHelper.addVertexWithUV(widthX, 2, 2.5 - widthZ, 1, dropL);
 			RenderHelper.draw();
 
-			final boolean smoosh = drill.enableCrusher;
+			boolean smoosh = drill.enableCrusher;
 			widthX = smoosh ? 0.5 : 0.25;
 			widthZ = 0.0625;
-			final double uU = smoosh ? 4 : 2;
-			final double uL = 0.5;
+			double uU = smoosh ? 4 : 2;
+			double uL = 0.5;
 			bindTexture(smoosh ? gravel : cobble);
 			RenderHelper.startDrawingTexturedQuads();
 			RenderHelper.addVertexWithUV(widthX, 2, 2.5 + widthZ, 0, dropU);

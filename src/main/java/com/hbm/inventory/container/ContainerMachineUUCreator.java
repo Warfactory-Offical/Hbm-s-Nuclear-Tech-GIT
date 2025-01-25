@@ -2,20 +2,18 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.TileEntityMachineUUCreator;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineUUCreator extends Container {
 
-	private final TileEntityMachineUUCreator testNuke;
+	private TileEntityMachineUUCreator testNuke;
 	
-	public ContainerMachineUUCreator(final InventoryPlayer invPlayer, final TileEntityMachineUUCreator tedf) {
+	public ContainerMachineUUCreator(InventoryPlayer invPlayer, TileEntityMachineUUCreator tedf) {
 		
 		testNuke = tedf;
 		//Electricity
@@ -38,14 +36,14 @@ public class ContainerMachineUUCreator extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 5) {
@@ -75,7 +73,7 @@ public class ContainerMachineUUCreator extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 }

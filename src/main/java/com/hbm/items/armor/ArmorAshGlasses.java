@@ -19,7 +19,7 @@ public class ArmorAshGlasses extends ItemArmor {
 	@SideOnly(Side.CLIENT)
 	private ModelGlasses modelGoggles;
 
-	public ArmorAshGlasses(final ArmorMaterial armorMaterial, final int renderIndex, final EntityEquipmentSlot armorType, final String s) {
+	public ArmorAshGlasses(ArmorMaterial armorMaterial, int renderIndex, EntityEquipmentSlot armorType, String s) {
 		super(armorMaterial, renderIndex, armorType);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,7 +32,7 @@ public class ArmorAshGlasses extends ItemArmor {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default){
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default){
 		if(model == null) {
 			model = new ModelGlasses(0);
 		}
@@ -40,7 +40,7 @@ public class ArmorAshGlasses extends ItemArmor {
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, list, flagIn);
 		list.add("Shows nearby Gasses");
 	}

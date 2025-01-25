@@ -6,15 +6,15 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemStackHandlerWrapper implements IItemHandlerModifiable {
 
-	private final ItemStackHandler handle;
-	private final int[] validSlots;
+	private ItemStackHandler handle;
+	private int[] validSlots;
 	
-	public ItemStackHandlerWrapper(final ItemStackHandler handle) {
+	public ItemStackHandlerWrapper(ItemStackHandler handle) {
 		this.handle = handle;
 		validSlots = new int[]{};
 	}
 	
-	public ItemStackHandlerWrapper(final ItemStackHandler handle, final int[] validSlots) {
+	public ItemStackHandlerWrapper(ItemStackHandler handle, int[] validSlots) {
 		this.handle = handle;
 		this.validSlots = validSlots;
 	}
@@ -25,33 +25,33 @@ public class ItemStackHandlerWrapper implements IItemHandlerModifiable {
 	}
 
 	@Override
-	public ItemStack getStackInSlot(final int slot) {
+	public ItemStack getStackInSlot(int slot) {
 		return handle.getStackInSlot(slot);
 	}
 
 	@Override
-	public ItemStack insertItem(final int slot, final ItemStack stack, final boolean simulate) {
-		for(final int i : validSlots)
+	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+		for(int i : validSlots)
 			if(i == slot)
 				return handle.insertItem(slot, stack, simulate);
 		return stack;
 	}
 
 	@Override
-	public ItemStack extractItem(final int slot, final int amount, final boolean simulate) {
-		for(final int i : validSlots)
+	public ItemStack extractItem(int slot, int amount, boolean simulate) {
+		for(int i : validSlots)
 			if(i == slot)
 				return handle.extractItem(slot, amount, simulate);
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public int getSlotLimit(final int slot) {
+	public int getSlotLimit(int slot) {
 		return handle.getSlotLimit(slot);
 	}
 
 	@Override
-	public void setStackInSlot(final int slot, final ItemStack stack) {
+	public void setStackInSlot(int slot, ItemStack stack) {
 		handle.setStackInSlot(slot, stack);
 	}
 

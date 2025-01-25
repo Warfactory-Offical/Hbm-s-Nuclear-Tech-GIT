@@ -28,24 +28,24 @@ public class EntityLaser extends Entity {
 
 	public static final DataParameter<String> PLAYER_NAME = EntityDataManager.createKey(EntityLaser.class, DataSerializers.STRING);
 	
-	public EntityLaser(final World worldIn) {
+	public EntityLaser(World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 	}
 	
-	public EntityLaser(final World world, final EntityPlayer player, final EnumHand hand) {
+	public EntityLaser(World world, EntityPlayer player, EnumHand hand) {
 		super(world);
 		this.ignoreFrustumCheck = true;
 		this.getDataManager().set(PLAYER_NAME, player.getName());
 		
-		final Vec3d vec1 = player.getLookVec();
-		final Vec3 vec = Vec3.createVectorHelper(vec1.x, vec1.y, vec1.z);
+		Vec3d vec1 = player.getLookVec();
+		Vec3 vec = Vec3.createVectorHelper(vec1.x, vec1.y, vec1.z);
 		if(hand == EnumHand.OFF_HAND){
 			vec.rotateAroundY(90F);
 		} else {
 			vec.rotateAroundY(-90F);
 		}
-		final float l = 0.25F;
+		float l = 0.25F;
 		vec.xCoord *= l;
 		vec.yCoord *= l;
 		vec.zCoord *= l;
@@ -64,15 +64,15 @@ public class EntityLaser extends Entity {
 		if(this.ticksExisted > 1)
 			this.setDead();
 		
-		final int range = 100;
+		int range = 100;
 		
-		final EntityPlayer player = world.getPlayerEntityByName(this.getDataManager().get(PLAYER_NAME));
+		EntityPlayer player = world.getPlayerEntityByName(this.getDataManager().get(PLAYER_NAME));
 		
 		if(player != null) {
 			
 			//this.setPosition(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 			
-			final RayTraceResult pos = Library.rayTrace(player, range, 1);
+			RayTraceResult pos = Library.rayTrace(player, range, 1);
 			
 			//worldObj.createExplosion(this, pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, 1, false);
 			
@@ -80,20 +80,20 @@ public class EntityLaser extends Entity {
 			world.playSound(pos.hitVec.x, pos.hitVec.y, pos.hitVec.z, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, 1, 1, true);
 			
 			if(CompatibilityConfig.isWarDim(world)){
-				final List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.hitVec.x - 1, pos.hitVec.y - 1, pos.hitVec.z - 1, pos.hitVec.x + 1, pos.hitVec.y + 1, pos.hitVec.z + 1));
+				List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.hitVec.x - 1, pos.hitVec.y - 1, pos.hitVec.z - 1, pos.hitVec.x + 1, pos.hitVec.y + 1, pos.hitVec.z + 1));
 				
-				for(final Entity e : list)
+				for(Entity e : list)
 					e.attackEntityFrom(ModDamageSource.radiation, 5);
 			}
 		}
 	}
 	
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 	}
 
 	@Override

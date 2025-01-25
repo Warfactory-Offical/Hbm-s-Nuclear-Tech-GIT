@@ -1,24 +1,22 @@
 package com.hbm.render;
 
-import java.util.Random;
-
+import com.hbm.render.amlfrom1710.Vec3;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
-import com.hbm.render.amlfrom1710.Vec3;
-
-import net.minecraft.client.renderer.GlStateManager;
+import java.util.Random;
 
 public class RenderSparks {
 
-	public static void renderSpark(final int seed, double x, double y, double z, final float length, final int min, final int max, final int color1, final int color2) {
+	public static void renderSpark(int seed, double x, double y, double z, float length, int min, int max, int color1, int color2) {
 
-		final float r1 = (color1 >> 16 & 255)/255F;
-		final float g1 = (color1 >> 8 & 255)/255F;
-		final float b1 = (color1 & 255)/255F;
+		float r1 = (color1 >> 16 & 255)/255F;
+		float g1 = (color1 >> 8 & 255)/255F;
+		float b1 = (color1 & 255)/255F;
 		
-		final float r2 = (color2 >> 16 & 255)/255F;
-		final float g2 = (color2 >> 8 & 255)/255F;
-		final float b2 = (color2 & 255)/255F;
+		float r2 = (color2 >> 16 & 255)/255F;
+		float g2 = (color2 >> 8 & 255)/255F;
+		float b2 = (color2 & 255)/255F;
 		
 		GL11.glPushMatrix();
 		GlStateManager.disableTexture2D();
@@ -26,7 +24,7 @@ public class RenderSparks {
 		GlStateManager.glLineWidth(3F);
 		
 
-		final Random rand = new Random(seed);
+		Random rand = new Random(seed);
 		Vec3 vec = Vec3.createVectorHelper(rand.nextDouble() - 0.5, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5);
 		vec = vec.normalize();
 
@@ -40,7 +38,7 @@ public class RenderSparks {
 			prevY = y;
 			prevZ = z;
 
-			final Vec3 dir = vec.normalize();
+			Vec3 dir = vec.normalize();
 			dir.xCoord *= length * rand.nextFloat();
 			dir.yCoord *= length * rand.nextFloat();
 			dir.zCoord *= length * rand.nextFloat();

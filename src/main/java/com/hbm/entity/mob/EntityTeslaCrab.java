@@ -1,23 +1,19 @@
 package com.hbm.entity.mob;
 
+import com.hbm.items.ModItems;
+import com.hbm.tileentity.machine.TileEntityTesla;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.item.Item;
+import net.minecraft.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.hbm.items.ModItems;
-import com.hbm.items.meta.materials.MaterialMineral;
-import com.hbm.tileentity.machine.TileEntityTesla;
-
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class EntityTeslaCrab extends EntityCyberCrab {
 	
 	public List<double[]> targets = new ArrayList<double[]>();
 
-	public EntityTeslaCrab(final World p_i1733_1_) {
+	public EntityTeslaCrab(World p_i1733_1_) {
 		super(p_i1733_1_);
         this.setSize(0.75F, 1.25F);
         this.ignoreFrustumCheck = true;
@@ -38,37 +34,13 @@ public class EntityTeslaCrab extends EntityCyberCrab {
         super.onLivingUpdate();
     }
 
-	protected ItemStack getDropItemStack(){
-        return ModItems.wire.getItemStack(MaterialMineral.ADVANCED_ALLOY);
+    @Override
+	protected Item getDropItem(){
+        return ModItems.wire_advanced_alloy;
     }
 
-    protected void dropRareDrop(final int p_70600_1_) {
+    protected void dropRareDrop(int p_70600_1_) {
     	this.dropItem(ModItems.coil_copper, 1);
     }
 
-    @Override
-    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
-    {
-        ItemStack item = this.getDropItemStack();
-
-        if (item != null)
-        {
-            int i = this.rand.nextInt(3);
-
-            if (lootingModifier > 0)
-            {
-                i += this.rand.nextInt(lootingModifier + 1);
-            }
-
-            for (int j = 0; j < i; ++j)
-            {
-                this.dropItem(item, 1);
-            }
-        }
-    }
-
-    public EntityItem dropItem(ItemStack itemIn, int size)
-    {
-        return this.entityDropItem(new ItemStack(itemIn.getItem(), itemIn.getMetadata(), size), 0);
-    }
 }

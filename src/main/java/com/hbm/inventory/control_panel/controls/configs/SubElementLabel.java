@@ -4,7 +4,6 @@ import com.hbm.inventory.control_panel.DataValue;
 import com.hbm.inventory.control_panel.DataValueFloat;
 import com.hbm.inventory.control_panel.DataValueString;
 import com.hbm.inventory.control_panel.GuiControlEdit;
-import com.hbm.main.MainRegistry;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.RenderHelper;
 import net.minecraft.client.Minecraft;
@@ -12,13 +11,9 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiSlider;
-import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.hbm.inventory.control_panel.DataValue.DataType.ENUM;
-import static com.hbm.inventory.control_panel.DataValue.DataType.NUMBER;
 
 public class SubElementLabel extends SubElementBaseConfig {
 
@@ -34,7 +29,7 @@ public class SubElementLabel extends SubElementBaseConfig {
     GuiTextField textField;
     GuiSlider slideScale;
 
-    public SubElementLabel(final GuiControlEdit gui, final Map<String, DataValue> map) {
+    public SubElementLabel(GuiControlEdit gui, Map<String, DataValue> map) {
         super(gui);
         this.colorR = map.get("colorR").getNumber();
         this.colorG = map.get("colorG").getNumber();
@@ -45,7 +40,7 @@ public class SubElementLabel extends SubElementBaseConfig {
 
     @Override
     public Map<String, DataValue> getConfigs() {
-        final Map<String, DataValue> m = new HashMap<>();
+        Map<String, DataValue> m = new HashMap<>();
         m.put("colorR", new DataValueFloat(colorR));
         m.put("colorG", new DataValueFloat(colorG));
         m.put("colorB", new DataValueFloat(colorB));
@@ -56,8 +51,8 @@ public class SubElementLabel extends SubElementBaseConfig {
 
     @Override
     public void initGui() {
-        final int cX = gui.width/2;
-        final int cY = gui.height/2;
+        int cX = gui.width/2;
+        int cY = gui.height/2;
 
         slideColorR = gui.addButton(new GuiSlider(gui.currentButtonId(), cX-85, gui.getGuiTop()+70, 80, 15, TextFormatting.RED+"R ", "", 0, 100, colorR*100, false, true));
         slideColorG = gui.addButton(new GuiSlider(gui.currentButtonId(), cX-85, gui.getGuiTop()+90, 80, 15, TextFormatting.GREEN+"G ", "", 0, 100, colorG*100, false, true));
@@ -87,19 +82,19 @@ public class SubElementLabel extends SubElementBaseConfig {
     }
 
     @Override
-    protected void mouseClicked(final int mouseX, final int mouseY, final int button) {
+    protected void mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
         this.textField.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
-    protected void keyTyped(final char typedChar, final int keyCode) {
+    protected void keyTyped(char typedChar, int keyCode) {
         super.keyTyped(typedChar, keyCode);
         this.textField.textboxKeyTyped(typedChar, keyCode);
     }
 
     @Override
-    public void mouseReleased(final int mouseX, final int mouseY, final int state) {
+    public void mouseReleased(int mouseX, int mouseY, int state) {
         colorR = (float) slideColorR.sliderValue;
         colorG = (float) slideColorG.sliderValue;
         colorB = (float) slideColorB.sliderValue;
@@ -107,7 +102,7 @@ public class SubElementLabel extends SubElementBaseConfig {
     }
 
     @Override
-    public void enableButtons(final boolean enable) {
+    public void enableButtons(boolean enable) {
         slideColorR.visible = enable;
         slideColorR.enabled = enable;
         slideColorG.visible = enable;

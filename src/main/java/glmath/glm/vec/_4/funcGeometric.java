@@ -11,15 +11,15 @@ package glmath.glm.vec._4;
  */
 abstract class funcGeometric extends funcCommon {
 
-    public float dot(final Vec4 y) {
+    public float dot(Vec4 y) {
         return dot((Vec4) this, y);
     }
 
-    public static float dot(final Vec4 x, final Vec4 y) {
-        final float tX = x.x * y.x;
-        final float tY = x.y * y.y;
-        final float tZ = x.z * y.z;
-        final float tW = x.w * y.w;
+    public static float dot(Vec4 x, Vec4 y) {
+        float tX = x.x * y.x;
+        float tY = x.y * y.y;
+        float tZ = x.z * y.z;
+        float tW = x.w * y.w;
         return tX + tY + tZ + tW;
     }
 
@@ -38,8 +38,8 @@ abstract class funcGeometric extends funcCommon {
      * @param res will hold the result
      * @return
      */
-    public Vec4 normalize(final Vec4 res) {
-        final float invLength = (float) (1.0 / Math.sqrt(x * x + y * y + z * z + w * w));
+    public Vec4 normalize(Vec4 res) {
+        float invLength = (float) (1.0 / Math.sqrt(x * x + y * y + z * z + w * w));
         res.x = x * invLength;
         res.y = y * invLength;
         res.z = z * invLength;

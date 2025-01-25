@@ -25,7 +25,7 @@ public class ParticleBFGParticle extends Particle {
 	float prevAlpha;
 	Vec3 targetPoint;
 	
-	public ParticleBFGParticle(final World worldIn, final double posXIn, final double posYIn, final double posZIn) {
+	public ParticleBFGParticle(World worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.canCollide = false;
 		this.particleScale = 2;
@@ -36,7 +36,7 @@ public class ParticleBFGParticle extends Particle {
 		
 	}
 	
-	public ParticleBFGParticle(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final double mX, final double mY, final double mZ) {
+	public ParticleBFGParticle(World worldIn, double posXIn, double posYIn, double posZIn, double mX, double mY, double mZ) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.canCollide = false;
 		this.particleScale = 2;
@@ -50,7 +50,7 @@ public class ParticleBFGParticle extends Particle {
 		this.motionZ = mZ;
 	}
 	
-	public ParticleBFGParticle(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final double mX, final double mY, final double mZ, final Vec3 targetPoint) {
+	public ParticleBFGParticle(World worldIn, double posXIn, double posYIn, double posZIn, double mX, double mY, double mZ, Vec3 targetPoint) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.canCollide = false;
 		this.particleScale = 2;
@@ -70,7 +70,7 @@ public class ParticleBFGParticle extends Particle {
 		this.particleAge++;
 		if(particleAge >= particleMaxAge)
 			this.setExpired();
-		final float timeScale = this.particleAge/(float)this.particleMaxAge;
+		float timeScale = this.particleAge/(float)this.particleMaxAge;
 		
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -102,16 +102,16 @@ public class ParticleBFGParticle extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entity, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		
-		final double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
-		final double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
-		final double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
+		double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks;
+		double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks;
+		double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks;
 		
-		final double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-		final double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-		final double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+		double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+		double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+		double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
 
 		GL11.glTranslated(d0 - d3, d1 - d4, d2 - d5);
 		
@@ -120,27 +120,27 @@ public class ParticleBFGParticle extends Particle {
         GlStateManager.depthMask(false);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-        final float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
+        float alpha = prevAlpha + (particleAlpha-prevAlpha)*partialTicks;
         GlStateManager.color(0.5F, 1F, 0.5F, alpha);
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.bfg_particle);
-		final Tessellator tes = Tessellator.getInstance();
-        final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+        BufferBuilder buf = tes.getBuffer();
         
         
-        final float f = 0;
-        final float f1 = 1;
-        final float f2 = 0;
-        final float f3 = 1;
-        final float f4 = 0.1F * this.particleScale;
+        float f = 0;
+        float f1 = 1;
+        float f2 = 0;
+        float f3 = 1;
+        float f4 = 0.1F * this.particleScale;
 
-        final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
+        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
 
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        buffer.pos(avec3d[0].x, avec3d[0].y, avec3d[0].z).tex(f1, f3).endVertex();
-        buffer.pos(avec3d[1].x, avec3d[1].y, avec3d[1].z).tex(f1, f2).endVertex();
-        buffer.pos(avec3d[2].x, avec3d[2].y, avec3d[2].z).tex(f, f2).endVertex();
-        buffer.pos(avec3d[3].x, avec3d[3].y, avec3d[3].z).tex(f, f3).endVertex();
+        buffer.pos(avec3d[0].x, avec3d[0].y, avec3d[0].z).tex((double)f1, (double)f3).endVertex();
+        buffer.pos(avec3d[1].x, avec3d[1].y, avec3d[1].z).tex((double)f1, (double)f2).endVertex();
+        buffer.pos(avec3d[2].x, avec3d[2].y, avec3d[2].z).tex((double)f, (double)f2).endVertex();
+        buffer.pos(avec3d[3].x, avec3d[3].y, avec3d[3].z).tex((double)f, (double)f3).endVertex();
         tes.draw();
         
         

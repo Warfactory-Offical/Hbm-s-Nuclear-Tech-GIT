@@ -20,7 +20,7 @@ import java.util.List;
 
 public class IndicatorLamp extends Control {
 
-    public IndicatorLamp(final String name, final ControlPanel panel) {
+    public IndicatorLamp(String name, ControlPanel panel) {
         super(name, panel);
         vars.put("isLit", new DataValueFloat(0));
         vars.put("color", new DataValueEnum<>(EnumDyeColor.RED));
@@ -40,14 +40,14 @@ public class IndicatorLamp extends Control {
     public void render() {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.ctrl_button_push_tex);
-        final Tessellator tes = Tessellator.instance;
-        final IModelCustom model = getModel();
+        Tessellator tes = Tessellator.instance;
+        IModelCustom model = getModel();
 
-        final boolean isLit = getVar("isLit").getBoolean();
-        final float[] color = getVar("color").getEnum(EnumDyeColor.class).getColorComponentValues();
+        boolean isLit = getVar("isLit").getBoolean();
+        float[] color = getVar("color").getEnum(EnumDyeColor.class).getColorComponentValues();
 
-        final float lX = OpenGlHelper.lastBrightnessX;
-        final float lY = OpenGlHelper.lastBrightnessY;
+        float lX = OpenGlHelper.lastBrightnessX;
+        float lY = OpenGlHelper.lastBrightnessY;
 
         GlStateManager.disableTexture2D();
         tes.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
@@ -96,11 +96,11 @@ public class IndicatorLamp extends Control {
     }
 
     @Override
-    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
+    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
     }
 
     @Override
-    public Control newControl(final ControlPanel panel) {
+    public Control newControl(ControlPanel panel) {
         return new IndicatorLamp(name, panel);
     }
 }

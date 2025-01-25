@@ -5,7 +5,7 @@ import com.hbm.main.MainRegistry;
 import net.minecraft.item.ItemPickaxe;
 
 public class ModPickaxe extends ItemPickaxe {
-	public ModPickaxe(final ToolMaterial t, final String s){
+	public ModPickaxe(ToolMaterial t, String s){
 		super(t);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);

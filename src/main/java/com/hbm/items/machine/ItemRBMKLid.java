@@ -4,7 +4,6 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.items.ModItems;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKBase;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 
 public class ItemRBMKLid extends Item {
 
-	public ItemRBMKLid(final String s){
+	public ItemRBMKLid(String s){
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -28,22 +27,25 @@ public class ItemRBMKLid extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos bpos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
-		final Block b = world.getBlockState(bpos).getBlock();
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos bpos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+		Block b = world.getBlockState(bpos).getBlock();
 		
-		if(!world.isRemote && b instanceof RBMKBase rbmk) {
-
-            final int[] pos = rbmk.findCore(world, bpos.getX(), bpos.getY(), bpos.getZ());
+		if(!world.isRemote && b instanceof RBMKBase) {
+			RBMKBase rbmk = (RBMKBase) b;
+			
+			int[] pos = rbmk.findCore(world, bpos.getX(), bpos.getY(), bpos.getZ());
 			
 			if(pos == null)
 				return EnumActionResult.FAIL;
 			
-			final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+			TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 			
-			if(!(te instanceof TileEntityRBMKBase tile))
+			if(!(te instanceof TileEntityRBMKBase))
 				return EnumActionResult.FAIL;
-
-            if(tile.hasLid())
+			
+			TileEntityRBMKBase tile = (TileEntityRBMKBase) te;
+			
+			if(tile.hasLid())
 				return EnumActionResult.FAIL;
 			
 			int meta = RBMKBase.DIR_NORMAL_LID.ordinal();
@@ -56,7 +58,7 @@ public class ItemRBMKLid extends Item {
 			}
 			
 			world.setBlockState(new BlockPos(pos[0], pos[1], pos[2]), world.getBlockState(new BlockPos(pos[0], pos[1], pos[2])).withProperty(BlockDummyable.META, meta + RBMKBase.offset), 3);
-			final NBTTagCompound nbt = tile.writeToNBT(new NBTTagCompound());
+			NBTTagCompound nbt = tile.writeToNBT(new NBTTagCompound());
 			world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2])).readFromNBT(nbt);
 			
 			player.getHeldItem(hand).shrink(1);

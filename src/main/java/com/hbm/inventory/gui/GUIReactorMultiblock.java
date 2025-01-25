@@ -1,9 +1,5 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.inventory.container.ContainerReactorMultiblock;
@@ -11,7 +7,6 @@ import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxButtonPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityMachineReactorLarge;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
@@ -19,14 +14,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIReactorMultiblock extends GuiInfoContainer {
 	
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_large_experimental.png");
-	private final TileEntityMachineReactorLarge diFurnace;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_large_experimental.png");
+	private TileEntityMachineReactorLarge diFurnace;
 	private boolean barGrabbed = false;
 
-	public GUIReactorMultiblock(final InventoryPlayer invPlayer, final TileEntityMachineReactorLarge tedf) {
+	public GUIReactorMultiblock(InventoryPlayer invPlayer, TileEntityMachineReactorLarge tedf) {
 		super(new ContainerReactorMultiblock(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -35,7 +33,7 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 6, guiTop + 5, 16, 52, diFurnace.tanks[0], diFurnace.tankTypes[0]);
@@ -45,7 +43,7 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 48, guiTop + 5, 4, 88, new String[] { "Hull Temperature:", "   " + Math.round((diFurnace.hullHeat) * 0.00001 * 980 + 20) + "°C" });
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 115, guiTop + 17, 18, 90, new String[] { "Control Rods: " + diFurnace.rods + "%" });
 		
-		final String[] text = new String[] { "Coolant will move heat from the core to",
+		String[] text = new String[] { "Coolant will move heat from the core to",
 				"the hull. Water will use that heat and",
 				"generate steam.",
 				"Water consumption rate:",
@@ -84,17 +82,17 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 100, guiTop + 16, 10, 88, new String[] {fuel+" Rod", "Fuel: "+( Math.round(100F * diFurnace.fuel / diFurnace.maxFuel))+"%"});
 		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 128, guiTop + 16, 10, 88, new String[] {"Depleted "+fuel+" Rod", "Depleted Fuel: "+( Math.round(100F * diFurnace.waste/ diFurnace.maxWaste))+"%"});
 		
-		final String[] text0 = new String[] { diFurnace.rods > 0 ? "Reactor is ON" : "Reactor is OFF"};
+		String[] text0 = new String[] { diFurnace.rods > 0 ? "Reactor is ON" : "Reactor is OFF"};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 35, guiTop + 107, 18, 18, mouseX, mouseY, text0);
 		
 		if(diFurnace.tanks[0].getFluidAmount() <= 0) {
-			final String[] text2 = new String[] { "Error: Water is required for",
+			String[] text2 = new String[] { "Error: Water is required for",
 					"the reactor to function properly!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 32 + 16, text2);
 		}
 
 		if(diFurnace.tanks[1].getFluidAmount() <= 0) {
-			final String[] text3 = new String[] { "Error: Coolant is required for",
+			String[] text3 = new String[] { "Error: Coolant is required for",
 					"the reactor to function properly!" };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 32 + 16, text3);
 		}
@@ -109,13 +107,13 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 			s = "100x";
 		}
 		
-		final String[] text4 = new String[] { "Steam compression switch",
+		String[] text4 = new String[] { "Steam compression switch",
 				"Current compression level: " + s};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 4, guiTop + 105, 16, 20, mouseX, mouseY, text4);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+	protected void mouseClicked(int x, int y, int i) throws IOException {
     	super.mouseClicked(x, y, i);
     	
     	if(guiLeft + 114 <= x && guiLeft + 114 + 10 > x && guiTop + 16 < y && guiTop + 16 + 88 >= y) {
@@ -158,7 +156,7 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
     }
 	
 	@Override
-	protected void mouseClickMove(final int mouseX, final int mouseY, final int clickedMouseButton, final long timeSinceLastClick) {
+	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
 		if(barGrabbed){
 			int rods = MathHelper.clamp((mouseY - (guiTop + 23)) * 100 / 77, 0, 100);
 			rods = 100 - rods;
@@ -168,40 +166,40 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
 		barGrabbed = false;
 		super.mouseReleased(mouseX, mouseY, state);
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		this.fontRenderer.drawString("Size", 68, 10, 0x7F7F7F);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), this.xSize-this.fontRenderer.getStringWidth(I18n.format("container.inventory"))-6, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		final int k = diFurnace.rods;
+		int k = diFurnace.rods;
 		drawTexturedModalRect(guiLeft + 115, guiTop + 107 - 14 - (k * 76 / 100), 208, 36, 18, 14);
 
-		final int f = diFurnace.getRodsScaled(88);
+		int f = diFurnace.getRodsScaled(88);
 		drawTexturedModalRect(guiLeft + 115, guiTop + 16, 200, 36+f, 8, 88-f);
 		
 		if(diFurnace.rods > 0)
 			drawTexturedModalRect(guiLeft + 35, guiTop + 107, 176, 0, 18, 18);
 		
-		final int q = diFurnace.getFuelScaled(88);
+		int q = diFurnace.getFuelScaled(88);
 		drawTexturedModalRect(guiLeft + 101, guiTop + 16 + 88 - q, 184, 36, 8, q);
 		
-		final int j = diFurnace.getWasteScaled(88);
+		int j = diFurnace.getWasteScaled(88);
 		drawTexturedModalRect(guiLeft + 129, guiTop + 16 + 88 - j, 192, 36, 8, j);
 		
-		final int s = diFurnace.size;
+		int s = diFurnace.size;
 		
 		if(s < 8)
 			drawTexturedModalRect(guiLeft + 67, guiTop + 18, 208, 50 + s * 18, 22, 18);
@@ -219,7 +217,7 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 		if(diFurnace.hasCoreHeat()) {
 			int i = diFurnace.getCoreHeatScaled(88);
 			
-			i = Math.min(i, 88);
+			i = (int) Math.min(i, 88);
 			
 			drawTexturedModalRect(guiLeft + 42, guiTop + 94 - i, 176, 124-i, 4, i);
 		}
@@ -227,7 +225,7 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 		if(diFurnace.hasHullHeat()) {
 			int i = diFurnace.getHullHeatScaled(88);
 			
-			i = Math.min(i, 88);
+			i = (int) Math.min(i, 88);
 			
 			drawTexturedModalRect(guiLeft + 48, guiTop + 94 - i, 180, 124-i, 4, i);
 		}

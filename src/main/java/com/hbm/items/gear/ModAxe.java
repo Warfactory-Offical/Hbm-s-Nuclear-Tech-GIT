@@ -6,7 +6,7 @@ import net.minecraft.item.ItemAxe;
 
 public class ModAxe extends ItemAxe {
 
-	public ModAxe(final ToolMaterial t, final String s){
+	public ModAxe(ToolMaterial t, String s){
 		
 		super(t, 6.0F, -3.2F);
 		this.setTranslationKey(s);
@@ -14,7 +14,7 @@ public class ModAxe extends ItemAxe {
 		this.setCreativeTab(MainRegistry.controlTab);
 		ModItems.ALL_ITEMS.add(this);
 	}
-	public ModAxe(final ToolMaterial t, final String s, final float damage, final float speed){
+	public ModAxe(ToolMaterial t, String s, float damage, float speed){
 		
 		super(t, t.getAttackDamage(), speed);
 		this.setTranslationKey(s);

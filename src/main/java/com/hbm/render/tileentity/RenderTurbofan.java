@@ -1,17 +1,15 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityMachineTurbofan;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderTurbofan extends TileEntitySpecialRenderer<TileEntityMachineTurbofan> {
 
 	@Override
-	public void render(final TileEntityMachineTurbofan turbo, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineTurbofan turbo, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.disableCull();
@@ -21,7 +19,7 @@ public class RenderTurbofan extends TileEntitySpecialRenderer<TileEntityMachineT
 		case 3: GL11.glRotatef(270, 0F, 1F, 0F); break;
 		case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
-		final float spin = turbo.lastSpin + (turbo.spin - turbo.lastSpin) * partialTicks;
+		float spin = turbo.lastSpin + (turbo.spin - turbo.lastSpin) * partialTicks; 
 		GlStateManager.disableLighting();
 		GL11.glShadeModel(GL11.GL_SMOOTH);
         bindTexture(ResourceManager.turbofan_tex);

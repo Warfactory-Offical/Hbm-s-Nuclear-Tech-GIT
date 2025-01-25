@@ -1,26 +1,19 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.MobConfig;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.interfaces.IRadResistantBlock;
+import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFuelRod;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.FluidTankPacket;
-import com.hbm.packet.FluidTypePacketTest;
 import com.hbm.packet.LargeReactorPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.saveddata.RadiationSavedData;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,11 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -48,6 +37,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TileEntityMachineReactorLarge extends TileEntity implements ITickable, IFluidHandler, ITankPacketAcceptor {
 
@@ -72,7 +65,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 
 	public static int fuelMult = 1000;
 	public static int cycleDuration = 24000;
-	private static final int fuelBase = 240 * fuelMult;
+	private static int fuelBase = 240 * fuelMult;
 	//private static int waterBase = 128 * 1000;
 	//private static int coolantBase = 64 * 1000;
 	//private static int steamBase = 32 * 1000;
@@ -90,7 +83,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	public TileEntityMachineReactorLarge() {
 		inventory = new ItemStackHandler(8){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -98,12 +91,12 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		dropProvider = new ICapabilityProvider(){
 
 			@Override
-			public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+			public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 				return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 			}
 
 			@Override
-			public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+			public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 				return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : null;
 			}
 			
@@ -128,11 +121,11 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -141,7 +134,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		coreHeat = compound.getInteger("heat");
 		hullHeat = compound.getInteger("hullHeat");
 		rods = compound.getInteger("rods");
@@ -167,7 +160,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("heat", coreHeat);
 		compound.setInteger("hullHeat", hullHeat);
 		compound.setInteger("rods", rods);
@@ -180,27 +173,27 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		return super.writeToNBT(compound);
 	}
 	
-	public int getCoreHeatScaled(final int i) {
+	public int getCoreHeatScaled(int i) {
 		return (coreHeat * i) / maxCoreHeat;
 	}
 
-	public int getHullHeatScaled(final int i) {
+	public int getHullHeatScaled(int i) {
 		return (hullHeat * i) / maxHullHeat;
 	}
 
-	public int getFuelScaled(final int i) {
+	public int getFuelScaled(int i) {
 		return (fuel * i) / maxFuel;
 	}
 
-	public int getWasteScaled(final int i) {
+	public int getWasteScaled(int i) {
 		return (waste * i) / maxWaste;
 	}
 
-	public int getRodsScaled(final int i) {
+	public int getRodsScaled(int i) {
 		return (rods * i) / rodsMax;
 	}
 
-	public int getSteamScaled(final int i) {
+	public int getSteamScaled(int i) {
 		return (tanks[2].getFluidAmount() * i) / tanks[2].getCapacity();
 	}
 
@@ -212,20 +205,20 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		return hullHeat > 0;
 	}
 	
-	public void compress(final int level){
+	public void compress(int level){
 		if(level == compression)
 			return;
 		if(level >= 0 && level < 3){
 			if(compression == 0){
 				if(level == 1){
 					tankTypes[2] = ModForgeFluids.hotsteam;
-					final int newAmount = (int) (tanks[2].getFluidAmount()/10D);
+					int newAmount = (int) (tanks[2].getFluidAmount()/10D);
 					tanks[2].drain(tanks[2].getCapacity(), true);
 					tanks[2].fill(new FluidStack(tankTypes[2], newAmount), true);
 				}
 				if(level == 2){
 					tankTypes[2] = ModForgeFluids.superhotsteam;
-					final int newAmount = (int) (tanks[2].getFluidAmount()/100D);
+					int newAmount = (int) (tanks[2].getFluidAmount()/100D);
 					tanks[2].drain(tanks[2].getCapacity(), true);
 					tanks[2].fill(new FluidStack(tankTypes[2], newAmount), true);
 				}
@@ -233,13 +226,13 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			if(compression == 1){
 				if(level == 0){
 					tankTypes[2] = ModForgeFluids.steam;
-					final int newAmount = tanks[2].getFluidAmount()*10;
+					int newAmount = (int) (tanks[2].getFluidAmount()*10);
 					tanks[2].drain(tanks[2].getCapacity(), true);
 					tanks[2].fill(new FluidStack(tankTypes[2], newAmount), true);
 				}
 				if(level == 2){
 					tankTypes[2] = ModForgeFluids.superhotsteam;
-					final int newAmount = (int) (tanks[2].getFluidAmount()/10D);
+					int newAmount = (int) (tanks[2].getFluidAmount()/10D);
 					tanks[2].drain(tanks[2].getCapacity(), true);
 					tanks[2].fill(new FluidStack(tankTypes[2], newAmount), true);
 				}
@@ -247,13 +240,13 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			if(compression == 2){
 				if(level == 0){
 					tankTypes[2] = ModForgeFluids.steam;
-					final int newAmount = tanks[2].getFluidAmount()*100;
+					int newAmount = (int) (tanks[2].getFluidAmount()*100);
 					tanks[2].drain(tanks[2].getCapacity(), true);
 					tanks[2].fill(new FluidStack(tankTypes[2], newAmount), true);
 				}
 				if(level == 1){
 					tankTypes[2] = ModForgeFluids.hotsteam;
-					final int newAmount = (int) (tanks[2].getFluidAmount()*10D);
+					int newAmount = (int) (tanks[2].getFluidAmount()*10D);
 					tanks[2].drain(tanks[2].getCapacity(), true);
 					tanks[2].fill(new FluidStack(tankTypes[2], newAmount), true);
 				}
@@ -264,10 +257,10 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 	
 	public boolean checkBody() {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		return world.getBlockState(mPos.setPos(x + 1, y, z + 1)).getBlock() == ModBlocks.reactor_element &&
 				world.getBlockState(mPos.setPos(x - 1, y, z + 1)).getBlock() == ModBlocks.reactor_element &&
 				world.getBlockState(mPos.setPos(x - 1, y, z - 1)).getBlock() == ModBlocks.reactor_element &&
@@ -278,11 +271,11 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 				world.getBlockState(mPos.setPos(x, y, z - 1)).getBlock() == ModBlocks.reactor_control;
 	}
 	
-	public boolean checkSegment(final int offset) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+	public boolean checkSegment(int offset) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		return world.getBlockState(mPos.setPos(x + 1, y + offset, z + 1)).getBlock() == ModBlocks.reactor_element &&
 				world.getBlockState(mPos.setPos(x - 1, y + offset, z + 1)).getBlock() == ModBlocks.reactor_element &&
 				world.getBlockState(mPos.setPos(x - 1, y + offset, z - 1)).getBlock() == ModBlocks.reactor_element &&
@@ -296,11 +289,11 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	
 	private float checkHull() {
 		
-		final float max = getSize() * 12;
+		float max = getSize() * 12;
 		float count = 0;
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int z = pos.getZ();
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int z = pos.getZ();
 		for(int y = pos.getY() - depth; y <= pos.getY() + height; y++) {
 			
 			if(blocksRad(mPos.setPos(x - 1, y, z + 2)))
@@ -341,15 +334,18 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 	
 	@SuppressWarnings("deprecation")
-	private boolean blocksRad(final BlockPos pos) {
+	private boolean blocksRad(BlockPos pos) {
 		
-		final Block b = world.getBlockState(pos).getBlock();
+		Block b = world.getBlockState(pos).getBlock();
 		
 		if(b instanceof IRadResistantBlock)
 			return true;
 
-        return b == ModBlocks.reactor_hatch || b == ModBlocks.reactor_ejector || b == ModBlocks.reactor_inserter;
-    }
+		if(b == ModBlocks.reactor_hatch || b == ModBlocks.reactor_ejector || b == ModBlocks.reactor_inserter)
+			return true;
+		
+		return false;
+	}
 	
 	private void caluclateSize() {
 		
@@ -392,7 +388,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		fuel -= consumption;
 		waste += consumption;
 		
-		final int heat = (consumption / size) * type.heat / fuelMult;
+		int heat = (consumption / size) * type.heat / fuelMult;
 		
 		this.coreHeat += heat;
 		
@@ -417,8 +413,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			}
 
 			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, size, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tanks[0], tanks[1], tanks[2]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTypePacketTest(pos.getX(), pos.getY(), pos.getZ(), new Fluid[]{tankTypes[2]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tanks[0], tanks[1], tanks[2]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 		
 			maxWaste = maxFuel = fuelBase * getSize();
 			
@@ -448,12 +443,12 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			
 			//Meteorite sword
 			if(coreHeat > 0 && inventory.getStackInSlot(4).getItem() == ModItems.meteorite_sword_bred)
-				inventory.setStackInSlot(4, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_irradiated));
+				inventory.setStackInSlot(4, new ItemStack(ModItems.meteorite_sword_irradiated));
 			
 			//Load fuel
 			if(getFuelContent(inventory.getStackInSlot(4), type) > 0) {
 				
-				final int cont = getFuelContent(inventory.getStackInSlot(4), type) * fuelMult;
+				int cont = getFuelContent(inventory.getStackInSlot(4), type) * fuelMult;
 				
 				if(fuel + cont <= maxFuel) {
 					
@@ -463,7 +458,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 						
 					} else if(inventory.getStackInSlot(5).isEmpty()) {
 						
-						inventory.setStackInSlot(5, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(4).getItem().getContainerItem()));
+						inventory.setStackInSlot(5, new ItemStack(inventory.getStackInSlot(4).getItem().getContainerItem()));
 						inventory.getStackInSlot(4).shrink(1);
 						fuel += cont;
 						
@@ -482,14 +477,14 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			//Unload waste
 			if(getWasteAbsorbed(inventory.getStackInSlot(6).getItem(), type) > 0) {
 				
-				final int absorbed = getWasteAbsorbed(inventory.getStackInSlot(6).getItem(), type) * fuelMult;
+				int absorbed = getWasteAbsorbed(inventory.getStackInSlot(6).getItem(), type) * fuelMult;
 				
 				if(absorbed <= waste) {
 					
 					if(inventory.getStackInSlot(7).isEmpty()) {
 
 						waste -= absorbed;
-						inventory.setStackInSlot(7, ItemStackUtil.itemStackFrom(getWaste(inventory.getStackInSlot(6).getItem(), type)));
+						inventory.setStackInSlot(7, new ItemStack(getWaste(inventory.getStackInSlot(6).getItem(), type)));
 						inventory.getStackInSlot(6).shrink(1);
 						
 					} else if(inventory.getStackInSlot(7).getItem() == getWaste(inventory.getStackInSlot(6).getItem(), type) && inventory.getStackInSlot(7).getCount() < inventory.getStackInSlot(7).getMaxStackSize()) {
@@ -536,10 +531,10 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 				RadiationSavedData.incrementRad(world, pos, rad, 50 * 4);
 			}
 
-			final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-			final int x = pos.getX();
-			final int y = pos.getY();
-			final int z = pos.getZ();
+			MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
 			
 			if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x, y, z - 2)).getValue(BlockHorizontal.FACING) == EnumFacing.NORTH)
 				tryEjectInto(mPos.setPos(x, y, z - 3));
@@ -563,30 +558,32 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		}
 	}
 	
-	protected boolean inputValidForTank(final int tank, final int slot){
+	protected boolean inputValidForTank(int tank, int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty() && tanks[tank] != null){
-            return inventory.getStackInSlot(slot).getItem() == ModItems.fluid_barrel_infinite || isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
+			if(inventory.getStackInSlot(slot).getItem() == ModItems.fluid_barrel_infinite || isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
+				return true;
+			}
 		}
 		return false;
 	}
 	
-	private boolean isValidFluidForTank(final int tank, final FluidStack stack) {
+	private boolean isValidFluidForTank(int tank, FluidStack stack) {
 		if(stack == null || tanks[tank] == null)
 			return false;
 		return stack.getFluid() == tankTypes[tank];
 	}
 	
-	private void tryEjectInto(final BlockPos pos) {
+	private void tryEjectInto(BlockPos pos) {
 		
-		final int wSize = type.toString().equals(ReactorFuelType.SCHRABIDIUM.toString()) ? 60 * fuelMult : 6 * fuelMult;
+		int wSize = type.toString().equals(ReactorFuelType.SCHRABIDIUM.toString()) ? 60 * fuelMult : 6 * fuelMult;
 		
 		if(waste < wSize)
 			return;
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
 		if(te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)){
-			final IItemHandler chest = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			IItemHandler chest = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			
 			Item waste = ModItems.waste_uranium_hot;
 			
@@ -609,7 +606,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			}
 			
 			for(int i = 0; i < chest.getSlots(); i ++){
-				if(chest.insertItem(i, ItemStackUtil.itemStackFrom(waste), false).isEmpty()){
+				if(chest.insertItem(i, new ItemStack(waste), false).isEmpty()){
 					this.waste -= wSize;
 					return;
 				}
@@ -642,8 +639,8 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			
 			for(int i = 0; i < chest.getSizeInventory(); i++) {
 				
-				if(chest.isItemValidForSlot(i, ItemStackUtil.itemStackFrom(waste)) && chest.getStackInSlot(i) != null && chest.getStackInSlot(i).getItem() == waste && chest.getStackInSlot(i).stackSize < chest.getStackInSlot(i).getMaxStackSize()) {
-					chest.setInventorySlotContents(i, ItemStackUtil.itemStackFrom(waste, chest.getStackInSlot(i).stackSize + 1));
+				if(chest.isItemValidForSlot(i, new ItemStack(waste)) && chest.getStackInSlot(i) != null && chest.getStackInSlot(i).getItem() == waste && chest.getStackInSlot(i).stackSize < chest.getStackInSlot(i).getMaxStackSize()) {
+					chest.setInventorySlotContents(i, new ItemStack(waste, chest.getStackInSlot(i).stackSize + 1));
 					this.waste -= wSize;
 					return;
 				}
@@ -651,8 +648,8 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			
 			for(int i = 0; i < chest.getSizeInventory(); i++) {
 				
-				if(chest.isItemValidForSlot(i, ItemStackUtil.itemStackFrom(waste)) && chest.getStackInSlot(i) == null) {
-					chest.setInventorySlotContents(i, ItemStackUtil.itemStackFrom(waste));
+				if(chest.isItemValidForSlot(i, new ItemStack(waste)) && chest.getStackInSlot(i) == null) {
+					chest.setInventorySlotContents(i, new ItemStack(waste));
 					this.waste -= wSize;
 					return;
 				}
@@ -660,27 +657,28 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		}*/
 	}
 	
-	private void tryInsertFrom(final BlockPos pos) {
+	private void tryInsertFrom(BlockPos pos) {
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
 		if(te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)){
-			final IItemHandler check = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			if(check instanceof IItemHandlerModifiable chest){
-                if(fuel > 0){
+			IItemHandler check = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			if(check instanceof IItemHandlerModifiable){
+				IItemHandlerModifiable chest = (IItemHandlerModifiable)check;
+				if(fuel > 0){
 					for(int i = 0; i < chest.getSlots(); i ++){
 						if(!chest.getStackInSlot(i).isEmpty()){
-							final int cont = getFuelContent(chest.getStackInSlot(i), type) * fuelMult;
+							int cont = getFuelContent(chest.getStackInSlot(i), type) * fuelMult;
 							
 							if(cont > 0 && fuel + cont <= maxFuel){
-								final Item container =  chest.getStackInSlot(i).getItem().getContainerItem();
+								Item container =  chest.getStackInSlot(i).getItem().getContainerItem();
 								
 								chest.getStackInSlot(i).shrink(1);
 								if(chest.getStackInSlot(i).isEmpty())
 									chest.setStackInSlot(i, ItemStack.EMPTY);
 								fuel += cont;
 								if(chest.getStackInSlot(i).isEmpty() && container != null)
-									chest.setStackInSlot(i, ItemStackUtil.itemStackFrom(container));
+									chest.setStackInSlot(i, new ItemStack(container));
 							}
 						}
 					}
@@ -688,10 +686,10 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 					for(int i = 0; i < chest.getSlots(); i++) {
 						
 						if(!chest.getStackInSlot(i).isEmpty()) {
-							final int cont = getFuelContent(chest.getStackInSlot(i), getFuelType(chest.getStackInSlot(i).getItem())) * fuelMult;
+							int cont = getFuelContent(chest.getStackInSlot(i), getFuelType(chest.getStackInSlot(i).getItem())) * fuelMult;
 							if(cont > 0 && fuel + cont <= maxFuel) {
 								
-								final Item container = chest.getStackInSlot(i).getItem().getContainerItem();
+								Item container = chest.getStackInSlot(i).getItem().getContainerItem();
 								
 								type = getFuelType(chest.getStackInSlot(i).getItem());
 								chest.getStackInSlot(i).shrink(1);
@@ -700,7 +698,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 								fuel += cont;
 								
 								if(chest.getStackInSlot(i).isEmpty() && container != null)
-									chest.setStackInSlot(i, ItemStackUtil.itemStackFrom(container));
+									chest.setStackInSlot(i, new ItemStack(container));
 							}
 						}
 					}
@@ -714,7 +712,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		//function of SHS produced per tick
 		//maxes out at heat% * tank capacity / 20
 		
-		final double statSteMaFiFiLe = 32000;
+		double statSteMaFiFiLe = 32000;
 		
 		int waterConsumption = (int)((((double)hullHeat / (double)maxHullHeat) * (statSteMaFiFiLe / 50D)) * size);
 		
@@ -729,7 +727,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 
 		int steamProduction = waterConsumption * steamMul;
 
-		final int waterFill = tanks[0].getFluidAmount();
+		int waterFill = tanks[0].getFluidAmount();
 
 		if(waterFill > 0){
 			if(waterFill < waterConsumption){
@@ -748,7 +746,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			inventory.setStackInSlot(i, ItemStack.EMPTY);
 		}
 
-		final int rad = (int)(((long)fuel) * 25000L / (fuelBase * 15L));
+		int rad = (int)(((long)fuel) * 25000L / (fuelBase * 15L));
 		
 		RadiationSavedData.incrementRad(world, pos, rad, 75000);
 
@@ -777,18 +775,18 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		
 		world.setBlockState(pos, ModBlocks.sellafield_core.getStateFromMeta(world.rand.nextInt(4)));
 		if(MobConfig.enableElementals) {
-			final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(100, 100, 100));
+			List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).grow(100, 100, 100));
 
-			for(final EntityPlayer player : players) {
+			for(EntityPlayer player : players) {
 				player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", true);
 			}
 		}
 	}
 	
-	private void randomizeRadBlock(final int x, final int y, final int z) {
-		final BlockPos pos = new BlockPos(x, y, z);
+	private void randomizeRadBlock(int x, int y, int z) {
+		BlockPos pos = new BlockPos(x, y, z);
 		
-		final int rand = world.rand.nextInt(20);
+		int rand = world.rand.nextInt(20);
 		
 		if(rand < 3)
 			world.setBlockState(pos, ModBlocks.corium_block.getDefaultState());
@@ -798,11 +796,11 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			world.setBlockState(pos, ModBlocks.block_corium_cobble.getDefaultState());
 	}
 	
-	public void fillFluidInit(final FluidTank tank) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+	public void fillFluidInit(FluidTank tank) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_hatch)
 			FFUtils.fillFluid(this, tank, world, new BlockPos(pos.getX() - 3, pos.getY(), pos.getZ()), 2560000);
 		
@@ -825,7 +823,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource == null){
 			return 0;
 		} else if(resource.getFluid() == tankTypes[0]){
@@ -838,7 +836,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		if(resource != null && resource.getFluid() == tankTypes[2]){
 			return tanks[2].drain(resource.amount, doDrain);
 		} else {
@@ -847,14 +845,15 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return tanks[2].drain(maxDrain, doDrain);
 	}
 	
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 3){
-        } else {
+			return;
+		} else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 			tanks[2].readFromNBT(tags[2]);
@@ -862,12 +861,12 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this) : super.getCapability(capability, facing);
 	}
 	
@@ -880,12 +879,12 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		SCHRABIDIUM(2085000),
 		UNKNOWN(1);
 		
-		private ReactorFuelType(final int i) {
+		private ReactorFuelType(int i) {
 			heat = i;
 		}
 		
 		//Heat per nugget burned
-		private final int heat;
+		private int heat;
 		
 		public int getHeat() {
 			return heat;
@@ -895,7 +894,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			return Arrays.asList(ReactorFuelType.values()).indexOf(this);
 		}
 		
-		public static ReactorFuelType getEnum(final int i) {
+		public static ReactorFuelType getEnum(int i) {
 			if(i < ReactorFuelType.values().length)
 				return ReactorFuelType.values()[i];
 			else
@@ -908,21 +907,11 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		int value;
 		ReactorFuelType type;
 		Item item;
-		int meta; // TODO: use this motherfucker
-
-		public ReactorFuelEntry(final int value, final ReactorFuelType type, final Item item, final int meta) {
+		
+		public ReactorFuelEntry(int value, ReactorFuelType type, Item item) {
 			this.value = value;
 			this.type = type;
 			this.item = item;
-			this.meta = meta;
-		}
-
-		public ReactorFuelEntry(final int value, final ReactorFuelType type, final ItemStack stack) {
-			this(value, type, stack.getItem(), stack.getMetadata());
-		}
-
-		public ReactorFuelEntry(final int value, final ReactorFuelType type, final Item item) {
-			this(value, type, item, 0);
 		}
 	}
 	
@@ -933,7 +922,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		Item in;
 		Item out;
 		
-		public ReactorWasteEntry(final int value, final ReactorFuelType type, final Item in, final Item out) {
+		public ReactorWasteEntry(int value, ReactorFuelType type, Item in, Item out) {
 			this.value = value;
 			this.type = type;
 			this.in = in;
@@ -945,34 +934,31 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	//Alcater: seems to be done now
 	static List<ReactorFuelEntry> fuels = new ArrayList<ReactorFuelEntry>();
 	static List<ReactorWasteEntry> wastes = new ArrayList<ReactorWasteEntry>();
-
-	public static void registerFuelEntry(final int nuggets, final ReactorFuelType type, final Item fuel) {
-		fuels.add(new ReactorFuelEntry(nuggets, type, fuel));
-	}
-
-	public static void registerFuelEntry(final int nuggets, final ReactorFuelType type, final ItemStack fuel) {
+	
+	public static void registerFuelEntry(int nuggets, ReactorFuelType type, Item fuel) {
+		
 		fuels.add(new ReactorFuelEntry(nuggets, type, fuel));
 	}
 	
-	public static void registerWasteEntry(final int nuggets, final ReactorFuelType type, final Item in, final Item out) {
+	public static void registerWasteEntry(int nuggets, ReactorFuelType type, Item in, Item out) {
 		
 		wastes.add(new ReactorWasteEntry(nuggets, type, in, out));
 	}
 	
-	public static int getFuelContent(final ItemStack item, final ReactorFuelType type) {
+	public static int getFuelContent(ItemStack item, ReactorFuelType type) {
 		
 		if(item == null || item.isEmpty())
 			return 0;
 		
-		for(final ReactorFuelEntry ent : fuels) {
+		for(ReactorFuelEntry ent : fuels) {
 			if(ent.item == item.getItem() && type.toString().equals(ent.type.toString())) {
 
-				final int value = ent.value;
+				int value = ent.value;
 
 				//if it's a fuel rod that has been used up, multiply by damage and floor it
 				if(item.getItem() instanceof ItemFuelRod) {
 
-					final double mult = 1D - ((double)ItemFuelRod.getLifeTime(item) / (double)((ItemFuelRod)item.getItem()).getMaxLifeTime());
+					double mult = 1D - ((double)ItemFuelRod.getLifeTime(item) / (double)((ItemFuelRod)item.getItem()).getMaxLifeTime());
 					return (int)Math.floor(mult * value);
 				}
 
@@ -983,9 +969,9 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		return 0;
 	}
 	
-	public static ReactorFuelType getFuelType(final Item item) {
+	public static ReactorFuelType getFuelType(Item item) {
 		
-		for(final ReactorFuelEntry ent : fuels) {
+		for(ReactorFuelEntry ent : fuels) {
 			if(ent.item == item)
 				return ent.type;
 		}
@@ -993,9 +979,9 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		return ReactorFuelType.UNKNOWN;
 	}
 	
-	public static Item getWaste(final Item item, final ReactorFuelType type) {
+	public static Item getWaste(Item item, ReactorFuelType type) {
 		
-		for(final ReactorWasteEntry ent : wastes) {
+		for(ReactorWasteEntry ent : wastes) {
 			if(ent.in == item && type.toString().equals(ent.type.toString()))
 				return ent.out;
 		}
@@ -1003,9 +989,9 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		return null;
 	}
 	
-	public static int getWasteAbsorbed(final Item item, final ReactorFuelType type) {
+	public static int getWasteAbsorbed(Item item, ReactorFuelType type) {
 		
-		for(final ReactorWasteEntry ent : wastes) {
+		for(ReactorWasteEntry ent : wastes) {
 			if(ent.in == item && type.toString().equals(ent.type.toString()))
 				return ent.value;
 		}

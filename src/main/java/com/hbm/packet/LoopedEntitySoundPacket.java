@@ -25,17 +25,17 @@ public class LoopedEntitySoundPacket implements IMessage {
 		
 	}
 
-	public LoopedEntitySoundPacket(final int entityID){
+	public LoopedEntitySoundPacket(int entityID){
 		this.entityID = entityID;
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		entityID = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(entityID);
 	}
 
@@ -44,9 +44,9 @@ public class LoopedEntitySoundPacket implements IMessage {
 		@Override
 		//Tamaized, I love you!
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final LoopedEntitySoundPacket m, final MessageContext ctx) {
+		public IMessage onMessage(LoopedEntitySoundPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final Entity e = Minecraft.getMinecraft().world.getEntityByID(m.entityID);
+				Entity e = Minecraft.getMinecraft().world.getEntityByID(m.entityID);
 
 				if(e instanceof EntityMissileCustom || e instanceof EntityMissileBaseAdvanced){
 					boolean startNew = true;
@@ -64,7 +64,7 @@ public class LoopedEntitySoundPacket implements IMessage {
 				if(e instanceof EntityBomber) {
 
 					int n = 1;
-			        final int x = (int) e.getDataManager().get(EntityBomber.STYLE);
+			        int x = (int) e.getDataManager().get(EntityBomber.STYLE);
 
 			        switch(x) {
 			        case 0:

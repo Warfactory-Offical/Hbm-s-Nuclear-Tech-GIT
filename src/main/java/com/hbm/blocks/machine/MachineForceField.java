@@ -1,11 +1,8 @@
 package com.hbm.blocks.machine;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityForceField;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -21,9 +18,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Random;
+
 public class MachineForceField extends BlockContainer {
 
-	public MachineForceField(final Material materialIn, final String s) {
+	public MachineForceField(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,12 +31,12 @@ public class MachineForceField extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityForceField();
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
@@ -52,27 +51,27 @@ public class MachineForceField extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(final IBlockState state, final World world, final BlockPos pos, final Random rand) {
-		final TileEntityForceField te = (TileEntityForceField)world.getTileEntity(pos);
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		TileEntityForceField te = (TileEntityForceField)world.getTileEntity(pos);
 		
 		if(te.isOn && te.cooldown == 0 && te.power > 0) {
 			for(int i = 0; i < 4; i++) {
-				final float f = pos.getX();
-				final float f1 = pos.getY() + 2F;
-				final float f2 = pos.getZ();
-				final float f4 = rand.nextFloat();
-				final float f5 = rand.nextFloat();
+				float f = pos.getX();
+				float f1 = pos.getY() + 2F;
+				float f2 = pos.getZ();
+				float f4 = rand.nextFloat();
+				float f5 = rand.nextFloat();
 	
 				if(te.color == 0xFF0000)
 					world.spawnParticle(EnumParticleTypes.LAVA, f + f4, f1, f2 + f5, 0.0D, 0.0D, 0.0D);
 			}
 		} else if(te.cooldown > 0) {
 			for(int i = 0; i < 4; i++) {
-				final float f = pos.getX();
-				final float f1 = pos.getY() + 2F;
-				final float f2 = pos.getZ();
-				final float f4 = rand.nextFloat();
-				final float f5 = rand.nextFloat();
+				float f = pos.getX();
+				float f1 = pos.getY() + 2F;
+				float f2 = pos.getZ();
+				float f4 = rand.nextFloat();
+				float f5 = rand.nextFloat();
 	
 				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, f + f4, f1, f2 + f5, 0.0D, 0.0D, 0.0D);
 			}
@@ -80,32 +79,32 @@ public class MachineForceField extends BlockContainer {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 

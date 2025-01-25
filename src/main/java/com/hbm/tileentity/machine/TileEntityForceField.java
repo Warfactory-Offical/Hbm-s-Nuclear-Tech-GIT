@@ -1,8 +1,6 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
@@ -10,8 +8,6 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEFFPacket;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +21,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityForceField extends TileEntityLoadedBase implements ITickable, IEnergyUser {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TileEntityForceField extends TileEntityLoadedBase implements ITickable, IEnergyReceiverMK2 {
 
 	public ItemStackHandler inventory;
 	
@@ -52,7 +51,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	public TileEntityForceField() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -67,11 +66,11 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -81,7 +80,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		this.power = nbt.getLong("powerTime");
 		this.health = nbt.getInteger("health");
 		this.maxHealth = nbt.getInteger("maxHealth");
@@ -95,7 +94,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt.setLong("powerTime", power);
 		nbt.setInteger("health", health);
 		nbt.setInteger("maxHealth", maxHealth);
@@ -107,18 +106,18 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		return super.writeToNBT(nbt);
 	}
 	
-	public int getHealthScaled(final int i) {
+	public int getHealthScaled(int i) {
 		return (health * i) / Math.max(1, maxHealth);
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / Math.max(1, maxPower);
 	}
 	
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			this.updateStandardConnections(world, pos);
+			updateConnections();
 			int rStack = 0;
 			int hStack = 0;
 			radius = 16;
@@ -178,14 +177,14 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		}
 	}
 	
-	private int impact(final Entity e) {
+	private int impact(Entity e) {
 		
-		final double mass = e.height * e.width * e.width;
-		final double speed = getMotionWithFallback(e);
+		double mass = e.height * e.width * e.width;
+		double speed = getMotionWithFallback(e);
 		return (int)(mass * speed * 50);
 	}
 	
-	private void damage(final int ouch) {
+	private void damage(int ouch) {
 		health -= ouch;
 		
 		if(ouch >= (this.maxHealth / 250))
@@ -197,26 +196,34 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		}
 	}
 
+	private void updateConnections() {
+		this.trySubscribe(world, pos.getX() + 1, pos.getY(), pos.getZ(), Library.POS_X);
+		this.trySubscribe(world, pos.getX() - 1, pos.getY(), pos.getZ(), Library.NEG_X);
+		this.trySubscribe(world, pos.getX(), pos.getY(), pos.getZ() + 1, Library.POS_Z);
+		this.trySubscribe(world, pos.getX(), pos.getY(), pos.getZ() - 1, Library.NEG_Z);
+		this.trySubscribe(world, pos.getX(), pos.getY() - 1, pos.getZ(), Library.NEG_Y);
+	}
+
 	List<Entity> outside = new ArrayList<Entity>();
 	List<Entity> inside = new ArrayList<Entity>();
 	
-	private void doField(final float rad) {
+	private void doField(float rad) {
 
-		final List<Entity> oLegacy = new ArrayList<Entity>(outside);
-		final List<Entity> iLegacy = new ArrayList<Entity>(inside);
+		List<Entity> oLegacy = new ArrayList<Entity>(outside);
+		List<Entity> iLegacy = new ArrayList<Entity>(inside);
 
 		outside.clear();
 		inside.clear();
 		
-		final List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() + 0.5 - (rad + 25), pos.getY() + 0.5 - (rad + 25), pos.getZ() + 0.5 - (rad + 25), pos.getX() + 0.5 + (rad + 25), pos.getY() + 0.5 + (rad + 25), pos.getZ() + 0.5 + (rad + 25)));
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() + 0.5 - (rad + 25), pos.getY() + 0.5 - (rad + 25), pos.getZ() + 0.5 - (rad + 25), pos.getX() + 0.5 + (rad + 25), pos.getY() + 0.5 + (rad + 25), pos.getZ() + 0.5 + (rad + 25)));
 		
-		for(final Entity entity : list) {
+		for(Entity entity : list) {
 			
 			if(!(entity instanceof EntityPlayer) && !(entity instanceof EntityItem)) {
 				
-				final double dist = Math.sqrt(Math.pow(pos.getX() + 0.5 - entity.posX, 2) + Math.pow(pos.getY() + 0.5 - entity.posY, 2) + Math.pow(pos.getZ() + 0.5 - entity.posZ, 2));
+				double dist = Math.sqrt(Math.pow(pos.getX() + 0.5 - entity.posX, 2) + Math.pow(pos.getY() + 0.5 - entity.posY, 2) + Math.pow(pos.getZ() + 0.5 - entity.posZ, 2));
 				
-				final boolean out = dist > rad;
+				boolean out = dist > rad;
 				
 				//if the entity has not been registered yet
 				if(!oLegacy.contains(entity) && !iLegacy.contains(entity)) {
@@ -234,13 +241,13 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 						Vec3 vec = Vec3.createVectorHelper(pos.getX() + 0.5 - entity.posX, pos.getY() + 0.5 - entity.posY, pos.getZ() + 0.5 - entity.posZ);
 						vec = vec.normalize();
 						
-						final double mx = -vec.xCoord * (rad + 1);
-						final double my = -vec.yCoord * (rad + 1);
-						final double mz = -vec.zCoord * (rad + 1);
+						double mx = -vec.xCoord * (rad + 1);
+						double my = -vec.yCoord * (rad + 1);
+						double mz = -vec.zCoord * (rad + 1);
 						
 						entity.setLocationAndAngles(pos.getX() + 0.5 + mx, pos.getY() + 0.5 + my, pos.getZ() + 0.5 + mz, 0, 0);
 						
-						final double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
+						double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
 
 						entity.motionX = vec.xCoord * -mo;
 						entity.motionY = vec.yCoord * -mo;
@@ -264,13 +271,13 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 						Vec3 vec = Vec3.createVectorHelper(pos.getX() + 0.5 - entity.posX, pos.getY() + 0.5 - entity.posY, pos.getZ() + 0.5 - entity.posZ);
 						vec = vec.normalize();
 						
-						final double mx = -vec.xCoord * (rad - 1);
-						final double my = -vec.yCoord * (rad - 1);
-						final double mz = -vec.zCoord * (rad - 1);
+						double mx = -vec.xCoord * (rad - 1);
+						double my = -vec.yCoord * (rad - 1);
+						double mz = -vec.zCoord * (rad - 1);
 
 						entity.setLocationAndAngles(pos.getX() + 0.5 + mx, pos.getY() + 0.5 + my, pos.getZ() + 0.5 + mz, 0, 0);
 						
-						final double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
+						double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
 
 						entity.motionX = vec.xCoord * mo;
 						entity.motionY = vec.yCoord * mo;
@@ -300,13 +307,13 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 		}
 	}
 	
-	private double getMotionWithFallback(final Entity e) {
+	private double getMotionWithFallback(Entity e) {
 
-		final Vec3 v1 = Vec3.createVectorHelper(e.motionX, e.motionY, e.motionZ);
-		final Vec3 v2 = Vec3.createVectorHelper(e.posX - e.prevPosY, e.posY - e.prevPosY, e.posZ - e.prevPosZ);
+		Vec3 v1 = Vec3.createVectorHelper(e.motionX, e.motionY, e.motionZ);
+		Vec3 v2 = Vec3.createVectorHelper(e.posX - e.prevPosY, e.posY - e.prevPosY, e.posZ - e.prevPosZ);
 
-		final double s1 = v1.length();
-		final double s2 = v2.length();
+		double s1 = v1.length();
+		double s2 = v2.length();
 		
 		if(s1 == 0)
 			return s2;
@@ -318,7 +325,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ITicka
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

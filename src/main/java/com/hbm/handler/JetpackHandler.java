@@ -83,35 +83,37 @@ public class JetpackHandler {
 	private static boolean hud_key_down = false;
 	
 	//I should be able to use this cheesily for both server and client, since they're technically different entities.
-	private static final Map<PlayerKey, JetpackInfo> perPlayerInfo = new HashMap<>();
+	private static Map<PlayerKey, JetpackInfo> perPlayerInfo = new HashMap<>();
 	
-	public static JetpackInfo get(final EntityPlayer p){
+	public static JetpackInfo get(EntityPlayer p){
 		return perPlayerInfo.get(new PlayerKey(p));
 	}
 	
-	public static void put(final EntityPlayer p, final JetpackInfo j){
+	public static void put(EntityPlayer p, JetpackInfo j){
 		perPlayerInfo.put(new PlayerKey(p), j);
 	}
 	
-	public static boolean hasJetpack(final EntityPlayer p){
-		final ItemStack chest = p.inventory.armorInventory.get(2);
-		final ItemStack stack = ArmorModHandler.pryMod(chest, 1);
-        return stack.getItem() == ModItems.jetpack_glider;
-    }
+	public static boolean hasJetpack(EntityPlayer p){
+		ItemStack chest = p.inventory.armorInventory.get(2);
+		ItemStack stack = ArmorModHandler.pryMod(chest, 1);
+		if(stack.getItem() == ModItems.jetpack_glider)
+			return true;
+		return false;
+	}
 	
-	public static FluidTank getTank(final EntityPlayer p){
-		final ItemStack chest = p.inventory.armorInventory.get(2);
-		final ItemStack stack = ArmorModHandler.pryMod(chest, 1);
+	public static FluidTank getTank(EntityPlayer p){
+		ItemStack chest = p.inventory.armorInventory.get(2);
+		ItemStack stack = ArmorModHandler.pryMod(chest, 1);
 		return ((JetpackGlider)stack.getItem()).getTank(stack);
 	}
 	
-	public static void setTank(final EntityPlayer p, final FluidTank tank){
-		final ItemStack chest = p.inventory.armorInventory.get(2);
-		final ItemStack stack = ArmorModHandler.pryMod(chest, 1);
+	public static void setTank(EntityPlayer p, FluidTank tank){
+		ItemStack chest = p.inventory.armorInventory.get(2);
+		ItemStack stack = ArmorModHandler.pryMod(chest, 1);
 		((JetpackGlider)stack.getItem()).setTank(stack, tank);
 	}
 	
-	public static float getSpeed(final Fluid f){
+	public static float getSpeed(Fluid f){
 		if(f == null)
 			return 0;
 		if(f == ModForgeFluids.kerosene){
@@ -124,7 +126,7 @@ public class JetpackHandler {
 		return 0;
 	}
 	
-	public static int getDrain(final Fluid f){
+	public static int getDrain(Fluid f){
 		if(f == null)
 			return 0;
 		//Drain is already scaled by thrust, which is greater with the higher tier fuels
@@ -138,29 +140,29 @@ public class JetpackHandler {
 		return 0;
 	}
 	
-	private static final float[] keroseneColor = new float[]{1, 0.6F, 0.5F};
-	private static final float[] nitanColor = new float[]{1F, 0.5F, 1F};
-	private static final float[] bfColor = new float[]{0.4F, 1, 0.7F};
-	private static final ColorGradient keroseneGradient = new ColorGradient(
+	private static float[] keroseneColor = new float[]{1, 0.6F, 0.5F};
+	private static float[] nitanColor = new float[]{1F, 0.5F, 1F};
+	private static float[] bfColor = new float[]{0.4F, 1, 0.7F};
+	private static ColorGradient keroseneGradient = new ColorGradient(
 			new float[]{1, 0.918F, 0.882F, 1, 0},
 			new float[]{0.887F, 1, 0, 1, 0.177F},
 			new float[]{1, 0.19F, 0, 1, 0.336F},
 			new float[]{1, 0.14F, 0, 1, 0.85F},
 			new float[]{1, 0.14F, 0, 0, 1});
-	private static final ColorGradient nitanGradient = new ColorGradient(
+	private static ColorGradient nitanGradient = new ColorGradient(
 			new float[]{0.845F, 0.779F, 1F, 1, 0},
 			new float[]{1F, 0.3F, 1F, 1, 0.122F},
 			new float[]{0.7F, 0.4F, 1F, 1, 0.389F},
 			new float[]{0.35F, 0.2F, 1F, 1, 0.891F},
 			new float[]{0.1F, 0.1F, 1F, 0, 1});
-	private static final ColorGradient bfGradient = new ColorGradient(
+	private static ColorGradient bfGradient = new ColorGradient(
 			new float[]{1F, 0.95F, 0.279F, 1, 0},
 			new float[]{1F, 0.9F, 0.1F, 1, 0.122F},
 			new float[]{0.013F, 1F, 0.068F, 1, 0.389F},
 			new float[]{0.2F, 1F, 0.3F, 1, 0.891F},
 			new float[]{0, 1F, 0.4F, 0, 1});
 	
-	public static ColorGradient getGradientFromFuel(final Fluid fuel){
+	public static ColorGradient getGradientFromFuel(Fluid fuel){
 		if(fuel == ModForgeFluids.balefire){
 			return bfGradient;
 		} else if(fuel == ModForgeFluids.nitan){
@@ -169,7 +171,7 @@ public class JetpackHandler {
 		return keroseneGradient;
 	}
 	
-	public static float[] getBrightnessColorFromFuel(final Fluid fuel){
+	public static float[] getBrightnessColorFromFuel(Fluid fuel){
 		if(fuel == ModForgeFluids.balefire){
 			return bfColor;
 		} else if(fuel == ModForgeFluids.nitan){
@@ -181,41 +183,41 @@ public class JetpackHandler {
 	//I'm not even going to bother trying to cheat protect this. If a player wants to fly really fast,
 	//They can just download a regular hacked anyway.
 	@SideOnly(Side.CLIENT)
-	public static void inputUpdate(final InputUpdateEvent e){
-		final EntityPlayer player = e.getEntityPlayer();
+	public static void inputUpdate(InputUpdateEvent e){
+		EntityPlayer player = e.getEntityPlayer();
 		if(!hasJetpack(player))
 			return;
-		final FluidTank fuelTank = getTank(player);
+		FluidTank fuelTank = getTank(player);
 		JetpackInfo info = get(player);
 		if(info == null){
 			info = new JetpackInfo(true);
 			put(player, info);
 			info.dirty = true;
 		}
-		final boolean jKey = ClientProxy.jetpackActivate.isKeyDown();
+		boolean jKey = ClientProxy.jetpackActivate.isKeyDown();
 		if(jKey && !jet_key_down && System.currentTimeMillis()-getAnimTime(player) > 1000){
 			toggleOpenState(player);
 		}
 		jet_key_down = jKey;
-		final boolean hKey = ClientProxy.jetpackHover.isKeyDown();
+		boolean hKey = ClientProxy.jetpackHover.isKeyDown();
 		if(hKey && !hover_key_down){
 			toggleHoverState(player);
 		}
 		hover_key_down = hKey;
-		final boolean hudKey = ClientProxy.jetpackHud.isKeyDown();
+		boolean hudKey = ClientProxy.jetpackHud.isKeyDown();
 		if(hudKey && !hud_key_down){
 			toggleHUDState(player);
 		}
 		hud_key_down = hudKey;
-		final float thrust = info.thrust;
+		float thrust = info.thrust;
 		if(jetpackActive(player) && player.isInWater()){
 			info.failureTicks = 80;
 		}
 		if(jetpackActive(player) && !player.onGround && info.failureTicks <= 0 && fuelTank.getFluidAmount() > 0){
-			final float speed = getSpeed(fuelTank.getFluid().getFluid());
+			float speed = getSpeed(fuelTank.getFluid().getFluid());
 			player.capabilities.isFlying = false;
-			final MovementInput m = e.getMovementInput();
-			final boolean sprint = Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown();
+			MovementInput m = e.getMovementInput();
+			boolean sprint = Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown();
 			if(player.isSprinting())
 				player.setSprinting(sprint);
 			if(isHovering(player)){
@@ -237,15 +239,15 @@ public class JetpackHandler {
 					extraMY -= Math.min(0.3, 0.3*speed);
 				}
 				player.motionY += extraMY;
-				final float diff = (Math.abs(m.moveForward)+Math.abs(m.moveStrafe)+extraMY+0.4F) - thrust;
+				float diff = (Math.abs(m.moveForward)+Math.abs(m.moveStrafe)+extraMY+0.4F) - thrust;
 				setThrust(player, thrust + diff*0.3F);
 				m.moveForward = sprint ? 0.81F : 0;
 				m.moveStrafe = 0;
 			} else {
-				final float boost = m.jump ? speed : 0;
-				final float diff = MathHelper.clamp(BobMathUtil.remap(boost, 0, 2, 0F, 4), 0, 2) - thrust;
+				float boost = m.jump ? speed : 0;
+				float diff = MathHelper.clamp(BobMathUtil.remap(boost, 0, 2, 0F, 4), 0, 2) - thrust;
 				setThrust(player, thrust + diff*0.2F);
-				final Vec3d look = player.getLookVec();
+				Vec3d look = player.getLookVec();
 				if(m.jump){
 					player.motionX += look.x*boost*0.5F;
 					player.motionY += look.y*boost*0.5F;
@@ -259,8 +261,8 @@ public class JetpackHandler {
 				
 				//Same thing as lunar's glider, I figured I should make it consistent
 				if(player.motionY < -0.08) {
-					final Vec3d vec = player.getLookVec();
-					final double mo = player.motionY * -0.4;
+					Vec3d vec = player.getLookVec();
+					double mo = player.motionY * -0.4;
 					player.motionY += mo*(1-Math.abs(vec.y));
 					
 					player.motionX += vec.x*mo;
@@ -270,25 +272,25 @@ public class JetpackHandler {
 			}
 			info.prevThrust = thrust;
 		} else {
-			final float diff = -thrust;
+			float diff = -thrust;
 			setThrust(player, thrust + diff*0.3F);
 			info.prevThrust = thrust;
 		}
 	}
 	
 	public static void serverTick(){
-		final Iterator<Entry<PlayerKey, JetpackInfo>> itr = perPlayerInfo.entrySet().iterator();
+		Iterator<Entry<PlayerKey, JetpackInfo>> itr = perPlayerInfo.entrySet().iterator();
 		while(itr.hasNext()){
-			final Entry<PlayerKey, JetpackInfo> e = itr.next();
-			final EntityPlayer player = e.getKey().player;
+			Entry<PlayerKey, JetpackInfo> e = itr.next();
+			EntityPlayer player = e.getKey().player;
 			if(player.isDead){
 				itr.remove();
 				continue;
 			}
 			if(!player.world.isRemote){
-				final JetpackInfo info = e.getValue();
+				JetpackInfo info = e.getValue();
 				if(jetpackActive(player)){
-					final FluidTank tank = getTank(player);
+					FluidTank tank = getTank(player);
 					int drain = (int) Math.ceil(getDrain(tank.getFluid() == null ? null : tank.getFluid().getFluid())*info.thrust);
 					if(info.thrust < 0.0001)
 						drain = 0;
@@ -302,41 +304,41 @@ public class JetpackHandler {
 		}
 	}
 	
-	public static void playerLoggedIn(final PlayerLoggedInEvent e){
-		final EntityPlayer player = e.player;
-		final ItemStack stack = player.inventory.armorInventory.get(2);
+	public static void playerLoggedIn(PlayerLoggedInEvent e){
+		EntityPlayer player = e.player;
+		ItemStack stack = player.inventory.armorInventory.get(2);
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey(JETPACK_NBT)){
-			final NBTTagCompound tag = stack.getTagCompound().getCompoundTag(JETPACK_NBT);
-			final JetpackInfo j = new JetpackInfo(player.world.isRemote);
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag(JETPACK_NBT);
+			JetpackInfo j = new JetpackInfo(player.world.isRemote);
 			j.readFromNBT(tag);
 			put(e.player, j);
 			PacketDispatcher.sendTo(new JetpackSyncPacket(player), (EntityPlayerMP) player);
 		}
 	}
 	
-	public static void loadNBT(final EntityPlayer player){
-		final ItemStack stack = player.inventory.armorInventory.get(2);
+	public static void loadNBT(EntityPlayer player){
+		ItemStack stack = player.inventory.armorInventory.get(2);
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey(JETPACK_NBT)){
-			final NBTTagCompound tag = stack.getTagCompound().getCompoundTag(JETPACK_NBT);
-			final JetpackInfo j = new JetpackInfo(player.world.isRemote);
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag(JETPACK_NBT);
+			JetpackInfo j = new JetpackInfo(player.world.isRemote);
 			j.readFromNBT(tag);
 			put(player, j);
-			PacketDispatcher.wrapper.sendToAllTracking(new JetpackSyncPacket(player), player);
+			PacketDispatcher.wrapper.sendToAllTracking(new JetpackSyncPacket(player), (EntityPlayerMP) player);
 		}
 	}
 	
-	public static void worldLoad(final WorldEvent.Load e){
-		for(final EntityPlayer player : e.getWorld().playerEntities){
+	public static void worldLoad(WorldEvent.Load e){
+		for(EntityPlayer player : e.getWorld().playerEntities){
 			loadNBT(player);
 		}
 	}
 
-	public static void saveNBT(final EntityPlayer player){
+	public static void saveNBT(EntityPlayer player){
 		if(hasJetpack(player)){
-			final JetpackInfo info = get(player);
+			JetpackInfo info = get(player);
 			if(info != null){
-				final NBTTagCompound tag = info.writeToNBT(new NBTTagCompound());
-				final ItemStack stack = player.inventory.armorInventory.get(2);
+				NBTTagCompound tag = info.writeToNBT(new NBTTagCompound());
+				ItemStack stack = player.inventory.armorInventory.get(2);
 				if(stack.isEmpty())
 					return;
 				if(!stack.hasTagCompound())
@@ -346,16 +348,17 @@ public class JetpackHandler {
 		}
 	}
 	
-	public static void worldSave(final WorldEvent.Save e){
-		for(final EntityPlayer player : e.getWorld().playerEntities){
+	public static void worldSave(WorldEvent.Save e){
+		for(EntityPlayer player : e.getWorld().playerEntities){
 			saveNBT(player);
 		}
 	}
 	
-	public static void startTracking(final PlayerEvent.StartTracking e){
+	public static void startTracking(PlayerEvent.StartTracking e){
 		if(!e.getEntityPlayer().world.isRemote){
-			if(e.getTarget() instanceof EntityPlayer player && e.getEntityPlayer() instanceof EntityPlayerMP){
-                final JetpackInfo j = get(player);
+			if(e.getTarget() instanceof EntityPlayer && e.getEntityPlayer() instanceof EntityPlayerMP){
+				EntityPlayer player = (EntityPlayer)e.getTarget();
+				JetpackInfo j = get(player);
 				if(j != null){
 					PacketDispatcher.wrapper.sendTo(new JetpackSyncPacket(player), (EntityPlayerMP) e.getEntityPlayer());
 				}
@@ -364,8 +367,8 @@ public class JetpackHandler {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static void postPlayerTick(final EntityPlayer player){
-		final JetpackInfo j = get(player);
+	public static void postPlayerTick(EntityPlayer player){
+		JetpackInfo j = get(player);
 		if(j == null)
 			return;
 		if(r_setSize == null){
@@ -375,7 +378,7 @@ public class JetpackHandler {
 			if(isHovering(player)){
 				try {
 					r_setSize.invoke(player, player.width, 1.8F);
-				} catch(final IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
 				if(j != null && j.jetpackFlyTime >= 0 && player.world.isRemote){
@@ -385,7 +388,7 @@ public class JetpackHandler {
 				try {
 					//The magic number 0.6 seems to also make sure the eye height is set correctly automatically in getEyeHeight.
 					r_setSize.invoke(player, player.width, 0.6F);
-				} catch(final IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
 				if(j != null && player.world.isRemote){
@@ -397,7 +400,7 @@ public class JetpackHandler {
 				j.jetpackFlyTime = -1;
 				try {
 					r_setSize.invoke(player, player.width, 1.8F);
-				} catch(final IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
 			}
@@ -405,16 +408,16 @@ public class JetpackHandler {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void renderHUD(final EntityPlayer p, final ScaledResolution res){
+	public static void renderHUD(EntityPlayer p, ScaledResolution res){
 		if(!hasJetpack(p))
 			return;
-		final JetpackInfo info = get(p);
+		JetpackInfo info = get(p);
 		if(info == null)
 			return;
 		if(info.useCompactHUD){
 			//GL11.glPushMatrix();
-			final float maxHeight = 0.78125F;
-			final float maxHeightPixels = 50*maxHeight;
+			float maxHeight = 0.78125F;
+			float maxHeightPixels = 50*maxHeight;
 			//GL11.glTranslated(0, -res.getScaledHeight()+maxHeightPixels, 0);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.jetpack_hud_small);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
@@ -423,24 +426,24 @@ public class JetpackHandler {
 			RenderHelper.drawGuiRect(0, res.getScaledHeight()-maxHeightPixels, 0, 1-maxHeight, 50, maxHeightPixels, 1, 1);
 			GlStateManager.disableAlpha();
 			GlStateManager.enableBlend();
-			final float oX = 31/256F;
-			final float width = 88/256F - oX;
-			final float oY = 8/256F;
-			final float height = 31/256F - oY;
+			float oX = 31/256F;
+			float width = 88/256F - oX;
+			float oY = 8/256F;
+			float height = 31/256F - oY;
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 			//Thrust
-			final float thrust = info.prevThrust+(info.thrust-info.prevThrust)*MainRegistry.proxy.partialTicks();
-			final float thrustDegrees = MathHelper.clamp(thrust*100-27, -27, 200);
+			float thrust = info.prevThrust+(info.thrust-info.prevThrust)*MainRegistry.proxy.partialTicks();
+			float thrustDegrees = MathHelper.clamp(thrust*100-27, -27, 200);
 			GL11.glPushMatrix();
-			final float rX = oX*50 + 40.5F*50/256F;
-			final float rY = res.getScaledHeight()-(maxHeightPixels-maxHeightPixels*oY) + 14.5F*maxHeightPixels/256F;
+			float rX = oX*50 + 40.5F*50/256F;
+			float rY = res.getScaledHeight()-(maxHeightPixels-maxHeightPixels*oY) + 14.5F*maxHeightPixels/256F;
 			GL11.glTranslated(rX+(117/256F)*50, rY+(76/256F)*maxHeightPixels, 0);
 			GL11.glRotated(thrustDegrees, 0, 0, 1);
 			GL11.glTranslated(-rX, -rY, 0);
 			RenderHelper.drawGuiRect(oX*50, res.getScaledHeight()-(maxHeightPixels-maxHeightPixels*oY), oX, oY, width*50, height*50, oX+width, oY+height);
 			GL11.glPopMatrix();
 			//Fuel
-			final FluidTank tank = getTank(p);
+			FluidTank tank = getTank(p);
 			float fuelDegrees = ((float)tank.getFluidAmount()/tank.getCapacity());
 			fuelDegrees = fuelDegrees * 227 - 27;
 			GL11.glPushMatrix();
@@ -486,8 +489,8 @@ public class JetpackHandler {
 			RenderHelper.drawGuiRect(0, res.getScaledHeight()-80, 0, 0, 80, 80, 0.5F, 1);
 			GlStateManager.disableAlpha();
 			
-			final boolean active = jetpackActive(p);
-			final boolean hover = isHovering(p);
+			boolean active = jetpackActive(p);
+			boolean hover = isHovering(p);
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 			float oX = 40/512F;
@@ -514,22 +517,22 @@ public class JetpackHandler {
 			}
 			oX = 49/512F;
 			width = 134/512F - oX;
-			final float oY = 148/512F;
-			final float height = 171/512F - oY;
+			float oY = 148/512F;
+			float height = 171/512F - oY;
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 			//Thrust
-			final float thrust = info.prevThrust+(info.thrust-info.prevThrust)*MainRegistry.proxy.partialTicks();
-			final float thrustDegrees = MathHelper.clamp(thrust*100-27, -27, 200);
+			float thrust = info.prevThrust+(info.thrust-info.prevThrust)*MainRegistry.proxy.partialTicks();
+			float thrustDegrees = MathHelper.clamp(thrust*100-27, -27, 200);
 			GL11.glPushMatrix();
-			final float rX = oX*80 + 61.5F*80/512F;
-			final float rY = res.getScaledHeight()-(80-oY*80) + 11.5F*80/512F;
+			float rX = oX*80 + 61.5F*80/512F;
+			float rY = res.getScaledHeight()-(80-oY*80) + 11.5F*80/512F;
 			GL11.glTranslated(rX, rY, 0);
 			GL11.glRotated(thrustDegrees, 0, 0, 1);
 			GL11.glTranslated(-rX, -rY, 0);
 			RenderHelper.drawGuiRect(oX*80, res.getScaledHeight()-(80-oY*80), 0.5F+oX*0.5F, oY, width*80, height*80, 0.5F+(width+oX)*0.5F, oY+height);
 			GL11.glPopMatrix();
 			//Fuel
-			final FluidTank tank = getTank(p);
+			FluidTank tank = getTank(p);
 			float fuelDegrees = ((float)tank.getFluidAmount()/tank.getCapacity());
 			fuelDegrees = fuelDegrees * 227 - 27;
 			GL11.glPushMatrix();
@@ -541,58 +544,58 @@ public class JetpackHandler {
 			//GlStateManager.disableBlend();
 			if(tank.getFluid() != null){
 				Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-				final TextureAtlasSprite fuel = FFUtils.getTextureFromFluid(tank.getFluid().getFluid());
+				TextureAtlasSprite fuel = FFUtils.getTextureFromFluid(tank.getFluid().getFluid());
 				RenderHelper.drawGuiRect(66.8F, res.getScaledHeight()-71.3F, fuel.getMinU(), fuel.getMinV(), 6.5F, 6.8F, fuel.getMaxU(), fuel.getMaxV());
 			}
 		}
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void preRenderPlayer(final EntityPlayer player){
+	public static void preRenderPlayer(EntityPlayer player){
 		if(!hasJetpack(player) || !jetpackActive(player))
 			return;
 		GL11.glPushMatrix();
 		
-		final float partialTicks = MainRegistry.proxy.partialTicks();
-		final double playerPosX = player.prevPosX + (player.posX-player.prevPosX)*partialTicks;
-		final double playerPosY = player.prevPosY + (player.posY-player.prevPosY)*partialTicks;
-		final double playerPosZ = player.prevPosZ + (player.posZ-player.prevPosZ)*partialTicks;
-		final double offsetX = playerPosX-TileEntityRendererDispatcher.staticPlayerX;
-		final double offsetY = playerPosY-TileEntityRendererDispatcher.staticPlayerY;
-		final double offsetZ = playerPosZ-TileEntityRendererDispatcher.staticPlayerZ;
+		float partialTicks = MainRegistry.proxy.partialTicks();
+		double playerPosX = player.prevPosX + (player.posX-player.prevPosX)*partialTicks;
+		double playerPosY = player.prevPosY + (player.posY-player.prevPosY)*partialTicks;
+		double playerPosZ = player.prevPosZ + (player.posZ-player.prevPosZ)*partialTicks;
+		double offsetX = playerPosX-TileEntityRendererDispatcher.staticPlayerX;
+		double offsetY = playerPosY-TileEntityRendererDispatcher.staticPlayerY;
+		double offsetZ = playerPosZ-TileEntityRendererDispatcher.staticPlayerZ;
 		
 		GL11.glTranslated(offsetX, offsetY, offsetZ);
 		
-		final JetpackInfo j = get(player);
+		JetpackInfo j = get(player);
 		if(isHovering(player)){
 			if(j != null){
 				
-				final float prevMX = (float) (player.prevPosX-j.prevPrevPosX);
-				final float prevMZ = (float) (player.prevPosZ-j.prevPrevPosZ);
-				final float mX = (float) (player.posX-player.prevPosX);
-				final float mZ = (float) (player.posZ-player.prevPosZ);
-				final float motionX = prevMX + (mX-prevMX)*MainRegistry.proxy.partialTicks();
-				final float motionZ = prevMZ + (mZ-prevMZ)*MainRegistry.proxy.partialTicks();
-				final float angle = (float) (Math.atan2(motionX, motionZ) + Math.PI*0.5F);
-				final float amount = MathHelper.clamp(MathHelper.sqrt(motionX*motionX+motionZ*motionZ), 0, 2);
+				float prevMX = (float) (player.prevPosX-j.prevPrevPosX);
+				float prevMZ = (float) (player.prevPosZ-j.prevPrevPosZ);
+				float mX = (float) (player.posX-player.prevPosX);
+				float mZ = (float) (player.posZ-player.prevPosZ);
+				float motionX = (float) (prevMX + (mX-prevMX)*MainRegistry.proxy.partialTicks());
+				float motionZ = (float) (prevMZ + (mZ-prevMZ)*MainRegistry.proxy.partialTicks());
+				float angle = (float) (Math.atan2(motionX, motionZ) + Math.PI*0.5F);
+				float amount = MathHelper.clamp(MathHelper.sqrt(motionX*motionX+motionZ*motionZ), 0, 2);
 				GL11.glRotated(amount*22.5, Math.toDegrees(MathHelper.sin(angle)), 0, Math.toDegrees(MathHelper.cos(angle)));
 			}
 		} else if(!player.onGround && j != null && j.failureTicks <= 0 && getTank(player).getFluidAmount() > 0) {
-			final Vec3d look = player.getLook(MainRegistry.proxy.partialTicks());
-			final float renderYaw = interpolateRotation(player.prevRenderYawOffset, player.renderYawOffset, MainRegistry.proxy.partialTicks());
+			Vec3d look = player.getLook(MainRegistry.proxy.partialTicks());
+			float renderYaw = interpolateRotation(player.prevRenderYawOffset, player.renderYawOffset, MainRegistry.proxy.partialTicks());
 			GlStateManager.rotate(180.0F - renderYaw, 0.0F, 1.0F, 0.0F);
-			final float time = j.jetpackFlyTime+MainRegistry.proxy.partialTicks();
-			final float mult = BobMathUtil.remap01_clamp(time*time*0.5F, 0, 100);
+			float time = j.jetpackFlyTime+MainRegistry.proxy.partialTicks();
+			float mult = BobMathUtil.remap01_clamp(time*time*0.5F, 0, 100);
 			GL11.glRotated((-player.rotationPitch-90)*mult, 1, 0, 0);
 			Vector2f lookXZ = new Vector2f((float)look.x, (float)look.z);
 			Vector2f rotXZ = new Vector2f(MathHelper.cos((float) Math.toRadians(renderYaw+90)),MathHelper.sin((float) Math.toRadians(renderYaw+90)));
 			if(lookXZ.lengthSquared() != 0 && rotXZ.lengthSquared() != 0){
 				lookXZ = (Vector2f) lookXZ.normalise();
 				rotXZ = (Vector2f) rotXZ.normalise();
-				final float angle = (float) Math.acos(Math.max(Vector2f.dot(lookXZ, rotXZ), 0));
+				float angle = (float) Math.acos(Math.max(Vector2f.dot(lookXZ, rotXZ), 0));
 				if(!Float.isNaN(angle)){
 					//Apparently a Vector2f doesn't have a cross product function
-					final float cross = lookXZ.y*rotXZ.x-rotXZ.y*lookXZ.x;
+					float cross = lookXZ.y*rotXZ.x-rotXZ.y*lookXZ.x;
 					GL11.glRotated(Math.toDegrees(angle)*Math.signum(cross)*mult, 0, 1, 0);
 				}
 			}
@@ -602,7 +605,7 @@ public class JetpackHandler {
 					r_ticksElytraFlying = ReflectionHelper.findField(EntityLivingBase.class, "ticksElytraFlying", "field_184629_bo");
 				try {
 					r_ticksElytraFlying.setInt(player, j.jetpackFlyTime);
-				} catch(final IllegalArgumentException | IllegalAccessException e) {
+				} catch(IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
 			}
@@ -610,10 +613,11 @@ public class JetpackHandler {
 		GL11.glTranslated(-offsetX, -offsetY, -offsetZ);
 	}
 	
-	protected static float interpolateRotation(final float prevYawOffset, final float yawOffset, final float partialTicks){
+	protected static float interpolateRotation(float prevYawOffset, float yawOffset, float partialTicks){
         float f;
 
         for (f = yawOffset - prevYawOffset; f < -180.0F; f += 360.0F) {
+            ;
         }
 
         while (f >= 180.0F) {
@@ -624,11 +628,11 @@ public class JetpackHandler {
     }
 	
 	@SideOnly(Side.CLIENT)
-	public static void postRenderPlayer(final EntityPlayer player){
+	public static void postRenderPlayer(EntityPlayer player){
 		if(!hasJetpack(player) || !jetpackActive(player))
 			return;
 		if(!isHovering(player) && getTank(player).getFluidAmount() > 0){
-			final JetpackInfo info = get(player);
+			JetpackInfo info = get(player);
 			if(!player.onGround && info.failureTicks <= 0 && info.particleSpawnPositions != null && player.motionX*player.motionX+player.motionY*player.motionY+player.motionZ*player.motionZ > 1.5*1.5){
 				ClientProxy.deferredRenderers.add(() -> {
 					if(info.trails[0] == null){
@@ -646,7 +650,7 @@ public class JetpackHandler {
 				r_ticksElytraFlying = ReflectionHelper.findField(EntityLivingBase.class, "ticksElytraFlying", "field_184629_bo");
 			try {
 				r_ticksElytraFlying.setInt(player, 0);
-			} catch(final IllegalArgumentException | IllegalAccessException e) {
+			} catch(IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
@@ -654,10 +658,10 @@ public class JetpackHandler {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void clientTick(final ClientTickEvent e){
-		final EntityPlayer p = Minecraft.getMinecraft().player;
+	public static void clientTick(ClientTickEvent e){
+		EntityPlayer p = Minecraft.getMinecraft().player;
 		if(e.phase == Phase.END){
-			for(final EntityPlayer player : p.world.playerEntities){
+			for(EntityPlayer player : p.world.playerEntities){
 				if(jetpackActive(player) && !player.onGround){
 					player.limbSwingAmount = 0;
 					player.limbSwing = 0;
@@ -665,10 +669,10 @@ public class JetpackHandler {
 				}
 			}
 		} else if(e.phase == Phase.START){
-			final Iterator<Entry<PlayerKey, JetpackInfo>> itr = perPlayerInfo.entrySet().iterator();
+			Iterator<Entry<PlayerKey, JetpackInfo>> itr = perPlayerInfo.entrySet().iterator();
 			while(itr.hasNext()){
-				final Entry<PlayerKey, JetpackInfo> entry = itr.next();
-				final EntityPlayer player = entry.getKey().player;
+				Entry<PlayerKey, JetpackInfo> entry = itr.next();
+				EntityPlayer player = entry.getKey().player;
 				if(player.isDead){
 					if(entry.getValue().sound != null){
 						entry.getValue().sound.end();
@@ -679,7 +683,7 @@ public class JetpackHandler {
 				if(!player.world.isRemote)
 					continue;
 				
-				final JetpackInfo j = entry.getValue();
+				JetpackInfo j = entry.getValue();
 				if(j.thrust > 0.001){
 					if(j.sound == null){
 						Minecraft.getMinecraft().getSoundHandler().playSound(j.sound = new MovingSoundJetpack(player, HBMSoundHandler.jetpack, SoundCategory.PLAYERS));
@@ -699,37 +703,37 @@ public class JetpackHandler {
 				j.prevPrevPosZ = player.prevPosZ;
 				Iterator<Particle> it = j.booster_particles.iterator();
 				while(it.hasNext()){
-					final Particle part = it.next();
+					Particle part = it.next();
 					part.onUpdate();
 					if(!part.isAlive())
 						it.remove();
 				}
 				it = j.distortion_particles.iterator();
 				while(it.hasNext()){
-					final Particle part = it.next();
+					Particle part = it.next();
 					part.onUpdate();
 					if(!part.isAlive())
 						it.remove();
 				}
 				it = j.brightness_particles.iterator();
 				while(it.hasNext()){
-					final Particle part = it.next();
+					Particle part = it.next();
 					part.onUpdate();
 					if(!part.isAlive())
 						it.remove();
 				}
-				final boolean active = jetpackActive(player);
-				final FluidTank tank = active ? getTank(player) : null;
+				boolean active = jetpackActive(player);
+				FluidTank tank = active ? getTank(player) : null;
 				if(active && !player.onGround && tank.getFluid() != null){
-					final ColorGradient grad = getGradientFromFuel(tank.getFluid().getFluid());
-					final float[] color = getBrightnessColorFromFuel(tank.getFluid().getFluid());
+					ColorGradient grad = getGradientFromFuel(tank.getFluid().getFluid());
+					float[] color = getBrightnessColorFromFuel(tank.getFluid().getFluid());
 					if(j.thrust > 0.05F){
-						final float thrust = j.thrust - 0.4F;
-						final float speed = -1-2*thrust;
-						final float scale = 4+2*thrust;
-						final int numParticles = 3;
+						float thrust = j.thrust - 0.4F;
+						float speed = -1-2*thrust;
+						float scale = 4+2*thrust;
+						int numParticles = 3;
 						for(int i = 0; i < numParticles; i ++){
-							final float iN = (float)i/(float)numParticles;
+							float iN = (float)i/(float)numParticles;
 							float randX = (float) (p.world.rand.nextGaussian()*0.05F);
 							float randZ = (float) (p.world.rand.nextGaussian()*0.05F);
 							j.booster_particles.add(new ParticleRocketPlasma(p.world, -1.8, iN*speed, 4, scale, grad)
@@ -771,13 +775,13 @@ public class JetpackHandler {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void handleCameraTransform(final EntityViewRenderEvent.CameraSetup e){
+	public static void handleCameraTransform(EntityViewRenderEvent.CameraSetup e){
 		if(JetpackHandler.jetpackActive(Minecraft.getMinecraft().player) && !JetpackHandler.isHovering(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().gameSettings.thirdPersonView > 0 && !Minecraft.getMinecraft().player.onGround){
 			GL11.glTranslated(0, -1.22, 0);
 		}
 	}
 	
-	public static void toggleOpenState(final EntityPlayer p){
+	public static void toggleOpenState(EntityPlayer p){
 		JetpackInfo j = get(p);
 		if(j == null){
 			j = new JetpackInfo(p.world.isRemote);
@@ -788,7 +792,7 @@ public class JetpackHandler {
 		j.opening = !j.opening;
 	}
 	
-	public static void toggleHoverState(final EntityPlayer p){
+	public static void toggleHoverState(EntityPlayer p){
 		JetpackInfo j = get(p);
 		if(j == null){
 			j = new JetpackInfo(p.world.isRemote);
@@ -798,7 +802,7 @@ public class JetpackHandler {
 		j.hover = !j.hover;
 	}
 	
-	public static void toggleHUDState(final EntityPlayer p){
+	public static void toggleHUDState(EntityPlayer p){
 		JetpackInfo j = get(p);
 		if(j == null){
 			j = new JetpackInfo(p.world.isRemote);
@@ -808,7 +812,7 @@ public class JetpackHandler {
 		j.useCompactHUD = !j.useCompactHUD;
 	}
 	
-	public static void setThrust(final EntityPlayer p, final float thrust){
+	public static void setThrust(EntityPlayer p, float thrust){
 		JetpackInfo j = get(p);
 		if(j == null){
 			j = new JetpackInfo(p.world.isRemote);
@@ -820,36 +824,36 @@ public class JetpackHandler {
 		}
 	}
 	
-	public static boolean isHovering(final EntityPlayer p){
-		final JetpackInfo j = get(p);
+	public static boolean isHovering(EntityPlayer p){
+		JetpackInfo j = get(p);
 		if(j == null)
 			return false;
 		return j.hover;
 	}
 	
-	public static boolean isOpening(final EntityPlayer p){
-		final JetpackInfo j = get(p);
+	public static boolean isOpening(EntityPlayer p){
+		JetpackInfo j = get(p);
 		if(j == null)
 			return true;
 		return j.opening;
 	}
 	
-	public static boolean useCompactHUD(final EntityPlayer p){
-		final JetpackInfo j = get(p);
+	public static boolean useCompactHUD(EntityPlayer p){
+		JetpackInfo j = get(p);
 		if(j == null)
 			return false;
 		return j.useCompactHUD;
 	}
 	
-	public static long getAnimTime(final EntityPlayer p){
-		final JetpackInfo j = get(p);
+	public static long getAnimTime(EntityPlayer p){
+		JetpackInfo j = get(p);
 		if(j == null)
 			return 0;
 		return j.animTime;
 	}
 	
-	public static boolean jetpackActive(final EntityPlayer p){
-		final JetpackInfo j = get(p);
+	public static boolean jetpackActive(EntityPlayer p){
+		JetpackInfo j = get(p);
 		if(j == null || !hasJetpack(p))
 			return false;
 		return j.opening && System.currentTimeMillis() - j.animTime > 1000;
@@ -859,7 +863,7 @@ public class JetpackHandler {
 	public static class JetpackLayer implements LayerRenderer<EntityPlayer> {
 		
 		@Override
-		public void doRenderLayer(final EntityPlayer player, final float limbSwing, final float limbSwingAmount, final float partialTicks, final float ageInTicks, final float netHeadYaw, final float headPitch, final float scale) {
+		public void doRenderLayer(EntityPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 			if(!hasJetpack(player))
 				return;
 			GL11.glPushMatrix();
@@ -876,9 +880,9 @@ public class JetpackHandler {
 			}
 			GlStateManager.shadeModel(GL11.GL_SMOOTH);
 	        Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.jetpack_tex);
-	        final long startTime = getAnimTime(player);
-	        final boolean reverse = !isOpening(player);
-	        final AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.jetpack_activate);
+	        long startTime = getAnimTime(player);
+	        boolean reverse = !isOpening(player);
+	        AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.jetpack_activate);
 	        if(reverse){
 	        	w.reverse();
 	        }
@@ -886,7 +890,7 @@ public class JetpackHandler {
 			ResourceManager.jetpack.controller.setAnim(w);
 			ResourceManager.jetpack.renderAnimated(System.currentTimeMillis());
 			GlStateManager.shadeModel(GL11.GL_FLAT);
-			final float[] matrix = new float[16];
+			float[] matrix = new float[16];
 			GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER);
 			ClientProxy.AUX_GL_BUFFER.get(matrix);
 			ClientProxy.AUX_GL_BUFFER.rewind();
@@ -896,7 +900,7 @@ public class JetpackHandler {
 				ClientProxy.AUX_GL_BUFFER.rewind();
 				GL11.glLoadMatrix(ClientProxy.AUX_GL_BUFFER);
 				//Particles//
-				final JetpackInfo j = get(player);
+				JetpackInfo j = get(player);
 				if(j != null){
 					//left forward down
 					j.particleSpawnPositions = BobMathUtil.worldFromLocal(new Vector4f(5.25F, 0.2F, 2.75F, 1F), new Vector4f(-5.25F, 0.2F, 2.75F, 1F));
@@ -907,21 +911,21 @@ public class JetpackHandler {
 					GlStateManager.disableAlpha();
 					GlStateManager.disableCull();
 					GlStateManager.depthMask(false);
-					final Entity entityIn = Minecraft.getMinecraft().getRenderViewEntity();
-					final float f1 = MathHelper.cos(entityIn.rotationYaw * 0.017453292F);
-			        final float f2 = MathHelper.sin(entityIn.rotationYaw * 0.017453292F);
-			        final float f3 = -f2 * MathHelper.sin(entityIn.rotationPitch * 0.017453292F);
-			        final float f4 = f1 * MathHelper.sin(entityIn.rotationPitch * 0.017453292F);
-			        final float f5 = MathHelper.cos(entityIn.rotationPitch * 0.017453292F);
-			        for(final Particle p : j.distortion_particles){
+					Entity entityIn = Minecraft.getMinecraft().getRenderViewEntity();
+					float f1 = MathHelper.cos(entityIn.rotationYaw * 0.017453292F);
+			        float f2 = MathHelper.sin(entityIn.rotationYaw * 0.017453292F);
+			        float f3 = -f2 * MathHelper.sin(entityIn.rotationPitch * 0.017453292F);
+			        float f4 = f1 * MathHelper.sin(entityIn.rotationPitch * 0.017453292F);
+			        float f5 = MathHelper.cos(entityIn.rotationPitch * 0.017453292F);
+			        for(Particle p : j.distortion_particles){
 						p.renderParticle(Tessellator.getInstance().getBuffer(), entityIn, partialTicks, f1, f5, f2, f3, f4);
 					}
 			        GlStateManager.depthMask(false);
 					GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-					for(final Particle p : j.booster_particles){
+					for(Particle p : j.booster_particles){
 						p.renderParticle(Tessellator.getInstance().getBuffer(), entityIn, partialTicks, f1, f5, f2, f3, f4);
 					}
-					for(final Particle p : j.brightness_particles){
+					for(Particle p : j.brightness_particles){
 						p.renderParticle(Tessellator.getInstance().getBuffer(), entityIn, partialTicks, f1, f5, f2, f3, f4);
 					}
 					GlStateManager.depthMask(true);
@@ -977,7 +981,7 @@ public class JetpackHandler {
 		@SideOnly(Side.CLIENT)
 		public ParticleJetpackTrail[] trails;
 		
-		public JetpackInfo(final boolean client) {
+		public JetpackInfo(boolean client) {
 			if(client)
 				initClient();
 		}
@@ -991,7 +995,7 @@ public class JetpackHandler {
 			trails = new ParticleJetpackTrail[2];
 		}
 		
-		public NBTTagCompound writeToNBT(final NBTTagCompound tag){
+		public NBTTagCompound writeToNBT(NBTTagCompound tag){
 			tag.setBoolean("opening", opening);
 			tag.setBoolean("hover", hover);
 			tag.setFloat("thrust", thrust);
@@ -1001,7 +1005,7 @@ public class JetpackHandler {
 			return tag;
 		}
 		
-		public void readFromNBT(final NBTTagCompound tag){
+		public void readFromNBT(NBTTagCompound tag){
 			opening = tag.getBoolean("opening");
 			hover = tag.getBoolean("hover");
 			thrust = tag.getFloat("thrust");
@@ -1011,7 +1015,7 @@ public class JetpackHandler {
 			dirty = true;
 		}
 		
-		public void write(final ByteBuf buf){
+		public void write(ByteBuf buf){
 			buf.writeBoolean(opening);
 			buf.writeBoolean(hover);
 			buf.writeFloat(thrust);
@@ -1020,7 +1024,7 @@ public class JetpackHandler {
 			buf.writeInt(failureTicks);
 		}
 		
-		public void read(final ByteBuf buf){
+		public void read(ByteBuf buf){
 			opening = buf.readBoolean();
 			hover = buf.readBoolean();
 			thrust = buf.readFloat();
@@ -1029,7 +1033,7 @@ public class JetpackHandler {
 			failureTicks = buf.readInt();
 		}
 
-		public void setFromServer(final JetpackInfo other) {
+		public void setFromServer(JetpackInfo other) {
 			if(other.opening != this.opening){
 				this.animTime = System.currentTimeMillis();
 			}
@@ -1046,7 +1050,7 @@ public class JetpackHandler {
 		
 		public EntityPlayer player;
 		
-		public PlayerKey(final EntityPlayer player) {
+		public PlayerKey(EntityPlayer player) {
 			this.player = player;
 		}
 		
@@ -1056,7 +1060,7 @@ public class JetpackHandler {
 		}
 		
 		@Override
-		public boolean equals(final Object obj) {
+		public boolean equals(Object obj) {
 			if(!(obj instanceof PlayerKey))
 				return false;
 			return player == ((PlayerKey)obj).player;

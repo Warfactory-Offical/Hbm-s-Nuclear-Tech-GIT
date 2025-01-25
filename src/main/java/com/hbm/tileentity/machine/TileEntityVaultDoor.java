@@ -8,7 +8,6 @@ import com.hbm.interfaces.IAnimatedDoor;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEVaultPacket;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -48,20 +47,20 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 			if(!isLocked()) {
 				boolean flagX = false;
 				boolean flagZ = false;
-				final int xCoord = pos.getX();
-				final int yCoord = pos.getY();
-				final int zCoord = pos.getZ();
+				int xCoord = pos.getX();
+				int yCoord = pos.getY();
+				int zCoord = pos.getZ();
 
 				for(int x = pos.getX() - 2; x <= xCoord + 2; x++)
 					for(int y = yCoord; y <= yCoord + 5; y++)
-						if(world.isBlockPowered(new BlockPos(x, y, zCoord))) {
+						if(world.isBlockIndirectlyGettingPowered(new BlockPos(x, y, zCoord)) > 0) {
 							flagX = true;
 							break;
 						}
 				
 				for(int z = zCoord - 2; z <= zCoord + 2; z++)
 					for(int y = yCoord; y <= yCoord + 5; y++)
-						if(world.isBlockPowered(new BlockPos(xCoord, y, z))) {
+						if(world.isBlockIndirectlyGettingPowered(new BlockPos(xCoord, y, z)) > 0) {
 							flagZ = true;
 							break;
 						}
@@ -175,26 +174,27 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 		return false;
 	}
 	
-	public boolean placeDummy(final int x, final int y, final int z){
+	public boolean placeDummy(int x, int y, int z){
 		return placeDummy(new BlockPos(x, y, z));
 	}
 	
-	public boolean placeDummy(final BlockPos dummyPos) {
+	public boolean placeDummy(BlockPos dummyPos) {
 		if(!world.getBlockState(dummyPos).getBlock().isReplaceable(world, dummyPos))
 			return false;
 		
 		world.setBlockState(dummyPos, ModBlocks.dummy_block_vault.getDefaultState());
 		
-		final TileEntity te = world.getTileEntity(dummyPos);
+		TileEntity te = world.getTileEntity(dummyPos);
 		
-		if(te instanceof TileEntityDummy dummy) {
-            dummy.target = pos;
+		if(te instanceof TileEntityDummy) {
+			TileEntityDummy dummy = (TileEntityDummy)te;
+			dummy.target = pos;
 		}
 		
 		return true;
 	}
 	
-	public void removeDummy(final BlockPos dummyPos) {
+	public void removeDummy(BlockPos dummyPos) {
 		if(world.getBlockState(dummyPos).getBlock() == ModBlocks.dummy_block_vault) {
 			DummyBlockVault.safeBreak = true;
 			world.setBlockState(dummyPos, Blocks.AIR.getDefaultState());
@@ -302,7 +302,7 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		state = DoorState.values()[compound.getInteger("state")];
 		sysTime = compound.getLong("sysTime");
 		timer = compound.getInteger("timer");
@@ -311,7 +311,7 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("state", state.ordinal());
 		compound.setLong("sysTime", sysTime);
 		compound.setInteger("timer", timer);
@@ -359,7 +359,7 @@ public class TileEntityVaultDoor extends TileEntityLockableBase implements ITick
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(final DoorState state) {
+	public void handleNewState(DoorState state) {
 		// TODO: Move audio into this method from update method to match sliding blast door
 	}
 }

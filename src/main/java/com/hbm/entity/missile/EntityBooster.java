@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityBooster extends EntityThrowable {
 
-	public EntityBooster(final World p_i1582_1_) {
+	public EntityBooster(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 	}
@@ -47,7 +47,7 @@ public class EntityBooster extends EntityThrowable {
         
         if(!world.isRemote) {
 			for(int i = 0; i < 2; i++) {
-				final EntityTSmokeFX fx1 = new EntityTSmokeFX(world);
+				EntityTSmokeFX fx1 = new EntityTSmokeFX(world);
 				fx1.posY = posY - 0.25D;
 				fx1.posX = posX + rand.nextGaussian() * 0.25D;
 				fx1.posZ = posZ + rand.nextGaussian() * 0.25D;
@@ -62,11 +62,12 @@ public class EntityBooster extends EntityThrowable {
 	}
 	
 	protected void rotation() {
-        final float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
         for (this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
+            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -86,13 +87,13 @@ public class EntityBooster extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(final RayTraceResult p_70184_1_) {
+	protected void onImpact(RayTraceResult p_70184_1_) {
 		
 	}
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(final double distance)
+    public boolean isInRangeToRenderDist(double distance)
     {
         return distance < 500000;
     }

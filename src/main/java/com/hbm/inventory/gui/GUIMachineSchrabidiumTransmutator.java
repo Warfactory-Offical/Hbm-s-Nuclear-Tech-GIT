@@ -1,22 +1,20 @@
 package com.hbm.inventory.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.container.ContainerMachineSchrabidiumTransmutator;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineSchrabidiumTransmutator;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GUIMachineSchrabidiumTransmutator extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_transmutator.png");
-	private final TileEntityMachineSchrabidiumTransmutator diFurnace;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_transmutator.png");
+	private TileEntityMachineSchrabidiumTransmutator diFurnace;
 
-	public GUIMachineSchrabidiumTransmutator(final InventoryPlayer invPlayer, final TileEntityMachineSchrabidiumTransmutator tedf) {
+	public GUIMachineSchrabidiumTransmutator(InventoryPlayer invPlayer, TileEntityMachineSchrabidiumTransmutator tedf) {
 		super(new ContainerMachineSchrabidiumTransmutator(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -25,7 +23,7 @@ public class GUIMachineSchrabidiumTransmutator extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 106 - 88, 16, 88, diFurnace.power, TileEntityMachineSchrabidiumTransmutator.maxPower);
@@ -33,29 +31,29 @@ public class GUIMachineSchrabidiumTransmutator extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getName() : I18n.format(this.diFurnace.getName());
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
+		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getName() : I18n.format(this.diFurnace.getName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
-		this.fontRenderer.drawString(I18n.format(diFurnace.getPower() + " HE"), this.xSize / 2 - this.fontRenderer.getStringWidth(diFurnace.getPower() + " HE") / 2, 16, 4210752);
+		this.fontRenderer.drawString(I18n.format(String.valueOf(diFurnace.getPower()) + " HE"), this.xSize / 2 - this.fontRenderer.getStringWidth(String.valueOf(diFurnace.getPower()) + " HE") / 2, 16, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
 		if(diFurnace.getPower() > 0) {
-			final int i = (int)diFurnace.getPowerScaled(88);
+			int i = (int)diFurnace.getPowerScaled(88);
 			drawTexturedModalRect(guiLeft + 8, guiTop + 106 - i, 176, 88 - i, 16, i);
 		}
 
 		if(diFurnace.isProcessing())
 		{
-			final int j1 = diFurnace.getProgressScaled(66);
+			int j1 = diFurnace.getProgressScaled(66);
 			drawTexturedModalRect(guiLeft + 64, guiTop + 55, 176, 88, j1, 66);
 		}
 	}

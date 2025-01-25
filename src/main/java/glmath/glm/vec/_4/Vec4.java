@@ -22,55 +22,55 @@ public class Vec4 extends colorSpace {
         this(0);
     }
 
-    public Vec4(final Vec4 v) {
+    public Vec4(Vec4 v) {
         this(v.x, v.y, v.z, v.w);
     }
 
-    public Vec4(final float f) {
+    public Vec4(float f) {
         this(f, f, f, f);
     }
 
-    public Vec4(final float[] fa) {
+    public Vec4(float[] fa) {
         this(fa, 0);
     }
 
-    public Vec4(final float[] fa, final int i) {
-        this(fa[i], fa[i + 1], fa[i + 2], fa[i + 3]);
+    public Vec4(float[] fa, int i) {
+        this(fa[i + 0], fa[i + 1], fa[i + 2], fa[i + 3]);
     }
 
-    public Vec4(final double d) {
+    public Vec4(double d) {
         this((float) d);
     }
 
-    public Vec4(final double[] da) {
+    public Vec4(double[] da) {
         this(da, 0);
     }
 
-    public Vec4(final double[] da, final int i) {
-        this(da[i], da[i + 1], da[i + 2], da[i + 3]);
+    public Vec4(double[] da, int i) {
+        this(da[i + 0], da[i + 1], da[i + 2], da[i + 3]);
     }
 
-    public Vec4(final float f, final Vec3 v) {
+    public Vec4(float f, Vec3 v) {
         this(f, v.x, v.y, v.z);
     }
 
-    public Vec4(final Vec3 v, final float f) {
+    public Vec4(Vec3 v, float f) {
         this(v.x, v.y, v.z, f);
     }
 
-    public Vec4(final Vec2 v0, final Vec2 v1) {
+    public Vec4(Vec2 v0, Vec2 v1) {
         this(v0.x, v0.y, v1.x, v1.y);
     }
 
-    public Vec4(final Vec2 v, final float f0, final float f1) {
+    public Vec4(Vec2 v, float f0, float f1) {
         this(v.x, v.y, f0, f1);
     }
 
-    public Vec4(final double x, final double y, final double z, final double w) {
+    public Vec4(double x, double y, double z, double w) {
         this((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4(final float x, final float y, final float z, final float w) {
+    public Vec4(float x, float y, float z, float w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -81,55 +81,55 @@ public class Vec4 extends colorSpace {
         return set(0);
     }
 
-    public Vec4 set(final Vec4 v) {
+    public Vec4 set(Vec4 v) {
         return set(v.x, v.y, v.z, v.w);
     }
 
-    public Vec4 set(final float f) {
+    public Vec4 set(float f) {
         return set(f, f, f, f);
     }
 
-    public Vec4 set(final float[] fa) {
+    public Vec4 set(float[] fa) {
         return set(fa, 0);
     }
 
-    public Vec4 set(final float[] fa, final int i) {
-        return set(fa[i], fa[i + 1], fa[i + 2], fa[i + 3]);
+    public Vec4 set(float[] fa, int i) {
+        return set(fa[i + 0], fa[i + 1], fa[i + 2], fa[i + 3]);
     }
 
-    public Vec4 set(final double d) {
+    public Vec4 set(double d) {
         return set(d, d, d, d);
     }
 
-    public Vec4 set(final double[] da) {
+    public Vec4 set(double[] da) {
         return set(da, 0);
     }
 
-    public Vec4 set(final double[] da, final int i) {
-        return set(da[i], da[i + 1], da[i + 2], da[i + 3]);
+    public Vec4 set(double[] da, int i) {
+        return set(da[i + 0], da[i + 1], da[i + 2], da[i + 3]);
     }
 
-    public Vec4 set(final float f, final Vec3 v) {
+    public Vec4 set(float f, Vec3 v) {
         return set(f, v.x, v.y, v.z);
     }
 
-    public Vec4 set(final Vec3 v, final float f) {
+    public Vec4 set(Vec3 v, float f) {
         return set(v.x, v.y, v.z, f);
     }
 
-    public Vec4 set(final Vec2 v0, final Vec2 v1) {
+    public Vec4 set(Vec2 v0, Vec2 v1) {
         return set(v0.x, v0.y, v1.x, v1.y);
     }
 
-    public Vec4 set(final Vec2 v, final float f0, final float f1) {
+    public Vec4 set(Vec2 v, float f0, float f1) {
         return set(v.x, v.y, f0, f1);
     }
 
-    public Vec4 set(final double x, final double y, final double z, final double w) {
+    public Vec4 set(double x, double y, double z, double w) {
         return set((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4 set(final float x, final float y, final float z, final float w) {
+    public Vec4 set(float x, float y, float z, float w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -141,7 +141,7 @@ public class Vec4 extends colorSpace {
         return toVec3(new Vec3());
     }
 
-    public Vec3 toVec3(final Vec3 res) {
+    public Vec3 toVec3(Vec3 res) {
         return res.set(x, y, z);
     }
     
@@ -149,7 +149,7 @@ public class Vec4 extends colorSpace {
         return toFA(new float[4]);
     }
 
-    public float[] toFA(final float[] fa) {
+    public float[] toFA(float[] fa) {
         fa[0] = x;
         fa[1] = y;
         fa[2] = z;
@@ -161,13 +161,13 @@ public class Vec4 extends colorSpace {
         return toDfb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer());
     }
 
-    public FloatBuffer toDfb(final FloatBuffer fb) {
+    public FloatBuffer toDfb(FloatBuffer fb) {
         return toDfb(fb, 0);
     }
 
-    public FloatBuffer toDfb(final FloatBuffer fb, final int index) {
+    public FloatBuffer toDfb(FloatBuffer fb, int index) {
         return fb
-                .put(index, x)
+                .put(index + 0, x)
                 .put(index + 1, y)
                 .put(index + 2, z)
                 .put(index + 3, w);
@@ -177,14 +177,14 @@ public class Vec4 extends colorSpace {
         return toDbb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()));
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb) {
+    public ByteBuffer toDbb(ByteBuffer bb) {
         return toDbb(bb, 0);
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb, final int index) {
+    public ByteBuffer toDbb(ByteBuffer bb, int index) {
         return bb
-                .putFloat(index, x)
-                .putFloat(index + Float.BYTES, y)
+                .putFloat(index + 0 * Float.BYTES, x)
+                .putFloat(index + 1 * Float.BYTES, y)
                 .putFloat(index + 2 * Float.BYTES, z)
                 .putFloat(index + 3 * Float.BYTES, w);
     }
@@ -198,16 +198,16 @@ public class Vec4 extends colorSpace {
         print("", true);
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         print(title, true);
     }
 
-    public void print(final boolean outStream) {
+    public void print(boolean outStream) {
         print("", outStream);
     }
 
-    public void print(final String title, final boolean outStream) {
-        final String res = title + "\n(" + x + ", " + y + ", " + z + ", " + w + ")";
+    public void print(String title, boolean outStream) {
+        String res = title + "\n(" + x + ", " + y + ", " + z + ", " + w + ")";
         if (outStream) {
             System.out.print(res);
         } else {

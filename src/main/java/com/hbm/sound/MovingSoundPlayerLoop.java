@@ -13,12 +13,11 @@ public abstract class MovingSoundPlayerLoop extends MovingSound {
 	public static List<MovingSoundPlayerLoop> globalSoundList = new ArrayList<MovingSoundPlayerLoop>();
 	public List<Entity> playerForSound = new ArrayList<Entity>();
 	public Entity player;
-	public enum EnumHbmSound { soundTauLoop, soundChopperLoop, soundCrashingLoop, soundMineLoop, soundRadarLoop }
-
-    public EnumHbmSound type;
+	public enum EnumHbmSound { soundTauLoop, soundChopperLoop, soundCrashingLoop, soundMineLoop, soundRadarLoop };
+	public EnumHbmSound type;
 	public boolean init;
 
-	public MovingSoundPlayerLoop(final SoundEvent res, final SoundCategory c, final Entity player, final EnumHbmSound type) {
+	public MovingSoundPlayerLoop(SoundEvent res, SoundCategory c, Entity player, EnumHbmSound type) {
 		super(res, c);
 		this.player = player;
 		this.type = type;
@@ -50,9 +49,9 @@ public abstract class MovingSoundPlayerLoop extends MovingSound {
 		this.player = null;
 	}
 	
-	public static MovingSoundPlayerLoop getSoundByPlayer(final Entity player, final EnumHbmSound type) {
+	public static MovingSoundPlayerLoop getSoundByPlayer(Entity player, EnumHbmSound type) {
 		
-		for(final MovingSoundPlayerLoop sound : globalSoundList) {
+		for(MovingSoundPlayerLoop sound : globalSoundList) {
 			if(sound.player == player && sound.type == type)
 				return sound;
 		}
@@ -60,15 +59,15 @@ public abstract class MovingSoundPlayerLoop extends MovingSound {
 		return null;
 	}
 	
-	public void setPitch(final float f) {
+	public void setPitch(float f) {
 		this.pitch = f;
 	}
 	
-	public void setVolume(final float f) {
+	public void setVolume(float f) {
 		this.volume = f;
 	}
 	
-	public void setDone(final boolean b) {
+	public void setDone(boolean b) {
 		this.donePlaying = b;
 	}
 

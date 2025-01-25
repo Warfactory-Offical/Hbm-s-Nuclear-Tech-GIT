@@ -2,9 +2,7 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotPattern;
 import com.hbm.inventory.SlotUpgrade;
-import com.hbm.items.ModItems;
 import com.hbm.tileentity.network.TileEntityCraneExtractor;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -16,7 +14,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerCraneExtractor extends Container  {
     protected TileEntityCraneExtractor extractor;
 
-    public ContainerCraneExtractor(final InventoryPlayer invPlayer, final TileEntityCraneExtractor extractor) {
+    public ContainerCraneExtractor(InventoryPlayer invPlayer, TileEntityCraneExtractor extractor) {
         this.extractor = extractor;
 
         //filter
@@ -49,15 +47,15 @@ public class ContainerCraneExtractor extends Container  {
     }
 
     @Override
-    public ItemStack slotClick(final int slotId, final int dragType, final ClickType clickTypeIn, final EntityPlayer player) {
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
         if (slotId < 0 || slotId >= 9) {
             return super.slotClick(slotId, dragType, clickTypeIn, player);
         }
 
-        final Slot slot = this.inventorySlots.get(slotId);
+        Slot slot = this.inventorySlots.get(slotId);
 
         ItemStack ret = ItemStack.EMPTY;
-        final ItemStack held = player.inventory.getItemStack();
+        ItemStack held = player.inventory.getItemStack();
 
         if (slot.getHasStack()) {
             ret = slot.getStack().copy();
@@ -81,12 +79,12 @@ public class ContainerCraneExtractor extends Container  {
     }
 
     @Override
-    public ItemStack transferStackInSlot(final EntityPlayer player, final int slot) {
+    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
         ItemStack var3 = ItemStack.EMPTY;
-        final Slot var4 = this.inventorySlots.get(slot);
+        Slot var4 = (Slot) this.inventorySlots.get(slot);
 
         if(var4 != null && var4.getHasStack()) {
-            final ItemStack var5 = var4.getStack();
+            ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
             if(slot < 9) { //filters
@@ -112,7 +110,7 @@ public class ContainerCraneExtractor extends Container  {
     }
 
     @Override
-    public boolean canInteractWith(final EntityPlayer player) {
+    public boolean canInteractWith(EntityPlayer player) {
         return extractor.isUseableByPlayer(player);
     }
 }

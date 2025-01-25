@@ -26,12 +26,12 @@ import java.util.List;
 
 public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 
-	private final float damageMod;
-	private final float projectileMod;
-	private final float explosionMod;
-	private final float speed;
-
-	public ItemModInsert(final int durability, final float damageMod, final float projectileMod, final float explosionMod, final float speed, final String s){
+	private float damageMod;
+	private float projectileMod;
+	private float explosionMod;
+	private float speed;
+	
+	public ItemModInsert(int durability, float damageMod, float projectileMod, float explosionMod, float speed, String s){
 		super(ArmorModHandler.kevlar, false, true, false, false, s);
 		this.damageMod = damageMod;
 		this.projectileMod = projectileMod;
@@ -41,7 +41,7 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		if(damageMod != 1F)
 			list.add(TextFormatting.RED + (damageMod < 1 ? "-" : "+") + Math.abs(Math.round((1F - damageMod) * 100)) + "% Damage");
 		if(projectileMod != 1F)
@@ -63,8 +63,8 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor){
-		final List<String> desc = new ArrayList<>();
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor){
+		List<String> desc = new ArrayList<>();
 
 		if(damageMod != 1F)
 			desc.add((damageMod < 1 ? "-" : "+") + Math.abs(Math.round((1F - damageMod) * 100)) + "% dmg");
@@ -78,13 +78,13 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 		if(this == ModItems.insert_polonium)
 			desc.add("+100 RAD/s");
 		
-		final String join = String.join(" / ", desc);
+		String join = String.join(" / ", desc);
 		
 		list.add(TextFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (" + join + " / " + (stack.getMaxDamage() - stack.getItemDamage()) + "HP)");
 	}
 	
 	@Override
-	public void modDamage(final LivingHurtEvent event, final ItemStack armor){
+	public void modDamage(LivingHurtEvent event, ItemStack armor){
 		event.setAmount(event.getAmount()*damageMod);
 		
 		if(event.getSource().isProjectile())
@@ -93,7 +93,7 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 		if(event.getSource().isExplosion())
 			event.setAmount(event.getAmount()*explosionMod);
 		
-		final ItemStack insert = ArmorModHandler.pryMods(armor)[ArmorModHandler.kevlar];
+		ItemStack insert = ArmorModHandler.pryMods(armor)[ArmorModHandler.kevlar];
 		
 		if(insert == null)
 			return;
@@ -112,25 +112,25 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor){
+	public void modUpdate(EntityLivingBase entity, ItemStack armor){
 		if(!entity.world.isRemote && this == ModItems.insert_polonium) {
 			ContaminationUtil.contaminate(entity, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
 		}
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getModifiers(final EntityEquipmentSlot slot, final ItemStack armor){
+	public Multimap<String, AttributeModifier> getModifiers(EntityEquipmentSlot slot, ItemStack armor){
 		if(speed == 1)
 			return null;
 		
-		final Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, armor);
 		
 		multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(),
 				new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType.getIndex()], "NTM Armor Mod Speed", -1F + speed, 2));
 		
 		return multimap;
 	}
-
+	
 	ItemHazardModule module = new ItemHazardModule();
 	
 	@Override
@@ -139,7 +139,7 @@ public class ItemModInsert extends ItemArmorMod implements IItemHazard {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entityIn, final int itemSlot, final boolean isSelected){
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected){
 		if(entityIn instanceof EntityLivingBase)
 			this.module.applyEffects((EntityLivingBase) entityIn, stack.getCount(), itemSlot, isSelected, ((EntityLivingBase)entityIn).getHeldItem(EnumHand.MAIN_HAND) == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 	}

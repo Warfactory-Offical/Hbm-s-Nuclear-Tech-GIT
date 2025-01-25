@@ -1,22 +1,19 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityMachineCyclotron;
-import com.hbm.blocks.BlockDummyable;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCyclotron extends TileEntitySpecialRenderer<TileEntityMachineCyclotron> {
 
 	@Override
-	public void render(final TileEntityMachineCyclotron cyc, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineCyclotron cyc, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 
@@ -79,7 +76,7 @@ public class RenderCyclotron extends TileEntitySpecialRenderer<TileEntityMachine
 	        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 	        GlStateManager.disableAlpha();
 
-			final String msg = "plures necat crapula quam gladius";
+			String msg = "plures necat crapula quam gladius";
 
 			GL11.glTranslated(0, 2, 0);
 			GL11.glRotated(180, 1, 0, 0);
@@ -87,7 +84,7 @@ public class RenderCyclotron extends TileEntitySpecialRenderer<TileEntityMachine
 			float rot = 0F;
 
 			//looks dumb but we'll use this technology for the cyclotron
-			for(final char c : msg.toCharArray()) {
+			for(char c : msg.toCharArray()) {
 
 				GL11.glPushMatrix();
 
@@ -99,7 +96,7 @@ public class RenderCyclotron extends TileEntitySpecialRenderer<TileEntityMachine
 
 				GL11.glRotatef(-90, 0, 1, 0);
 
-				final float scale = 0.1F;
+				float scale = 0.1F;
 				GL11.glScalef(scale, scale, scale);
 				GlStateManager.disableCull();
 				Minecraft.getMinecraft().standardGalacticFontRenderer.drawString(String.valueOf(c), 0, 0, 0x600060);

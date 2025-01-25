@@ -1,22 +1,20 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityDeuteriumTower;
-
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderDeuteriumTower extends TileEntitySpecialRenderer<TileEntityDeuteriumTower> {
 	
 	@Override
-	public boolean isGlobalRenderer(final TileEntityDeuteriumTower te) {
+	public boolean isGlobalRenderer(TileEntityDeuteriumTower te) {
 		return true;
 	}
 
 	@Override
-	public void render(final TileEntityDeuteriumTower te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityDeuteriumTower te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 	
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);

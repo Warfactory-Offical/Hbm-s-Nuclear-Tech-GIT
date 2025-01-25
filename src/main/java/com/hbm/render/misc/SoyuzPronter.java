@@ -1,13 +1,11 @@
 package com.hbm.render.misc;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class SoyuzPronter {
 
@@ -67,17 +65,17 @@ public class SoyuzPronter {
 		public ResourceLocation boosterside;
 		
 		SoyuzSkin(
-                final ResourceLocation engineblock,
-                final ResourceLocation bottomstage,
-                final ResourceLocation topstage,
-                final ResourceLocation payload,
-                final ResourceLocation payloadblocks,
-                final ResourceLocation les,
-                final ResourceLocation lesthrusters,
-                final ResourceLocation mainengines,
-                final ResourceLocation sideengines,
-                final ResourceLocation booster,
-                final ResourceLocation boosterside
+				ResourceLocation engineblock,
+				ResourceLocation bottomstage,
+				ResourceLocation topstage,
+				ResourceLocation payload,
+				ResourceLocation payloadblocks,
+				ResourceLocation les,
+				ResourceLocation lesthrusters,
+				ResourceLocation mainengines,
+				ResourceLocation sideengines,
+				ResourceLocation booster,
+				ResourceLocation boosterside
 		) {
 			this.engineblock = engineblock;
 			this.bottomstage = bottomstage;
@@ -94,7 +92,7 @@ public class SoyuzPronter {
 	}
 
 	
-	public static void prontSoyuz(final int type) {
+	public static void prontSoyuz(int type) {
 		
 		if(type >= SoyuzSkin.values().length || type < 0)
 			return;
@@ -103,13 +101,13 @@ public class SoyuzPronter {
 		prontBoosters(type);
 	}
 	
-	public static void prontMain(final int type) {
-		final SoyuzSkin skin = SoyuzSkin.values()[type];
+	public static void prontMain(int type) {
+		SoyuzSkin skin = SoyuzSkin.values()[type];
 
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		final TextureManager tex = Minecraft.getMinecraft().getTextureManager();
+		TextureManager tex = Minecraft.getMinecraft().getTextureManager();
 
 		tex.bindTexture(skin.engineblock);
 		ResourceManager.soyuz.renderOnly("EngineBlock");
@@ -146,14 +144,14 @@ public class SoyuzPronter {
 		GL11.glPopMatrix();
 	}
 	
-	public static void prontBoosters(final int type) {
+	public static void prontBoosters(int type) {
 		
-		final SoyuzSkin skin = SoyuzSkin.values()[type];
+		SoyuzSkin skin = SoyuzSkin.values()[type];
 
 		GL11.glPushMatrix();
 		GlStateManager.enableCull();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		final TextureManager tex = Minecraft.getMinecraft().getTextureManager();
+		TextureManager tex = Minecraft.getMinecraft().getTextureManager();
 		
 		tex.bindTexture(skin.booster);
 		ResourceManager.soyuz.renderOnly("Booster.000");
@@ -185,7 +183,7 @@ public class SoyuzPronter {
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
-		final TextureManager tex = Minecraft.getMinecraft().getTextureManager();
+		TextureManager tex = Minecraft.getMinecraft().getTextureManager();
 
 		tex.bindTexture(ResourceManager.soyuz_module_dome_tex);
 		ResourceManager.soyuz_module.renderPart("Dome");

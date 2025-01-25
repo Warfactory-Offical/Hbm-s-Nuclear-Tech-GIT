@@ -1,6 +1,6 @@
 package com.hbm.items.tool;
 
-import api.hbm.energy.IEnergyConnector;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.interfaces.IFluidPipe;
 import com.hbm.items.ModItems;
 import com.hbm.tileentity.machine.TileEntityDummy;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ItemAnalyzer extends Item {
 
-	public ItemAnalyzer(final String s) {
+	public ItemAnalyzer(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -31,8 +31,8 @@ public class ItemAnalyzer extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
-		final Block block = world.getBlockState(pos).getBlock();
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		Block block = world.getBlockState(pos).getBlock();
 		TileEntity te = world.getTileEntity(pos);
 		
 		if(world.isRemote) {
@@ -65,8 +65,8 @@ public class ItemAnalyzer extends Item {
 				if(parts.length == 0)
 					parts = new String[]{"error"};
 				
-				final String post = parts[parts.length - 1];
-				final String name = post.split("@")[0];
+				String post = parts[parts.length - 1];
+				String name = post.split("@")[0];
 
 				player.sendMessage(new TextComponentString(
 						"Tile Entity: " + name));
@@ -77,16 +77,16 @@ public class ItemAnalyzer extends Item {
 							"Slots: " + ((IInventory)te).getSizeInventory()));
 				}
 				
-				if(te instanceof IEnergyConnector) {
+				if(te instanceof IEnergyReceiverMK2) {
 					
 					player.sendMessage(new TextComponentString(
-							"Electricity: " + ((IEnergyConnector)te).getPower() + " HE"));
+							"Electricity: " + ((IEnergyReceiverMK2)te).getPower() + " HE"));
 				}
 				
 				if(te instanceof IFluidPipe) {
 					
 					player.sendMessage(new TextComponentString(
-							"Duct Type: " + I18n.format(((IFluidPipe)te).getType().getUnlocalizedName())));
+							"Duct Type: " + I18n.format(((IFluidPipe)te).getType().getTranslationKey())));
 				}
 				
 				if(te instanceof TileEntityPylonBase) {
@@ -94,11 +94,12 @@ public class ItemAnalyzer extends Item {
 					player.sendMessage(new TextComponentString(
 							"Connections:"));
 					
-					final List<BlockPos> connections = ((TileEntityPylonBase)te).connected;
+					List<int[]> connections = ((TileEntityPylonBase)te).connected;
 					
 					for(int i = 0; i < connections.size(); i++) {
+						int[] coords = connections.get(i);
 						player.sendMessage(new TextComponentString(
-								" *" + connections.get(i).getX() + " / " + connections.get(i).getY() + " / " + connections.get(i).getZ()));
+								" *" + coords[0] + " / " + coords[1] + " / " + coords[2]));
 					}
 				}
 				

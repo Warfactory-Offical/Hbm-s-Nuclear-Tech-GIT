@@ -17,243 +17,243 @@ abstract class ArithmeticOperators {
 
     public byte x, y, z, w;
 
-    public Vec4b add_(final byte b) {
+    public Vec4b add_(byte b) {
         return Glm.add(new Vec4b(), (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b add_(final int b) {
+    public Vec4b add_(int b) {
         return Glm.add(new Vec4b(), (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b add_(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b add_(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.add(new Vec4b(), (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b add_(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b add_(int bX, int bY, int bZ, int bW) {
         return Glm.add(new Vec4b(), (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b add_(final Vec4b b) {
+    public Vec4b add_(Vec4b b) {
         return Glm.add(new Vec4b(), (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b add(final byte b) {
+    public Vec4b add(byte b) {
         return Glm.add((Vec4b) this, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b add(final int b) {
+    public Vec4b add(int b) {
         return Glm.add((Vec4b) this, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b add(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b add(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.add((Vec4b) this, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b add(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b add(int bX, int bY, int bZ, int bW) {
         return Glm.add((Vec4b) this, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b add(final Vec4b b) {
+    public Vec4b add(Vec4b b) {
         return Glm.add((Vec4b) this, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b add(final byte b, final Vec4b res) {
+    public Vec4b add(byte b, Vec4b res) {
         return Glm.add(res, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b add(final int b, final Vec4b res) {
+    public Vec4b add(int b, Vec4b res) {
         return Glm.add(res, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b add(final byte bX, final byte bY, final byte bZ, final byte bW, final Vec4b res) {
+    public Vec4b add(byte bX, byte bY, byte bZ, byte bW, Vec4b res) {
         return Glm.add(res, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b add(final int bX, final int bY, final int bZ, final int bW, final Vec4b res) {
+    public Vec4b add(int bX, int bY, int bZ, int bW, Vec4b res) {
         return Glm.add(res, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b add(final Vec4b b, final Vec4b res) {
+    public Vec4b add(Vec4b b, Vec4b res) {
         return Glm.add(res, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b sub_(final byte b) {
+    public Vec4b sub_(byte b) {
         return Glm.sub(new Vec4b(), (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b sub_(final int b) {
+    public Vec4b sub_(int b) {
         return Glm.sub(new Vec4b(), (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b sub_(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b sub_(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.sub(new Vec4b(), (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b sub_(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b sub_(int bX, int bY, int bZ, int bW) {
         return Glm.sub(new Vec4b(), (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b sub_(final Vec4b b) {
+    public Vec4b sub_(Vec4b b) {
         return Glm.sub(new Vec4b(), (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b sub(final byte b) {
+    public Vec4b sub(byte b) {
         return Glm.sub((Vec4b) this, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b sub(final int b) {
+    public Vec4b sub(int b) {
         return Glm.sub((Vec4b) this, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b sub(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b sub(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.sub((Vec4b) this, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b sub(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b sub(int bX, int bY, int bZ, int bW) {
         return Glm.sub((Vec4b) this, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b sub(final Vec4b b) {
+    public Vec4b sub(Vec4b b) {
         return Glm.sub((Vec4b) this, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b sub(final byte b, final Vec4b res) {
+    public Vec4b sub(byte b, Vec4b res) {
         return Glm.sub(res, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b sub(final int b, final Vec4b res) {
+    public Vec4b sub(int b, Vec4b res) {
         return Glm.sub(res, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b sub(final byte bX, final byte bY, final byte bZ, final byte bW, final Vec4b res) {
+    public Vec4b sub(byte bX, byte bY, byte bZ, byte bW, Vec4b res) {
         return Glm.sub(res, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b sub(final int bX, final int bY, final int bZ, final int bW, final Vec4b res) {
+    public Vec4b sub(int bX, int bY, int bZ, int bW, Vec4b res) {
         return Glm.sub(res, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b sub(final Vec4b b, final Vec4b res) {
+    public Vec4b sub(Vec4b b, Vec4b res) {
         return Glm.sub(res, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b mul_(final byte b) {
+    public Vec4b mul_(byte b) {
         return Glm.mul(new Vec4b(), (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b mul_(final int b) {
+    public Vec4b mul_(int b) {
         return Glm.mul(new Vec4b(), (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b mul_(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b mul_(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.mul(new Vec4b(), (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b mul_(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b mul_(int bX, int bY, int bZ, int bW) {
         return Glm.mul(new Vec4b(), (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b mul_(final Vec4b b) {
+    public Vec4b mul_(Vec4b b) {
         return Glm.mul(new Vec4b(), (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b mul(final byte b) {
+    public Vec4b mul(byte b) {
         return Glm.mul((Vec4b) this, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b mul(final int b) {
+    public Vec4b mul(int b) {
         return Glm.mul((Vec4b) this, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b mul(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b mul(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.mul((Vec4b) this, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b mul(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b mul(int bX, int bY, int bZ, int bW) {
         return Glm.mul((Vec4b) this, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b mul(final Vec4b b) {
+    public Vec4b mul(Vec4b b) {
         return Glm.mul((Vec4b) this, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b mul(final byte b, final Vec4b res) {
+    public Vec4b mul(byte b, Vec4b res) {
         return Glm.mul(res, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b mul(final int b, final Vec4b res) {
+    public Vec4b mul(int b, Vec4b res) {
         return Glm.mul(res, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b mul(final byte bX, final byte bY, final byte bZ, final byte bW, final Vec4b res) {
+    public Vec4b mul(byte bX, byte bY, byte bZ, byte bW, Vec4b res) {
         return Glm.mul(res, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b mul(final int bX, final int bY, final int bZ, final int bW, final Vec4b res) {
+    public Vec4b mul(int bX, int bY, int bZ, int bW, Vec4b res) {
         return Glm.mul(res, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b mul(final Vec4b b, final Vec4b res) {
+    public Vec4b mul(Vec4b b, Vec4b res) {
         return Glm.mul(res, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b div_(final byte b) {
+    public Vec4b div_(byte b) {
         return Glm.div(new Vec4b(), (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b div_(final int b) {
+    public Vec4b div_(int b) {
         return Glm.div(new Vec4b(), (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b div_(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b div_(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.div(new Vec4b(), (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b div_(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b div_(int bX, int bY, int bZ, int bW) {
         return Glm.div(new Vec4b(), (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b div_(final Vec4b b) {
+    public Vec4b div_(Vec4b b) {
         return Glm.div(new Vec4b(), (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b div(final byte b) {
+    public Vec4b div(byte b) {
         return Glm.div((Vec4b) this, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b div(final int b) {
+    public Vec4b div(int b) {
         return Glm.div((Vec4b) this, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b div(final byte bX, final byte bY, final byte bZ, final byte bW) {
+    public Vec4b div(byte bX, byte bY, byte bZ, byte bW) {
         return Glm.div((Vec4b) this, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b div(final int bX, final int bY, final int bZ, final int bW) {
+    public Vec4b div(int bX, int bY, int bZ, int bW) {
         return Glm.div((Vec4b) this, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b div(final Vec4b b) {
+    public Vec4b div(Vec4b b) {
         return Glm.div((Vec4b) this, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
-    public Vec4b div(final byte b, final Vec4b res) {
+    public Vec4b div(byte b, Vec4b res) {
         return Glm.div(res, (Vec4b) this, (int) b, b, b, b);
     }
 
-    public Vec4b div(final int b, final Vec4b res) {
+    public Vec4b div(int b, Vec4b res) {
         return Glm.div(res, (Vec4b) this, b, b, b, b);
     }
 
-    public Vec4b div(final byte bX, final byte bY, final byte bZ, final byte bW, final Vec4b res) {
+    public Vec4b div(byte bX, byte bY, byte bZ, byte bW, Vec4b res) {
         return Glm.div(res, (Vec4b) this, (int) bX, bY, bZ, bW);
     }
 
-    public Vec4b div(final int bX, final int bY, final int bZ, final int bW, final Vec4b res) {
+    public Vec4b div(int bX, int bY, int bZ, int bW, Vec4b res) {
         return Glm.div(res, (Vec4b) this, bX, bY, bZ, bW);
     }
 
-    public Vec4b div(final Vec4b b, final Vec4b res) {
+    public Vec4b div(Vec4b b, Vec4b res) {
         return Glm.div(res, (Vec4b) this, (int) b.x, b.y, b.z, b.w);
     }
 
@@ -265,7 +265,7 @@ abstract class ArithmeticOperators {
         return Glm.incr((Vec4b) this);
     }
 
-    public Vec4b incr(final Vec4b res) {
+    public Vec4b incr(Vec4b res) {
         return Glm.incr(res, (Vec4b) this);
     }
 
@@ -277,7 +277,7 @@ abstract class ArithmeticOperators {
         return Glm.decr((Vec4b) this);
     }
 
-    public Vec4b decr(final Vec4b res) {
+    public Vec4b decr(Vec4b res) {
         return Glm.decr(res, (Vec4b) this);
     }
 }

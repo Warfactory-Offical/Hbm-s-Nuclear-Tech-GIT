@@ -1,19 +1,17 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
-import com.hbm.items.ModItems;
+import api.hbm.energymk2.IBatteryItem;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.inventory.CentrifugeRecipes;
+import com.hbm.items.ModItems;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.LoopedSoundPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyUser;
-import api.hbm.energy.IBatteryItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -23,7 +21,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityMachineCentrifuge extends TileEntityMachineBase implements ITickable, IEnergyUser {
+public class TileEntityMachineCentrifuge extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 
 	public int progress;
 	public long power;
@@ -40,7 +38,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		return "container.centrifuge";
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -49,16 +47,16 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		}
 	}
 	
-	public int getCentrifugeProgressScaled(final int i) {
+	public int getCentrifugeProgressScaled(int i) {
 		return (progress * i) / processingSpeed;
 	}
 	
-	public long getPowerRemainingScaled(final int i) {
+	public long getPowerRemainingScaled(int i) {
 		return (power * i) / maxPower;
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
+	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		if(i == 2 || i == 3 || i == 4 || i == 5)
 		{
 			return false;
@@ -72,29 +70,29 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
 		return new int[]{ 0, 1, 2, 3, 4, 5, 6, 7};
 	}
 	
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
 		return slot > 1 && slot < 6;
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setShort("progressTime", (short) progress);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("powerTime");
 		progress = compound.getShort("progressTime");
 		super.readFromNBT(compound);
@@ -106,7 +104,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		{
 			return false;
 		}
-		final ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
+		ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
 		if(itemStack == null)
 		{
 			return false;
@@ -116,16 +114,21 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		{
 			return true;
 		}
-
-        return (inventory.getStackInSlot(2).isEmpty() || (itemStack.length > 0 && itemStack[0] != null && inventory.getStackInSlot(2).isItemEqual(itemStack[0]) && inventory.getStackInSlot(2).getCount() + itemStack[0].getCount() <= itemStack[0].getMaxStackSize())) &&
-                (inventory.getStackInSlot(3).isEmpty() || itemStack.length < 2 || (itemStack.length > 1 && itemStack[1] != null && inventory.getStackInSlot(3).isItemEqual(itemStack[1]) && inventory.getStackInSlot(3).getCount() + itemStack[1].getCount() <= itemStack[1].getMaxStackSize())) &&
-                (inventory.getStackInSlot(4).isEmpty() || itemStack.length < 3 || (itemStack.length > 2 && itemStack[2] != null && inventory.getStackInSlot(4).isItemEqual(itemStack[2]) && inventory.getStackInSlot(4).getCount() + itemStack[2].getCount() <= itemStack[2].getMaxStackSize())) &&
-                (inventory.getStackInSlot(5).isEmpty() || itemStack.length < 4 || (itemStack.length > 3 && itemStack[3] != null && inventory.getStackInSlot(5).isItemEqual(itemStack[3]) && inventory.getStackInSlot(5).getCount() + itemStack[3].getCount() <= itemStack[3].getMaxStackSize()));
-    }
+		
+		if((inventory.getStackInSlot(2).isEmpty() || (itemStack.length > 0 && itemStack[0] != null && inventory.getStackInSlot(2).isItemEqual(itemStack[0]) && inventory.getStackInSlot(2).getCount() + itemStack[0].getCount() <= itemStack[0].getMaxStackSize())) && 
+				(inventory.getStackInSlot(3).isEmpty() || itemStack.length < 2 || (itemStack.length > 1 && itemStack[1] != null && inventory.getStackInSlot(3).isItemEqual(itemStack[1]) && inventory.getStackInSlot(3).getCount() + itemStack[1].getCount() <= itemStack[1].getMaxStackSize())) && 
+				(inventory.getStackInSlot(4).isEmpty() || itemStack.length < 3 || (itemStack.length > 2 && itemStack[2] != null && inventory.getStackInSlot(4).isItemEqual(itemStack[2]) && inventory.getStackInSlot(4).getCount() + itemStack[2].getCount() <= itemStack[2].getMaxStackSize())) && 
+				(inventory.getStackInSlot(5).isEmpty() || itemStack.length < 4 || (itemStack.length > 3 && itemStack[3] != null && inventory.getStackInSlot(5).isItemEqual(itemStack[3]) && inventory.getStackInSlot(5).getCount() + itemStack[3].getCount() <= itemStack[3].getMaxStackSize())))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 	
 	private void processItem() {
 		if(canProcess()) {
-			final ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
+			ItemStack[] itemStack = CentrifugeRecipes.getOutput(inventory.getStackInSlot(0));
 			
 			if(inventory.getStackInSlot(2).isEmpty() && itemStack[0] != null)
 			{
@@ -168,7 +171,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 			//Alcater: No idea - "for(int i = 0; i < 1; i++)" should be a illegal
 			if(inventory.getStackInSlot(0).isEmpty())
 			{
-				//inventory.setStackInSlot(0, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem().setFull3D()));
+				//inventory.setStackInSlot(0, new ItemStack(inventory.getStackInSlot(i).getItem().setFull3D()));
 				inventory.setStackInSlot(0, ItemStack.EMPTY);
 			}else{
 				inventory.getStackInSlot(0).shrink(1);
@@ -232,8 +235,9 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	public void update() {
 		
 		if(!world.isRemote) {
-			
-			this.updateStandardConnections(world, pos);
+
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 
 			if(inventory.getSlots() < 7){
 				inventory = this.getNewInventory(8, 64);
@@ -244,9 +248,9 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 			int speed = 1;
 			int consumption = 200;
 			
-			final int speedLvl = getSpeedLvl();
-			final int powerLvl = getPowerLvl();
-			final int overdriveLvl = getOverdriveLvl();
+			int speedLvl = getSpeedLvl();
+			int powerLvl = getPowerLvl();
+			int overdriveLvl = getOverdriveLvl();
 
 			speed += speedLvl;
 			consumption += speedLvl * 200;
@@ -263,8 +267,12 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 					this.power = 0;
 				}
 			}
-
-            isProgressing = hasPower() && canProcess();
+			
+			if(hasPower() && canProcess()){
+				isProgressing = true;
+			} else {
+				isProgressing = false;
+			}
 			
 			if(isProgressing){
 				progress += speed;
@@ -324,7 +332,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

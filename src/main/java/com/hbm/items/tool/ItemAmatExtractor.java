@@ -1,7 +1,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.blocks.bomb.BlockCrashedBomb;
-import com.hbm.forgefluid.ModForgeFluids;
+import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.special.ItemCell;
 import com.hbm.items.special.ItemCustomLore;
 import com.hbm.util.ContaminationUtil;
@@ -16,30 +16,30 @@ import net.minecraft.world.World;
 
 public class ItemAmatExtractor extends ItemCustomLore {
 
-	public ItemAmatExtractor(final String s){
+	public ItemAmatExtractor(String s){
 		super(s);
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(world.getBlockState(pos).getBlock() instanceof BlockCrashedBomb) {
 			if(!world.isRemote && ItemCell.hasEmptyCell(player)) {
 				
-				final float chance = world.rand.nextFloat();
+				float chance = world.rand.nextFloat();
 				
 				if(chance < 0.01) {
 					((BlockCrashedBomb) world.getBlockState(pos).getBlock()).explode(world, pos);
 				} else if(chance <= 0.3) {
 					ItemCell.consumeEmptyCell(player);
 	
-					if(!player.inventory.addItemStackToInventory(ItemCell.getFullCell(ModForgeFluids.balefire))) {
-						player.dropItem(ItemCell.getFullCell(ModForgeFluids.balefire), false);
+					if(!player.inventory.addItemStackToInventory(ItemCell.getFullCell(Fluids.BALEFIRE))) {
+						player.dropItem(ItemCell.getFullCell(Fluids.BALEFIRE), false);
 					}
 				} else {
 					ItemCell.consumeEmptyCell(player);
 	
-					if(!player.inventory.addItemStackToInventory(ItemCell.getFullCell(ModForgeFluids.amat))) {
-						player.dropItem(ItemCell.getFullCell(ModForgeFluids.amat), false);
+					if(!player.inventory.addItemStackToInventory(ItemCell.getFullCell(Fluids.AMAT))) {
+						player.dropItem(ItemCell.getFullCell(Fluids.AMAT), false);
 					}
 				}
 				

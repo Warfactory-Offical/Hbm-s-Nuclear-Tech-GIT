@@ -54,7 +54,7 @@ public class PacketSpecialDeath implements IMessage {
 	public PacketSpecialDeath() {
 	}
 	
-	public PacketSpecialDeath(final Entity ent, final int effectId, final float... auxData) {
+	public PacketSpecialDeath(Entity ent, int effectId, float... auxData) {
 		serverEntity = ent;
 		this.effectId = effectId;
 		this.entId = ent.getEntityId();
@@ -62,10 +62,10 @@ public class PacketSpecialDeath implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		entId = buf.readInt();
 		effectId = buf.readInt();
-		final int len = buf.readByte();
+		int len = buf.readByte();
 		auxData = new float[len];
 		for(int i = 0; i < len; i++){
 			auxData[i] = buf.readFloat();
@@ -76,11 +76,11 @@ public class PacketSpecialDeath implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(entId);
 		buf.writeInt(effectId);
 		buf.writeByte(auxData.length);
-		for(final float f : auxData){
+		for(float f : auxData){
 			buf.writeFloat(f);
 		}
 		if(effectId == 4){
@@ -93,9 +93,9 @@ public class PacketSpecialDeath implements IMessage {
 		@SuppressWarnings("deprecation")
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final PacketSpecialDeath m, final MessageContext ctx) {
+		public IMessage onMessage(PacketSpecialDeath m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final Entity ent = Minecraft.getMinecraft().world.getEntityByID(m.entId);
+				Entity ent = Minecraft.getMinecraft().world.getEntityByID(m.entId);
 				if(ent instanceof EntityLivingBase){
 					switch(m.effectId){
 					case 0:
@@ -108,9 +108,9 @@ public class PacketSpecialDeath implements IMessage {
 						try {
 							if(rGetHurtSound == null)
 								rGetHurtSound = ReflectionHelper.findMethod(EntityLivingBase.class, "getHurtSound", "func_184601_bQ", DamageSource.class);
-							final SoundEvent s = (SoundEvent) rGetHurtSound.invoke(ent, ModDamageSource.radiation);
+							SoundEvent s = (SoundEvent) rGetHurtSound.invoke(ent, ModDamageSource.radiation);
 							Minecraft.getMinecraft().world.playSound(ent.posX, ent.posY, ent.posZ, s, SoundCategory.MASTER, 1, 1, false);
-						} catch(final Exception e) {
+						} catch(Exception e) {
 							e.printStackTrace();
 						}
 						break;
@@ -122,48 +122,48 @@ public class PacketSpecialDeath implements IMessage {
 					case 3:
 						ent.setDead();
 						//ModEventHandlerClient.specialDeathEffectEntities.add((EntityLivingBase) ent);
-						final float[] data = m.auxData;
-						final int id = Float.floatToIntBits(data[4]);
-						final ResourceLocation capTex;
+						float[] data = m.auxData;
+						int id = Float.floatToIntBits(data[4]);
+						ResourceLocation capTex;
 						if(id == 0){
 							capTex = ResourceManager.gore_generic;
 						} else {
 							capTex = ResourceManager.crucible_cap;
 						}
-						final ParticleSlicedMob[] particles = ModelRendererUtil.generateCutParticles(ent, data, capTex, id == 1 ? 1 : 0, capTris -> {
-							final int bloodCount = 5;
-							final int cCount = id == 1 ? 8 : 0;
+						ParticleSlicedMob[] particles = ModelRendererUtil.generateCutParticles(ent, data, capTex, id == 1 ? 1 : 0, capTris -> {
+							int bloodCount = 5;
+							int cCount = id == 1 ? 8 : 0;
 							if(capTris.isEmpty()){
 								return;
 							}
 							for(int i = 0; i < bloodCount+cCount; i ++){
-								final Triangle randTriangle = capTris.get(ent.world.rand.nextInt(capTris.size()));
+								Triangle randTriangle = capTris.get(ent.world.rand.nextInt(capTris.size()));
 								//Hopefully this works for getting a random position in a triangle
 								float rand1 = ent.world.rand.nextFloat();
 								float rand2 = ent.world.rand.nextFloat();
 								if(rand2 < rand1){
-									final float tmp = rand2;
+									float tmp = rand2;
 									rand2 = rand1;
 									rand1 = tmp;
 								}
 								Vec3d pos = randTriangle.p1.pos.scale(rand1);
 								pos = pos.add(randTriangle.p2.pos.scale(rand2-rand1));
 								pos = pos.add(randTriangle.p3.pos.scale(1-rand2));
-								pos = pos.add(ent.posX, ent.posY, ent.posZ);
+								pos = pos.addVector(ent.posX, ent.posY, ent.posZ);
 								
-								final Random rand = ent.world.rand;
+								Random rand = ent.world.rand;
 								if(i < bloodCount){
-									final ParticleBlood blood = new ParticleBlood(ent.world, pos.x, pos.y, pos.z, 1, 0.4F+rand.nextFloat()*0.4F, 18+rand.nextInt(10), 0.05F);
+									ParticleBlood blood = new ParticleBlood(ent.world, pos.x, pos.y, pos.z, 1, 0.4F+rand.nextFloat()*0.4F, 18+rand.nextInt(10), 0.05F);
 									Vec3d direction = Minecraft.getMinecraft().player.getLook(1).crossProduct(new Vec3d(data[0], data[1], data[2])).normalize().scale(-0.6F);
-									final Vec3d randMotion = new Vec3d(rand.nextDouble()*2-1, rand.nextDouble()*2-1, rand.nextDouble()*2-1).scale(0.2F);
+									Vec3d randMotion = new Vec3d(rand.nextDouble()*2-1, rand.nextDouble()*2-1, rand.nextDouble()*2-1).scale(0.2F);
 									direction = direction.add(randMotion);
 									blood.motion((float)direction.x, (float)direction.y, (float)direction.z);
 									blood.color(0.5F, 0.1F, 0.1F, 1F);
 									blood.onUpdate();
 									Minecraft.getMinecraft().effectRenderer.addEffect(blood);
 								} else {
-									final Vec3d direction = capTris.get(0).p2.pos.subtract(capTris.get(0).p1.pos).crossProduct(capTris.get(2).p2.pos.subtract(capTris.get(0).p1.pos)).normalize().scale(i%2==0 ? 0.4 : -0.4);
-									final NBTTagCompound tag = new NBTTagCompound();
+									Vec3d direction = capTris.get(0).p2.pos.subtract(capTris.get(0).p1.pos).crossProduct(capTris.get(2).p2.pos.subtract(capTris.get(0).p1.pos)).normalize().scale(i%2==0 ? 0.4 : -0.4);
+									NBTTagCompound tag = new NBTTagCompound();
 									tag.setString("type", "spark");
 									tag.setString("mode", "coneBurst");
 									tag.setDouble("posX", pos.x);
@@ -188,21 +188,22 @@ public class PacketSpecialDeath implements IMessage {
 								}
 							}
 						});
-						for(final ParticleSlicedMob p : particles)
+						for(ParticleSlicedMob p : particles)
 							Minecraft.getMinecraft().effectRenderer.addEffect(p);
 						break;
 					case 4:
 						ent.setDead();
-						@SuppressWarnings("unchecked") final List<BulletHit> bHits = (List<BulletHit>) m.auxObj;
-						final List<Pair<Matrix4f, ModelRenderer>> boxes = ModelRendererUtil.getBoxesFromMob(ent);
-						final RigidBody[] bodies = ModelRendererUtil.generateRigidBodiesFromBoxes(ent, boxes);
-						final int[] displayLists = ModelRendererUtil.generateDisplayListsFromBoxes(boxes);
-						final ResourceLocation tex = ModelRendererUtil.getEntityTexture(ent);
+						@SuppressWarnings("unchecked")
+						List<BulletHit> bHits = (List<BulletHit>) m.auxObj;
+						List<Pair<Matrix4f, ModelRenderer>> boxes = ModelRendererUtil.getBoxesFromMob(ent);
+						RigidBody[] bodies = ModelRendererUtil.generateRigidBodiesFromBoxes(ent, boxes);
+						int[] displayLists = ModelRendererUtil.generateDisplayListsFromBoxes(boxes);
+						ResourceLocation tex = ModelRendererUtil.getEntityTexture(ent);
 						for(int i = 0; i < bodies.length; i ++){
-							for(final BulletHit b : bHits){
-								final float dist = (float) b.pos.distanceTo(bodies[i].globalCentroid.toVec3d());
-								final float falloff = pointLightFalloff(1, dist);
-								final float regular = 1.5F*falloff;
+							for(BulletHit b : bHits){
+								float dist = (float) b.pos.distanceTo(bodies[i].globalCentroid.toVec3d());
+								float falloff = pointLightFalloff(1, dist);
+								float regular = 1.5F*falloff;
 								bodies[i].impulseVelocityDirect(new Vec3(b.direction.scale(regular)), new Vec3(b.pos));
 							}
 							bodies[i].angularVelocity = bodies[i].angularVelocity.min(10).max(-10);
@@ -218,12 +219,12 @@ public class PacketSpecialDeath implements IMessage {
 	}
 	
 	//Epic games lighting model falloff
-	public static float pointLightFalloff(final float radius, final float dist){
-		final float distOverRad = dist/radius;
-		final float distOverRad2 = distOverRad*distOverRad;
-		final float distOverRad4 = distOverRad2*distOverRad2;
+	public static float pointLightFalloff(float radius, float dist){
+		float distOverRad = dist/radius;
+		float distOverRad2 = distOverRad*distOverRad;
+		float distOverRad4 = distOverRad2*distOverRad2;
 		
-		final float falloff = MathHelper.clamp(1-distOverRad4, 0, 1);
+		float falloff = MathHelper.clamp(1-distOverRad4, 0, 1);
 		return (falloff * falloff)/(dist*dist + 1);
 	}
 	

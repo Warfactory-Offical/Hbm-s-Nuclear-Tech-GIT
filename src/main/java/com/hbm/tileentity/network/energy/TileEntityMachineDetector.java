@@ -1,13 +1,12 @@
 package com.hbm.tileentity.network.energy;
 
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.blocks.network.energy.PowerDetector;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyUser;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
-public class TileEntityMachineDetector extends TileEntityLoadedBase implements ITickable, IEnergyUser {
+public class TileEntityMachineDetector extends TileEntityLoadedBase implements ITickable, IEnergyReceiverMK2 {
 
 	private long power;
 
@@ -20,9 +19,10 @@ public class TileEntityMachineDetector extends TileEntityLoadedBase implements I
 	public void update() {
 		if(!world.isRemote) {
 
-			this.updateStandardConnections(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 
-			final int meta = this.getBlockMetadata();
+			int meta = this.getBlockMetadata();
 			int state = 0;
 
 			if(this.power > 0) {
@@ -31,14 +31,14 @@ public class TileEntityMachineDetector extends TileEntityLoadedBase implements I
 			}
 
 			if(meta != state) {
-				PowerDetector.updateBlockState(state == 1, world, pos);
+				PowerDetector.updateBlockState(state==1 ? true: false, world, pos);
 				this.markDirty();
 			}
 		}
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		this.power = i;
 	}
 

@@ -1,18 +1,16 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.turret.TileEntityTurretRichard;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
 
 public class RenderTurretRichard extends RenderTurretBase<TileEntityTurretRichard> {
 
 	@Override
-	public void render(final TileEntityTurretRichard turret, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
-		final Vec3d pos = turret.getHorizontalOffset();
+	public void render(TileEntityTurretRichard turret, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+		Vec3d pos = turret.getHorizontalOffset();
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + pos.x, y, z + pos.z);
@@ -24,8 +22,8 @@ public class RenderTurretRichard extends RenderTurretBase<TileEntityTurretRichar
 
 		bindTexture(ResourceManager.turret_base_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");
-		final double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
-		final double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
+		double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
+		double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
 		
 		GL11.glRotated(yaw, 0, 1, 0);
 		bindTexture(ResourceManager.turret_carriage_tex);

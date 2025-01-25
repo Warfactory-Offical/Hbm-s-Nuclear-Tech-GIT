@@ -1,9 +1,7 @@
 package com.hbm.entity.mob;
-import com.hbm.util.ItemStackUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.hbm.entity.effect.EntityNukeTorex;
+import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.entity.projectile.EntityBulletBase;
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.interfaces.IRadiationImmune;
@@ -17,9 +15,6 @@ import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
-import com.hbm.entity.effect.EntityNukeTorex;
-import com.hbm.entity.logic.EntityNukeExplosionMK5;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,12 +43,15 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 
 	public static final DataParameter<Boolean> BEAM = EntityDataManager.createKey(EntityUFO.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<BlockPos> WAYPOINT = EntityDataManager.createKey(EntityUFO.class, DataSerializers.BLOCK_POS);
 	
-	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS));
 	
 	public int courseChangeCooldown;
 	public int scanCooldown;
@@ -63,9 +61,9 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 	public int hurtCooldown;
 	public int beamTimer;
 	private Entity target;
-	private final List<Entity> secondaries = new ArrayList<>();
+	private List<Entity> secondaries = new ArrayList<>();
 	
-	public EntityUFO(final World p_i1587_1_) {
+	public EntityUFO(World p_i1587_1_) {
 		super(p_i1587_1_);
 		this.setSize(15F, 4F);
 		this.isImmuneToFire = true;
@@ -80,12 +78,12 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 	}
 	
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		
 		if(hurtCooldown > 0)
 			return false;
 		
-		final boolean hit = super.attackEntityFrom(source, amount);
+		boolean hit = super.attackEntityFrom(source, amount);
 		
 		if(hit)
 			hurtCooldown = 5;
@@ -125,11 +123,11 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 		}
 		
 		if(this.scanCooldown <= 0) {
-			final List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, this.getEntityBoundingBox().grow(100, 50, 100));
+			List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, this.getEntityBoundingBox().grow(100, 50, 100));
 			this.secondaries.clear();
 			this.target = null;
 			
-			for(final Entity entity : entities) {
+			for(Entity entity : entities) {
 				
 				if(!entity.isEntityAlive() || !canAttackClass(entity.getClass()))
 					continue;
@@ -164,16 +162,16 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 		
 		if(this.target != null && this.courseChangeCooldown <= 0) {
 			
-			final Vec3 vec = Vec3.createVectorHelper(this.posX - this.target.posX, 0, this.posZ - this.target.posZ);
+			Vec3 vec = Vec3.createVectorHelper(this.posX - this.target.posX, 0, this.posZ - this.target.posZ);
 			
 			if(rand.nextInt(3) > 0)
 				vec.rotateAroundY((float)Math.PI * 2 * rand.nextFloat());
 			
-			final double length = vec.length();
-			final double overshoot = 35;
+			double length = vec.lengthVector();
+			double overshoot = 35;
 			
-			final int wX = (int)Math.floor(this.target.posX - vec.xCoord / length * overshoot);
-			final int wZ = (int)Math.floor(this.target.posZ - vec.zCoord / length * overshoot);
+			int wX = (int)Math.floor(this.target.posX - vec.xCoord / length * overshoot);
+			int wZ = (int)Math.floor(this.target.posZ - vec.zCoord / length * overshoot);
 			
 			this.setWaypoint(wX, Math.max(this.world.getHeight(wX, wZ) + 20 + rand.nextInt(15), (int) this.target.posY + 15),  wZ);
 			
@@ -187,7 +185,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 			}
 
 			if(this.target != null) {
-				final double dist = Math.abs(this.target.posX - this.posX) + Math.abs(this.target.posZ - this.posZ);
+				double dist = Math.abs(this.target.posX - this.posX) + Math.abs(this.target.posZ - this.posZ);
 				if(dist < 25)
 					this.beamTimer = 30;
 			}
@@ -200,8 +198,8 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 					this.setBeam(true);
 				}
 
-				final int ix = (int)Math.floor(this.posX);
-				final int iz = (int)Math.floor(this.posZ);
+				int ix = (int)Math.floor(this.posX);
+				int iz = (int)Math.floor(this.posZ);
 				int iy = 0;
 				
 				for(int i = (int)Math.ceil(this.posY); i >= 0; i--) {
@@ -213,9 +211,9 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 				}
 				
 				if(iy < this.posY) {
-					final List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(this.posX, iy, this.posZ, this.posX, this.posY, this.posZ).grow(5, 0, 5));
+					List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(this.posX, iy, this.posZ, this.posX, this.posY, this.posZ).grow(5, 0, 5));
 					
-					for(final Entity e : entities) {
+					for(Entity e : entities) {
 						if(this.canAttackClass(e.getClass())) {
 							e.attackEntityFrom(ModDamageSource.causeCombineDamage(this, e), 1000F);
 							e.setFire(5);
@@ -225,7 +223,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 						}
 					}
 					
-					final NBTTagCompound data = new NBTTagCompound();
+					NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "ufo");
 					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, iy + 0.5, posZ),  new TargetPoint(dimension, posX, iy + 0.5, posZ, 150));
 					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX + this.motionX * 0.5, iy + 0.5, posZ + this.motionZ * 0.5),  new TargetPoint(dimension, posX + this.motionX * 0.5, iy + 0.5, posZ + this.motionZ * 0.5, 150));
@@ -237,7 +235,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 				if(this.ticksExisted % 4 == 0) {
 					
 					if(!this.secondaries.isEmpty()){
-						final Entity e = this.secondaries.get(rand.nextInt(this.secondaries.size()));
+						Entity e = this.secondaries.get(rand.nextInt(this.secondaries.size()));
 						
 						if(!e.isEntityAlive())
 							this.secondaries.remove(e);
@@ -258,7 +256,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 				if(this.ticksExisted % 20 == 0) {
 					
 					if(!this.secondaries.isEmpty()){
-						final Entity e = this.secondaries.get(rand.nextInt(this.secondaries.size()));
+						Entity e = this.secondaries.get(rand.nextInt(this.secondaries.size()));
 						
 						if(!e.isEntityAlive())
 							this.secondaries.remove(e);
@@ -284,12 +282,12 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 		
 		if(this.courseChangeCooldown > 0) {
 			
-			final double deltaX = this.getX() - this.posX;
-			final double deltaY = this.getY() - this.posY;
-			final double deltaZ = this.getZ() - this.posZ;
-			final Vec3 delta = Vec3.createVectorHelper(deltaX, deltaY, deltaZ);
-			final double len = delta.length();
-			final double speed = this.target instanceof EntityPlayer ? 5D : 2D;
+			double deltaX = this.getX() - this.posX;
+			double deltaY = this.getY() - this.posY;
+			double deltaZ = this.getZ() - this.posZ;
+			Vec3 delta = Vec3.createVectorHelper(deltaX, deltaY, deltaZ);
+			double len = delta.lengthVector();
+			double speed = this.target instanceof EntityPlayer ? 5D : 2D;
 			
 			if(len > 5) {
 				if(isCourseTraversable(this.getX(), this.getY(), this.getZ(), len)) {
@@ -318,30 +316,30 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 			EntityNukeTorex.statFac(world, this.posX, this.posY, this.posZ, 25);
 			world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, 25, posX + 0.5, posY + 0.5, posZ + 0.5));
             
-			final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(200, 200, 200));
-			for(final EntityPlayer player : players) {
+			List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(200, 200, 200));
+			for(EntityPlayer player : players) {
 				AdvancementManager.grantAchievement(player, AdvancementManager.bossUFO);
-				player.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(ModItems.coin_ufo));
+				player.inventory.addItemStackToInventory(new ItemStack(ModItems.coin_ufo));
 			}
 		}
 		
 		super.onDeathUpdate();
 	}
 	
-	private void laserAttack(final Entity e) {
+	private void laserAttack(Entity e) {
 		
 		Vec3 vec = Vec3.createVectorHelper(this.posX - e.posX, 0, this.posZ - e.posZ);
 		vec.rotateAroundY((float) Math.toRadians(-80 + rand.nextInt(160)));
 		vec = vec.normalize();
 
-		final double pivotX = this.posX - vec.xCoord * 10;
-		final double pivotY = this.posY + 0.5;
-		final double pivotZ = this.posZ - vec.zCoord * 10;
+		double pivotX = this.posX - vec.xCoord * 10;
+		double pivotY = this.posY + 0.5;
+		double pivotZ = this.posZ - vec.zCoord * 10;
 
 		Vec3 heading = Vec3.createVectorHelper(e.posX - pivotX, e.posY + e.height / 2 - pivotY, e.posZ - pivotZ);
 		heading = heading.normalize();
 
-		final EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.WORM_LASER);
+		EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.WORM_LASER);
 		bullet.shooter = this;
 		bullet.setPosition(pivotX, pivotY, pivotZ);
 		bullet.shoot(heading.xCoord, heading.yCoord, heading.zCoord, 2F, 0.02F);
@@ -349,11 +347,11 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 		this.playSound(HBMSoundHandler.ballsLaser, 5.0F, 1.0F);
 	}
 	
-	private void rocketAttack(final Entity e) {
+	private void rocketAttack(Entity e) {
 		Vec3 heading = Vec3.createVectorHelper(e.posX - this.posX, e.posY + e.height / 2 - posY - 0.5D, e.posZ - this.posZ);
 		heading = heading.normalize();
 
-		final EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.UFO_ROCKET);
+		EntityBulletBase bullet = new EntityBulletBase(this.world, BulletConfigSyncingUtil.UFO_ROCKET);
 		bullet.shooter = this;
 		bullet.setPosition(this.posX, this.posY - 0.5D, this.posZ);
 		bullet.shoot(heading.xCoord, heading.yCoord, heading.zCoord, 2F, 0.02F);
@@ -363,7 +361,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 	}
 	
 	@Override
-	public boolean canAttackClass(final Class clazz) {
+	public boolean canAttackClass(Class clazz) {
 		return clazz != this.getClass() && clazz != EntityBulletBase.class;
 	}
 
@@ -374,12 +372,12 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 		this.dataManager.register(WAYPOINT, new BlockPos(0, 0, 0));
 	}
 	
-	private boolean isCourseTraversable(final double p_70790_1_, final double p_70790_3_, final double p_70790_5_, final double p_70790_7_) {
+	private boolean isCourseTraversable(double p_70790_1_, double p_70790_3_, double p_70790_5_, double p_70790_7_) {
 		
-		final double d4 = (this.getX() - this.posX) / p_70790_7_;
-		final double d5 = (this.getY() - this.posY) / p_70790_7_;
-		final double d6 = (this.getZ() - this.posZ) / p_70790_7_;
-		final AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+		double d4 = (this.getX() - this.posX) / p_70790_7_;
+		double d5 = (this.getY() - this.posY) / p_70790_7_;
+		double d6 = (this.getZ() - this.posZ) / p_70790_7_;
+		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 
 		for(int i = 1; i < p_70790_7_; ++i) {
 			this.setEntityBoundingBox(axisalignedbb.offset(d4, d5, d6));
@@ -398,7 +396,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(final DamageSource damageSourceIn){
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn){
 		return SoundEvents.ENTITY_BLAZE_HURT;
 	}
 	
@@ -408,16 +406,16 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 	}
 	
 	@Override
-	public void writeEntityToNBT(final NBTTagCompound p_70014_1_) {
+	public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
 		super.writeEntityToNBT(p_70014_1_);
 	}
 	
 	@Override
-	public void readEntityFromNBT(final NBTTagCompound p_70037_1_) {
+	public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
 		super.readEntityFromNBT(p_70037_1_);
 	}
 
-	public void setBeam(final boolean b) {
+	public void setBeam(boolean b) {
 		this.dataManager.set(BEAM, b);
 	}
 
@@ -425,7 +423,7 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 		return this.dataManager.get(BEAM);
 	}
 
-	public void setWaypoint(final int x, final int y, final int z) {
+	public void setWaypoint(int x, int y, int z) {
 		this.dataManager.set(WAYPOINT, new BlockPos(x, y, z));
 	}
 
@@ -452,20 +450,20 @@ public class EntityUFO extends EntityFlying implements IMob, IRadiationImmune {
 	}
 	
 	@Override
-	public void addTrackingPlayer(final EntityPlayerMP player){
+	public void addTrackingPlayer(EntityPlayerMP player){
 		super.addTrackingPlayer(player);
 		bossInfo.addPlayer(player);
 	}
 	
 	@Override
-	public void removeTrackingPlayer(final EntityPlayerMP player){
+	public void removeTrackingPlayer(EntityPlayerMP player){
 		super.removeTrackingPlayer(player);
 		bossInfo.removePlayer(player);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(final double distance) {
+	public boolean isInRangeToRenderDist(double distance) {
 		return distance < 500000;
 	}
 }

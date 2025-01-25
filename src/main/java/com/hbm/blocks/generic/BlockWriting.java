@@ -1,7 +1,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.BlockBase;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,18 +14,18 @@ import net.minecraft.world.World;
 
 public class BlockWriting extends BlockBase {
 
-	public BlockWriting(final Material mat, final String s) {
+	public BlockWriting(Material mat, String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(world.isRemote) {
 			return true;
-			
+
 		} else if(!player.isSneaking()) {
-			
-			final Style red = new Style().setColor(TextFormatting.RED);
+
+			Style red = new Style().setColor(TextFormatting.RED);
 			player.sendMessage(new TextComponentString("You should not have come here.").setStyle(red));
 			player.sendMessage(new TextComponentString("This is not a place of honor. No great deed is commemorated here.").setStyle(red));
 			player.sendMessage(new TextComponentString("Nothing of value is here.").setStyle(red));
@@ -38,10 +37,10 @@ public class BlockWriting extends BlockBase {
 			player.sendMessage(new TextComponentString("If this place is opened, the fire will not be isolated from the world, and we will have failed to protect you.").setStyle(red));
 			player.sendMessage(new TextComponentString("Leave this place and never come back.").setStyle(red));
 			return true;
-			
+
 		} else {
 			return false;
 		}
 	}
-	
+
 }

@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotUpgrade;
 import com.hbm.tileentity.machine.TileEntityMachineChemfac;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -15,7 +14,7 @@ import javax.annotation.Nonnull;
 public class ContainerChemfac extends Container {
 	private final TileEntityMachineChemfac chemfac;
 
-	public ContainerChemfac(final InventoryPlayer playerInv, final TileEntityMachineChemfac tile) {
+	public ContainerChemfac(InventoryPlayer playerInv, TileEntityMachineChemfac tile) {
 		this.chemfac = tile;
 
 		this.addSlotToContainer(new SlotItemHandler(tile.inventory, 0, 234, 79));
@@ -57,19 +56,19 @@ public class ContainerChemfac extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(@Nonnull final EntityPlayer playerIn) {
+	public boolean canInteractWith(@Nonnull EntityPlayer playerIn) {
 		return chemfac.isUseableByPlayer(playerIn);
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 3) {

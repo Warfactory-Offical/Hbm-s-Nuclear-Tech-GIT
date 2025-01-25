@@ -21,9 +21,9 @@ import net.minecraft.item.ItemStack;
 public class Centrifuge {
 	
 	private static class ActionAddRecipe implements IAction{
-		private final ItemStack[] outputs;
-		private final ItemStack input;
-		public ActionAddRecipe(final IItemStack input, final IItemStack[] outputs){
+		private ItemStack[] outputs;
+		private ItemStack input;
+		public ActionAddRecipe(IItemStack input, IItemStack[] outputs){
 			this.outputs = new ItemStack[outputs.length];
 			for(int i = 0; i < outputs.length; i++)
 				this.outputs[i] = CraftTweakerMC.getItemStack(outputs[i]);
@@ -39,7 +39,7 @@ public class Centrifuge {
 				CraftTweakerAPI.logError("ERROR Centrifuge recipe output item count must be <=4 not "+this.outputs.length+"!");
 				return;
 			}
-			for(final ItemStack i: this.outputs){
+			for(ItemStack i: this.outputs){
 				if(i == null || i.isEmpty()){
 					CraftTweakerAPI.logError("ERROR Centrifuge recipe output items can not include an empty/air stack!");
 					return;
@@ -58,16 +58,16 @@ public class Centrifuge {
 	}
 
 	@ZenMethod
-	public static void addRecipe(final IItemStack output, final IItemStack[] inputs){
+	public static void addRecipe(IItemStack output, IItemStack[] inputs){
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(output, inputs));
 	}
 
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private final ItemStack input;
+		private ItemStack input;
 
-		public ActionRemoveRecipe(final IItemStack input){
+		public ActionRemoveRecipe(IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);
 		}
 		@Override
@@ -85,7 +85,7 @@ public class Centrifuge {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(final IItemStack output){
+	public static void removeRecipe(IItemStack output){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(output));
 	}
 

@@ -1,10 +1,6 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.BombConfig;
 import com.hbm.entity.logic.EntityNukeExplosionMK3;
@@ -14,15 +10,13 @@ import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemCapacitor;
 import com.hbm.items.special.WatzFuel;
-import com.hbm.lib.Library;
 import com.hbm.lib.ForgeDirection;
-import com.hbm.world.Watz;
+import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyGenerator;
+import com.hbm.world.Watz;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -44,7 +38,9 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickable, IEnergyGenerator, IFluidHandler, ITankPacketAcceptor {
+import java.util.Random;
+
+public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickable, IEnergyProviderMK2, IFluidHandler, ITankPacketAcceptor {
 
 	public long power;
 	public final static long maxPower = 1000000000;
@@ -70,7 +66,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	public TileEntityWatzCore() {
 		inventory = new ItemStackHandler(40){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -88,16 +84,21 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
-        return world.getTileEntity(pos) == this;
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		if(world.getTileEntity(pos) != this)
+		{
+			return false;
+		}else{
+			return true;
+		}
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		tank.readFromNBT(compound);
 		tankType = ModForgeFluids.watz;
@@ -107,7 +108,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		tank.writeToNBT(compound);
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -185,12 +186,12 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 				needsUpdate = false;
 			}
 			
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos, power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 		}
 	}
 
-	public boolean isStructureValid(final World world) {
+	public boolean isStructureValid(World world) {
 		return Watz.checkHull(world, pos);
 	}
 
@@ -198,47 +199,50 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 		return inventory.getStackInSlot(38).getItem() == ModItems.titanium_filter && ItemCapacitor.getDura(inventory.getStackInSlot(38)) > 0;
 	}
 
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power/100 * i) / (maxPower/100);
 	}
 	
-	public void surveyPellet(final ItemStack stack) {
-		if(stack != null && stack.getItem() instanceof WatzFuel fuel)
+	public void surveyPellet(ItemStack stack) {
+		if(stack != null && stack.getItem() instanceof WatzFuel)
 		{
-            this.powerList += fuel.power;
+			WatzFuel fuel = (WatzFuel)stack.getItem();
+			this.powerList += fuel.power;
 			this.heatList += fuel.heat;
 		}
 	}
 	
-	public void surveyPelletAgain(final ItemStack stack) {
-		if(stack.getItem() instanceof WatzFuel fuel)
+	public void surveyPelletAgain(ItemStack stack) {
+		if(stack.getItem() instanceof WatzFuel)
 		{
-            this.powerMultiplier *= fuel.powerMultiplier;
+			WatzFuel fuel = (WatzFuel)stack.getItem();
+			this.powerMultiplier *= fuel.powerMultiplier;
 			this.heatMultiplier *= fuel.heatMultiplier;
 			this.decayMultiplier *= fuel.decayMultiplier;
 		}
 	}
 	
-	public void decayPellet(final int i) {
-		if(inventory.getStackInSlot(i).getItem() instanceof WatzFuel fuel)
+	public void decayPellet(int i) {
+		if(inventory.getStackInSlot(i).getItem() instanceof WatzFuel)
 		{
-            WatzFuel.setLifeTime(inventory.getStackInSlot(i), WatzFuel.getLifeTime(inventory.getStackInSlot(i)) + this.decayMultiplier);
+			WatzFuel fuel = (WatzFuel)inventory.getStackInSlot(i).getItem();
+			WatzFuel.setLifeTime(inventory.getStackInSlot(i), WatzFuel.getLifeTime(inventory.getStackInSlot(i)) + this.decayMultiplier);
 			WatzFuel.updateDamage(inventory.getStackInSlot(i));
 			if(WatzFuel.getLifeTime(inventory.getStackInSlot(i)) >= fuel.lifeTime)
 			{
 				if(inventory.getStackInSlot(i).getItem() == ModItems.pellet_lead)
-					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.powder_lead));
+					inventory.setStackInSlot(i, new ItemStack(ModItems.powder_lead));
 				else
-					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(ModItems.pellet_lead));
+					inventory.setStackInSlot(i, new ItemStack(ModItems.pellet_lead));
 			}
 		}
 	}
 	
 	public void emptyWaste() {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		tank.drain(tank.getFluidAmount() / 4, true);
 		needsUpdate = true;
 		if (!world.isRemote) {
@@ -273,7 +277,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 					this.world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 3.0F, 0.5F);
 					this.world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 3.0F, 0.75F);
 				} else {
-					final EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
+					EntityNukeExplosionMK3 entity = new EntityNukeExplosionMK3(world);
 					entity.posX = x;
 					entity.posY = y;
 					entity.posZ = z;
@@ -289,11 +293,11 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 
 	public void sendWatzPower() {
-		this.sendPower(world, pos.up(7), ForgeDirection.UP);
-		this.sendPower(world, pos.down(7), ForgeDirection.DOWN);
+		this.tryProvide(world, pos.getX(), pos.getY() + 7, pos.getZ(), ForgeDirection.UP);
+		this.tryProvide(world, pos.getX(), pos.getY() - 7, pos.getZ(), ForgeDirection.DOWN);
 	}
 
-	public void fillFluidInit(final FluidTank tank) {
+	public void fillFluidInit(FluidTank tank) {
 		needsUpdate = FFUtils.fillFluid(this, tank, world, pos.add(4, 0, 0), 16000) || needsUpdate;
 		needsUpdate = FFUtils.fillFluid(this, tank, world, pos.add(-4, 0, 0), 16000) || needsUpdate;
 		needsUpdate = FFUtils.fillFluid(this, tank, world, pos.add(0, 0, 4), 16000) || needsUpdate;
@@ -306,12 +310,12 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		if(resource != null && resource.getFluid() == tankType){
 			needsUpdate = true;
 			return tank.drain(resource.amount, doDrain);
@@ -321,7 +325,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if(tank.getFluidAmount() > 0){
 			needsUpdate = true;
 			return tank.drain(maxDrain, doDrain);
@@ -331,20 +335,21 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1){
-        } else {
+			return;
+		} else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this) : super.getCapability(capability, facing);
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
@@ -354,7 +359,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ITickabl
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

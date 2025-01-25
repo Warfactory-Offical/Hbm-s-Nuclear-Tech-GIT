@@ -42,7 +42,7 @@ public class WeaponSpecial extends ItemSword {
 
 	Random rand = new Random();
 	
-	public WeaponSpecial(final ToolMaterial material, final String s) {
+	public WeaponSpecial(ToolMaterial material, String s) {
 		super(material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -51,7 +51,7 @@ public class WeaponSpecial extends ItemSword {
 	}
 	
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		if(this == ModItems.schrabidium_hammer) {
 			return EnumRarity.RARE;
 		}
@@ -65,8 +65,8 @@ public class WeaponSpecial extends ItemSword {
 	}
 	
 	@Override
-	public boolean hitEntity(final ItemStack stack, final EntityLivingBase target, final EntityLivingBase attacker) {
-		final World world = target.world;
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		World world = target.world;
 		if(this == ModItems.schrabidium_hammer) {
 			if (!world.isRemote)
         	{
@@ -77,7 +77,7 @@ public class WeaponSpecial extends ItemSword {
 		if(this == ModItems.bottle_opener) {
 			if (!target.world.isRemote)
         	{
-				final int i = rand.nextInt(7);
+				int i = rand.nextInt(7);
 				if(i == 0)
 					target.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * 60 * 20, 0));
 				if(i == 1)
@@ -85,15 +85,15 @@ public class WeaponSpecial extends ItemSword {
 				if(i == 2)
 					target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 5 * 60 * 20, 2));
 				if(i == 3)
-					target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 60 * 20, 0));
+					target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 1 * 60 * 20, 0));
         	}
         	target.playSound(SoundEvents.BLOCK_ANVIL_LAND, 3.0F, 1.0F);
 		}
 		if(this == ModItems.shimmer_sledge) {
-			final Vec3d vec = attacker.getLookVec();
-			final double dX = vec.x * 5;
-			final double dY = vec.y * 5;
-			final double dZ = vec.z * 5;
+			Vec3d vec = attacker.getLookVec();
+			double dX = vec.x * 5;
+			double dY = vec.y * 5;
+			double dZ = vec.z * 5;
 
 			target.motionX += dX;
 			target.motionY += dY;
@@ -109,11 +109,11 @@ public class WeaponSpecial extends ItemSword {
 		}
 		if(this == ModItems.wrench) {
 
-			final Vec3d vec = attacker.getLookVec();
+			Vec3d vec = attacker.getLookVec();
 			
-			final double dX = vec.x * 0.5;
-			final double dY = vec.y * 0.5;
-			final double dZ = vec.z * 0.5;
+			double dX = vec.x * 0.5;
+			double dY = vec.y * 0.5;
+			double dZ = vec.z * 0.5;
 
 			target.motionX += dX;
 			target.motionY += dY;
@@ -161,7 +161,7 @@ public class WeaponSpecial extends ItemSword {
 
 		if(this == ModItems.diamond_gavel) {
 
-			final float ded = target.getMaxHealth() / 3;
+			float ded = target.getMaxHealth() / 3;
 			target.setHealth(target.getHealth() - ded);
 
 			world.playSound(null, target.posX, target.posY, target.posZ, HBMSoundHandler.whack, SoundCategory.PLAYERS, 3.0F, 1.F);
@@ -172,21 +172,21 @@ public class WeaponSpecial extends ItemSword {
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(this == ModItems.shimmer_sledge) {
 			if(world.getBlockState(pos).getBlock() != Blocks.AIR && world.getBlockState(pos).getBlock().getExplosionResistance(null) < 6000) {
 				
-				final EntityRubble rubble = new EntityRubble(world);
+				EntityRubble rubble = new EntityRubble(world);
 				rubble.posX = pos.getX() + 0.5F;
 				rubble.posY = pos.getY();
 				rubble.posZ = pos.getZ() + 0.5F;
 				
 				rubble.setMetaBasedOnBlock(world.getBlockState(pos).getBlock(), (world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos))));
 				
-				final Vec3d vec = player.getLookVec();
-				final double dX = vec.x * 5;
-				final double dY = vec.y * 5;
-				final double dZ = vec.z * 5;
+				Vec3d vec = player.getLookVec();
+				double dX = vec.x * 5;
+				double dY = vec.y * 5;
+				double dZ = vec.z * 5;
 
 				rubble.motionX += dX;
 				rubble.motionY += dY;
@@ -223,8 +223,8 @@ public class WeaponSpecial extends ItemSword {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			if(this == ModItems.schrabidium_hammer) {
 				map.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(UUID.fromString("91AEAA56-376B-4498-935B-2F7F68070635"), "Weapon modifier", -0.5, 1));
@@ -237,7 +237,7 @@ public class WeaponSpecial extends ItemSword {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World worldIn, final Entity entity, final int itemSlot, final boolean isSelected) {
+	public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
 		if(entity instanceof EntityPlayer) {
     		if(ArmorUtil.checkForFiend((EntityPlayer) entity)) {
     			AdvancementManager.grantAchievement(((EntityPlayer) entity), AdvancementManager.achFiend);
@@ -248,7 +248,7 @@ public class WeaponSpecial extends ItemSword {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if(this == ModItems.schrabidium_hammer) {
 			list.add("Even though it says \"+1000000000");
 			list.add("damage\", it's actually \"onehit anything\"");

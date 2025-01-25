@@ -1,42 +1,10 @@
 package com.hbm.render;
 
+import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.*;
+
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-
-import org.lwjgl.opengl.APPLEFloatPixels;
-import org.lwjgl.opengl.APPLEVertexArrayObject;
-import org.lwjgl.opengl.ARBDepthTexture;
-import org.lwjgl.opengl.ARBDrawInstanced;
-import org.lwjgl.opengl.ARBFragmentShader;
-import org.lwjgl.opengl.ARBFramebufferObject;
-import org.lwjgl.opengl.ARBGeometryShader4;
-import org.lwjgl.opengl.ARBImaging;
-import org.lwjgl.opengl.ARBInstancedArrays;
-import org.lwjgl.opengl.ARBMultitexture;
-import org.lwjgl.opengl.ARBOcclusionQuery;
-import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.ARBTextureFloat;
-import org.lwjgl.opengl.ARBVertexArrayObject;
-import org.lwjgl.opengl.ARBVertexBufferObject;
-import org.lwjgl.opengl.ARBVertexProgram;
-import org.lwjgl.opengl.ARBVertexShader;
-import org.lwjgl.opengl.ATITextureFloat;
-import org.lwjgl.opengl.ContextCapabilities;
-import org.lwjgl.opengl.EXTDrawInstanced;
-import org.lwjgl.opengl.EXTFramebufferBlit;
-import org.lwjgl.opengl.EXTFramebufferObject;
-import org.lwjgl.opengl.EXTGeometryShader4;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
-import org.lwjgl.opengl.GL32;
-import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GLContext;
-
-import net.minecraft.client.Minecraft;
 
 public class GLCompat {
 
@@ -97,7 +65,7 @@ public class GLCompat {
 		return 0;
 	}
 	
-	public static void bindVertexArray(final int vao){
+	public static void bindVertexArray(int vao){
 		switch(vaoType){
 		case NORMAL:
 			GL30.glBindVertexArray(vao);
@@ -118,49 +86,49 @@ public class GLCompat {
 			return GL15.glGenBuffers();
 	}
 	
-	public static void bindBuffer(final int target, final int buf){
+	public static void bindBuffer(int target, int buf){
 		if(arbVbo)
 			ARBVertexBufferObject.glBindBufferARB(target, buf);
 		else
 			GL15.glBindBuffer(target, buf);
 	}
 	
-	public static void bufferData(final int target, final ByteBuffer data, final int usage){
+	public static void bufferData(int target, ByteBuffer data, int usage){
 		if(arbVbo)
 			ARBVertexBufferObject.glBufferDataARB(target, data, usage);
 		else
 			GL15.glBufferData(target, data, usage);
 	}
 	
-	public static void vertexAttribPointer(final int index, final int size, final int type, final boolean normalized, final int stride, final long offset){
+	public static void vertexAttribPointer(int index, int size, int type, boolean normalized, int stride, long offset){
 		if(arbVertexProgram)
 			ARBVertexProgram.glVertexAttribPointerARB(index, size, type, normalized, stride, offset);
 		else
 			GL20.glVertexAttribPointer(index, size, type, normalized, stride, offset);
 	}
 	
-	public static void enableVertexAttribArray(final int index){
+	public static void enableVertexAttribArray(int index){
 		if(arbVertexProgram)
 			ARBVertexProgram.glEnableVertexAttribArrayARB(index);
 		else
 			GL20.glEnableVertexAttribArray(index);
 	}
 	
-	public static void disableVertexAttribArray(final int index){
+	public static void disableVertexAttribArray(int index){
 		if(arbVertexProgram)
 			ARBVertexProgram.glDisableVertexAttribArrayARB(index);
 		else
 			GL20.glDisableVertexAttribArray(index);
 	}
 	
-	public static void bindAttribLocation(final int program, final int index, final CharSequence name){
+	public static void bindAttribLocation(int program, int index, CharSequence name){
 		if(arbVertexShader)
 			ARBVertexShader.glBindAttribLocationARB(program, index, name);
 		else
 			GL20.glBindAttribLocation(program, index, name);
 	}
 	
-	public static void deleteFramebuffers(final int framebuffer){
+	public static void deleteFramebuffers(int framebuffer){
 		switch(fboType){
 		case NORMAL:
 			GL30.glDeleteFramebuffers(framebuffer);
@@ -174,7 +142,7 @@ public class GLCompat {
 		}
 	}
 
-	public static void bindFramebuffer(final int target, final int framebuffer){
+	public static void bindFramebuffer(int target, int framebuffer){
 		switch(fboType){
 		case NORMAL:
 			GL30.glBindFramebuffer(target, framebuffer);
@@ -188,7 +156,7 @@ public class GLCompat {
 		}
 	}
 
-	public static void framebufferTexture2D(final int target, final int attachment, final int textarget, final int texture, final int level){
+	public static void framebufferTexture2D(int target, int attachment, int textarget, int texture, int level){
 		switch(fboType){
 		case NORMAL:
 			GL30.glFramebufferTexture2D(target, attachment, textarget, texture, level);
@@ -202,7 +170,7 @@ public class GLCompat {
 		}
 	}
 	
-	public static void bindRenderbuffer(final int target, final int renderbuffer){
+	public static void bindRenderbuffer(int target, int renderbuffer){
 		switch(fboType){
 		case NORMAL:
 			GL30.glBindRenderbuffer(target, renderbuffer);
@@ -228,7 +196,7 @@ public class GLCompat {
 		return 0;
 	}
 	
-	public static void renderbufferStorage(final int target, final int internalformat, final int width, final int height){
+	public static void renderbufferStorage(int target, int internalformat, int width, int height){
 		switch(fboType){
 		case NORMAL:
 			GL30.glRenderbufferStorage(target, internalformat, width, height);
@@ -242,7 +210,7 @@ public class GLCompat {
 		}
 	}
 
-	public static void framebufferRenderbuffer(final int target, final int attachment, final int renderbuffertarget, final int renderbuffer){
+	public static void framebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer){
 		switch(fboType){
 		case NORMAL:
 			GL30.glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
@@ -256,7 +224,7 @@ public class GLCompat {
 		}
 	}
 	
-	public static void deleteRenderbuffers(final int renderbuffer){
+	public static void deleteRenderbuffers(int renderbuffer){
 		switch(fboType){
 		case NORMAL:
 			GL30.glDeleteRenderbuffers(renderbuffer);
@@ -282,7 +250,7 @@ public class GLCompat {
 		return 0;
 	}
 	
-	public static void blitFramebuffer(final int srcX0, final int srcY0, final int srcX1, final int srcY1, final int dstX0, final int dstY0, final int dstX1, final int dstY1, final int mask, final int filter){
+	public static void blitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter){
 		switch(fboType){
 		case NORMAL:
 			GL30.glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
@@ -296,21 +264,21 @@ public class GLCompat {
 		}
 	}
 	
-	public static void activeTexture(final int tex){
+	public static void activeTexture(int tex){
 		if(arbMultitexture)
 			ARBMultitexture.glActiveTextureARB(tex);
 		else
 			GL13.glActiveTexture(tex);
 	}
 	
-	public static void blendEquation(final int mode){
+	public static void blendEquation(int mode){
 		if(arbImaging)
 			ARBImaging.glBlendEquation(mode);
 		else
 			GL14.glBlendEquation(mode);
 	}
 	
-	public static void drawArraysInstanced(final int mode, final int first, final int count, final int primcount){
+	public static void drawArraysInstanced(int mode, int first, int count, int primcount){
 		switch(instancingType){
 		case NORMAL:
 			GL31.glDrawArraysInstanced(mode, first, count, primcount);
@@ -324,7 +292,7 @@ public class GLCompat {
 		}
 	}
 	
-	public static void vertexAttribDivisor(final int index, final int divisor){
+	public static void vertexAttribDivisor(int index, int divisor){
 		if(arbInstancedArrays)
 			ARBInstancedArrays.glVertexAttribDivisorARB(index, divisor);
 		else
@@ -338,28 +306,28 @@ public class GLCompat {
 			return GL15.glGenQueries();
 	}
 	
-	public static void beginQuery(final int target, final int id){
+	public static void beginQuery(int target, int id){
 		if(arbOcclusionQuery)
 			ARBOcclusionQuery.glBeginQueryARB(target, id);
 		else
 			GL15.glBeginQuery(target, id);
 	}
 	
-	public static void endQuery(final int target){
+	public static void endQuery(int target){
 		if(arbOcclusionQuery)
 			ARBOcclusionQuery.glEndQueryARB(target);
 		else
 			GL15.glEndQuery(target);
 	}
 	
-	public static void deleteQueries(final int id){
+	public static void deleteQueries(int id){
 		if(arbOcclusionQuery)
 			ARBOcclusionQuery.glDeleteQueriesARB(id);
 		else
 			GL15.glDeleteQueries(id);
 	}
 	
-	public static int getQueryObject(final int id, final int pname){
+	public static int getQueryObject(int id, int pname){
 		if(arbOcclusionQuery)
 			return ARBOcclusionQuery.glGetQueryObjectuiARB(id, pname);
 		else
@@ -368,56 +336,56 @@ public class GLCompat {
 	
 	
 	
-	public static int getUniformLocation(final int program, final CharSequence name){
+	public static int getUniformLocation(int program, CharSequence name){
 		if(arbShaderObject)
 			return ARBShaderObjects.glGetUniformLocationARB(program, name);
 		else
 			return GL20.glGetUniformLocation(program, name);
 	}
 	
-	public static void uniform1i(final int location, final int i){
+	public static void uniform1i(int location, int i){
 		if(arbShaderObject)
 			ARBShaderObjects.glUniform1iARB(location, i);
 		else
 			GL20.glUniform1i(location, i);
 	}
 	
-	public static void uniform1f(final int location, final float f){
+	public static void uniform1f(int location, float f){
 		if(arbShaderObject)
 			ARBShaderObjects.glUniform1fARB(location, f);
 		else
 			GL20.glUniform1f(location, f);
 	}
 	
-	public static void uniform2f(final int location, final float f1, final float f2){
+	public static void uniform2f(int location, float f1, float f2){
 		if(arbShaderObject)
 			ARBShaderObjects.glUniform2fARB(location, f1, f2);
 		else
 			GL20.glUniform2f(location, f1, f2);
 	}
 	
-	public static void uniform3f(final int location, final float f1, final float f2, final float f3){
+	public static void uniform3f(int location, float f1, float f2, float f3){
 		if(arbShaderObject)
 			ARBShaderObjects.glUniform3fARB(location, f1, f2, f3);
 		else
 			GL20.glUniform3f(location, f1, f2, f3);
 	}
 	
-	public static void uniform4f(final int location, final float f1, final float f2, final float f3, final float f4){
+	public static void uniform4f(int location, float f1, float f2, float f3, float f4){
 		if(arbShaderObject)
 			ARBShaderObjects.glUniform4fARB(location, f1, f2, f3, f4);
 		else
 			GL20.glUniform4f(location, f1, f2, f3, f4);
 	}
 	
-	public static void uniformMatrix3(final int location, final boolean transpose, final FloatBuffer matrices){
+	public static void uniformMatrix3(int location, boolean transpose, FloatBuffer matrices){
 		if(arbShaderObject)
 			ARBShaderObjects.glUniformMatrix3ARB(location, transpose, matrices);
 		else
 			GL20.glUniformMatrix3(location, transpose, matrices);
 	}
 	
-	public static void uniformMatrix4(final int location, final boolean transpose, final FloatBuffer matrices){
+	public static void uniformMatrix4(int location, boolean transpose, FloatBuffer matrices){
 		if(arbShaderObject)
 			ARBShaderObjects.glUniformMatrix4ARB(location, transpose, matrices);
 		else
@@ -431,77 +399,77 @@ public class GLCompat {
 			return GL20.glCreateProgram();
 	}
 	
-	public static int createShader(final int shaderType){
+	public static int createShader(int shaderType){
 		if(arbShaderObject)
 			return ARBShaderObjects.glCreateShaderObjectARB(shaderType);
 		else
 			return GL20.glCreateShader(shaderType);
 	}
 	
-	public static void shaderSource(final int shader, final ByteBuffer string){
+	public static void shaderSource(int shader, ByteBuffer string){
 		if(arbShaderObject)
 			ARBShaderObjects.glShaderSourceARB(shader, string);
 		else
 			GL20.glShaderSource(shader, string);
 	}
 	
-	public static void compileShader(final int shader){
+	public static void compileShader(int shader){
 		if(arbShaderObject)
 			ARBShaderObjects.glCompileShaderARB(shader);
 		else
 			GL20.glCompileShader(shader);
 	}
 	
-	public static int getShaderi(final int shader, final int pname){
+	public static int getShaderi(int shader, int pname){
 		if(arbShaderObject)
 			return ARBShaderObjects.glGetObjectParameteriARB(shader, pname);
 		else
 			return GL20.glGetShaderi(shader, pname);
 	}
 	
-	public static String getShaderInfoLog(final int shader, final int length){
+	public static String getShaderInfoLog(int shader, int length){
 		if(arbShaderObject)
 			return ARBShaderObjects.glGetInfoLogARB(shader, length);
 		else
 			return GL20.glGetShaderInfoLog(shader, length);
 	}
 	
-	public static void attachShader(final int program, final int shader){
+	public static void attachShader(int program, int shader){
 		if(arbShaderObject)
 			ARBShaderObjects.glAttachObjectARB(program, shader);
 		else
 			GL20.glAttachShader(program, shader);
 	}
 	
-	public static void linkProgram(final int program){
+	public static void linkProgram(int program){
 		if(arbShaderObject)
 			ARBShaderObjects.glLinkProgramARB(program);
 		else
 			GL20.glLinkProgram(program);
 	}
 	
-	public static int getProgrami(final int program, final int pname){
+	public static int getProgrami(int program, int pname){
 		if(arbShaderObject)
 			return ARBShaderObjects.glGetObjectParameteriARB(program, pname);
 		else
 			return GL20.glGetProgrami(program, pname);
 	}
 	
-	public static String getProgramInfoLog(final int program, final int length){
+	public static String getProgramInfoLog(int program, int length){
 		if(arbShaderObject)
 			return ARBShaderObjects.glGetInfoLogARB(program, length);
 		else
 			return GL20.glGetProgramInfoLog(program, length);
 	}
 	
-	public static void deleteShader(final int shader){
+	public static void deleteShader(int shader){
 		if(arbShaderObject)
 			ARBShaderObjects.glDeleteObjectARB(shader);
 		else
 			GL20.glDeleteShader(shader);
 	}
 	
-	public static void useProgram(final int program){
+	public static void useProgram(int program){
 		if(arbShaderObject)
 			ARBShaderObjects.glUseProgramObjectARB(program);
 		else
@@ -510,7 +478,7 @@ public class GLCompat {
 	
 	
 	public static String init(){
-		final ContextCapabilities cap = GLContext.getCapabilities();
+		ContextCapabilities cap = GLContext.getCapabilities();
 		
 		if(cap.OpenGL30)
 			vaoType = VAOType.NORMAL;
@@ -710,19 +678,19 @@ public class GLCompat {
 	public static enum VAOType {
 		NORMAL,
 		ARB,
-		APPLE
-    }
+		APPLE;
+	}
 	
 	public static enum FBOType {
 		NORMAL,
 		ARB,
-		EXT
-    }
+		EXT;
+	}
 	
 	public static enum InstancingType {
 		NORMAL,
 		ARB,
-		EXT
-    }
+		EXT;
+	}
 
 }

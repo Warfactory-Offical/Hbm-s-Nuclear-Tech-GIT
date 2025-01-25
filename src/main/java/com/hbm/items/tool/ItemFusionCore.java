@@ -1,6 +1,6 @@
 package com.hbm.items.tool;
 
-import api.hbm.energy.IBatteryItem;
+import api.hbm.energymk2.IBatteryItem;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ArmorFSBPowered;
 import com.hbm.items.gear.ArmorFSB;
@@ -21,9 +21,9 @@ import java.util.List;
 
 public class ItemFusionCore extends Item {
 
-	private final int charge;
+	private int charge;
 	
-	public ItemFusionCore(final int charge, final String s) {
+	public ItemFusionCore(int charge, String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.charge = charge;
@@ -32,20 +32,20 @@ public class ItemFusionCore extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if(ArmorFSB.hasFSBArmorIgnoreCharge(player) && player.inventory.armorInventory.get(3).getItem() instanceof ArmorFSBPowered) {
-			final ItemStack stack = player.getHeldItem(hand);
+			ItemStack stack = player.getHeldItem(hand);
 
-        	for(final ItemStack st : player.inventory.armorInventory) {
+        	for(ItemStack st : player.inventory.armorInventory) {
 
         		if(st == null)
         			continue;
 
         		if(st.getItem() instanceof IBatteryItem) {
 
-        			final long maxcharge = ((IBatteryItem)st.getItem()).getMaxCharge();
-        			final long charge = ((IBatteryItem)st.getItem()).getCharge(st);
-        			final long newcharge = Math.min(charge + this.charge, maxcharge);
+        			long maxcharge = ((IBatteryItem)st.getItem()).getMaxCharge();
+        			long charge = ((IBatteryItem)st.getItem()).getCharge(st);
+        			long newcharge = Math.min(charge + this.charge, maxcharge);
 
         			((IBatteryItem)st.getItem()).setCharge(st, newcharge);
         		}
@@ -59,7 +59,7 @@ public class ItemFusionCore extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TextFormatting.YELLOW + I18nUtil.resolveKey("desc.fusioncore1", Library.getShortNumber(charge)));
 		tooltip.add("[" + I18nUtil.resolveKey("desc.fusioncore2")+"]");
 	}

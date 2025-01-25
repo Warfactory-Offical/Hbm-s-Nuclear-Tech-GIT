@@ -1,42 +1,35 @@
 package com.hbm.entity.mob;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.entity.mob.ai.EntityAIMaskmanCasualApproach;
 import com.hbm.entity.mob.ai.EntityAIMaskmanLasergun;
 import com.hbm.entity.mob.ai.EntityAIMaskmanMinigun;
+import com.hbm.handler.ArmorUtil;
 import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
-import com.hbm.handler.ArmorUtil;
 import com.hbm.main.AdvancementManager;
-
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.item.ItemStack;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 
-	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS));
 	
 	public float prevHealth;
 	
-	public EntityMaskMan(final World worldIn) {
+	public EntityMaskMan(World worldIn) {
 		super(worldIn);
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIMaskmanCasualApproach(this, EntityPlayer.class, 1.0D, false));
@@ -65,9 +58,9 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	}
 	
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 
-		if(source instanceof EntityDamageSourceIndirect && source.getImmediateSource() instanceof EntityEgg && rand.nextInt(10) == 0) {
+		if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect) source).getImmediateSource() instanceof EntityEgg && rand.nextInt(10) == 0) {
 			this.experienceValue = 0;
 			this.setHealth(0);
 			return true;
@@ -101,11 +94,11 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	}
 	
 	@Override
-	public void onDeath(final DamageSource cause) {
+	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-		final List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
+		List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(50, 50, 50));
 			
-		for(final EntityPlayer player : players) {
+		for(EntityPlayer player : players) {
 			AdvancementManager.grantAchievement(player, AdvancementManager.bossMaskman);
 		}
 	}
@@ -128,23 +121,23 @@ public class EntityMaskMan extends EntityMob implements IRadiationImmune {
 	}
 	
 	@Override
-	public void addTrackingPlayer(final EntityPlayerMP player) {
+	public void addTrackingPlayer(EntityPlayerMP player) {
 		super.addTrackingPlayer(player);
 		bossInfo.addPlayer(player);
 	}
 	
 	@Override
-	public void removeTrackingPlayer(final EntityPlayerMP player) {
+	public void removeTrackingPlayer(EntityPlayerMP player) {
 		super.removeTrackingPlayer(player);
 		bossInfo.removePlayer(player);
 	}
 
 	@Override
-	protected void dropFewItems(final boolean wasRecentlyHit, final int lootingModifier) {
+	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
 		if(!world.isRemote){
 
-			final ItemStack mask = ItemStackUtil.itemStackFrom(ModItems.gas_mask_m65);
-			ArmorUtil.installGasMaskFilter(mask, ItemStackUtil.itemStackFrom(ModItems.gas_mask_filter_combo));
+			ItemStack mask = new ItemStack(ModItems.gas_mask_m65);
+			ArmorUtil.installGasMaskFilter(mask, new ItemStack(ModItems.gas_mask_filter_combo));
 			
 			this.entityDropItem(mask, 0F);
 			this.dropItem(ModItems.coin_maskman, 1);

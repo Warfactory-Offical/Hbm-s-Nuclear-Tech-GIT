@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ItemLungDiagnostic extends Item {
 
-	public ItemLungDiagnostic(final String s) {
+	public ItemLungDiagnostic(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -21,7 +21,7 @@ public class ItemLungDiagnostic extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
 		
 		if(!world.isRemote) {
 			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 1.0F, 1.0F);

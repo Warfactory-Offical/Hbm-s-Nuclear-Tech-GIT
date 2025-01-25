@@ -1,33 +1,23 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hbm.interfaces.IControlReceiver;
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
+import com.hbm.interfaces.IControlReceiver;
 import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.inventory.SAFERecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFWatzCore;
 import com.hbm.lib.Library;
-import com.hbm.lib.ForgeDirection;
-import com.hbm.packet.AuxElectricityPacket;
-import com.hbm.packet.FluidTankPacket;
-import com.hbm.packet.PacketDispatcher;
-import com.hbm.world.FWatz;
 import com.hbm.tileentity.INBTPacketReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyGenerator;
+import com.hbm.world.FWatz;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -37,16 +27,15 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityFWatzCore extends TileEntityLoadedBase implements IControlReceiver, ITickable, IEnergyGenerator, IFluidHandler, ITankPacketAcceptor, INBTPacketReceiver {
+public class TileEntityFWatzCore extends TileEntityLoadedBase implements IControlReceiver, ITickable, IEnergyProviderMK2, IFluidHandler, ITankPacketAcceptor, INBTPacketReceiver {
 
 	public long power;
 	public final static long maxPower = 1000000000000L;
 	public boolean cooldown = false;
 
-	public FluidTank[] tanks;
+	public FluidTank tanks[];
 	public Fluid[] tankTypes;
 	public boolean needsUpdate;
 	public boolean isOn = false;
@@ -58,7 +47,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	public TileEntityFWatzCore() {
 		inventory = new ItemStackHandler(7) {
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -75,12 +64,12 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 
 	@Override
-	public boolean hasPermission(final EntityPlayer player){
+	public boolean hasPermission(EntityPlayer player){
 		return true;
 	}
 	
 	@Override
-	public void receiveControl(final NBTTagCompound data){
+	public void receiveControl(NBTTagCompound data){
 		this.isOn = !this.isOn;
 		this.markDirty();
 	}
@@ -93,16 +82,20 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 		return this.customName != null && this.customName.length() > 0;
 	}
 
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 
-	public boolean isUseableByPlayer(final EntityPlayer player) {
-        return world.getTileEntity(pos) == this;
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		if(world.getTileEntity(pos) != this) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public int getSingularityType(){
-		final Item item = inventory.getStackInSlot(2).getItem();
+		Item item = inventory.getStackInSlot(2).getItem();
 		if(item instanceof ItemFWatzCore){
 			return ((ItemFWatzCore)item).type;
 		}
@@ -110,7 +103,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("power");
 		isOn = compound.getBoolean("isOn");
 		tankTypes[0] = ModForgeFluids.coolant;
@@ -124,7 +117,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setBoolean("isOn", isOn);
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -139,18 +132,19 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 			sendSAFEPower();
 
 			if(this.isRunning()){
-				final ItemStack stack = inventory.getStackInSlot(2);
+				ItemStack stack = inventory.getStackInSlot(2);
 				if(stack.getItem() == ModItems.meteorite_sword_baleful){
-					inventory.setStackInSlot(2, ItemStackUtil.itemStackFrom(ModItems.meteorite_sword_warped));
+					inventory.setStackInSlot(2, new ItemStack(ModItems.meteorite_sword_warped));
 				} else if(stack.hasTagCompound()){
-					final NBTTagCompound nbt = stack.getTagCompound();
+					NBTTagCompound nbt = stack.getTagCompound();
 					if(nbt.getBoolean("ntmContagion")) nbt.removeTag("ntmContagion");
-					if(nbt.isEmpty()) stack.setTagCompound(null);
+					if(nbt.hasNoTags()) stack.setTagCompound(null);
 				}
 			}
 
-			if(this.isOn && inventory.getStackInSlot(2).getItem() instanceof ItemFWatzCore itemCore) {
-                if(cooldown) {
+			if(this.isOn && inventory.getStackInSlot(2).getItem() instanceof ItemFWatzCore) {
+				ItemFWatzCore itemCore = (ItemFWatzCore)inventory.getStackInSlot(2).getItem();
+				if(cooldown) {
 					
 					tanks[0].fill(new FluidStack(tankTypes[0], itemCore.coolantRefill), true);
 
@@ -202,7 +196,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 			if(!this.isRunning() && tanks[1].getFluidAmount() >= 100 && tanks[2].getFluidAmount() >= 100 && isOn && inventory.getStackInSlot(2).getItem() instanceof ItemFWatzCore && !cooldown && this.isStructureValid(world))
 				this.fillPlasma();
 
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			data.setTag("tanks", FFUtils.serializeTankArray(tanks));
 			data.setBoolean("isOn", isOn);
@@ -211,7 +205,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		this.power = data.getLong("power");
 		this.isOn = data.getBoolean("isOn");
 		if(data.hasKey("tanks"))
@@ -219,24 +213,24 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 
 	private void sendSAFEPower(){
-		this.sendPower(world, pos.add(7, -1, 0), Library.POS_X);
-		this.sendPower(world, pos.add(-7, -1, 0), Library.NEG_X);
-		this.sendPower(world, pos.add(0, -1, 7), Library.POS_Z);
-		this.sendPower(world, pos.add(0, -1, -7), Library.NEG_Z);
+		this.tryProvide(world, pos.getX() + 7, pos.getX() -1, pos.getZ(), Library.POS_X);
+		this.tryProvide(world, pos.getX() -7, pos.getX() -1, pos.getZ(), Library.NEG_X);
+		this.tryProvide(world, pos.getX(), pos.getX() -1, pos.getZ() + 7, Library.POS_Z);
+		this.tryProvide(world, pos.getX(), pos.getX() -1, pos.getZ() - 7, Library.NEG_Z);
 	}
 
 	private void tryGrowCore(){
-		final ItemStack output = SAFERecipes.getOutput(inventory.getStackInSlot(2));
+		ItemStack output = SAFERecipes.getOutput(inventory.getStackInSlot(2));
 		if(output != null){
 			inventory.setStackInSlot(2, output.copy());
 		}
 	}
 
-	public boolean isStructureValid(final World world) {
+	public boolean isStructureValid(World world) {
 		return FWatz.checkHull(world, pos);
 	}
 
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power / 100 * i) / (maxPower / 100);
 	}
 
@@ -254,14 +248,16 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 		return FWatz.getPlasma(world, pos) && this.isStructureValid(world);
 	}
 
-	protected boolean inputValidForTank(final int tank, final int slot) {
+	protected boolean inputValidForTank(int tank, int slot) {
 		if(tanks[tank] != null) {
-            return inventory.getStackInSlot(slot).getItem() == ModItems.fluid_barrel_infinite || isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
+			if(inventory.getStackInSlot(slot).getItem() == ModItems.fluid_barrel_infinite || isValidFluidForTank(tank, FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))) {
+				return true;
+			}
 		}
 		return false;
 	}
 
-	private boolean isValidFluidForTank(final int tank, final FluidStack stack) {
+	private boolean isValidFluidForTank(int tank, FluidStack stack) {
 		if(stack == null || tanks[tank] == null)
 			return false;
 		return stack.getFluid() == tankTypes[tank];
@@ -273,7 +269,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource == null) {
 			return 0;
 		} else if(resource.getFluid() == tankTypes[0]) {
@@ -291,19 +287,20 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 3) {
-        } else {
+			return;
+		} else {
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
 			tanks[2].readFromNBT(tags[2]);
@@ -311,12 +308,12 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this) : super.getCapability(capability, facing);
 	}
 	
@@ -324,7 +321,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements IContro
 		return power;
 	}
 
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

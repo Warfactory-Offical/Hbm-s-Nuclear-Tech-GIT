@@ -33,14 +33,14 @@ public class ParticleBatchRenderer {
 	
 	public static List<ParticleRenderLayer> layers = new ArrayList<>();
 
-	private static final Queue<ParticleLayerBase> queue = Queues.newArrayDeque();
+	private static final Queue<ParticleLayerBase> queue = Queues.<ParticleLayerBase> newArrayDeque();
 
-	public static void registerRenderLayer(final ParticleRenderLayer r){
+	public static void registerRenderLayer(ParticleRenderLayer r){
 		layers.add(r);
 		r.isRegistered = true;
 	}
 	
-	public static void addParticle(final ParticleLayerBase p) {
+	public static void addParticle(ParticleLayerBase p) {
 		if(p != null)
 			queue.add(p);
 	}
@@ -49,10 +49,10 @@ public class ParticleBatchRenderer {
 		if(Minecraft.getMinecraft().world == null || Minecraft.getMinecraft().isGamePaused())
 			return;
 		
-		for(final ParticleRenderLayer layer : layers){
-			final Iterator<ParticleLayerBase> itr = layer.particles.iterator();
+		for(ParticleRenderLayer layer : layers){
+			Iterator<ParticleLayerBase> itr = layer.particles.iterator();
 			while(itr.hasNext()) {
-				final ParticleLayerBase p = itr.next();
+				ParticleLayerBase p = itr.next();
 				p.onUpdate();
 				if(!p.isAlive()) {
 					itr.remove();
@@ -62,7 +62,7 @@ public class ParticleBatchRenderer {
 		
 		if(!queue.isEmpty()) {
 			for(ParticleLayerBase particle = queue.poll(); particle != null; particle = queue.poll()) {
-				final ParticleRenderLayer layer = particle.getRenderLayer();
+				ParticleRenderLayer layer = particle.getRenderLayer();
 				
 				if(layer == null){
 					throw new RuntimeException("Particle " + particle + " does not use a custom render layer!");
@@ -78,12 +78,12 @@ public class ParticleBatchRenderer {
 		}
 	}
 
-	public static void renderParticles(final Entity entityIn, final float partialTicks) {
-		final float f = ActiveRenderInfo.getRotationX();
-		final float f1 = ActiveRenderInfo.getRotationZ();
-		final float f2 = ActiveRenderInfo.getRotationYZ();
-		final float f3 = ActiveRenderInfo.getRotationXY();
-		final float f4 = ActiveRenderInfo.getRotationXZ();
+	public static void renderParticles(Entity entityIn, float partialTicks) {
+		float f = ActiveRenderInfo.getRotationX();
+		float f1 = ActiveRenderInfo.getRotationZ();
+		float f2 = ActiveRenderInfo.getRotationYZ();
+		float f3 = ActiveRenderInfo.getRotationXY();
+		float f4 = ActiveRenderInfo.getRotationXZ();
 		Particle.interpPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * (double) partialTicks;
 		Particle.interpPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * (double) partialTicks;
 		Particle.interpPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * (double) partialTicks;
@@ -95,11 +95,11 @@ public class ParticleBatchRenderer {
 		GlStateManager.depthMask(false);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-		for(final ParticleRenderLayer layer : layers) {
+		for(ParticleRenderLayer layer : layers) {
 			if(layer.particles.isEmpty())
 				continue;
 			layer.preRender();
-			for(final ParticleLayerBase particle : layer.particles){
+			for(ParticleLayerBase particle : layer.particles){
 				particle.renderParticle(Tessellator.getInstance().getBuffer(), entityIn, partialTicks, f, f4, f1, f2, f3);
 			}
 			layer.postRender();
@@ -111,12 +111,12 @@ public class ParticleBatchRenderer {
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
 	}
 	
-	public static void renderLast(final RenderWorldLastEvent event) {
+	public static void renderLast(RenderWorldLastEvent event) {
 		renderParticles(Minecraft.getMinecraft().getRenderViewEntity(), event.getPartialTicks());
 	}
 
 	@SubscribeEvent
-	public static void clientTick(final ClientTickEvent event) {
+	public static void clientTick(ClientTickEvent event) {
 		if(event.phase == Phase.START) {
 			updateParticles();
 		}

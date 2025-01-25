@@ -23,11 +23,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class MultiblockHandler {
 
-	public enum EnumDirection { North, East, South, West }
-    //                            2      5     3      4
+	public enum EnumDirection { North, East, South, West };
+	//                            2      5     3      4
 	//                           -z     +x    +z     -x
 
-	public static int EnumToInt(final EnumDirection dir) {
+	public static int EnumToInt(EnumDirection dir) {
 		if(dir == EnumDirection.North)
 			return 2;
 		if(dir == EnumDirection.East)
@@ -38,7 +38,7 @@ public class MultiblockHandler {
 			return 4;
 		return 0;
 	}
-	public static EnumDirection IntToEnum(final int dir) {
+	public static EnumDirection IntToEnum(int dir) {
 		if(dir == 2)
 			return EnumDirection.North;
 		if(dir == 5)
@@ -50,7 +50,7 @@ public class MultiblockHandler {
 		return EnumDirection.North;
 	}
 	
-	public static EnumFacing intToEnumFacing(final int dir){
+	public static EnumFacing intToEnumFacing(int dir){
 		if(dir == 2)
 			return EnumFacing.NORTH;
 		if(dir == 5)
@@ -106,17 +106,17 @@ public class MultiblockHandler {
 	public static final int[] uf6Dimension  = new int[] { 0, 0, 1, 0, 0, 0 };
 	
 	//Approved!
-	public static boolean checkSpace(final World world, final BlockPos pos, final int[] i) {
+	public static boolean checkSpace(World world, BlockPos pos, int[] i) {
 		boolean placable = true;
-		final MutableBlockPos replace = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		MutableBlockPos replace = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		for(int a = x - i[1]; a <= x + i[0]; a++) {
 			for(int b = y - i[3]; b <= y + i[2]; b++) {
 				for(int c = z - i[5]; c <= z + i[4]; c++) {
 					if(!(a == x && b == y && c == z)) {
-						final Block block = world.getBlockState(replace.setPos(a, b, c)).getBlock();
+						Block block = world.getBlockState(replace.setPos(a, b, c)).getBlock();
 						if(block != Blocks.AIR && !block.isReplaceable(world, replace)) {
 							placable = false;
 						}
@@ -128,20 +128,21 @@ public class MultiblockHandler {
 		return placable;
 	}
 	
-	public static boolean fillUp(final World world, final BlockPos pos, final int[] i, final Block block) {
-		final boolean placable = true;
-		final MutableBlockPos replace = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+	public static boolean fillUp(World world, BlockPos pos, int[] i, Block block) {
+		boolean placable = true;
+		MutableBlockPos replace = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		for(int a = x - i[1]; a <= x + i[0]; a++) {
 			for(int b = y - i[3]; b <= y + i[2]; b++) {
 				for(int c = z - i[5]; c <= z + i[4]; c++) {
 					if(!(a == x && b == y && c == z)) {
 						world.setBlockState(replace.setPos(a, b, c), block.getDefaultState());
-						final TileEntity te = world.getTileEntity(replace.setPos(a, b, c));
-						if(te instanceof TileEntityDummy dummy) {
-                            dummy.target = pos;
+						TileEntity te = world.getTileEntity(replace.setPos(a, b, c));
+						if(te instanceof TileEntityDummy) {
+							TileEntityDummy dummy = (TileEntityDummy)te;
+							dummy.target = pos;
 						}
 					}
 				}
@@ -151,13 +152,13 @@ public class MultiblockHandler {
 		return placable;
 	}
 	
-	public static boolean removeAll(final World world, final BlockPos pos, final int[] i) {
-		final boolean placable = true;
+	public static boolean removeAll(World world, BlockPos pos, int[] i) {
+		boolean placable = true;
 		
-		final MutableBlockPos replace = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		MutableBlockPos replace = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		
 		for(int a = x - i[1]; a <= x + i[0]; a++) {
 			for(int b = y - i[3]; b <= y + i[2]; b++) {

@@ -1,31 +1,33 @@
 package com.hbm.lib;
 
+import java.util.Random;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.handler.WeightedRandomChestContentFrom1710;
+import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBattery;
-import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.items.special.ItemCell;
 import com.hbm.items.tool.ItemBombCaller;
 import com.hbm.items.tool.ItemBombCaller.EnumCallerType;
 import com.hbm.items.tool.ItemFluidCanister;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-
-import java.util.Random;
+import net.minecraft.item.ItemStack;
 
 public class HbmChestContents {
 
 	static Random rand = new Random();
 
-	private static final WeightedRandomChestContentFrom1710[] modGeneric = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] modGeneric = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(Items.BREAD, 0, 1, 5, 8),
 			new WeightedRandomChestContentFrom1710(ModItems.twinkie, 0, 1, 3, 6),
 			new WeightedRandomChestContentFrom1710(Items.IRON_INGOT, 0, 2, 6, 10),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.STEEL).getMetadata(), 2, 5, 7),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.BERYLLIUM).getMetadata(), 1, 2, 4),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.TITANIUM).getMetadata(), 1, 1, 3),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_steel, 0, 2, 5, 7),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_beryllium, 0, 1, 2, 4),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_titanium, 0, 1, 1, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_targeting_tier1, 0, 1, 1, 5),
 			new WeightedRandomChestContentFrom1710(ModItems.gun_revolver, 0, 1, 1, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.gun_revolver_ammo, 0, 2, 6, 4),
@@ -46,17 +48,17 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.bottle_cherry, 0, 1, 1, 2),
 			new WeightedRandomChestContentFrom1710(ModItems.stealth_boy, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.cap_nuka, 0, 1, 15, 7),
-			new WeightedRandomChestContentFrom1710(ItemFluidCanister.getFullCanister(ModForgeFluids.diesel), 1, 2, 2),
-			new WeightedRandomChestContentFrom1710(ItemFluidCanister.getFullCanister(ModForgeFluids.biofuel), 1, 2, 3),
+			new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.canister_generic, 1, Fluids.DIESEL.getID()), 1, 2, 2),
+			new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.canister_generic, 1, Fluids.BIOFUEL.getID()), 1, 2, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_m65, 60, 1, 1, 2),
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_filter, 0, 1, 1, 3)  };
 
-	private static final WeightedRandomChestContentFrom1710[] antenna = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] antenna = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(ModItems.twinkie, 0, 1, 3, 4),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.STEEL).getMetadata(), 1, 2, 7),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.RED_COPPER).getMetadata(), 1, 1, 4),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.TITANIUM).getMetadata(), 1, 3, 5),
-			new WeightedRandomChestContentFrom1710(ModItems.wire, ModItems.wire.getItemStack(MaterialMineral.RED_COPPER).getMetadata(), 2, 3, 7),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_steel, 0, 1, 2, 7),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_red_copper, 0, 1, 1, 4),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_titanium, 0, 1, 3, 5),
+			new WeightedRandomChestContentFrom1710(ModItems.wire_red_copper, 0, 2, 3, 7),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_targeting_tier1, 0, 1, 1, 4),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_copper, 0, 1, 1, 4),
 			new WeightedRandomChestContentFrom1710(ModItems.battery_generic, 0, 1, 1, 4),
@@ -77,8 +79,8 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.CARPET), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_filter, 0, 1, 1, 2) };
 
-	private static final WeightedRandomChestContentFrom1710[] expensive = new WeightedRandomChestContentFrom1710[] {
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM).getMetadata(), 1, 1, 1),
+	private static WeightedRandomChestContentFrom1710[] expensive = new WeightedRandomChestContentFrom1710[] {
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_schrabidium, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.chlorine_pinwheel, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_targeting_tier3, 0, 1, 1, 4),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_gold, 0, 1, 2, 3),
@@ -111,18 +113,18 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.bottle_nuka, 0, 1, 3, 6),
 			new WeightedRandomChestContentFrom1710(ModItems.bottle_quantum, 0, 1, 1, 3),
 			new WeightedRandomChestContentFrom1710(Item.getItemFromBlock(ModBlocks.red_barrel), 0, 1, 1, 6),
-			new WeightedRandomChestContentFrom1710(ItemFluidCanister.getFullCanister(ModForgeFluids.diesel), 1, 2, 2),
-			new WeightedRandomChestContentFrom1710(ItemFluidCanister.getFullCanister(ModForgeFluids.biofuel), 1, 2, 3),
+			new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.canister_generic, 1, Fluids.DIESEL.getID()), 1, 2, 2),
+			new WeightedRandomChestContentFrom1710(new ItemStack(ModItems.canister_generic, 1, Fluids.BIOFUEL.getID()), 1, 2, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_m65, 60, 1, 1, 5),
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.CARPET), 1, 1, 2),
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.NAPALM), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.POISON), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_filter, 0, 1, 1, 4) };
 
-	private static final WeightedRandomChestContentFrom1710[] nukeTrash = new WeightedRandomChestContentFrom1710[] {
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.U238).getMetadata(), 3, 12, 5),
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.PU240).getMetadata(), 3, 8, 5),
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.NEPTUNIUM).getMetadata(), 1, 4, 3),
+	private static WeightedRandomChestContentFrom1710[] nukeTrash = new WeightedRandomChestContentFrom1710[] {
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_u238, 0, 3, 12, 5),
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_pu240, 0, 3, 8, 5),
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_neptunium, 0, 1, 4, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.rod_u238, 0, 1, 1, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.rod_neptunium, 0, 1, 1, 4),
 			new WeightedRandomChestContentFrom1710(ModItems.rod_pu240, 0, 1, 1, 3),
@@ -136,10 +138,10 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_filter, 0, 1, 1, 5),
 			new WeightedRandomChestContentFrom1710(Item.getItemFromBlock(ModBlocks.yellow_barrel), 0, 1, 1, 2) };
 
-	private static final WeightedRandomChestContentFrom1710[] nuclear = new WeightedRandomChestContentFrom1710[] {
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.U235).getMetadata(), 3, 12, 5),
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.PU238).getMetadata(), 3, 12, 5),
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.PU239).getMetadata(), 3, 12, 5),
+	private static WeightedRandomChestContentFrom1710[] nuclear = new WeightedRandomChestContentFrom1710[] {
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_u235, 0, 3, 12, 5),
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_pu238, 0, 3, 12, 5),
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_pu239, 0, 3, 12, 5),
 			new WeightedRandomChestContentFrom1710(ModItems.rod_u235, 0, 1, 1, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.rod_pu239, 0, 1, 1, 3),
 			new WeightedRandomChestContentFrom1710(ModItems.rod_dual_u235, 0, 1, 1, 3),
@@ -166,7 +168,7 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_filter, 0, 1, 1, 5),
 			new WeightedRandomChestContentFrom1710(Item.getItemFromBlock(ModBlocks.yellow_barrel), 0, 1, 3, 3) };
 
-	private static final WeightedRandomChestContentFrom1710[] vertibird = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] vertibird = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(ModItems.t45_helmet, 0, 1, 1, 15),
 			new WeightedRandomChestContentFrom1710(ModItems.t45_plate, 0, 1, 1, 15),
 			new WeightedRandomChestContentFrom1710(ModItems.t45_legs, 0, 1, 1, 15),
@@ -194,7 +196,7 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.NAPALM), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.POISON), 1, 1, 2) };
 
-	private static final WeightedRandomChestContentFrom1710[] missile = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] missile = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(ModItems.missile_generic, 0, 1, 1, 4),
 			new WeightedRandomChestContentFrom1710(ModItems.missile_incendiary, 0, 1, 1, 4),
 			new WeightedRandomChestContentFrom1710(ModItems.missile_cluster, 0, 1, 1, 4),
@@ -218,14 +220,14 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.CARPET), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ItemBombCaller.getStack(EnumCallerType.ORANGE), 1, 1, 1) };
 
-	private static final WeightedRandomChestContentFrom1710[] spaceship = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] spaceship = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(ModItems.battery_advanced, 0, 1, 1, 5),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY).getMetadata(), 2, 16, 5),
-			new WeightedRandomChestContentFrom1710(ModItems.wire, ModItems.wire.getItemStack(MaterialMineral.ADVANCED_ALLOY).getMetadata(), 8, 32, 5),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_advanced_alloy, 0, 2, 16, 5),
+			new WeightedRandomChestContentFrom1710(ModItems.wire_advanced_alloy, 0, 8, 32, 5),
 			new WeightedRandomChestContentFrom1710(ModItems.coil_advanced_alloy, 0, 2, 16, 5),
-			new WeightedRandomChestContentFrom1710(ItemCell.getFullCell(ModForgeFluids.deuterium), 1, 8, 5),
-			new WeightedRandomChestContentFrom1710(ItemCell.getFullCell(ModForgeFluids.tritium), 1, 8, 5),
-			new WeightedRandomChestContentFrom1710(ItemCell.getFullCell(ModForgeFluids.amat), 1, 1, 1),
+			new WeightedRandomChestContentFrom1710(ItemCell.getFullCell(Fluids.DEUTERIUM), 1, 8, 5),
+			new WeightedRandomChestContentFrom1710(ItemCell.getFullCell(Fluids.TRITIUM), 1, 8, 5),
+			new WeightedRandomChestContentFrom1710(ItemCell.getFullCell(Fluids.AMAT), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_neodymium, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_niobium, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(Item.getItemFromBlock(ModBlocks.fusion_conductor), 0, 2, 4, 5),
@@ -235,7 +237,7 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(Item.getItemFromBlock(ModBlocks.red_wire_coated), 0, 4, 8, 5),
 			new WeightedRandomChestContentFrom1710(Item.getItemFromBlock(ModBlocks.red_cable), 0, 8, 16, 5)};
 
-	private static final WeightedRandomChestContentFrom1710[] powder = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] powder = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(ModItems.powder_neptunium, 0, 1, 32, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_iodine, 0, 1, 32, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_thorium, 0, 1, 32, 1),
@@ -249,12 +251,12 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.powder_tennessine, 0, 1, 32, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_cerium, 0, 1, 32, 1) };
 
-	private static final WeightedRandomChestContentFrom1710[] vault1 = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] vault1 = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(Items.GOLD_INGOT, 0, 3, 14, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.pin, 0, 8, 8, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gun_calamity, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.bottle_quantum, 0, 1, 3, 1),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.ADVANCED_ALLOY).getMetadata(), 4, 12, 1),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_advanced_alloy, 0, 4, 12, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.ammo_50bmg, 0, 24, 48, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_red_copper, 0, 6, 12, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gas_mask_m65, 0, 1, 1, 1),
@@ -262,8 +264,8 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.grenade_if_incendiary, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(Items.DIAMOND, 0, 1, 2, 1) };
 
-	private static final WeightedRandomChestContentFrom1710[] vault2 = new WeightedRandomChestContentFrom1710[] {
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.DESH).getMetadata(), 2, 6, 1),
+	private static WeightedRandomChestContentFrom1710[] vault2 = new WeightedRandomChestContentFrom1710[] {
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_desh, 0, 2, 6, 1),
 			new WeightedRandomChestContentFrom1710(ItemBattery.getFullBattery(ModItems.battery_advanced_cell_4), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_desh_mix, 0, 1, 5, 1),
 			new WeightedRandomChestContentFrom1710(Items.DIAMOND, 0, 3, 6, 1),
@@ -278,8 +280,8 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_red_copper, 0, 12, 16, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_gold, 0, 2, 6, 1) };
 
-	private static final WeightedRandomChestContentFrom1710[] vault3 = new WeightedRandomChestContentFrom1710[] {
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.DESH).getMetadata(), 6, 16, 1),
+	private static WeightedRandomChestContentFrom1710[] vault3 = new WeightedRandomChestContentFrom1710[] {
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_desh, 0, 6, 16, 1),
 			new WeightedRandomChestContentFrom1710(ItemBattery.getFullBattery(ModItems.battery_lithium), 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_power, 0, 1, 5, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.sat_chip, 0, 1, 1, 1),
@@ -290,15 +292,15 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.grenade_nuclear, 0, 1, 2, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.grenade_mirv, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.powder_yellowcake, 0, 26, 42, 1),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.U235).getMetadata(), 3, 6, 1),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_u235, 0, 3, 6, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gun_fatman, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gun_revolver_pip, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.clip_revolver_pip, 0, 2, 4, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_red_copper, 0, 18, 32, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.circuit_gold, 0, 6, 12, 1),
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM).getMetadata(), 6, 12, 1) };
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_schrabidium, 0, 6, 12, 1) };
 
-	private static final WeightedRandomChestContentFrom1710[] vault4 = new WeightedRandomChestContentFrom1710[] {
+	private static WeightedRandomChestContentFrom1710[] vault4 = new WeightedRandomChestContentFrom1710[] {
 			new WeightedRandomChestContentFrom1710(ModItems.ammo_container, 0, 3, 6, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.clip_fatman, 0, 2, 3, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.ammo_mirv, 0, 2, 3, 1),
@@ -306,8 +308,8 @@ public class HbmChestContents {
 			new WeightedRandomChestContentFrom1710(ModItems.gun_fatman, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gun_proto, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.gun_b92, 0, 1, 1, 1),
-			new WeightedRandomChestContentFrom1710(ModItems.ingot, ModItems.ingot.getItemStack(MaterialMineral.COMBINE_STEEL).getMetadata(), 16, 28, 1),
-			new WeightedRandomChestContentFrom1710(ModItems.nugget, ModItems.nugget.getItemStack(MaterialMineral.SCHRABIDIUM).getMetadata(), 8, 18, 1),
+			new WeightedRandomChestContentFrom1710(ModItems.ingot_combine_steel, 0, 16, 28, 1),
+			new WeightedRandomChestContentFrom1710(ModItems.nugget_schrabidium, 0, 8, 18, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.man_core, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.boy_kit, 0, 1, 1, 1),
 			new WeightedRandomChestContentFrom1710(ModItems.nuke_starter_kit, 0, 1, 1, 1),
@@ -334,7 +336,7 @@ public class HbmChestContents {
 	 *         case 9: powder loot (secret chest with the five powders for NITAN)
 	 **/
 
-	public static WeightedRandomChestContentFrom1710[] getLoot(final int i) {
+	public static WeightedRandomChestContentFrom1710[] getLoot(int i) {
 		switch (i) {
 		case 1:
 			return modGeneric;

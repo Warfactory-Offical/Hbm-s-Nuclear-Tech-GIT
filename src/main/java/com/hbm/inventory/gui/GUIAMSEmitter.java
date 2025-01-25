@@ -1,23 +1,21 @@
 package com.hbm.inventory.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.inventory.container.ContainerAMSEmitter;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityAMSEmitter;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GUIAMSEmitter extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_ams_emitter.png");
-	private final TileEntityAMSEmitter emitter;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_ams_emitter.png");
+	private TileEntityAMSEmitter emitter;
 	
-	public GUIAMSEmitter(final InventoryPlayer invPlayer, final TileEntityAMSEmitter tedf) {
+	public GUIAMSEmitter(InventoryPlayer invPlayer, TileEntityAMSEmitter tedf) {
 		super(new ContainerAMSEmitter(invPlayer, tedf));
 		emitter = tedf;
 		
@@ -26,7 +24,7 @@ public class GUIAMSEmitter extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 69 - 52, 16, 52, emitter.tank, emitter.tankType);
@@ -37,30 +35,30 @@ public class GUIAMSEmitter extends GuiInfoContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.emitter.hasCustomInventoryName() ? this.emitter.getInventoryName() : I18n.format(this.emitter.getInventoryName());
+	protected void drawGuiContainerForegroundLayer( int i, int j) {
+		String name = this.emitter.hasCustomInventoryName() ? this.emitter.getInventoryName() : I18n.format(this.emitter.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		final int i = (int) emitter.getPowerScaled(52);
+		int i = (int) emitter.getPowerScaled(52);
 		drawTexturedModalRect(guiLeft + 134, guiTop + 69 - i, 192, 52 - i, 16, i);
 		
-		final int j = emitter.getEfficiencyScaled(52);
+		int j = emitter.getEfficiencyScaled(52);
 		drawTexturedModalRect(guiLeft + 152, guiTop + 69 - j, 208, 52 - j, 16, j);
 		
-		final int k = emitter.getHeatScaled(52);
+		int k = emitter.getHeatScaled(52);
 		drawTexturedModalRect(guiLeft + 8, guiTop + 69 - k, 176, 52 - k, 16, k);
 		
-		final int m = emitter.warning;
+		int m = emitter.warning;
 		if(m > 0)
 			drawTexturedModalRect(guiLeft + 80, guiTop + 17, 176, 36 + 16 * m, 16, 16);
 		

@@ -29,7 +29,7 @@ public class ParticleTauMuzzleLightning extends ParticleFirstPerson {
 	int nextPositionTime;
 	List<Vec3d> positions = new ArrayList<>(10);
 	
-	public ParticleTauMuzzleLightning(final World worldIn, final double posX, final double posY, final double posZ, final float width) {
+	public ParticleTauMuzzleLightning(World worldIn, double posX, double posY, double posZ, float width) {
 		super(worldIn, posX, posY, posZ);
 		this.particleMaxAge = 120;
 		this.randU = rand.nextFloat();
@@ -56,7 +56,7 @@ public class ParticleTauMuzzleLightning extends ParticleFirstPerson {
 		}
 		if(nextPositionTime == 0){
 			nextPositionTime = 3 + rand.nextInt(3);
-			positions.add(new Vec3d(rand.nextFloat()-0.5, rand.nextFloat()-0.5, rand.nextFloat()-0.5).scale(0.3).add(posX, posY, posZ));
+			positions.add(new Vec3d(rand.nextFloat()-0.5, rand.nextFloat()-0.5, rand.nextFloat()-0.5).scale(0.3).addVector(posX, posY, posZ));
 			if(positions.size() > 9){
 				positions.remove(0);
 			}
@@ -75,7 +75,7 @@ public class ParticleTauMuzzleLightning extends ParticleFirstPerson {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		if(positions.size() < 2){
 			return;
 		}
@@ -88,18 +88,18 @@ public class ParticleTauMuzzleLightning extends ParticleFirstPerson {
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.bfg_core_lightning);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		final float lifeN = (particleAge+partialTicks) /(float)particleMaxAge;
-		final float fade = MathHelper.clamp(2.5F-lifeN*2.5F, 0, 1);
+		float lifeN = (float)(particleAge+partialTicks)/(float)particleMaxAge;
+		float fade = MathHelper.clamp(2.5F-lifeN*2.5F, 0, 1);
 		
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 		for(int i = 0; i < positions.size()-1; i ++){
-			final Vec3d current = positions.get(i);
-			final Vec3d next = positions.get(i+1);
-			final Vec3d axis = next.subtract(current);
-			final Vec3d toPlayer = current;
-			final Vec3d pos1 = axis.crossProduct(toPlayer).normalize().scale(particleScale*Math.max(fade, 0.75));
-			final Vec3d pos2 = pos1.scale(-1);
-			final float al = i == 0 || i == 9 ? 0.5F : 1;
+			Vec3d current = positions.get(i);
+			Vec3d next = positions.get(i+1);
+			Vec3d axis = next.subtract(current);
+			Vec3d toPlayer = current;
+			Vec3d pos1 = axis.crossProduct(toPlayer).normalize().scale(particleScale*Math.max(fade, 0.75));
+			Vec3d pos2 = pos1.scale(-1);
+			float al = i == 0 || i == 9 ? 0.5F : 1;
 			buffer.pos(pos1.x + current.x, pos1.y + current.y, pos1.z + current.z).tex(randU, 0).color(1.0F, 0.7F, 0.1F, fade*al).endVertex();
 			buffer.pos(pos2.x + current.x, pos2.y + current.y, pos2.z + current.z).tex(randU, 1).color(1.0F, 0.7F, 0.1F, fade*al).endVertex();
 			buffer.pos(pos2.x + next.x, pos2.y + next.y, pos2.z + next.z).tex(randU, 1).color(1.0F, 0.7F, 0.1F, fade*al).endVertex();

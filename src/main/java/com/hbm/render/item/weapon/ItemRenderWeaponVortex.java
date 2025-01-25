@@ -1,21 +1,19 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.item.TEISRBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderWeaponVortex extends TEISRBase {
 
 	@Override
-	public void renderByItem(final ItemStack itemStackIn) {
+	public void renderByItem(ItemStack itemStackIn) {
 		GL11.glTranslated(0.5, 0.5, 0.5);
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.vortex_tex);
@@ -24,7 +22,7 @@ public class ItemRenderWeaponVortex extends TEISRBase {
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			final double[] recoil = HbmAnimations.getRelevantTransformation("VORTEX_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+			double[] recoil = HbmAnimations.getRelevantTransformation("VORTEX_RECOIL", type == TransformType.FIRST_PERSON_LEFT_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 			//Scaled up by 10 from the regular scale amount so the item bobbing affects the gun less.
 			GL11.glScaled(0.5, 0.4, 0.5);
 			if(type == TransformType.FIRST_PERSON_RIGHT_HAND){

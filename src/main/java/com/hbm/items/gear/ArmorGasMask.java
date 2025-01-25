@@ -41,20 +41,20 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 	@SideOnly(Side.CLIENT)
 	private ModelM65 modelM65;
 	
-	private final ResourceLocation goggleBlur0 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_0.png");
-	private final ResourceLocation goggleBlur1 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_1.png");
-	private final ResourceLocation goggleBlur2 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_2.png");
-	private final ResourceLocation goggleBlur3 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_3.png");
-	private final ResourceLocation goggleBlur4 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_4.png");
-	private final ResourceLocation goggleBlur5 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_5.png");
-	private final ResourceLocation gasmaskBlur0 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_0.png");
-	private final ResourceLocation gasmaskBlur1 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_1.png");
-	private final ResourceLocation gasmaskBlur2 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_2.png");
-	private final ResourceLocation gasmaskBlur3 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_3.png");
-	private final ResourceLocation gasmaskBlur4 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_4.png");
-	private final ResourceLocation gasmaskBlur5 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_5.png");
+	private ResourceLocation goggleBlur0 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_0.png");
+	private ResourceLocation goggleBlur1 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_1.png");
+	private ResourceLocation goggleBlur2 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_2.png");
+	private ResourceLocation goggleBlur3 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_3.png");
+	private ResourceLocation goggleBlur4 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_4.png");
+	private ResourceLocation goggleBlur5 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_goggles_5.png");
+	private ResourceLocation gasmaskBlur0 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_0.png");
+	private ResourceLocation gasmaskBlur1 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_1.png");
+	private ResourceLocation gasmaskBlur2 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_2.png");
+	private ResourceLocation gasmaskBlur3 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_3.png");
+	private ResourceLocation gasmaskBlur4 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_4.png");
+	private ResourceLocation gasmaskBlur5 = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_gasmask_5.png");
 	
-	public ArmorGasMask(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
+	public ArmorGasMask(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -64,13 +64,13 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 	}
 	
 	@Override
-	public boolean isValidArmor(final ItemStack stack, final EntityEquipmentSlot armorType, final Entity entity) {
+	public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
 		return armorType == EntityEquipmentSlot.HEAD;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		if (this == ModItems.gas_mask) {
 			if (armorSlot == EntityEquipmentSlot.HEAD) {
 				if (this.modelGas == null) {
@@ -91,7 +91,7 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 	}
 	
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		if (stack.getItem() == ModItems.gas_mask) {
 			return (RefStrings.MODID + ":textures/armor/GasMask.png");
 		}
@@ -118,7 +118,7 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void renderHelmetOverlay(final ItemStack stack, final EntityPlayer player, final ScaledResolution resolution, final float partialTicks) {
+	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
 		if(this != ModItems.gas_mask && this != ModItems.gas_mask_m65 && this != ModItems.hazmat_helmet_red && this != ModItems.hazmat_helmet_grey)
     		return;
     	
@@ -167,9 +167,9 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
         }
         
         RenderHelper.startDrawingTexturedQuads();
-        RenderHelper.addVertexWithUV(0.0D, resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
-        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
-        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
+        RenderHelper.addVertexWithUV(0.0D, (double)resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
+        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), (double)resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
+        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
         RenderHelper.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
         RenderHelper.draw();
         GlStateManager.depthMask(true);
@@ -179,56 +179,56 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		super.addInformation(stack, worldIn, list, flagIn);
 		ArmorUtil.addGasMaskTooltip(stack, worldIn, list, flagIn);
-		final List<HazardClass> haz = getBlacklist(stack);
+		List<HazardClass> haz = getBlacklist(stack);
 	
 		if(!haz.isEmpty()) {
 			list.add("§c" + I18nUtil.resolveKey("hazard.neverProtects"));
 			
-			for(final HazardClass clazz : haz) {
+			for(HazardClass clazz : haz) {
 				list.add("§4 -" + I18nUtil.resolveKey(clazz.lang));
 			}
 		}
 	}
 
 	@Override
-	public ArrayList<HazardClass> getBlacklist(final ItemStack stack) {
+	public ArrayList<HazardClass> getBlacklist(ItemStack stack) {
 		if(stack.getItem() == ModItems.gas_mask_mono) {
-			return new ArrayList<HazardClass>(Arrays.asList(HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA));
+			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA}));
 		} else if(stack.getItem() == ModItems.gas_mask || stack.getItem() == ModItems.gas_mask_m65){
-			return new ArrayList<HazardClass>(Arrays.asList(HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT));
+			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT}));
 		} else {
 			return new ArrayList();
 		}
 	}
 
 	@Override
-	public ItemStack getFilter(final ItemStack stack) {
+	public ItemStack getFilter(ItemStack stack) {
 		return ArmorUtil.getGasMaskFilter(stack);
 	}
 
 	@Override
-	public void installFilter(final ItemStack stack, final ItemStack filter) {
+	public void installFilter(ItemStack stack, ItemStack filter) {
 		ArmorUtil.installGasMaskFilter(stack, filter);
 	}
 
 	@Override
-	public void damageFilter(final ItemStack stack, final int damage) {
+	public void damageFilter(ItemStack stack, int damage) {
 		ArmorUtil.damageGasMaskFilter(stack, damage);
 	}
 
 	@Override
-	public boolean isFilterApplicable(final ItemStack stack, final ItemStack filter) {
+	public boolean isFilterApplicable(ItemStack stack, ItemStack filter) {
 		return true;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if(player.isSneaking()) {
-			final ItemStack stack = player.getHeldItem(hand);
-			final ItemStack filter = this.getFilter(stack);
+			ItemStack stack = player.getHeldItem(hand);
+			ItemStack filter = this.getFilter(stack);
 			
 			if(filter != null) {
 				ArmorUtil.removeFilter(stack);

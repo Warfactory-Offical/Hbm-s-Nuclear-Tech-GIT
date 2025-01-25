@@ -34,38 +34,38 @@ public class JetpackBase extends ItemArmorMod {
 	public Fluid fuel;
 	public int maxFuel;
 	
-	public JetpackBase(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final Fluid fuel, final int maxFuel, final String s) {
+	public JetpackBase(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, Fluid fuel, int maxFuel, String s) {
 		super(ArmorModHandler.plate_only, false, true, false, false, s);
 		this.fuel = fuel;
 		this.maxFuel = maxFuel;
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
-		tooltip.add(TextFormatting.LIGHT_PURPLE + I18nUtil.resolveKey(fuel.getUnlocalizedName()) + ": " + getFuel(stack) + "mB / " + this.maxFuel + "mB");
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(TextFormatting.LIGHT_PURPLE + I18nUtil.resolveKey(fuel.getTranslationKey()) + ": " + getFuel(stack) + "mB / " + this.maxFuel + "mB");
 		tooltip.add("");
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TextFormatting.GOLD + "Can be worn on its own!");
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		
-		final ItemStack jetpack = ArmorModHandler.pryMods(armor)[ArmorModHandler.plate_only];
+		ItemStack jetpack = ArmorModHandler.pryMods(armor)[ArmorModHandler.plate_only];
 		
 		if(jetpack == null)
 			return;
 		
-		list.add(TextFormatting.RED + "  " + stack.getDisplayName() + " (" + I18nUtil.resolveKey(fuel.getUnlocalizedName()) + ": " + getFuel(jetpack) + "mB / " + this.maxFuel + "mB");
+		list.add(TextFormatting.RED + "  " + stack.getDisplayName() + " (" + I18nUtil.resolveKey(fuel.getTranslationKey()) + ": " + getFuel(jetpack) + "mB / " + this.maxFuel + "mB");
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
 		if(!(entity instanceof EntityPlayer))
 			return;
 		
-		final ItemStack jetpack = ArmorModHandler.pryMods(armor)[ArmorModHandler.plate_only];
+		ItemStack jetpack = ArmorModHandler.pryMods(armor)[ArmorModHandler.plate_only];
 		
 		if(jetpack == null)
 			return;
@@ -78,25 +78,25 @@ public class JetpackBase extends ItemArmorMod {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void modRender(final Pre event, final ItemStack armor) {
+	public void modRender(Pre event, ItemStack armor) {
 
-		final ModelBiped modelJetpack = getArmorModel(event.getEntityLiving(), null, EntityEquipmentSlot.CHEST, null);
+		ModelBiped modelJetpack = getArmorModel(event.getEntityLiving(), null, EntityEquipmentSlot.CHEST, null);
 		
-		final EntityPlayer player = event.getEntityPlayer();
+		EntityPlayer player = event.getEntityPlayer();
 
-		final RenderPlayer renderer = event.getRenderer();
-		final ModelBiped model = renderer.getMainModel();
+		RenderPlayer renderer = event.getRenderer();
+		ModelBiped model = renderer.getMainModel();
 		modelJetpack.isSneak = model.isSneak;
 		
-		final float interp = event.getPartialRenderTick();
-		final float yaw = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset)*interp;
-		final float yawWrapped = MathHelper.wrapDegrees(yaw+180);
-		final float pitch = player.rotationPitch;
+		float interp = event.getPartialRenderTick();
+		float yaw = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset)*interp;
+		float yawWrapped = MathHelper.wrapDegrees(yaw+180);
+		float pitch = player.rotationPitch;
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(this.getArmorTexture(armor, event.getEntity(), this.getEquipmentSlot(armor), null)));
 
-		final EntityPlayer me = MainRegistry.proxy.me();
-		final boolean isMe = player == me;
+		EntityPlayer me = MainRegistry.proxy.me();
+		boolean isMe = player == me;
 		if(!isMe){
 			GL11.glPushMatrix();
 			offset(player, me, interp);
@@ -108,13 +108,13 @@ public class JetpackBase extends ItemArmorMod {
 	}
 	
 	@Override
-	public boolean isValidArmor(final ItemStack stack, final EntityEquipmentSlot armorType, final Entity entity) {
+	public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
 		return armorType == EntityEquipmentSlot.CHEST;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		if (armorSlot == EntityEquipmentSlot.CHEST) {
 			if (model == null) {
 				this.model = new ModelJetPack();
@@ -125,13 +125,13 @@ public class JetpackBase extends ItemArmorMod {
 		return null;
 	}
 	
-	protected void useUpFuel(final EntityPlayer player, final ItemStack stack, final int rate) {
+	protected void useUpFuel(EntityPlayer player, ItemStack stack, int rate) {
 
 		if(player.ticksExisted % rate == 0)
 			setFuel(stack, getFuel(stack) - 1);
 	}
 
-    public static int getFuel(final ItemStack stack) {
+    public static int getFuel(ItemStack stack) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -141,7 +141,7 @@ public class JetpackBase extends ItemArmorMod {
 
 	}
 
-	public static void setFuel(final ItemStack stack, final int i) {
+	public static void setFuel(ItemStack stack, int i) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}

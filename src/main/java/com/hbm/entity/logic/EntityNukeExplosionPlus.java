@@ -5,7 +5,6 @@ import com.hbm.entity.effect.EntityFalloutRain;
 import com.hbm.explosion.ExplosionFleija;
 import com.hbm.explosion.ExplosionNukeAdvanced;
 import com.hbm.util.ContaminationUtil;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,7 +27,7 @@ public class EntityNukeExplosionPlus extends Entity {
 	public boolean did2 = false;
 	public boolean waste = true;
 	
-	public EntityNukeExplosionPlus(final World worldIn) {
+	public EntityNukeExplosionPlus(World worldIn) {
 		super(worldIn);
 	}
 	
@@ -80,7 +79,7 @@ public class EntityNukeExplosionPlus extends Entity {
         	ContaminationUtil.radiate(this.world, this.posX, this.posY, this.posZ, this.destructionRange * 2, this.destructionRange * 10, 0, this.destructionRange * 2, this.destructionRange * 3);
         } else {
 			if (!did2 && waste) {
-				final EntityFalloutRain fallout = new EntityFalloutRain(this.world, (this.wasteRange) * 10);
+				EntityFalloutRain fallout = new EntityFalloutRain(this.world, (this.wasteRange) * 10);
 				fallout.posX = this.posX;
 				fallout.posY = this.posY;
 				fallout.posZ = this.posZ;
@@ -100,11 +99,11 @@ public class EntityNukeExplosionPlus extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 	}
 
 }

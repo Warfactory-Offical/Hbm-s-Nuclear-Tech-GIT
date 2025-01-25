@@ -4,25 +4,17 @@ import com.google.common.base.Predicate;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
-import com.hbm.items.meta.materials.MaterialMineral;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.ModDamageSource;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -31,12 +23,12 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 
 	private static final Predicate<EntityLiving> selector = new Predicate<EntityLiving>(){
 		@Override
-		public boolean apply(final EntityLiving input) {
+		public boolean apply(EntityLiving input) {
 			return !(input instanceof EntityCyberCrab || input instanceof EntityCreeper || input instanceof EntityNuclearCreeper);
 		}
 	};
 	
-	public EntityCyberCrab(final World worldIn) {
+	public EntityCyberCrab(World worldIn) {
 		super(worldIn);
 		this.setSize(0.75F, 0.35F);
 		if(!(this instanceof EntityTaintCrab))
@@ -65,7 +57,7 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 	
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(ModDamageSource.getIsTau(source))
     		return false;
 		return super.attackEntityFrom(source, amount);
@@ -89,7 +81,7 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(final DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return HBMSoundHandler.cybercrab;
 	}
 	
@@ -99,21 +91,22 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 	
 	@Override
-	public boolean attackEntityAsMob(final Entity entityIn) {
+	public boolean attackEntityAsMob(Entity entityIn) {
 		return true;
 	}
 	
-	protected ItemStack getDropItemStack() {
-		return ModItems.wire.getItemStack(MaterialMineral.GOLD);
+	@Override
+	protected Item getDropItem() {
+		return ModItems.wire_gold;
 	}
 	
-	protected void dropRareDrop(final int p_70600_1_) {
-    	this.dropItem(ModItems.wire.getItemStack(MaterialMineral.MAGNETIZED_TUNGSTEN), 1);
+	protected void dropRareDrop(int p_70600_1_) {
+    	this.dropItem(ModItems.wire_magnetized_tungsten, 1);
     }
 	
 	@Override
-	public void attackEntityWithRangedAttack(final EntityLivingBase target, final float distanceFactor) {
-		final EntityBullet bullet = new EntityBullet(world, this, target, 1.6F, 2);
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+		EntityBullet bullet = new EntityBullet(world, this, target, 1.6F, 2);
 		bullet.setIsCritical(true);
 		bullet.setTau(true);
 		bullet.damage = 2;
@@ -122,34 +115,7 @@ public class EntityCyberCrab extends EntityMob implements IRangedAttackMob, IRad
 	}
 
 	@Override
-	public void setSwingingArms(final boolean swingingArms) {
-	}
-
-
-	@Override
-	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
-	{
-		ItemStack item = this.getDropItemStack();
-
-		if (item != null)
-		{
-			int i = this.rand.nextInt(3);
-
-			if (lootingModifier > 0)
-			{
-				i += this.rand.nextInt(lootingModifier + 1);
-			}
-
-			for (int j = 0; j < i; ++j)
-			{
-				this.dropItem(item, 1);
-			}
-		}
-	}
-
-	public EntityItem dropItem(ItemStack itemIn, int size)
-	{
-		return this.entityDropItem(new ItemStack(itemIn.getItem(), itemIn.getMetadata(), size), 0);
+	public void setSwingingArms(boolean swingingArms) {
 	}
 
 }

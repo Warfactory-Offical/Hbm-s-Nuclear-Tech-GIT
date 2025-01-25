@@ -8,7 +8,6 @@ import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
@@ -21,7 +20,7 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 
 	public static final int maxAge = 60;
 	
-	public EntityDeathBlast(final World worldIn) {
+	public EntityDeathBlast(World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 	}
@@ -32,15 +31,15 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 			this.setDead();
 
 			if(CompatibilityConfig.isWarDim(world)){
-				world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, 40, posX, posY, posZ).mute());
+				world.spawnEntity(EntityNukeExplosionMK5.statFacNoRad(world, 40, posX, posY, posZ));
 				
-				final int count = 100;
+				int count = 100;
 				for(int i = 0; i < count; i++) {
 					
-					final Vec3 vec = Vec3.createVectorHelper(0.2, 0, 0);
+					Vec3 vec = Vec3.createVectorHelper(0.2, 0, 0);
 					vec.rotateAroundY((float)(2 * Math.PI * i / (float)count));
 					
-					final EntityBulletBase laser = new EntityBulletBase(world, BulletConfigSyncingUtil.MASKMAN_BOLT);
+					EntityBulletBase laser = new EntityBulletBase(world, BulletConfigSyncingUtil.MASKMAN_BOLT);
 					laser.setPosition(posX, posY + 2, posZ);
 					laser.motionX = vec.xCoord;
 					laser.motionZ = vec.zCoord;
@@ -49,7 +48,7 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 				}
 			}
 			
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "muke");
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, posY + 0.5, posZ), new TargetPoint(world.provider.getDimension(), posX, posY, posZ, 250));
 			world.playSound(null, posX, posY, posZ, HBMSoundHandler.mukeExplosion, SoundCategory.HOSTILE, 25.0F, 0.9F);
@@ -71,7 +70,7 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(final double distance)
+    public boolean isInRangeToRenderDist(double distance)
     {
         return distance < 25000;
     }
@@ -81,11 +80,11 @@ public class EntityDeathBlast extends Entity implements IConstantRenderer {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 	}
 
 }

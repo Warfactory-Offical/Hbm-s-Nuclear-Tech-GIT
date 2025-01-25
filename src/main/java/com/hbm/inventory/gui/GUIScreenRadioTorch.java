@@ -1,26 +1,24 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-import java.util.Arrays;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.NBTControlPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.network.TileEntityRadioTorchBase;
 import com.hbm.tileentity.network.TileEntityRadioTorchSender;
 import com.hbm.util.I18nUtil;
-
-import net.minecraft.init.SoundEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 public class GUIScreenRadioTorch extends GuiScreen {
 
@@ -42,17 +40,17 @@ public class GUIScreenRadioTorch extends GuiScreen {
 	protected static final int oraTextColor = 0xFF9232;
 	protected static final int oraTextColorDarker = 0xFF7A00;
 	
-	public GUIScreenRadioTorch(final TileEntityRadioTorchBase radio) {
+	public GUIScreenRadioTorch(TileEntityRadioTorchBase radio) {
 		this.radio = radio;
 		
 		if(radio instanceof TileEntityRadioTorchSender) {
 			this.texture = textureSender;
 			this.title = "container.rttySender";
-			isSender = true;
+			this.isSender = true;
 		} else {
 			this.texture = textureReceiver;
 			this.title = "container.rttyReceiver";
-			isSender = false;
+			this.isSender = false;
 		}
 	}
 
@@ -64,13 +62,13 @@ public class GUIScreenRadioTorch extends GuiScreen {
 
 		Keyboard.enableRepeatEvents(true);
 		
-		final int oX = 4;
-		final int oY = 4;
-		final int in = radio instanceof TileEntityRadioTorchSender ? 18 : 0;
+		int oX = 4;
+		int oY = 4;
+		int in = radio instanceof TileEntityRadioTorchSender ? 18 : 0;
 
 		this.frequency = new GuiTextField(0, this.fontRenderer, guiLeft + 25 + oX, guiTop + 18 + oY, 90 - oX * 2, 14);
-		this.frequency.setTextColor(isSender ? bluTextColor : oraTextColor);
-		this.frequency.setDisabledTextColour(isSender ? bluTextColorDarker : oraTextColorDarker);
+		this.frequency.setTextColor(this.isSender ? bluTextColor : oraTextColor);
+		this.frequency.setDisabledTextColour(this.isSender ? bluTextColorDarker : oraTextColorDarker);
 		this.frequency.setEnableBackgroundDrawing(false);
 		this.frequency.setMaxStringLength(10);
 		this.frequency.setText(radio.channel == null ? "" : radio.channel);
@@ -79,8 +77,8 @@ public class GUIScreenRadioTorch extends GuiScreen {
 		
 		for(int i = 0; i < 16; i++) {
 			this.remap[i] = new GuiTextField(i+1, this.fontRenderer, guiLeft + 7 + (130 * (i / 8)) + oX + in, guiTop + 54 + (18 * (i % 8)) + oY, 90 - oX * 2, 14);
-			this.remap[i].setTextColor(isSender ? oraTextColor : bluTextColor);
-			this.remap[i].setDisabledTextColour(isSender ? oraTextColorDarker : bluTextColorDarker);
+			this.remap[i].setTextColor(this.isSender ? oraTextColor : bluTextColor);
+			this.remap[i].setDisabledTextColour(this.isSender ? oraTextColorDarker : bluTextColorDarker);
 			this.remap[i].setEnableBackgroundDrawing(false);
 			this.remap[i].setMaxStringLength(15);
 			this.remap[i].setText(radio.mapping[i] == null ? "" : radio.mapping[i]);
@@ -92,14 +90,14 @@ public class GUIScreenRadioTorch extends GuiScreen {
 		return false;
 	}
 
-	public void drawCustomInfoStat(final int mouseX, final int mouseY, final int x, final int y, final int width, final int height, final int tPosX, final int tPosY, final String[] text) {
+	public void drawCustomInfoStat(int mouseX, int mouseY, int x, int y, int width, int height, int tPosX, int tPosY, String[] text) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY){
 			this.drawHoveringText(Arrays.asList(text), tPosX, tPosY);
 		}
 	}
 
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		this.drawDefaultBackground();
         this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
         GlStateManager.enableLighting();
@@ -114,12 +112,12 @@ public class GUIScreenRadioTorch extends GuiScreen {
 	}
 
 
-	private void drawGuiContainerForegroundLayer(final int x, final int y) {
-		final String name = I18nUtil.resolveKey(this.title);
-		this.fontRenderer.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, this.guiTop + 6, isSender ? 4210752 : 0xE9E9E9);
+	private void drawGuiContainerForegroundLayer(int x, int y) {
+		String name = I18nUtil.resolveKey(this.title);
+		this.fontRenderer.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, this.guiTop + 6, this.isSender ? 4210752 : 0xE9E9E9);
 	}
 
-	private void drawGuiContainerBackgroundLayer(final float f, final int mouseX, final int mouseY) {
+	private void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 
@@ -142,7 +140,7 @@ public class GUIScreenRadioTorch extends GuiScreen {
 	}
 
 	@Override
-	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+	protected void mouseClicked(int x, int y, int i) throws IOException {
 		super.mouseClicked(x, y, i);
 		
 		this.frequency.mouseClicked(x, y, i);
@@ -155,21 +153,21 @@ public class GUIScreenRadioTorch extends GuiScreen {
 		
 		if(guiLeft + 137 <= x && guiLeft + 137 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("hasMapping", !radio.customMap);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, radio.getPos()));
 		}
 		
 		if(guiLeft + 173 <= x && guiLeft + 173 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("isPolling", !radio.polling);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, radio.getPos()));
 		}
 		
 		if(guiLeft + 209 <= x && guiLeft + 209 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setString("channel", this.frequency.getText());
 			for(int j = 0; j < 16; j++) {
 				data.setString("mapping" + j, this.remap[j].getText());
@@ -179,7 +177,7 @@ public class GUIScreenRadioTorch extends GuiScreen {
 	}
 
 	@Override
-	protected void keyTyped(final char c, final int key) throws IOException {
+	protected void keyTyped(char c, int key) throws IOException {
 		
 		if(this.frequency.textboxKeyTyped(c, key)){
 			return;

@@ -4,13 +4,12 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
-
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -20,9 +19,9 @@ import net.minecraftforge.fluids.Fluid;
 
 public class RadWaterBlock extends BlockFluidClassic {
 
-	private final DamageSource damageSource;
+	private DamageSource damageSource;
 	
-	public RadWaterBlock(final Fluid fluid, final Material material, final DamageSource source, final String s) {
+	public RadWaterBlock(Fluid fluid, Material material, DamageSource source, String s) {
 		super(fluid, material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -35,7 +34,7 @@ public class RadWaterBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public boolean canDisplace(final IBlockAccess world, final BlockPos pos) {
+	public boolean canDisplace(IBlockAccess world, BlockPos pos) {
 		if(world.getBlockState(pos).getMaterial().isLiquid())
 			return true;
 		return super.canDisplace(world, pos);
@@ -47,13 +46,13 @@ public class RadWaterBlock extends BlockFluidClassic {
 	// }
 
 	@Override
-	public void onEntityCollision(final World worldIn, final BlockPos pos, final IBlockState state, final Entity entityIn) {
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 		if(entityIn instanceof EntityLivingBase)
 			ContaminationUtil.contaminate((EntityLivingBase)entityIn, HazardType.RADIATION, ContaminationType.CREATIVE, 1.0F);
 	}
 	
 	@Override
-	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block neighborBlock, final BlockPos neighbourPos) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighbourPos) {
 		super.neighborChanged(state, world, pos, neighborBlock, neighbourPos);
 		reactToBlocks(world, pos.east(), 2);
 		reactToBlocks(world, pos.west(), 2);
@@ -63,9 +62,9 @@ public class RadWaterBlock extends BlockFluidClassic {
 		reactToBlocks(world, pos.north(), 2);
 	}
 	
-	public void reactToBlocks(final World world, final BlockPos pos, final int flag) {
+	public void reactToBlocks(World world, BlockPos pos, int flag) {
 		if(world.getBlockState(pos).getMaterial() != ModBlocks.fluidradwater) {
-			final IBlockState block = world.getBlockState(pos);
+			IBlockState block = world.getBlockState(pos);
 			
 			if(block.getMaterial() == Material.LAVA) {
 				//flag 1 == pos is on top, flag 2 == pos is on side, flag 3 == pos is on bottom
@@ -81,7 +80,7 @@ public class RadWaterBlock extends BlockFluidClassic {
 	}
 	
 	@Override
-	public int tickRate(final World world) {
+	public int tickRate(World world) {
 		return 15;
 	}
 	

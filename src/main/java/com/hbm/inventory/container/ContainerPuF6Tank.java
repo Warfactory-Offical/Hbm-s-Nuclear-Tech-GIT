@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.TileEntityMachinePuF6Tank;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,9 +11,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerPuF6Tank extends Container {
 
-	private final TileEntityMachinePuF6Tank testNuke;
+	private TileEntityMachinePuF6Tank testNuke;
 	
-	public ContainerPuF6Tank(final InventoryPlayer invPlayer, final TileEntityMachinePuF6Tank tedf) {
+	public ContainerPuF6Tank(InventoryPlayer invPlayer, TileEntityMachinePuF6Tank tedf) {
 		testNuke = tedf;
 		
 		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 0, 44, 17));
@@ -37,14 +36,14 @@ public class ContainerPuF6Tank extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
@@ -73,7 +72,7 @@ public class ContainerPuF6Tank extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return testNuke.isUseableByPlayer(player);
 	}
 }

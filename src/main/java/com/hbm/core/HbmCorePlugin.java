@@ -1,8 +1,8 @@
 package com.hbm.core;
 
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-
 import java.util.Map;
+
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 @IFMLLoadingPlugin.TransformerExclusions({"com.hbm.core"})
@@ -37,7 +37,7 @@ public class HbmCorePlugin implements IFMLLoadingPlugin {
 	}
 
 	@Override
-	public void injectData(final Map<String, Object> data) {
+	public void injectData(Map<String, Object> data) {
 	}
 
 	@Override

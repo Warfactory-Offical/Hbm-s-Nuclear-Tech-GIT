@@ -4,7 +4,6 @@ import com.hbm.forgefluid.FFUtils;
 import com.hbm.inventory.container.ContainerCore;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityCore;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -13,10 +12,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GUICore extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/dfc/gui_core.png");
-	private final TileEntityCore core;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/dfc/gui_core.png");
+	private TileEntityCore core;
 	
-	public GUICore(final InventoryPlayer invPlayer, final TileEntityCore tedf) {
+	public GUICore(InventoryPlayer invPlayer, TileEntityCore tedf) {
 		super(new ContainerCore(invPlayer, tedf));
 		core = tedf;
 		
@@ -25,29 +24,29 @@ public class GUICore extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 7, 16, 78, core.tanks[0]);
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 7, 16, 78, core.tanks[1]);
 
-		final String[] heat = new String[] { "Heat Saturation: " + core.heat + "%" };
-		final String[] field = new String[] { "Restriction Field: " + core.field + "%" };
+		String[] heat = new String[] { "Heat Saturation: " + core.heat + "%" };
+		String[] field = new String[] { "Restriction Field: " + core.field + "%" };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 53, guiTop + 97, 70, 4, mouseX, mouseY, heat);
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 53, guiTop + 101, 70, 4, mouseX, mouseY, field);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+	protected void drawGuiContainerForegroundLayer( int i, int j) {
 		
-		final String name = this.core.hasCustomInventoryName() ? this.core.getInventoryName() : I18n.format(this.core.getInventoryName()).trim();
+		String name = this.core.hasCustomInventoryName() ? this.core.getInventoryName() : I18n.format(this.core.getInventoryName()).trim();
 		this.fontRenderer.drawString(name, this.xSize - 8 - this.fontRenderer.getStringWidth(name), this.ySize - 96 + 2, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);

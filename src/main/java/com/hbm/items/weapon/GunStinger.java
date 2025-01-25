@@ -1,13 +1,10 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-
 import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityRocketHoming;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
-
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -28,9 +25,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
+import java.util.List;
+
 public class GunStinger extends Item {
 
-	public GunStinger(final String s) {
+	public GunStinger(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -43,23 +42,24 @@ public class GunStinger extends Item {
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
-		if(!(entityLiving instanceof EntityPlayer player))
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if(!(entityLiving instanceof EntityPlayer))
 			return;
-
-        if(player.getHeldItemMainhand() == stack && (player.getHeldItemOffhand().getItem() == ModItems.gun_stinger || player.getHeldItemOffhand().getItem() == ModItems.gun_skystinger)){
+		
+		EntityPlayer player = (EntityPlayer)entityLiving;
+		if(player.getHeldItemMainhand() == stack && (player.getHeldItemOffhand().getItem() == ModItems.gun_stinger || player.getHeldItemOffhand().getItem() == ModItems.gun_skystinger)){
 			player.getHeldItemOffhand().onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
-		final ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.gun_stinger_ammo));
+		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, worldIn, j, Library.hasInventoryItem(player.inventory, ModItems.gun_stinger_ammo));
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.isCanceled()) {
 			return;
 		}
 		j = event.getCharge();
 
-		final boolean flag = player.capabilities.isCreativeMode
+		boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 		if (flag || Library.hasInventoryItem(player.inventory, ModItems.gun_stinger_ammo)) {
@@ -84,9 +84,9 @@ public class GunStinger extends Item {
 			Library.consumeInventoryItem(player.inventory, ModItems.gun_stinger_ammo);
 
 			if (!worldIn.isRemote) {
-				final EnumHand hand = player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+				EnumHand hand = player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 				if(this == ModItems.gun_stinger) {
-					final EntityRocketHoming entityarrow = new EntityRocketHoming(worldIn, player, 1.0F, hand);
+					EntityRocketHoming entityarrow = new EntityRocketHoming(worldIn, player, 1.0F, hand);
 					if(player.isSneaking())
 						entityarrow.homingRadius = 0;
 					worldIn.spawnEntity(entityarrow);
@@ -95,8 +95,8 @@ public class GunStinger extends Item {
 				if(this == ModItems.gun_skystinger) {
 					
 					if(player.isSneaking()) {
-						final EntityRocketHoming entityarrow = new EntityRocketHoming(worldIn, player, 1.5F, hand);
-						final EntityRocketHoming entityarrow1 = new EntityRocketHoming(worldIn, player, 1.5F, hand);
+						EntityRocketHoming entityarrow = new EntityRocketHoming(worldIn, player, 1.5F, hand);
+						EntityRocketHoming entityarrow1 = new EntityRocketHoming(worldIn, player, 1.5F, hand);
 						entityarrow.homingMod = 12;
 						entityarrow1.homingMod = 12;
 						entityarrow.motionX += worldIn.rand.nextGaussian() * 0.2;
@@ -110,7 +110,7 @@ public class GunStinger extends Item {
 						worldIn.spawnEntity(entityarrow);
 						worldIn.spawnEntity(entityarrow1);
 					} else {
-						final EntityRocketHoming entityarrow = new EntityRocketHoming(worldIn, player, 2.0F, hand);
+						EntityRocketHoming entityarrow = new EntityRocketHoming(worldIn, player, 2.0F, hand);
 						entityarrow.homingMod = 8;
 						entityarrow.homingRadius *= 50;
 						entityarrow.setIsCritical(true);
@@ -122,17 +122,17 @@ public class GunStinger extends Item {
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(final ItemStack stack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		if(this == ModItems.gun_stinger) {
         	list.add("Woosh, beep-beep-beep!");
 			list.add("");
@@ -155,8 +155,8 @@ public class GunStinger extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.gun_stinger_ammo));
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ArrowNockEvent event = new ArrowNockEvent(playerIn, playerIn.getHeldItem(handIn), handIn, worldIn, Library.hasInventoryItem(playerIn.inventory, ModItems.gun_stinger_ammo));
 		MinecraftForge.EVENT_BUS.post(event);
 		playerIn.setActiveHand(handIn);
 		
@@ -169,8 +169,8 @@ public class GunStinger extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 4, 0));
 		}

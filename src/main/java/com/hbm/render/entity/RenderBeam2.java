@@ -1,37 +1,35 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityLaserBeam;
 import com.hbm.lib.RefStrings;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderBeam2 extends Render<EntityLaserBeam> {
 
 	public static final IRenderFactory<EntityLaserBeam> FACTORY = (RenderManager man) -> {return new RenderBeam2(man);};
 	public static final ResourceLocation beam_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/PlasmaBeam.png");
 	
-	protected RenderBeam2(final RenderManager renderManager) {
+	protected RenderBeam2(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityLaserBeam entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
-		final float radius = 0.12F;
+	public void doRender(EntityLaserBeam entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		float radius = 0.12F;
 		//float radius = 0.06F;
-		final int distance = 4;
-		final Tessellator tessellator = Tessellator.getInstance();
-		final BufferBuilder buf = tessellator.getBuffer();
+		int distance = 4;
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buf = tessellator.getBuffer();
 
 		GL11.glPushMatrix();
 		GlStateManager.disableTexture2D();
@@ -43,9 +41,9 @@ public class RenderBeam2 extends Render<EntityLaserBeam> {
 		GL11.glRotatef(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-entity.rotationPitch, 1.0F, 0.0F, 0.0F);
 
-		final boolean red = true;
-		final boolean green = true;
-		final boolean blue = true;
+		boolean red = true;
+		boolean green = true;
+		boolean blue = true;
 
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		for (float o = 0; o <= radius; o += radius / 8) {
@@ -54,23 +52,23 @@ public class RenderBeam2 extends Render<EntityLaserBeam> {
 				color = 0;
 			buf.pos(0 + o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 + o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			
 			buf.pos(0 - o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 + o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			
 			buf.pos(0 - o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 - o, 0 - o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 - o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 - o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			
 			buf.pos(0 + o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 			buf.pos(0 - o, 0 + o, 0).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 - o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
-			buf.pos(0 + o, 0 + o, distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 - o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
+			buf.pos(0 + o, 0 + o, 0 + distance).color(red ? 1 : color, green ? 1 : color, blue ? 1 : color, 1f).endVertex();
 		}
 		tessellator.draw();
 		GlStateManager.disableBlend();
@@ -79,7 +77,7 @@ public class RenderBeam2 extends Render<EntityLaserBeam> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityLaserBeam entity) {
+	protected ResourceLocation getEntityTexture(EntityLaserBeam entity) {
 		return beam_rl;
 	}
 

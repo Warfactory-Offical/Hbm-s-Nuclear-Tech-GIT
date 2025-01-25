@@ -17,18 +17,18 @@ public class SurveyPacket implements IMessage {
 	public SurveyPacket(){
 	}
 
-	public SurveyPacket(final int rbmkHeight){
+	public SurveyPacket(int rbmkHeight){
 		this.rbmkHeight = rbmkHeight;
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf){
+	public void fromBytes(ByteBuf buf){
 
 		rbmkHeight = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf){
+	public void toBytes(ByteBuf buf){
 		buf.writeInt(rbmkHeight);
 	}
 
@@ -36,12 +36,12 @@ public class SurveyPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final SurveyPacket m, final MessageContext ctx){
+		public IMessage onMessage(SurveyPacket m, MessageContext ctx){
 
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				try {
 					TileEntityRBMKBase.rbmkHeight = m.rbmkHeight;
-				} catch(final Exception x) {
+				} catch(Exception x) {
 				}
 			});
 

@@ -1,16 +1,9 @@
 package com.hbm.render.misc;
 
-import java.nio.FloatBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ClientProxy;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.GLCompat;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -18,6 +11,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RefStrings.MODID)
@@ -34,42 +32,42 @@ public class LensVisibilityHandler {
 		return currentId;
 	}
 	
-	public static int generate(final FloatBuffer matrix){
-		final int id = findId();
-		final float[] mat = new float[16];
+	public static int generate(FloatBuffer matrix){
+		int id = findId();
+		float[] mat = new float[16];
 		matrix.get(mat);
 		matrix.rewind();
-		final LensSpikeInfo i = new LensSpikeInfo(mat);
+		LensSpikeInfo i = new LensSpikeInfo(mat);
 		lensSpikes.put(id, i);
 		return id;
 	}
 	
-	public static void delete(final int id){
-		final LensSpikeInfo i = lensSpikes.get(id);
+	public static void delete(int id){
+		LensSpikeInfo i = lensSpikes.get(id);
 		if(i != null){
 			i.cleanup();
 			lensSpikes.remove(id);
 		}
 	}
 	
-	public static float getVisibility(final int id){
-		final LensSpikeInfo i = lensSpikes.get(id);
+	public static float getVisibility(int id){
+		LensSpikeInfo i = lensSpikes.get(id);
 		if(i != null){
 			return i.visibility;
 		}
 		return 0.0F;
 	}
 	
-	public static float[] getMatrixBuf(final int id){
-		final LensSpikeInfo i = lensSpikes.get(id);
+	public static float[] getMatrixBuf(int id){
+		LensSpikeInfo i = lensSpikes.get(id);
 		if(i != null){
 			return i.modelviewMatrix;
 		}
 		return null;
 	}
 	
-	public static void putMatrixBuf(final int id, final FloatBuffer matrix){
-		final LensSpikeInfo i = lensSpikes.get(id);
+	public static void putMatrixBuf(int id, FloatBuffer matrix){
+		LensSpikeInfo i = lensSpikes.get(id);
 		if(i != null){
 			matrix.get(i.modelviewMatrix);
 			matrix.rewind();
@@ -77,8 +75,8 @@ public class LensVisibilityHandler {
 	}
 	
 	@SubscribeEvent
-	public static void renderLast(final RenderWorldLastEvent event) {
-		for(final LensSpikeInfo i : lensSpikes.values()){
+	public static void renderLast(RenderWorldLastEvent event) {
+		for(LensSpikeInfo i : lensSpikes.values()){
 			i.updateVisibility();
 		}
 	}
@@ -86,10 +84,10 @@ public class LensVisibilityHandler {
 	public static class LensSpikeInfo {
 		public float[] modelviewMatrix;
 		public float visibility = 0.0F;
-		private final int totalFragmentsQuery;
-		private final int fragmentsPassedQuery;
+		private int totalFragmentsQuery;
+		private int fragmentsPassedQuery;
 		
-		public LensSpikeInfo(final float[] matrix) {
+		public LensSpikeInfo(float[] matrix) {
 			this.modelviewMatrix = matrix;
 			totalFragmentsQuery = GLCompat.genQueries();
 			fragmentsPassedQuery = GLCompat.genQueries();
@@ -121,11 +119,11 @@ public class LensVisibilityHandler {
 		}
 		
 		public void updateVisibility(){
-			final int totalDone = GLCompat.getQueryObject(totalFragmentsQuery, GLCompat.GL_QUERY_RESULT_AVAILABLE);
-			final int passedDone = GLCompat.getQueryObject(fragmentsPassedQuery, GLCompat.GL_QUERY_RESULT_AVAILABLE);
+			int totalDone = GLCompat.getQueryObject(totalFragmentsQuery, GLCompat.GL_QUERY_RESULT_AVAILABLE);
+			int passedDone = GLCompat.getQueryObject(fragmentsPassedQuery, GLCompat.GL_QUERY_RESULT_AVAILABLE);
 			if(totalDone != 0 && passedDone != 0){
-				final float total = GLCompat.getQueryObject(totalFragmentsQuery, GLCompat.GL_QUERY_RESULT);
-				final float passed = GLCompat.getQueryObject(fragmentsPassedQuery, GLCompat.GL_QUERY_RESULT);
+				float total = GLCompat.getQueryObject(totalFragmentsQuery, GLCompat.GL_QUERY_RESULT);
+				float passed = GLCompat.getQueryObject(fragmentsPassedQuery, GLCompat.GL_QUERY_RESULT);
 				visibility = passed/total;
 				
 				GlStateManager.colorMask(false, false, false, false);

@@ -7,18 +7,17 @@ import com.hbm.lib.ForgeDirection;
 import com.hbm.modules.ModuleBurnTime;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,10 +64,10 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 			if(burnTime <= 0) {
 				
 				for(int i = 1; i < 3; i++) {
-					final ItemStack input = inventory.getStackInSlot(i);
+					ItemStack input = inventory.getStackInSlot(i);
 					if(input != null) {
 						
-						final int fuel = burnModule.getBurnTime(input);
+						int fuel = burnModule.getBurnTime(input);
 						
 						if(fuel > 0) {
 							this.maxBurnTime = this.burnTime = fuel;
@@ -89,8 +88,8 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 				}
 				
 				if(this.progress >= this.processingTime) {
-					final ItemStack outputs = inventory.getStackInSlot(3);
-					final ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
+					ItemStack outputs = inventory.getStackInSlot(3);
+					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
 					ItemStack copy = outputs;
 		
 					if(outputs == ItemStack.EMPTY) {
@@ -109,7 +108,7 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 				this.progress = 0;
 			}
 			
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("maxBurnTime", this.maxBurnTime);
 			data.setInteger("burnTime", this.burnTime);
 			data.setInteger("progress", this.progress);
@@ -119,10 +118,10 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 		} else {
 			
 			if(this.progress > 0) {
-				final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
-				final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				
-				final double offset = this.progress % 2 == 0 ? 1 : 0.5;
+				double offset = this.progress % 2 == 0 ? 1 : 0.5;
 				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5 - dir.offsetX * offset - rot.offsetX * 0.1875, pos.getY() + 2, pos.getZ() + 0.5 - dir.offsetZ * offset - rot.offsetZ * 0.1875, 0.0, 0.01, 0.0);
 				
 				if(this.progress % 5 == 0) {
@@ -133,7 +132,7 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		this.maxBurnTime = nbt.getInteger("maxBurnTime");
 		this.burnTime = nbt.getInteger("burnTime");
 		this.progress = nbt.getInteger("progress");
@@ -146,7 +145,7 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 		if(this.burnTime <= 0) return false;
 		if(inventory.getStackInSlot(0).isEmpty()) return false;
 		
-		final ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
+		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(0));
 		
 		if(result == null || result.isEmpty()) return false;
 		if(inventory.getStackInSlot(3).isEmpty()) return true;
@@ -160,12 +159,12 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
 		return new int[] { 0, 1, 2, 3 };
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
 		
 		if(i == 0)
 			return FurnaceRecipes.instance().getSmeltingResult(itemStack) != null;
@@ -177,12 +176,12 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	}
 
 	@Override
-	public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
+	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
 		return i == 3;
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.maxBurnTime = nbt.getInteger("maxBurnTime");
@@ -191,7 +190,7 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("maxBurnTime", maxBurnTime);
@@ -201,13 +200,13 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	}
 
 	@Override
-	public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new ContainerFurnaceIron(player.inventory, this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new GUIFurnaceIron(player.inventory, this);
 	}
 	

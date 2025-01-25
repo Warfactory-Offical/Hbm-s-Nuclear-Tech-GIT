@@ -1,9 +1,5 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.inventory.container.ContainerSoyuzLauncher;
@@ -11,7 +7,6 @@ import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxButtonPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntitySoyuzLauncher;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,13 +14,16 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUISoyuzLauncher extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_soyuz.png");
-	private final TileEntitySoyuzLauncher launcher;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_soyuz.png");
+	private TileEntitySoyuzLauncher launcher;
 	
-	public GUISoyuzLauncher(final InventoryPlayer invPlayer, final TileEntitySoyuzLauncher tedf) {
+	public GUISoyuzLauncher(InventoryPlayer invPlayer, TileEntitySoyuzLauncher tedf) {
 		super(new ContainerSoyuzLauncher(invPlayer, tedf));
 		launcher = tedf;
 		
@@ -34,7 +32,7 @@ public class GUISoyuzLauncher extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 36, 16, 52, launcher.tanks[0], ModForgeFluids.kerosene);
@@ -50,7 +48,7 @@ public class GUISoyuzLauncher extends GuiInfoContainer {
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+	protected void mouseClicked(int x, int y, int i) throws IOException {
     	super.mouseClicked(x, y, i);
 		
     	if(guiLeft + 88 <= x && guiLeft + 88 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
@@ -73,8 +71,8 @@ public class GUISoyuzLauncher extends GuiInfoContainer {
     }
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.launcher.hasCustomInventoryName() ? this.launcher.getInventoryName() : I18n.format(this.launcher.getInventoryName());
+	protected void drawGuiContainerForegroundLayer( int i, int j) {
+		String name = this.launcher.hasCustomInventoryName() ? this.launcher.getInventoryName() : I18n.format(this.launcher.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -86,37 +84,37 @@ public class GUISoyuzLauncher extends GuiInfoContainer {
 		if(cents.length() == 1)
 			cents += "0";
 		
-		final float scale = 0.5F;
+		float scale = 0.5F;
 		GL11.glScalef(scale, scale, 1);
 		this.fontRenderer.drawString(secs + ":" + cents, (int)(153.5F / scale), (int)(37.5F / scale), 0xff0000);
 		GL11.glScalef(1/scale, 1/scale, 1);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		final int i = (int)launcher.getPowerScaled(34);
+		int i = (int)launcher.getPowerScaled(34);
 		drawTexturedModalRect(guiLeft + 49, guiTop + 106 - i, 194, 52 - i, 6, i);
 		
 		drawTexturedModalRect(guiLeft + 61, guiTop + 17, 176 + (launcher.hasRocket() ? 18 : 0), 0, 18, 18);
-		final int j = launcher.designator();
+		int j = launcher.designator();
 		
 		if(j > 0)
 			drawTexturedModalRect(guiLeft + 61, guiTop + 35, 176 + (j - 1) * 18, 0, 18, 18);
 		
-		final int k = launcher.mode;
+		int k = launcher.mode;
 		drawTexturedModalRect(guiLeft + 88, guiTop + 17 + k * 18, 176, 18 + k * 18, 18, 18);
 		
-		final int l = launcher.orbital();
+		int l = launcher.orbital();
 		
 		if(l > 0)
 			drawTexturedModalRect(guiLeft + 115, guiTop + 35, 176 + (l - 1) * 18, 0, 18, 18);
 		
-		final int m = launcher.satellite();
+		int m = launcher.satellite();
 		
 		if(m > 0)
 			drawTexturedModalRect(guiLeft + 115, guiTop + 17, 176 + (m - 1) * 18, 0, 18, 18);

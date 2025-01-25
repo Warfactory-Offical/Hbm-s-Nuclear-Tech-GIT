@@ -1,16 +1,16 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.energymk2.IBatteryItem;
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.inventory.PressRecipes;
 import com.hbm.items.machine.ItemStamp;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEPressPacket;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IBatteryItem;
-import api.hbm.energy.IEnergyUser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityMachineEPress extends TileEntityMachineBase implements ITickable, IEnergyUser {
+public class TileEntityMachineEPress extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 
 	public int progress = 0;
 	public long power = 0;
@@ -42,7 +42,7 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 		return "container.epress";
 	}
 
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -51,33 +51,35 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack stack){
+	public boolean isItemValidForSlot(int i, ItemStack stack){
 		if(stack.getItem() instanceof ItemStamp && i == 1)
 			return true;
 		
 		if(i == 0 && stack.getItem() instanceof IBatteryItem)
 			return true;
-
-        return !(stack.getItem() instanceof ItemStamp) && i == 2;
-    }
+		
+		if(!(stack.getItem() instanceof ItemStamp) && i == 2)
+			return true;
+		return false;
+	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(EnumFacing e){
 		return e.ordinal() == 0 ? new int[] { 3 } : new int[]{ 0, 1, 2 };
 	}
 	
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
+	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
 		return slot == 3;
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("progress", progress);
 		compound.setLong("power", power);
 		compound.setBoolean("ret", isRetracting);
@@ -86,7 +88,7 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		progress = compound.getInteger("progress");
 		power = compound.getInteger("power");
 		isRetracting = compound.getBoolean("ret");
@@ -99,15 +101,16 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	public void update() {
 		if(!world.isRemote)
 		{
-			this.updateStandardConnections(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
 			power = Library.chargeTEFromItems(inventory, 0, power, maxPower);
 			
-			if(power >= 100 && !(world.isBlockPowered(pos))) {
+			if(power >= 100 && !(world.isBlockIndirectlyGettingPowered(pos) > 0)) {
 
-				final int speed = 25;
+				int speed = 25;
 				
 				if(!inventory.getStackInSlot(1).isEmpty() && !inventory.getStackInSlot(2).isEmpty()) {
-					final ItemStack stack = PressRecipes.getPressResult(inventory.getStackInSlot(2).copy(), inventory.getStackInSlot(1).copy());
+					ItemStack stack = PressRecipes.getPressResult(inventory.getStackInSlot(2).copy(), inventory.getStackInSlot(1).copy());
 					if(stack != null &&
 							(inventory.getStackInSlot(3).isEmpty() ||
 							(inventory.getStackInSlot(3).getItem() == stack.getItem() &&
@@ -124,8 +127,8 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 							else
 								inventory.getStackInSlot(3).grow(stack.getCount());
 							
-							inventory.getStackInSlot(2).shrink(1);
-                            if(inventory.getStackInSlot(2).isEmpty())
+							inventory.getStackInSlot(2).shrink(1);;
+							if(inventory.getStackInSlot(2).isEmpty())
 								inventory.setStackInSlot(2, ItemStack.EMPTY);
 
 							if(inventory.getStackInSlot(1).getMaxDamage() > 0){
@@ -192,11 +195,11 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 		
 	}
 	
-	public long getPowerScaled(final int i) {
+	public long getPowerScaled(int i) {
 		return (power * i) / maxPower;
 	}
 
-	public int getProgressScaled(final int i) {
+	public int getProgressScaled(int i) {
 		return (progress * i) / maxProgress;
 	}
 	
@@ -213,7 +216,7 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 		
 	}
@@ -229,12 +232,12 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return super.getCapability(capability, facing);
 	}
 }

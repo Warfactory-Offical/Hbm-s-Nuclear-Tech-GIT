@@ -1,15 +1,12 @@
 package com.hbm.tileentity.machine;
 
 import api.hbm.block.IToolable.ToolType;
-import com.hbm.items.ModItems;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.items.ModItems;
-import com.hbm.items.tool.ItemTooling;
 import com.hbm.items.tool.ItemKeyPin;
+import com.hbm.items.tool.ItemTooling;
 import com.hbm.lib.HBMSoundHandler;
-import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,21 +24,21 @@ public class TileEntityLockableBase extends TileEntity {
 		return isLocked;
 	}
 
-	public boolean canLock(final EntityPlayer player, final EnumHand hand, final EnumFacing facing) {
+	public boolean canLock(EntityPlayer player, EnumHand hand, EnumFacing facing) {
 		return true;
 	}
 
 	public void lock() {
 		
 		if(lock == 0) {
-			MainRegistry.logger.error("A block has been set to locked state before setting pins, this should not happen and may cause errors! " + this);
+			MainRegistry.logger.error("A block has been set to locked state before setting pins, this should not happen and may cause errors! " + this.toString());
 		}
-		if(!isLocked)
+		if(isLocked == false)
 			markDirty();
 		isLocked = true;
 	}
 	
-	public void setPins(final int pins) {
+	public void setPins(int pins) {
 		if(lock != pins)
 			markDirty();
 		lock = pins;
@@ -51,7 +48,7 @@ public class TileEntityLockableBase extends TileEntity {
 		return lock;
 	}
 	
-	public void setMod(final double mod) {
+	public void setMod(double mod) {
 		if(lockMod != mod)
 			markDirty();
 		lockMod = mod;
@@ -62,7 +59,7 @@ public class TileEntityLockableBase extends TileEntity {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		lock = compound.getInteger("lock");
 		isLocked = compound.getBoolean("isLocked");
 		lockMod = compound.getDouble("lockMod");
@@ -70,37 +67,38 @@ public class TileEntityLockableBase extends TileEntity {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("lock", lock);
 		compound.setBoolean("isLocked", isLocked);
 		compound.setDouble("lockMod", lockMod);
 		return super.writeToNBT(compound);
 	}
 	
-	public boolean canAccess(final EntityPlayer player) {
-		
-		if(player == null) { //!isLocked || 
-			return false;
-		} else {
-			final ItemStack stack = player.getHeldItemMainhand();
-			
-			if(stack.getItem() instanceof ItemKeyPin && ItemKeyPin.getPins(stack) == this.lock) {
-	        	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockOpen, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return true;
-			}
-			
-			if(stack.getItem() == ModItems.key_red) {
-	        	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockOpen, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return true;
-			}
-			
-			return tryPick(player);
+	public boolean canAccess(EntityPlayer player) {
+		if(!isLocked) {
+			return true;
 		}
+		if(player == null) { //!isLocked ||
+			return false;
+		}
+
+		ItemStack stack = player.getHeldItemMainhand();
+
+		if(stack.getItem() instanceof ItemKeyPin && ItemKeyPin.getPins(stack) == this.lock) {
+			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockOpen, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return true;
+		}
+
+		if(stack.getItem() == ModItems.key_red) {
+			world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockOpen, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return true;
+		}
+		return tryPick(player);
 	}
 
-	public static int hasLockPickTools(final EntityPlayer player){
-		final ItemStack stackR = player.getHeldItemMainhand();
-		final ItemStack stackL = player.getHeldItemOffhand();
+	public static int hasLockPickTools(EntityPlayer player){
+		ItemStack stackR = player.getHeldItemMainhand();
+		ItemStack stackL = player.getHeldItemOffhand();
 		if(stackR == null || stackL == null) return -1;
 		if(stackR.getItem() == ModItems.pin){
 			if(stackL.getItem() instanceof ItemTooling && ((ItemTooling)stackL.getItem()).getType() == ToolType.SCREWDRIVER){
@@ -114,10 +112,10 @@ public class TileEntityLockableBase extends TileEntity {
 		return -1;
 	}	
 	
-	public boolean tryPick(final EntityPlayer player) {
+	public boolean tryPick(EntityPlayer player) {
 
 		boolean canPick = false;
-		final int hand = hasLockPickTools(player);
+		int hand = hasLockPickTools(player);
 		double chanceOfSuccess = this.lockMod * 100;
 		
 		if(hand == 1) {
@@ -133,7 +131,7 @@ public class TileEntityLockableBase extends TileEntity {
 			if(ArmorUtil.checkArmorPiece(player, ModItems.jackt, 2) || ArmorUtil.checkArmorPiece(player, ModItems.jackt2, 2))
 				chanceOfSuccess *= 100D;
 			
-			final double rand = player.world.rand.nextDouble() * 100;
+			double rand = player.world.rand.nextDouble() * 100;
 			
 			if(chanceOfSuccess > rand) {
         		world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.pinUnlock, SoundCategory.BLOCKS, 1.0F, 1.0F);

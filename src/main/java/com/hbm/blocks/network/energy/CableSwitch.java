@@ -3,7 +3,6 @@ package com.hbm.blocks.network.energy;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.tileentity.network.energy.TileEntityCableSwitch;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -23,7 +22,7 @@ public class CableSwitch extends BlockContainer {
 
 	public static final PropertyBool STATE = PropertyBool.create("state");
 	
-	public CableSwitch(final Material materialIn, final String s) {
+	public CableSwitch(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,18 +31,18 @@ public class CableSwitch extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityCableSwitch();
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			final boolean isOn = state.getValue(STATE);
+			boolean isOn = state.getValue(STATE);
 			if(!isOn) {
 				world.setBlockState(pos, state.withProperty(STATE, true), 2);
 				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.reactorStart, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -60,21 +59,21 @@ public class CableSwitch extends BlockContainer {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, STATE);
+		return new BlockStateContainer(this, new IProperty[] { STATE });
 	}
 	
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(STATE).booleanValue() ? 1 : 0;
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(STATE).booleanValue() == true ? 1 : 0;
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		return this.getDefaultState().withProperty(STATE, meta == 1);
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(STATE, meta == 1 ? true : false);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

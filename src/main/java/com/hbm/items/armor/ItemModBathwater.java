@@ -18,12 +18,12 @@ import java.util.List;
 
 public class ItemModBathwater extends ItemArmorMod {
 
-	public ItemModBathwater(final String s) {
+	public ItemModBathwater(String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		String color = "";
 		if(this == ModItems.bathwater){
 			color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.LIGHT_PURPLE);
@@ -42,7 +42,7 @@ public class ItemModBathwater extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		String color = "";
 		if(this == ModItems.bathwater){
 			color = "" + (System.currentTimeMillis() % 1000 < 500 ? TextFormatting.BLUE : TextFormatting.LIGHT_PURPLE);
@@ -59,13 +59,13 @@ public class ItemModBathwater extends ItemArmorMod {
 	}
 	
 	@Override
-	public void modDamage(final LivingHurtEvent event, final ItemStack armor) {
+	public void modDamage(LivingHurtEvent event, ItemStack armor) {
 		
 		if(!event.getEntityLiving().world.isRemote) {
 
 			if(event.getSource() instanceof EntityDamageSource) {
 				
-				final Entity attacker = event.getSource().getTrueSource();
+				Entity attacker = ((EntityDamageSource)event.getSource()).getTrueSource();
 				
 				if(attacker instanceof EntityLivingBase) {
 					

@@ -6,12 +6,12 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 
 public class ArmorHat extends ArmorModel {
 
-	public ArmorHat(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
+	public ArmorHat(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn, s);
 	}
 	
 	@Override
-	public boolean onEntityItemUpdate(final EntityItem entityItem) {
+	public boolean onEntityItemUpdate(EntityItem entityItem) {
 		entityItem.setDead();
 		return true;
 	}

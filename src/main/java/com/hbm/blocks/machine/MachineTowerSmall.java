@@ -1,32 +1,31 @@
 package com.hbm.blocks.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hbm.forgefluid.ModForgeFluids;
-import com.hbm.util.I18nUtil;
-import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.BlockDummyable;
+import com.hbm.blocks.ILookOverlay;
+import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityTowerSmall;
-
-import net.minecraft.util.math.BlockPos;
+import com.hbm.util.I18nUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MachineTowerSmall extends BlockDummyable implements ILookOverlay {
 
-	public MachineTowerSmall(final Material mat, final String s) {
+	public MachineTowerSmall(Material mat, String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
+	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
 		
 		if(meta >= 12)
 			return new TileEntityTowerSmall();
@@ -48,31 +47,33 @@ public class MachineTowerSmall extends BlockDummyable implements ILookOverlay {
 	}
 
 	@Override
-	public void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
+	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 		
 		for(int i = 2; i <= 6; i++) {
-			final ForgeDirection dr2 = ForgeDirection.getOrientation(i);
+			ForgeDirection dr2 = ForgeDirection.getOrientation(i);
 			this.makeExtra(world, x + dr2.offsetX * 2, y, z + dr2.offsetZ * 2);
 		}
 	}
 
 	@Override
-	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
-		final int[] pos = this.findCore(world, x, y, z);
+	public void printHook(Pre event, World world, int x, int y, int z) {
+		int[] pos = this.findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
 		
-		final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+		TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 		
-		if(!(te instanceof TileEntityTowerSmall chungus))
+		if(!(te instanceof TileEntityTowerSmall))
 			return;
-
-        final List<String> text = new ArrayList();
+		
+		TileEntityTowerSmall chungus = (TileEntityTowerSmall) te;
+		
+		List<String> text = new ArrayList();
 
 		text.add("§a-> §r" + ModForgeFluids.spentsteam.getLocalizedName(new FluidStack(ModForgeFluids.spentsteam, 1)) + ": " + chungus.tanks[0].getFluidAmount() + "/" + chungus.tanks[0].getCapacity() + "mB");
 		text.add("§c<- §r" + FluidRegistry.WATER.getLocalizedName(new FluidStack(FluidRegistry.WATER, 1)) + ": " + chungus.tanks[1].getFluidAmount() + "/" + chungus.tanks[1].getCapacity() + "mB");

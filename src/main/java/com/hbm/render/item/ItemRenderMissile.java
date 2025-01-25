@@ -1,19 +1,17 @@
 package com.hbm.render.item;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.weapon.ItemCustomMissile;
 import com.hbm.render.misc.MissileMultipart;
 import com.hbm.render.misc.MissilePronter;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderMissile extends TEISRBase {
 
 	@Override
-	public void renderByItem(final ItemStack item) {
-		final MissileMultipart missile = MissileMultipart.loadFromStruct(ItemCustomMissile.getStruct(item));
+	public void renderByItem(ItemStack item) {
+		MissileMultipart missile = MissileMultipart.loadFromStruct(ItemCustomMissile.getStruct(item));
 		if(missile == null)
 			return;
 		GL11.glPushMatrix();
@@ -27,7 +25,7 @@ public class ItemRenderMissile extends TEISRBase {
 		case FIXED:
 		case HEAD:
 			
-			final double s = 0.2;
+			double s = 0.2;
 			GL11.glScaled(s, s, s);
 			GL11.glTranslated(2, 0, 0);
 			
@@ -42,8 +40,8 @@ public class ItemRenderMissile extends TEISRBase {
 			if(height == 0D)
 				height = 4D;
 			
-			final double size = 20;
-			final double scale = size / height;
+			double size = 20;
+			double scale = size / height;
 			
 			GL11.glTranslated(height / 2 * scale, 0, 0);
 			GL11.glTranslated(-9.2, 0.2, 0);

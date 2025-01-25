@@ -30,7 +30,7 @@ public class Gun75BoltFactory {
 
 	public static GunConfiguration getBolterConfig() {
 
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 2;
 		config.roundsPerCycle = 1;
@@ -87,7 +87,7 @@ public class Gun75BoltFactory {
 	static float inaccuracy = 0.5F;
 	public static BulletConfiguration get75BoltConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_75bolt;
 		bullet.ammoCount = 30;
@@ -100,13 +100,14 @@ public class Gun75BoltFactory {
 		bullet.bHurt = new IBulletHurtBehavior() {
 
 			@Override
-			public void behaveEntityHurt(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHurt(EntityBulletBase bullet, Entity hit) {
 
 				if(bullet.world.isRemote)
 					return;
 
-				if(hit instanceof EntityLivingBase living) {
-                    float f = living.getHealth();
+				if(hit instanceof EntityLivingBase) {
+					EntityLivingBase living = (EntityLivingBase) hit;
+					float f = living.getHealth();
 					f = Math.max(0, f - 2);
 					living.setHealth(f);
 
@@ -121,7 +122,7 @@ public class Gun75BoltFactory {
 	
 	public static BulletConfiguration get75BoltIncConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_75bolt_incendiary;
 		bullet.ammoCount = 30;
@@ -134,7 +135,7 @@ public class Gun75BoltFactory {
 		bullet.incendiary = 5;
 		bullet.doesPenetrate = false;
 
-		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
+		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
 		eff.getCurativeItems().clear();
 		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
@@ -142,9 +143,9 @@ public class Gun75BoltFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
+			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
 
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaburst");
 				data.setString("mode", "flame");
 				data.setInteger("count", 15);
@@ -159,7 +160,7 @@ public class Gun75BoltFactory {
 
 	public static BulletConfiguration get75BoltHEConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_75bolt_he;
 		bullet.ammoCount = 30;

@@ -1,13 +1,9 @@
 package com.hbm.blocks.generic;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.main.MainRegistry;
 import com.hbm.interfaces.IItemHazard;
+import com.hbm.main.MainRegistry;
 import com.hbm.modules.ItemHazardModule;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -19,11 +15,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Random;
+
 public class BlockMushHuge extends Block implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public BlockMushHuge(final Material mat, final String s) {
+	public BlockMushHuge(Material mat, String s) {
 		super(mat);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -37,25 +35,25 @@ public class BlockMushHuge extends Block implements IItemHazard {
 	public ItemHazardModule getModule() {
 		return module;
 	}
-	
+
 	@Override
-	public int quantityDropped(final IBlockState state, final int fortune, final Random rand) {
+	public int quantityDropped(IBlockState state, int fortune, Random rand) {
 		int i = rand.nextInt(10) - 7;
 		if(i < 0) {
 			i = 0;
 		}
 		return i;
 	}
-	
+
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(ModBlocks.mush);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(final World worldIn, final BlockPos pos, final IBlockState state) {
-		return ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.mush), 1, 0);
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(Item.getItemFromBlock(ModBlocks.mush), 1, 0);
 	}
-	
+
 }

@@ -18,7 +18,7 @@ public class SAFERecipeHandler implements IRecipeCategory<SAFERecipe> {
 	
 	protected final IDrawable background;
 	
-	public SAFERecipeHandler(final IGuiHelper help) {
+	public SAFERecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 32, 32, 111, 22);
 	}
 	
@@ -43,8 +43,8 @@ public class SAFERecipeHandler implements IRecipeCategory<SAFERecipe> {
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final SAFERecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, SAFERecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 2, 2);
 		guiItemStacks.init(1, false, 91, 2);

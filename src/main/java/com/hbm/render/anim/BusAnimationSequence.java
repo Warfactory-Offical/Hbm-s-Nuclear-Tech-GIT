@@ -1,9 +1,9 @@
 package com.hbm.render.anim;
 
+import com.hbm.render.anim.BusAnimationKeyframe.InterpolationType;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.hbm.render.anim.BusAnimationKeyframe.InterpolationType;
 
 //the actual bus, a sequence of keyframes with their own behavior and such
 public class BusAnimationSequence {
@@ -17,11 +17,11 @@ public class BusAnimationSequence {
 		SCALE
 	}
 
-	private final List<BusAnimationKeyframe> keyframes = new ArrayList<>();
+	private List<BusAnimationKeyframe> keyframes = new ArrayList<>();
 	public EnumTransformation transformationType;
 
 	//appends a keyframe at the end of the sequence
-	public BusAnimationSequence addKeyframe(final BusAnimationKeyframe keyframe) {
+	public BusAnimationSequence addKeyframe(BusAnimationKeyframe keyframe) {
 
 		keyframes.add(keyframe);
 
@@ -29,9 +29,9 @@ public class BusAnimationSequence {
 	}
 
 	//all transformation data is absolute, additive transformations have not yet been implemented
-	public double[] getTransformation(final int millis) {
+	public double[] getTransformation(int millis) {
 
-		final BusAnimationKeyframe frame = getFrameAtTime(millis);
+		BusAnimationKeyframe frame = getFrameAtTime(millis);
 
 		if(frame == null)
 			return null;
@@ -43,27 +43,27 @@ public class BusAnimationSequence {
 		//if this is the first frame, the "previous" values are 0
 		double[] previous = new double[] {0, 0, 0};
 
-		final BusAnimationKeyframe lastFrame = getPreviousFrame(frame);
+		BusAnimationKeyframe lastFrame = getPreviousFrame(frame);
 
 		if(lastFrame != null)
 			previous = lastFrame.toArray();
 
 		//the time elapsed during the frame is the total current time minus the starting timie of the current frame
-		final int frameTime = millis - getStartingTime(frame);
-		final double interpolation = (double)frameTime / (double)frame.duration;
+		int frameTime = millis - getStartingTime(frame);
+		double interpolation = (double)frameTime / (double)frame.duration;
 
-		final double interX = (frame.x - previous[0]) * interpolation + previous[0];
-		final double interY = (frame.y - previous[1]) * interpolation + previous[1];
-		final double interZ = (frame.z - previous[2]) * interpolation + previous[2];
+		double interX = (frame.x - previous[0]) * interpolation + previous[0];
+		double interY = (frame.y - previous[1]) * interpolation + previous[1];
+		double interZ = (frame.z - previous[2]) * interpolation + previous[2];
 
 		return new double[] {interX, interY, interZ};
 	}
 
-	public BusAnimationKeyframe getFrameAtTime(final int millis) {
+	public BusAnimationKeyframe getFrameAtTime(int millis) {
 
 		int time = 0;
 
-		for(final BusAnimationKeyframe frame : keyframes) {
+		for(BusAnimationKeyframe frame : keyframes) {
 			time += frame.duration;
 
 			if(millis < time)
@@ -73,9 +73,9 @@ public class BusAnimationSequence {
 		return null;
 	}
 
-	public BusAnimationKeyframe getPreviousFrame(final BusAnimationKeyframe frame) {
+	public BusAnimationKeyframe getPreviousFrame(BusAnimationKeyframe frame) {
 
-		final int index = keyframes.indexOf(frame);
+		int index = keyframes.indexOf(frame);
 
 		if(index == 0)
 			return null;
@@ -83,11 +83,11 @@ public class BusAnimationSequence {
 		return keyframes.get(index - 1);
 	}
 
-	public int getStartingTime(final BusAnimationKeyframe start) {
+	public int getStartingTime(BusAnimationKeyframe start) {
 
 		int time = 0;
 
-		for(final BusAnimationKeyframe frame : keyframes) {
+		for(BusAnimationKeyframe frame : keyframes) {
 
 			if(frame == start)
 				break;
@@ -102,7 +102,7 @@ public class BusAnimationSequence {
 
 		int time = 0;
 
-		for(final BusAnimationKeyframe frame : keyframes) {
+		for(BusAnimationKeyframe frame : keyframes) {
 			time += frame.duration;
 		}
 

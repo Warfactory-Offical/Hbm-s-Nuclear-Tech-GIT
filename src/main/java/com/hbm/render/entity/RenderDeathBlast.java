@@ -1,14 +1,11 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.logic.EntityDeathBlast;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ClientProxy;
 import com.hbm.render.amlfrom1710.AdvancedModelLoader;
 import com.hbm.render.amlfrom1710.IModelCustom;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,6 +16,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderDeathBlast extends Render<EntityDeathBlast> {
 
@@ -26,12 +24,12 @@ public class RenderDeathBlast extends Render<EntityDeathBlast> {
 	
 	private static final IModelCustom sphere = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/sphere.obj"));
 	
-	protected RenderDeathBlast(final RenderManager renderManager) {
+	protected RenderDeathBlast(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityDeathBlast entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityDeathBlast entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		if(!ClientProxy.renderingConstant)
 			return;
 		GL11.glPushMatrix();
@@ -48,10 +46,10 @@ public class RenderDeathBlast extends Render<EntityDeathBlast> {
 	        
 	        GlStateManager.color(1, 0, 0);
 	        
-	        final Vec3 vector = Vec3.createVectorHelper(0.5D, 0, 0);
+	        Vec3 vector = Vec3.createVectorHelper(0.5D, 0, 0);
 	
-	        final Tessellator tessellator = Tessellator.getInstance();
-	        final BufferBuilder buf = tessellator.getBuffer();
+	        Tessellator tessellator = Tessellator.getInstance();
+	        BufferBuilder buf = tessellator.getBuffer();
 			RenderHelper.disableStandardItemLighting();
 			
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
@@ -85,7 +83,7 @@ public class RenderDeathBlast extends Render<EntityDeathBlast> {
         renderOrb(entity, x, y, z, entityYaw, partialTicks);
 	}
 	
-	public void renderOrb(final Entity entity, final double x, final double y, final double z, final float p_76986_8_, final float p_76986_9_) {
+	public void renderOrb(Entity entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
 		GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y, (float)z);
         GlStateManager.disableLighting();
@@ -94,7 +92,7 @@ public class RenderDeathBlast extends Render<EntityDeathBlast> {
         GlStateManager.alphaFunc(GL11.GL_GEQUAL, 0);
 		
 		float scale = 10 - 10F * (((float)entity.ticksExisted) / ((float)EntityDeathBlast.maxAge));
-		final float alpha = (((float)entity.ticksExisted) / ((float)EntityDeathBlast.maxAge));
+		float alpha = (((float)entity.ticksExisted) / ((float)EntityDeathBlast.maxAge));
 		
 		if(scale < 0)
 			scale = 0;
@@ -126,10 +124,10 @@ public class RenderDeathBlast extends Render<EntityDeathBlast> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
+	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityDeathBlast entity) {
+	protected ResourceLocation getEntityTexture(EntityDeathBlast entity) {
 		return null;
 	}
 

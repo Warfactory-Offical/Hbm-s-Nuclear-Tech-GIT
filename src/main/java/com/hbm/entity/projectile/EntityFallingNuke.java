@@ -27,12 +27,12 @@ public class EntityFallingNuke extends EntityThrowable {
 	float sol;
 	float euph;
 	
-	public EntityFallingNuke(final World worldIn) {
+	public EntityFallingNuke(World worldIn) {
 		super(worldIn);
 		this.ignoreFrustumCheck = true;
 	}
 	
-	public EntityFallingNuke(final World p_i1582_1_, final float tnt, final float nuke, final float hydro, final float bale, final float dirty, final float schrab, final float sol, final float euph) {
+	public EntityFallingNuke(World p_i1582_1_, float tnt, float nuke, float hydro, float bale, float dirty, float schrab, float sol, float euph) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		
@@ -96,13 +96,13 @@ public class EntityFallingNuke extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(final RayTraceResult result) {
+	protected void onImpact(RayTraceResult result) {
 		
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(final double distance)
+    public boolean isInRangeToRenderDist(double distance)
     {
         return distance < 25000;
     }

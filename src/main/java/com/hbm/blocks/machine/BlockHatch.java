@@ -2,7 +2,6 @@ package com.hbm.blocks.machine;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.machine.TileEntityHatch;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,7 +12,7 @@ import net.minecraft.world.World;
 
 public class BlockHatch extends BlockContainer {
 
-	public BlockHatch(final Material materialIn, final String s) {
+	public BlockHatch(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -22,13 +21,13 @@ public class BlockHatch extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityHatch();
 	}
 	
-	public void setControllerPos(final World world, final BlockPos pos, final BlockPos controller) {
+	public void setControllerPos(World world, BlockPos pos, BlockPos controller) {
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
 		if(te != null && te instanceof TileEntityHatch) {
 			((TileEntityHatch)te).setControllerPos(controller);
@@ -37,7 +36,7 @@ public class BlockHatch extends BlockContainer {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 

@@ -3,7 +3,6 @@ package com.hbm.blocks.network.energy;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.tileentity.network.energy.TileEntityCableSwitch;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -15,14 +14,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class CableDetector extends BlockContainer {
 
 	public static final PropertyBool STATE = PropertyBool.create("state");
 	
-	public CableDetector(final Material materialIn, final String s) {
+	public CableDetector(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -31,13 +29,13 @@ public class CableDetector extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityCableSwitch();
 	}
 	
 	@Override
-	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
-		final boolean on = world.isBlockPowered(pos);
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		boolean on = world.isBlockIndirectlyGettingPowered(pos) > 0;
 		if(on) {
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(STATE, true), 2);
 			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.reactorStart, SoundCategory.BLOCKS, 1.0F, 0.3F);
@@ -48,21 +46,21 @@ public class CableDetector extends BlockContainer {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, STATE);
+		return new BlockStateContainer(this, new IProperty[] { STATE });
 	}
 	
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(STATE).booleanValue() ? 1 : 0;
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(STATE).booleanValue() == true ? 1 : 0;
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		return this.getDefaultState().withProperty(STATE, meta == 1);
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(STATE, meta == 1 ? true : false);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 }

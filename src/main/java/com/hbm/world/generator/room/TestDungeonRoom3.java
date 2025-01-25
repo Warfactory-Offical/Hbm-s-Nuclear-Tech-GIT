@@ -14,11 +14,11 @@ import net.minecraft.world.World;
 
 public class TestDungeonRoom3 extends CellularDungeonRoom {
 
-	public TestDungeonRoom3(final CellularDungeon parent) {
+	public TestDungeonRoom3(CellularDungeon parent) {
 		super(parent);
 	}
 
-	public void generateMain(final World world, final int x, final int y, final int z) {
+	public void generateMain(World world, int x, int y, int z) {
 		
 		super.generateMain(world, x, y, z);
 		DungeonToolbox.generateBox(world, x + parent.width / 2 - 2, y + 1, z + parent.width / 2 - 2, 5, 4, 5, ModBlocks.deco_lead.getDefaultState());
@@ -26,7 +26,7 @@ public class TestDungeonRoom3 extends CellularDungeonRoom {
 		DungeonToolbox.generateBox(world, x + parent.width / 2 - 1, y + 4, z + parent.width / 2 - 1, 3, 1, 3, Blocks.AIR.getDefaultState());
 		
 		world.setBlockState(new BlockPos(x + parent.width / 2, y + 1, z + parent.width / 2), Blocks.MOB_SPAWNER.getDefaultState(), 2);
-        final TileEntityMobSpawner tileentitymobspawner2 = (TileEntityMobSpawner)world.getTileEntity(new BlockPos(x + parent.width / 2, y + 1, z + parent.width / 2));
+        TileEntityMobSpawner tileentitymobspawner2 = (TileEntityMobSpawner)world.getTileEntity(new BlockPos(x + parent.width / 2, y + 1, z + parent.width / 2));
 
         if (tileentitymobspawner2 != null)
         {

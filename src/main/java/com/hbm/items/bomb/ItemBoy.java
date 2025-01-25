@@ -11,16 +11,16 @@ import java.util.List;
 
 public class ItemBoy extends ItemHazard {
 
-	public ItemBoy(final float radiation, final String s) {
+	public ItemBoy(float radiation, String s) {
 		super(radiation, s);
 		this.setCreativeTab(MainRegistry.nukeTab);
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.usedin"));
 		list.add(" "+ I18nUtil.resolveKey("tile.nuke_boy.name"));
-		//super.addInformation(stack, world, list, flagIn);
+		super.addInformation(stack, world, list, flagIn);
 	}
 	
 }

@@ -24,7 +24,7 @@ public class AnvilRecipeHandler implements IRecipeCategory<AnvilRecipe> {
 	
 	private AnvilRecipe currentDrawHack = null;
 	
-	public AnvilRecipeHandler(final IGuiHelper help){
+	public AnvilRecipeHandler(IGuiHelper help){
 		background = help.createDrawable(gui_rl, 0, 0, 200, 144);
 	}
 	
@@ -49,7 +49,7 @@ public class AnvilRecipeHandler implements IRecipeCategory<AnvilRecipe> {
 	}
 	
 	@Override
-	public void drawExtras(final Minecraft minecraft){
+	public void drawExtras(Minecraft minecraft){
 		if(currentDrawHack != null){
 			if(currentDrawHack.tierUpper == -1){
 				minecraft.fontRenderer.drawString(I18nUtil.resolveKey("desc.tier", currentDrawHack.tierLower), 84, 40, 0x40404040);
@@ -78,9 +78,9 @@ public class AnvilRecipeHandler implements IRecipeCategory<AnvilRecipe> {
 	}
 	
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final AnvilRecipe recipe, final IIngredients ingredients){
+	public void setRecipe(IRecipeLayout recipeLayout, AnvilRecipe recipe, IIngredients ingredients){
 		currentDrawHack = recipe;
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		for(int i = 0; i < recipe.outputs.size(); i ++){
 			guiItemStacks.init(i, false, 18*(i%4) + 128, 18*(i/4));
 		}
@@ -91,7 +91,7 @@ public class AnvilRecipeHandler implements IRecipeCategory<AnvilRecipe> {
 		recipeLayout.getIngredientsGroup(VanillaTypes.ITEM).addTooltipCallback((slot, input, ingredient, tooltip) -> {
 			if(slot >= recipe.outputs.size())
 				return;
-			final float chance = recipe.chances.get(slot);
+			float chance = recipe.chances.get(slot);
 			if(chance != 1)
 				tooltip.add(chance*100 + "%");
 		});

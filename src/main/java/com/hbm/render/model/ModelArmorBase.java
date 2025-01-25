@@ -1,16 +1,10 @@
 package com.hbm.render.model;
 
-import com.hbm.interfaces.IHoldableWeapon;
 import com.hbm.render.loader.ModelRendererObj;
-
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class ModelArmorBase extends ModelBiped {
 
@@ -25,7 +19,7 @@ public class ModelArmorBase extends ModelBiped {
 	ModelRendererObj leftFoot;
 	ModelRendererObj rightFoot;
 
-	public ModelArmorBase(final int type) {
+	public ModelArmorBase(int type) {
 		this.type = type;
 		
 		//generate null defaults to prevent major breakage from using incomplete models
@@ -40,11 +34,12 @@ public class ModelArmorBase extends ModelBiped {
 	}
 
     @Override
-    public void setRotationAngles(final float walkCycle, final float walkAmplitude, final float idleCycle, final float headYaw, final float headPitch, final float scale, final Entity entity) {
+    public void setRotationAngles(float walkCycle, float walkAmplitude, float idleCycle, float headYaw, float headPitch, float scale, Entity entity) {
 
         super.setRotationAngles(walkCycle, walkAmplitude, idleCycle, headYaw, headPitch, scale, entity);
 
-        if (entity instanceof EntityPlayer player) {
+        if (entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entity;
             this.isSneak = player.isSneaking();
         }
 

@@ -1,16 +1,14 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityMeteor;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.RenderHelper;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderMeteor extends Render<EntityMeteor> {
 
@@ -18,12 +16,12 @@ public class RenderMeteor extends Render<EntityMeteor> {
 	
 	private static final ResourceLocation block_rl = new ResourceLocation(RefStrings.MODID + ":textures/blocks/block_meteor_molten.png");
 	
-	protected RenderMeteor(final RenderManager renderManager) {
+	protected RenderMeteor(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityMeteor rocket, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityMeteor rocket, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
@@ -42,7 +40,7 @@ public class RenderMeteor extends Render<EntityMeteor> {
 		GL11.glPopMatrix();
 	}
 	
-	public void renderBlock(final double x, final double y, final double z) {
+	public void renderBlock(double x, double y, double z) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glRotatef(180, 0F, 0F, 1F);
@@ -83,7 +81,7 @@ public class RenderMeteor extends Render<EntityMeteor> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityMeteor entity) {
+	protected ResourceLocation getEntityTexture(EntityMeteor entity) {
 		return block_rl;
 	}
 

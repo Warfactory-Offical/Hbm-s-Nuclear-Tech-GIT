@@ -1,7 +1,6 @@
 package com.hbm.entity.effect;
 
 import com.hbm.interfaces.IConstantRenderer;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -16,7 +15,7 @@ public class EntityCloudTom extends Entity implements IConstantRenderer {
 	public int maxAge = 100;
 	public int age;
 	
-	public EntityCloudTom(final World worldIn) {
+	public EntityCloudTom(World worldIn) {
 		super(worldIn);
 		this.setSize(1, 4);
 		this.ignoreFrustumCheck = true;
@@ -24,7 +23,7 @@ public class EntityCloudTom extends Entity implements IConstantRenderer {
 		this.age = 0;
 	}
 
-	public EntityCloudTom(final World p_i1582_1_, final int maxAge) {
+	public EntityCloudTom(World p_i1582_1_, int maxAge) {
 		super(p_i1582_1_);
 		this.setSize(20, 40);
 		this.isImmuneToFire = true;
@@ -47,16 +46,16 @@ public class EntityCloudTom extends Entity implements IConstantRenderer {
 	}
 	
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 		this.age = compound.getShort("age");
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setShort("age", (short) age);
 	}
 	
-	public void setMaxAge(final int i) {
+	public void setMaxAge(int i) {
 		this.getDataManager().set(MAXAGE, Integer.valueOf(i));
 	}
 
@@ -65,7 +64,7 @@ public class EntityCloudTom extends Entity implements IConstantRenderer {
 	}
 	
 	@Override
-	public boolean isInRangeToRenderDist(final double distance) {
+	public boolean isInRangeToRenderDist(double distance) {
 		return true;
 	}
 

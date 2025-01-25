@@ -1,18 +1,16 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.ModItems;
 import com.hbm.items.special.weapon.GunB92;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelB92;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderGunAnim extends TileEntityItemStackRenderer {
 
@@ -29,9 +27,9 @@ public class ItemRenderGunAnim extends TileEntityItemStackRenderer {
 	}
 	
 	@Override
-	public void renderByItem(final ItemStack item) {
+	public void renderByItem(ItemStack item) {
 		
-		final float lever = 0;
+		float lever = 0;
 		
 		GL11.glPopMatrix();
 		switch(type) {
@@ -64,7 +62,7 @@ public class ItemRenderGunAnim extends TileEntityItemStackRenderer {
 				GL11.glTranslated(0, -1, -0.5);
 				
 				if(item.getItem() == ModItems.gun_b92 && GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) > 0) {
-					final float off = GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
+					float off = GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
 					GL11.glRotatef(GunB92.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * -90, 0.0F, 0.0F, 1.0F);
 					//b92Ani.apply();
 					GL11.glTranslatef(off * -0.5F, off * -0.5F, 0.0F);

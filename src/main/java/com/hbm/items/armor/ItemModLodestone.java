@@ -16,13 +16,13 @@ public class ItemModLodestone extends ItemArmorMod {
 
 	int range;
 	
-	public ItemModLodestone(final int range, final String s) {
+	public ItemModLodestone(int range, String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 		this.range = range;
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.DARK_GRAY + "Attracts nearby items");
 		list.add(TextFormatting.DARK_GRAY + "Item attraction range: " + range);
 		if(this == ModItems.lodestone)
@@ -32,16 +32,16 @@ public class ItemModLodestone extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.DARK_GRAY + "  " + stack.getDisplayName() + " (Magnetic range: " + range + ")");
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		final List<EntityItem> items = entity.world.getEntitiesWithinAABB(EntityItem.class, entity.getEntityBoundingBox().grow(range, range, range));
+		List<EntityItem> items = entity.world.getEntitiesWithinAABB(EntityItem.class, entity.getEntityBoundingBox().grow(range, range, range));
 		
-		for(final EntityItem item : items) {
+		for(EntityItem item : items) {
 			
 			Vec3 vec = Vec3.createVectorHelper(entity.posX - item.posX, entity.posY - item.posY, entity.posZ - item.posZ);
 			vec = vec.normalize();

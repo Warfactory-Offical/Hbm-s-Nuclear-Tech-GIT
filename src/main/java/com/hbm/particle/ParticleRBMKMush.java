@@ -18,7 +18,7 @@ public class ParticleRBMKMush extends Particle {
 
 	private static final ResourceLocation texture = new ResourceLocation(com.hbm.lib.RefStrings.MODID + ":textures/particle/rbmk_mush.png");
 	
-	public ParticleRBMKMush(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale){
+	public ParticleRBMKMush(World worldIn, double posXIn, double posYIn, double posZIn, float scale){
 		super(worldIn, posXIn, posYIn, posZIn);
 		particleMaxAge = 80;
 
@@ -46,16 +46,16 @@ public class ParticleRBMKMush extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ){
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		com.hbm.render.RenderHelper.resetParticleInterpPos(entityIn, partialTicks);
 
-		final int segs = 30;
+		int segs = 30;
 
 		// the size of one frame
-		final double frame = 1D / (double) segs;
+		double frame = 1D / (double) segs;
 		// how many frames we're in
-		final int prog = particleAge * segs / particleMaxAge;
+		int prog = particleAge * segs / particleMaxAge;
 
 		GlStateManager.color(1, 1, 1, 1);
 		GlStateManager.glNormal3f(0, 1, 0);
@@ -65,20 +65,20 @@ public class ParticleRBMKMush extends Particle {
 		GlStateManager.depthMask(false);
 		RenderHelper.disableStandardItemLighting();
 
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 		
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		final float scale = this.particleScale;
-		final float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX));
-		final float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY)) + particleScale;
-		final float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ));
+		float scale = this.particleScale;
+		float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX));
+		float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY)) + particleScale;
+		float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ));
 
-		buf.pos(pX - rotationX * scale - rotationXY * scale, pY - rotationZ * scale, pZ - rotationYZ * scale - rotationXZ * scale).tex(1, (prog + 1) * frame).endVertex();
-		buf.pos(pX - rotationX * scale + rotationXY * scale, pY + rotationZ * scale, pZ - rotationYZ * scale + rotationXZ * scale).tex(1, prog * frame).endVertex();
-		buf.pos(pX + rotationX * scale + rotationXY * scale, pY + rotationZ * scale, pZ + rotationYZ * scale + rotationXZ * scale).tex(0, prog * frame).endVertex();
-		buf.pos(pX + rotationX * scale - rotationXY * scale, pY - rotationZ * scale, pZ + rotationYZ * scale - rotationXZ * scale).tex(0, (prog + 1) * frame).endVertex();
+		buf.pos((double) (pX - rotationX * scale - rotationXY * scale), (double) (pY - rotationZ * scale), (double) (pZ - rotationYZ * scale - rotationXZ * scale)).tex(1, (prog + 1) * frame).endVertex();
+		buf.pos((double) (pX - rotationX * scale + rotationXY * scale), (double) (pY + rotationZ * scale), (double) (pZ - rotationYZ * scale + rotationXZ * scale)).tex(1, prog * frame).endVertex();
+		buf.pos((double) (pX + rotationX * scale + rotationXY * scale), (double) (pY + rotationZ * scale), (double) (pZ + rotationYZ * scale + rotationXZ * scale)).tex(0, prog * frame).endVertex();
+		buf.pos((double) (pX + rotationX * scale - rotationXY * scale), (double) (pY - rotationZ * scale), (double) (pZ + rotationYZ * scale - rotationXZ * scale)).tex(0, (prog + 1) * frame).endVertex();
 		tes.draw();
 
 		GlStateManager.doPolygonOffset(0, 0);

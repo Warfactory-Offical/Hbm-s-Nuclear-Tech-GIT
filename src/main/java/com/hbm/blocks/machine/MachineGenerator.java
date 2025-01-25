@@ -1,7 +1,5 @@
 package com.hbm.blocks.machine;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
@@ -10,11 +8,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 
+import java.util.Random;
+
 public class MachineGenerator extends Block {
 
 	
 	
-	public MachineGenerator(final Material m, final String s) {
+	public MachineGenerator(Material m, String s) {
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -24,7 +24,7 @@ public class MachineGenerator extends Block {
 	}
 
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return ModItems.circuit_targeting_tier3;
 	}
 	

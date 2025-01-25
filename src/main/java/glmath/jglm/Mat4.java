@@ -29,7 +29,7 @@ public class Mat4 extends Mat {
 //        c3 = new Vec4(matrix, order * 3);
     }
 
-    public Mat4(final float value) {
+    public Mat4(float value) {
 
         this();
 
@@ -43,7 +43,7 @@ public class Mat4 extends Mat {
 //        c3 = new Vec4(matrix, order * 3);
     }
 
-    public Mat4(final Mat3 mat3) {
+    public Mat4(Mat3 mat3) {
 
         order = 4;
 
@@ -63,7 +63,7 @@ public class Mat4 extends Mat {
      *
      * @param floatArray
      */
-    public Mat4(final float[] floatArray) {
+    public Mat4(float[] floatArray) {
 
         order = 4;
 
@@ -73,7 +73,7 @@ public class Mat4 extends Mat {
         c3 = new Vec4(floatArray, order * 3);
     }
 
-    public Mat4(final Vec4 v0, final Vec4 v1, final Vec4 v2, final Vec4 v3) {
+    public Mat4(Vec4 v0, Vec4 v1, Vec4 v2, Vec4 v3) {
 
         order = 4;
 
@@ -83,7 +83,7 @@ public class Mat4 extends Mat {
         c3 = v3;
     }
 
-    public Mat4(final Vec4 diag) {
+    public Mat4(Vec4 diag) {
 
         this();
 
@@ -108,14 +108,14 @@ public class Mat4 extends Mat {
             c3.x, c3.y, c3.z, c3.w};
     }
 
-    public void setDiagonal(final Vec3 vec3) {
+    public void setDiagonal(Vec3 vec3) {
         c0.x = vec3.x;
         c1.y = vec3.y;
         c2.z = vec3.z;
     }
 
-    public Mat4 mult(final Mat4 second) {
-        final float[] result = new float[16];
+    public Mat4 mult(Mat4 second) {
+        float[] result = new float[16];
         float partial;
 
 //        System.out.println("this: ");
@@ -140,9 +140,9 @@ public class Mat4 extends Mat {
         return new Mat4(result);
     }
 
-    public Vec4 mult(final Vec4 second) {
+    public Vec4 mult(Vec4 second) {
 
-        final float[] result = new float[4];
+        float[] result = new float[4];
         float partial;
 
         for (int i = 0; i < order; i++) {
@@ -161,7 +161,7 @@ public class Mat4 extends Mat {
 
     public Mat4 transpose() {
 
-        final float[] transposed = new float[]{
+        float[] transposed = new float[]{
             c0.x, c1.x, c2.x, c3.x,
             c0.y, c1.y, c2.y, c3.y,
             c0.z, c1.z, c2.z, c3.z,
@@ -172,12 +172,7 @@ public class Mat4 extends Mat {
 
     public Quat toQuaternion() {
 
-        final float trace;
-        float s;
-        float x;
-        float y;
-        float z;
-        final float w;
+        float trace, s, x, y, z, w;
 
         trace = c0.x + c1.y + c2.z;
 
@@ -230,27 +225,27 @@ public class Mat4 extends Mat {
             w = (c0.y - c1.x) / s;
         }
 
-        final Quat quat = new Quat(x, y, z, w);
+        Quat quat = new Quat(x, y, z, w);
 
         quat.normalize();
 
         return quat;
     }
 
-    public static Mat4 translate(final Vec3 translation) {
+    public static Mat4 translate(Vec3 translation) {
 
-        final Mat4 translationMat = new Mat4(1.0f);
+        Mat4 translationMat = new Mat4(1.0f);
         translationMat.c3 = new Vec4(translation, 1.0f);
 
         return translationMat;
     }
 
-    public static Mat4 rotationX(final float angle) {
+    public static Mat4 rotationX(float angle) {
 
-        final float sina = (float) Math.sin(angle);
-        final float cosa = (float) Math.cos(angle);
+        float sina = (float) Math.sin(angle);
+        float cosa = (float) Math.cos(angle);
 
-        final Mat4 result = new Mat4(1f);
+        Mat4 result = new Mat4(1f);
 
         result.c1.y = cosa;
         result.c1.z = sina;
@@ -260,12 +255,12 @@ public class Mat4 extends Mat {
         return result;
     }
 
-    public static Mat4 rotationY(final float angle) {
+    public static Mat4 rotationY(float angle) {
 
-        final float sina = (float) Math.sin(angle);
-        final float cosa = (float) Math.cos(angle);
+        float sina = (float) Math.sin(angle);
+        float cosa = (float) Math.cos(angle);
 
-        final Mat4 result = new Mat4(1f);
+        Mat4 result = new Mat4(1f);
 
         result.c0.x = cosa;
         result.c0.z = -sina;
@@ -275,12 +270,12 @@ public class Mat4 extends Mat {
         return result;
     }
 
-    public static Mat4 rotationZ(final float angle) {
+    public static Mat4 rotationZ(float angle) {
 
-        final float sina = (float) Math.sin(angle);
-        final float cosa = (float) Math.cos(angle);
+        float sina = (float) Math.sin(angle);
+        float cosa = (float) Math.cos(angle);
 
-        final Mat4 result = new Mat4(1f);
+        Mat4 result = new Mat4(1f);
 
         result.c0.x = cosa;
         result.c0.y = sina;
@@ -290,15 +285,15 @@ public class Mat4 extends Mat {
         return result;
     }
 
-    public static Mat4 CalcLookAtMatrix(final Vec3 cameraPt, final Vec3 lookPt, final Vec3 upPt) {
+    public static Mat4 CalcLookAtMatrix(Vec3 cameraPt, Vec3 lookPt, Vec3 upPt) {
 
         Vec3 lookDir = lookPt.minus(cameraPt);
         lookDir = lookDir.normalize();
-        final Vec3 upDir = upPt.normalize();
+        Vec3 upDir = upPt.normalize();
 
-        final Vec3 crossProduct = lookDir.crossProduct(upDir);
-        final Vec3 rightDir = crossProduct.normalize();
-        final Vec3 perpUpDir = rightDir.crossProduct(lookDir);
+        Vec3 crossProduct = lookDir.crossProduct(upDir);
+        Vec3 rightDir = crossProduct.normalize();
+        Vec3 perpUpDir = rightDir.crossProduct(lookDir);
 
         Mat4 rotationMat = new Mat4(1.0f);
         rotationMat.c0 = new Vec4(rightDir, 0.0f);
@@ -307,13 +302,13 @@ public class Mat4 extends Mat {
 
         rotationMat = rotationMat.transpose();
 
-        final Mat4 translationMat = new Mat4(1.0f);
+        Mat4 translationMat = new Mat4(1.0f);
         translationMat.c3 = new Vec4(cameraPt.negated(), 1.0f);
 
         return rotationMat.mult(translationMat);
     }
 
-    public boolean isEqual(final Mat4 second) {
+    public boolean isEqual(Mat4 second) {
 
         boolean equal = true;
 
@@ -334,15 +329,15 @@ public class Mat4 extends Mat {
         System.out.println(c0.w + " " + c1.w + " " + c2.w + " " + c3.w + "\n");
     }
 
-    public void print(final String title) {
-        System.out.println(title);
+    public void print(String title) {
+        System.out.println("" + title);
         System.out.println(c0.x + " " + c1.x + " " + c2.x + " " + c3.x + "\n");
         System.out.println(c0.y + " " + c1.y + " " + c2.y + " " + c3.y + "\n");
         System.out.println(c0.z + " " + c1.z + " " + c2.z + " " + c3.z + "\n");
         System.out.println(c0.w + " " + c1.w + " " + c2.w + " " + c3.w + "\n");
     }
 
-    public final void set(final int index, final float value) {
+    public final void set(int index, float value) {
         switch (index) {
             case 0:
                 c0.x = value;
@@ -395,7 +390,7 @@ public class Mat4 extends Mat {
         }
     }
 
-    public final float get(final int index) {
+    public final float get(int index) {
         switch (index) {
             case 0:
                 return c0.x;
@@ -435,87 +430,87 @@ public class Mat4 extends Mat {
 
     public Mat4 inverse() {
 
-        final float coeff00 = c2.z * c3.w - c3.z * c2.w;
-        final float coeff02 = c1.z * c3.w - c3.z * c1.w;
-        final float coeff03 = c1.z * c2.w - c2.z * c1.w;
+        float coeff00 = c2.z * c3.w - c3.z * c2.w;
+        float coeff02 = c1.z * c3.w - c3.z * c1.w;
+        float coeff03 = c1.z * c2.w - c2.z * c1.w;
 
-        final float coeff04 = c2.y * c3.w - c3.y * c2.w;
-        final float coeff06 = c1.y * c3.w - c3.y * c1.w;
-        final float coeff07 = c1.y * c2.w - c2.y * c1.w;
+        float coeff04 = c2.y * c3.w - c3.y * c2.w;
+        float coeff06 = c1.y * c3.w - c3.y * c1.w;
+        float coeff07 = c1.y * c2.w - c2.y * c1.w;
 
-        final float coeff08 = c2.y * c3.z - c3.y * c2.z;
-        final float coeff10 = c1.y * c3.z - c3.y * c1.z;
-        final float coeff11 = c1.y * c2.z - c2.y * c1.z;
+        float coeff08 = c2.y * c3.z - c3.y * c2.z;
+        float coeff10 = c1.y * c3.z - c3.y * c1.z;
+        float coeff11 = c1.y * c2.z - c2.y * c1.z;
 
-        final float coeff12 = c2.x * c3.w - c3.x * c2.w;
-        final float coeff14 = c1.x * c3.w - c3.x * c1.w;
-        final float coeff15 = c1.x * c2.w - c2.x * c1.w;
+        float coeff12 = c2.x * c3.w - c3.x * c2.w;
+        float coeff14 = c1.x * c3.w - c3.x * c1.w;
+        float coeff15 = c1.x * c2.w - c2.x * c1.w;
 
-        final float coeff16 = c2.x * c3.z - c3.x * c2.z;
-        final float coeff18 = c1.x * c3.z - c3.x * c1.z;
-        final float coeff19 = c1.x * c2.z - c2.x * c1.z;
+        float coeff16 = c2.x * c3.z - c3.x * c2.z;
+        float coeff18 = c1.x * c3.z - c3.x * c1.z;
+        float coeff19 = c1.x * c2.z - c2.x * c1.z;
 
-        final float coeff20 = c2.x * c3.y - c3.x * c2.y;
-        final float coeff22 = c1.x * c3.y - c3.x * c1.y;
-        final float coeff23 = c1.x * c2.y - c2.x * c1.y;
+        float coeff20 = c2.x * c3.y - c3.x * c2.y;
+        float coeff22 = c1.x * c3.y - c3.x * c1.y;
+        float coeff23 = c1.x * c2.y - c2.x * c1.y;
 
-        final Vec4 signA = new Vec4(1.0f, -1.0f, 1.0f, -1.0f);
-        final Vec4 signB = new Vec4(-1.0f, 1.0f, -1.0f, 1.0f);
+        Vec4 signA = new Vec4(1.0f, -1.0f, 1.0f, -1.0f);
+        Vec4 signB = new Vec4(-1.0f, 1.0f, -1.0f, 1.0f);
 
-        final Vec4 fac0 = new Vec4(coeff00, coeff00, coeff02, coeff03);
-        final Vec4 fac1 = new Vec4(coeff04, coeff04, coeff06, coeff07);
-        final Vec4 fac2 = new Vec4(coeff08, coeff08, coeff10, coeff11);
-        final Vec4 fac3 = new Vec4(coeff12, coeff12, coeff14, coeff15);
-        final Vec4 fac4 = new Vec4(coeff16, coeff16, coeff18, coeff19);
-        final Vec4 fac5 = new Vec4(coeff20, coeff20, coeff22, coeff23);
+        Vec4 fac0 = new Vec4(coeff00, coeff00, coeff02, coeff03);
+        Vec4 fac1 = new Vec4(coeff04, coeff04, coeff06, coeff07);
+        Vec4 fac2 = new Vec4(coeff08, coeff08, coeff10, coeff11);
+        Vec4 fac3 = new Vec4(coeff12, coeff12, coeff14, coeff15);
+        Vec4 fac4 = new Vec4(coeff16, coeff16, coeff18, coeff19);
+        Vec4 fac5 = new Vec4(coeff20, coeff20, coeff22, coeff23);
 
-        final Vec4 vec0 = new Vec4(c1.x, c0.x, c0.x, c0.x);
-        final Vec4 vec1 = new Vec4(c1.y, c0.y, c0.y, c0.y);
-        final Vec4 vec2 = new Vec4(c1.z, c0.z, c0.z, c0.z);
-        final Vec4 vec3 = new Vec4(c1.w, c0.w, c0.w, c0.w);
+        Vec4 vec0 = new Vec4(c1.x, c0.x, c0.x, c0.x);
+        Vec4 vec1 = new Vec4(c1.y, c0.y, c0.y, c0.y);
+        Vec4 vec2 = new Vec4(c1.z, c0.z, c0.z, c0.z);
+        Vec4 vec3 = new Vec4(c1.w, c0.w, c0.w, c0.w);
 
         Vec4 one = vec1.mult(fac0);
         Vec4 two = vec2.mult(fac1);
         Vec4 three = vec3.mult(fac2);
-        final Vec4 inv0 = signA.mult(one.minus(two).plus(three));
+        Vec4 inv0 = signA.mult(one.minus(two).plus(three));
 
         one = vec0.mult(fac0);
         two = vec2.mult(fac3);
         three = vec3.mult(fac4);
-        final Vec4 inv1 = signB.mult(one.minus(two).plus(three));
+        Vec4 inv1 = signB.mult(one.minus(two).plus(three));
 
         one = vec0.mult(fac1);
         two = vec1.mult(fac3);
         three = vec3.mult(fac5);
-        final Vec4 inv2 = signA.mult(one.minus(two).plus(three));
+        Vec4 inv2 = signA.mult(one.minus(two).plus(three));
 
         one = vec0.mult(fac2);
         two = vec1.mult(fac4);
         three = vec2.mult(fac5);
-        final Vec4 inv3 = signB.mult(one.minus(two).plus(three));
+        Vec4 inv3 = signB.mult(one.minus(two).plus(three));
 
 //        inv0.print("inv0");
 //        inv1.print("inv1");
 //        inv2.print("inv2");
 //        inv3.print("inv3");
-        final Mat4 inverse = new Mat4(inv0, inv1, inv2, inv3);
+        Mat4 inverse = new Mat4(inv0, inv1, inv2, inv3);
 
 //        inverse.print("inverse");
-        final Vec4 row0 = new Vec4(inverse.c0.x, inverse.c1.x, inverse.c2.x, inverse.c3.x);
+        Vec4 row0 = new Vec4(inverse.c0.x, inverse.c1.x, inverse.c2.x, inverse.c3.x);
 
 //        row0.print("row0");
-        final float determinant = Jglm.dot(c0, row0);
+        float determinant = Jglm.dot(c0, row0);
 
 //        System.out.println("det: "+determinant);
         return inverse.divide(determinant);
     }
 
-    public Mat4 divide(final float s) {
+    public Mat4 divide(float s) {
 
-        final Vec4 newC0 = new Vec4(c0.x / s, c0.y / s, c0.z / s, c0.w / s);
-        final Vec4 newC1 = new Vec4(c1.x / s, c1.y / s, c1.z / s, c1.w / s);
-        final Vec4 newC2 = new Vec4(c2.x / s, c2.y / s, c2.z / s, c2.w / s);
-        final Vec4 newC3 = new Vec4(c3.x / s, c3.y / s, c3.z / s, c3.w / s);
+        Vec4 newC0 = new Vec4(c0.x / s, c0.y / s, c0.z / s, c0.w / s);
+        Vec4 newC1 = new Vec4(c1.x / s, c1.y / s, c1.z / s, c1.w / s);
+        Vec4 newC2 = new Vec4(c2.x / s, c2.y / s, c2.z / s, c2.w / s);
+        Vec4 newC3 = new Vec4(c3.x / s, c3.y / s, c3.z / s, c3.w / s);
 
         return new Mat4(newC0, newC1, newC2, newC3);
     }

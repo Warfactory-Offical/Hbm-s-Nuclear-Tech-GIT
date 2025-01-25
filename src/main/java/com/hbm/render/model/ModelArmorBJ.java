@@ -1,18 +1,16 @@
 package com.hbm.render.model;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.ModelRendererObj;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 
 public class ModelArmorBJ extends ModelArmorBase {
 	
 	ModelRendererObj jetpack;
 
-	public ModelArmorBJ(final int type) {
+	public ModelArmorBJ(int type) {
 		super(type);
 		head = new ModelRendererObj(ResourceManager.armor_bj, "Head");
 		body = new ModelRendererObj(ResourceManager.armor_bj, "Body");
@@ -26,7 +24,7 @@ public class ModelArmorBJ extends ModelArmorBase {
 	}
 
 	@Override
-	public void render(final Entity par1Entity, final float par2, final float par3, final float par4, final float par5, final float par6, final float par7) {
+	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 		
 		setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 		body.copyTo(jetpack);

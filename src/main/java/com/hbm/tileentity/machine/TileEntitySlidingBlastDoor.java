@@ -3,20 +3,18 @@ package com.hbm.tileentity.machine;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.handler.RadiationSystemNT;
 import com.hbm.interfaces.IAnimatedDoor;
-import com.hbm.lib.ForgeDirection;
-import com.hbm.lib.HBMSoundHandler;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemKeyPin;
+import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.HBMSoundHandler;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEDoorAnimationPacket;
 import com.hbm.sound.AudioWrapper;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -40,7 +38,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			final DoorState oldState = state;
+			DoorState oldState = state;
 
 			if(state.isStationaryState()) {
 				timer = 0;
@@ -80,11 +78,11 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 				}
 			}
 			PacketDispatcher.wrapper.sendToAllAround(new TEDoorAnimationPacket(pos, (byte) state.ordinal(), texture), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, shouldUseBB ? 1 : 0, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, shouldUseBB == true ? 1 : 0, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
 		}
 	}
 
-	public boolean tryOpen(final EntityPlayer player) {
+	public boolean tryOpen(EntityPlayer player) {
 		if(state == DoorState.CLOSED) {
 			if(!world.isRemote && canAccess(player)) {
 				open();
@@ -94,7 +92,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		return false;
 	}
 
-	public boolean tryToggle(final EntityPlayer player){
+	public boolean tryToggle(EntityPlayer player){
 		if(state == DoorState.CLOSED) {
 			return tryOpen(player);
 		} else if(state == DoorState.OPEN) {
@@ -103,7 +101,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		return false;
 	}
 
-	public boolean tryClose(final EntityPlayer player) {
+	public boolean tryClose(EntityPlayer player) {
 		if(state == DoorState.OPEN) {
 			if(!world.isRemote && canAccess(player)) {
 				close();
@@ -114,14 +112,14 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 
 	@Override
-	public boolean canAccess(final EntityPlayer player) {
+	public boolean canAccess(EntityPlayer player) {
 		if(keypadLocked && player != null)
 			return false;
 		
 		if(!this.isLocked()) {
 			return true;
 		} else {
-			final ItemStack stack = player.getHeldItemMainhand();
+			ItemStack stack = player.getHeldItemMainhand();
 			
 			if(stack.getItem() instanceof ItemKeyPin && ItemKeyPin.getPins(stack) == this.lock) {
 	        	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.lockOpen, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -137,8 +135,8 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		}
 	}
 
-	private void placeDummy(final int offset){
-		final ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+	private void placeDummy(int offset){
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		BlockPos placePos = null;
 		switch(dir){
 		case SOUTH:
@@ -166,8 +164,8 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 		((BlockDummyable)getBlockType()).removeExtra(world, placePos.getX(), placePos.getY()+3, placePos.getZ());
 	}
 
-	private void removeDummy(final int offset){
-		final ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+	private void removeDummy(int offset){
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		BlockPos placePos = null;
 		switch(dir){
 		case SOUTH:
@@ -208,7 +206,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		state = DoorState.values()[compound.getByte("state")];
 		sysTime = compound.getLong("sysTime");
 		timer = compound.getInteger("timer");
@@ -220,7 +218,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setByte("state", (byte) state.ordinal());
 		compound.setLong("sysTime", sysTime);
 		compound.setInteger("timer", timer);
@@ -250,7 +248,7 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(final DoorState newState) {
+	public void handleNewState(DoorState newState) {
 		if(this.state != newState){
 			if(this.state == DoorState.CLOSED && newState == DoorState.OPENING){
 				if(audio == null){
@@ -308,12 +306,12 @@ public class TileEntitySlidingBlastDoor extends TileEntityLockableBase implement
 	}
 	
 	@Override
-	public void setTextureState(final byte tex){
+	public void setTextureState(byte tex){
 		this.texture = tex;
 	}
 	
 	@Override
-	public boolean setTexture(final String tex) {
+	public boolean setTexture(String tex) {
 		if(tex.equals("sliding_blast_door")){
 			this.texture = 0;
 			return true;

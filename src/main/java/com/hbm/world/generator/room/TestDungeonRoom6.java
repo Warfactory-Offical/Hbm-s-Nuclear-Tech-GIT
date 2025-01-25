@@ -12,11 +12,11 @@ import net.minecraft.world.World;
 
 public class TestDungeonRoom6 extends CellularDungeonRoom {
 
-	public TestDungeonRoom6(final CellularDungeon parent) {
+	public TestDungeonRoom6(CellularDungeon parent) {
 		super(parent);
 	}
 
-	public void generateMain(final World world, final int x, final int y, final int z) {
+	public void generateMain(World world, int x, int y, int z) {
 		
 		super.generateMain(world, x, y, z);
 		DungeonToolbox.generateBox(world, x + 1, y, z + 1, parent.width - 2, 1, parent.width - 2, ModBlocks.toxic_block.getDefaultState());
@@ -31,7 +31,7 @@ public class TestDungeonRoom6 extends CellularDungeonRoom {
 		DungeonToolbox.generateBox(world, x, y-1, z, parent.width, 1, parent.width, Blocks.CONCRETE.getStateFromMeta(15));
 	}
 	
-	public void generateWall(final World world, final int x, final int y, final int z, final EnumFacing wall, final boolean door) {
+	public void generateWall(World world, int x, int y, int z, EnumFacing wall, boolean door) {
 
 		super.generateWall(world, x, y, z, wall, door);
 		

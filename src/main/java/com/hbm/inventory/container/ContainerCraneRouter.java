@@ -10,9 +10,9 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerCraneRouter extends Container {
-    private final TileEntityCraneRouter router;
+    private TileEntityCraneRouter router;
 
-    public ContainerCraneRouter(final InventoryPlayer invPlayer, final TileEntityCraneRouter router) {
+    public ContainerCraneRouter(InventoryPlayer invPlayer, TileEntityCraneRouter router) {
         this.router = router;
 
         for(int j = 0; j < 2; j++) {
@@ -35,15 +35,15 @@ public class ContainerCraneRouter extends Container {
     }
 
     @Override
-    public ItemStack slotClick(final int slotId, final int dragType, final ClickType clickTypeIn, final EntityPlayer player) {
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
         if (slotId < 0 || slotId >= 30) {
             return super.slotClick(slotId, dragType, clickTypeIn, player);
         }
 
-        final Slot slot = this.inventorySlots.get(slotId);
+        Slot slot = this.inventorySlots.get(slotId);
 
         ItemStack ret = ItemStack.EMPTY;
-        final ItemStack held = player.inventory.getItemStack();
+        ItemStack held = player.inventory.getItemStack();
 
         if (slot.getHasStack()) {
             ret = slot.getStack().copy();
@@ -67,12 +67,12 @@ public class ContainerCraneRouter extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(final EntityPlayer player, final int index) {
+    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public boolean canInteractWith(final EntityPlayer player) {
+    public boolean canInteractWith(EntityPlayer player) {
         return router.isUseableByPlayer(player);
     }
 }

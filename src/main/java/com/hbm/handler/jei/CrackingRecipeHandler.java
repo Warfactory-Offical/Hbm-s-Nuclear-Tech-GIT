@@ -18,7 +18,7 @@ public class CrackingRecipeHandler implements IRecipeCategory<CrackingRecipe> {
 	
 	protected final IDrawable background;
 	
-	public CrackingRecipeHandler(final IGuiHelper help) {
+	public CrackingRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 43, 34, 133-43, 52-34);
 	}
 	
@@ -43,12 +43,12 @@ public class CrackingRecipeHandler implements IRecipeCategory<CrackingRecipe> {
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final CrackingRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, CrackingRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
 		guiItemStacks.init(0, true, 0, 0);
 
-		final int rec_size = recipeWrapper.outputs.size();
+		int rec_size = recipeWrapper.outputs.size();
 		for(int i = 0; i < rec_size; i ++){
 			guiItemStacks.init(i+1, false, 54 + i * 18, 0);
 		}

@@ -1,26 +1,24 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.render.misc.MissileMultipart;
 import com.hbm.render.misc.MissilePart;
 import com.hbm.render.misc.MissilePronter;
 import com.hbm.tileentity.machine.TileEntityMachineMissileAssembly;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderMissileAssembly extends TileEntitySpecialRenderer<TileEntityMachineMissileAssembly> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityMachineMissileAssembly te) {
+	public boolean isGlobalRenderer(TileEntityMachineMissileAssembly te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityMachineMissileAssembly te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineMissileAssembly te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		
 		GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
@@ -40,7 +38,7 @@ public class RenderMissileAssembly extends TileEntitySpecialRenderer<TileEntityM
 		bindTexture(ResourceManager.missile_assembly_tex);
 		ResourceManager.missile_assembly.renderAll();
 
-		final MissileMultipart missile = MissileMultipart.loadFromStruct(te.load);
+		MissileMultipart missile = MissileMultipart.loadFromStruct(te.load);
 		
 		if(missile != null) {
 		
@@ -56,7 +54,7 @@ public class RenderMissileAssembly extends TileEntitySpecialRenderer<TileEntityM
 			if(te.inventory.getStackInSlot(4) != null)
 				missile.thruster = MissilePart.getPart(te.inventory.getStackInSlot(4).getItem());
 			
-			final int range = (int) (missile.getHeight() / 2 - 1);
+			int range = (int) (missile.getHeight() / 2 - 1);
 			
 			int step = 1;
 			

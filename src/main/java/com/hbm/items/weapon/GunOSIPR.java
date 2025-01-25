@@ -1,15 +1,11 @@
 package com.hbm.items.weapon;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.entity.projectile.EntityCombineBall;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,11 +22,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 public class GunOSIPR extends Item {
 	
 	Random rand = new Random();
 	
-	public GunOSIPR(final String s) {
+	public GunOSIPR(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.maxStackSize = 1;
@@ -40,35 +39,36 @@ public class GunOSIPR extends Item {
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(final ItemStack stack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 	
 	@Override
-	public int getMaxItemUseDuration(final ItemStack stack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		playerIn.setActiveHand(handIn);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
 	@Override
-	public void onUsingTick(final ItemStack stack, final EntityLivingBase player1, final int count) {
-		if(!(player1 instanceof EntityPlayer player))
+	public void onUsingTick(ItemStack stack, EntityLivingBase player1, int count) {
+		if(!(player1 instanceof EntityPlayer))
 			return;
-        if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_osipr){
+		EntityPlayer player = (EntityPlayer) player1;
+		if(player.getHeldItemMainhand() == stack && player.getHeldItemOffhand().getItem() == ModItems.gun_osipr){
 			player.getHeldItemOffhand().getItem().onUsingTick(player.getHeldItemOffhand(), player, count);
 		}
-		final World world = player.world;
+		World world = player.world;
 		
 		if (!player.isSneaking()) {
-			final boolean flag = player.capabilities.isCreativeMode
+			boolean flag = player.capabilities.isCreativeMode
 					|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 			if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.gun_osipr_ammo)) && count % 3 == 0) {
-					final EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 5, 15, false, "chopper", player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+					EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 5, 15, false, "chopper", player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 				entityarrow.setDamage(5 + rand.nextInt(10));
 
 				//world.playSoundAtEntity(player, "random.explode", 1.0F, 1.5F + (rand.nextFloat() / 4));
@@ -85,10 +85,10 @@ public class GunOSIPR extends Item {
 				}
 			}
 		} else {
-			final boolean flag = player.capabilities.isCreativeMode
+			boolean flag = player.capabilities.isCreativeMode
 					|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 			if ((player.capabilities.isCreativeMode || Library.hasInventoryItem(player.inventory, ModItems.gun_osipr_ammo2)) && count % 30 == 0 && (this.getMaxItemUseDuration(stack) - count) != 0) {
-				final EntityCombineBall entityarrow = new EntityCombineBall(player.world, player, 3.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+				EntityCombineBall entityarrow = new EntityCombineBall(player.world, player, 3.0F, player.getHeldItemMainhand() == stack ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 				entityarrow.setDamage(35 + rand.nextInt(45 - 35));
 
 				//world.playSoundAtEntity(player, "tile.piston.in", 1.0F, 0.75F);
@@ -111,7 +111,7 @@ public class GunOSIPR extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add("Hold right mouse button");
 		list.add("to shoot,");
 		list.add("sneak to shoot a");
@@ -124,8 +124,8 @@ public class GunOSIPR extends Item {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(final EntityEquipmentSlot slot, final ItemStack stack) {
-		final Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> map = super.getAttributeModifiers(slot, stack);
 		if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND){
 			map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 5, 0));
 		}

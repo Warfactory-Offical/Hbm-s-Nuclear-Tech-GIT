@@ -23,7 +23,7 @@ public class ParticleGluonParticleSmol extends Particle {
 	float workingAlpha;
 	public int timeUntilChange = 0;
 	
-	protected ParticleGluonParticleSmol(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final double mX, final double mY, final double mZ) {
+	protected ParticleGluonParticleSmol(World worldIn, double posXIn, double posYIn, double posZIn, double mX, double mY, double mZ) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = 0.1F;
 		this.particleMaxAge = 6 + rand.nextInt(5);
@@ -35,7 +35,7 @@ public class ParticleGluonParticleSmol extends Particle {
 		timeUntilChange = rand.nextInt(5)+1;
 	}
 	
-	public ParticleGluonParticleSmol color(final float colR, final float colG, final float colB, final float colA){
+	public ParticleGluonParticleSmol color(float colR, float colG, float colB, float colA){
 		this.particleRed = colR;
 		this.particleGreen = colG;
 		this.particleBlue = colB;
@@ -44,7 +44,7 @@ public class ParticleGluonParticleSmol extends Particle {
 		return this;
 	}
 	
-	public ParticleGluonParticleSmol lifetime(final int lifetime){
+	public ParticleGluonParticleSmol lifetime(int lifetime){
 		this.particleMaxAge = lifetime;
 		return this;
 	}
@@ -84,7 +84,7 @@ public class ParticleGluonParticleSmol extends Particle {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		GL11.glPushMatrix();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.fresnel_ms);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -92,19 +92,19 @@ public class ParticleGluonParticleSmol extends Particle {
 		GlStateManager.depthMask(false);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
-		final float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
-		final float shrink = MathHelper.clamp(1-BobMathUtil.remap(MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1);
+		float timeScale = (this.particleAge+partialTicks)/(float)this.particleMaxAge;
+		float shrink = MathHelper.clamp(1-BobMathUtil.remap((float)MathHelper.clamp(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1);
 		this.workingAlpha = shrink*particleAlpha;
 		
-		final float f4 = 0.1F * (this.particleScale+shrink*particleScale*4);
+		float f4 = 0.1F * (this.particleScale+shrink*particleScale*4);
         
-        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
         
         GL11.glTranslated(f5, f6, f7);
 		
-        final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
+        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
         buffer.pos(avec3d[0].x, avec3d[0].y, avec3d[0].z).tex(1, 1).color(this.particleRed, this.particleGreen, this.particleBlue, this.workingAlpha).lightmap(240, 240).endVertex();
         buffer.pos(avec3d[1].x, avec3d[1].y, avec3d[1].z).tex(1, 0).color(this.particleRed, this.particleGreen, this.particleBlue, this.workingAlpha).lightmap(240, 240).endVertex();

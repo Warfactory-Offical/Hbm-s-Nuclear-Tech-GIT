@@ -19,7 +19,7 @@ public class ArmorAustralium extends ItemArmor {
 
 	Random rand = new Random();
 	
-	public ArmorAustralium(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
+	public ArmorAustralium(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,7 +28,7 @@ public class ArmorAustralium extends ItemArmor {
 	}
 
 	@Override
-	public void onArmorTick(final World world, final EntityPlayer player, final ItemStack armor) {
+	public void onArmorTick(World world, EntityPlayer player, ItemStack armor) {
 		if(armor.getItemDamage() < armor.getMaxDamage()) {
 			if (armor.getItem() == ModItems.australium_iii) {
 				if(rand.nextInt(3) == 0) {
@@ -41,14 +41,14 @@ public class ArmorAustralium extends ItemArmor {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (stack.getItem() == ModItems.australium_iii)
 			tooltip.add("Ouch, that hurts.");
 	}
 	
 	@Override
 	
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		if(stack.getItem().equals(ModItems.australium_iii)) {
 			return (RefStrings.MODID + ":textures/armor/australium_iii.png");
 		}

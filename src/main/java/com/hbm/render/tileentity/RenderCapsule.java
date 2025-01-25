@@ -1,22 +1,20 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntitySoyuzCapsule;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCapsule extends TileEntitySpecialRenderer<TileEntitySoyuzCapsule> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntitySoyuzCapsule te) {
+	public boolean isGlobalRenderer(TileEntitySoyuzCapsule te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntitySoyuzCapsule te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntitySoyuzCapsule te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y, z + 0.5);
         GlStateManager.enableLighting();

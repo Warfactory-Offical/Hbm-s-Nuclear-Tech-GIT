@@ -1,19 +1,17 @@
 package com.hbm.tileentity.turret;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.handler.BulletConfiguration;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.amlfrom1710.Vec3;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 
@@ -75,19 +73,19 @@ public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 		
 		if(timer > 20 && timer % getDelay() == 0) {
 			
-			final BulletConfiguration conf = this.getFirstConfigLoaded();
+			BulletConfiguration conf = this.getFirstConfigLoaded();
 			
 			if(conf != null) {
 				this.spawnBullet(conf);
 				this.conusmeAmmo(conf.ammo);
 				this.world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.chekhov_fire, SoundCategory.BLOCKS, 2.0F, 1.0F);
 				
-				final Vec3 pos = new Vec3(this.getTurretPos());
-				final Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = new Vec3(this.getTurretPos());
+				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaExt");
 				data.setString("mode", "largeexplode");
 				data.setFloat("size", 1.5F);

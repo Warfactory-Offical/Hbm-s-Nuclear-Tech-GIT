@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.TileEntityFurnaceSteel;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,7 +13,7 @@ public class ContainerFurnaceSteel extends Container {
 	
 	protected TileEntityFurnaceSteel furnace;
 	
-	public ContainerFurnaceSteel(final InventoryPlayer invPlayer, final TileEntityFurnaceSteel furnace) {
+	public ContainerFurnaceSteel(InventoryPlayer invPlayer, TileEntityFurnaceSteel furnace) {
 		this.furnace = furnace;
 
 		//input
@@ -38,12 +37,12 @@ public class ContainerFurnaceSteel extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer player, final int index) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
-		final Slot slot = this.inventorySlots.get(index);
+		Slot slot = (Slot) this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			final ItemStack originalStack = slot.getStack();
+			ItemStack originalStack = slot.getStack();
 			stack = originalStack.copy();
 
 			if(index <= 5) {
@@ -68,7 +67,7 @@ public class ContainerFurnaceSteel extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return furnace.isUseableByPlayer(player);
 	}
 }

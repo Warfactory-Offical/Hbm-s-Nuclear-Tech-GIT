@@ -1,29 +1,27 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.render.misc.SoyuzLauncherPronter;
 import com.hbm.render.misc.SoyuzPronter;
 import com.hbm.tileentity.machine.TileEntitySoyuzLauncher;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderSoyuzLauncher extends TileEntitySpecialRenderer<TileEntitySoyuzLauncher> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntitySoyuzLauncher te) {
+	public boolean isGlobalRenderer(TileEntitySoyuzLauncher te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntitySoyuzLauncher te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntitySoyuzLauncher te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y-4, (float) z + 0.5F);
 		
-		final TileEntitySoyuzLauncher launcher = te;
+		TileEntitySoyuzLauncher launcher = (TileEntitySoyuzLauncher)te;
 		
-		final double open = 45D;
-		final int timer = 20;
+		double open = 45D;
+		int timer = 20;
 		
 		double rot = open;
 		

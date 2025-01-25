@@ -6,7 +6,7 @@ public interface IKeypadHandler {
 
 	public Keypad getKeypad();
 	
-	public default void keypadActivated(){}
-
-    public default void passwordSet(){}
+	public default void keypadActivated(){};
+	
+	public default void passwordSet(){};
 }

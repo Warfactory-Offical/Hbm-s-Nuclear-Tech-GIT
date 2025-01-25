@@ -1,44 +1,42 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.lang3.math.NumberUtils;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.RefStrings;
-import com.hbm.util.I18nUtil;
 import com.hbm.packet.NBTControlPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.RBMKColumn;
-
+import com.hbm.util.I18nUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GUIRBMKConsole extends GuiScreen {
 	
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_rbmk_console.png");
-	private final TileEntityRBMKConsole console;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_rbmk_console.png");
+	private TileEntityRBMKConsole console;
 	protected int guiLeft;
 	protected int guiTop;
 	protected int xSize;
@@ -50,7 +48,7 @@ public class GUIRBMKConsole extends GuiScreen {
 	
 	private GuiTextField field;
 
-	public GUIRBMKConsole(final InventoryPlayer invPlayer, final TileEntityRBMKConsole tedf) {
+	public GUIRBMKConsole(InventoryPlayer invPlayer, TileEntityRBMKConsole tedf) {
 		super();
 		this.console = tedf;
 		
@@ -74,23 +72,23 @@ public class GUIRBMKConsole extends GuiScreen {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		this.drawDefaultBackground();
 		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		
-		final int bX = 86;
-		final int bY = 11;
-		final int size = 10;
+		int bX = 86;
+		int bY = 11;
+		int size = 10;
 
 		if(guiLeft + 86 <= mouseX && guiLeft + 86 + 150 > mouseX && guiTop + 11 < mouseY && guiTop + 11 + 10150 >= mouseY) {
-			final int index = ((mouseX - bX - guiLeft) / size + (mouseY - bY - guiTop) / size * 15);
+			int index = ((mouseX - bX - guiLeft) / size + (mouseY - bY - guiTop) / size * 15);
 			
 			if(index > 0 && index < console.columns.length) {
-				final RBMKColumn col = console.columns[index];
+				RBMKColumn col = console.columns[index];
 				
 				if(col != null) {
 					
-					final List<String> list = new ArrayList<>();
+					List<String> list = new ArrayList<>();
 					list.add(col.type.toString());
 					list.addAll(col.getFancyStats());
 					this.drawHoveringText(list, mouseX, mouseY);
@@ -103,7 +101,7 @@ public class GUIRBMKConsole extends GuiScreen {
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 2; j++) {
-				final int id = i * 2 + j + 1;
+				int id = i * 2 + j + 1;
 				this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 6 + 40 * j, guiTop + 8 + 21 * i, 18, 18, mouseX, mouseY, new String[]{ "§e" + I18nUtil.resolveKey("rbmk.console." + console.screens[id - 1].type.name().toLowerCase(), id) } );
 				this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 24 + 40 * j, guiTop + 8 + 21 * i, 18, 18, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("rbmk.console.assign", id) } );
 			}
@@ -120,25 +118,25 @@ public class GUIRBMKConsole extends GuiScreen {
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 50, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select purple group" } );
 	}
 	
-	public void drawCustomInfoStat(final int mouseX, final int mouseY, final int x, final int y, final int width, final int height, final int tPosX, final int tPosY, final String[] text) {
+	public void drawCustomInfoStat(int mouseX, int mouseY, int x, int y, int width, int height, int tPosX, int tPosY, String[] text) {
 		
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
 			this.drawHoveringText(Arrays.asList(text), tPosX, tPosY);
 	}
 
 	@Override
-	protected void mouseClicked(final int mouseX, final int mouseY, final int i) throws IOException {
+	protected void mouseClicked(int mouseX, int mouseY, int i) throws IOException {
 		super.mouseClicked(mouseX, mouseY, i);
 		this.field.mouseClicked(mouseX, mouseY, i);
 		
-		final int bX = 86;
-		final int bY = 11;
-		final int size = 10;
+		int bX = 86;
+		int bY = 11;
+		int size = 10;
 
 		//toggle column selection
 		if(guiLeft + 86 <= mouseX && guiLeft + 86 + 150 > mouseX && guiTop + 11 < mouseY && guiTop + 11 + 150 >= mouseY) {
 			
-			final int index = ((mouseX - bX - guiLeft) / size + (mouseY - bY - guiTop) / size * 15);
+			int index = ((mouseX - bX - guiLeft) / size + (mouseY - bY - guiTop) / size * 15);
 			
 			if(index > 0 && index < selection.length && console.columns[index] != null) {
 				this.selection[index] = !this.selection[index];
@@ -197,7 +195,7 @@ public class GUIRBMKConsole extends GuiScreen {
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(HBMSoundHandler.shutdown, 1));
 				lastPress = System.currentTimeMillis();
 				
-				final NBTTagCompound control = new NBTTagCompound();
+				NBTTagCompound control = new NBTTagCompound();
 				control.setDouble("level", 0);
 
 				for(int j = 0; j < console.columns.length; j++) {
@@ -214,17 +212,17 @@ public class GUIRBMKConsole extends GuiScreen {
 		//save control rod setting
 		if(guiLeft + 48 <= mouseX && guiLeft + 48 + 12 > mouseX && guiTop + 82 < mouseY && guiTop + 82 + 12 >= mouseY) {
 			
-			final double level;
+			double level;
 			
 			if(NumberUtils.isCreatable(field.getText())) {
-				final int j = (int)MathHelper.clamp(Double.parseDouble(field.getText()), 0, 100);
+				int j = (int)MathHelper.clamp(Double.parseDouble(field.getText()), 0, 100);
 				field.setText(j + "");
 				level = j * 0.01D;
 			} else {
 				return;
 			}
 			
-			final NBTTagCompound control = new NBTTagCompound();
+			NBTTagCompound control = new NBTTagCompound();
 			control.setDouble("level", level);
 
 			for(int j = 0; j < selection.length; j++) {
@@ -240,10 +238,10 @@ public class GUIRBMKConsole extends GuiScreen {
 		for(int j = 0; j < 3; j++) {
 			for(int k = 0; k < 2; k++) {
 				
-				final int id = j * 2 + k;
+				int id = j * 2 + k;
 				
 				if(guiLeft + 6 + 40 * k <= mouseX && guiLeft + 6 + 40 * k + 18 > mouseX && guiTop + 8 + 21 * j < mouseY && guiTop + 8 + 21 * j + 18 >= mouseY) {
-					final NBTTagCompound control = new NBTTagCompound();
+					NBTTagCompound control = new NBTTagCompound();
 					control.setByte("toggle", (byte) id);
 					PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, console.getPos()));
 					mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1F));
@@ -252,7 +250,7 @@ public class GUIRBMKConsole extends GuiScreen {
 				
 				if(guiLeft + 24 + 40 * k <= mouseX && guiLeft + 24 + 40 * k + 18 > mouseX && guiTop + 8 + 21 * j < mouseY && guiTop + 8 + 21 * j + 18 >= mouseY) {
 
-					final NBTTagCompound control = new NBTTagCompound();
+					NBTTagCompound control = new NBTTagCompound();
 					control.setByte("id", (byte) id);
 
 					for(int s = 0; s < selection.length; s++) {
@@ -270,7 +268,7 @@ public class GUIRBMKConsole extends GuiScreen {
 
 		//Graph Selections
 		if(guiLeft + 62 <= mouseX && guiLeft + 72 > mouseX && guiTop + 83 < mouseY && guiTop + 93 >= mouseY) {
-			final NBTTagCompound control = new NBTTagCompound();
+			NBTTagCompound control = new NBTTagCompound();
 			control.setByte("toggle", (byte) 99);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, console.getPos()));
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1F));
@@ -279,7 +277,7 @@ public class GUIRBMKConsole extends GuiScreen {
 		
 		if(guiLeft + 72 <= mouseX && guiLeft + 82 > mouseX && guiTop + 83 < mouseY && guiTop + 93 >= mouseY) {
 
-			final NBTTagCompound control = new NBTTagCompound();
+			NBTTagCompound control = new NBTTagCompound();
 			control.setByte("id", (byte) 99);
 
 			for(int s = 0; s < selection.length; s++) {
@@ -290,10 +288,11 @@ public class GUIRBMKConsole extends GuiScreen {
 
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, console.getPos()));
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1F));
-        }
+			return;
+		}
 	}
 
-	protected void drawGuiContainerBackgroundLayer(final float interp, final int mX, final int mY) {
+	protected void drawGuiContainerBackgroundLayer(float interp, int mX, int mY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -306,31 +305,31 @@ public class GUIRBMKConsole extends GuiScreen {
 
 		for(int j = 0; j < 3; j++) {
 			for(int k = 0; k < 2; k++) {
-				final int id = j * 2 + k;
+				int id = j * 2 + k;
 				drawTexturedModalRect(guiLeft + 6 + 40 * k, guiTop + 8 + 21 * j, this.console.screens[id].type.offset, 238, 18, 18);
 			}
 		}
 		drawTexturedModalRect(guiLeft + 62, guiTop + 83, (int)(this.console.graph.type.offset*10D/18D), 228, 10, 10);
-		final int bX = 86;
-		final int bY = 11;
-		final int size = 10;
+		int bX = 86;
+		int bY = 11;
+		int size = 10;
 		
 		for(int i = 0; i < console.columns.length; i++) {
 			
-			final RBMKColumn col = console.columns[i];
+			RBMKColumn col = console.columns[i];
 			
 			if(col == null)
 				continue;
 
-			final int x = bX + size * (i % 15);
-			final int y = bY + size * (i / 15);
+			int x = bX + size * (i % 15);
+			int y = bY + size * (i / 15);
 			
-			final int tX = col.type.offset;
-			final int tY = 172;
+			int tX = col.type.offset;
+			int tY = 172;
 			
 			drawTexturedModalRect(guiLeft + x, guiTop + y, tX, tY, size, size);
 			
-			final int h = (int)Math.ceil((col.data.getDouble("heat") - 20) * 10 / col.data.getDouble("maxHeat"));
+			int h = (int)Math.ceil((col.data.getDouble("heat") - 20) * 10 / col.data.getDouble("maxHeat"));
 			drawTexturedModalRect(guiLeft + x, guiTop + y + size - h, 0, 192 - h, 10, h);
 			
 			switch(col.type) {
@@ -342,43 +341,43 @@ public class GUIRBMKConsole extends GuiScreen {
 			case BREEDER: break;
 			
 			case COOLER:
-				final int cryo = (int)Math.ceil(col.data.getShort("cryo") * 8 / 16000);
+				int cryo = (int)Math.ceil(col.data.getShort("cryo") * 8 / 16000);
 				if(cryo > 0)
 					drawTexturedModalRect(guiLeft + x + 3, guiTop + y + size - cryo - 1, 123, 191 - cryo, 4, cryo);
 				break;
 			case CONTROL:
-				final int color = col.data.getShort("color");
+				int color = col.data.getShort("color");
 				if(color > -1)
 					drawTexturedModalRect(guiLeft + x, guiTop + y, color * size, 202, 10, 10);
 				
 			case CONTROL_AUTO:
-				final int fr = 8 - (int)Math.ceil((col.data.getDouble("level") * 8));
+				int fr = 8 - (int)Math.ceil((col.data.getDouble("level") * 8));
 				drawTexturedModalRect(guiLeft + x + 4, guiTop + y + 1, 24, 183, 2, fr);
 				break;
 
 			case FUEL:
 			case FUEL_SIM:
 				if(col.data.hasKey("c_heat")) {
-					final int fh = (int)Math.ceil((col.data.getDouble("c_heat") - 20) * 8 / col.data.getDouble("c_maxHeat"));
+					int fh = (int)Math.ceil((col.data.getDouble("c_heat") - 20) * 8 / col.data.getDouble("c_maxHeat"));
 					drawTexturedModalRect(guiLeft + x + 1, guiTop + y + size - fh - 1, 11, 191 - fh, 2, fh);
 					
-					final int fe = (int)Math.ceil((col.data.getDouble("enrichment")) * 8);
+					int fe = (int)Math.ceil((col.data.getDouble("enrichment")) * 8);
 					drawTexturedModalRect(guiLeft + x + 4, guiTop + y + size - fe - 1, 14, 191 - fe, 2, fe);
 				}
 				break;
 			case HEATEX:
-				final int fk = (int)Math.ceil((col.data.getInteger("inputFluidAmount")) * 8 / col.data.getDouble("inputFluidMax"));
+				int fk = (int)Math.ceil((col.data.getInteger("inputFluidAmount")) * 8 / col.data.getDouble("inputFluidMax"));
 				drawTexturedModalRect(guiLeft + x + 1, guiTop + y + size - fk - 1, 131, 191 - fk, 3, fk);
-				final int fz = (int)Math.ceil((col.data.getInteger("outputFluidAmount")) * 8 / col.data.getDouble("outputFluidMax"));
+				int fz = (int)Math.ceil((col.data.getInteger("outputFluidAmount")) * 8 / col.data.getDouble("outputFluidMax"));
 				drawTexturedModalRect(guiLeft + x + 6, guiTop + y + size - fz - 1, 136, 191 - fz, 3, fz);
 				break;
 			case BOILER:
-				final int fw = (int)Math.ceil((col.data.getInteger("water")) * 8 / col.data.getDouble("maxWater"));
+				int fw = (int)Math.ceil((col.data.getInteger("water")) * 8 / col.data.getDouble("maxWater"));
 				drawTexturedModalRect(guiLeft + x + 1, guiTop + y + size - fw - 1, 41, 191 - fw, 3, fw);
-				final int fs = (int)Math.ceil((col.data.getInteger("steam")) * 8 / col.data.getDouble("maxSteam"));
+				int fs = (int)Math.ceil((col.data.getInteger("steam")) * 8 / col.data.getDouble("maxSteam"));
 				drawTexturedModalRect(guiLeft + x + 6, guiTop + y + size - fs - 1, 46, 191 - fs, 3, fs);
 
-				final Fluid fluid = FluidRegistry.getFluid(col.data.getString("type"));
+				Fluid fluid = FluidRegistry.getFluid(col.data.getString("type"));
 				
 				if(fluid == ModForgeFluids.steam)
 					drawTexturedModalRect(guiLeft + x + 4, guiTop + y + 1, 44, 183, 2, 2);
@@ -401,7 +400,7 @@ public class GUIRBMKConsole extends GuiScreen {
 	}
 	
 	@Override
-	protected void keyTyped(final char c, final int i) throws IOException {
+	protected void keyTyped(char c, int i) throws IOException {
 
 		if(this.field.textboxKeyTyped(c, i))
 			return;
@@ -424,18 +423,18 @@ public class GUIRBMKConsole extends GuiScreen {
 		Keyboard.enableRepeatEvents(false);
 	}
 
-	private double[] scaleData(final int[] arrayData){
+	private double[] scaleData(int[] arrayData){
 		int max = 0;
-		for(final int n : arrayData){
+		for(int n : arrayData){
 			if(n > max){
 				max = n;
 			}
 		}
-		final int median = 2*arrayData[arrayData.length/2];
+		int median = 2*arrayData[(int)(arrayData.length/2)];
 		if(max < median){
 			max = median;
 		}
-		final double[] scaledData = new double[arrayData.length];
+		double[] scaledData = new double[arrayData.length];
 		if(max == 0){
 			Arrays.fill(scaledData, 0);
 		} else {
@@ -446,16 +445,16 @@ public class GUIRBMKConsole extends GuiScreen {
 		return scaledData;
 	}
 
-	private void drawGraph(final int x, final int y, final int width, final int height, final double[] data, final int color, final float thickness) {
+	private void drawGraph(int x, int y, int width, int height, double[] data, int color, float thickness) {
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
         GlStateManager.color(((color >> 16) & 0xFF) / 255.0F, ((color >> 8) & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
         GlStateManager.glLineWidth(thickness);
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        final BufferBuilder buf = Tessellator.getInstance().getBuffer();
+        BufferBuilder buf = Tessellator.getInstance().getBuffer();
         buf.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
         
-        final float stepsize = ((float)width)/(data.length-1);
+        float stepsize = ((float)width)/(data.length-1);
         double currentX = x;
         double currentY = y + height - data[0]*height;
         buf.pos(guiLeft + currentX, guiTop + currentY, this.zLevel).endVertex();

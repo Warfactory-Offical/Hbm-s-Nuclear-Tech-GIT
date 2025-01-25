@@ -1,55 +1,49 @@
 package com.hbm.blocks.network.energy;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hbm.blocks.ModBlocks;
+import api.hbm.block.IToolable;
+import api.hbm.energymk2.IEnergyConnectorBlock;
+import api.hbm.energymk2.IEnergyConnectorMK2;
+import api.hbm.energymk2.IEnergyReceiverMK2;
+import api.hbm.energymk2.IEnergyReceiverMK2.ConnectionPriority;
+import api.hbm.energymk2.Nodespace;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ITooltipProvider;
-import com.hbm.main.MainRegistry;
-import com.hbm.lib.Library;
+import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.Library;
 import com.hbm.tileentity.INBTPacketReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
+import com.hbm.util.Compat;
 import com.hbm.util.I18nUtil;
-
-import api.hbm.block.IToolable;
-import api.hbm.block.IToolable.ToolType;
-import api.hbm.energy.IEnergyUser;
-import api.hbm.energy.IEnergyConnectorBlock;
-import api.hbm.energy.IEnergyConnector.ConnectionPriority;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CableDiode extends BlockContainer implements IEnergyConnectorBlock, ILookOverlay, IToolable, ITooltipProvider {
 	
 	public static final PropertyDirection FACING = BlockDirectional.FACING;
 	
-	public CableDiode(final Material materialIn, final String s) {
+	public CableDiode(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -59,44 +53,44 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, new IProperty[] { FACING });
 	}
 
 	@Override
-	public int getMetaFromState(final IBlockState state){
-		return state.getValue(FACING).getIndex();
+	public int getMetaFromState(IBlockState state){
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		final EnumFacing enumfacing = EnumFacing.byIndex(meta);
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
 
 	@Override
-	public IBlockState withRotation(final IBlockState state, final Rotation rot){
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	public IBlockState withRotation(IBlockState state, Rotation rot){
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn){
-		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn){
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
 	
 	@Override
-	public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)));
 	}
 
 	@Override
-	public boolean canConnect(final IBlockAccess world, final BlockPos pos, final ForgeDirection dir) {
+	public boolean canConnect(IBlockAccess world, BlockPos pos, ForgeDirection dir) {
 		return true;
 	}
 
 	@Override
-	public boolean onScrew(final World world, final EntityPlayer player, final int x, final int y, final int z, final EnumFacing side, final float fX, final float fY, final float fZ, final EnumHand hand, final ToolType tool){
+	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, EnumFacing side, float fX, float fY, float fZ, EnumHand hand, ToolType tool){
 	
-		final TileEntityDiode te = (TileEntityDiode)world.getTileEntity(new BlockPos(x, y, z));
+		TileEntityDiode te = (TileEntityDiode)world.getTileEntity(new BlockPos(x, y, z));
 		
 		if(world.isRemote)
 			return true;
@@ -105,7 +99,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 			if(te.level < 17)
 				te.level++;
 			te.markDirty();
-			INBTPacketReceiver.networkPack(te, te.packValues(), 20);
+			INBTPacketReceiver.networkPack((TileEntity)te, te.packValues(), 20);
 			return true;
 		}
 		
@@ -113,7 +107,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 			if(te.level > 1)
 				te.level--;
 			te.markDirty();
-			INBTPacketReceiver.networkPack(te, te.packValues(), 20);
+			INBTPacketReceiver.networkPack((TileEntity)te, te.packValues(), 20);
 			return true;
 		}
 		
@@ -122,7 +116,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 			if(p > 2) p = 0;
 			te.priority = ConnectionPriority.values()[p];
 			te.markDirty();
-			INBTPacketReceiver.networkPack(te, te.packValues(), 20);
+			INBTPacketReceiver.networkPack((TileEntity)te, te.packValues(), 20);
 			return true;
 		}
 		
@@ -130,20 +124,22 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
-        this.addStandardInfo(list);
-        super.addInformation(stack, worldIn, list, flagIn);
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+        this.addStandardInfo((List)list);
+        super.addInformation(stack, worldIn, (List)list, flagIn);
     }
 
 	@Override
-	public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
+	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		final TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(!(te instanceof TileEntityDiode diode))
+		if(!(te instanceof TileEntityDiode))
 			return;
-
-        final List<String> text = new ArrayList();
+		
+		TileEntityDiode diode = (TileEntityDiode) te;
+		
+		List<String> text = new ArrayList();
 		text.add("Max.: " + Library.getShortNumber(diode.getMaxPower()*20) + "HE/s");
 		text.add("Priority: " + diode.priority.name());
 		
@@ -151,39 +147,39 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityDiode();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
-	public static class TileEntityDiode extends TileEntityLoadedBase implements ITickable, IEnergyUser, INBTPacketReceiver {
+	public static class TileEntityDiode extends TileEntityLoadedBase implements ITickable, IEnergyReceiverMK2, INBTPacketReceiver {
 
 		@Override
-		public void networkUnpack(final NBTTagCompound nbt){
+		public void networkUnpack(NBTTagCompound nbt){
 			level = nbt.getInteger("level");
 			priority = ConnectionPriority.values()[nbt.getByte("p")];
 		}
 
 		public NBTTagCompound packValues(){
-			final NBTTagCompound nbt = new NBTTagCompound();
+			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setInteger("level", level);
 			nbt.setByte("p", (byte) this.priority.ordinal());
 			return nbt;
 		}
 		
 		@Override
-		public void readFromNBT(final NBTTagCompound nbt) {
+		public void readFromNBT(NBTTagCompound nbt) {
 			super.readFromNBT(nbt);
 			level = nbt.getInteger("level");
 			priority = ConnectionPriority.values()[nbt.getByte("p")];
 		}
 		
 		@Override
-		public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+		public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
 			nbt.setInteger("level", level);
 			nbt.setByte("p", (byte) this.priority.ordinal());
@@ -201,33 +197,38 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		}
 		
 		@Override
-		public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+		public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 			this.readFromNBT(pkt.getNbtCompound());
 		}
 		
 		int level = 1;
 		
 		private ForgeDirection getDir() {
-			final IBlockState state = world.getBlockState(pos);
+			IBlockState state = world.getBlockState(pos);
 			return ForgeDirection.getOrientation(state.getBlock().getMetaFromState(state)).getOpposite();
 		}
 
 		@Override
 		public void update() {
-			if(!world.isRemote) {
-				this.updateConnectionsExcept(world, pos, getDir());
+			if (!world.isRemote) {
+				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+
+					if (dir == getDir())
+						continue;
+
+					this.trySubscribe(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
+				}
 			}
 		}
 
 		@Override
-		public boolean canConnect(final ForgeDirection dir) {
+		public boolean canConnect(ForgeDirection dir) {
 			return dir != getDir();
 		}
-		
+
+		/** Used as an intra-tick tracker for how much energy has been transmitted, resets to 0 each tick and maxes out based on transfer */
+		private long power;
 		private boolean recursionBrake = false;
-		private long subBuffer;
-		private long contingent = 0;
-		private long lastTransfer = 0;
 		private int pulses = 0;
 		public ConnectionPriority priority = ConnectionPriority.NORMAL;
 
@@ -236,36 +237,36 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 
 			if(recursionBrake)
 				return power;
-			
+
 			pulses++;
-			
-			if(lastTransfer != world.getTotalWorldTime()) {
-				lastTransfer = world.getTotalWorldTime();
-				contingent = getMaxPower();
-				pulses = 0;
-			}
-			
-			if(contingent <= 0 || pulses > 10)
-				return power;
-			
-			//this part turns "maxPower" from a glorified transfer weight into an actual transfer cap
-			final long overShoot = Math.max(0, power - contingent);
-			power = Math.min(power, contingent);
-			
+			if(this.getPower() >= this.getMaxPower() || pulses > 10) return power; //if we have already maxed out transfer or max pulses, abort
+
 			recursionBrake = true;
-			this.subBuffer = power;
-			
-			final ForgeDirection dir = getDir();
-			this.sendPower(world, pos.add(dir.offsetX, dir.offsetY, dir.offsetZ), dir);
-			final long ret = this.subBuffer;
-			
-			final long sent = power - ret;
-			contingent -= sent;
-			
-			this.subBuffer = 0;
+
+			ForgeDirection dir = getDir();
+			Nodespace.PowerNode node = Nodespace.getNode(world, pos);
+			TileEntity te = Compat.getTileStandard(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ);
+
+			if(node != null && !node.expired && node.hasValidNet() && te instanceof IEnergyConnectorMK2 && ((IEnergyConnectorMK2) te).canConnect(dir.getOpposite())) {
+				long toTransfer = Math.min(power, this.getReceiverSpeed());
+				long remainder = node.net.sendPowerDiode(toTransfer);
+				long transferred = (toTransfer - remainder);
+				this.power += transferred;
+				power -= transferred;
+
+			} else if(te instanceof IEnergyReceiverMK2 && te != this) {
+				IEnergyReceiverMK2 rec = (IEnergyReceiverMK2) te;
+				if(rec.canConnect(dir.getOpposite())) {
+					long toTransfer = Math.min(power, rec.getReceiverSpeed());
+					long remainder = rec.transferPower(toTransfer);
+					power -= (toTransfer - remainder);
+					recursionBrake = false;
+					return power;
+				}
+			}
+
 			recursionBrake = false;
-			
-			return ret + overShoot;
+			return power;
 		}
 
 
@@ -276,12 +277,12 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 
 		@Override
 		public long getPower() {
-			return subBuffer;
+			return Math.min(power, this.getMaxPower());
 		}
-		
+
 		@Override
-		public void setPower(final long power) {
-			this.subBuffer = power;
+		public void setPower(long power) {
+			this.power = power;
 		}
 
 		@Override

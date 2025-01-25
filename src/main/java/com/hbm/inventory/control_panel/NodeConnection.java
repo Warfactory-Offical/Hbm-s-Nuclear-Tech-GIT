@@ -1,23 +1,20 @@
 package com.hbm.inventory.control_panel;
 
-import javax.annotation.Nonnull;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.control_panel.DataValue.DataType;
 import com.hbm.inventory.control_panel.nodes.Node;
 import com.hbm.render.RenderHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nonnull;
 
 public class NodeConnection extends NodeElement {
 
@@ -36,7 +33,7 @@ public class NodeConnection extends NodeElement {
 	
 	public NodeDropdown enumSelector = null;
 	
-	public NodeConnection(final String name, final Node p, final int idx, final boolean isInput, final DataType type, @Nonnull final DataValue defaultVal){
+	public NodeConnection(String name, Node p, int idx, boolean isInput, DataType type, @Nonnull DataValue defaultVal){
 		super(p, idx);
 		this.name = name;
 		this.connection = null;
@@ -46,7 +43,7 @@ public class NodeConnection extends NodeElement {
 		this.type = type;
 	}
 	
-	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
+	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
 		super.writeToNBT(tag, sys);
 //		tag.setString("eleType", "connection");
 		tag.setString("name", name);
@@ -59,11 +56,11 @@ public class NodeConnection extends NodeElement {
 		return tag;
 	}
 	
-	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
+	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
 		super.readFromNBT(tag, sys);
 		name = tag.getString("name");
 		connectionIndex = tag.getInteger("Ci");
-		final int nodeIdx = tag.getInteger("Ni");
+		int nodeIdx = tag.getInteger("Ni");
 		if(nodeIdx == -1){
 			connection = null;
 		} else {
@@ -82,13 +79,13 @@ public class NodeConnection extends NodeElement {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void setDefault(@Nonnull final DataValue defaultVal){
+	public void setDefault(@Nonnull DataValue defaultVal){
 		this.defaultValue = defaultVal;
 		type = defaultVal.getType();
 		if(type == DataType.ENUM){
 			enumSelector = new NodeDropdown(parent, this.index, s -> {
-				final Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
-				for(final Enum<?> e : vals){
+				Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
+				for(Enum<?> e : vals){
 					if(e.name().equals(s)){
 						defaultValue = new DataValueEnum(e);
 						return null;
@@ -96,8 +93,8 @@ public class NodeConnection extends NodeElement {
 				}
 				return null;
 			}, ()->defaultValue.toString());
-			final Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
-			for(final Enum<?> e : vals)
+			Enum<?>[] vals = ((DataValueEnum<?>)defaultVal).getPossibleValues();
+			for(Enum<?> e : vals)
 				enumSelector.list.addItems(e.name());
 			enumSelector.setOffset(offsetX, offsetY);
 		} else {
@@ -108,7 +105,7 @@ public class NodeConnection extends NodeElement {
 	public NodeConnection removeConnection(){
 		//Will only run for input nodes as well, since the output node doesn't maintain a connection
 		if(connection != null){
-			final NodeConnection n = connection.outputs.get(connectionIndex);
+			NodeConnection n = connection.outputs.get(connectionIndex);
 			drawsLine = false;
 			connection = null;
 			connectionIndex = -1;
@@ -117,7 +114,7 @@ public class NodeConnection extends NodeElement {
 		return null;
 	}
 
-	public NodeConnection setData(final Node connection, final int connectionIndex, final boolean drawsLine) {
+	public NodeConnection setData(Node connection, int connectionIndex, boolean drawsLine) {
 		this.connection = connection;
 		this.connectionIndex = connectionIndex;
 		this.drawsLine = drawsLine;
@@ -138,12 +135,12 @@ public class NodeConnection extends NodeElement {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void render(final float mX, final float mY){
+	public void render(float mX, float mY){
 		float[] color = type.getColor();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(NodeSystem.node_tex);
 		Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		final float x = offsetX+38 + (isInput ? -40 : 0);
-		final float y = offsetY+8;
+		float x = offsetX+38 + (isInput ? -40 : 0);
+		float y = offsetY+8;
 		RenderHelper.drawGuiRectBatchedColor(x, y, 0.625F, 0, 4, 4, 0.6875F, 0.0625F, color[0], color[1], color[2], 1);
 		color = RenderHelper.intersects2DBox(mX, mY, this.getValueBox()) && !isTyping ? new float[]{1, 1, 1} : new float[]{0.6F, 0.6F, 0.6F};
 		if(isInput){
@@ -158,16 +155,16 @@ public class NodeConnection extends NodeElement {
 		}
 		Tessellator.getInstance().draw();
 		
-		final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, 0);
 		GL11.glScaled(0.4, 0.4, 0.4);
 		GL11.glTranslated(-x, -y, 0);
 		if(isTyping){
-			final String s = builder.toString();
+			String s = builder.toString();
 			font.drawString(s + (Minecraft.getMinecraft().world.getTotalWorldTime()%20 > 10 ? "_" : ""), x+(isInput ? 16 : -font.getStringWidth(name)-1), y+1F, 0xFFAFAFAF, false);
 		} else {
-			final int hex = isInput ? 0xFFAFAFAF : 0xFF2F2F2F;
+			int hex = isInput ? 0xFFAFAFAF : 0xFF2F2F2F;
 			font.drawString(name, x+(isInput ? 16 : -font.getStringWidth(name)-1), y+1F, hex, false);
 			if(isInput && connection == null){
 				String s = defaultValue.toString();
@@ -181,14 +178,14 @@ public class NodeConnection extends NodeElement {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void drawLine(final float mouseX, final float mouseY){
+	public void drawLine(float mouseX, float mouseY){
 		if(drawsLine){
-			final BufferBuilder buf = Tessellator.getInstance().getBuffer();
+			BufferBuilder buf = Tessellator.getInstance().getBuffer();
 			buf.pos(offsetX + (isInput ? 0 : 40), offsetY+10, 0).endVertex();
 			if(connectionIndex == -1 || !isInput){
 				buf.pos(mouseX, mouseY, 0).endVertex();
 			} else {
-				final NodeConnection pair = (isInput ? connection.outputs : connection.inputs).get(connectionIndex);
+				NodeConnection pair = (isInput ? connection.outputs : connection.inputs).get(connectionIndex);
 				buf.pos(pair.offsetX + (pair.isInput ? 0 : 40), pair.offsetY+10, 0).endVertex();
 			}
 		}
@@ -228,7 +225,7 @@ public class NodeConnection extends NodeElement {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)
 	public void stopTyping(){
-		final DataValue val = new DataValueString(builder.toString());
+		DataValue val = new DataValueString(builder.toString());
 		builder = null;
 		isTyping = false;
 		switch(type){
@@ -237,15 +234,15 @@ public class NodeConnection extends NodeElement {
 			defaultValue = val;
 			break;
 		case ENUM:
-			final DataValueEnum<?> def = (DataValueEnum<?>)defaultValue;
-			final Enum<?>[] possibleVals = def.getPossibleValues();
-			for(final Enum<?> e : possibleVals){
+			DataValueEnum<?> def = (DataValueEnum<?>)defaultValue;
+			Enum<?>[] possibleVals = def.getPossibleValues();
+			for(Enum<?> e : possibleVals){
 				if(e.name().equalsIgnoreCase(val.toString())){
 					defaultValue = new DataValueEnum(e);
 					break;
 				}
 			}
-			final int idx = Math.abs(((int)val.getNumber()))%possibleVals.length;
+			int idx = Math.abs(((int)val.getNumber()))%possibleVals.length;
 			defaultValue = new DataValueEnum(possibleVals[idx]);
 			break;
 		case NUMBER:
@@ -254,7 +251,7 @@ public class NodeConnection extends NodeElement {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void keyTyped(final char c, final int key){
+	public void keyTyped(char c, int key){
 		if(key == Keyboard.KEY_BACK){
 			if(builder.length() > 0)
 				builder.deleteCharAt(builder.length()-1);

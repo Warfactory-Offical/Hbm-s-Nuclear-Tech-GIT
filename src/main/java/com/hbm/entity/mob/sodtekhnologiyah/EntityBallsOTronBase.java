@@ -1,7 +1,6 @@
 package com.hbm.entity.mob.sodtekhnologiyah;
 
 import com.google.common.base.Predicate;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.math.Vec3d;
@@ -12,10 +11,13 @@ public abstract class EntityBallsOTronBase extends EntityWormBase {
 	public int attackCounter = 0;
 
 	protected final Predicate<Entity> selector = ent -> {
-        return !(ent instanceof EntityWormBase) || ((EntityWormBase) ent).getUniqueWormID() != EntityBallsOTronBase.this.getUniqueWormID();
-    };
+			if(ent instanceof EntityWormBase && ((EntityWormBase)ent).getUniqueWormID() == EntityBallsOTronBase.this.getUniqueWormID())
+				return false;
+
+			return true;
+		};
 	
-	public EntityBallsOTronBase(final World world) {
+	public EntityBallsOTronBase(World world) {
 		super(world);
 		this.setSize(2.0F, 2.0F);
 		this.isImmuneToFire = true;
@@ -27,7 +29,7 @@ public abstract class EntityBallsOTronBase extends EntityWormBase {
 	}
 	
 	@Override
-	public boolean canEntityBeSeen(final Entity entityIn) {
+	public boolean canEntityBeSeen(Entity entityIn) {
 		return this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double)entityIn.getEyeHeight(), entityIn.posZ), false, true, false) == null;
 	}
 	
@@ -38,7 +40,7 @@ public abstract class EntityBallsOTronBase extends EntityWormBase {
 	}
 
 	@Override
-	public void setPartID(final int id) {
+	public void setPartID(int id) {
 
 	}
 

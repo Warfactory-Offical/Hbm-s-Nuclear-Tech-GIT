@@ -1,16 +1,14 @@
 package com.hbm.inventory.control_panel.nodes;
 
 import com.hbm.inventory.control_panel.*;
-import com.hbm.inventory.control_panel.nodes.Node;
-import com.hbm.inventory.control_panel.DataValue.*;
-import com.hbm.main.MainRegistry;
+import com.hbm.inventory.control_panel.DataValue.DataType;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class NodeBuffer extends Node {
 
     private int internalCount;
 
-    public NodeBuffer(final float x, final float y) {
+    public NodeBuffer(float x, float y) {
         super(x, y);
         this.inputs.add(new NodeConnection("Input", this, inputs.size(), true, DataType.NUMBER, new DataValueFloat(0)));
         this.inputs.add(new NodeConnection("Delay", this, inputs.size(), true, DataType.NUMBER, new DataValueFloat(0)));
@@ -30,29 +28,29 @@ public class NodeBuffer extends Node {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys) {
         tag.setString("nodeType", "buffer");
         tag.setInteger("internalCount", this.internalCount);
         return super.writeToNBT(tag, sys);
     }
 
     @Override
-    public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys) {
+    public void readFromNBT(NBTTagCompound tag, NodeSystem sys) {
         this.internalCount = tag.getInteger("internalCount");
         super.readFromNBT(tag, sys);
     }
 
     @Override
-    public DataValue evaluate(final int inx) {
+    public DataValue evaluate(int inx) {
         if (cacheValid)
             return evalCache[0];
         cacheValid = true;
 
-        final DataValue in = inputs.get(0).evaluate();
-        final DataValue delay = inputs.get(1).evaluate();
+        DataValue in = inputs.get(0).evaluate();
+        DataValue delay = inputs.get(1).evaluate();
         if (in == null || delay == null)
             return null;
-        final int delayInt = Math.abs(Math.round(delay.getNumber()));
+        int delayInt = Math.abs(Math.round(delay.getNumber()));
 
         if (in.getBoolean() || (internalCount != 0)) {
             if (internalCount == delayInt) {

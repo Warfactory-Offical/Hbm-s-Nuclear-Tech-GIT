@@ -57,6 +57,10 @@ public class CompatibilityConfig {
 	public static HashMap endTixiteSpawn;
 
 	public static HashMap bedrockOilSpawn;
+
+	public static HashMap dunaOilSpawn;
+	public static HashMap laytheOilSpawn;
+	public static HashMap eveGasSpawn;
 	
 	public static HashMap radioStructure;
 	public static HashMap antennaStructure;
@@ -109,7 +113,7 @@ public class CompatibilityConfig {
 
 
 	
-	public static void loadFromConfig(final Configuration config) {
+	public static void loadFromConfig(Configuration config) {
 		final String CATEGORY_DIMRAD = "01_dimension_radiation";
 		final String CATEGORY_DIMORE = "02_dimension_ores";
 		final String CATEGORY_DIMSTRUC = "03_dimension_structures";
@@ -119,7 +123,7 @@ public class CompatibilityConfig {
 		final String CATEGORY_NUKES = "07_nukes";
 		final String CATEGORY_BORES = "08_bedrockOres";
 
-		final String dimRadComment = "Amount of background radiation in the dimension in Rad/s - <dimID:Rad> (Int:Float)";
+		String dimRadComment = "Amount of background radiation in the dimension in Rad/s - <dimID:Rad> (Int:Float)";
 		dimensionRad = CommonConfig.createConfigHashMap(config, CATEGORY_DIMRAD, "01.01_dimensionRadiation", dimRadComment, "Int", "Float", new String[]{  
 			"-1:0.666", //Nether
 			"1:0.01", //End
@@ -225,7 +229,6 @@ public class CompatibilityConfig {
 		daffergonSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "01.30_daffergonSpawnRate", "Amount of daffergon ore veins per chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "-30:1" }, ":");
 		
 		bedrockOilSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "01.31_bedrockOilSpawnRate", "Spawn bedrock oil every nTH chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "0:200", "-6:200" }, ":");
-		
 		netherUraniumSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "02.N00_uraniumSpawnrate", "Amount of nether uranium per chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "-1:8" }, ":");
 		netherTungstenSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "02.N01_tungstenSpawnrate", "Amount of nether tungsten per chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "-1:10" }, ":");
 		netherSulfurSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "02.N02_sulfurSpawnrate", "Amount of nether sulfur per chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "-1:26" }, ":");
@@ -233,7 +236,9 @@ public class CompatibilityConfig {
 		netherCoalSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "02.N04_coalSpawnrate", "Amount of nether coal per chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "-1:24" }, ":");
 		netherPlutoniumSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "02.N05_plutoniumSpawnrate", "Amount of nether plutonium per chunk, if enabled - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "-1:8" }, ":");
 		netherCobaltSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "02.N06_cobaltSpawnrate", "Amount of nether cobalt per chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "-1:2" }, ":");
-		
+		dunaOilSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "0.2S1_oilSpawnRate", "Spawns an oil bubble every nTH chunk (on Duna) - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "16:100" }, ":");
+		laytheOilSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "0.2S2_oilSpawnRate", "Spawns a DS oil bubble every nTH chunk (on Laythe) - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "22:100" }, ":");
+		eveGasSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "0.2S3_gasSpawnRate", "Spawns a natural gas bubble every nTH chunk (on Eve) - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "18:100" }, ":");
 		endTixiteSpawn = CommonConfig.createConfigHashMap(config, CATEGORY_DIMORE, "03.E01_tixiteSpawnrate", "Amount of end trixite per chunk - <dimID:amount> (Int:Int)", "Int", "Int", new String[]{ "1:8" }, ":");
 		
 
@@ -323,14 +328,14 @@ public class CompatibilityConfig {
 		}, ":");
 		
 
-		final String mobModRadComment = "Amount of radiation resistance all the mobs of that mod get. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod=radresistance> (String:Float)";
+		String mobModRadComment = "Amount of radiation resistance all the mobs of that mod get. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod=radresistance> (String:Float)";
 		mobModRadresistance = CommonConfig.createConfigHashMap(config, CATEGORY_MOB, "06.01_mob_Mod_Radresistance", mobModRadComment, "String", "Float", new String[]{ 
 			"srparasites=0.2",
 			"thaumcraft=0.75",
 		}, "=");
 		
 
-		final String mobRadComment = "Amount of radiation resistance the mob gets. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod:mobitentifier=radresistance> (String:Float)";
+		String mobRadComment = "Amount of radiation resistance the mob gets. Radresistance s is calculated as s=(1-0.1^r). So a resistance value of 3.0 means that 99.9%=(1-0.1^3.0) of the radiation gets blocked. - <mod:mobitentifier=radresistance> (String:Float)";
 		mobRadresistance = CommonConfig.createConfigHashMap(config, CATEGORY_MOB, "06.02_mob_Radresistance", mobRadComment, "String", "Float", new String[]{ 
 			"minecraft:parrot=0.5", 
 			"minecraft:rabbit=1.0", 
@@ -447,11 +452,11 @@ public class CompatibilityConfig {
 		});
 	}
 
-	public static boolean isWarDim(final World world){
+	public static boolean isWarDim(World world){
 		return isWarDim(world.provider.getDimension());
 	}
 
-	public static boolean isWarDim(final int dimID){
+	public static boolean isWarDim(int dimID){
 		if(peaceDimensionsIsWhitelist)
 			return !peaceDimensions.contains(dimID);
 		else

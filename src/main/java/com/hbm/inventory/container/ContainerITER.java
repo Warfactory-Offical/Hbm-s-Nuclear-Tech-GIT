@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.TileEntityITER;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,9 +11,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerITER extends Container {
 
-private final TileEntityITER iter;
+private TileEntityITER iter;
 
-	public ContainerITER(final InventoryPlayer invPlayer, final TileEntityITER tedf) {
+	public ContainerITER(InventoryPlayer invPlayer, TileEntityITER tedf) {
 
 		iter = tedf;
 
@@ -44,14 +43,14 @@ private final TileEntityITER iter;
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
             if (par2 <= 2) {
@@ -77,7 +76,7 @@ private final TileEntityITER iter;
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return iter.isUseableByPlayer(player);
 	}
 }

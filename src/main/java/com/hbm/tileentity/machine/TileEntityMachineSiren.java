@@ -1,8 +1,5 @@
 package com.hbm.tileentity.machine;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.hbm.inventory.control_panel.ControlEvent;
 import com.hbm.inventory.control_panel.ControlEventSystem;
 import com.hbm.inventory.control_panel.IControllable;
@@ -11,7 +8,6 @@ import com.hbm.items.machine.ItemCassette.SoundType;
 import com.hbm.items.machine.ItemCassette.TrackType;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TESirenPacket;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +18,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TileEntityMachineSiren extends TileEntity implements ITickable, IControllable {
 
@@ -39,7 +38,7 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 	public TileEntityMachineSiren() {
 		inventory = new ItemStackHandler(1){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
@@ -54,11 +53,11 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -68,14 +67,14 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
@@ -83,14 +82,14 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			final int id = Arrays.asList(TrackType.values()).indexOf(getCurrentType());
+			int id = Arrays.asList(TrackType.values()).indexOf(getCurrentType());
 			
 			if(getCurrentType().name().equals(TrackType.NULL.name())) {
 				PacketDispatcher.wrapper.sendToDimension(new TESirenPacket(pos.getX(), pos.getY(), pos.getZ(), id, false), world.provider.getDimension());
 				return;
 			}
 			
-			final boolean active = ctrlActive || world.isBlockPowered(pos);
+			boolean active = ctrlActive || world.isBlockIndirectlyGettingPowered(pos) > 0;
 			
 			if(getCurrentType().getType().name().equals(SoundType.LOOP.name())) {
 				
@@ -113,7 +112,7 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 	@Override
 	public void onChunkUnload() {
 		if(!world.isRemote) {
-			final int id = Arrays.asList(TrackType.values()).indexOf(getCurrentType());
+			int id = Arrays.asList(TrackType.values()).indexOf(getCurrentType());
 			PacketDispatcher.wrapper.sendToDimension(new TESirenPacket(pos.getX(), pos.getY(), pos.getZ(), id, false), world.provider.getDimension());		
 		}
 	}
@@ -121,7 +120,7 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 	@Override
 	public void invalidate() {
 		if(!world.isRemote) {
-			final int id = Arrays.asList(TrackType.values()).indexOf(getCurrentType());
+			int id = Arrays.asList(TrackType.values()).indexOf(getCurrentType());
 			PacketDispatcher.wrapper.sendToDimension(new TESirenPacket(pos.getX(), pos.getY(), pos.getZ(), id, false), world.provider.getDimension());		
 		}
 		ControlEventSystem.get(world).removeControllable(this);
@@ -137,17 +136,17 @@ public class TileEntityMachineSiren extends TileEntity implements ITickable, ICo
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 
 	@Override
-	public void receiveEvent(final BlockPos from, final ControlEvent e){
+	public void receiveEvent(BlockPos from, ControlEvent e){
 		if(e.name.equals("siren_set_state")){
 			ctrlActive = e.vars.get("isOn").getBoolean();
 		}

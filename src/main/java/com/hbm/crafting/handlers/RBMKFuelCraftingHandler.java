@@ -1,5 +1,4 @@
 package com.hbm.crafting.handlers;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.items.machine.ItemRBMKRod;
 
@@ -15,35 +14,37 @@ public class RBMKFuelCraftingHandler extends net.minecraftforge.registries.IForg
 	 * The only rules for matching is that the item is fuel (meta and NBT don't matter) and that it's the only stack in the grid
 	 */
 	@Override
-	public boolean matches(final InventoryCrafting inventory, final World world) {
+	public boolean matches(InventoryCrafting inventory, World world) {
 		if(!hasExactlyOneStack(inventory))
 			return false;
 		
-		final ItemStack stack = getFirstStack(inventory);
+		ItemStack stack = getFirstStack(inventory);
 		
 		return stack.getItem() instanceof ItemRBMKRod && ((ItemRBMKRod)stack.getItem()).pellet != null &&
 				ItemRBMKRod.getHullHeat(stack) < 50 && ItemRBMKRod.getCoreHeat(stack) < 50;
 	}
 
 	@Override
-	public ItemStack getCraftingResult(final InventoryCrafting inventory) {
+	public ItemStack getCraftingResult(InventoryCrafting inventory) {
 		if(!hasExactlyOneStack(inventory))
 			return ItemStack.EMPTY;
 		
-		final ItemStack stack = getFirstStack(inventory);
+		ItemStack stack = getFirstStack(inventory);
 		
-		if(stack.getItem() instanceof ItemRBMKRod rod) {
-
-            if(rod.pellet == null)
+		if(stack.getItem() instanceof ItemRBMKRod) {
+			
+			ItemRBMKRod rod = (ItemRBMKRod)stack.getItem();
+			
+			if(rod.pellet == null)
 				return ItemStack.EMPTY;
 			
 			if(ItemRBMKRod.getEnrichment(stack) > 0.99D)
 				return ItemStack.EMPTY;
 			
 			if(ItemRBMKRod.getHullHeat(stack) < 50 && ItemRBMKRod.getCoreHeat(stack) < 50) {
-				final ItemStack result = ItemStackUtil.itemStackFrom(rod.pellet, 8);
-				final int enrichment = 4 - MathHelper.clamp((int)Math.ceil(ItemRBMKRod.getEnrichment(stack) * 5 - 1), 0, 4);
-				final int meta = enrichment + (ItemRBMKRod.getPoisonLevel(stack) >= 0.5D ? 5 : 0);
+				ItemStack result = new ItemStack(rod.pellet, 8);
+				int enrichment = 4 - MathHelper.clamp((int)Math.ceil(ItemRBMKRod.getEnrichment(stack) * 5 - 1), 0, 4);
+				int meta = enrichment + (ItemRBMKRod.getPoisonLevel(stack) >= 0.5D ? 5 : 0);
 				result.setItemDamage(meta);
 				return result;
 			}
@@ -57,14 +58,14 @@ public class RBMKFuelCraftingHandler extends net.minecraftforge.registries.IForg
 		return ItemStack.EMPTY;
 	}
 	
-	private boolean hasExactlyOneStack(final InventoryCrafting inventory) {
+	private boolean hasExactlyOneStack(InventoryCrafting inventory) {
 		
 		boolean hasOne = false;
 
 		for(int i = 0; i < 3; ++i) {
 			for(int j = 0; j < 3; ++j) {
 				
-				final ItemStack stack = inventory.getStackInRowAndColumn(j, i);
+				ItemStack stack = inventory.getStackInRowAndColumn(j, i);
 				
 				if(!stack.isEmpty()) {
 					
@@ -79,12 +80,12 @@ public class RBMKFuelCraftingHandler extends net.minecraftforge.registries.IForg
 		return hasOne;
 	}
 	
-	private ItemStack getFirstStack(final InventoryCrafting inventory) {
+	private ItemStack getFirstStack(InventoryCrafting inventory) {
 
 		for(int i = 0; i < 3; ++i) {
 			for(int j = 0; j < 3; ++j) {
 				
-				final ItemStack stack = inventory.getStackInRowAndColumn(j, i);
+				ItemStack stack = inventory.getStackInRowAndColumn(j, i);
 				
 				if(stack != null && !stack.isEmpty()) {
 					return stack;
@@ -101,7 +102,7 @@ public class RBMKFuelCraftingHandler extends net.minecraftforge.registries.IForg
 	}
 	
 	@Override
-	public boolean canFit(final int width, final int height){
+	public boolean canFit(int width, int height){
 		return width >= 1 && height >= 1;
 	}
 

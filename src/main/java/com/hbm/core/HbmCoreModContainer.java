@@ -1,17 +1,18 @@
 package com.hbm.core;
 
+import java.util.Arrays;
+
 import com.google.common.eventbus.EventBus;
+
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
-
-import java.util.Arrays;
 
 public class HbmCoreModContainer extends DummyModContainer {
 
 	public HbmCoreModContainer() {
 		super(new ModMetadata());
-        final ModMetadata meta = getMetadata();
+        ModMetadata meta = getMetadata();
         meta.modId = "hbmcore";
         meta.name = "NTMCore";
         meta.description = "Hbm core mod";
@@ -20,7 +21,7 @@ public class HbmCoreModContainer extends DummyModContainer {
 	}
 	
 	@Override
-	public boolean registerBus(final EventBus bus, final LoadController controller) {
+	public boolean registerBus(EventBus bus, LoadController controller) {
 		bus.register(this);
 		return true;
 	}

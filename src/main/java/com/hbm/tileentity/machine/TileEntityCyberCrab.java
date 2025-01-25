@@ -1,15 +1,14 @@
 package com.hbm.tileentity.machine;
 
-import java.util.List;
-
 import com.hbm.entity.mob.EntityCyberCrab;
 import com.hbm.entity.mob.EntityTeslaCrab;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+
+import java.util.List;
 
 public class TileEntityCyberCrab extends TileEntity implements ITickable {
 
@@ -18,11 +17,11 @@ public class TileEntityCyberCrab extends TileEntity implements ITickable {
 		if(!this.world.isRemote) {
 
 			if(world.rand.nextInt(400) == 0 && world.isAreaLoaded(pos, 5) && world.getBlockState(pos.up()).getBlock() == Blocks.AIR) {
-				final List<Entity> entities = this.world.getEntitiesWithinAABB(EntityCyberCrab.class, new AxisAlignedBB(pos.getX() - 5, pos.getY() - 1, pos.getZ() - 5, pos.getX() + 5, pos.getY() + 3, pos.getZ() + 5));
+				List<Entity> entities = this.world.getEntitiesWithinAABB(EntityCyberCrab.class, new AxisAlignedBB(pos.getX() - 5, pos.getY() - 1, pos.getZ() - 5, pos.getX() + 5, pos.getY() + 3, pos.getZ() + 5));
 
 				if(entities.size() < 7) {
 
-					final EntityCyberCrab crab;
+					EntityCyberCrab crab;
 
 					if(world.rand.nextInt(5) == 0)
 						crab = new EntityTeslaCrab(world);

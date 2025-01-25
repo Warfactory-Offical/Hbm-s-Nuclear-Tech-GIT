@@ -13,19 +13,19 @@ import net.minecraft.world.World;
 
 public class JungleDungeonRoomArrowFire extends JungleDungeonRoom {
 
-	public JungleDungeonRoomArrowFire(final CellularDungeon parent) {
+	public JungleDungeonRoomArrowFire(CellularDungeon parent) {
 		super(parent);
 	}
 
 	public void generateMain(final World world, final int x, final int y, final int z) {
 		super.generateMain(world, x, y, z);
 
-		final ITimedJob job = new ITimedJob() {
+		ITimedJob job = new ITimedJob() {
 
 			@Override
 			public void work() {
 
-				final ITimedJob job = new ITimedJob() {
+				ITimedJob job = new ITimedJob() {
 
 					@Override
 					public void work() {

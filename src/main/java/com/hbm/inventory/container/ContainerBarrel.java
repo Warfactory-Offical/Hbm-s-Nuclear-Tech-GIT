@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.TileEntityBarrel;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,18 +12,20 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBarrel extends Container {
 
-	private final TileEntityBarrel diFurnace;
+	private TileEntityBarrel diFurnace;
 	private int mode;
 
-	public ContainerBarrel(final InventoryPlayer invPlayer, final TileEntityBarrel tedf) {
+	public ContainerBarrel(InventoryPlayer invPlayer, TileEntityBarrel tedf) {
 		mode = 0;
 
 		diFurnace = tedf;
 
-		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 0, 53 - 18, 17));
-		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 1, 53 - 18, 53));
-		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 2, 125, 17));
-		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 3, 125, 53));
+		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 0, 8, 17));
+		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 1, 8, 53));
+		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 2, 53 - 18, 17));
+		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 3, 53 - 18, 53));
+		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 4, 125, 17));
+		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 5, 125, 53));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
@@ -38,18 +39,18 @@ public class ContainerBarrel extends Container {
 	}
 
 	@Override
-	public void addListener(final IContainerListener listener) {
+	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
 		listener.sendWindowProperty(this, 0, diFurnace.mode);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2) {
+	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2) {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 
 		if(var4 != null && var4.getHasStack()) {
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
 			if(par2 <= 5) {
@@ -72,7 +73,7 @@ public class ContainerBarrel extends Container {
 
 	@Override
 	public void detectAndSendChanges() {
-		for(final IContainerListener listener : this.listeners) {
+		for(IContainerListener listener : this.listeners) {
 			if(this.mode != diFurnace.mode) {
 				listener.sendWindowProperty(this, 0, diFurnace.mode);
 				this.mode = diFurnace.mode;
@@ -82,14 +83,14 @@ public class ContainerBarrel extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(final int id, final int data) {
+	public void updateProgressBar(int id, int data) {
 		if(id == 0)
 			diFurnace.mode = (short) data;
 		super.updateProgressBar(id, data);
 	}
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 }

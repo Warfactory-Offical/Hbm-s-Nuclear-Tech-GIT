@@ -2,8 +2,6 @@ package com.hbm.tileentity.machine;
 
 import com.hbm.lib.ForgeDirection;
 import com.hbm.main.MainRegistry;
-import com.hbm.tileentity.INBTPacketReceiver;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidTank;
@@ -25,7 +23,7 @@ public class TileEntityTowerLarge extends TileEntityCondenser {
 		if(world.isRemote) {
 			
 			if(this.waterTimer > 0 && this.world.getTotalWorldTime() % 4 == 0) {
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "tower");
 				data.setFloat("lift", 1F);
 				data.setFloat("base", 1F);
@@ -42,11 +40,11 @@ public class TileEntityTowerLarge extends TileEntityCondenser {
 	}
 
 	@Override
-	public void fillFluidInit(final FluidTank tank) {
+	public void fillFluidInit(FluidTank tank) {
 		
 		for(int i = 2; i <= 6; i++) {
-			final ForgeDirection dir = ForgeDirection.getOrientation(i);
-			final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+			ForgeDirection dir = ForgeDirection.getOrientation(i);
+			ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 			fillFluid(pos.getX() + dir.offsetX * 5, pos.getY(), pos.getZ() + dir.offsetZ * 5, tank);
 			fillFluid(pos.getX() + dir.offsetX * 5 + rot.offsetX * 3, pos.getY(), pos.getZ() + dir.offsetZ * 5 + rot.offsetZ * 3, tank);
 			fillFluid(pos.getX() + dir.offsetX * 5 + rot.offsetX * -3, pos.getY(), pos.getZ() + dir.offsetZ * 5 + rot.offsetZ * -3, tank);

@@ -22,7 +22,7 @@ public class Vertex_v2fc4f {
     public Vertex_v2fc4f() {
     }
 
-    public Vertex_v2fc4f(final Vec4 position, final Vec2 texCoord) {
+    public Vertex_v2fc4f(Vec4 position, Vec2 texCoord) {
         this.position = position;
         this.texCoord = texCoord;
     }

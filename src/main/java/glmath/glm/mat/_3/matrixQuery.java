@@ -15,7 +15,7 @@ abstract class matrixQuery extends matrixTransform {
         return isIdentity(0.0f);
     }
 
-    public boolean isIdentity(final float epsilon) {
+    public boolean isIdentity(float epsilon) {
         return Math.abs(m00 - 1) <= epsilon
                 && Math.abs(m01) <= epsilon
                 && Math.abs(m02) <= epsilon

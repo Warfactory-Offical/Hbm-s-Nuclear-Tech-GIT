@@ -1,18 +1,16 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityRailgunBlast;
 import com.hbm.entity.projectile.EntityTom;
 import com.hbm.main.ClientProxy;
 import com.hbm.render.misc.TomPronter2;
 import com.hbm.render.util.TomPronter;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderTom<T extends Entity> extends Render<T> {
 
@@ -23,19 +21,19 @@ public class RenderTom<T extends Entity> extends Render<T> {
 		return new RenderTom<EntityTom>(man);
 	};
 
-	protected RenderTom(final RenderManager renderManager) {
+	protected RenderTom(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(final T entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		if(entity instanceof EntityRailgunBlast) {
 			GL11.glPushMatrix();
 			GL11.glTranslated(x, y, z);
 			GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
 
-			final int i = 0;
+			int i = 0;
 
 			// if(entity instanceof EntityShell || entity instanceof
 			// EntityMissileShell)
@@ -55,7 +53,7 @@ public class RenderTom<T extends Entity> extends Render<T> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final T entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return null;
 	}
 

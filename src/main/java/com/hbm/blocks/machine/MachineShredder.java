@@ -1,12 +1,9 @@
 package com.hbm.blocks.machine;
 
-import java.util.Random;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.InventoryHelper;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityMachineShredder;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,9 +16,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class MachineShredder extends BlockContainer {
 
-	public MachineShredder(final Material m, final String s) {
+	public MachineShredder(Material m, String s) {
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -30,21 +29,21 @@ public class MachineShredder extends BlockContainer {
 	}
 
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(ModBlocks.machine_shredder);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityMachineShredder();
 	}
 
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			final TileEntityMachineShredder entity = (TileEntityMachineShredder) world.getTileEntity(pos);
+			TileEntityMachineShredder entity = (TileEntityMachineShredder) world.getTileEntity(pos);
 			if(entity != null) {
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_machine_shredder, world, pos.getX(), pos.getY(), pos.getZ());
 			}
@@ -55,19 +54,19 @@ public class MachineShredder extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 
-		final TileEntity tileentity = worldIn.getTileEntity(pos);
+		TileEntity tileentity = worldIn.getTileEntity(pos);
 
 		if(tileentity instanceof TileEntityMachineShredder) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
+			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityMachineShredder) tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 		super.breakBlock(worldIn, pos, state);
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 }

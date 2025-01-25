@@ -10,11 +10,16 @@ public class SatelliteMiner extends Satellite {
 		this.satIface = Interfaces.NONE;
 	}
 	
-	public void writeToNBT(final NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt) {
 		nbt.setLong("lastOp", lastOp);
 	}
 	
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		lastOp = nbt.getLong("lastOp");
+	}
+
+	@Override
+	public float[] getColor() {
+		return new float[] { 0.0F, 0.0F, 0.0F };
 	}
 }

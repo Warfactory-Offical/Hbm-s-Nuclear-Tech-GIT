@@ -1,15 +1,13 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.mob.EntityHunterChopper;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelHunterChopper;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderHunterChopper extends Render<EntityHunterChopper> {
 
@@ -20,14 +18,14 @@ public class RenderHunterChopper extends Render<EntityHunterChopper> {
 	//ProtoCopter mine;
 	ModelHunterChopper mine2;
 	
-	protected RenderHunterChopper(final RenderManager renderManager) {
+	protected RenderHunterChopper(RenderManager renderManager) {
 		super(renderManager);
 		//mine = new ProtoCopter();
 		mine2 = new ModelHunterChopper();
 	}
 	
 	@Override
-	public void doRender(final EntityHunterChopper rocket, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityHunterChopper rocket, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glTranslatef(0.0625F * 0, 0.0625F * 32, 0.0625F * 0);
@@ -48,7 +46,7 @@ public class RenderHunterChopper extends Render<EntityHunterChopper> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityHunterChopper entity) {
+	protected ResourceLocation getEntityTexture(EntityHunterChopper entity) {
 		return chopper_rl;
 	}
 

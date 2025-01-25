@@ -19,7 +19,7 @@ public class AuxParticlePacketNT implements IMessage {
 
 	public AuxParticlePacketNT() { }
 
-	public AuxParticlePacketNT(final NBTTagCompound nbt, final double x, final double y, final double z) {
+	public AuxParticlePacketNT(NBTTagCompound nbt, double x, double y, double z) {
 		
 		this.buffer = new PacketBuffer(Unpooled.buffer());
 
@@ -31,7 +31,7 @@ public class AuxParticlePacketNT implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		
 		if (buffer == null) {
 			buffer = new PacketBuffer(Unpooled.buffer());
@@ -40,7 +40,7 @@ public class AuxParticlePacketNT implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		
 		if (buffer == null) {
 			buffer = new PacketBuffer(Unpooled.buffer());
@@ -51,19 +51,19 @@ public class AuxParticlePacketNT implements IMessage {
 	public static class Handler implements IMessageHandler<AuxParticlePacketNT, IMessage> {
 		
 		@Override
-		public IMessage onMessage(final AuxParticlePacketNT m, final MessageContext ctx) {
+		public IMessage onMessage(AuxParticlePacketNT m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				if(Minecraft.getMinecraft().world == null)
 					return;
 				
 				try {
 					
-					final NBTTagCompound nbt = m.buffer.readCompoundTag();
+					NBTTagCompound nbt = m.buffer.readCompoundTag();
 					
 					if(nbt != null)
 						MainRegistry.proxy.effectNT(nbt);
 					
-				} catch (final IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			});

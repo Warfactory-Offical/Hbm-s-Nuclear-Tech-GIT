@@ -10,9 +10,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerHeaterHeatex extends Container {
 
-	private final TileEntityHeaterHeatex heater;
+	private TileEntityHeaterHeatex heater;
 
-	public ContainerHeaterHeatex(final InventoryPlayer invPlayer, final TileEntityHeaterHeatex tedf) {
+	public ContainerHeaterHeatex(InventoryPlayer invPlayer, TileEntityHeaterHeatex tedf) {
 		heater = tedf;
 
 		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 0, 80, 72));
@@ -29,12 +29,12 @@ public class ContainerHeaterHeatex extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer player, final int index) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
-		final Slot slot = this.inventorySlots.get(index);
+		Slot slot = (Slot) this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			final ItemStack originalStack = slot.getStack();
+			ItemStack originalStack = slot.getStack();
 			stack = originalStack.copy();
 
 			if(index == 0) {
@@ -58,7 +58,7 @@ public class ContainerHeaterHeatex extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return heater.isUseableByPlayer(player);
 	}
 }

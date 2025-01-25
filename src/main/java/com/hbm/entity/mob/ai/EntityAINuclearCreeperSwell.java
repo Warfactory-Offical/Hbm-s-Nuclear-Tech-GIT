@@ -1,7 +1,6 @@
 package com.hbm.entity.mob.ai;
 
 import com.hbm.entity.mob.EntityNuclearCreeper;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 
@@ -12,7 +11,7 @@ public class EntityAINuclearCreeperSwell extends EntityAIBase {
     EntityLivingBase creeperAttackTarget;
     private static final String __OBFID = "CL_00001614";
 
-    public EntityAINuclearCreeperSwell(final EntityNuclearCreeper p_i1655_1_)
+    public EntityAINuclearCreeperSwell(EntityNuclearCreeper p_i1655_1_)
     {
         this.swellingCreeper = p_i1655_1_;
         this.setMutexBits(1);
@@ -24,7 +23,7 @@ public class EntityAINuclearCreeperSwell extends EntityAIBase {
     @Override
 	public boolean shouldExecute()
     {
-        final EntityLivingBase entitylivingbase = this.swellingCreeper.getAttackTarget();
+        EntityLivingBase entitylivingbase = this.swellingCreeper.getAttackTarget();
         return this.swellingCreeper.getCreeperState() > 0 || entitylivingbase != null && this.swellingCreeper.getDistanceSq(entitylivingbase) < 9.0D;
     }
 

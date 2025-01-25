@@ -1,16 +1,14 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityShrapnel;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelShrapnel;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderShrapnel extends Render<Entity> {
 	
@@ -18,14 +16,14 @@ public class RenderShrapnel extends Render<Entity> {
 	
 	ModelShrapnel mine;
 
-	public RenderShrapnel(final RenderManager manage) {
+	public RenderShrapnel(RenderManager manage) {
 		super(manage);
 		mine = new ModelShrapnel();
 	}
 
 	@Override
-	public void doRender(final Entity rocket, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_,
-                         final float p_76986_9_) {
+	public void doRender(Entity rocket, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
+			float p_76986_9_) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) p_76986_2_, (float) p_76986_4_, (float) p_76986_6_);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
@@ -45,7 +43,7 @@ public class RenderShrapnel extends Render<Entity> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final Entity p_110775_1_) {
+	protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
 		return new ResourceLocation(RefStrings.MODID + ":textures/models/shrapnel.png");
 	}
 }

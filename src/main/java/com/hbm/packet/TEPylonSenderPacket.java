@@ -30,7 +30,7 @@ public class TEPylonSenderPacket implements IMessage {
 		
 	}
 
-	public TEPylonSenderPacket(final int x, final int y, final int z, final int conX, final int conY, final int conZ, final boolean addOrRemove)
+	public TEPylonSenderPacket(int x, int y, int z, int conX, int conY, int conZ, boolean addOrRemove)
 	{
 		this.x = x;
 		this.y = y;
@@ -42,7 +42,7 @@ public class TEPylonSenderPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -53,7 +53,7 @@ public class TEPylonSenderPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -66,21 +66,22 @@ public class TEPylonSenderPacket implements IMessage {
 	public static class Handler implements IMessageHandler<TEPylonSenderPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(final TEPylonSenderPacket m, final MessageContext ctx) {
+		public IMessage onMessage(TEPylonSenderPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final BlockPos pos = new BlockPos(m.x, m.y, m.z);
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+				BlockPos pos = new BlockPos(m.x, m.y, m.z);
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 				
 				try {
-					if (te != null && te instanceof TileEntityPylonBase pyl) {
-
-                        if(m.addOrRemove){
-							pyl.addConnection(new BlockPos(m.conX, m.conY, m.conZ));
+					if (te != null && te instanceof TileEntityPylonBase) {
+							
+						TileEntityPylonBase pyl = (TileEntityPylonBase) te;
+						if(m.addOrRemove){
+							pyl.addConnection(m.conX, m.conY, m.conZ);
 						}else{
 							pyl.removeConnection(new BlockPos(m.conX, m.conY, m.conZ));
 						}
 					}
-				} catch(final Exception x) {}
+				} catch(Exception x) {}
 			});
 			
 			return null;

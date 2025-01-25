@@ -1,7 +1,6 @@
 package com.hbm.tileentity.network;
 
 import com.hbm.tileentity.TileEntityMachineBase;
-
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,11 +12,11 @@ import net.minecraftforge.common.util.Constants;
 
 public abstract class TileEntityCraneBase extends TileEntityMachineBase implements ITickable {
 
-    public TileEntityCraneBase(final int scount) {
+    public TileEntityCraneBase(int scount) {
         super(scount);
     }
 
-    public TileEntityCraneBase(final int scount, final int slotlimit) {
+    public TileEntityCraneBase(int scount, int slotlimit) {
         super(scount, slotlimit);
     }
 
@@ -40,8 +39,8 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase implemen
     }
 
     public EnumFacing getInputSide() {
-        final IBlockState state = world.getBlockState(pos);
-        final EnumFacing currentFacing = state.getValue(BlockHorizontal.FACING);
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing currentFacing = state.getValue(BlockHorizontal.FACING);
         switch (currentFacing) {
             case NORTH:
                 return EnumFacing.NORTH;
@@ -57,12 +56,12 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase implemen
     }
 
     public EnumFacing getOutputSide() {
-        final EnumFacing override = getOutputOverride();
+        EnumFacing override = getOutputOverride();
         if (override != null) {
             return override;
         }
-        final IBlockState state = world.getBlockState(pos);
-        final EnumFacing currentFacing = state.getValue(BlockHorizontal.FACING);
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing currentFacing = state.getValue(BlockHorizontal.FACING);
 
         switch (currentFacing) {
             case NORTH:
@@ -83,7 +82,7 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase implemen
     }
 
     public void setOutputOverride(EnumFacing direction) {
-        final EnumFacing  oldSide = getOutputSide();
+        EnumFacing  oldSide = getOutputSide();
         if(oldSide == direction) direction = direction.getOpposite();
 
         outputOverride = direction;
@@ -97,10 +96,10 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase implemen
     public void setInput(EnumFacing direction) {
         outputOverride = getOutputSide(); // save the current output, if it isn't saved yet
 
-        final EnumFacing  oldSide = getInputSide();
+        EnumFacing  oldSide = getInputSide();
         if(oldSide == direction) direction = direction.getOpposite();
 
-        final boolean needSwapOutput = direction == getOutputSide();
+        boolean needSwapOutput = direction == getOutputSide();
         world.setBlockState(pos, getBlockType().getDefaultState(), needSwapOutput ? 4 : 3);
 
         if(needSwapOutput)
@@ -116,18 +115,18 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase implemen
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        final NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound nbt = new NBTTagCompound();
         writeToNBT(nbt);
         return new SPacketUpdateTileEntity(pos, 0, nbt);
     }
 
     @Override
-    public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         readFromNBT(pkt.getNbtCompound());
     }
 
     @Override
-    public void readFromNBT(final NBTTagCompound nbt) {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         if(nbt.hasKey("CraneOutputOverride", Constants.NBT.TAG_BYTE)) {
             outputOverride = EnumFacing.values()[nbt.getByte("CraneOutputOverride")];
@@ -137,7 +136,7 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase implemen
     }
 
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         if (outputOverride != null) {
             nbt.setByte("CraneOutputOverride", (byte) outputOverride.ordinal());

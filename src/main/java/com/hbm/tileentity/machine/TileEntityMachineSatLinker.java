@@ -1,7 +1,7 @@
 package com.hbm.tileentity.machine;
 
+import com.hbm.items.ISatChip;
 import com.hbm.items.machine.ItemSatChip;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +26,7 @@ public class TileEntityMachineSatLinker extends TileEntity implements ITickable 
 	public TileEntityMachineSatLinker() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				super.onContentsChanged(slot);
 				markDirty();
 			}
@@ -41,11 +41,11 @@ public class TileEntityMachineSatLinker extends TileEntity implements ITickable 
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -55,14 +55,14 @@ public class TileEntityMachineSatLinker extends TileEntity implements ITickable 
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey("inventory"))
 			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
@@ -74,20 +74,28 @@ public class TileEntityMachineSatLinker extends TileEntity implements ITickable 
 			if(inventory.getStackInSlot(0).getItem() instanceof ItemSatChip && inventory.getStackInSlot(1).getItem() instanceof ItemSatChip) {
 				ItemSatChip.setFreq(inventory.getStackInSlot(1), ItemSatChip.getFreq(inventory.getStackInSlot(0)));
 			}
-			
+			if(inventory.getStackInSlot(0).getItem() instanceof ItemSatChip && inventory.getStackInSlot(1).getItem() instanceof ISatChip){
+				ISatChip.setFreqS(inventory.getStackInSlot(1), ItemSatChip.getFreq(inventory.getStackInSlot(0)));
+			}
+			if(inventory.getStackInSlot(0).getItem() instanceof ISatChip && inventory.getStackInSlot(1).getItem() instanceof ItemSatChip){
+				ItemSatChip.setFreq(inventory.getStackInSlot(1), ItemSatChip.getFreq(inventory.getStackInSlot(0)));
+			}
 			if(inventory.getStackInSlot(2).getItem() instanceof ItemSatChip) {
 				ItemSatChip.setFreq(inventory.getStackInSlot(2), world.rand.nextInt(100000));
+			}
+			if(inventory.getStackInSlot(2).getItem() instanceof ISatChip){
+				ISatChip.setFreqS(inventory.getStackInSlot(2), world.rand.nextInt(100000));
 			}
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : super.getCapability(capability, facing);
 	}
 }

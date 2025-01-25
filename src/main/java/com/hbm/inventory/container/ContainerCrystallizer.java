@@ -3,7 +3,6 @@ package com.hbm.inventory.container;
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.inventory.SlotUpgrade;
 import com.hbm.tileentity.machine.TileEntityMachineCrystallizer;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,9 +12,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCrystallizer extends Container {
 
-	private final TileEntityMachineCrystallizer diFurnace;
+	private TileEntityMachineCrystallizer diFurnace;
 
-	public ContainerCrystallizer(final InventoryPlayer invPlayer, final TileEntityMachineCrystallizer tedf) {
+	public ContainerCrystallizer(InventoryPlayer invPlayer, TileEntityMachineCrystallizer tedf) {
 		diFurnace = tedf;
 
 		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 0, 62, 45));
@@ -41,14 +40,14 @@ public class ContainerCrystallizer extends Container {
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= diFurnace.inventory.getSlots() - 1) {
@@ -78,7 +77,7 @@ public class ContainerCrystallizer extends Container {
     }
 	
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return diFurnace.isUseableByPlayer(player);
 	}
 }

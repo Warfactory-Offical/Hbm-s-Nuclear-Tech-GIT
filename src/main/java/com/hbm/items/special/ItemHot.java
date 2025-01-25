@@ -1,7 +1,6 @@
 package com.hbm.items.special;
 
 import com.hbm.items.ModItems;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,7 @@ public class ItemHot extends Item {
 
 	public static int heat;
 	
-	public ItemHot(final int heat, final String s) {
+	public ItemHot(int heat, String s) {
 		ItemHot.heat = heat;
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -20,7 +19,7 @@ public class ItemHot extends Item {
 		ModItems.ALL_ITEMS.add(this);
 	}
 	
-	public static ItemStack heatUp(final ItemStack stack) {
+	public static ItemStack heatUp(ItemStack stack) {
 
 		if(!(stack.getItem() instanceof ItemHot))
 			return stack;
@@ -32,7 +31,7 @@ public class ItemHot extends Item {
 		return stack;
 	}
 
-	public static ItemStack heatUp(final ItemStack stack, final double d) {
+	public static ItemStack heatUp(ItemStack stack, double d) {
 
 		if(!(stack.getItem() instanceof ItemHot))
 			return stack;
@@ -44,7 +43,7 @@ public class ItemHot extends Item {
 		return stack;
 	}
 	
-	public static double getHeat(final ItemStack stack) {
+	public static double getHeat(ItemStack stack) {
 
 		if(!(stack.getItem() instanceof ItemHot))
 			return 0;
@@ -52,16 +51,16 @@ public class ItemHot extends Item {
 		if(!stack.hasTagCompound())
 			return 0;
 
-		final int h = stack.getTagCompound().getInteger("heat");
+		int h = stack.getTagCompound().getInteger("heat");
 
 		return (double)h / (double)heat;
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int itemSlot, final boolean isSelected) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 		if(!world.isRemote && stack.hasTagCompound()) {
 
-    		final int h = stack.getTagCompound().getInteger("heat");
+    		int h = stack.getTagCompound().getInteger("heat");
 
     		if(h > 0) {
     			stack.getTagCompound().setInteger("heat", h - 1);

@@ -1,25 +1,23 @@
 package com.hbm.inventory.gui;
 
-import com.hbm.util.I18nUtil;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.container.ContainerMachineAssembler;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineAssembler;
-
+import com.hbm.util.I18nUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GUIMachineAssembler extends GuiInfoContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_assembler.png");
-	private final TileEntityMachineAssembler assembler;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_assembler.png");
+	private TileEntityMachineAssembler assembler;
 	
-	public GUIMachineAssembler(final InventoryPlayer invPlayer, final TileEntityMachineAssembler tedf) {
+	public GUIMachineAssembler(InventoryPlayer invPlayer, TileEntityMachineAssembler tedf) {
 		super(new ContainerMachineAssembler(invPlayer, tedf));
 		assembler = tedf;
 		
@@ -28,40 +26,40 @@ public class GUIMachineAssembler extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		this.renderHoveredToolTip(mouseX, mouseY);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 70 - 52, 16, 52, assembler.power, TileEntityMachineAssembler.maxPower);
 		
 		if(assembler.inventory.getStackInSlot(4).getItem() == Items.AIR || assembler.inventory.getStackInSlot(4).getItem()!= ModItems.assembly_template) {
 
-			final String[] text1 = I18nUtil.resolveKeyArray("desc.guimachassembler");
+			String[] text1 = I18nUtil.resolveKeyArray("desc.guimachassembler");
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		}
 
-		final String[] text = I18nUtil.resolveKeyArray("desc.guiacceptupgrades1");
+		String[] text = I18nUtil.resolveKeyArray("desc.guiacceptupgrades1");
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 141, guiTop + 40, 8, 8, guiLeft + 141, guiTop + 40 + 16, text);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.assembler.hasCustomInventoryName() ? this.assembler.getInventoryName() : I18n.format(this.assembler.getInventoryName());
+	protected void drawGuiContainerForegroundLayer( int i, int j) {
+		String name = this.assembler.hasCustomInventoryName() ? this.assembler.getInventoryName() : I18n.format(this.assembler.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		this.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		final int i = (int)assembler.getPowerScaled(52);
+		int i = (int)assembler.getPowerScaled(52);
 		drawTexturedModalRect(guiLeft + 116, guiTop + 70 - i, 176, 52 - i, 16, i);
 		if(assembler.isProgressing){
-		final int j = assembler.getProgressScaled(83);
+		int j = assembler.getProgressScaled(83);
 		drawTexturedModalRect(guiLeft + 45, guiTop + 82, 2, 222, j, 32);
 		} else {
 			drawTexturedModalRect(guiLeft + 45, guiTop + 82, 2, 222, 0, 32);

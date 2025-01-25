@@ -6,7 +6,6 @@ import com.hbm.lib.ForgeDirection;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntitySILEX;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,12 +17,12 @@ import net.minecraft.world.World;
 
 public class MachineSILEX extends BlockDummyable {
 
-	public MachineSILEX(final Material mat, final String s) {
+	public MachineSILEX(Material mat, String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		if(meta >= 12)
 			return new TileEntitySILEX();
 		if(meta >= 6)
@@ -42,12 +41,12 @@ public class MachineSILEX extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos1, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ){
+	public boolean onBlockActivated(World world, BlockPos pos1, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(world.isRemote) {
 			return true;
 			
 		} else if(!player.isSneaking()) {
-			final int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
+			int[] pos = this.findCore(world, pos1.getX(), pos1.getY(), pos1.getZ());
 
 			if(pos == null)
 				return false;
@@ -60,7 +59,7 @@ public class MachineSILEX extends BlockDummyable {
 	}
 	
 	@Override
-	protected void fillSpace(final World world, final int x, final int y, final int z, final ForgeDirection dir, final int o) {
+	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
 		if(dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH) {

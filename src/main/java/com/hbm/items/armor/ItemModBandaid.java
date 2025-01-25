@@ -11,12 +11,12 @@ import java.util.List;
 
 public class ItemModBandaid extends ItemArmorMod {
 
-	public ItemModBandaid(final String s) {
+	public ItemModBandaid(String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.RED + "3% chance for full heal when damaged");
 		list.add("Dropped by 1:500 Animals");
 		list.add("");
@@ -24,12 +24,12 @@ public class ItemModBandaid extends ItemArmorMod {
 	}
 	
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.RED + "  " + stack.getDisplayName() + " (3% chance for full heal)");
 	}
 	
 	@Override
-	public void modDamage(final LivingHurtEvent event, final ItemStack armor) {
+	public void modDamage(LivingHurtEvent event, ItemStack armor) {
 		
 		if(event.getEntity().world.rand.nextInt(100) < 3) {
 			event.setAmount(0);

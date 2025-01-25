@@ -22,7 +22,7 @@ public class Mat3 extends Mat {
         c2 = new Vec3();
     }
 
-    public Mat3(final float value) {
+    public Mat3(float value) {
 
         this();
 
@@ -31,7 +31,7 @@ public class Mat3 extends Mat {
         }
     }
 
-    public Mat3(final Mat4 mat4) {
+    public Mat3(Mat4 mat4) {
 
         this();
 
@@ -40,7 +40,7 @@ public class Mat3 extends Mat {
         c2 = new Vec3(mat4.c2.x, mat4.c2.y, mat4.c2.z);
     }
 
-    public Mat3(final Vec3 v0, final Vec3 v1, final Vec3 v2) {
+    public Mat3(Vec3 v0, Vec3 v1, Vec3 v2) {
 
         this();
 
@@ -49,12 +49,12 @@ public class Mat3 extends Mat {
         c2 = v2;
     }
 
-    public Mat3(final float[] fs) {
+    public Mat3(float[] fs) {
 
         this();
 
-        c0 = new Vec3(fs, 0);
-        c1 = new Vec3(fs, order);
+        c0 = new Vec3(fs, order * 0);
+        c1 = new Vec3(fs, order * 1);
         c2 = new Vec3(fs, order * 2);
     }
 
@@ -66,18 +66,18 @@ public class Mat3 extends Mat {
             c2.x, c2.y, c2.z};
     }
 
-    public void setDiagonal(final Vec3 vec3) {
+    public void setDiagonal(Vec3 vec3) {
         c0.x = vec3.x;
         c1.y = vec3.y;
         c2.z = vec3.z;
     }
 
-    public static Mat3 rotateX(final float fAngDeg) {
-        final float fAngRad = (float) Math.toRadians(fAngDeg);
-        final float fCos = (float) Math.cos(fAngRad);
-        final float fSin = (float) Math.sin(fAngRad);
+    public static Mat3 rotateX(float fAngDeg) {
+        float fAngRad = (float) Math.toRadians(fAngDeg);
+        float fCos = (float) Math.cos(fAngRad);
+        float fSin = (float) Math.sin(fAngRad);
 
-        final Mat3 mat3 = new Mat3(1.0f);
+        Mat3 mat3 = new Mat3(1.0f);
         mat3.c1.y = fCos;
         mat3.c1.z = fSin;
         mat3.c2.y = -fSin;
@@ -86,12 +86,12 @@ public class Mat3 extends Mat {
         return mat3;
     }
 
-    public static Mat3 rotateY(final float fAngDeg) {
-        final float fAngRad = (float) Math.toRadians(fAngDeg);
-        final float fCos = (float) Math.cos(fAngRad);
-        final float fSin = (float) Math.sin(fAngRad);
+    public static Mat3 rotateY(float fAngDeg) {
+        float fAngRad = (float) Math.toRadians(fAngDeg);
+        float fCos = (float) Math.cos(fAngRad);
+        float fSin = (float) Math.sin(fAngRad);
 
-        final Mat3 mat3 = new Mat3(1.0f);
+        Mat3 mat3 = new Mat3(1.0f);
         mat3.c0.x = fCos;
         mat3.c0.z = -fSin;
         mat3.c2.x = fSin;
@@ -100,12 +100,12 @@ public class Mat3 extends Mat {
         return mat3;
     }
 
-    public static Mat3 rotateZ(final float fAngDeg) {
-        final float fAngRad = (float) Math.toRadians(fAngDeg);
-        final float fCos = (float) Math.cos(fAngRad);
-        final float fSin = (float) Math.sin(fAngRad);
+    public static Mat3 rotateZ(float fAngDeg) {
+        float fAngRad = (float) Math.toRadians(fAngDeg);
+        float fCos = (float) Math.cos(fAngRad);
+        float fSin = (float) Math.sin(fAngRad);
 
-        final Mat3 mat3 = new Mat3(1.0f);
+        Mat3 mat3 = new Mat3(1.0f);
         mat3.c0.x = fCos;
         mat3.c0.y = fSin;
         mat3.c1.x = -fSin;
@@ -114,9 +114,9 @@ public class Mat3 extends Mat {
         return mat3;
     }
 
-    public Mat3 times(final Mat3 mat) {
+    public Mat3 times(Mat3 mat) {
 
-        final float[] result = new float[9];
+        float[] result = new float[9];
         float partial;
 
         for (int i = 0; i < 3; i++) {
@@ -135,9 +135,9 @@ public class Mat3 extends Mat {
         return new Mat3(result);
     }
 
-    public Vec3 mult(final Vec3 second) {
+    public Vec3 mult(Vec3 second) {
 
-        final float[] result = new float[3];
+        float[] result = new float[3];
         float partial;
 
         for (int i = 0; i < order; i++) {
@@ -156,7 +156,7 @@ public class Mat3 extends Mat {
 
     public Mat3 inverse() {
 
-        final Mat3 inverse = new Mat3();
+        Mat3 inverse = new Mat3();
 
         inverse.c0.x = +(c1.y * c2.z - c2.y * c1.z);
         inverse.c1.x = -(c1.x * c2.z - c2.x * c1.z);
@@ -173,11 +173,11 @@ public class Mat3 extends Mat {
         return inverse;
     }
 
-    public Mat3 divide(final float s) {
+    public Mat3 divide(float s) {
 
-        final Vec3 newC0 = new Vec3(c0.x / s, c0.y / s, c0.z / s);
-        final Vec3 newC1 = new Vec3(c1.x / s, c1.y / s, c1.z / s);
-        final Vec3 newC2 = new Vec3(c2.x / s, c2.y / s, c2.z / s);
+        Vec3 newC0 = new Vec3(c0.x / s, c0.y / s, c0.z / s);
+        Vec3 newC1 = new Vec3(c1.x / s, c1.y / s, c1.z / s);
+        Vec3 newC2 = new Vec3(c2.x / s, c2.y / s, c2.z / s);
 
         return new Mat3(newC0, newC1, newC2);
     }
@@ -189,7 +189,7 @@ public class Mat3 extends Mat {
 
     public Mat3 transpose() {
 
-        final Mat3 result = new Mat3();
+        Mat3 result = new Mat3();
 
         result.c0.x = c0.x;
         result.c0.y = c1.x;
@@ -206,7 +206,7 @@ public class Mat3 extends Mat {
         return result;
     }
 
-    public final void set(final int index, final float value) {
+    public final void set(int index, float value) {
         switch (index) {
             case 0:
                 c0.x = value;
@@ -238,7 +238,7 @@ public class Mat3 extends Mat {
         }
     }
 
-    public final float get(final int index) {
+    public final float get(int index) {
         switch (index) {
             case 0:
                 return c0.x;
@@ -268,8 +268,8 @@ public class Mat3 extends Mat {
         System.out.println(c0.z + " " + c1.z + " " + c2.z + "\n");
     }
 
-    public void print(final String title) {
-        System.out.println(title);
+    public void print(String title) {
+        System.out.println("" + title);
         System.out.println(c0.x + " " + c1.x + " " + c2.x + "\n");
         System.out.println(c0.y + " " + c1.y + " " + c2.y + "\n");
         System.out.println(c0.z + " " + c1.z + " " + c2.z + "\n");

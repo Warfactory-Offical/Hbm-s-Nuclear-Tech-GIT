@@ -22,21 +22,21 @@ public class TEFluidTypePacketTest implements IMessage {
 	public TEFluidTypePacketTest() {
 	}
 	
-	public TEFluidTypePacketTest(final int x, final int y, final int z, final Fluid type) {
+	public TEFluidTypePacketTest(int x, int y, int z, Fluid type) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.type = type;
 	}
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		final int len = buf.readInt();
-		final byte[] bytes = new byte[len];
+		int len = buf.readInt();
+		byte[] bytes = new byte[len];
 		buf.readBytes(bytes);
-		final String name = new String(bytes);
+		String name = new String(bytes);
 		if(name.equals("HBM_NULL")){
 			type = null;
 			
@@ -46,11 +46,11 @@ public class TEFluidTypePacketTest implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		final byte[] bytes = type == null ? "HBM_NULL".getBytes() : type.getName().getBytes();
+		byte[] bytes = type == null ? "HBM_NULL".getBytes() : type.getName().getBytes();
 		buf.writeInt(bytes.length);
 		buf.writeBytes(bytes);
 	}
@@ -59,13 +59,14 @@ public class TEFluidTypePacketTest implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final TEFluidTypePacketTest m, final MessageContext ctx) {
+		public IMessage onMessage(TEFluidTypePacketTest m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof IFluidPipe duct) {
-
-                    if(m.type == null)
+				if (te != null && te instanceof IFluidPipe) {
+					
+					IFluidPipe duct = (IFluidPipe) te;
+					if(m.type == null)
 						duct.setTypeTrue(null);
 					else if(!m.type.equals(duct.getType()))
 						duct.setTypeTrue(m.type);

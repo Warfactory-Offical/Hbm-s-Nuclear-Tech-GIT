@@ -1,22 +1,19 @@
 package com.hbm.render.world;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.capability.HbmLivingProps;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
 
 public class RenderNTMSkybox extends IRenderHandler { //why an abstract class uses the I-prefix is beyond me but ok, alright, whatever
 	
@@ -25,7 +22,7 @@ public class RenderNTMSkybox extends IRenderHandler { //why an abstract class us
 	 * We make out own renderer, grab any existing renderers that are already occupying the slot, doing what is effectively chainloading while adding our own garbage.
 	 * If somebody does the exact same thing as we do we might be screwed due to increasingly long recursive loops but we can fix that too, no worries.
 	 */
-	private final IRenderHandler parent;
+	private IRenderHandler parent;
 
 	private static final ResourceLocation digammaStar = new ResourceLocation("hbm:textures/misc/star_digamma.png");
 	private static final ResourceLocation bobmazonSat = new ResourceLocation("hbm:textures/misc/sat_bobmazon.png");
@@ -35,17 +32,17 @@ public class RenderNTMSkybox extends IRenderHandler { //why an abstract class us
 	 */
 	public static boolean didLastRender = false;
 	
-	public RenderNTMSkybox(final IRenderHandler parent) {
+	public RenderNTMSkybox(IRenderHandler parent) {
 		this.parent = parent;
 	}
 	
 	@Override
-	public void render(final float partialTicks, final WorldClient world, final Minecraft mc) {
+	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 		
 		if(parent != null) {
 			parent.render(partialTicks, world, mc);
 		} else{
-			final RenderGlobal rg = Minecraft.getMinecraft().renderGlobal;
+			RenderGlobal rg = Minecraft.getMinecraft().renderGlobal;
 			world.provider.setSkyRenderer(null);
 			rg.renderSky(partialTicks, 2);
 			world.provider.setSkyRenderer(this);
@@ -73,12 +70,12 @@ public class RenderNTMSkybox extends IRenderHandler { //why an abstract class us
 		GL11.glRotatef(-40.0F, 0.0F, 0.0F, 1.0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(digammaStar);
 		
-		final float digamma = HbmLivingProps.getDigamma(Minecraft.getMinecraft().player);
-		float var12 = (1 + digamma * 0.25F);
+		float digamma = HbmLivingProps.getDigamma(Minecraft.getMinecraft().player);
+		float var12 = 1F * (1 + digamma * 0.25F);
 		double dist = 100D - digamma * 2.5;
 		
-		final Tessellator tessellator = Tessellator.getInstance();
-		final BufferBuilder buf = tessellator.getBuffer();
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buf = tessellator.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		buf.pos(-var12, dist, -var12).tex(0, 0).endVertex();
 		buf.pos(var12, dist, -var12).tex(0, 1).endVertex();

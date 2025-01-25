@@ -7,7 +7,6 @@ import com.hbm.lib.ForgeDirection;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityMachineUUCreator;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,12 +19,12 @@ import net.minecraft.world.World;
 
 public class MachineUUCreator extends BlockDummyable {
 
-	public MachineUUCreator(final Material mat, final String s) {
+	public MachineUUCreator(Material mat, String s) {
 		super(mat, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World p_149915_1_, final int meta) {
+	public TileEntity createNewTileEntity(World p_149915_1_, int meta) {
 		if(meta >= 12)
 			return new TileEntityMachineUUCreator();
 		if(meta >= 6)
@@ -35,18 +34,18 @@ public class MachineUUCreator extends BlockDummyable {
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			final int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
+			int[] pos1 = this.findCore(world, pos.getX(), pos.getY(), pos.getZ());
 
 			if(pos1 == null)
 				return false;
 
-			final TileEntityMachineUUCreator entity = (TileEntityMachineUUCreator) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
+			TileEntityMachineUUCreator entity = (TileEntityMachineUUCreator) world.getTileEntity(new BlockPos(pos1[0], pos1[1], pos1[2]));
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_uu_creator, world, pos1[0], pos1[1], pos1[2]);
@@ -68,7 +67,7 @@ public class MachineUUCreator extends BlockDummyable {
 	}
 	
 	@Override
-	protected void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
+	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{2, 0, 2, 2, 2, -2}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[]{2, 0, 2, 2, -2, 2}, this, dir);
@@ -90,7 +89,7 @@ public class MachineUUCreator extends BlockDummyable {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	

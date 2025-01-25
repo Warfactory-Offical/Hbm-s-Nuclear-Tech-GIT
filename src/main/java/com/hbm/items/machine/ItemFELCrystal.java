@@ -1,21 +1,20 @@
 package com.hbm.items.machine;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemFELCrystal extends Item {
 
 	public EnumWavelengths wavelength = EnumWavelengths.NULL;
 
-	public ItemFELCrystal(final EnumWavelengths wavelength, final String s) {
+	public ItemFELCrystal(EnumWavelengths wavelength, String s) {
 		this.wavelength = wavelength;
 		this.setMaxStackSize(1);
 		this.setTranslationKey(s);
@@ -25,8 +24,8 @@ public class ItemFELCrystal extends Item {
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
-		final String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (TextFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (this.getUnlocalizedNameInefficiently(stack) + ".desc");
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+		String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (TextFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (this.getTranslationKeyInefficiently(stack) + ".desc");
 		list.add(I18nUtil.resolveKey(desc));
 		list.add(wavelength.textColor + I18nUtil.resolveKey(wavelength.name) + " - " + wavelength.textColor + I18nUtil.resolveKey(this.wavelength.wavelengthRange));
 	}
@@ -49,7 +48,7 @@ public class ItemFELCrystal extends Item {
 		public int guiColor;
 		public TextFormatting textColor;
 
-		private EnumWavelengths(final String name, final String wavelength, final int color, final int guiColor, final TextFormatting textColor) {
+		private EnumWavelengths(String name, String wavelength, int color, int guiColor, TextFormatting textColor) {
 			this.name = name;
 			this.wavelengthRange = wavelength;
 			this.renderedBeamColor = color;

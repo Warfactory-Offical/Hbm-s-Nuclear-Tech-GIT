@@ -37,9 +37,9 @@ public class ParticleBloodParticle extends ParticleLayerBase {
 	public boolean doesDecal = true;
 	public boolean doesFlow = true;
 	
-	public ParticleBloodParticle(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final int idx, final float scale, final float scaleOverLife, final int lifetime) {
+	public ParticleBloodParticle(World worldIn, double posXIn, double posYIn, double posZIn, int idx, float scale, float scaleOverLife, int lifetime) {
 		super(worldIn, posXIn, posYIn, posZIn);
-		this.particleScale = 0.5F + worldIn.rand.nextFloat();
+		this.particleScale = 0.5F + worldIn.rand.nextFloat()*1F;
 		particleScale *= scale;
 		this.particleAngle = (float) (rand.nextFloat()*Math.PI*2);
 		rotationOverLifetime = world.rand.nextFloat()*0.3F-0.15F;
@@ -51,26 +51,26 @@ public class ParticleBloodParticle extends ParticleLayerBase {
 		prevScale = particleScale;
 	}
 
-	public ParticleBloodParticle color(final float r, final float g, final float b){
+	public ParticleBloodParticle color(float r, float g, float b){
 		this.particleRed = r;
 		this.particleGreen = g;
 		this.particleBlue = b;
 		return this;
 	}
 	
-	public ParticleBloodParticle motion(final float x, final float y, final float z){
+	public ParticleBloodParticle motion(float x, float y, float z){
 		this.motionX = x;
 		this.motionY = y;
 		this.motionZ = z;
 		return this;
 	}
 	
-	public ParticleBloodParticle doDecal(final boolean dec){
+	public ParticleBloodParticle doDecal(boolean dec){
 		this.doesDecal = dec;
 		return this;
 	}
 	
-	public ParticleBloodParticle doFlow(final boolean flow){
+	public ParticleBloodParticle doFlow(boolean flow){
 		this.doesFlow = flow;
 		return this;
 	}
@@ -86,20 +86,20 @@ public class ParticleBloodParticle extends ParticleLayerBase {
 		prevScale = particleScale;
 		this.particleScale += scaleOverLifetime;
 		if(particleAge*1.5F < particleMaxAge && this.doesDecal){
-			final RayTraceResult r = world.rayTraceBlocks(new Vec3d(posX, posY, posZ), new Vec3d(posX+motionX, posY+motionY, posZ+motionZ));
+			RayTraceResult r = world.rayTraceBlocks(new Vec3d(posX, posY, posZ), new Vec3d(posX+motionX, posY+motionY, posZ+motionZ));
 			if(r != null && r.typeOfHit == Type.BLOCK){
-				final Vec3d hit = r.hitVec;
+				Vec3d hit = r.hitVec;
 				Vec3d direction = new Vec3d(motionX, motionY, motionZ).normalize();
 				if(ParticleDecalFlow.numParticles >= GeneralConfig.flowingDecalAmountMax || !doesFlow){
-					final int[] dl = BakedModelUtil.generateDecalMesh(world, direction, particleScale*0.1F, (float)hit.x, (float)hit.y, (float)hit.z, DecalType.REGULAR);
+					int[] dl = BakedModelUtil.generateDecalMesh(world, direction, particleScale*0.1F, (float)hit.x, (float)hit.y, (float)hit.z, DecalType.REGULAR);
 					direction = direction.scale(0.001F);
 					Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleDecal(world, dl[0], ResourceManager.blood_particles, 120, (float)hit.x-direction.x, (float)hit.y-direction.y, (float)hit.z-direction.z).textureIndex(texIdx, 4).shader(ResourceManager.blood_dissolve));
 				} else {
-					final int[] data = BakedModelUtil.generateDecalMesh(world, direction, particleScale*0.1F, (float)hit.x, (float)hit.y, (float)hit.z, DecalType.FLOW, ResourceManager.blood_particles, texIdx, 4);
+					int[] data = BakedModelUtil.generateDecalMesh(world, direction, particleScale*0.1F, (float)hit.x, (float)hit.y, (float)hit.z, DecalType.FLOW, ResourceManager.blood_particles, texIdx, 4);
 					direction = direction.scale(0.001F);
 					Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleDecalFlow(world, data, 150, (float)hit.x-direction.x, (float)hit.y-direction.y, (float)hit.z-direction.z).shader(ResourceManager.blood_dissolve));
 				}
-				final float vel = (float) Math.sqrt(motionX*motionX + motionY*motionY + motionZ*motionZ);
+				float vel = (float) Math.sqrt(motionX*motionX + motionY*motionY + motionZ*motionZ);
 				world.playSound(posX, posY, posZ, HBMSoundHandler.blood_splat, SoundCategory.BLOCKS, vel*0.5F, 0.8F+rand.nextFloat()*0.4F, false);
 				setExpired();
 				return;
@@ -121,44 +121,44 @@ public class ParticleBloodParticle extends ParticleLayerBase {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
-		final float size = 0.25F;
-        final float u = (texIdx%4)*size;
-        final float v = (texIdx/4)*size;
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		float size = 0.25F;
+        float u = (texIdx%4)*size;
+        float v = (texIdx/4)*size;
         
         //Fades it out at the end.
       	this.particleAlpha = 1-MathHelper.clamp((particleAge+partialTicks)-(particleMaxAge-10), 0, 10)*0.1F;
         
-      	final float s = prevScale + (particleScale - prevScale)*partialTicks;
-        final float f4 = 0.1F * s;
+      	float s = prevScale + (particleScale - prevScale)*partialTicks;
+        float f4 = 0.1F * s;
 
-        final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
-        final int i = this.getBrightnessForRender(partialTicks);
-        final int j = i >> 16 & 65535;
-        final int k = i & 65535;
-        final Vec3d[] avec3d = new Vec3d[] {new Vec3d(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3d(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3d(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
+        float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
+        int i = this.getBrightnessForRender(partialTicks);
+        int j = i >> 16 & 65535;
+        int k = i & 65535;
+        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
 
         if (this.particleAngle != 0.0F)
         {
-            final float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
-            final float f9 = MathHelper.cos(f8 * 0.5F);
-            final float f10 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.x;
-            final float f11 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.y;
-            final float f12 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.z;
-            final Vec3d vec3d = new Vec3d(f10, f11, f12);
+            float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
+            float f9 = MathHelper.cos(f8 * 0.5F);
+            float f10 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.x;
+            float f11 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.y;
+            float f12 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.z;
+            Vec3d vec3d = new Vec3d((double)f10, (double)f11, (double)f12);
 
             for (int l = 0; l < 4; ++l)
             {
-                avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double)(f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale(2.0F * f9));
+                avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double)(f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double)(2.0F * f9)));
             }
         }
 
         buffer.pos((double)f5 + avec3d[0].x, (double)f6 + avec3d[0].y, (double)f7 + avec3d[0].z).tex((double)u+size, (double)v+size).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-        buffer.pos((double)f5 + avec3d[1].x, (double)f6 + avec3d[1].y, (double)f7 + avec3d[1].z).tex((double)u+size, v).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-        buffer.pos((double)f5 + avec3d[2].x, (double)f6 + avec3d[2].y, (double)f7 + avec3d[2].z).tex(u, v).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-        buffer.pos((double)f5 + avec3d[3].x, (double)f6 + avec3d[3].y, (double)f7 + avec3d[3].z).tex(u, (double)v+size).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+        buffer.pos((double)f5 + avec3d[1].x, (double)f6 + avec3d[1].y, (double)f7 + avec3d[1].z).tex((double)u+size, (double)v).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+        buffer.pos((double)f5 + avec3d[2].x, (double)f6 + avec3d[2].y, (double)f7 + avec3d[2].z).tex((double)u, (double)v).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
+        buffer.pos((double)f5 + avec3d[3].x, (double)f6 + avec3d[3].y, (double)f7 + avec3d[3].z).tex((double)u, (double)v+size).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
 	}
 	
 	@Override

@@ -1,26 +1,25 @@
 package com.hbm.blocks.bomb;
 
-import java.util.List;
-
-import com.hbm.util.I18nUtil;
 import com.hbm.blocks.machine.BlockMachineBase;
 import com.hbm.interfaces.IBomb;
 import com.hbm.tileentity.bomb.TileEntityNukeBalefire;
-
-import net.minecraft.client.util.ITooltipFlag;
+import com.hbm.util.I18nUtil;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class NukeBalefire extends BlockMachineBase implements IBomb {
 
-	public NukeBalefire(final Material materialIn, final int guiID, final String s) {
+	public NukeBalefire(Material materialIn, int guiID, String s) {
 		super(materialIn, guiID, s);
 	}
 	
@@ -30,59 +29,65 @@ public class NukeBalefire extends BlockMachineBase implements IBomb {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityNukeBalefire();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public void neighborChanged(final IBlockState state, final World world, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
-		if (world.isBlockPowered(pos)) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (world.isBlockIndirectlyGettingPowered(pos) > 0) {
 			explode(world, pos);
 		}
 	}
 
 	@Override
-	public void explode(final World world, final BlockPos pos) {
+	public BombReturnCode explode(World world, BlockPos pos) {
 		if(!world.isRemote) {
-			final TileEntityNukeBalefire bomb = (TileEntityNukeBalefire) world.getTileEntity(pos);
+			TileEntityNukeBalefire bomb = (TileEntityNukeBalefire) world.getTileEntity(pos);
 
-			if(bomb.isLoaded())
+			if(bomb.isLoaded()){
 				bomb.explode();
+				return BombReturnCode.DETONATED;
+			}
+
+			return BombReturnCode.ERROR_MISSING_COMPONENT;
 		}
+
+		return BombReturnCode.UNDEFINED;
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add("§a["+ I18nUtil.resolveKey("trait.balefirebomb")+"]"+"§r");
 		tooltip.add(" §e"+I18nUtil.resolveKey("desc.radius", 250)+"§r");
 	}

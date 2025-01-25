@@ -1,13 +1,9 @@
 package com.hbm.blocks.generic;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.Random;
-
-import com.hbm.blocks.ModBlocks;
-import com.hbm.items.ModItems;
 
 import api.hbm.block.IDrillInteraction;
 import api.hbm.block.IMiningDrill;
+import com.hbm.blocks.ModBlocks;
+import com.hbm.items.ModItems;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -20,46 +16,48 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
+import java.util.Random;
+
 public class BlockCluster extends BlockOre implements IDrillInteraction {
 
-	public BlockCluster(final String s) {
+	public BlockCluster(String s) {
 		super();
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setHarvestLevel("pickaxe", 1);
-		
+
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune){
+	public Item getItemDropped(IBlockState state, Random rand, int fortune){
 		return Items.AIR;
 	}
-	
+
 	@Override
-	public void harvestBlock(final World world, final EntityPlayer player, final BlockPos pos, final IBlockState state, final TileEntity te, final ItemStack stack){
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack){
 		if(player instanceof FakePlayer || player == null) {
 			return;
 		}
 
 		if(!world.isRemote && world.getGameRules().getBoolean("doTileDrops") && !world.restoringBlockSnapshots) {
-			
-			final Item drop = getDrop();
-			
+
+			Item drop = getDrop();
+
 			if(drop == null)
 				return;
-			
-			final float f = 0.7F;
-			final double mX = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			final double mY = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			final double mZ = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			
-			final EntityItem entityitem = new EntityItem(world, (double) pos.getX() + mX, (double) pos.getY() + mY, (double) pos.getZ() + mZ, ItemStackUtil.itemStackFrom(drop));
+
+			float f = 0.7F;
+			double mX = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+			double mY = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+			double mZ = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+
+			EntityItem entityitem = new EntityItem(world, (double) pos.getX() + mX, (double) pos.getY() + mY, (double) pos.getZ() + mZ, new ItemStack(drop));
 			entityitem.setPickupDelay(10);
 			world.spawnEntity(entityitem);
 		}
 	}
-	
+
 	private Item getDrop() {
 
 		if(this == ModBlocks.cluster_iron)
@@ -72,22 +70,22 @@ public class BlockCluster extends BlockOre implements IDrillInteraction {
 			return ModItems.crystal_copper;
 		if(this == ModBlocks.basalt_gem)
 			return ModItems.gem_volcanic;
-		
+
 		return null;
 	}
 
 	@Override
-	public boolean canBreak(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
+	public boolean canBreak(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
 		return drill.getDrillRating() >= 30;
 	}
 
 	@Override
-	public ItemStack extractResource(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
-		return drill.getDrillRating() >= 30 ? ItemStackUtil.itemStackFrom(this.getDrop()) : null;
+	public ItemStack extractResource(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
+		return drill.getDrillRating() >= 30 ? new ItemStack(this.getDrop()) : null;
 	}
 
 	@Override
-	public float getRelativeHardness(final World world, final int x, final int y, final int z, final IBlockState state, final IMiningDrill drill) {
+	public float getRelativeHardness(World world, int x, int y, int z, IBlockState state, IMiningDrill drill) {
 		return state.getBlockHardness(world, new BlockPos(x, y, z));
 	}
 }

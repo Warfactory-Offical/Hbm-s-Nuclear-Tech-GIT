@@ -1,9 +1,6 @@
 package com.hbm.blocks;
 
-import java.util.List;
-
 import com.hbm.main.MainRegistry;
-
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -11,9 +8,11 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class BlockFallingBase extends BlockFalling {
 	
-	public BlockFallingBase(final Material m, final String s, final SoundType type){
+	public BlockFallingBase(Material m, String s, SoundType type){
 		super(m);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -24,7 +23,7 @@ public class BlockFallingBase extends BlockFalling {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World player, final List<String> tooltip, final ITooltipFlag advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		if(this == ModBlocks.gravel_diamond){
 			tooltip.add("There is some kind of joke here,");
 			tooltip.add("but I can't quite tell what it is.");

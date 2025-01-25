@@ -6,12 +6,12 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockScrap extends ItemBlock {
 
-	public ItemBlockScrap(final Block block) {
+	public ItemBlockScrap(Block block) {
 		super(block);
 	}
 	
 	@Override
-	public int getItemBurnTime(final ItemStack itemStack) {
+	public int getItemBurnTime(ItemStack itemStack) {
 		return 4000;
 	}
 

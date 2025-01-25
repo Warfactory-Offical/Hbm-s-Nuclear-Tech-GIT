@@ -1,13 +1,9 @@
 package com.hbm.items.weapon;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.List;
 
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile.FuelType;
 import com.hbm.items.weapon.ItemMissile.WarheadType;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,27 +11,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemCustomMissile extends Item {
 
-	public ItemCustomMissile(final String s) {
+	public ItemCustomMissile(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 
 		ModItems.ALL_ITEMS.add(this);
 	}
 
-	public static ItemStack buildMissile(final Item chip, final Item warhead, final Item fuselage, final Item stability, final Item thruster) {
+	public static ItemStack buildMissile(Item chip, Item warhead, Item fuselage, Item stability, Item thruster) {
 
 		if(stability == null) {
-			return buildMissile(ItemStackUtil.itemStackFrom(chip), ItemStackUtil.itemStackFrom(warhead), ItemStackUtil.itemStackFrom(fuselage), null, ItemStackUtil.itemStackFrom(thruster));
+			return buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), null, new ItemStack(thruster));
 		} else {
-			return buildMissile(ItemStackUtil.itemStackFrom(chip), ItemStackUtil.itemStackFrom(warhead), ItemStackUtil.itemStackFrom(fuselage), ItemStackUtil.itemStackFrom(stability), ItemStackUtil.itemStackFrom(thruster));
+			return buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), new ItemStack(stability), new ItemStack(thruster));
 		}
 	}
 
-	public static ItemStack buildMissile(final ItemStack chip, final ItemStack warhead, final ItemStack fuselage, final ItemStack stability, final ItemStack thruster) {
+	public static ItemStack buildMissile(ItemStack chip, ItemStack warhead, ItemStack fuselage, ItemStack stability, ItemStack thruster) {
 
-		final ItemStack missile = ItemStackUtil.itemStackFrom(ModItems.missile_custom);
+		ItemStack missile = new ItemStack(ModItems.missile_custom);
 
 		writeToNBT(missile, "chip", Item.getIdFromItem(chip.getItem()));
 		writeToNBT(missile, "warhead", Item.getIdFromItem(warhead.getItem()));
@@ -48,34 +46,34 @@ public class ItemCustomMissile extends Item {
 		return missile;
 	}
 
-	private static void writeToNBT(final ItemStack stack, final String key, final int value) {
+	private static void writeToNBT(ItemStack stack, String key, int value) {
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setInteger(key, value);
 	}
 
-	public static int readFromNBT(final ItemStack stack, final String key) {
+	public static int readFromNBT(ItemStack stack, String key) {
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		return stack.getTagCompound().getInteger(key);
 	}
 
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		try {
-			final ItemMissile chip = (ItemMissile) Item.getItemById(readFromNBT(stack, "chip"));
-			final ItemMissile warhead = (ItemMissile) Item.getItemById(readFromNBT(stack, "warhead"));
-			final ItemMissile fuselage = (ItemMissile) Item.getItemById(readFromNBT(stack, "fuselage"));
+			ItemMissile chip = (ItemMissile) Item.getItemById(readFromNBT(stack, "chip"));
+			ItemMissile warhead = (ItemMissile) Item.getItemById(readFromNBT(stack, "warhead"));
+			ItemMissile fuselage = (ItemMissile) Item.getItemById(readFromNBT(stack, "fuselage"));
 			ItemMissile stability = null;
-			final Item item = Item.getItemById(readFromNBT(stack, "stability"));
+			Item item = Item.getItemById(readFromNBT(stack, "stability"));
 			if(item instanceof ItemMissile)
 				stability = (ItemMissile) item;
-			final ItemMissile thruster = (ItemMissile) Item.getItemById(readFromNBT(stack, "thruster"));
+			ItemMissile thruster = (ItemMissile) Item.getItemById(readFromNBT(stack, "thruster"));
 
 			tooltip.add(TextFormatting.BOLD + "Warhead: " + TextFormatting.GRAY + warhead.getWarhead((WarheadType) warhead.attributes[0]));
-			tooltip.add(TextFormatting.BOLD + "Strength: " + TextFormatting.RED + warhead.attributes[1]);
+			tooltip.add(TextFormatting.BOLD + "Strength: " + TextFormatting.RED + (Float) warhead.attributes[1]);
 			tooltip.add(TextFormatting.BOLD + "Fuel Type: " + TextFormatting.GRAY + fuselage.getFuel((FuelType) fuselage.attributes[0]));
-			tooltip.add(TextFormatting.BOLD + "Fuel amount: " + TextFormatting.GRAY + fuselage.attributes[1] + "l");
+			tooltip.add(TextFormatting.BOLD + "Fuel amount: " + TextFormatting.GRAY + (Float) fuselage.attributes[1] + "l");
 			tooltip.add(TextFormatting.BOLD + "Chip inaccuracy: " + TextFormatting.GRAY + (Float) chip.attributes[0] * 100 + "%");
 
 			if(stability != null)
@@ -90,29 +88,30 @@ public class ItemCustomMissile extends Item {
 				health += stability.health;
 
 			tooltip.add(TextFormatting.BOLD + "Health: " + TextFormatting.GREEN + health + "HP");
-		} catch(final ClassCastException x) {
+		} catch(ClassCastException x) {
 			//Drillgon200: Why is this even necessary, JEI?
-        }
+			return;
+		}
 	}
 
-	public static MissileStruct getStruct(final ItemStack stack) {
+	public static MissileStruct getStruct(ItemStack stack) {
 
 		if(stack == null || stack.isEmpty() || stack.getTagCompound() == null || !(stack.getItem() instanceof ItemCustomMissile))
 			return null;
 		// This is a stupid fix
 		try {
-			final ItemMissile warhead = (ItemMissile) Item.getItemById(readFromNBT(stack, "warhead"));
-			final ItemMissile fuselage = (ItemMissile) Item.getItemById(readFromNBT(stack, "fuselage"));
+			ItemMissile warhead = (ItemMissile) Item.getItemById(readFromNBT(stack, "warhead"));
+			ItemMissile fuselage = (ItemMissile) Item.getItemById(readFromNBT(stack, "fuselage"));
 			ItemMissile stability = null;
-			final Item item = Item.getItemById(readFromNBT(stack, "stability"));
+			Item item = Item.getItemById(readFromNBT(stack, "stability"));
 			if(item instanceof ItemMissile)
 				stability = (ItemMissile) item;
-			final ItemMissile thruster = (ItemMissile) Item.getItemById(readFromNBT(stack, "thruster"));
+			ItemMissile thruster = (ItemMissile) Item.getItemById(readFromNBT(stack, "thruster"));
 
-			final MissileStruct missile = new MissileStruct(warhead, fuselage, stability, thruster);
+			MissileStruct missile = new MissileStruct(warhead, fuselage, stability, thruster);
 
 			return missile;
-		} catch(final ClassCastException x) {
+		} catch(ClassCastException x) {
 			return null;
 		}
 

@@ -34,16 +34,16 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 	@SideOnly(Side.CLIENT)
 	private ModelM65 modelM65;
 	
-	private final ResourceLocation tex = new ResourceLocation("hbm:textures/armor/ModelM65.png");
-	private final ResourceLocation tex_mono = new ResourceLocation("hbm:textures/armor/ModelM65Mono.png");
+	private ResourceLocation tex = new ResourceLocation("hbm:textures/armor/ModelM65.png");
+	private ResourceLocation tex_mono = new ResourceLocation("hbm:textures/armor/ModelM65Mono.png");
 	
-	public ItemModGasmask(final String s) {
+	public ItemModGasmask(String s) {
 		super(ArmorModHandler.helmet_only, true, false, false, false, s);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		if(this == ModItems.attachment_mask)
 			list.add(TextFormatting.GREEN + "Gas protection");
 		
@@ -52,12 +52,12 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 
 		ArmorUtil.addGasMaskTooltip(stack, worldIn, list, flagIn);
 
-		final List<HazardClass> haz = getBlacklist(stack);
+		List<HazardClass> haz = getBlacklist(stack);
 		
 		if(!haz.isEmpty()) {
 			list.add("§c"+I18nUtil.resolveKey("hazard.neverProtects"));
 			
-			for(final HazardClass clazz : haz) {
+			for(HazardClass clazz : haz) {
 				list.add("§4 -" + I18nUtil.resolveKey(clazz.lang));
 			}
 		}
@@ -65,34 +65,34 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor){
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor){
 		list.add("§a  " + stack.getDisplayName() + " (gas protection)");
 		ArmorUtil.addGasMaskTooltip(stack, null, list, ITooltipFlag.TooltipFlags.NORMAL);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void modRender(final Pre event, final ItemStack armor){
+	public void modRender(Pre event, ItemStack armor){
 		if(this.modelM65 == null) {
 			this.modelM65 = new ModelM65();
 		}
-		final RenderPlayer renderer = event.getRenderer();
-		final ModelBiped model = renderer.getMainModel();
-		final EntityPlayer player = event.getEntityPlayer();
+		RenderPlayer renderer = event.getRenderer();
+		ModelBiped model = renderer.getMainModel();
+		EntityPlayer player = event.getEntityPlayer();
 
 		copyRot(modelM65, model);
 
-		final float interp = event.getPartialRenderTick();
-		final float yawWrapped = MathHelper.wrapDegrees(player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp + 180);
-		final float pitch = player.rotationPitch;
+		float interp = event.getPartialRenderTick();
+		float yawWrapped = MathHelper.wrapDegrees(player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp + 180);
+		float pitch = player.rotationPitch;
 
 		if(this == ModItems.attachment_mask)
 			Minecraft.getMinecraft().renderEngine.bindTexture(tex);
 		if(this == ModItems.attachment_mask_mono)
 			Minecraft.getMinecraft().renderEngine.bindTexture(tex_mono);
 		
-		final EntityPlayer me = MainRegistry.proxy.me();
-		final boolean isMe = player == me;
+		EntityPlayer me = MainRegistry.proxy.me();
+		boolean isMe = player == me;
 		if(!isMe){
 			GL11.glPushMatrix();
 			offset(player, me, interp);
@@ -105,41 +105,41 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 	}
 
 	@Override
-	public ArrayList<HazardClass> getBlacklist(final ItemStack stack) {
+	public ArrayList<HazardClass> getBlacklist(ItemStack stack) {
 		
 		if(this == ModItems.attachment_mask_mono) {
-			return new ArrayList<HazardClass>(Arrays.asList(HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA));
+			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA}));
 		} else {
-			return new ArrayList<HazardClass>(Arrays.asList(HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT));
+			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT}));
 		}
 	}
 
 	@Override
-	public ItemStack getFilter(final ItemStack stack) {
+	public ItemStack getFilter(ItemStack stack) {
 		return ArmorUtil.getGasMaskFilter(stack);
 	}
 
 	@Override
-	public void installFilter(final ItemStack stack, final ItemStack filter) {
+	public void installFilter(ItemStack stack, ItemStack filter) {
 		ArmorUtil.installGasMaskFilter(stack, filter);
 	}
 
 	@Override
-	public void damageFilter(final ItemStack stack, final int damage) {
+	public void damageFilter(ItemStack stack, int damage) {
 		ArmorUtil.damageGasMaskFilter(stack, damage);
 	}
 
 	@Override
-	public boolean isFilterApplicable(final ItemStack stack, final ItemStack filter) {
+	public boolean isFilterApplicable(ItemStack stack, ItemStack filter) {
 		return true;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		
 		if(player.isSneaking()) {
-			final ItemStack stack = player.getHeldItem(hand);
-			final ItemStack filter = this.getFilter(stack);
+			ItemStack stack = player.getHeldItem(hand);
+			ItemStack filter = this.getFilter(stack);
 			
 			if(filter != null) {
 				ArmorUtil.removeFilter(stack);

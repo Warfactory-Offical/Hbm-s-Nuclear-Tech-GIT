@@ -1,14 +1,10 @@
 package com.hbm.blocks.machine;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityDummy;
 import com.hbm.tileentity.machine.TileEntityDummyPort;
 import com.hbm.tileentity.machine.TileEntityMachineRadGen;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,23 +20,25 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class DummyBlockRadGen extends DummyOldBase {
 
 	public static boolean safeBreak = false;
 
-	public DummyBlockRadGen(final Material materialIn, final String s, final boolean port) {
+	public DummyBlockRadGen(Material materialIn, String s, boolean port) {
 		super(materialIn, s, port);
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityDummyPort();
 	}
 	
 	@Override
-	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		if(!safeBreak) {
-    		final TileEntity te = world.getTileEntity(pos);
+    		TileEntity te = world.getTileEntity(pos);
     		if(te != null && te instanceof TileEntityDummy) {
     			if(!world.isRemote)
     				world.destroyBlock(((TileEntityDummy)te).target, true);
@@ -50,27 +48,27 @@ public class DummyBlockRadGen extends DummyOldBase {
 	}
 	
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Items.AIR;
 	}
 	
 	@Override
-	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
-		return ItemStackUtil.itemStackFrom(ModBlocks.machine_radgen);
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(ModBlocks.machine_radgen);
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-    		final TileEntity te = world.getTileEntity(pos);
+    		TileEntity te = world.getTileEntity(pos);
     		if(te != null && te instanceof TileEntityDummy) {
-    			final BlockPos dummyPos = ((TileEntityDummy)te).target;
+    			BlockPos dummyPos = ((TileEntityDummy)te).target;
     			
-    			final TileEntityMachineRadGen entity = (TileEntityMachineRadGen) world.getTileEntity(dummyPos);
+    			TileEntityMachineRadGen entity = (TileEntityMachineRadGen) world.getTileEntity(dummyPos);
     			if(entity != null)
     			{
     				player.openGui(MainRegistry.instance, ModBlocks.guiID_radgen, world, dummyPos.getX(), dummyPos.getY(), dummyPos.getZ());
@@ -83,31 +81,31 @@ public class DummyBlockRadGen extends DummyOldBase {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	@Override
-	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 }

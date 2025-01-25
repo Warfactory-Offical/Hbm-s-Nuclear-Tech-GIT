@@ -3,7 +3,6 @@ package com.hbm.render.util;
 import com.hbm.render.amlfrom1710.IModelCustom;
 import com.hbm.render.amlfrom1710.IModelCustomLoader;
 import com.hbm.render.amlfrom1710.ModelFormatException;
-
 import net.minecraft.util.ResourceLocation;
 
 public class HmfModelLoader implements IModelCustomLoader {
@@ -23,7 +22,7 @@ public class HmfModelLoader implements IModelCustomLoader {
     }
 
     @Override
-    public IModelCustom loadInstance(final ResourceLocation resource) throws ModelFormatException
+    public IModelCustom loadInstance(ResourceLocation resource) throws ModelFormatException
     {
         return new HbmModelObject(resource);
     }

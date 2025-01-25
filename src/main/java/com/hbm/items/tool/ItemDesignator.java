@@ -1,9 +1,11 @@
 package com.hbm.items.tool;
 
+import api.hbm.item.IDesignatorItem;
 import com.hbm.blocks.bomb.LaunchPad;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.main.MainRegistry;
+import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,9 +23,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemDesignator extends Item {
+public class ItemDesignator extends Item implements IDesignatorItem {
 
-	public ItemDesignator(final String s) {
+	public ItemDesignator(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.missileTab);
@@ -32,27 +34,27 @@ public class ItemDesignator extends Item {
 	}
 	
 	@Override
-	public void onCreated(final ItemStack stack, final World worldIn, final EntityPlayer playerIn) {
+	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
 		stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setInteger("xCoord", 0);
 		stack.getTagCompound().setInteger("zCoord", 0);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(stack.getTagCompound() != null)
 		{
 			tooltip.add(TextFormatting.GREEN + I18nUtil.resolveKey("desc.targetcoord")+"§r");
-			tooltip.add("§aX: " + stack.getTagCompound().getInteger("xCoord") + "§r");
-			tooltip.add("§aZ: " + stack.getTagCompound().getInteger("zCoord") + "§r");
+			tooltip.add("§aX: " + String.valueOf(stack.getTagCompound().getInteger("xCoord")) + "§r");
+			tooltip.add("§aZ: " + String.valueOf(stack.getTagCompound().getInteger("zCoord")) + "§r");
 		} else {
 			tooltip.add(TextFormatting.YELLOW + I18nUtil.resolveKey("desc.choosetarget1"));
 		}
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
 		if(!(world.getBlockState(pos).getBlock() instanceof LaunchPad))
 		{
 			if(stack.getTagCompound() != null)
@@ -75,5 +77,15 @@ public class ItemDesignator extends Item {
 		}
     	
         return EnumActionResult.PASS;
+	}
+
+	@Override
+	public boolean isReady(World world, ItemStack stack, int x, int y, int z) {
+		return stack.hasTagCompound();
+	}
+
+	@Override
+	public Vec3 getCoords(World world, ItemStack stack, int x, int y, int z) {
+		return Vec3.createVectorHelper(stack.getTagCompound().getInteger("xCoord"), 0, stack.getTagCompound().getInteger("zCoord"));
 	}
 }

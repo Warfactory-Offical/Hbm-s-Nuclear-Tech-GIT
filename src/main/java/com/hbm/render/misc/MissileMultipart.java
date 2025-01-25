@@ -2,7 +2,6 @@ package com.hbm.render.misc;
 
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemMissile.PartType;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,12 +27,12 @@ public class MissileMultipart {
 		return height;
 	}
 	
-	public static MissileMultipart loadFromStruct(final MissileStruct struct) {
+	public static MissileMultipart loadFromStruct(MissileStruct struct) {
 		
 		if(struct == null)
 			return null;
 		
-		final MissileMultipart multipart = new MissileMultipart();
+		MissileMultipart multipart = new MissileMultipart();
 
 		multipart.warhead = MissilePart.getPart(struct.warhead);
 		multipart.fuselage = MissilePart.getPart(struct.fuselage);

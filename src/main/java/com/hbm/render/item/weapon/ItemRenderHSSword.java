@@ -1,14 +1,11 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.animloader.AnimationWrapper;
 import com.hbm.items.weapon.ItemSwordCutter;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.anim.HbmAnimations.Animation;
 import com.hbm.render.item.TEISRBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
@@ -16,35 +13,36 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderHSSword extends TEISRBase {
 
 	@Override
-	public void renderByItem(final ItemStack itemStackIn) {
+	public void renderByItem(ItemStack itemStackIn) {
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		switch(type){
 		case FIRST_PERSON_LEFT_HAND:
 		case FIRST_PERSON_RIGHT_HAND:
-			final EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+			EnumHand hand = type == TransformType.FIRST_PERSON_RIGHT_HAND ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 			GL11.glScaled(5, 5, 5);
 			GL11.glTranslated(0.3, -1.45, 0.55);
 			GL11.glRotated(-90, 0, 1, 0);
 			GL11.glRotated(-20, 1, 0, 0);
 			GL11.glRotated(5, 0, 0, 1);
 			
-			final Animation anim = HbmAnimations.getRelevantAnim(hand);
+			Animation anim = HbmAnimations.getRelevantAnim(hand);
 			if(ItemSwordCutter.startPos != null && anim != null && (ItemSwordCutter.clicked || anim.animation != null)){
-				final double[] swing_rot = HbmAnimations.getRelevantTransformation("SWING", hand);
-				final EntityPlayer p = Minecraft.getMinecraft().player;
-				final Vec3d v = ItemSwordCutter.startPos.rotateYaw((float) Math.toRadians(p.rotationYaw+180)).rotatePitch((float) Math.toRadians(-p.rotationPitch));
+				double[] swing_rot = HbmAnimations.getRelevantTransformation("SWING", hand);
+				EntityPlayer p = Minecraft.getMinecraft().player;
+				Vec3d v = ItemSwordCutter.startPos.rotateYaw((float) Math.toRadians(p.rotationYaw+180)).rotatePitch((float) Math.toRadians(-p.rotationPitch));
 				double angle = Math.toDegrees(Math.atan2(v.y, v.x))-80;
-				final float oX = 0.4F;
-				final float oY = -1.55F;
-				final float oZ = 0;
+				float oX = 0.4F;
+				float oY = -1.55F;
+				float oZ = 0;
 				boolean flag = false;
 				if(anim.animation != null){
 					angle = ItemSwordCutter.prevAngle;
-					final long time = System.currentTimeMillis() - anim.startMillis;
+					long time = System.currentTimeMillis() - anim.startMillis;
 					if(anim.animation.getDuration()-time < 400){
 						flag = true;
 					}
@@ -62,7 +60,7 @@ public class ItemRenderHSSword extends TEISRBase {
 				GL11.glRotated(swing_rot[0], 1, 0, 0);
 			}
 			
-			final AnimationWrapper w = HbmAnimations.getRelevantBlenderAnim(hand);
+			AnimationWrapper w = HbmAnimations.getRelevantBlenderAnim(hand);
 			if(w == AnimationWrapper.EMPTY){
 				GlStateManager.shadeModel(GL11.GL_FLAT);
 				return;
@@ -92,20 +90,24 @@ public class ItemRenderHSSword extends TEISRBase {
 			GL11.glRotated(180, 0, 1, 0);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.hs_sword_tex);
 			ResourceManager.hs_sword.render((prevFrame, currentFrame, model, diffN, modelName) -> {
-                return modelName.equals("rightArm");
-            });
+				if(modelName.equals("rightArm"))
+					return true;
+				return false;
+			});
 			break;
 		case GUI:
 			GL11.glTranslated(-1.15, 0, 0);
 			GL11.glRotated(-135+90, 0, 0, 1);
 			GL11.glRotated(90, 0, 1, 0);
-			final double scale = 0.9D;
+			double scale = 0.9D;
 			GL11.glScaled(scale, scale, scale);
 
 			Minecraft.getMinecraft().getTextureManager().bindTexture(ResourceManager.hs_sword_tex);
 			ResourceManager.hs_sword.render((prevFrame, currentFrame, model, diffN, modelName) -> {
-                return modelName.equals("rightArm");
-            });
+				if(modelName.equals("rightArm"))
+					return true;
+				return false;
+			});
 			break;
 		case NONE:
 			break;

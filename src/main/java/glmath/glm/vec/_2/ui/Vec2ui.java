@@ -25,55 +25,55 @@ public class Vec2ui extends FuncRelational {
         y.value = 0;
     }
 
-    public Vec2ui(final int i) {
+    public Vec2ui(int i) {
         x.value = i;
         y.value = i;
     }
 
-    public Vec2ui(final int x, final int y) {
+    public Vec2ui(int x, int y) {
         this.x.value = x;
         this.y.value = y;
     }
 
-    public Vec2ui(final Vec2ui v) {
+    public Vec2ui(Vec2ui v) {
         x = v.x;
         y = v.y;
     }
 
-    public Vec2ui(final Vec2i v) {
+    public Vec2ui(Vec2i v) {
         x.value = v.x;
         y.value = v.y;
     }
 
-    public Vec2ui(final Vec3 v) {
+    public Vec2ui(Vec3 v) {
         x.value =  (int) v.x;
         y.value = (int) v.y;
     }
 
-    public Vec2ui(final Vec4 v) {
+    public Vec2ui(Vec4 v) {
         x.value = (int) v.x;
-        y.value = (int) v.y;
+        y.value = (int) v.y;;
     }
 
-    public Vec2ui set(final int i) {
+    public Vec2ui set(int i) {
         x.value = i;
         y.value = i;
         return this;
     }
 
-    public Vec2ui set(final UInt x, final UInt y) {
+    public Vec2ui set(UInt x, UInt y) {
         this.x = x;
         this.y = y;
         return this;
     }
 
-    public Vec2ui set(final float x, final float y) {
+    public Vec2ui set(float x, float y) {
         this.x.value = (int) x;
         this.y.value = (int) y;
         return this;
     }
 
-    public Vec2ui set(final int[] ia) {
+    public Vec2ui set(int[] ia) {
         x.value = ia[0];
         y.value = ia[1];
         return this;
@@ -83,7 +83,7 @@ public class Vec2ui extends FuncRelational {
         return toIa(new float[2]);
     }
 
-    public float[] toIa(final float[] fa) {
+    public float[] toIa(float[] fa) {
         fa[0] = x.value;
         fa[1] = y.value;
         return fa;
@@ -93,28 +93,28 @@ public class Vec2ui extends FuncRelational {
         return toDib(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()).asIntBuffer());
     }
 
-    public IntBuffer toDib(final IntBuffer ib) {
+    public IntBuffer toDib(IntBuffer ib) {
         return toDib(ib, 0);
     }
 
-    public IntBuffer toDib(final IntBuffer ib, final int index) {
+    public IntBuffer toDib(IntBuffer ib, int index) {
         return ib
-                .put(index, x.value)
-                .put(index + 1, y.value);
+                .put(index + 0, (int) x.value)
+                .put(index + 1, (int) y.value);
     }
 
     public ByteBuffer toDbb_() {
         return toDbb(ByteBuffer.allocateDirect(SIZE).order(ByteOrder.nativeOrder()));
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb) {
+    public ByteBuffer toDbb(ByteBuffer bb) {
         return toDbb(bb, 0);
     }
 
-    public ByteBuffer toDbb(final ByteBuffer bb, final int index) {
+    public ByteBuffer toDbb(ByteBuffer bb, int index) {
         return bb
-                .putInt(index, x.value)
-                .putInt(index + Integer.BYTES, y.value);
+                .putInt(index + 0 * Integer.BYTES, (int) x.value)
+                .putInt(index + 1 * Integer.BYTES, (int) y.value);
     }
 
     @Override
@@ -126,16 +126,16 @@ public class Vec2ui extends FuncRelational {
         print("", true);
     }
 
-    public void print(final String title) {
+    public void print(String title) {
         print(title, true);
     }
 
-    public void print(final boolean outStream) {
+    public void print(boolean outStream) {
         print("", outStream);
     }
 
-    public void print(final String title, final boolean outStream) {
-        final String res = title + "\n(" + x + ", " + y + ")";
+    public void print(String title, boolean outStream) {
+        String res = title + "\n(" + x + ", " + y + ")";
         if (outStream) {
             System.out.print(res);
         } else {

@@ -1,9 +1,6 @@
 package com.hbm.tileentity.deco;
 
-import java.util.List;
-
 import com.hbm.blocks.ModBlocks;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -15,6 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class TileEntityDecoBlockAlt extends TileEntity implements ITickable {
 	
 	@Override
@@ -22,36 +21,36 @@ public class TileEntityDecoBlockAlt extends TileEntity implements ITickable {
 		if(world.getBlockState(pos).getBlock() != ModBlocks.statue_elb_f)
 			return;
 		int strength = 4;
-		final float f = strength;
-        final int i;
-        final int j;
-        final int k;
+		float f = strength;
+        int i;
+        int j;
+        int k;
         double d5;
         double d6;
         double d7;
-        final double wat = 4*2;
+        double wat = 4*2;
         
 
         strength *= 2.0F;
         i = MathHelper.floor(pos.getX() - wat - 1.0D);
         j = MathHelper.floor(pos.getX() + wat + 1.0D);
         k = MathHelper.floor(pos.getY() - wat - 1.0D);
-        final int i2 = MathHelper.floor(pos.getY() + wat + 1.0D);
-        final int l = MathHelper.floor(pos.getZ() - wat - 1.0D);
-        final int j2 = MathHelper.floor(pos.getZ() + wat + 1.0D);
-        final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
+        int i2 = MathHelper.floor(pos.getY() + wat + 1.0D);
+        int l = MathHelper.floor(pos.getZ() - wat - 1.0D);
+        int j2 = MathHelper.floor(pos.getZ() + wat + 1.0D);
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(i, k, l, j, i2, j2));
 
         for (int i1 = 0; i1 < list.size(); ++i1)
         {
-            final Entity entity = list.get(i1);
-            final double d4 = entity.getDistance(pos.getX(), pos.getY(), pos.getZ()) / 4;
+            Entity entity = (Entity)list.get(i1);
+            double d4 = entity.getDistance(pos.getX(), pos.getY(), pos.getZ()) / 4;
 
             if (d4 <= 1.0D)
             {
                 d5 = entity.posX - pos.getX();
                 d6 = entity.posY + entity.getEyeHeight() - pos.getY();
                 d7 = entity.posZ - pos.getZ();
-                final double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
+                double d9 = MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
                 if (d9 < wat)
                 {
                 	if(entity instanceof EntityPlayer) {

@@ -1,20 +1,15 @@
 package com.hbm.items.special;
 
-import java.util.function.BiConsumer;
-
 import com.hbm.util.Tuple.Pair;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+
+import java.util.function.BiConsumer;
 
 public class ItemSimpleConsumable extends ItemCustomLore {
 	
@@ -24,25 +19,25 @@ public class ItemSimpleConsumable extends ItemCustomLore {
 	private BiConsumer<ItemStack, Pair<EntityLivingBase, EntityLivingBase>> hitAction;
 	private BiConsumer<ItemStack, Pair<EntityLivingBase, EntityLivingBase>> hitActionServer;
 
-	public ItemSimpleConsumable(final String s){
+	public ItemSimpleConsumable(String s){
 		super(s);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 
-		final ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 		if(this.useAction != null)
 			this.useAction.accept(stack, player);
 		
 		if(!world.isRemote && this.useActionServer != null)
 			this.useActionServer.accept(stack, player);
 		
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.<ItemStack> newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
-	public boolean hitEntity(final ItemStack stack, final EntityLivingBase entity, final EntityLivingBase entityPlayer) {
+	public boolean hitEntity(ItemStack stack, EntityLivingBase entity, EntityLivingBase entityPlayer) {
 		
 		if(this.hitAction != null)
 			this.hitAction.accept(stack, new Pair(entity, entityPlayer));
@@ -53,13 +48,13 @@ public class ItemSimpleConsumable extends ItemCustomLore {
 		return false;
 	}
 	
-	public static void giveSoundAndDecrement(final ItemStack stack, final EntityLivingBase entity, final SoundEvent sound, final ItemStack container) {
+	public static void giveSoundAndDecrement(ItemStack stack, EntityLivingBase entity, SoundEvent sound, ItemStack container) {
 		stack.shrink(1);
 		entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
 		ItemSimpleConsumable.tryAddItem(entity, container);
 	}
 	
-	public static void addPotionEffect(final EntityLivingBase entity, final Potion effect, final int duration, final int level) {
+	public static void addPotionEffect(EntityLivingBase entity, Potion effect, int duration, int level) {
 		
 		if(!entity.isPotionActive(effect)) {
 			entity.addPotionEffect(new PotionEffect(effect, duration, level));
@@ -71,17 +66,18 @@ public class ItemSimpleConsumable extends ItemCustomLore {
 		}
 	}
 	
-	public static void tryAddItem(final EntityLivingBase entity, final ItemStack stack) {
-		if(entity instanceof EntityPlayer player) {
-            if(!player.inventory.addItemStackToInventory(stack)) {
+	public static void tryAddItem(EntityLivingBase entity, ItemStack stack) {
+		if(entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			if(!player.inventory.addItemStackToInventory(stack)) {
 				player.dropItem(stack, false);
 			}
 		}
 	}
 	
 	//this formatting style probably already has a name but i will call it "the greg"
-	public ItemSimpleConsumable setUseAction(final BiConsumer<ItemStack, EntityPlayer> delegate) {								this.useAction = delegate;			return this; }
-	public ItemSimpleConsumable setUseActionServer(final BiConsumer<ItemStack, EntityPlayer> delegate) {								this.useActionServer = delegate;	return this; }
-	public ItemSimpleConsumable setHitAction(final BiConsumer<ItemStack, Pair<EntityLivingBase, EntityLivingBase>> delegate) {	this.hitAction = delegate;			return this; }
-	public ItemSimpleConsumable setHitActionServer(final BiConsumer<ItemStack, Pair<EntityLivingBase, EntityLivingBase>> delegate) {	this.hitActionServer = delegate;	return this; }
+	public ItemSimpleConsumable setUseAction(		BiConsumer<ItemStack, EntityPlayer> delegate) {								this.useAction = delegate;			return this; }
+	public ItemSimpleConsumable setUseActionServer(	BiConsumer<ItemStack, EntityPlayer> delegate) {								this.useActionServer = delegate;	return this; }
+	public ItemSimpleConsumable setHitAction(		BiConsumer<ItemStack, Pair<EntityLivingBase, EntityLivingBase>> delegate) {	this.hitAction = delegate;			return this; }
+	public ItemSimpleConsumable setHitActionServer(	BiConsumer<ItemStack, Pair<EntityLivingBase, EntityLivingBase>> delegate) {	this.hitActionServer = delegate;	return this; }
 }

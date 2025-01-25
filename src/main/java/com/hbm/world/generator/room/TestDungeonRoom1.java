@@ -13,11 +13,11 @@ import net.minecraft.world.World;
 
 public class TestDungeonRoom1 extends CellularDungeonRoom {
 
-	public TestDungeonRoom1(final CellularDungeon parent) {
+	public TestDungeonRoom1(CellularDungeon parent) {
 		super(parent);
 	}
 
-	public void generateMain(final World world, final int x, final int y, final int z) {
+	public void generateMain(World world, int x, int y, int z) {
 		
 		super.generateMain(world, x, y, z);
 		DungeonToolbox.generateBox(world, x + parent.width / 2 - 3, y + 1, z + parent.width / 2 - 3, 1, parent.height - 2, 1, ModBlocks.meteor_pillar.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y));

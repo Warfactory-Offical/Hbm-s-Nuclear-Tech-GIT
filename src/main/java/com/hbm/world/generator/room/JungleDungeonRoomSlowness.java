@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class JungleDungeonRoomSlowness extends JungleDungeonRoom {
 
-	public JungleDungeonRoomSlowness(final CellularDungeon parent) {
+	public JungleDungeonRoomSlowness(CellularDungeon parent) {
 		super(parent);
 	}
 
@@ -21,7 +21,7 @@ public class JungleDungeonRoomSlowness extends JungleDungeonRoom {
 	public void generateMain(final World world, final int x, final int y, final int z) {
 		super.generateMain(world, x, y, z);
 
-		final ITimedJob job = new ITimedJob() {
+		ITimedJob job = new ITimedJob() {
 
 			@Override
 			public void work() {
@@ -31,7 +31,7 @@ public class JungleDungeonRoomSlowness extends JungleDungeonRoom {
 					for(int b = 1; b < 4; b++) {
 
 						if(world.rand.nextInt(2) == 0) {
-							final Block bl = world.getBlockState(new BlockPos(x + a, y, z + b)).getBlock();
+							Block bl = world.getBlockState(new BlockPos(x + a, y, z + b)).getBlock();
 							if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
 								world.setBlockState(new BlockPos(x + a, y, z + b), ModBlocks.brick_jungle_trap.getDefaultState().withProperty(TrappedBrick.TYPE, Trap.SLOWNESS.ordinal()), 3);
 							}

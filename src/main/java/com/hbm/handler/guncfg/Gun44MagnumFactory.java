@@ -29,7 +29,7 @@ public class Gun44MagnumFactory {
 
 	public static GunConfiguration getBaseConfig() {
 
-		final GunConfiguration config = new GunConfiguration();
+		GunConfiguration config = new GunConfiguration();
 
 		config.rateOfFire = 10;
 		config.roundsPerCycle = 1;
@@ -50,7 +50,7 @@ public class Gun44MagnumFactory {
 
 	public static GunConfiguration getNovacConfig() {
 
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 
 		config.durability = 2500;
 
@@ -72,7 +72,7 @@ public class Gun44MagnumFactory {
 
 	public static GunConfiguration getMacintoshConfig() {
 
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 
 		config.durability = 4000;
 
@@ -95,7 +95,7 @@ public class Gun44MagnumFactory {
 
 	public static GunConfiguration getBlackjackConfig() {
 
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 
 		config.durability = 4000;
 		config.ammoCap = 5;
@@ -119,7 +119,7 @@ public class Gun44MagnumFactory {
 
 	public static GunConfiguration getSilverConfig() {
 
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 
 		config.durability = 4000;
 		config.ammoCap = 6;
@@ -144,7 +144,7 @@ public class Gun44MagnumFactory {
 
 	public static GunConfiguration getRedConfig() {
 
-		final GunConfiguration config = getBaseConfig();
+		GunConfiguration config = getBaseConfig();
 
 		config.durability = 4000;
 		config.ammoCap = 64;
@@ -171,7 +171,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getNoPipConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_44;
 		bullet.dmgMin = 5;
@@ -182,7 +182,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getNoPipAPConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_44_ap;
 		bullet.dmgMin = 7;
@@ -195,7 +195,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getNoPipDUConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_44_du;
 		bullet.dmgMin = 7;
@@ -208,7 +208,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getNoPipStarConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_44_star;
 		bullet.dmgMin = 14;
@@ -221,7 +221,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getPipConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_44_pip;
 		bullet.dmgMin = 4;
@@ -232,16 +232,16 @@ public class Gun44MagnumFactory {
 		bullet.bHit = new IBulletHitBehavior() {
 
 			@Override
-			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHit(EntityBulletBase bullet, Entity hit) {
 
 				if(!bullet.world.isRemote) {
-					final EntityBoxcar pippo = new EntityBoxcar(bullet.world);
+					EntityBoxcar pippo = new EntityBoxcar(bullet.world);
 					pippo.posX = hit.posX;
 					pippo.posY = hit.posY + 50;
 					pippo.posZ = hit.posZ;
 
 					for(int j = 0; j < 50; j++) {
-						final EntityBSmokeFX fx = new EntityBSmokeFX(bullet.world, pippo.posX + (bullet.world.rand.nextDouble() - 0.5) * 4, pippo.posY + (bullet.world.rand.nextDouble() - 0.5) * 12, pippo.posZ + (bullet.world.rand.nextDouble() - 0.5) * 4, 0, 0, 0);
+						EntityBSmokeFX fx = new EntityBSmokeFX(bullet.world, pippo.posX + (bullet.world.rand.nextDouble() - 0.5) * 4, pippo.posY + (bullet.world.rand.nextDouble() - 0.5) * 12, pippo.posZ + (bullet.world.rand.nextDouble() - 0.5) * 4, 0, 0, 0);
 						bullet.world.spawnEntity(fx);
 					}
 					bullet.world.spawnEntity(pippo);
@@ -256,7 +256,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getBJConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_44_bj;
 		bullet.dmgMin = 4;
@@ -267,16 +267,16 @@ public class Gun44MagnumFactory {
 		bullet.bHit = new IBulletHitBehavior() {
 
 			@Override
-			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHit(EntityBulletBase bullet, Entity hit) {
 
 				if(!bullet.world.isRemote) {
-					final EntityDuchessGambit pippo = new EntityDuchessGambit(bullet.world);
+					EntityDuchessGambit pippo = new EntityDuchessGambit(bullet.world);
 					pippo.posX = hit.posX;
 					pippo.posY = hit.posY + 50;
 					pippo.posZ = hit.posZ;
 
 					for(int j = 0; j < 150; j++) {
-						final EntityBSmokeFX fx = new EntityBSmokeFX(bullet.world, pippo.posX + (bullet.world.rand.nextDouble() - 0.5) * 7, pippo.posY + (bullet.world.rand.nextDouble() - 0.5) * 8, pippo.posZ + (bullet.world.rand.nextDouble() - 0.5) * 18, 0, 0, 0);
+						EntityBSmokeFX fx = new EntityBSmokeFX(bullet.world, pippo.posX + (bullet.world.rand.nextDouble() - 0.5) * 7, pippo.posY + (bullet.world.rand.nextDouble() - 0.5) * 8, pippo.posZ + (bullet.world.rand.nextDouble() - 0.5) * 18, 0, 0, 0);
 						bullet.world.spawnEntity(fx);
 					}
 					bullet.world.spawnEntity(pippo);
@@ -292,7 +292,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getSilverStormConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 
 		bullet.ammo = ModItems.ammo_44_silver;
 		bullet.dmgMin = 4;
@@ -303,16 +303,16 @@ public class Gun44MagnumFactory {
 		bullet.bHit = new IBulletHitBehavior() {
 
 			@Override
-			public void behaveEntityHit(final EntityBulletBase bullet, final Entity hit) {
+			public void behaveEntityHit(EntityBulletBase bullet, Entity hit) {
 
 				if(!bullet.world.isRemote) {
-					final EntityBuilding pippo = new EntityBuilding(bullet.world);
+					EntityBuilding pippo = new EntityBuilding(bullet.world);
 					pippo.posX = hit.posX;
 					pippo.posY = hit.posY + 50;
 					pippo.posZ = hit.posZ;
 
 					for(int j = 0; j < 150; j++) {
-						final EntityBSmokeFX fx = new EntityBSmokeFX(bullet.world, pippo.posX + (bullet.world.rand.nextDouble() - 0.5) * 15, pippo.posY + (bullet.world.rand.nextDouble() - 0.5) * 15, pippo.posZ + (bullet.world.rand.nextDouble() - 0.5) * 15, 0, 0, 0);
+						EntityBSmokeFX fx = new EntityBSmokeFX(bullet.world, pippo.posX + (bullet.world.rand.nextDouble() - 0.5) * 15, pippo.posY + (bullet.world.rand.nextDouble() - 0.5) * 15, pippo.posZ + (bullet.world.rand.nextDouble() - 0.5) * 15, 0, 0, 0);
 						bullet.world.spawnEntity(fx);
 					}
 					bullet.world.spawnEntity(pippo);
@@ -328,7 +328,7 @@ public class Gun44MagnumFactory {
 
 	public static BulletConfiguration getRocketConfig() {
 
-		final BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardRocketConfig();
 
 		bullet.ammo = ModItems.ammo_44_rocket;
 		bullet.velocity = 5;
@@ -340,7 +340,7 @@ public class Gun44MagnumFactory {
 	
 	public static BulletConfiguration getPhosphorusConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = ModItems.ammo_44_phosphorus;
 		bullet.dmgMin = 5;
@@ -349,7 +349,7 @@ public class Gun44MagnumFactory {
 		bullet.incendiary = 5;
 		bullet.doesPenetrate = false;
 		
-		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
+		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus, 20 * 20, 0, true, false);
 		eff.getCurativeItems().clear();
 		bullet.effects = new ArrayList<PotionEffect>();
 		bullet.effects.add(new PotionEffect(eff));
@@ -357,9 +357,9 @@ public class Gun44MagnumFactory {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
+			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
 				
-				final NBTTagCompound data = new NBTTagCompound();
+				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaburst");
 				data.setString("mode", "flame");
 				data.setInteger("count", 15);

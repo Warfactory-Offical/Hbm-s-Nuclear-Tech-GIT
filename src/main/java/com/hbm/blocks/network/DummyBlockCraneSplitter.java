@@ -1,5 +1,4 @@
 package com.hbm.blocks.network;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IDummy;
@@ -23,7 +22,7 @@ public class DummyBlockCraneSplitter extends BlockContainer implements IDummy {
 
         public static boolean safeBreak = false;
 
-        public DummyBlockCraneSplitter(final Material materialIn, final String s) {
+        public DummyBlockCraneSplitter(Material materialIn, String s) {
             super(materialIn);
             this.setTranslationKey(s);
             this.setRegistryName(s);
@@ -32,14 +31,14 @@ public class DummyBlockCraneSplitter extends BlockContainer implements IDummy {
         }
 
         @Override
-        public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+        public TileEntity createNewTileEntity(World worldIn, int meta) {
             return new TileEntityDummy();
         }
 
         @Override
-        public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        public void breakBlock(World world, BlockPos pos, IBlockState state) {
             if(!safeBreak) {
-                final TileEntity te = world.getTileEntity(pos);
+                TileEntity te = world.getTileEntity(pos);
                 if(te != null && te instanceof TileEntityDummy) {
                     if(!world.isRemote)
                         world.destroyBlock(((TileEntityDummy)te).target, true);
@@ -49,41 +48,41 @@ public class DummyBlockCraneSplitter extends BlockContainer implements IDummy {
         }
 
         @Override
-        public EnumBlockRenderType getRenderType(final IBlockState state) {
+        public EnumBlockRenderType getRenderType(IBlockState state) {
             return EnumBlockRenderType.INVISIBLE;
         }
 
         @Override
-        public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+        public Item getItemDropped(IBlockState state, Random rand, int fortune) {
             return Items.AIR;
         }
 
         @Override
-        public boolean isOpaqueCube(final IBlockState state) {
+        public boolean isOpaqueCube(IBlockState state) {
             return false;
         }
 
         @Override
-        public boolean isBlockNormalCube(final IBlockState state) {
+        public boolean isBlockNormalCube(IBlockState state) {
             return false;
         }
 
         @Override
-        public boolean isNormalCube(final IBlockState state) {
+        public boolean isNormalCube(IBlockState state) {
             return false;
         }
 
         @Override
-        public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+        public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
             return false;
         }
         @Override
-        public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
+        public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
             return false;
         }
 
         @Override
-        public ItemStack getItem(final World worldIn, final BlockPos pos, final IBlockState state) {
-            return ItemStackUtil.itemStackFrom(ModBlocks.machine_centrifuge);
+        public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+            return new ItemStack(ModBlocks.machine_centrifuge);
         }
 }

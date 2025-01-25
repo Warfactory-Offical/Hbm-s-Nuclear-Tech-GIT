@@ -1,7 +1,5 @@
 package com.hbm.tileentity.machine;
 
-import java.io.IOException;
-
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.inventory.container.ContainerFirebox;
@@ -9,7 +7,6 @@ import com.hbm.inventory.gui.GUIFirebox;
 import com.hbm.lib.RefStrings;
 import com.hbm.modules.ModuleBurnTime;
 import com.hbm.tileentity.IConfigurableMachine;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -17,6 +14,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
 
 public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IConfigurableMachine {
 
@@ -68,7 +67,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 		return maxHeatEnergy;
 	}
     @Override
-	public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new ContainerFirebox(player.inventory, this);
 	}
 
@@ -76,7 +75,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if(texture == null) texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_firebox.png");
 		return new GUIFirebox(player.inventory, this, texture);
 	}
@@ -87,7 +86,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 	}
 
 	@Override
-	public void readIfPresent(final JsonObject obj) {
+	public void readIfPresent(JsonObject obj) {
 		baseHeat = IConfigurableMachine.grab(obj, "I:baseHeat", baseHeat);
 		timeMult = IConfigurableMachine.grab(obj, "D:burnTimeMult", timeMult);
 		maxHeatEnergy = IConfigurableMachine.grab(obj, "I:heatCap", maxHeatEnergy);
@@ -97,7 +96,7 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 	}
 
 	@Override
-	public void writeConfig(final JsonWriter writer) throws IOException {
+	public void writeConfig(JsonWriter writer) throws IOException {
 		writer.name("I:baseHeat").value(baseHeat);
 		writer.name("D:burnTimeMult").value(timeMult);
 		writer.name("I:heatCap").value(maxHeatEnergy);

@@ -22,13 +22,13 @@ public class EntityMinerRocket extends Entity {
 	public int timer = 0;
 	public byte type = 0;
 
-	public EntityMinerRocket(final World p_i1582_1_) {
+	public EntityMinerRocket(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		this.setSize(1F, 3F);
 	}
 
-	public EntityMinerRocket(final World p_i1582_1_, final byte type) {
+	public EntityMinerRocket(World p_i1582_1_, byte type) {
 		this(p_i1582_1_);
 		this.type = type;
 	}
@@ -43,14 +43,14 @@ public class EntityMinerRocket extends Entity {
 		return this.getDataManager().get(TYPE);
 	}
 
-	public void setRocketType(final byte value){
+	public void setRocketType(byte value){
 		this.type = value;
 		this.getDataManager().set(TYPE, value);
 	}
 	
 	@Override
 	public void onUpdate() {
-		final int i = this.getDataManager().get(TIMER);
+		int i = this.getDataManager().get(TIMER);
 		if(i == 0)
 			motionY = -0.75;
 		if(i == 1)
@@ -83,12 +83,12 @@ public class EntityMinerRocket extends Entity {
 				this.getDataManager().set(TIMER, 2);
 			}
 		}
-		final int t = this.getDataManager().get(TIMER);
+		int t = this.getDataManager().get(TIMER);
 		
 		if(t != 1) {
 			
 			if(ticksExisted % 2 == 0) {
-				final EntityGasFlameFX fx = new EntityGasFlameFX(world);
+				EntityGasFlameFX fx = new EntityGasFlameFX(world);
 				fx.posY = posY - 0.5D;
 				fx.posX = posX;
 				fx.posZ = posZ;
@@ -103,10 +103,10 @@ public class EntityMinerRocket extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 	}
 }

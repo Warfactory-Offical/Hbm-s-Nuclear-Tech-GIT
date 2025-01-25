@@ -17,7 +17,7 @@ public class SoundLoopCrucible extends MovingSound {
 	public EntityPlayer player;
 	public ISound start;
 	
-	public SoundLoopCrucible(final EntityPlayer player) {
+	public SoundLoopCrucible(EntityPlayer player) {
 		super(HBMSoundHandler.crucibleLoop, SoundCategory.PLAYERS);
 		this.repeat = true;
 		this.repeatDelay = 0;

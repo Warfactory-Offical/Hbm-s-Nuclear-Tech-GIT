@@ -7,7 +7,7 @@ import mezz.jei.api.IGuiHelper;
 
 public class SILEXXRayRecipeHandler extends SILEXRecipeHandler {
 
-	public SILEXXRayRecipeHandler(final IGuiHelper help){
+	public SILEXXRayRecipeHandler(IGuiHelper help){
 		super(help);
 	}
 

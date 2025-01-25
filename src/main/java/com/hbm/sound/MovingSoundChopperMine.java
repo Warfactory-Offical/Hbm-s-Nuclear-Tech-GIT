@@ -6,7 +6,7 @@ import net.minecraft.util.SoundEvent;
 
 public class MovingSoundChopperMine extends MovingSoundPlayerLoop {
 
-	public MovingSoundChopperMine(final SoundEvent p_i45104_1_, final SoundCategory c, final Entity player, final EnumHbmSound type) {
+	public MovingSoundChopperMine(SoundEvent p_i45104_1_, SoundCategory c, Entity player, EnumHbmSound type) {
 		super(p_i45104_1_, c, player, type);
 	}
 }

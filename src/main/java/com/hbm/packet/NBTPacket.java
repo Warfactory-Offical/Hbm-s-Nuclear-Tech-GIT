@@ -29,7 +29,7 @@ public class NBTPacket implements IMessage {
 	public NBTPacket() {
 	}
 
-	public NBTPacket(final NBTTagCompound nbt, final BlockPos pos) {
+	public NBTPacket(NBTTagCompound nbt, BlockPos pos) {
 
 		this.buffer = new PacketBuffer(Unpooled.buffer());
 		this.x = pos.getX();
@@ -41,7 +41,7 @@ public class NBTPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 
 		x = buf.readInt();
 		y = buf.readInt();
@@ -54,7 +54,7 @@ public class NBTPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 
 		buf.writeInt(x);
 		buf.writeInt(y);
@@ -70,23 +70,23 @@ public class NBTPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final NBTPacket m, final MessageContext ctx) {
+		public IMessage onMessage(NBTPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				if(Minecraft.getMinecraft().world == null)
 					return;
 
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
 				try {
 
-					final NBTTagCompound nbt = m.buffer.readCompoundTag();
+					NBTTagCompound nbt = m.buffer.readCompoundTag();
 
 					if(nbt != null) {
 						 if(te instanceof INBTPacketReceiver)
 								((INBTPacketReceiver) te).networkUnpack(nbt);
 					}
 
-				} catch(final IOException e) {
+				} catch(IOException e) {
 					e.printStackTrace();
 				}
 			});

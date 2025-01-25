@@ -5,17 +5,17 @@ import net.minecraft.util.math.MathHelper;
 
 public class WormMovementHead {
 
-	private final EntityWormBase user;
+	private EntityWormBase user;
 
-	public WormMovementHead(final EntityWormBase user) {
+	public WormMovementHead(EntityWormBase user) {
 		this.user = user;
 	}
 
 	protected void updateMovement() {
 
-		final double var1 = this.user.waypointX - this.user.posX;
-	    final double var3 = this.user.waypointY - this.user.posY;
-	    final double var5 = this.user.waypointZ - this.user.posZ;
+		double var1 = this.user.waypointX - this.user.posX;
+	    double var3 = this.user.waypointY - this.user.posY;
+	    double var5 = this.user.waypointZ - this.user.posZ;
 	    double var7 = var1 * var1 + var3 * var3 + var5 * var5;
 	    if (this.user.courseChangeCooldown-- <= 0)
 	    {
@@ -26,7 +26,7 @@ public class WormMovementHead {
 	        if (!this.user.isCourseTraversable()) {
 	          var7 *= 8.0D;
 	        }
-	        final double moverSpeed = this.user.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
+	        double moverSpeed = this.user.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
 	        this.user.motionX += var1 / var7 * moverSpeed;
 	        this.user.motionY += var3 / var7 * moverSpeed;
 	        this.user.motionZ += var5 / var7 * moverSpeed;

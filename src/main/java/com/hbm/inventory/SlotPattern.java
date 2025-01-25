@@ -1,7 +1,6 @@
 package com.hbm.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,12 +11,12 @@ public class SlotPattern extends SlotItemHandler {
 
     protected boolean canHover = true;
 
-    public SlotPattern(final IItemHandler inv, final int index, final int x, final int y) {
+    public SlotPattern(IItemHandler inv, int index, int x, int y) {
         super(inv, index, x, y);
     }
 
     @Override
-    public boolean canTakeStack(final EntityPlayer player) {
+    public boolean canTakeStack(EntityPlayer player) {
         return true;
     }
 
@@ -27,7 +26,7 @@ public class SlotPattern extends SlotItemHandler {
     }
 
     @Override
-    public int getItemStackLimit(final ItemStack stack) {
+    public int getItemStackLimit(ItemStack stack) {
         return 1;
     }
 
@@ -37,7 +36,7 @@ public class SlotPattern extends SlotItemHandler {
     }
 
     @Override
-    public boolean isItemValid(final ItemStack stack) {
+    public boolean isItemValid(ItemStack stack) {
         return stack != null;
     }
 

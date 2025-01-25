@@ -80,7 +80,7 @@ public class ArmorFSB extends ItemArmor {
 	public SoundEvent jump;
 	public SoundEvent fall;
 	
-	public ArmorFSB(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String texture, final String name) {
+	public ArmorFSB(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String texture, String name) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(name);
 		this.setRegistryName(name);
@@ -89,22 +89,23 @@ public class ArmorFSB extends ItemArmor {
 		ModItems.ALL_ITEMS.add(this);
 	}
 	
-	public static boolean hasFSBArmor(final EntityLivingBase entity) {
+	public static boolean hasFSBArmor(EntityLivingBase entity) {
 		if(entity == null)
 			return false;
 		
-		final ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+		ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 		
-		if(plate != null && plate.getItem() instanceof ArmorFSB chestplate) {
+		if(plate != null && plate.getItem() instanceof ArmorFSB) {
 
-            final boolean noHelmet = chestplate.noHelmet;
+			ArmorFSB chestplate = (ArmorFSB)plate.getItem();
+			boolean noHelmet = chestplate.noHelmet;
 
-			for(final EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+			for(EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 				if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND)
 					continue;
 				if(noHelmet && slot == EntityEquipmentSlot.HEAD)
 					continue;
-				final ItemStack armor = entity.getItemStackFromSlot(slot);
+				ItemStack armor = entity.getItemStackFromSlot(slot);
 
 				if(armor == null || !(armor.getItem() instanceof ArmorFSB))
 					return false;
@@ -121,8 +122,8 @@ public class ArmorFSB extends ItemArmor {
 		return false;
     }
 	
-	public static boolean hasFSBArmorHelmet(final EntityLivingBase entity){
-		final ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+	public static boolean hasFSBArmorHelmet(EntityLivingBase entity){
+		ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 
 		if(plate != null && plate.getItem() instanceof ArmorFSB) {
 			return !((ArmorFSB)plate.getItem()).noHelmet && hasFSBArmor(entity);
@@ -130,22 +131,23 @@ public class ArmorFSB extends ItemArmor {
 		return false;
 	}
 
-	public static boolean hasFSBArmorIgnoreCharge(final EntityLivingBase entity) {
+	public static boolean hasFSBArmorIgnoreCharge(EntityLivingBase entity) {
 		if(entity == null)
 			return false;
 
-		final ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+		ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 		
-		if(plate != null && plate.getItem() instanceof ArmorFSB chestplate) {
+		if(plate != null && plate.getItem() instanceof ArmorFSB) {
 
-            final boolean noHelmet = chestplate.noHelmet;
+			ArmorFSB chestplate = (ArmorFSB)plate.getItem();
+			boolean noHelmet = chestplate.noHelmet;
 			
-			for(final EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+			for(EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 				if(slot == EntityEquipmentSlot.MAINHAND || slot == EntityEquipmentSlot.OFFHAND)
 					continue;
 				if(noHelmet && slot == EntityEquipmentSlot.HEAD)
 					continue;
-				final ItemStack armor = entity.getItemStackFromSlot(slot);
+				ItemStack armor = entity.getItemStackFromSlot(slot);
 
 				if(armor == null || !(armor.getItem() instanceof ArmorFSB))
 					return false;
@@ -160,21 +162,18 @@ public class ArmorFSB extends ItemArmor {
     }
 
 	
-    public static void handleAttack(final LivingAttackEvent event) {
-
-		final EntityLivingBase e = event.getEntityLiving();
-
-		if(ArmorFSB.hasFSBArmor(e)) {
-
-			final ItemStack plate = e.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-
-			final ArmorFSB chestplate = (ArmorFSB)plate.getItem();
-			
-			chestplate.handleAttack(event, chestplate);
+    public static void handleAttack(LivingAttackEvent event) {
+		EntityLivingBase e = event.getEntityLiving();
+		if(e != null){
+			if(ArmorFSB.hasFSBArmor(e)) {
+				ItemStack plate = e.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+				ArmorFSB chestplate = (ArmorFSB)plate.getItem();
+				chestplate.handleAttack(event, chestplate);
+			}
 		}
     }
 
-    public void handleAttack(final LivingAttackEvent event, final ArmorFSB chestplate){
+    public void handleAttack(LivingAttackEvent event, ArmorFSB chestplate){
     	if(chestplate.damageThreshold >= event.getAmount() && !event.getSource().isUnblockable()) {
 			event.setCanceled(true);
 		}
@@ -189,22 +188,22 @@ public class ArmorFSB extends ItemArmor {
 		}
     }
 	
-    public static void handleHurt(final LivingHurtEvent event) {
+    public static void handleHurt(LivingHurtEvent event) {
 
-		final EntityLivingBase e = event.getEntityLiving();
+		EntityLivingBase e = event.getEntityLiving();
 
 		if(ArmorFSB.hasFSBArmor(e)) {
 
-			final ArmorFSB chestplate = (ArmorFSB)e.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
+			ArmorFSB chestplate = (ArmorFSB)e.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 
 			chestplate.handleHurt(event, chestplate);
 		}
     }
     
-    public void handleHurt(final LivingHurtEvent event, final ArmorFSB chestplate){
+    public void handleHurt(LivingHurtEvent event, ArmorFSB chestplate){
 
     	//store any damage above the yield
-		final float overFlow = Math.max(0, event.getAmount() - chestplate.protectionYield);
+		float overFlow = Math.max(0, event.getAmount() - chestplate.protectionYield);
 		//reduce the damage to the yield cap if it exceeds the yield
 		event.setAmount(Math.min(event.getAmount(), chestplate.protectionYield));
 
@@ -236,28 +235,28 @@ public class ArmorFSB extends ItemArmor {
 		event.setAmount(event.getAmount()+overFlow);
     }
 	
-	public boolean isArmorEnabled(final ItemStack stack) {
+	public boolean isArmorEnabled(ItemStack stack) {
 		return true;
 	}
 
-	public static void handleTick(final TickEvent.PlayerTickEvent event) {
+	public static void handleTick(TickEvent.PlayerTickEvent event) {
 		handleTick(event.player, event.phase == Phase.START);
 	}
 
-	public static void handleTick(final EntityLivingBase entity) {
+	public static void handleTick(EntityLivingBase entity) {
 		handleTick(entity, true);
 	}
 	
-    public static void handleTick(final EntityLivingBase entity, final boolean isStart) {
+    public static void handleTick(EntityLivingBase entity, boolean isStart) {
 		if(ArmorFSB.hasFSBArmor(entity)) {
 
-			final ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+			ItemStack plate = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 
-			final ArmorFSB chestplate = (ArmorFSB) plate.getItem();
+			ArmorFSB chestplate = (ArmorFSB) plate.getItem();
 
 			if(!chestplate.effects.isEmpty()) {
 
-				for(final PotionEffect i : chestplate.effects) {
+				for(PotionEffect i : chestplate.effects) {
 					entity.addPotionEffect(new PotionEffect(i.getPotion(), i.getDuration(), i.getAmplifier(), i.getIsAmbient(), i.doesShowParticles()));
 				}
 			}
@@ -279,17 +278,17 @@ public class ArmorFSB extends ItemArmor {
 						entity.getEntityData().setFloat("hfr_nextStepDistance", nextStepDistance.getFloat(entity));
 					}
 
-	                final int px = MathHelper.floor(entity.posX);
-	                final int py = MathHelper.floor(entity.posY - 0.2D);
-	                final int pz = MathHelper.floor(entity.posZ);
-	                final IBlockState block = entity.world.getBlockState(new BlockPos(px, py, pz));
+	                int px = MathHelper.floor(entity.posX);
+	                int py = MathHelper.floor(entity.posY - 0.2D);
+	                int pz = MathHelper.floor(entity.posZ);
+	                IBlockState block = entity.world.getBlockState(new BlockPos(px, py, pz));
 					if(block.getMaterial() != Material.AIR && entity.getEntityData().getFloat("hfr_nextStepDistance") <= distanceWalkedOnStepModified.getFloat(entity)){
 						entity.playSound(chestplate.step, 1.0F, 1.0F);
 					}
 
 					entity.getEntityData().setFloat("hfr_nextStepDistance", nextStepDistance.getFloat(entity));
 
-				} catch (final Exception x) {
+				} catch (Exception x) {
 					x.printStackTrace();
 				}
 			}
@@ -297,34 +296,34 @@ public class ArmorFSB extends ItemArmor {
     }
 	
 	
-	public static void handleJump(final EntityLivingBase entity) {
+	public static void handleJump(EntityLivingBase entity) {
 
 		if(ArmorFSB.hasFSBArmor(entity)) {
 
-			final ArmorFSB chestplate = (ArmorFSB) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
+			ArmorFSB chestplate = (ArmorFSB) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 
 			if(chestplate.jump != null)
 				entity.playSound(chestplate.jump, 1.0F, 1.0F);
 		}
 	}
 
-	public static void handleFall(final EntityLivingBase entity) {
+	public static void handleFall(EntityLivingBase entity) {
 
 		if(ArmorFSB.hasFSBArmor(entity)) {
 
-			final ArmorFSB chestplate = (ArmorFSB) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
+			ArmorFSB chestplate = (ArmorFSB) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 
 			if(chestplate.hardLanding && entity.fallDistance > 10) {
 
-				final List<Entity> entities = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().grow(3, 0, 3));
+				List<Entity> entities = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().grow(3, 0, 3));
 
-				for(final Entity e : entities) {
+				for(Entity e : entities) {
 
-					final Vec3 vec = Vec3.createVectorHelper(entity.posX - e.posX, 0, entity.posZ - e.posZ);
+					Vec3 vec = Vec3.createVectorHelper(entity.posX - e.posX, 0, entity.posZ - e.posZ);
 
-					if(vec.length() < 3) {
+					if(vec.lengthVector() < 3) {
 
-						final double intensity = 3 - vec.length();
+						double intensity = 3 - vec.lengthVector();
 						e.motionX += vec.xCoord * intensity * -2;
 						e.motionY += 0.1D * intensity;
 						e.motionZ += vec.zCoord * intensity * -2;
@@ -342,7 +341,7 @@ public class ArmorFSB extends ItemArmor {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void updateClient(final ItemStack stack, final ArmorFSB fsbarmor, final World world, final Entity entity, final int slot, final boolean selected){
+	public void updateClient(ItemStack stack, ArmorFSB fsbarmor, World world, Entity entity, int slot, boolean selected){
 		if(fsbarmor.flashlightPosition != null){
 			if(!flashlightPress && ClientProxy.fsbFlashlight.isKeyDown()){
 				PacketDispatcher.wrapper.sendToServer(new KeybindPacket(1));
@@ -352,13 +351,14 @@ public class ArmorFSB extends ItemArmor {
 	}
 	
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity e, final int itemSlot, final boolean isSelected) {
+	public void onUpdate(ItemStack stack, World world, Entity e, int itemSlot, boolean isSelected) {
 
-		if(this.armorType != EntityEquipmentSlot.CHEST || !(e instanceof EntityLivingBase entity))
+		if(this.armorType != EntityEquipmentSlot.CHEST || !(e instanceof EntityLivingBase))
 			return;
-        if(!hasFSBArmor(entity))
+		EntityLivingBase entity = (EntityLivingBase)e;
+		if(!hasFSBArmor(entity))
 			return;
-		final ArmorFSB fsbarmor = (ArmorFSB) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
+		ArmorFSB fsbarmor = (ArmorFSB) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 		
 		if(world.isRemote){
 			updateClient(stack, fsbarmor, world, e, itemSlot, isSelected);
@@ -378,116 +378,116 @@ public class ArmorFSB extends ItemArmor {
 	
 	//For crazier stuff not possible without hooking the event
     @SideOnly(Side.CLIENT)
-	public void handleOverlay(final RenderGameOverlayEvent.Pre event, final EntityPlayer player) { }
+	public void handleOverlay(RenderGameOverlayEvent.Pre event, EntityPlayer player) { }
 	
-	public ArmorFSB enableThermalSight(final boolean thermal) {
+	public ArmorFSB enableThermalSight(boolean thermal) {
 		this.thermal = thermal;
 		return this;
 	}
 	
-	public ArmorFSB setHasGeigerSound(final boolean geiger) {
+	public ArmorFSB setHasGeigerSound(boolean geiger) {
 		this.geigerSound = geiger;
 		return this;
 	}
 
-	public ArmorFSB setHasCustomGeiger(final boolean geiger) {
+	public ArmorFSB setHasCustomGeiger(boolean geiger) {
 		this.customGeiger = geiger;
 		return this;
 	}
 	
-	public ArmorFSB setHasHardLanding(final boolean hardLanding) {
+	public ArmorFSB setHasHardLanding(boolean hardLanding) {
 		this.hardLanding = hardLanding;
 		return this;
 	}
 
-	public ArmorFSB setGravity(final double gravity) {
+	public ArmorFSB setGravity(double gravity) {
 		this.gravity = gravity;
 		return this;
 	}
 
-	public ArmorFSB setProtectionLevel(final float damageYield) {
+	public ArmorFSB setProtectionLevel(float damageYield) {
 		this.protectionYield = damageYield;
 		return this;
 	}
 	
-	public ArmorFSB setBlastProtection(final float blastProtection) {
+	public ArmorFSB setBlastProtection(float blastProtection) {
 		this.blastProtection = blastProtection;
 		return this;
 	}
 
-	public ArmorFSB setProjectileProtection(final float projectileProtection) {
+	public ArmorFSB setProjectileProtection(float projectileProtection) {
 		this.projectileProtection = projectileProtection;
 		return this;
 	}
 
-	public ArmorFSB setStep(final SoundEvent step) {
+	public ArmorFSB setStep(SoundEvent step) {
 		this.step = step;
 		return this;
 	}
 	
-	public ArmorFSB setJump(final SoundEvent jump) {
+	public ArmorFSB setJump(SoundEvent jump) {
 		this.jump = jump;
 		return this;
 	}
 
-	public ArmorFSB setFall(final SoundEvent fall) {
+	public ArmorFSB setFall(SoundEvent fall) {
 		this.fall = fall;
 		return this;
 	}
 	
-	public ArmorFSB addEffect(final PotionEffect effect) {
+	public ArmorFSB addEffect(PotionEffect effect) {
 		if(!PotionConfig.doJumpBoost && effect.getPotion() == MobEffects.JUMP_BOOST)
 			return this;
 		effects.add(effect);
 		return this;
 	}
 	
-	public ArmorFSB addResistance(final String damage, final float mod) {
+	public ArmorFSB addResistance(String damage, float mod) {
 		resistance.put(damage, mod);
 		return this;
 	}
 	
-	public ArmorFSB setCap(final float cap) {
+	public ArmorFSB setCap(float cap) {
 		this.damageCap = cap;
 		return this;
 	}
 	
-	public ArmorFSB setMod(final float mod) {
+	public ArmorFSB setMod(float mod) {
 		this.damageMod = mod;
 		return this;
 	}
 	
-	public ArmorFSB setThreshold(final float threshold) {
+	public ArmorFSB setThreshold(float threshold) {
 		this.damageThreshold = threshold;
 		return this;
 	}
 	
-	public ArmorFSB setFireproof(final boolean fire) {
+	public ArmorFSB setFireproof(boolean fire) {
 		this.fireproof = fire;
 		return this;
 	}
 	
-	public ArmorFSB setNoHelmet(final boolean noHelmet) {
+	public ArmorFSB setNoHelmet(boolean noHelmet) {
 		this.noHelmet = noHelmet;
 		return this;
 	}
 	
-	public ArmorFSB enableVATS(final boolean vats) {
+	public ArmorFSB enableVATS(boolean vats) {
 		this.vats = vats;
 		return this;
 	}
 	
-	public ArmorFSB enableFlashlight(final Vec3d pos){
+	public ArmorFSB enableFlashlight(Vec3d pos){
 		this.flashlightPosition = pos;
 		return this;
 	}
 	
-	public ArmorFSB setOverlay(final String path) {
+	public ArmorFSB setOverlay(String path) {
 		this.overlay = new ResourceLocation(path);
 		return this;
 	}
 	
-	public ArmorFSB cloneStats(final ArmorFSB original) {
+	public ArmorFSB cloneStats(ArmorFSB original) {
 		//lists aren't being modified after instantiation, so there's no need to dereference
 		this.effects = original.effects;
 		this.resistance = original.resistance;
@@ -514,25 +514,25 @@ public class ArmorFSB extends ItemArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		return texture;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		list.add(TextFormatting.GOLD + I18nUtil.resolveKey("armor.fullSetBonus"));
     	
     	if(!effects.isEmpty()) {
     		
-    		for(final PotionEffect effect : effects) {
+    		for(PotionEffect effect : effects) {
 	    		list.add(TextFormatting.AQUA + "  " + I18n.format(effect.getPotion().getName()));
     		}
     	}
     	
     	if(!resistance.isEmpty()) {
 
-        	for(final Entry<String, Float> struct : resistance.entrySet()) {
+        	for(Entry<String, Float> struct : resistance.entrySet()) {
         		if(struct.getValue() != 0)
         			list.add(TextFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.damageModifier", struct.getValue(), I18n.format(struct.getKey())));
         		else
@@ -595,7 +595,7 @@ public class ArmorFSB extends ItemArmor {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHelmetOverlay(final ItemStack stack, final EntityPlayer player, final ScaledResolution resolution, final float partialTicks) {
+	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
 		if(overlay == null)
     		return;
         GlStateManager.disableDepth();
@@ -605,9 +605,9 @@ public class ArmorFSB extends ItemArmor {
         GlStateManager.disableAlpha();
         Minecraft.getMinecraft().getTextureManager().bindTexture(overlay);
         RenderHelper.startDrawingTexturedQuads();
-        RenderHelper.addVertexWithUV(0.0D, resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
-        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
-        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
+        RenderHelper.addVertexWithUV(0.0D, (double)resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
+        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), (double)resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
+        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
         RenderHelper.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
         RenderHelper.draw();
         GlStateManager.depthMask(true);

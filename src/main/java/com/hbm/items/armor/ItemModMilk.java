@@ -16,12 +16,12 @@ import java.util.List;
 
 public class ItemModMilk extends ItemArmorMod {
 	
-	public ItemModMilk(final String s) {
+	public ItemModMilk(String s) {
 		super(ArmorModHandler.extra, true, true, true, true, s);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.WHITE + "Removes bad potion effects");
 		list.add("Dropped by 1:500 Spiders");
 		list.add("");
@@ -29,26 +29,26 @@ public class ItemModMilk extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.WHITE + "  " + stack.getDisplayName() + " (Removes bad potion effects)");
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		final List<Potion> pots = new ArrayList<>();
+		List<Potion> pots = new ArrayList<>();
 
-		final Iterator<PotionEffect> iterator = entity.getActivePotionEffects().iterator();
+		Iterator<PotionEffect> iterator = ((Collection<PotionEffect>) entity.getActivePotionEffects()).iterator();
 
 		while(iterator.hasNext()) {
-			final PotionEffect eff = iterator.next();
+			PotionEffect eff = iterator.next();
 
 			if(eff.getPotion().isBadEffect()) {
 				pots.add(eff.getPotion());
 			}
 		}
 
-		for(final Potion p : pots) {
+		for(Potion p : pots) {
 			entity.removePotionEffect(p);
 		}
 	}

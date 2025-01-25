@@ -1,29 +1,27 @@
 package com.hbm.blocks.network.energy;
 
-import java.util.List;
-
-import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ITooltipProvider;
 import com.hbm.tileentity.network.energy.TileEntityPylonBase;
 import com.hbm.tileentity.network.energy.TileEntityPylonLarge;
-
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class PylonLarge extends BlockDummyable implements ITooltipProvider {
 
-	public PylonLarge(final Material materialIn, final String s) {
+	public PylonLarge(Material materialIn, String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		if(meta >= 12)
 			return new TileEntityPylonLarge();
 		return null;
@@ -40,16 +38,16 @@ public class PylonLarge extends BlockDummyable implements ITooltipProvider {
 	}
 
 	@Override
-	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
-        final TileEntity te = world.getTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntityPylonBase) {
             ((TileEntityPylonBase)te).disconnectAll();
         }
         super.breakBlock(world, pos, state);
     }
 
-    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
-        this.addStandardInfo(list);
-        super.addInformation(stack, worldIn, list, flagIn);
+    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
+        this.addStandardInfo((List)list);
+        super.addInformation(stack, worldIn, (List)list, flagIn);
     }
 }

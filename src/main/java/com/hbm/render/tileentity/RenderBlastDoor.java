@@ -1,23 +1,21 @@
 package com.hbm.render.tileentity;
 
 import com.hbm.interfaces.IDoor;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityBlastDoor;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderBlastDoor extends TileEntitySpecialRenderer<TileEntityBlastDoor> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityBlastDoor te) {
+	public boolean isGlobalRenderer(TileEntityBlastDoor te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityBlastDoor tileEntity, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityBlastDoor tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -25,7 +23,7 @@ public class RenderBlastDoor extends TileEntitySpecialRenderer<TileEntityBlastDo
         GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glRotatef(180, 0F, 1F, 0F);
 
-        final double timer;
+        double timer;
         
         if(tileEntity.getBlockMetadata() == 2 || tileEntity.getBlockMetadata() == 3)
     		GL11.glRotatef(90, 0F, 1F, 0F);
@@ -76,10 +74,10 @@ public class RenderBlastDoor extends TileEntitySpecialRenderer<TileEntityBlastDo
         GL11.glPopMatrix();
 	}
 	
-	private static double getAnimationFromSysTime(final long time) {
+	private static double getAnimationFromSysTime(long time) {
     	
-    	final double duration = 5000D;
-    	final double extend = 5.0D;
+    	double duration = 5000D;
+    	double extend = 5.0D;
     	
     	return Math.max(Math.min(time, duration) / duration * extend, 0.0D);
     }

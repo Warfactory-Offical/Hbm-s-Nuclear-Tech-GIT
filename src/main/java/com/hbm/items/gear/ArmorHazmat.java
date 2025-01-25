@@ -20,9 +20,9 @@ import org.lwjgl.opengl.GL11;
 
 public class ArmorHazmat extends ItemArmor {
 
-	private final ResourceLocation hazmatBlur = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_hazmat.png");
+	private ResourceLocation hazmatBlur = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_hazmat.png");
 	
-	public ArmorHazmat(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String s) {
+	public ArmorHazmat(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String s) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -31,7 +31,7 @@ public class ArmorHazmat extends ItemArmor {
 	}
 	
 	@Override
-	public String getArmorTexture(final ItemStack stack, final Entity entity, final EntityEquipmentSlot slot, final String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		if(stack.getItem().equals(ModItems.hazmat_plate) || stack.getItem().equals(ModItems.hazmat_boots)) {
 			return (RefStrings.MODID + ":textures/armor/hazmat_1.png");
 		}
@@ -61,7 +61,7 @@ public class ArmorHazmat extends ItemArmor {
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void renderHelmetOverlay(final ItemStack stack, final EntityPlayer player, final ScaledResolution resolution, final float partialTicks) {
+	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
 		if(this != ModItems.hazmat_helmet && this != ModItems.hazmat_paa_helmet)
     		return;
 		GlStateManager.disableDepth();
@@ -71,9 +71,9 @@ public class ArmorHazmat extends ItemArmor {
         GlStateManager.disableAlpha();
         Minecraft.getMinecraft().getTextureManager().bindTexture(hazmatBlur);
         RenderHelper.startDrawingTexturedQuads();
-        RenderHelper.addVertexWithUV(0.0D, resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
-        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
-        RenderHelper.addVertexWithUV(resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
+        RenderHelper.addVertexWithUV(0.0D, (double)resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
+        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), (double)resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
+        RenderHelper.addVertexWithUV((double)resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
         RenderHelper.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
         RenderHelper.draw();
         GL11.glDepthMask(true);

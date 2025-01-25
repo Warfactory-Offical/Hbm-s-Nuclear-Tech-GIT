@@ -40,13 +40,13 @@ public class HbmKeybinds {
 	}
 	
 	@SubscribeEvent
-	public void keyEvent(final KeyInputEvent event) {
+	public void keyEvent(KeyInputEvent event) {
 		
-		final IHBMData props = HbmCapability.getData(MainRegistry.proxy.me());
+		IHBMData props = HbmCapability.getData(MainRegistry.proxy.me());
 		
-		for(final EnumKeybind key : EnumKeybind.values()) {
-			final boolean last = props.getKeyPressed(key);
-			final boolean current = MainRegistry.proxy.getIsKeyPressed(key);
+		for(EnumKeybind key : EnumKeybind.values()) {
+			boolean last = props.getKeyPressed(key);
+			boolean current = MainRegistry.proxy.getIsKeyPressed(key);
 			
 			if(last != current) {
 				PacketDispatcher.wrapper.sendToServer(new KeybindPacket(key, current));

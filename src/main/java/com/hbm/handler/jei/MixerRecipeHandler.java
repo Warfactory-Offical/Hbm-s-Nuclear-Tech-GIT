@@ -18,7 +18,7 @@ public class MixerRecipeHandler implements IRecipeCategory<MixerRecipe> {
 	
 	protected final IDrawable background;
 	
-	public MixerRecipeHandler(final IGuiHelper help) {
+	public MixerRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 34, 34, 108, 18);
 	}
 	
@@ -43,9 +43,9 @@ public class MixerRecipeHandler implements IRecipeCategory<MixerRecipe> {
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final MixerRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-		final int rec_size = recipeWrapper.getInputSize();
+	public void setRecipe(IRecipeLayout recipeLayout, MixerRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+		int rec_size = recipeWrapper.getInputSize();
 		if(rec_size == 1){
 			guiItemStacks.init(0, true, 36, 0);
 		} else if(rec_size == 2){

@@ -1,28 +1,26 @@
 package com.hbm.inventory.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.inventory.container.ContainerForceField;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxButtonPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityForceField;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIForceField extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_field.png");
-	private final TileEntityForceField diFurnace;
+	private TileEntityForceField diFurnace;
 	
-	public GUIForceField(final InventoryPlayer invPlayer, final TileEntityForceField tedf) {
+	public GUIForceField(InventoryPlayer invPlayer, TileEntityForceField tedf) {
 		super(new ContainerForceField(invPlayer, tedf));
 		diFurnace = tedf;
 
@@ -31,7 +29,7 @@ public class GUIForceField extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 69 - 52, 16, 52, diFurnace.power, TileEntityForceField.maxPower);
@@ -40,14 +38,14 @@ public class GUIForceField extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
+		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
-    protected void mouseClicked(final int x, final int y, final int i) throws IOException {
+    protected void mouseClicked(int x, int y, int i) throws IOException {
     	super.mouseClicked(x, y, i);
 		
     	if(guiLeft + 142 <= x && guiLeft + 142 + 18 > x && guiTop + 34 < y && guiTop + 34 + 18 >= y) {
@@ -58,16 +56,16 @@ public class GUIForceField extends GuiInfoContainer {
     }
 	
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		final int i = (int)diFurnace.getPowerScaled(52);
+		int i = (int)diFurnace.getPowerScaled(52);
 		drawTexturedModalRect(guiLeft + 8, guiTop + 69 - i, 176, 52 - i, 16, i);
 		
-		final int j = diFurnace.getHealthScaled(52);
+		int j = diFurnace.getHealthScaled(52);
 		drawTexturedModalRect(guiLeft + 62, guiTop + 69 - j, 192, 52 - j, 16, j);
 		
 		if(diFurnace.isOn) {

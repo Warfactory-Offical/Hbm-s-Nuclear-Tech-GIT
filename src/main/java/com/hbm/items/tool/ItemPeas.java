@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ItemPeas extends Item {
 
-	public ItemPeas(final String s) {
+	public ItemPeas(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -23,14 +23,14 @@ public class ItemPeas extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (!player.capabilities.isCreativeMode) {
 			player.getHeldItem(hand).shrink(1);
 		}
 		
-		final List<EntityQuackos> quacc = world.getEntitiesWithinAABB(EntityQuackos.class, player.getEntityBoundingBox().grow(50, 50, 50));
+		List<EntityQuackos> quacc = world.getEntitiesWithinAABB(EntityQuackos.class, player.getEntityBoundingBox().grow(50, 50, 50));
 		
-		for(final EntityQuackos ducc : quacc) {
+		for(EntityQuackos ducc : quacc) {
 			ducc.despawn();
 		}
 		
@@ -38,7 +38,7 @@ public class ItemPeas extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("He accepts your offering.");
 	}
 }

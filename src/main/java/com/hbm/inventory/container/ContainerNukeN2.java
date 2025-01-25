@@ -1,7 +1,6 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.bomb.TileEntityNukeN2;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,9 +10,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerNukeN2 extends Container {
 
-	private final TileEntityNukeN2 nukeSol;
+	private TileEntityNukeN2 nukeSol;
 	
-	public ContainerNukeN2(final InventoryPlayer invPlayer, final TileEntityNukeN2 tedf) {
+	public ContainerNukeN2(InventoryPlayer invPlayer, TileEntityNukeN2 tedf) {
 		
 		nukeSol = tedf;
 		
@@ -45,14 +44,14 @@ public class ContainerNukeN2 extends Container {
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 11) {
@@ -78,7 +77,7 @@ public class ContainerNukeN2 extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return nukeSol.isUseableByPlayer(player);
 	}
 }

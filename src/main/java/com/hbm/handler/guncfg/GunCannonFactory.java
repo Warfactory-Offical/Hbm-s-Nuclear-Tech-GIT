@@ -9,7 +9,7 @@ public class GunCannonFactory {
 
 public static BulletConfiguration getShellConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
 		
 		bullet.ammo = ModItems.ammo_shell;
 		bullet.dmgMin = 25;
@@ -22,7 +22,7 @@ public static BulletConfiguration getShellConfig() {
 
 	public static BulletConfiguration getShellExplosiveConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
 		
 		bullet.ammo = ModItems.ammo_shell_explosive;
 		bullet.dmgMin = 35;
@@ -35,7 +35,7 @@ public static BulletConfiguration getShellConfig() {
 
 	public static BulletConfiguration getShellAPConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
 		
 		bullet.ammo = ModItems.ammo_shell_apfsds_t;
 		bullet.dmgMin = 50;
@@ -48,7 +48,7 @@ public static BulletConfiguration getShellConfig() {
 
 	public static BulletConfiguration getShellDUConfig() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
 		
 		bullet.ammo = ModItems.ammo_shell_apfsds_du;
 		bullet.dmgMin = 70;
@@ -61,7 +61,7 @@ public static BulletConfiguration getShellConfig() {
 
 	public static BulletConfiguration getShellW9Config() {
 		
-		final BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardShellConfig();
 		
 		bullet.ammo = ModItems.ammo_shell_w9;
 		bullet.dmgMin = 100;
@@ -70,7 +70,7 @@ public static BulletConfiguration getShellConfig() {
 		bullet.bImpact = new IBulletImpactBehavior() {
 
 			@Override
-			public void behaveBlockHit(final EntityBulletBase bullet, final int x, final int y, final int z) {
+			public void behaveBlockHit(EntityBulletBase bullet, int x, int y, int z) {
 				BulletConfigFactory.nuclearExplosion(bullet, x, y, z, 25);
 			}
 		};

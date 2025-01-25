@@ -18,7 +18,7 @@ public class FusionRecipeHandler implements IRecipeCategory<FusionRecipe> {
 	
 	protected final IDrawable background;
 	
-	public FusionRecipeHandler(final IGuiHelper help) {
+	public FusionRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 33, 33, 109, 19);
 	}
 	
@@ -43,8 +43,8 @@ public class FusionRecipeHandler implements IRecipeCategory<FusionRecipe> {
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final FusionRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, FusionRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 1, 1);
 		guiItemStacks.init(1, false, 91, 1);

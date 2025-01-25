@@ -1,28 +1,26 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.grenade.EntityGrenadeASchrab;
 import com.hbm.entity.grenade.EntityGrenadeMk2;
 import com.hbm.main.ResourceManager;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderGrenade extends Render<Entity> {
 
 	public static final IRenderFactory<Entity> FACTORY = man -> new RenderGrenade(man);
 	
-	protected RenderGrenade(final RenderManager renderManager) {
+	protected RenderGrenade(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(final Entity grenade, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(Entity grenade, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y + 0.125F, (float)z);
         GL11.glRotatef(grenade.prevRotationYaw + (grenade.rotationYaw - grenade.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -49,7 +47,7 @@ public class RenderGrenade extends Render<Entity> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(final Entity grenade) {
+	protected ResourceLocation getEntityTexture(Entity grenade) {
 		if(grenade instanceof EntityGrenadeMk2) {
     		return ResourceManager.grenade_mk2;
         }

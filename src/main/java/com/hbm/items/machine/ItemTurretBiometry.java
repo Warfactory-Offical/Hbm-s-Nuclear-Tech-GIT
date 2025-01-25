@@ -1,14 +1,8 @@
 package com.hbm.items.machine;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.main.MainRegistry;
-
-import com.hbm.util.I18nUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,9 +14,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ItemTurretBiometry extends Item {
 
-	public ItemTurretBiometry(final String s) {
+	public ItemTurretBiometry(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.weaponTab);
@@ -31,15 +28,16 @@ public class ItemTurretBiometry extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
-		final String[] names = getNames(stack);
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		String[] names = getNames(stack);
 		if(names != null)
-            Collections.addAll(tooltip, names);
+			for(int i = 0; i < names.length; i++)
+				tooltip.add(names[i]);
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
-		final ItemStack stack = player.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
+		ItemStack stack = player.getHeldItem(handIn);
 		addName(stack, player.getDisplayName().getUnformattedText());
 
         if(world.isRemote)
@@ -47,18 +45,18 @@ public class ItemTurretBiometry extends Item {
 
     	world.playSound(player.posX, player.posY, player.posZ, HBMSoundHandler.techBleep, SoundCategory.PLAYERS, 1.0F, 1.0F, true);
 		
-		player.swingArm(handIn);
-
-        return super.onItemRightClick(world, player, handIn);
+		player.swingArm(handIn);;
+		
+		return super.onItemRightClick(world, player, handIn);
 	}
 	
-	public static String[] getNames(final ItemStack stack) {
+	public static String[] getNames(ItemStack stack) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return null;
 		}
 		
-		final String[] names = new String [stack.getTagCompound().getInteger("playercount")];
+		String[] names = new String [stack.getTagCompound().getInteger("playercount")];
 		
 		for(int i = 0; i < names.length; i++) {
 			names[i] = stack.getTagCompound().getString("player_" + i);
@@ -70,12 +68,12 @@ public class ItemTurretBiometry extends Item {
 		return names;
 	}
 	
-	public static void addName(final ItemStack stack, final String s) {
+	public static void addName(ItemStack stack, String s) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		
-		final String[] names = getNames(stack);
+		String[] names = getNames(stack);
 		int count = 0;
 		
 		if(names != null && Arrays.asList(names).contains(s))
@@ -89,7 +87,7 @@ public class ItemTurretBiometry extends Item {
 		stack.getTagCompound().setString("player_" + count, s);
 	}
 	
-	public static void clearNames(final ItemStack stack) {
+	public static void clearNames(ItemStack stack) {
 		if(stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}

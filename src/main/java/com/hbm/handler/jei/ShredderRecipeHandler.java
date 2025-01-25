@@ -26,7 +26,7 @@ public class ShredderRecipeHandler implements IRecipeCategory<ShredderRecipe> {
 	protected final IDrawableStatic powerStatic;
 	protected final IDrawableAnimated powerAnimated;
 	
-	public ShredderRecipeHandler(final IGuiHelper help) {
+	public ShredderRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 6, 15, 145, 55);
 		
 		progressStatic = help.createDrawable(gui_rl, 100, 119, 23, 16);
@@ -57,14 +57,14 @@ public class ShredderRecipeHandler implements IRecipeCategory<ShredderRecipe> {
 	}
 	
 	@Override
-	public void drawExtras(final Minecraft minecraft) {
+	public void drawExtras(Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 79, 20);
 		powerAnimated.draw(minecraft, 2, 2);
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final ShredderRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, ShredderRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 37, 19);
 		guiItemStacks.init(1, false, 127, 19);

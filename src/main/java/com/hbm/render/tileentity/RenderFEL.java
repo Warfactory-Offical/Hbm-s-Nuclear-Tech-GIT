@@ -1,31 +1,28 @@
 package com.hbm.render.tileentity;
 
-import java.awt.Color;
-
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.items.machine.ItemFELCrystal.EnumWavelengths;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.TileEntityFEL;
-
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.render.misc.BeamPronter;
 import com.hbm.render.misc.BeamPronter.EnumBeamType;
 import com.hbm.render.misc.BeamPronter.EnumWaveType;
+import com.hbm.tileentity.machine.TileEntityFEL;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 public class RenderFEL extends TileEntitySpecialRenderer<TileEntityFEL> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityFEL fel) {
+	public boolean isGlobalRenderer(TileEntityFEL fel) {
 		return true;
 	}
 
 	@Override
-	public void render(final TileEntityFEL fel, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityFEL fel, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
@@ -51,9 +48,9 @@ public class RenderFEL extends TileEntitySpecialRenderer<TileEntityFEL> {
 		} else {
 			color = fel.mode.renderedBeamColor;
 		}
-		final int length = fel.distance - 3;
+		int length = fel.distance - 3;
 		GL11.glTranslated(0, 1.5, -1.5);
-		if(fel.power > TileEntityFEL.powerReq * Math.pow(4, fel.mode.ordinal()) && fel.isOn && !(fel.mode == EnumWavelengths.NULL) && length > 0) {
+		if(fel.power > fel.powerReq * Math.pow(4, fel.mode.ordinal()) && fel.isOn && !(fel.mode == EnumWavelengths.NULL) && length > 0) {
 			BeamPronter.prontBeam(Vec3.createVectorHelper(0, 0, -length - 1), EnumWaveType.STRAIGHT, EnumBeamType.SOLID, color, 0xFFFFFF, 0, 1, 0, 3, 0.0625F);
 		}
 

@@ -1,24 +1,22 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.render.misc.BeamPronter;
 import com.hbm.render.misc.BeamPronter.EnumBeamType;
 import com.hbm.render.misc.BeamPronter.EnumWaveType;
 import com.hbm.tileentity.turret.TileEntityTurretTauon;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
 
 public class RenderTurretTauon extends RenderTurretBase<TileEntityTurretTauon> {
 
 	@Override
-	public void render(final TileEntityTurretTauon te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha){
-		final TileEntityTurretTauon turret = te;
-		final Vec3d off = turret.getHorizontalOffset();
+	public void render(TileEntityTurretTauon te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
+		TileEntityTurretTauon turret = (TileEntityTurretTauon)te;
+		Vec3d off = turret.getHorizontalOffset();
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + off.x, y, z + off.z);
@@ -31,8 +29,8 @@ public class RenderTurretTauon extends RenderTurretBase<TileEntityTurretTauon> {
 		bindTexture(ResourceManager.turret_base_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");
 		
-		final double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
-		final double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
+		double yaw = -Math.toDegrees(turret.lastRotationYaw + (turret.rotationYaw - turret.lastRotationYaw) * partialTicks) - 90D;
+		double pitch = Math.toDegrees(turret.lastRotationPitch + (turret.rotationPitch - turret.lastRotationPitch) * partialTicks);
 		
 		GL11.glRotated(yaw, 0, 1, 0);
 		bindTexture(ResourceManager.turret_carriage_tex);
@@ -54,7 +52,7 @@ public class RenderTurretTauon extends RenderTurretBase<TileEntityTurretTauon> {
 			GL11.glPopMatrix();
 		}
 		
-		final float rot = turret.lastSpin + (turret.spin - turret.lastSpin) * partialTicks;
+		float rot = turret.lastSpin + (turret.spin - turret.lastSpin) * partialTicks;
 		GL11.glTranslated(0, 1.375, 0);
 		GL11.glRotated(rot, -1, 0, 0);
 		GL11.glTranslated(0, -1.375, 0);

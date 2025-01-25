@@ -18,7 +18,7 @@ public class Vertex_v3fn3fc4f {
     public Vec3 texCoord;
     public Vec4 color;
 
-    public Vertex_v3fn3fc4f(final Vec3 position, final Vec3 texCoord, final Vec4 color) {
+    public Vertex_v3fn3fc4f(Vec3 position, Vec3 texCoord, Vec4 color) {
         this.position = position;
         this.texCoord = texCoord;
         this.color = color;

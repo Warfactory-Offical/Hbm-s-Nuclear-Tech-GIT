@@ -1,18 +1,16 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityFurnaceIron;
-
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderFurnaceIron extends TileEntitySpecialRenderer<TileEntityFurnaceIron> {
 
 	@Override
-	public void render(final TileEntityFurnaceIron tileEntity, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityFurnaceIron tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GL11.glEnable(GL11.GL_LIGHTING);
@@ -27,7 +25,7 @@ public class RenderFurnaceIron extends TileEntitySpecialRenderer<TileEntityFurna
 		
 		GL11.glTranslated(-0.5D, 0, -0.5D);
 		
-		final TileEntityFurnaceIron furnace = tileEntity;
+		TileEntityFurnaceIron furnace = (TileEntityFurnaceIron) tileEntity;
 		
 		bindTexture(ResourceManager.furnace_iron_tex);
 		ResourceManager.furnace_iron.renderPart("Main");

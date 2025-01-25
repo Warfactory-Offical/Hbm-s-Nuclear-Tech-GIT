@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemAppleEuphemium extends ItemFood {
 
-	public ItemAppleEuphemium(final int amount, final float saturation, final boolean isWolfFood, final String s) {
+	public ItemAppleEuphemium(int amount, float saturation, boolean isWolfFood, String s) {
 		super(amount, saturation, isWolfFood);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -23,12 +23,12 @@ public class ItemAppleEuphemium extends ItemFood {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(final ItemStack stack) {
+	public boolean hasEffect(ItemStack stack) {
 		return true;
 	}
 	
 	@Override
-	protected void onFoodEaten(final ItemStack stack, final World worldIn, final EntityPlayer player) {
+	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
 		if (!worldIn.isRemote)
         {
 			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 2147483647, 127));
@@ -38,7 +38,7 @@ public class ItemAppleEuphemium extends ItemFood {
 	}
 	
 	@Override
-	public EnumRarity getRarity(final ItemStack stack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.EPIC;
 	}
 

@@ -1,22 +1,10 @@
 package com.hbm.render;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
-
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.glu.Project;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.culling.ClippingHelperImpl;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -33,6 +21,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import org.lwjgl.opengl.GLContext;
+import org.lwjgl.util.glu.Project;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 public class FakeWorldRenderer {
 
@@ -63,16 +56,16 @@ public class FakeWorldRenderer {
 	private FakeWorldRenderer() {
 		for(int i = 0; i < 32; ++i) {
 			for(int j = 0; j < 32; ++j) {
-				final float f = (float) (j - 16);
-				final float f1 = (float) (i - 16);
-				final float f2 = MathHelper.sqrt(f * f + f1 * f1);
+				float f = (float) (j - 16);
+				float f1 = (float) (i - 16);
+				float f2 = MathHelper.sqrt(f * f + f1 * f1);
 				this.rainXCoords[i << 5 | j] = -f1 / f2;
 				this.rainYCoords[i << 5 | j] = f / f2;
 			}
 		}
 	}
 
-	public void renderWorld(final float partialTicks, final long finishTimeNano) {
+	public void renderWorld(float partialTicks, long finishTimeNano) {
 		if(mc == null)
 			mc = Minecraft.getMinecraft();
 
@@ -87,16 +80,16 @@ public class FakeWorldRenderer {
 		this.renderWorldPass(2, partialTicks, finishTimeNano);
 	}
 
-	private void renderWorldPass(final int pass, final float partialTicks, final long finishTimeNano) {
+	private void renderWorldPass(int pass, float partialTicks, long finishTimeNano) {
 
-		final RenderGlobal renderglobal = this.mc.renderGlobal;
-		final ParticleManager particlemanager = this.mc.effectRenderer;
+		RenderGlobal renderglobal = this.mc.renderGlobal;
+		ParticleManager particlemanager = this.mc.effectRenderer;
 		GlStateManager.enableCull();
-		this.mc.profiler.endStartSection("clear");
+		this.mc.mcProfiler.endStartSection("clear");
 		GlStateManager.viewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
 		this.updateFogColor(partialTicks);
 		GlStateManager.clear(16640);
-		this.mc.profiler.endStartSection("camera");
+		this.mc.mcProfiler.endStartSection("camera");
 		this.setupCameraTransform(partialTicks, pass);
 		//ActiveRenderInfo.updateRenderInfo(this.mc.getRenderViewEntity(), this.mc.gameSettings.thirdPersonView == 2); // Forge:
 																														// MC-46445
@@ -112,19 +105,19 @@ public class FakeWorldRenderer {
 																														// have
 																														// been
 																														// before
-		this.mc.profiler.endStartSection("frustum");
+		this.mc.mcProfiler.endStartSection("frustum");
 		ClippingHelperImpl.getInstance();
-		this.mc.profiler.endStartSection("culling");
-		final ICamera icamera = new Frustum();
-		final Entity entity = this.mc.getRenderViewEntity();
-		final double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-		final double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-		final double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+		this.mc.mcProfiler.endStartSection("culling");
+		ICamera icamera = new Frustum();
+		Entity entity = this.mc.getRenderViewEntity();
+		double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+		double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+		double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
 		icamera.setPosition(d0, d1, d2);
 
 		if(this.mc.gameSettings.renderDistanceChunks >= 4) {
 			this.setupFog(-1, partialTicks);
-			this.mc.profiler.endStartSection("sky");
+			this.mc.mcProfiler.endStartSection("sky");
 			GlStateManager.matrixMode(5889);
 			GlStateManager.loadIdentity();
 			Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float) this.mc.displayWidth / (float) this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
@@ -139,23 +132,23 @@ public class FakeWorldRenderer {
 		this.setupFog(0, partialTicks);
 		GlStateManager.shadeModel(7425);
 
-		this.mc.profiler.endStartSection("prepareterrain");
+		this.mc.mcProfiler.endStartSection("prepareterrain");
 		this.setupFog(0, partialTicks);
 		this.mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
-		this.mc.profiler.endStartSection("terrain_setup");
-		renderglobal.setupTerrain(entity, partialTicks, icamera, 0, this.mc.player.isSpectator());
+		this.mc.mcProfiler.endStartSection("terrain_setup");
+		renderglobal.setupTerrain(entity, (double) partialTicks, icamera, 0, this.mc.player.isSpectator());
 
 		if(pass == 0 || pass == 2) {
-			this.mc.profiler.endStartSection("updatechunks");
+			this.mc.mcProfiler.endStartSection("updatechunks");
 			this.mc.renderGlobal.updateChunks(finishTimeNano);
 		}
 
-		this.mc.profiler.endStartSection("terrain");
+		this.mc.mcProfiler.endStartSection("terrain");
 		GlStateManager.matrixMode(5888);
 		GlStateManager.pushMatrix();
 		GlStateManager.disableAlpha();
-		renderglobal.renderBlockLayer(BlockRenderLayer.SOLID, partialTicks, pass, entity);
+		renderglobal.renderBlockLayer(BlockRenderLayer.SOLID, (double) partialTicks, pass, entity);
 		GlStateManager.enableAlpha();
 		this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, this.mc.gameSettings.mipmapLevels > 0); // FORGE:
 																																				// fix
@@ -168,10 +161,10 @@ public class FakeWorldRenderer {
 																																				// the
 																																				// blurMipmap
 																																				// settings
-		renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT_MIPPED, partialTicks, pass, entity);
+		renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT_MIPPED, (double) partialTicks, pass, entity);
 		this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 		this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
-		renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT, partialTicks, pass, entity);
+		renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT, (double) partialTicks, pass, entity);
 		this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 		GlStateManager.shadeModel(7424);
 		GlStateManager.alphaFunc(516, 0.1F);
@@ -180,7 +173,7 @@ public class FakeWorldRenderer {
 		GlStateManager.popMatrix();
 		GlStateManager.pushMatrix();
 		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
-		this.mc.profiler.endStartSection("entities");
+		this.mc.mcProfiler.endStartSection("entities");
 		net.minecraftforge.client.ForgeHooksClient.setRenderPass(0);
 		renderglobal.renderEntities(entity, icamera, partialTicks);
 		net.minecraftforge.client.ForgeHooksClient.setRenderPass(0);
@@ -194,7 +187,7 @@ public class FakeWorldRenderer {
 			this.mc.debugRenderer.renderDebug(partialTicks, finishTimeNano);
 		}
 
-		this.mc.profiler.endStartSection("destroyProgress");
+		this.mc.mcProfiler.endStartSection("destroyProgress");
 		GlStateManager.enableBlend();
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
@@ -203,17 +196,17 @@ public class FakeWorldRenderer {
 		GlStateManager.disableBlend();
 
 		this.enableLightmap();
-		this.mc.profiler.endStartSection("litParticles");
+		this.mc.mcProfiler.endStartSection("litParticles");
 		particlemanager.renderLitParticles(entity, partialTicks);
 		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 		this.setupFog(0, partialTicks);
-		this.mc.profiler.endStartSection("particles");
+		this.mc.mcProfiler.endStartSection("particles");
 		particlemanager.renderParticles(entity, partialTicks);
 		this.disableLightmap();
 
 		GlStateManager.depthMask(false);
 		GlStateManager.enableCull();
-		this.mc.profiler.endStartSection("weather");
+		this.mc.mcProfiler.endStartSection("weather");
 		this.renderRainSnow(partialTicks);
 		GlStateManager.depthMask(true);
 		renderglobal.renderWorldBorder(entity, partialTicks);
@@ -226,11 +219,11 @@ public class FakeWorldRenderer {
 		GlStateManager.depthMask(false);
 		this.mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.shadeModel(7425);
-		this.mc.profiler.endStartSection("translucent");
-		renderglobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, partialTicks, pass, entity);
+		this.mc.mcProfiler.endStartSection("translucent");
+		renderglobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, (double) partialTicks, pass, entity);
 
 		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
-		this.mc.profiler.endStartSection("entities");
+		this.mc.mcProfiler.endStartSection("entities");
 		net.minecraftforge.client.ForgeHooksClient.setRenderPass(1);
 		renderglobal.renderEntities(entity, icamera, partialTicks);
 		// restore blending function changed by
@@ -245,22 +238,22 @@ public class FakeWorldRenderer {
 		GlStateManager.disableBlend();
 		GlStateManager.disableFog();
 
-		this.mc.profiler.endStartSection("forge_render_last");
+		this.mc.mcProfiler.endStartSection("forge_render_last");
 		net.minecraftforge.client.ForgeHooksClient.dispatchRenderLast(renderglobal, partialTicks);
 
-		this.mc.profiler.endStartSection("hand");
+		this.mc.mcProfiler.endStartSection("hand");
 
 	}
 
-	private void setupFog(final int startCoords, final float partialTicks) {
-		final Entity entity = this.mc.getRenderViewEntity();
+	private void setupFog(int startCoords, float partialTicks) {
+		Entity entity = this.mc.getRenderViewEntity();
 		this.setupFogColor(false);
 		GlStateManager.glNormal3f(0.0F, -1.0F, 0.0F);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		final IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, entity, partialTicks);
+		IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, entity, partialTicks);
 		if(entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(MobEffects.BLINDNESS)) {
 			float f1 = 5.0F;
-			final int i = ((EntityLivingBase) entity).getActivePotionEffect(MobEffects.BLINDNESS).getDuration();
+			int i = ((EntityLivingBase) entity).getActivePotionEffect(MobEffects.BLINDNESS).getDuration();
 
 			if(i < 20) {
 				f1 = 5.0F + (this.farPlaneDistance - 5.0F) * (1.0F - (float) i / 20.0F);
@@ -298,7 +291,7 @@ public class FakeWorldRenderer {
 			GlStateManager.setFog(GlStateManager.FogMode.EXP);
 			GlStateManager.setFogDensity(2.0F);
 		} else {
-			final float f = this.farPlaneDistance;
+			float f = this.farPlaneDistance;
 			GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
 
 			if(startCoords == -1) {
@@ -324,7 +317,7 @@ public class FakeWorldRenderer {
 		GlStateManager.colorMaterial(1028, 4608);
 	}
 
-	public void setupFogColor(final boolean black) {
+	public void setupFogColor(boolean black) {
 		if(black) {
 			GlStateManager.glFog(2918, this.setFogColorBuffer(0.0F, 0.0F, 0.0F, 1.0F));
 		} else {
@@ -332,30 +325,30 @@ public class FakeWorldRenderer {
 		}
 	}
 
-	private FloatBuffer setFogColorBuffer(final float red, final float green, final float blue, final float alpha) {
+	private FloatBuffer setFogColorBuffer(float red, float green, float blue, float alpha) {
 		this.fogColorBuffer.clear();
 		this.fogColorBuffer.put(red).put(green).put(blue).put(alpha);
 		this.fogColorBuffer.flip();
 		return this.fogColorBuffer;
 	}
 
-	private void updateFogColor(final float partialTicks) {
-		final World world = this.mc.world;
-		final Entity entity = this.mc.getRenderViewEntity();
+	private void updateFogColor(float partialTicks) {
+		World world = this.mc.world;
+		Entity entity = this.mc.getRenderViewEntity();
 		float f = 0.25F + 0.75F * (float) this.mc.gameSettings.renderDistanceChunks / 32.0F;
-		f = 1.0F - (float) Math.pow(f, 0.25D);
-		final Vec3d vec3d = world.getSkyColor(this.mc.getRenderViewEntity(), partialTicks);
-		final float f1 = (float) vec3d.x;
-		final float f2 = (float) vec3d.y;
-		final float f3 = (float) vec3d.z;
-		final Vec3d vec3d1 = world.getFogColor(partialTicks);
+		f = 1.0F - (float) Math.pow((double) f, 0.25D);
+		Vec3d vec3d = world.getSkyColor(this.mc.getRenderViewEntity(), partialTicks);
+		float f1 = (float) vec3d.x;
+		float f2 = (float) vec3d.y;
+		float f3 = (float) vec3d.z;
+		Vec3d vec3d1 = world.getFogColor(partialTicks);
 		this.fogColorRed = (float) vec3d1.x;
 		this.fogColorGreen = (float) vec3d1.y;
 		this.fogColorBlue = (float) vec3d1.z;
 
 		if(this.mc.gameSettings.renderDistanceChunks >= 4) {
-			final double d0 = MathHelper.sin(world.getCelestialAngleRadians(partialTicks)) > 0.0F ? -1.0D : 1.0D;
-			final Vec3d vec3d2 = new Vec3d(d0, 0.0D, 0.0D);
+			double d0 = MathHelper.sin(world.getCelestialAngleRadians(partialTicks)) > 0.0F ? -1.0D : 1.0D;
+			Vec3d vec3d2 = new Vec3d(d0, 0.0D, 0.0D);
 			float f5 = (float) entity.getLook(partialTicks).dotProduct(vec3d2);
 
 			if(f5 < 0.0F) {
@@ -363,7 +356,7 @@ public class FakeWorldRenderer {
 			}
 
 			if(f5 > 0.0F) {
-				final float[] afloat = world.provider.calcSunriseSunsetColors(world.getCelestialAngle(partialTicks), partialTicks);
+				float[] afloat = world.provider.calcSunriseSunsetColors(world.getCelestialAngle(partialTicks), partialTicks);
 
 				if(afloat != null) {
 					f5 = f5 * afloat[3];
@@ -377,26 +370,26 @@ public class FakeWorldRenderer {
 		this.fogColorRed += (f1 - this.fogColorRed) * f;
 		this.fogColorGreen += (f2 - this.fogColorGreen) * f;
 		this.fogColorBlue += (f3 - this.fogColorBlue) * f;
-		final float f8 = world.getRainStrength(partialTicks);
+		float f8 = world.getRainStrength(partialTicks);
 
 		if(f8 > 0.0F) {
-			final float f4 = 1.0F - f8 * 0.5F;
-			final float f10 = 1.0F - f8 * 0.4F;
+			float f4 = 1.0F - f8 * 0.5F;
+			float f10 = 1.0F - f8 * 0.4F;
 			this.fogColorRed *= f4;
 			this.fogColorGreen *= f4;
 			this.fogColorBlue *= f10;
 		}
 
-		final float f9 = world.getThunderStrength(partialTicks);
+		float f9 = world.getThunderStrength(partialTicks);
 
 		if(f9 > 0.0F) {
-			final float f11 = 1.0F - f9 * 0.5F;
+			float f11 = 1.0F - f9 * 0.5F;
 			this.fogColorRed *= f11;
 			this.fogColorGreen *= f11;
 			this.fogColorBlue *= f11;
 		}
 
-		final float f13 = this.fogColor2 + (this.fogColor1 - this.fogColor2) * partialTicks;
+		float f13 = this.fogColor2 + (this.fogColor1 - this.fogColor2) * partialTicks;
 		this.fogColorRed *= f13;
 		this.fogColorGreen *= f13;
 		this.fogColorBlue *= f13;
@@ -414,14 +407,14 @@ public class FakeWorldRenderer {
 		}
 
 		if(this.bossColorModifier > 0.0F) {
-			final float f14 = this.bossColorModifierPrev + (this.bossColorModifier - this.bossColorModifierPrev) * partialTicks;
+			float f14 = this.bossColorModifierPrev + (this.bossColorModifier - this.bossColorModifierPrev) * partialTicks;
 			this.fogColorRed = this.fogColorRed * (1.0F - f14) + this.fogColorRed * 0.7F * f14;
 			this.fogColorGreen = this.fogColorGreen * (1.0F - f14) + this.fogColorGreen * 0.6F * f14;
 			this.fogColorBlue = this.fogColorBlue * (1.0F - f14) + this.fogColorBlue * 0.6F * f14;
 		}
 
 		if(entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(MobEffects.NIGHT_VISION)) {
-			final float f15 = this.getNightVisionBrightness((EntityLivingBase) entity, partialTicks);
+			float f15 = this.getNightVisionBrightness((EntityLivingBase) entity, partialTicks);
 			float f6 = 1.0F / this.fogColorRed;
 
 			if(f6 > 1.0F / this.fogColorGreen) {
@@ -442,9 +435,9 @@ public class FakeWorldRenderer {
 		}
 
 		if(this.mc.gameSettings.anaglyph) {
-			final float f16 = (this.fogColorRed * 30.0F + this.fogColorGreen * 59.0F + this.fogColorBlue * 11.0F) / 100.0F;
-			final float f17 = (this.fogColorRed * 30.0F + this.fogColorGreen * 70.0F) / 100.0F;
-			final float f7 = (this.fogColorRed * 30.0F + this.fogColorBlue * 70.0F) / 100.0F;
+			float f16 = (this.fogColorRed * 30.0F + this.fogColorGreen * 59.0F + this.fogColorBlue * 11.0F) / 100.0F;
+			float f17 = (this.fogColorRed * 30.0F + this.fogColorGreen * 70.0F) / 100.0F;
+			float f7 = (this.fogColorRed * 30.0F + this.fogColorBlue * 70.0F) / 100.0F;
 			this.fogColorRed = f16;
 			this.fogColorGreen = f17;
 			this.fogColorBlue = f7;
@@ -453,14 +446,14 @@ public class FakeWorldRenderer {
 		GlStateManager.clearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue, 0.0F);
 	}
 
-	private float getNightVisionBrightness(final EntityLivingBase entitylivingbaseIn, final float partialTicks) {
-		final int i = entitylivingbaseIn.getActivePotionEffect(MobEffects.NIGHT_VISION).getDuration();
+	private float getNightVisionBrightness(EntityLivingBase entitylivingbaseIn, float partialTicks) {
+		int i = entitylivingbaseIn.getActivePotionEffect(MobEffects.NIGHT_VISION).getDuration();
 		return i > 200 ? 1.0F : 0.7F + MathHelper.sin(((float) i - partialTicks) * (float) Math.PI * 0.2F) * 0.3F;
 	}
 
-	private void orientCamera(final float partialTicks) {
-		final Entity entity = this.mc.getRenderViewEntity();
-		final float f = entity.getEyeHeight();
+	private void orientCamera(float partialTicks) {
+		Entity entity = this.mc.getRenderViewEntity();
+		float f = entity.getEyeHeight();
 		double d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
 		double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
 		double d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
@@ -474,7 +467,7 @@ public class FakeWorldRenderer {
 		this.cloudFog = this.mc.renderGlobal.hasCloudFog(d0, d1, d2, partialTicks);
 	}
 
-	private void setupCameraTransform(final float partialTicks, final int pass) {
+	private void setupCameraTransform(float partialTicks, int pass) {
 		this.farPlaneDistance = (float) (this.mc.gameSettings.renderDistanceChunks * 16);
 		GlStateManager.matrixMode(5889);
 		GlStateManager.loadIdentity();
@@ -518,39 +511,39 @@ public class FakeWorldRenderer {
 		GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);*/
 	}
 
-	private float getFOVModifier(final float partialTicks, final boolean useFOVSetting) {
+	private float getFOVModifier(float partialTicks, boolean useFOVSetting) {
 
 		return 70.0F;
 
 	}
 
-	protected void renderRainSnow(final float partialTicks) {
-		final net.minecraftforge.client.IRenderHandler renderer = this.mc.world.provider.getWeatherRenderer();
+	protected void renderRainSnow(float partialTicks) {
+		net.minecraftforge.client.IRenderHandler renderer = this.mc.world.provider.getWeatherRenderer();
 		if(renderer != null) {
 			renderer.render(partialTicks, this.mc.world, mc);
 			return;
 		}
 
-		final float f = this.mc.world.getRainStrength(partialTicks);
+		float f = this.mc.world.getRainStrength(partialTicks);
 
 		if(f > 0.0F) {
 			this.enableLightmap();
-			final Entity entity = this.mc.getRenderViewEntity();
-			final World world = this.mc.world;
-			final int i = MathHelper.floor(entity.posX);
-			final int j = MathHelper.floor(entity.posY);
-			final int k = MathHelper.floor(entity.posZ);
-			final Tessellator tessellator = Tessellator.getInstance();
-			final BufferBuilder bufferbuilder = tessellator.getBuffer();
+			Entity entity = this.mc.getRenderViewEntity();
+			World world = this.mc.world;
+			int i = MathHelper.floor(entity.posX);
+			int j = MathHelper.floor(entity.posY);
+			int k = MathHelper.floor(entity.posZ);
+			Tessellator tessellator = Tessellator.getInstance();
+			BufferBuilder bufferbuilder = tessellator.getBuffer();
 			GlStateManager.disableCull();
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.alphaFunc(516, 0.1F);
-			final double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-			final double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-			final double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
-			final int l = MathHelper.floor(d1);
+			double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+			double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+			double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+			int l = MathHelper.floor(d1);
 			int i1 = 5;
 
 			if(this.mc.gameSettings.fancyGraphics) {
@@ -558,21 +551,21 @@ public class FakeWorldRenderer {
 			}
 
 			int j1 = -1;
-			final float f1 = (float) this.rendererUpdateCount + partialTicks;
+			float f1 = (float) this.rendererUpdateCount + partialTicks;
 			bufferbuilder.setTranslation(-d0, -d1, -d2);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			final BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 			for(int k1 = k - i1; k1 <= k + i1; ++k1) {
 				for(int l1 = i - i1; l1 <= i + i1; ++l1) {
-					final int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
-					final double d3 = (double) this.rainXCoords[i2] * 0.5D;
-					final double d4 = (double) this.rainYCoords[i2] * 0.5D;
+					int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
+					double d3 = (double) this.rainXCoords[i2] * 0.5D;
+					double d4 = (double) this.rainYCoords[i2] * 0.5D;
 					blockpos$mutableblockpos.setPos(l1, 0, k1);
-					final Biome biome = world.getBiome(blockpos$mutableblockpos);
+					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
 					if(biome.canRain() || biome.getEnableSnow()) {
-						final int j2 = world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
+						int j2 = world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
 						int k2 = j - i1;
 						int l2 = j + i1;
 
@@ -591,9 +584,9 @@ public class FakeWorldRenderer {
 						}
 
 						if(k2 != l2) {
-							this.random.setSeed((long) l1 * l1 * 3121 + l1 * 45238971L ^ (long) k1 * k1 * 418711 + k1 * 13761L);
+							this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
 							blockpos$mutableblockpos.setPos(l1, k2, k1);
-							final float f2 = biome.getTemperature(blockpos$mutableblockpos);
+							float f2 = biome.getTemperature(blockpos$mutableblockpos);
 
 							if(world.getBiomeProvider().getTemperatureAtHeight(f2, j2) >= 0.15F) {
 								if(j1 != 0) {
@@ -606,19 +599,19 @@ public class FakeWorldRenderer {
 									bufferbuilder.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 								}
 
-								final double d5 = -((double) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
-								final double d6 = (double) ((float) l1 + 0.5F) - entity.posX;
-								final double d7 = (double) ((float) k1 + 0.5F) - entity.posZ;
-								final float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
-								final float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * f;
+								double d5 = -((double) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
+								double d6 = (double) ((float) l1 + 0.5F) - entity.posX;
+								double d7 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
+								float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
-								final int j3 = world.getCombinedLight(blockpos$mutableblockpos, 0);
-								final int k3 = j3 >> 16 & 65535;
-								final int l3 = j3 & 65535;
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, l2, (double) k1 - d4 + 0.5D).tex(0.0D, (double) k2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, l2, (double) k1 + d4 + 0.5D).tex(1.0D, (double) k2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, k2, (double) k1 + d4 + 0.5D).tex(1.0D, (double) l2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, k2, (double) k1 - d4 + 0.5D).tex(0.0D, (double) l2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								int j3 = world.getCombinedLight(blockpos$mutableblockpos, 0);
+								int k3 = j3 >> 16 & 65535;
+								int l3 = j3 & 65535;
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0D, (double) k2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0D, (double) k2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0D, (double) l2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0D, (double) l2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
 							} else {
 								if(j1 != 1) {
 									if(j1 >= 0) {
@@ -630,21 +623,21 @@ public class FakeWorldRenderer {
 									bufferbuilder.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 								}
 
-								final double d8 = -((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F;
-								final double d9 = this.random.nextDouble() + (double) f1 * 0.01D * (double) ((float) this.random.nextGaussian());
-								final double d10 = this.random.nextDouble() + (double) (f1 * (float) this.random.nextGaussian()) * 0.001D;
-								final double d11 = (double) ((float) l1 + 0.5F) - entity.posX;
-								final double d12 = (double) ((float) k1 + 0.5F) - entity.posZ;
-								final float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
-								final float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * f;
+								double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
+								double d9 = this.random.nextDouble() + (double) f1 * 0.01D * (double) ((float) this.random.nextGaussian());
+								double d10 = this.random.nextDouble() + (double) (f1 * (float) this.random.nextGaussian()) * 0.001D;
+								double d11 = (double) ((float) l1 + 0.5F) - entity.posX;
+								double d12 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
+								float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
-								final int i4 = (world.getCombinedLight(blockpos$mutableblockpos, 0) * 3 + 15728880) / 4;
-								final int j4 = i4 >> 16 & 65535;
-								final int k4 = i4 & 65535;
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, l2, (double) k1 - d4 + 0.5D).tex(0.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, l2, (double) k1 + d4 + 0.5D).tex(1.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, k2, (double) k1 + d4 + 0.5D).tex(1.0D + d9, (double) l2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, k2, (double) k1 - d4 + 0.5D).tex(0.0D + d9, (double) l2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								int i4 = (world.getCombinedLight(blockpos$mutableblockpos, 0) * 3 + 15728880) / 4;
+								int j4 = i4 >> 16 & 65535;
+								int k4 = i4 & 65535;
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0D + d9, (double) l2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0D + d9, (double) l2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
 							}
 						}
 					}

@@ -9,37 +9,37 @@ public interface IItemHazard {
 	
 	public ItemHazardModule getModule();
 	
-	public default IItemHazard addRadiation(final float radiation) {
+	public default IItemHazard addRadiation(float radiation) {
 		this.getModule().addRadiation(radiation);
 		return this;
 	}
 	
-	public default IItemHazard addDigamma(final float digamma) {
+	public default IItemHazard addDigamma(float digamma) {
 		this.getModule().addDigamma(digamma);
 		return this;
 	}
 	
-	public default IItemHazard addFire(final int fire) {
+	public default IItemHazard addFire(int fire) {
 		this.getModule().addFire(fire);
 		return this;
 	}
 
-	public default IItemHazard addCryogenic(final int fire) {
+	public default IItemHazard addCryogenic(int fire) {
 		this.getModule().addCryogenic(fire);
 		return this;
 	}
 
-	public default IItemHazard addToxic(final int fire) {
+	public default IItemHazard addToxic(int fire) {
 		this.getModule().addToxic(fire);
 		return this;
 	}
 	
-	public default IItemHazard addAsbestos(final int asbestos) {
+	public default IItemHazard addAsbestos(int asbestos) {
 		this.getModule().addAsbestos(asbestos);
 		return this;
 	}
 	
-	public default IItemHazard addCoal(final int coal) {
+	public default IItemHazard addCoal(int coal) {
 		this.getModule().addCoal(coal);
 		return this;
 	}
@@ -54,7 +54,7 @@ public interface IItemHazard {
 		return this;
 	}
 	
-	public default IItemHazard addExplosive(final float bang) {
+	public default IItemHazard addExplosive(float bang) {
 		this.getModule().addExplosive(bang);
 		return this;
 	}

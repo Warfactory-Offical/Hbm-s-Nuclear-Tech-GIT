@@ -10,7 +10,7 @@ package glmath.jglm;
  */
 public class Jglm {
 
-    public static float mix(final float start, final float end, final float lerp) {
+    public static float mix(float start, float end, float lerp) {
         return (start + lerp * (end - start));
     }
 
@@ -36,7 +36,7 @@ public class Jglm {
 ////
 ////        return new float[]{vec3[0] / length, vec3[1] / length, vec3[2] / length};
 //    }
-    public static float clamp(final float value, final float min, final float max) {
+    public static float clamp(float value, float min, float max) {
 
         if (value < min) {
             return min;
@@ -48,7 +48,7 @@ public class Jglm {
         return value;
     }
 
-    public static int clamp(final int value, final int min, final int max) {
+    public static int clamp(int value, int min, int max) {
 
         if (value < min) {
             return min;
@@ -60,22 +60,22 @@ public class Jglm {
         return value;
     }
 
-    public static Mat4 translate(final Mat4 mat, final Vec3 vec3) {
+    public static Mat4 translate(Mat4 mat, Vec3 vec3) {
 
-        final Mat4 result = mat;
+        Mat4 result = mat;
 
         result.c3 = mat.mult(new Vec4(vec3, 1.0f));
 
         return result;
     }
 
-    public static Quat angleAxis(final float angle, Vec3 axis) {
+    public static Quat angleAxis(float angle, Vec3 axis) {
 
-        final Quat result = new Quat();
+        Quat result = new Quat();
 
-        final float a = (float) Math.toRadians(angle);
+        float a = (float) Math.toRadians(angle);
 
-        final float s = (float) Math.sin(a * 0.5f);
+        float s = (float) Math.sin(a * 0.5f);
 
         axis = axis.normalize();
 
@@ -87,11 +87,11 @@ public class Jglm {
         return result;
     }
 
-    public static Mat4 perspective(final float fovDeg, final float aspect, final float zNear, final float zFar) {
+    public static Mat4 perspective(float fovDeg, float aspect, float zNear, float zFar) {
 
-        final float frustumScale = calculateFrustumScale(fovDeg);
+        float frustumScale = calculateFrustumScale(fovDeg);
 
-        final Mat4 perspectiveMatrix = new Mat4();
+        Mat4 perspectiveMatrix = new Mat4();
 
         perspectiveMatrix.c0.x = frustumScale / aspect;
         perspectiveMatrix.c1.y = frustumScale;
@@ -104,11 +104,11 @@ public class Jglm {
         return perspectiveMatrix;
     }
 
-    public static Mat4 perspective(final float fovDeg, final float zNear, final float zFar) {
+    public static Mat4 perspective(float fovDeg, float zNear, float zFar) {
 
-        final float frustumScale = calculateFrustumScale(fovDeg);
+        float frustumScale = calculateFrustumScale(fovDeg);
 
-        final Mat4 perspectiveMatrix = new Mat4();
+        Mat4 perspectiveMatrix = new Mat4();
 
         perspectiveMatrix.c0.x = frustumScale;
         perspectiveMatrix.c1.y = frustumScale;
@@ -121,9 +121,9 @@ public class Jglm {
         return perspectiveMatrix;
     }
 
-    public static Mat4 orthographic(final float left, final float right, final float bottom, final float top, final float nearVal, final float farVal) {
+    public static Mat4 orthographic(float left, float right, float bottom, float top, float nearVal, float farVal) {
 
-        final Mat4 orthographicMatric = new Mat4(1.0f);
+        Mat4 orthographicMatric = new Mat4(1.0f);
 
         orthographicMatric.c0.x = 2 / (right - left);
 
@@ -140,16 +140,16 @@ public class Jglm {
         return orthographicMatric;
     }
 
-    public static Mat4 orthographic2D(final float left, final float right, final float bottom, final float top) {
+    public static Mat4 orthographic2D(float left, float right, float bottom, float top) {
 
         return orthographic(left, right, bottom, top, -1.0f, 1.0f);
     }
 
-    public static Vec3 unProject(final Vec3 window, final Mat4 modelview, final Mat4 projection, final Vec4 viewport) {
+    public static Vec3 unProject(Vec3 window, Mat4 modelview, Mat4 projection, Vec4 viewport) {
 
-        final Mat4 pm = projection.mult(modelview);
+        Mat4 pm = projection.mult(modelview);
 
-        final Mat4 inverse = pm.inverse();
+        Mat4 inverse = pm.inverse();
 
         Vec4 tmp = new Vec4(window, 1.0f);
         tmp.x = (tmp.x - viewport.x) / viewport.z;
@@ -164,15 +164,15 @@ public class Jglm {
         return new Vec3(obj);
     }
 
-    public static float dot(final Vec4 v0, final Vec4 v1) {
+    public static float dot(Vec4 v0, Vec4 v1) {
 
         return (v0.x * v1.x + v0.y * v1.y + v0.z * v1.z + v0.w * v1.w);
     }
 
-    public static float calculateFrustumScale(final float fFovDeg) {
+    public static float calculateFrustumScale(float fFovDeg) {
 
 //        float degToRad = (float) (Math.PI * 2.0f / 360.0f);
-        final float fFovRad = (float) Math.toRadians(fFovDeg);
+        float fFovRad = (float) Math.toRadians(fFovDeg);
         return (float) (1.0f / Math.tan(fFovRad / 2.0f));
     }
 
@@ -225,11 +225,11 @@ public class Jglm {
 //        return 1 * (4f * eyeProjectionShift / hmdInfo.HScreenSize);
 //    }
 
-    private static Mat4 perspectiveRH(final float yFov, final float aspect, final float zNear, final float zFar) {
+    private static Mat4 perspectiveRH(float yFov, float aspect, float zNear, float zFar) {
 
-        final float frustumScale = calculateFrustumScale(yFov);
+        float frustumScale = calculateFrustumScale(yFov);
 
-        final Mat4 perspectiveRH = new Mat4(0);
+        Mat4 perspectiveRH = new Mat4(0);
 
         perspectiveRH.c0.x = 1 / (aspect * frustumScale);
         perspectiveRH.c1.y = 1 / frustumScale;

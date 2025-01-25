@@ -1,26 +1,21 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.hbm.forgefluid.FFUtils;
-import com.hbm.interfaces.ITankPacketAcceptor;
-import com.hbm.lib.Library;
 import com.hbm.forgefluid.ModForgeFluids;
+import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.inventory.EngineRecipes;
 import com.hbm.inventory.EngineRecipes.FuelGrade;
+import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.Library;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,7 +27,9 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileEntityMachineDiesel extends TileEntityMachineBase implements ITickable, IEnergyGenerator, IFluidHandler, ITankPacketAcceptor {
+import java.util.HashMap;
+
+public class TileEntityMachineDiesel extends TileEntityMachineBase implements ITickable, IEnergyProviderMK2, IFluidHandler, ITankPacketAcceptor {
 
 	public long power;
 	public int soundCycle = 0;
@@ -65,7 +62,7 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setLong("powerCap", powerCap);
 		tank.writeToNBT(compound);
@@ -73,7 +70,7 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.power = compound.getLong("powerTime");
 		this.powerCap = compound.getLong("powerCap");
 		tank.readFromNBT(compound);
@@ -81,12 +78,12 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
-		final int p_94128_1_ = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+		int p_94128_1_ = e.ordinal();
 		return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / powerCap;
 	}
 	
@@ -98,7 +95,9 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 			if (needsUpdate) {
 				needsUpdate = false;
 			}
-			this.sendPower(world, pos);
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+				this.tryProvide(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
+			}
 
 
 			//Tank Management
@@ -106,7 +105,7 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 				if(FFUtils.fillFromFluidContainer(inventory, tank, 0, 1))
 					needsUpdate = true;
 
-			final Fluid type = tank.getFluid() == null ? null : tank.getFluid().getFluid();
+			Fluid type = tank.getFluid() == null ? null : tank.getFluid().getFluid();
 			if(type != null && type == ModForgeFluids.nitan)
 				powerCap = maxPower * 10;
 			else
@@ -117,17 +116,17 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 
 			generate();
 
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("power", (int) power);
 			data.setInteger("powerCap", (int) powerCap);
 			this.networkPack(data, 50);
 			
-			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, tank), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[] {tank}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10));
 		}
 	}
 	
 	@Override
-	public void networkUnpack(final NBTTagCompound data) {
+	public void networkUnpack(NBTTagCompound data) {
 		power = data.getInteger("power");
 		powerCap = data.getInteger("powerCap");
 	}
@@ -141,10 +140,10 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 		return getHEFromFuel(tank.getFluid().getFluid());
 	}
 	
-	public static long getHEFromFuel(final Fluid type) {
+	public static long getHEFromFuel(Fluid type) {
 		if(EngineRecipes.hasFuelRecipe(type)) {
-			final FuelGrade grade = EngineRecipes.getFuelGrade(type);
-			final double efficiency = fuelEfficiency.containsKey(grade) ? fuelEfficiency.get(grade) : 0;
+			FuelGrade grade = EngineRecipes.getFuelGrade(type);
+			double efficiency = fuelEfficiency.containsKey(grade) ? fuelEfficiency.get(grade) : 0;
 			return (long) (EngineRecipes.getEnergy(type) / 1000L * efficiency);
 		}
 		
@@ -172,14 +171,16 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 			}
 		}
 	}
-	protected boolean inputValidForTank(final int tank, final int slot){
+	protected boolean inputValidForTank(int tank, int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty()){
-            return isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)));
+			if(isValidFluid(FluidUtil.getFluidContained(inventory.getStackInSlot(slot)))){
+				return true;	
+			}
 		}
 		return false;
 	}
 
-	private boolean isValidFluid(final FluidStack stack) {
+	private boolean isValidFluid(FluidStack stack) {
 		if(stack == null)
 			return false;
 		return getHEFromFuel(stack.getFluid()) > 0;
@@ -191,7 +192,7 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if (isValidFluid(resource)) {
 			return tank.fill(resource, doFill);
 		}
@@ -199,25 +200,26 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length != 1){
-        } else {
+			return;
+		} else {
 			tank.readFromNBT(tags[0]);
 		}
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return true;
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -228,7 +230,7 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		} else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
@@ -244,7 +246,7 @@ public class TileEntityMachineDiesel extends TileEntityMachineBase implements IT
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

@@ -1,14 +1,10 @@
 package com.hbm.inventory.control_panel;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import akka.Main;
-import com.hbm.main.MainRegistry;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubElementEventEditor extends SubElement {
 
@@ -29,14 +25,14 @@ public class SubElementEventEditor extends SubElement {
 	public GuiButton done;
 	public GuiButton back;
 
-	public SubElementEventEditor(final GuiControlEdit gui){
+	public SubElementEventEditor(GuiControlEdit gui){
 		super(gui);
 	}
 	
 	@Override
 	protected void initGui(){
-		final int cX = gui.width/2;
-		final int cY = gui.height/2;
+		int cX = gui.width/2;
+		int cY = gui.height/2;
 		receivePageLeft = gui.addButton(new GuiButton(gui.currentButtonId(), cX-62, cY-29, 20, 20, "<"));
 		receivePageRight = gui.addButton(new GuiButton(gui.currentButtonId(), cX+88, cY-29, 20, 20, ">"));
 		sendPageLeft = gui.addButton(new GuiButton(gui.currentButtonId(), cX-62, cY+70, 20, 20, "<"));
@@ -46,7 +42,7 @@ public class SubElementEventEditor extends SubElement {
 		super.initGui();
 	}
 	
-	protected void accumulateEventTypes(final List<IControllable> list){
+	protected void accumulateEventTypes(List<IControllable> list){
 		gui.getButtons().removeAll(receiveButtons);
 		gui.getButtons().removeAll(sendButtons);
 		receiveButtons.clear();
@@ -54,41 +50,41 @@ public class SubElementEventEditor extends SubElement {
 		receiveEvents.clear();
 		sendEvents.clear();
 		// these at top cus more consistent when u need to employ fuckery when getting an EventData node by indexing receivable[].
-		for(final String name : gui.currentEditControl.getOutEvents()){
-			final ControlEvent evt = ControlEvent.getRegisteredEvent(name);
+		for(String name : gui.currentEditControl.getOutEvents()){
+			ControlEvent evt = ControlEvent.getRegisteredEvent(name);
 			if(!receiveEvents.contains(evt))
 				receiveEvents.add(ControlEvent.getRegisteredEvent(name));
 		}
-		for(final String name : gui.currentEditControl.getInEvents()){
-			final ControlEvent evt = ControlEvent.getRegisteredEvent(name);
+		for(String name : gui.currentEditControl.getInEvents()){
+			ControlEvent evt = ControlEvent.getRegisteredEvent(name);
 			if(!receiveEvents.contains(evt))
 				receiveEvents.add(ControlEvent.getRegisteredEvent(name));
 		}
-		for(final IControllable c : list){
-			for(final String name : c.getOutEvents()){
-				final ControlEvent evt = ControlEvent.getRegisteredEvent(name);
+		for(IControllable c : list){
+			for(String name : c.getOutEvents()){
+				ControlEvent evt = ControlEvent.getRegisteredEvent(name);
 				if(!receiveEvents.contains(evt))
 					receiveEvents.add(ControlEvent.getRegisteredEvent(name));
 			}
-			for(final String name : c.getInEvents()){
-				final ControlEvent evt = ControlEvent.getRegisteredEvent(name);
+			for(String name : c.getInEvents()){
+				ControlEvent evt = ControlEvent.getRegisteredEvent(name);
 				if(!sendEvents.contains(evt))
 					sendEvents.add(ControlEvent.getRegisteredEvent(name));
 			}
 		}
-		final int cX = gui.width/2;
-		final int cY = gui.height/2;
+		int cX = gui.width/2;
+		int cY = gui.height/2;
 		
 		numReceivePages = (receiveEvents.size()+2)/3;
 		for(int i = 0; i < receiveEvents.size(); i ++){
-			final int offset = (i%3)*25;
+			int offset = (i%3)*25;
 			receiveButtons.add(gui.addButton(new ButtonHoverText(i+1000, cX-62, cY-100+offset, 170, 20, receiveEvents.get(i).name, "<Click to edit>")));
 		}
 		currentReceivePage = MathHelper.clamp(currentReceivePage, 1, numReceivePages);
 		
 		numSendPages = (sendEvents.size()+2)/3;
 		for(int i = 0; i < sendEvents.size(); i ++){
-			final int offset = (i%3)*25;
+			int offset = (i%3)*25;
 			sendButtons.add(gui.addButton(new ButtonHoverText(i+2000, cX-62, cY+5+offset, 170, 20, sendEvents.get(i).name, "<Click to edit>")));
 		}
 		currentSendPage = MathHelper.clamp(currentSendPage, 1, numSendPages);
@@ -101,11 +97,11 @@ public class SubElementEventEditor extends SubElement {
 	}
 	
 	private void recalculateVisibleButtons(){
-		for(final GuiButton b : receiveButtons){
+		for(GuiButton b : receiveButtons){
 			b.visible = false;
 			b.enabled = false;
 		}
-		for(final GuiButton b : sendButtons){
+		for(GuiButton b : sendButtons){
 			b.visible = false;
 			b.enabled = false;
 		}
@@ -129,8 +125,8 @@ public class SubElementEventEditor extends SubElement {
 	
 	@Override
 	protected void drawScreen(){
-		final int cX = gui.width/2;
-		final int cY = gui.height/2;
+		int cX = gui.width/2;
+		int cY = gui.height/2;
 		String text = currentReceivePage + "/" + numReceivePages;
 		gui.getFontRenderer().drawString(text, cX+12, cY-21, 0xFF777777, false);
 		text = currentSendPage + "/" + numSendPages;
@@ -142,7 +138,7 @@ public class SubElementEventEditor extends SubElement {
 	}
 	
 	@Override
-	protected void actionPerformed(final GuiButton button){
+	protected void actionPerformed(GuiButton button){
 		if (button == back) {
 			gui.popElement();
 		} else if(button == receivePageLeft){
@@ -162,13 +158,13 @@ public class SubElementEventEditor extends SubElement {
 			currentSendPage = Math.min(numSendPages, currentSendPage + 1);
 			recalculateVisibleButtons();
 		} else if(button == done){
-			for(final IControllable c : gui.linker.linked) {
+			for(IControllable c : gui.linker.linked) {
 				if (!gui.currentEditControl.connectedSet.contains(c.getControlPos()))
 					gui.currentEditControl.connectedSet.add(c.getControlPos());
 			}
 			gui.currentEditControl.receiveEvent(ControlEvent.newEvent("initialize"));
 			if (!gui.isEditMode) {
-				final float[] gridMouse = gui.placement.convertToGridSpace(gui.mouseX, gui.mouseY);
+				float[] gridMouse = gui.placement.convertToGridSpace(gui.mouseX, gui.mouseY);
 				gui.currentEditControl.posX = gridMouse[0];
 				gui.currentEditControl.posY = gridMouse[1];
 				gui.placement.resetPrevPos();
@@ -194,15 +190,15 @@ public class SubElementEventEditor extends SubElement {
 	}
 	
 	@Override
-	protected void enableButtons(final boolean enable){
+	protected void enableButtons(boolean enable){
 		if(enable){
 			recalculateVisibleButtons();
 		} else {
-			for(final GuiButton b : receiveButtons){
+			for(GuiButton b : receiveButtons){
 				b.visible = false;
 				b.enabled = false;
 			}
-			for(final GuiButton b : sendButtons){
+			for(GuiButton b : sendButtons){
 				b.visible = false;
 				b.enabled = false;
 			}

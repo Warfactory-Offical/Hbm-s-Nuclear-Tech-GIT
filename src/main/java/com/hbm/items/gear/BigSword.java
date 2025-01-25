@@ -5,7 +5,7 @@ import net.minecraft.item.ItemSword;
 
 public class BigSword extends ItemSword {
 
-	public BigSword(final ToolMaterial material, final String s) {
+	public BigSword(ToolMaterial material, String s) {
 		super(material);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);

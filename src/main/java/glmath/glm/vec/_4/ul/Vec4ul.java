@@ -20,18 +20,18 @@ public class Vec4ul extends FuncRelational {
         w.value = 0;
     }
 
-    public Vec4ul(final int x, final int y, final int z, final int w) {
+    public Vec4ul(int x, int y, int z, int w) {
         this((long) x, y, z, w);
     }
 
-    public Vec4ul(final long x, final long y, final long z, final long w) {
+    public Vec4ul(long x, long y, long z, long w) {
         this.x.value = x;
         this.y.value = y;
         this.z.value = z;
         this.w.value = w;
     }
 
-    public Vec4ul set(final ULong x, final ULong y, final ULong z, final ULong w) {
+    public Vec4ul set(ULong x, ULong y, ULong z, ULong w) {
         this.x = x;
         this.y = y;
         this.z = z;

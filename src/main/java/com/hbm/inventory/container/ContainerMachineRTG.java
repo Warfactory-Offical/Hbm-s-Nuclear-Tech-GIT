@@ -1,7 +1,6 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.TileEntityMachineRTG;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,10 +11,10 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineRTG extends Container {
 
-	private final TileEntityMachineRTG testNuke;
+	private TileEntityMachineRTG testNuke;
 	private int heat;
 	
-	public ContainerMachineRTG(final InventoryPlayer invPlayer, final TileEntityMachineRTG tedf) {
+	public ContainerMachineRTG(InventoryPlayer invPlayer, TileEntityMachineRTG tedf) {
 		heat = 0;
 		
 		testNuke = tedf;
@@ -51,20 +50,20 @@ public class ContainerMachineRTG extends Container {
 	}
 	
 	@Override
-	public void addListener(final IContainerListener listener) {
+	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
 		listener.sendWindowProperty(this, 0, testNuke.heat);
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 14) {
@@ -92,7 +91,7 @@ public class ContainerMachineRTG extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return testNuke.isUseableByPlayer(player);
 	}
 	
@@ -102,7 +101,7 @@ public class ContainerMachineRTG extends Container {
 		
 		for(int i = 0; i < this.listeners.size(); i++)
 		{
-			final IContainerListener par1 = this.listeners.get(i);
+			IContainerListener par1 = (IContainerListener)this.listeners.get(i);
 
 			if(this.heat != this.testNuke.heat)
 			{
@@ -114,7 +113,7 @@ public class ContainerMachineRTG extends Container {
 	}
 	
 	@Override
-	public void updateProgressBar(final int i, final int j) {
+	public void updateProgressBar(int i, int j) {
 		if(i == 0)
 		{
 			testNuke.heat = j;

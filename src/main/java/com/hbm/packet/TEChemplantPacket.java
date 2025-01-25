@@ -22,7 +22,7 @@ public class TEChemplantPacket implements IMessage {
 		
 	}
 
-	public TEChemplantPacket(final int x, final int y, final int z, final boolean isProgressing)
+	public TEChemplantPacket(int x, int y, int z, boolean isProgressing)
 	{
 		this.x = x;
 		this.y = y;
@@ -31,7 +31,7 @@ public class TEChemplantPacket implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -39,7 +39,7 @@ public class TEChemplantPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -49,13 +49,14 @@ public class TEChemplantPacket implements IMessage {
 	public static class Handler implements IMessageHandler<TEChemplantPacket, IMessage> {
 		
 		@Override
-		public IMessage onMessage(final TEChemplantPacket m, final MessageContext ctx) {
+		public IMessage onMessage(TEChemplantPacket m, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				final TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 
-				if (te != null && te instanceof TileEntityMachineChemplant gen) {
-
-                    gen.isProgressing = m.isProgressing;
+				if (te != null && te instanceof TileEntityMachineChemplant) {
+						
+					TileEntityMachineChemplant gen = (TileEntityMachineChemplant) te;
+					gen.isProgressing = m.isProgressing;
 				}
 			});
 			

@@ -1,12 +1,10 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.bomb.TileEntityLaunchPad;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderLaunchPadTier1 extends TileEntitySpecialRenderer<TileEntityLaunchPad> {
 
@@ -17,12 +15,12 @@ public class RenderLaunchPadTier1 extends TileEntitySpecialRenderer<TileEntityLa
 	public static final float w_2 = 1F;
 	
 	@Override
-	public boolean isGlobalRenderer(final TileEntityLaunchPad te) {
+	public boolean isGlobalRenderer(TileEntityLaunchPad te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityLaunchPad te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityLaunchPad te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GlStateManager.enableLighting();
@@ -32,7 +30,7 @@ public class RenderLaunchPadTier1 extends TileEntitySpecialRenderer<TileEntityLa
 	    ResourceManager.missile_pad.renderAll();
 
 		if(te.clearingTimer == 0){
-			final int state = te.state;
+			int state = te.state;
 			GL11.glTranslated(0, 1, 0);
 			if (state == 1) {
 				GL11.glScalef(1.0F, h_1, 1.0F);

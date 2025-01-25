@@ -1,7 +1,6 @@
 package com.hbm.entity.mob.sodtekhnologiyah;
 
 import com.hbm.entity.mob.EntityAINearestAttackableTargetNT;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,9 +14,9 @@ public class EntityBallsOTronSegment extends EntityBallsOTronBase {
 
 	public static final DataParameter<Boolean> SHIELD = EntityDataManager.createKey(EntityBallsOTronSegment.class, DataSerializers.BOOLEAN);
 	
-	private final WormMovementBody movement = new WormMovementBody(this);
+	private WormMovementBody movement = new WormMovementBody(this);
 	
-	public EntityBallsOTronSegment(final World world) {
+	public EntityBallsOTronSegment(World world) {
 		super(world);
 		this.bodySpeed = 0.6D;
 		this.rangeForParts = 70.0D;
@@ -33,7 +32,7 @@ public class EntityBallsOTronSegment extends EntityBallsOTronBase {
 	}
 	
 	@Override
-	public float getAttackStrength(final Entity target) {
+	public float getAttackStrength(Entity target) {
 		if(target instanceof EntityLivingBase) {
 			return ((EntityLivingBase) target).getHealth() * 0.75F;
 		}
@@ -72,19 +71,19 @@ public class EntityBallsOTronSegment extends EntityBallsOTronBase {
 		} else if(this.attackCounter > 0) {
 			this.attackCounter -= 1;
 		}
-		final float f3 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
+		float f3 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(motionY, f3) * 180.0D / Math.PI);
 	}
 	
 	@Override
-	public void writeEntityToNBT(final NBTTagCompound compound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("partID", this.getPartID());
 	}
 	
 	@Override
-	public void readEntityFromNBT(final NBTTagCompound compound) {
+	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		setPartID(compound.getInteger("partID"));
 	}

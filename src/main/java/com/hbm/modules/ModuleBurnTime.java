@@ -32,8 +32,8 @@ public class ModuleBurnTime {
 	private static final int modRocket = 6;
 	private static final int modBalefire = 7;
 
-	private final double[] modTime = new double[8];
-	private final double[] modHeat = new double[8];
+	private double[] modTime = new double[8];
+	private double[] modHeat = new double[8];
 	
 	public ModuleBurnTime() {
 		for(int i = 0; i < modTime.length; i++) {
@@ -42,7 +42,7 @@ public class ModuleBurnTime {
 		}
 	}
 
-	public void readIfPresent(final JsonObject obj) {
+	public void readIfPresent(JsonObject obj) {
 		modTime[modLog] = IConfigurableMachine.grab(obj, "D:timeLog", modTime[modLog]);
 		modTime[modWood] = IConfigurableMachine.grab(obj, "D:timeWood", modTime[modWood]);
 		modTime[modCoal] = IConfigurableMachine.grab(obj, "D:timeCoal", modTime[modCoal]);
@@ -62,7 +62,7 @@ public class ModuleBurnTime {
 		modHeat[modBalefire] = IConfigurableMachine.grab(obj, "D:heatBalefie", modHeat[modBalefire]);
 	}
 
-	public void writeConfig(final JsonWriter writer) throws IOException {
+	public void writeConfig(JsonWriter writer) throws IOException {
 		writer.name("D:timeLog").value(modTime[modLog]);
 		writer.name("D:timeWood").value(modTime[modWood]);
 		writer.name("D:timeCoal").value(modTime[modCoal]);
@@ -81,8 +81,8 @@ public class ModuleBurnTime {
 		writer.name("D:heatBalefie").value(modHeat[modBalefire]);
 	}
 	
-	public int getBurnTime(final ItemStack stack) {
-		final int fuel = TileEntityFurnace.getItemBurnTime(stack);
+	public int getBurnTime(ItemStack stack) {
+		int fuel = TileEntityFurnace.getItemBurnTime(stack);
 		
 		if(fuel == 0)
 			return 0;
@@ -90,11 +90,11 @@ public class ModuleBurnTime {
 		return (int) (fuel * getMod(stack, modTime));
 	}
 	
-	public int getBurnHeat(final int base, final ItemStack stack) {
+	public int getBurnHeat(int base, ItemStack stack) {
 		return (int) (base * getMod(stack, modHeat));
 	}
 	
-	public double getMod(final ItemStack stack, final double[] mod) {
+	public double getMod(ItemStack stack, double[] mod) {
 		
 		if(stack == null)
 			return 0;
@@ -111,9 +111,9 @@ public class ModuleBurnTime {
 		if(stack.getItem() == ModItems.rocket_fuel)						return mod[modRocket];
 		if(stack.getItem() == ModItems.pellet_coal)						return mod[modCoal];
 		
-		final List<String> names = ItemStackUtil.getOreDictNames(stack);
+		List<String> names = ItemStackUtil.getOreDictNames(stack);
 		
-		for(final String name : names) {
+		for(String name : names) {
 			if(name.contains("Coke"))		return mod[modCoke];
 			if(name.contains("Coal"))		return mod[modCoal];
 			if(name.contains("Charcoal"))		return mod[modLignite];
@@ -126,14 +126,14 @@ public class ModuleBurnTime {
 	}
 	
 	public List<String> getDesc() {
-		final List<String> desc = new ArrayList();
+		List<String> desc = new ArrayList();
 		desc.addAll(getTimeDesc());
 		desc.addAll(getHeatDesc());
 		return desc;
 	}
 	
 	public List<String> getTimeDesc() {
-		final List<String> list = new ArrayList();
+		List<String> list = new ArrayList();
 
 		list.add(TextFormatting.GOLD + "Burn time bonuses:");
 		
@@ -153,7 +153,7 @@ public class ModuleBurnTime {
 	}
 	
 	public List<String> getHeatDesc() {
-		final List<String> list = new ArrayList();
+		List<String> list = new ArrayList();
 
 		list.add(TextFormatting.RED + "Burn heat bonuses:");
 		
@@ -172,7 +172,7 @@ public class ModuleBurnTime {
 		return list;
 	}
 	
-	private void addIf(final List<String> list, final String name, final double mod) {
+	private void addIf(List<String> list, String name, double mod) {
 		
 		if(mod != 1.0D)
 			list.add(TextFormatting.YELLOW + "- " + name + ": " + getPercent(mod));
@@ -190,21 +190,21 @@ public class ModuleBurnTime {
 		return num;
 	}
 	
-	public ModuleBurnTime setLogTimeMod(final double mod) { this.modTime[modLog] = mod; return this; }
-	public ModuleBurnTime setWoodTimeMod(final double mod) { this.modTime[modWood] = mod; return this; }
-	public ModuleBurnTime setCoalTimeMod(final double mod) { this.modTime[modCoal] = mod; return this; }
-	public ModuleBurnTime setLigniteTimeMod(final double mod) { this.modTime[modLignite] = mod; return this; }
-	public ModuleBurnTime setCokeTimeMod(final double mod) { this.modTime[modCoke] = mod; return this; }
-	public ModuleBurnTime setSolidTimeMod(final double mod) { this.modTime[modSolid] = mod; return this; }
-	public ModuleBurnTime setRocketTimeMod(final double mod) { this.modTime[modRocket] = mod; return this; }
-	public ModuleBurnTime setBalefireTimeMod(final double mod) { this.modTime[modBalefire] = mod; return this; }
+	public ModuleBurnTime setLogTimeMod(double mod) { this.modTime[modLog] = mod; return this; }
+	public ModuleBurnTime setWoodTimeMod(double mod) { this.modTime[modWood] = mod; return this; }
+	public ModuleBurnTime setCoalTimeMod(double mod) { this.modTime[modCoal] = mod; return this; }
+	public ModuleBurnTime setLigniteTimeMod(double mod) { this.modTime[modLignite] = mod; return this; }
+	public ModuleBurnTime setCokeTimeMod(double mod) { this.modTime[modCoke] = mod; return this; }
+	public ModuleBurnTime setSolidTimeMod(double mod) { this.modTime[modSolid] = mod; return this; }
+	public ModuleBurnTime setRocketTimeMod(double mod) { this.modTime[modRocket] = mod; return this; }
+	public ModuleBurnTime setBalefireTimeMod(double mod) { this.modTime[modBalefire] = mod; return this; }
 	
-	public ModuleBurnTime setLogHeatMod(final double mod) { this.modHeat[modLog] = mod; return this; }
-	public ModuleBurnTime setWoodHeatMod(final double mod) { this.modHeat[modWood] = mod; return this; }
-	public ModuleBurnTime setCoalHeatMod(final double mod) { this.modHeat[modCoal] = mod; return this; }
-	public ModuleBurnTime setLigniteHeatMod(final double mod) { this.modHeat[modLignite] = mod; return this; }
-	public ModuleBurnTime setCokeHeatMod(final double mod) { this.modHeat[modCoke] = mod; return this; }
-	public ModuleBurnTime setSolidHeatMod(final double mod) { this.modHeat[modSolid] = mod; return this; }
-	public ModuleBurnTime setRocketHeatMod(final double mod) { this.modHeat[modRocket] = mod; return this; }
-	public ModuleBurnTime setBalefireHeatMod(final double mod) { this.modHeat[modBalefire] = mod; return this; }
+	public ModuleBurnTime setLogHeatMod(double mod) { this.modHeat[modLog] = mod; return this; }
+	public ModuleBurnTime setWoodHeatMod(double mod) { this.modHeat[modWood] = mod; return this; }
+	public ModuleBurnTime setCoalHeatMod(double mod) { this.modHeat[modCoal] = mod; return this; }
+	public ModuleBurnTime setLigniteHeatMod(double mod) { this.modHeat[modLignite] = mod; return this; }
+	public ModuleBurnTime setCokeHeatMod(double mod) { this.modHeat[modCoke] = mod; return this; }
+	public ModuleBurnTime setSolidHeatMod(double mod) { this.modHeat[modSolid] = mod; return this; }
+	public ModuleBurnTime setRocketHeatMod(double mod) { this.modHeat[modRocket] = mod; return this; }
+	public ModuleBurnTime setBalefireHeatMod(double mod) { this.modHeat[modBalefire] = mod; return this; }
 }

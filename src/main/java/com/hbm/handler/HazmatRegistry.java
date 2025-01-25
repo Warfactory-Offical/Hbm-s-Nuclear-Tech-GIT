@@ -17,21 +17,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class HazmatRegistry {
-	private static final Map<Item, Double> entries = new HashMap<>();
+	private static Map<Item, Double> entries = new HashMap<>();
 
-	public static void registerHazmat(final Item item, final double resistance) {
+	public static void registerHazmat(Item item, double resistance) {
 
 		entries.put(item, resistance);
 	}
 
-	public static double getResistance(final ItemStack stack) {
+	public static double getResistance(ItemStack stack) {
 
 		if(stack == null)
 			return 0;
 
-		final float cladding = getCladding(stack);
+		float cladding = getCladding(stack);
 
-		final Double d = entries.get(stack.getItem());
+		Double d = entries.get(stack.getItem());
 
 		if(d != null)
 			return d + cladding;
@@ -39,14 +39,14 @@ public class HazmatRegistry {
 		return cladding;
 	}
 
-	public static float getCladding(final ItemStack stack) {
+	public static float getCladding(ItemStack stack) {
 
 		if (stack.hasTagCompound() && stack.getTagCompound().getFloat("hfr_cladding") > 0.0F) {
 			return stack.getTagCompound().getFloat("hfr_cladding");
 		} else {
 			if (ArmorModHandler.hasMods(stack)) {
-				final ItemStack[] mods = ArmorModHandler.pryMods(stack);
-				final ItemStack cladding = mods[5];
+				ItemStack[] mods = ArmorModHandler.pryMods(stack);
+				ItemStack cladding = mods[5];
 				if (cladding != null && cladding.getItem() instanceof ItemModCladding) {
 					return (float)((ItemModCladding)cladding.getItem()).rad;
 				}
@@ -56,26 +56,26 @@ public class HazmatRegistry {
 		}
 	}
 
-	public static float getResistance(final EntityLivingBase player) {
+	public static float getResistance(EntityLivingBase player) {
 		float res = 0.0F;
 
 		if (player.getUniqueID().toString().equals(Library.HbMinecraft) || player.getUniqueID().toString().equals(Library.Drillgon) || player.getUniqueID().toString().equals(Library.Alcater)) {
 			res += 1.0F;
 		}
 
-		for(final ItemStack stack : player.getArmorInventoryList()) {
+		for(ItemStack stack : player.getArmorInventoryList()) {
 			if(!stack.isEmpty()) {
 				res += getResistance(stack);
 			}
 		}
-		final PotionEffect radx = player.getActivePotionEffect(HbmPotion.radx);
+		PotionEffect radx = player.getActivePotionEffect(HbmPotion.radx);
 		if(radx != null)
 			res += 0.1F * (1+radx.getAmplifier());
 
 		return res;
 	}
 
-	public static double fixRounding(final double value){
+	public static double fixRounding(double value){
 		return BigDecimal.valueOf(value).setScale(4, RoundingMode.HALF_UP).doubleValue();
 	}
 
@@ -84,37 +84,37 @@ public class HazmatRegistry {
 		//real coefficient turned out to be 5
 		//oops
 
-		final double helmet = 0.2D;
-		final double chest = 0.4D;
-		final double legs = 0.3D;
-		final double boots = 0.1D;
+		double helmet = 0.2D;
+		double chest = 0.4D;
+		double legs = 0.3D;
+		double boots = 0.1D;
 
-		final double iron = 0.0225D; // 5%
-		final double gold = 0.03D; // 5%
-		final double steel = 0.045D; // 10%
-		final double titanium = 0.045D; // 10%
-		final double alloy = 0.07D; // 15%
-		final double cobalt = 0.125D; // 25%
+		double iron = 0.0225D; // 5%
+		double gold = 0.03D; // 5%
+		double steel = 0.045D; // 10%
+		double titanium = 0.045D; // 10%
+		double alloy = 0.07D; // 15%
+		double cobalt = 0.125D; // 25%
 
-		final double hazYellow = 0.6D; // 75%
-		final double hazRed = 1.0D; // 90%
-		final double hazGray = 2D; // 99%
-		final double liquidator = 2.4D; // 99.6%
-		final double paa = 3.0D; // 99.9%
+		double hazYellow = 0.6D; // 75%
+		double hazRed = 1.0D; // 90%
+		double hazGray = 2D; // 99%
+		double liquidator = 2.4D; // 99.6%
+		double paa = 3.0D; // 99.9%
 		
 
-		final double t45 = 1D; // 90%
-		final double ajr = 1.3D; // 95%
-		final double hev = 1.6D; // 97.5%
-		final double bj = 1D; // 90%
-		final double rpa = 2D; // 99%
-		final double fau = 4D; // 99.99%
-		final double dns = 6D; // 99.9999%
-		final double security = 0.01D; // 2.3%
-		final double star = 0.25D; // 44%
-		final double cmb = 1.3D; // 95%
-		final double schrab = 3D; // 99.9%
-		final double euph = 10D; // 99.99999999%
+		double t45 = 1D; // 90%
+		double ajr = 1.3D; // 95%
+		double hev = 1.6D; // 97.5%
+		double bj = 1D; // 90%
+		double rpa = 2D; // 99%
+		double fau = 4D; // 99.99%
+		double dns = 6D; // 99.9999%
+		double security = 0.01D; // 2.3%
+		double star = 0.25D; // 44%
+		double cmb = 1.3D; // 95%
+		double schrab = 3D; // 99.9%
+		double euph = 10D; // 99.99999999%
 
 		HazmatRegistry.registerHazmat(ModItems.hazmat_helmet, fixRounding(hazYellow * helmet));
 		HazmatRegistry.registerHazmat(ModItems.hazmat_plate, fixRounding(hazYellow * chest));

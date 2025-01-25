@@ -1,6 +1,9 @@
 package com.hbm.forgefluid;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.hbm.render.misc.EnumSymbol;
 
@@ -10,57 +13,57 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class FluidTypeHandler {
 
-	private static final Map<String, FluidProperties> fluidProperties = new HashMap<String, FluidProperties>();
+	private static Map<String, FluidProperties> fluidProperties = new HashMap<String, FluidProperties>();
 	public static final FluidProperties NONE = new FluidProperties(0, 0, 0, EnumSymbol.NONE);
 	
-	public static FluidProperties getProperties(final Fluid f){
+	public static FluidProperties getProperties(Fluid f){
 		if(f == null)
 			return NONE;
-		final FluidProperties p = fluidProperties.get(f.getName());
+		FluidProperties p = fluidProperties.get(f.getName());
 		return p != null ? p : NONE;
 	}
 	
-	public static FluidProperties getProperties(final FluidStack f){
+	public static FluidProperties getProperties(FluidStack f){
 		if(f == null)
 			return NONE;
 		return getProperties(f.getFluid());
 	}
 
-	public static float getDFCEfficiency(final Fluid f){
-		final FluidProperties prop = getProperties(f);
+	public static float getDFCEfficiency(Fluid f){
+		FluidProperties prop = getProperties(f);
 		return prop.dfcFuel;
 	}
 	
-	public static boolean isAntimatter(final Fluid f){
+	public static boolean isAntimatter(Fluid f){
 		return containsTrait(f, FluidTrait.AMAT);
 	}
 	
-	public static boolean isCorrosivePlastic(final Fluid f){
+	public static boolean isCorrosivePlastic(Fluid f){
 		return containsTrait(f, FluidTrait.CORROSIVE) || containsTrait(f, FluidTrait.CORROSIVE_2);
 	}
 	
-	public static boolean isCorrosiveIron(final Fluid f){
+	public static boolean isCorrosiveIron(Fluid f){
 		return containsTrait(f, FluidTrait.CORROSIVE_2);
 	}
 	
-	public static boolean isHot(final Fluid f){
+	public static boolean isHot(Fluid f){
 		if(f == null)
 			return false;
 		return f.getTemperature() >= 373;
 	}
 
-	public static boolean noID(final Fluid f){
+	public static boolean noID(Fluid f){
 		return containsTrait(f, FluidTrait.NO_ID);
 	}
 
-	public static boolean noContainer(final Fluid f){
+	public static boolean noContainer(Fluid f){
 		return containsTrait(f, FluidTrait.NO_CONTAINER);
 	}
 	
-	public static boolean containsTrait(final Fluid f, final FluidTrait t){
+	public static boolean containsTrait(Fluid f, FluidTrait t){
 		if(f == null)
 			return false;
-		final FluidProperties p = fluidProperties.get(f.getName());
+		FluidProperties p = fluidProperties.get(f.getName());
 		if(p == null)
 			return false;
 		return p.traits.contains(t);
@@ -75,7 +78,7 @@ public class FluidTypeHandler {
 		fluidProperties.put(ModForgeFluids.superhotsteam.getName(), new FluidProperties(0, 0 ,3, EnumSymbol.NONE));
 		fluidProperties.put(ModForgeFluids.ultrahotsteam.getName(), new FluidProperties(0, 0, 4, EnumSymbol.NONE));
 		fluidProperties.put(ModForgeFluids.coolant.getName(), new FluidProperties(1, 0, 0, EnumSymbol.NONE));
-		fluidProperties.put(ModForgeFluids.hotcoolant.getName(), new FluidProperties(1, 0, 4, EnumSymbol.NONE));
+		fluidProperties.put(ModForgeFluids.coolant_hot.getName(), new FluidProperties(1, 0, 4, EnumSymbol.NONE));
 		
 		fluidProperties.put(FluidRegistry.LAVA.getName(), new FluidProperties(4, 0, 0, EnumSymbol.NOWATER));
 		
@@ -180,17 +183,18 @@ public class FluidTypeHandler {
 		public final EnumSymbol symbol;
 		public final List<FluidTrait> traits = new ArrayList<>();
 
-		public FluidProperties(final int p, final int f, final int r, final EnumSymbol symbol, final FluidTrait... traits) {
+		public FluidProperties(int p, int f, int r, EnumSymbol symbol, FluidTrait... traits) {
 			this(p, f, r, 0, symbol, traits);
 		}
 		
-		public FluidProperties(final int p, final int f, final int r, final float dfc, final EnumSymbol symbol, final FluidTrait... traits) {
+		public FluidProperties(int p, int f, int r, float dfc, EnumSymbol symbol, FluidTrait... traits) {
 			this.poison = p;
 			this.flammability = f;
 			this.reactivity = r;
 			this.dfcFuel = dfc;
 			this.symbol = symbol;
-            Collections.addAll(this.traits, traits);
+			for(FluidTrait trait : traits)
+				this.traits.add(trait);
 		}
 	}
 	
@@ -199,6 +203,6 @@ public class FluidTypeHandler {
 		CORROSIVE,
 		CORROSIVE_2,
 		NO_CONTAINER,
-		NO_ID
-    }
+		NO_ID;
+	}
 }

@@ -5,7 +5,6 @@ import com.hbm.handler.MultiblockHandlerXR;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityMachineExcavator;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,12 +16,12 @@ import net.minecraft.world.World;
 
 public class MachineExcavator extends BlockDummyable {
 
-	public MachineExcavator(final Material mat, final String s) {
+	public MachineExcavator(Material mat, String s) {
         super(Material.IRON, s);
     }
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 
 		if(meta >= 12) return new TileEntityMachineExcavator();
 		if(meta >= 6) return new TileEntityProxyCombo(false, true, true);
@@ -30,7 +29,7 @@ public class MachineExcavator extends BlockDummyable {
 	}
 	
 	@Override
-    public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         return standardOpenBehavior(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
     }
 
@@ -50,7 +49,7 @@ public class MachineExcavator extends BlockDummyable {
 	}
 
 	@Override
-	protected boolean checkRequirement(final World world, int x, int y, int z, final ForgeDirection dir, final int o) {
+	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		x += dir.offsetX * o;
 		y += dir.offsetY * o;
 		z += dir.offsetZ * o;
@@ -59,7 +58,7 @@ public class MachineExcavator extends BlockDummyable {
 	}
 
 	@Override
-	protected void fillSpace(final World world, int x, int y, int z, final ForgeDirection dir, final int o) {
+	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		x += dir.offsetX * o;
 		y += dir.offsetY * o;
@@ -70,7 +69,7 @@ public class MachineExcavator extends BlockDummyable {
 		MultiblockHandlerXR.fillSpace(world, x, y, z, new int[] {-1, 3, 3, -2, -2, 3}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x, y, z, new int[] {-1, 3, -2, 3, 3, 3}, this, dir);
 		
-		final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		this.makeExtra(world, x + dir.offsetX * 3 + rot.offsetX, y + 1, z + dir.offsetZ * 3 + rot.offsetZ);
 		this.makeExtra(world, x + dir.offsetX * 3 - rot.offsetX, y + 1, z + dir.offsetZ * 3 - rot.offsetZ);
 		this.makeExtra(world, x + rot.offsetX * 3, y + 1, z + rot.offsetZ * 3);

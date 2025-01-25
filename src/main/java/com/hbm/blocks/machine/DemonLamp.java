@@ -4,7 +4,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IItemHazard;
 import com.hbm.modules.ItemHazardModule;
 import com.hbm.tileentity.machine.TileEntityDemonLamp;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
@@ -21,7 +20,7 @@ public class DemonLamp extends BlockContainer implements IItemHazard {
 
 	ItemHazardModule module;
 
-	public DemonLamp(final SoundType st, final String s) {
+	public DemonLamp(SoundType st, String s) {
 		super(Material.IRON);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -32,12 +31,12 @@ public class DemonLamp extends BlockContainer implements IItemHazard {
 	}
 	
 	@Override
-	public Block setSoundType(final SoundType sound){
+	public Block setSoundType(SoundType sound){
 		return super.setSoundType(sound);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World p_149915_1_, final int p_149915_2_) {
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileEntityDemonLamp();
 	}
 
@@ -47,31 +46,31 @@ public class DemonLamp extends BlockContainer implements IItemHazard {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	@Override
-	public boolean shouldSideBeRendered(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 }

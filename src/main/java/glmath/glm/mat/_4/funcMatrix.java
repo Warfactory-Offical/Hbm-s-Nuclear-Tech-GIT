@@ -26,19 +26,19 @@ abstract class funcMatrix {
         return inverse(new Mat4());
     }
 
-    public Mat4 inverse(final Mat4 dest) {
-        final float a = m00 * m11 - m01 * m10;
-        final float b = m00 * m12 - m02 * m10;
-        final float c = m00 * m13 - m03 * m10;
-        final float d = m01 * m12 - m02 * m11;
-        final float e = m01 * m13 - m03 * m11;
-        final float f = m02 * m13 - m03 * m12;
-        final float g = m20 * m31 - m21 * m30;
-        final float h = m20 * m32 - m22 * m30;
-        final float i = m20 * m33 - m23 * m30;
-        final float j = m21 * m32 - m22 * m31;
-        final float k = m21 * m33 - m23 * m31;
-        final float l = m22 * m33 - m23 * m32;
+    public Mat4 inverse(Mat4 dest) {
+        float a = m00 * m11 - m01 * m10;
+        float b = m00 * m12 - m02 * m10;
+        float c = m00 * m13 - m03 * m10;
+        float d = m01 * m12 - m02 * m11;
+        float e = m01 * m13 - m03 * m11;
+        float f = m02 * m13 - m03 * m12;
+        float g = m20 * m31 - m21 * m30;
+        float h = m20 * m32 - m22 * m30;
+        float i = m20 * m33 - m23 * m30;
+        float j = m21 * m32 - m22 * m31;
+        float k = m21 * m33 - m23 * m31;
+        float l = m22 * m33 - m23 * m32;
         float det = a * l - b * k + c * j + d * i - e * h + f * g;
         det = 1.0f / det;
         dest.set(
@@ -69,9 +69,9 @@ abstract class funcMatrix {
         return invTransp3(new Mat4());
     }
 
-    public Mat4 invTransp3(final Mat4 dest) {
-        final float det = det3();
-        final float s = 1.0f / det;
+    public Mat4 invTransp3(Mat4 dest) {
+        float det = det3();
+        float s = 1.0f / det;
         /* Invert and transpose in one go */
         dest.set((m11 * m22 - m21 * m12) * s,
                 (m20 * m12 - m10 * m22) * s,
@@ -97,11 +97,11 @@ abstract class funcMatrix {
         return transpose((Mat4) this);
     }
 
-    public Mat4 transpose(final Mat4 dest) {
+    public Mat4 transpose(Mat4 dest) {
         return transpose((Mat4) this, dest);
     }
 
-    public static Mat4 transpose(final Mat4 mat, final Mat4 dest) {
+    public static Mat4 transpose(Mat4 mat, Mat4 dest) {
         dest.set(mat.m00, mat.m10, mat.m20, mat.m30,
                 mat.m01, mat.m11, mat.m21, mat.m31,
                 mat.m02, mat.m12, mat.m22, mat.m32,

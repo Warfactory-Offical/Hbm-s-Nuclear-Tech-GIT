@@ -16,17 +16,17 @@ public class Vec3l extends FuncRelational {
         y = 0;
     }
 
-    public Vec3l(final int x, final int y, final int z) {
+    public Vec3l(int x, int y, int z) {
         this((long) x, y, z);
     }
 
-    public Vec3l(final long x, final long y, final long z) {
+    public Vec3l(long x, long y, long z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vec3l set(final long x, final long y, final long z) {
+    public Vec3l set(long x, long y, long z) {
         this.x = x;
         this.y = y;
         this.z = z;

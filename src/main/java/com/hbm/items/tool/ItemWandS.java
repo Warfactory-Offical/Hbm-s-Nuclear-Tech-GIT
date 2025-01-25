@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class ItemWandS extends Item {
 
-	public ItemWandS(final String s) {
+	public ItemWandS(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -29,7 +29,7 @@ public class ItemWandS extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("desc.creative"));
 		tooltip.add(I18nUtil.resolveKey("desc.structurewand.1"));
 		tooltip.add(I18nUtil.resolveKey("desc.structurewand.2"));
@@ -61,19 +61,19 @@ public class ItemWandS extends Item {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
-		final ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
 		if(stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
 			stack.getTagCompound().setInteger("building", 0);
 		}
 		
-		final boolean up = player.rotationPitch <= 0.5F;
+		boolean up = player.rotationPitch <= 0.5F;
 		
 		if(!world.isRemote)
 		{
-			final Random rand = new Random();
+			Random rand = new Random();
 			
 			switch(stack.getTagCompound().getInteger("building"))
 			{
@@ -108,10 +108,10 @@ public class ItemWandS extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn) {
 		if(player.isSneaking())
 		{
-			final ItemStack stack = player.getHeldItem(handIn);
+			ItemStack stack = player.getHeldItem(handIn);
 			if(stack.getTagCompound() == null)
 			{
 				stack.setTagCompound(new NBTTagCompound());

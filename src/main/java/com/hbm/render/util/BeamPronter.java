@@ -1,12 +1,11 @@
 package com.hbm.render.util;
 
-import java.util.Random;
-
+import com.hbm.render.amlfrom1710.Tessellator;
+import com.hbm.render.amlfrom1710.Vec3;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-import com.hbm.render.amlfrom1710.Tessellator;
-import net.minecraft.util.math.MathHelper;
-import com.hbm.render.amlfrom1710.Vec3;
+import java.util.Random;
 
 public class BeamPronter {
 
@@ -19,20 +18,20 @@ public class BeamPronter {
 	}
 	
 	private static boolean depthMask = false;
-	public static void prontBeamwithDepth(final Vec3 skeleton, final EnumWaveType wave, final EnumBeamType beam, final int outerColor, final int innerColor, final int start, final int segments, final float size, final int layers, final float thickness) {
+	public static void prontBeamwithDepth(Vec3 skeleton, EnumWaveType wave, EnumBeamType beam, int outerColor, int innerColor, int start, int segments, float size, int layers, float thickness) {
 		depthMask = true;
 		prontBeam(skeleton, wave, beam, outerColor, innerColor, start, segments, size, layers, thickness);
 		depthMask = false;
 	}
 
-	public static void prontBeam(final Vec3 skeleton, final EnumWaveType wave, final EnumBeamType beam, final int outerColor, final int innerColor, final int start, final int segments, final float size, final int layers, final float thickness) {
+	public static void prontBeam(Vec3 skeleton, EnumWaveType wave, EnumBeamType beam, int outerColor, int innerColor, int start, int segments, float size, int layers, float thickness) {
 
 		GL11.glPushMatrix();
 		GL11.glDepthMask(depthMask);
 
-		final float sYaw = (float) (Math.atan2(skeleton.xCoord, skeleton.zCoord) * 180F / Math.PI);
-		final float sqrt = MathHelper.sqrt(skeleton.xCoord * skeleton.xCoord + skeleton.zCoord * skeleton.zCoord);
-		final float sPitch = (float) (Math.atan2(skeleton.yCoord, sqrt) * 180F / Math.PI);
+		float sYaw = (float) (Math.atan2(skeleton.xCoord, skeleton.zCoord) * 180F / Math.PI);
+		float sqrt = MathHelper.sqrt(skeleton.xCoord * skeleton.xCoord + skeleton.zCoord * skeleton.zCoord);
+		float sPitch = (float) (Math.atan2(skeleton.yCoord, (double) sqrt) * 180F / Math.PI);
 
 		GL11.glRotatef(180, 0, 1F, 0);
 		GL11.glRotatef(sYaw, 0, 1F, 0);
@@ -48,19 +47,19 @@ public class BeamPronter {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		}
 
-		final Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.instance;
 
-		final Vec3 unit = Vec3.createVectorHelper(0, 1, 0);
-		final Random rand = new Random(start);
-		final double length = skeleton.length();
-		final double segLength = length / segments;
+		Vec3 unit = Vec3.createVectorHelper(0, 1, 0);
+		Random rand = new Random(start);
+		double length = skeleton.length();
+		double segLength = length / segments;
 		double lastX = 0;
 		double lastY = 0;
 		double lastZ = 0;
 
 		for(int i = 0; i <= segments; i++) {
 
-			final Vec3 spinner = Vec3.createVectorHelper(size, 0, 0);
+			Vec3 spinner = Vec3.createVectorHelper(size, 0, 0);
 
 			if(wave == EnumWaveType.SPIRAL) {
 				spinner.rotateAroundY((float) Math.PI * (float) start / 180F);
@@ -70,9 +69,9 @@ public class BeamPronter {
 				spinner.rotateAroundY((float) Math.PI * 2 * rand.nextFloat());
 			}
 
-			final double pX = unit.xCoord * segLength * i + spinner.xCoord;
-			final double pY = unit.yCoord * segLength * i + spinner.yCoord;
-			final double pZ = unit.zCoord * segLength * i + spinner.zCoord;
+			double pX = unit.xCoord * segLength * i + spinner.xCoord;
+			double pY = unit.yCoord * segLength * i + spinner.yCoord;
+			double pZ = unit.zCoord * segLength * i + spinner.zCoord;
 
 			if(beam == EnumBeamType.LINE && i > 0) {
 
@@ -85,25 +84,25 @@ public class BeamPronter {
 
 			if(beam == EnumBeamType.SOLID && i > 0) {
 
-				final float radius = thickness / layers;
+				float radius = thickness / layers;
 
 				for(int j = 1; j <= layers; j++) {
 
-					final float inter = (float) (j - 1) / (float) (layers - 1);
+					float inter = (float) (j - 1) / (float) (layers - 1);
 
-					final int r1 = ((outerColor & 0xFF0000) >> 16);
-					final int g1 = ((outerColor & 0x00FF00) >> 8);
-					final int b1 = ((outerColor & 0x0000FF) >> 0);
+					int r1 = ((outerColor & 0xFF0000) >> 16);
+					int g1 = ((outerColor & 0x00FF00) >> 8);
+					int b1 = ((outerColor & 0x0000FF) >> 0);
 					
-					final int r2 = ((innerColor & 0xFF0000) >> 16);
-					final int g2 = ((innerColor & 0x00FF00) >> 8);
-					final int b2 = ((innerColor & 0x0000FF) >> 0);
+					int r2 = ((innerColor & 0xFF0000) >> 16);
+					int g2 = ((innerColor & 0x00FF00) >> 8);
+					int b2 = ((innerColor & 0x0000FF) >> 0);
 
-					final int r = ((int)(r1 + (r2 - r1) * inter)) << 16;
-					final int g = ((int)(g1 + (g2 - g1) * inter)) << 8;
-					final int b = ((int)(b1 + (b2 - b1) * inter)) << 0;
+					int r = ((int)(r1 + (r2 - r1) * inter)) << 16;
+					int g = ((int)(g1 + (g2 - g1) * inter)) << 8;
+					int b = ((int)(b1 + (b2 - b1) * inter)) << 0;
 					
-					final int color = r | g | b;
+					int color = r | g | b;
 
 					tessellator.startDrawingQuads();
 					tessellator.setColorOpaque_I(color);

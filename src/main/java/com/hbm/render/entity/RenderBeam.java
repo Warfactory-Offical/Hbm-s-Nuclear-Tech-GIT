@@ -1,10 +1,7 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.projectile.EntityPlasmaBeam;
 import com.hbm.lib.RefStrings;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -13,6 +10,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderBeam extends Render<EntityPlasmaBeam> {
 
@@ -20,17 +18,17 @@ public class RenderBeam extends Render<EntityPlasmaBeam> {
 	
 	protected ResourceLocation beam_rl = new ResourceLocation(RefStrings.MODID + ":textures/models/projectiles/PlasmaBeam.png");
 	
-	protected RenderBeam(final RenderManager renderManager) {
+	protected RenderBeam(RenderManager renderManager) {
 		super(renderManager);
 	}
 	
 	@Override
-	public void doRender(final EntityPlasmaBeam rocket, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
-		final float radius = 0.12F;
+	public void doRender(EntityPlasmaBeam rocket, double x, double y, double z, float entityYaw, float partialTicks) {
+		float radius = 0.12F;
 		//float radius = 0.06F;
-		final int distance = 4;
-		final Tessellator tessellator = Tessellator.getInstance();
-		final BufferBuilder buf = tessellator.getBuffer();
+		int distance = 4;
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buf = tessellator.getBuffer();
 
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
@@ -51,23 +49,23 @@ public class RenderBeam extends Render<EntityPlasmaBeam> {
 				color = 0;
 			buf.pos(0 + o, 0 - o, 0).color(color, 1.0F, color, 1.0F).endVertex();
 			buf.pos(0 + o, 0 + o, 0).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 + o, 0 + o, distance).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 + o, 0 - o, distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 + o, 0 + o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 + o, 0 - o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
 			
 			buf.pos(0 - o, 0 - o, 0).color(color, 1.0F, color, 1.0F).endVertex();
 			buf.pos(0 + o, 0 - o, 0).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 + o, 0 - o, distance).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 - o, 0 - o, distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 + o, 0 - o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 - o, 0 - o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
 			
 			buf.pos(0 - o, 0 + o, 0).color(color, 1.0F, color, 1.0F).endVertex();
 			buf.pos(0 - o, 0 - o, 0).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 - o, 0 - o, distance).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 - o, 0 + o, distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 - o, 0 - o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 - o, 0 + o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
 			
 			buf.pos(0 + o, 0 + o, 0).color(color, 1.0F, color, 1.0F).endVertex();
 			buf.pos(0 - o, 0 + o, 0).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 - o, 0 + o, distance).color(color, 1.0F, color, 1.0F).endVertex();
-			buf.pos(0 + o, 0 + o, distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 - o, 0 + o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
+			buf.pos(0 + o, 0 + o, 0 + distance).color(color, 1.0F, color, 1.0F).endVertex();
 		}
 		tessellator.draw();
 		GL11.glDisable(GL11.GL_BLEND);
@@ -77,10 +75,10 @@ public class RenderBeam extends Render<EntityPlasmaBeam> {
 	}
 	
 	@Override
-	public void doRenderShadowAndFire(final Entity entityIn, final double x, final double y, final double z, final float yaw, final float partialTicks) {}
+	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityPlasmaBeam entity) {
+	protected ResourceLocation getEntityTexture(EntityPlasmaBeam entity) {
 		return beam_rl;
 	}
 

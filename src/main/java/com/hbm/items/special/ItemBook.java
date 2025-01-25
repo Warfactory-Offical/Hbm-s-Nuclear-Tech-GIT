@@ -1,7 +1,5 @@
 package com.hbm.items.special;
 
-import java.util.List;
-
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import net.minecraft.client.util.ITooltipFlag;
@@ -12,9 +10,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemBook extends Item {
 
-	public ItemBook(final String s) {
+	public ItemBook(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -22,12 +22,12 @@ public class ItemBook extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Edition 4, gold lined pages");
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if(!world.isRemote)
 			player.openGui(MainRegistry.instance, ModItems.guiID_item_book, world, 0, 0, 0);
 

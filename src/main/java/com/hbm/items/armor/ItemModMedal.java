@@ -13,17 +13,17 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class ItemModMedal extends ItemArmorMod {
-	private final float minusRads;
-	private final float decayRate;
+	private float minusRads;
+	private float decayRate;
 
-	public ItemModMedal(final String s, final float minusRads) {
+	public ItemModMedal(String s, float minusRads) {
 		super(ArmorModHandler.extra, false, true, false, false, s);
 		this.minusRads = minusRads;
 		this.decayRate = (float)Math.pow(0.5, minusRads/6000);
 
 	}
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		list.add(TextFormatting.GOLD + "-"+minusRads*20+" RAD/s");
 		if(15/minusRads < 60)
 			list.add(TextFormatting.YELLOW + " "+15/minusRads+"s Item Decontamination Halflife");
@@ -33,12 +33,12 @@ public class ItemModMedal extends ItemArmorMod {
 	}
 
 	@Override
-	public void addDesc(final List<String> list, final ItemStack stack, final ItemStack armor) {
+	public void addDesc(List<String> list, ItemStack stack, ItemStack armor) {
 		list.add(TextFormatting.GOLD + "  " + stack.getDisplayName() + " (-"+minusRads*20+" RAD/s)"+TextFormatting.YELLOW + " ("+15/minusRads+"s Halflife)");
 	}
 	
 	@Override
-	public void modUpdate(final EntityLivingBase entity, final ItemStack armor) {
+	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		if(!entity.world.isRemote) {
 			float rad = HbmLivingProps.getRadiation(entity);
 			rad -= minusRads;

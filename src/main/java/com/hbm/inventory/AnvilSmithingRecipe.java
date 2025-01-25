@@ -1,11 +1,10 @@
 package com.hbm.inventory;
 
-import java.util.List;
-
 import com.hbm.config.GeneralConfig;
 import com.hbm.inventory.RecipesCommon.AStack;
-
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public class AnvilSmithingRecipe {
 	
@@ -15,7 +14,7 @@ public class AnvilSmithingRecipe {
 	AStack right;
 	boolean shapeless = false;
 	
-	public AnvilSmithingRecipe(final int tier, final ItemStack out, final AStack left, final AStack right) {
+	public AnvilSmithingRecipe(int tier, ItemStack out, AStack left, AStack right) {
 		this.tier = tier;
 		this.output = out;
 		this.left = left;
@@ -28,11 +27,11 @@ public class AnvilSmithingRecipe {
 		return this;
 	}
 	
-	public boolean matches(final ItemStack left, final ItemStack right) {
+	public boolean matches(ItemStack left, ItemStack right) {
 		return matchesInt(left, right) != -1;
 	}
 	
-	public int matchesInt(final ItemStack left, final ItemStack right) {
+	public int matchesInt(ItemStack left, ItemStack right) {
 		
 		if(doesStackMatch(left, this.left) && doesStackMatch(right, this.right))
 			return 0;
@@ -44,7 +43,7 @@ public class AnvilSmithingRecipe {
 		return -1;
 	}
 	
-	public boolean doesStackMatch(final ItemStack input, final AStack recipe) {
+	public boolean doesStackMatch(ItemStack input, AStack recipe) {
 		return recipe.matchesRecipe(input, false);
 	}
 	
@@ -60,11 +59,11 @@ public class AnvilSmithingRecipe {
 		return output.copy();
 	}
 	
-	public ItemStack getOutput(final ItemStack left, final ItemStack right) {
+	public ItemStack getOutput(ItemStack left, ItemStack right) {
 		return getSimpleOutput();
 	}
 	
-	public int amountConsumed(final int index, final boolean mirrored) {
+	public int amountConsumed(int index, boolean mirrored) {
 		
 		if(index == 0)
 			return mirrored ? right.stacksize : left.stacksize;

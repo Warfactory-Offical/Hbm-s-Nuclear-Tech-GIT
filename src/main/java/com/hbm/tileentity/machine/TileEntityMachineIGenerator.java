@@ -1,11 +1,6 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.google.common.collect.HashBiMap;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.forgefluid.FFUtils;
@@ -18,8 +13,6 @@ import com.hbm.lib.Library;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,7 +30,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityMachineIGenerator extends TileEntityMachineBase implements ITickable, IEnergyGenerator, IFluidHandler, ITankPacketAcceptor {
+import java.util.HashMap;
+import java.util.Map;
+
+public class TileEntityMachineIGenerator extends TileEntityMachineBase implements ITickable, IEnergyProviderMK2, IFluidHandler, ITankPacketAcceptor {
 
 	public long power;
 	public static final long maxPower = 1000000;
@@ -108,7 +103,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			if(temperature > maxTemperature)
 				temperature = maxTemperature;
 			
-			final int displayHeat = temperature;
+			int displayHeat = temperature;
 			
 			rtgAction();
 			
@@ -117,8 +112,8 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			
 			this.power = Library.chargeItemsFromTE(inventory, 6, power, maxPower);
 			
-			final NBTTagCompound data = new NBTTagCompound();
-			final int[] rtgs = new int[pellets.length];
+			NBTTagCompound data = new NBTTagCompound();
+			int[] rtgs = new int[pellets.length];
 			
 			for(int i = 0; i < pellets.length; i++) {
 				if(pellets[i] != null)
@@ -151,13 +146,13 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
-		final int[] rtgs = nbt.getIntArray("rtgs");
+	public void networkUnpack(NBTTagCompound nbt) {
+		int[] rtgs = nbt.getIntArray("rtgs");
 		
 		if(rtgs != null) {
 			for(int i = 0; i < pellets.length; i++) {
 				
-				final int pellet = rtgs[i];
+				int pellet = rtgs[i];
 				if(pellet >= 0 && pellet < IGenRTG.values().length) {
 					pellets[i] = IGenRTG.values()[pellet];
 				} else {
@@ -180,7 +175,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public void handleButtonPacket(final int value, final int meta) {
+	public void handleButtonPacket(int value, int meta) {
 		if(meta == 0)
 			pushPellet();
 		if(meta == 1)
@@ -196,7 +191,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		
 		if(this.burnTime <= 0) {
 			
-			final int time = TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(0)) / 2;
+			int time = TileEntityFurnace.getItemBurnTime(inventory.getStackInSlot(0)) / 2;
 			
 			if(time > 0) {
 				
@@ -230,13 +225,13 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	 */
 	private void fuelAction() {
 		
-		final int heat = getHeatFromFuel(tanks[1].getFluid());
+		int heat = getHeatFromFuel(tanks[1].getFluid());
 		
-		final int maxBurn = 2;
+		int maxBurn = 2;
 		
 		if(tanks[1].getFluidAmount() > 0) {
 			
-			final int burn = Math.min(maxBurn, tanks[1].getFluidAmount());
+			int burn = Math.min(maxBurn, tanks[1].getFluidAmount());
 			
 			tanks[1].drain(burn, true);
 			temperature += heat * burn;
@@ -256,7 +251,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		fluidHeat.put(ModForgeFluids.nitan, 2500);
 	}
 	
-	public int getHeatFromFuel(final FluidStack fluid) {
+	public int getHeatFromFuel(FluidStack fluid) {
 		if(fluid == null)
 			return 0;
 		return fluidHeat.get(fluid.getFluid());
@@ -275,7 +270,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 				rtg += 15;
 		}
 		
-		final int pow = Math.min(this.temperature, rtg);
+		int pow = Math.min(this.temperature, rtg);
 		
 		this.temperature -= pow;
 		this.power += pow;
@@ -289,7 +284,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	 */
 	private void rotorAction() {
 		
-		final int conversion = getConversion();
+		int conversion = getConversion();
 		
 		if(temperature > 10 && tanks[0].getFluidAmount() > 0)
 			tanks[0].drain(1, true);
@@ -309,7 +304,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	 */
 	private void generatorAction() {
 		
-		final double balanceFactor = 0.25D;
+		double balanceFactor = 0.25D;
 		
 		this.power += this.torque * balanceFactor;
 		torque -= getBrake();
@@ -336,7 +331,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		
 		if(!inventory.getStackInSlot(1).isEmpty()) {
 			
-			final IGenRTG pellet = IGenRTG.getPellet(inventory.getStackInSlot(1).getItem());
+			IGenRTG pellet = IGenRTG.getPellet(inventory.getStackInSlot(1).getItem());
 			
 			if(pellet != null) {
 				
@@ -366,7 +361,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			return;
 		
 		//i don't feel like adding null checks because they won't trigger anyway
-		inventory.setStackInSlot(2, ItemStackUtil.itemStackFrom(rtgPellets.inverse().get(pellets[0])));
+		inventory.setStackInSlot(2, new ItemStack(rtgPellets.inverse().get(pellets[0])));
 		
 		for(int i = 0; i < pellets.length - 1; i++) {
 			pellets[i] = pellets[i + 1];
@@ -398,20 +393,20 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	int ignoreNext = 0;
-	public void setDialByAngle(final float angle) {
+	public void setDialByAngle(float angle) {
 		this.limiter = (angle - 45F) / 270F;
 		ignoreNext = 5;
 	}
 	
 	public void sendIGenPower() {
-		final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 		
-		final int[] rot = MultiblockHandlerXR.rotate(new int [] {1,0,4,0,8,8}, dir.toEnumFacing());
+		int[] rot = MultiblockHandlerXR.rotate(new int [] {1,0,4,0,8,8}, dir.toEnumFacing());
 		
 		for(int ix = -rot[4]; ix <= rot[5]; ix++) {
 			for(int iz = -rot[2]; iz <= rot[3]; iz++) {
 				if(ix == -rot[4] || ix == rot[5] || iz == -rot[2] || iz == rot[3]) {
-					this.sendPower(world, pos.add(dir.offsetX * 2 + ix, -1, dir.offsetZ * 2 + iz), ForgeDirection.DOWN);
+					this.tryProvide(world, pos.getX() + dir.offsetX * 2 + ix, pos.getY() -1, pos.getZ() + dir.offsetZ * 2 + iz, ForgeDirection.DOWN);
 				}
 			}
 		}
@@ -423,7 +418,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		if(resource != null){
 			if(resource.getFluid() == tankTypes[0]){
 				return tanks[0].fill(resource, doFill);
@@ -437,17 +432,17 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return null;
 	}
 	
 	@Override
-	public void recievePacket(final NBTTagCompound[] tags) {
+	public void recievePacket(NBTTagCompound[] tags) {
 		if(tags.length == 3){
 			tanks[0].readFromNBT(tags[0]);
 			tanks[1].readFromNBT(tags[1]);
@@ -456,11 +451,11 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		nbt.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		for(int i = 0; i < pellets.length; i++) {
 			
-			final short s = nbt.getShort("pellet" + i);
+			short s = nbt.getShort("pellet" + i);
 			
 			if(s >= 0 && s < IGenRTG.values().length) {
 				pellets[i] = IGenRTG.values()[s];
@@ -476,7 +471,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		FFUtils.deserializeTankArray(nbt.getTagList("tanks", 10), tanks);
 		for(int i = 0; i < pellets.length; i++) {
 			
@@ -493,7 +488,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		return super.writeToNBT(nbt);
 	}
 	
-	private static final HashBiMap<Item, IGenRTG> rtgPellets = HashBiMap.create();
+	private static HashBiMap<Item, IGenRTG> rtgPellets = HashBiMap.create();
 	
 	public static enum IGenRTG {
 		RADIUM(ModItems.pellet_rtg_radium, 9, 3),
@@ -507,13 +502,13 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		public int offset;
 		public int heat;
 		
-		private IGenRTG(final Item item, final int offset, final int heat) {
+		private IGenRTG(Item item, int offset, int heat) {
 			rtgPellets.put(item, this);
 			this.offset = offset;
 			this.heat = heat;
 		}
 		
-		public static IGenRTG getPellet(final Item item) {
+		public static IGenRTG getPellet(Item item) {
 			return rtgPellets.get(item);
 		}
 	}
@@ -536,7 +531,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

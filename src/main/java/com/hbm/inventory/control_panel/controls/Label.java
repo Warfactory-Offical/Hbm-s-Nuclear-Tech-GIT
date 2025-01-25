@@ -16,14 +16,14 @@ import java.util.Map;
 
 public class Label extends Control {
 
-    private final float[] color = new float[] {1, 1, 1};
+    private float[] color = new float[] {1, 1, 1};
     private String text = "label";
     private int scale = 25;
 
     float width = 0;
     float height = 0;
 
-    public Label(final String name, final ControlPanel panel) {
+    public Label(String name, ControlPanel panel) {
         super(name, panel);
         vars.put("isLit", new DataValueFloat(0));
         configMap.put("colorR", new DataValueFloat(color[0]));
@@ -49,10 +49,10 @@ public class Label extends Control {
     }
 
     @Override
-    public void applyConfigs(final Map<String, DataValue> configs) {
+    public void applyConfigs(Map<String, DataValue> configs) {
         super.applyConfigs(configs);
 
-        for (final Map.Entry<String, DataValue> e : configMap.entrySet()) {
+        for (Map.Entry<String, DataValue> e : configMap.entrySet()) {
             switch (e.getKey()) {
                 case "colorR" : {
                     color[0] = e.getValue().getNumber();
@@ -80,29 +80,29 @@ public class Label extends Control {
 
     @Override
     public void render() {
-        final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 
-        final float lX = OpenGlHelper.lastBrightnessX;
-        final float lY = OpenGlHelper.lastBrightnessY;
+        float lX = OpenGlHelper.lastBrightnessX;
+        float lY = OpenGlHelper.lastBrightnessY;
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(posX, 0, posY);
         GlStateManager.depthMask(false);
 
-        final boolean isLit = getVar("isLit").getBoolean();
+        boolean isLit = getVar("isLit").getBoolean();
         width = font.getStringWidth(text);
         height = font.FONT_HEIGHT;
 
-        final float s = scale/500F;
+        float s = scale/500F;
         GL11.glScalef(s, -s, s);
         GL11.glNormal3f(0.0F, 0.0F, -1.0F);
         GL11.glRotatef(90, 1, 0, 0);
         GL11.glTranslated(0, 0, .1F);
 
-        final int r = (int) (color[0]*255);
-        final int g = (int) (color[1]*255);
-        final int b = (int) (color[2]*255);
-        final int rgb = (r << 16) | (g << 8) | b;
+        int r = (int) (color[0]*255);
+        int g = (int) (color[1]*255);
+        int b = (int) (color[2]*255);
+        int rgb = (r << 16) | (g << 8) | b;
 
         if (isLit) {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
@@ -136,12 +136,12 @@ public class Label extends Control {
     }
 
     @Override
-    public Control newControl(final ControlPanel panel) {
+    public Control newControl(ControlPanel panel) {
         return new Label(name, panel);
     }
 
     @Override
-    public void populateDefaultNodes(final List<ControlEvent> receiveEvents) {
+    public void populateDefaultNodes(List<ControlEvent> receiveEvents) {
 
     }
 }

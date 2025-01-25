@@ -1,30 +1,23 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hbm.items.ModItems;
-import com.hbm.lib.Library;
+import api.hbm.energymk2.IEnergyProviderMK2;
+import com.hbm.items.machine.ItemRTGPellet;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.items.machine.ItemRTGPellet;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.RTGUtil;
-
-import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITickable, IEnergyGenerator {
+public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITickable, IEnergyProviderMK2 {
 
 	public ItemStackHandler inventory;
 	
@@ -42,28 +35,30 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 	public TileEntityMachineRTG() {
 		inventory = new ItemStackHandler(15){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
 			
 			@Override
-			public boolean isItemValid(final int slot, final ItemStack itemStack) {
-                return itemStack != null && (itemStack.getItem() instanceof ItemRTGPellet);
-            }
+			public boolean isItemValid(int slot, ItemStack itemStack) {
+				if(itemStack != null && (itemStack.getItem() instanceof ItemRTGPellet))
+					return true;
+				return false;
+			}
 			@Override
-			public ItemStack insertItem(final int slot, final ItemStack stack, final boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				if(isItemValid(slot, stack))
 					return super.insertItem(slot, stack, simulate);
 				return stack;
 			}
 
-			public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+			public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
 				return !isItemValid(slot, itemStack);
 			}
 
 			@Override
-			public ItemStack extractItem(final int slot, final int amount, final boolean simulate) {
+			public ItemStack extractItem(int slot, int amount, boolean simulate) {
 				if(canExtractItem(slot, inventory.getStackInSlot(slot), amount))
 					return super.extractItem(slot, amount, simulate);
 				return ItemStack.EMPTY;
@@ -75,8 +70,9 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 	public void update() {
 		if(!world.isRemote)
 		{
-			this.sendPower(world, pos);
-			final int[] slots = new int[inventory.getSlots()];
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+				this.tryProvide(world, pos.getX() + dir.offsetX, pos.getY() + dir.offsetY, pos.getZ() + dir.offsetZ, dir);
+			int[] slots = new int[inventory.getSlots()];
 			for(int i = 0; i < inventory.getSlots();i++){
 				slots[i] = i;
 			}
@@ -85,7 +81,7 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 			if(heat > heatMax)
 				heat = heatMax;
 			
-			power += heat* 5L;
+			power += heat*5;
 			if(power > maxPower)
 				power = maxPower;
 			
@@ -95,7 +91,7 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		heat = compound.getInteger("heat");
 		detectHeat = heat + 1;
@@ -106,7 +102,7 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("heat", this.heat);
 		compound.setLong("power", this.power);
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -114,11 +110,11 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 		return super.writeToNBT(compound);
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getHeatScaled(final int i) {
+	public int getHeatScaled(int i) {
 		return (heat * i) / heatMax;
 	}
 	
@@ -138,11 +134,11 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 		return this.customName != null && this.customName.length() > 0;
 	}
 	
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -152,12 +148,12 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 	}
 
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory) : 
 			super.getCapability(capability, facing);
 	}
@@ -187,7 +183,7 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ITicka
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

@@ -12,18 +12,18 @@ import java.util.List;
 
 public class ItemGadget extends ItemHazard {
 
-	public ItemGadget(final float radiation, final String s) {
+	public ItemGadget(float radiation, String s) {
 		super(radiation, s);
 		this.setCreativeTab(MainRegistry.nukeTab);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
 		list.add(I18nUtil.resolveKey("desc.usedin"));
 		list.add(" "+ I18nUtil.resolveKey("tile.nuke_gadget.name"));
 		if(this == ModItems.gadget_explosive8)
 			list.add(" "+ I18nUtil.resolveKey("tile.nuke_man.name"));
-		//super.addInformation(stack, world, list, flagIn);
+		super.addInformation(stack, world, list, flagIn);
 	}
 
 }

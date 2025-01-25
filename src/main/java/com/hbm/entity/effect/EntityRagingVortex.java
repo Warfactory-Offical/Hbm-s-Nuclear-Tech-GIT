@@ -1,7 +1,6 @@
 package com.hbm.entity.effect;
 
 import com.hbm.config.CompatibilityConfig;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -9,13 +8,13 @@ public class EntityRagingVortex extends EntityBlackHole {
 
 	int timer = 0;
 
-	public EntityRagingVortex(final World p_i1582_1_) {
+	public EntityRagingVortex(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
 	}
 
-	public EntityRagingVortex(final World world, final float size) {
+	public EntityRagingVortex(World world, float size) {
 		super(world);
 		this.getDataManager().set(SIZE, size);
 	}
@@ -31,7 +30,7 @@ public class EntityRagingVortex extends EntityBlackHole {
 		if(timer <= 20)
 			timer -= 20;
 		
-		final float pulse = (float)(Math.sin(timer) * Math.PI / 20D) * 0.35F;
+		float pulse = (float)(Math.sin(timer) * Math.PI / 20D) * 0.35F;
 		
 		float dec = 0.0F;
 		
@@ -50,14 +49,14 @@ public class EntityRagingVortex extends EntityBlackHole {
 	}
 
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound nbt) {
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		
 		timer = nbt.getInteger("vortexTimer");
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound nbt) {
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		
 		nbt.setInteger("vortexTimer", timer);

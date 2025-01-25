@@ -15,7 +15,7 @@ public class CellularDungeon {
 	CellularDungeonRoom[][] cells;
 	EnumFacing[][] doors;
 	// the order in which the buffer should be processed
-	private final List<int[]> order = new ArrayList<int[]>();
+	private List<int[]> order = new ArrayList<int[]>();
 
 	// the size of the cell array x
 	int dimX;
@@ -36,7 +36,7 @@ public class CellularDungeon {
 	int tries;
 	int branches;
 
-	public CellularDungeon(final int width, final int height, final int dimX, final int dimZ, final int tries, final int branches) {
+	public CellularDungeon(int width, int height, int dimX, int dimZ, int tries, int branches) {
 
 		this.dimX = dimX;
 		this.dimZ = dimZ;
@@ -46,7 +46,7 @@ public class CellularDungeon {
 		this.branches = branches;
 	}
 
-	public CellularDungeon(final int width, final int height, final int dimX, final int dimZ, final int tries, final int branches, final Block floor, final Block ceiling, final Block wall) {
+	public CellularDungeon(int width, int height, int dimX, int dimZ, int tries, int branches, Block floor, Block ceiling, Block wall) {
 
 		this.dimX = dimX;
 		this.dimZ = dimZ;
@@ -59,7 +59,7 @@ public class CellularDungeon {
 		this.wall.add(wall.getDefaultState());
 	}
 
-	public void generate(final World world, int x, final int y, int z, final Random rand) {
+	public void generate(World world, int x, int y, int z, Random rand) {
 		if(world.isRemote)
 			return;
 		
@@ -67,13 +67,13 @@ public class CellularDungeon {
 		z -= dimZ * width / 2;
 
 		compose(rand);
-		for(final int[] coord : order) {
+		for(int[] coord : order) {
 
 			if(coord == null || coord.length != 2)
 				continue;
 
-			final int dx = coord[0];
-			final int dz = coord[1];
+			int dx = coord[0];
+			int dz = coord[1];
 
 			if(cells[dx][dz] != null) {
 				cells[dx][dz].generate(world, x + dx * (width - 1), y, z + dz * (width - 1), doors[dx][dz]);
@@ -83,14 +83,14 @@ public class CellularDungeon {
 
 	int rec = 0;
 
-	public void compose(final Random rand) {
+	public void compose(Random rand) {
 
 		cells = new CellularDungeonRoom[dimX][dimZ];
 		doors = new EnumFacing[dimX][dimZ];
 		order.clear();
 
-		final int startX = dimX / 2;
-		final int startZ = dimZ / 2;
+		int startX = dimX / 2;
+		int startZ = dimZ / 2;
 
 		cells[startX][startZ] = DungeonToolbox.getRandom(rooms, rand);
 		doors[startX][startZ] = null;
@@ -101,7 +101,7 @@ public class CellularDungeon {
 	}
 
 	// if x and z are occupied, it will just use the next nearby random space
-	private boolean addRoom(final int x, final int z, final Random rand, final EnumFacing door, final CellularDungeonRoom room) {
+	private boolean addRoom(int x, int z, Random rand, EnumFacing door, CellularDungeonRoom room) {
 
 		rec++;
 		if(rec > tries)
@@ -112,28 +112,28 @@ public class CellularDungeon {
 
 		if(cells[x][z] != null) {
 
-			final EnumFacing dir = getRandomDir(rand);
-			addRoom(x + dir.getXOffset(), z + dir.getZOffset(), rand, dir.getOpposite(), DungeonToolbox.getRandom(rooms, rand));
+			EnumFacing dir = getRandomDir(rand);
+			addRoom(x + dir.getFrontOffsetX(), z + dir.getFrontOffsetZ(), rand, dir.getOpposite(), DungeonToolbox.getRandom(rooms, rand));
 			return false;
 		}
 
 
-		if(room.daisyChain == null || addRoom(x + room.daisyDirection.getXOffset(), z + room.daisyDirection.getZOffset(), rand, null, room.daisyChain)) {
+		if(room.daisyChain == null || addRoom(x + room.daisyDirection.getFrontOffsetX(), z + room.daisyDirection.getFrontOffsetZ(), rand, null, room.daisyChain)) {
 			cells[x][z] = room;
 			doors[x][z] = door;
 			order.add(new int[] { x, z });
 		}
 
 		for(int i = 0; i < branches; i++) {
-			final EnumFacing dir = getRandomDir(rand);
-			addRoom(x + dir.getXOffset(), z + dir.getZOffset(), rand, dir.getOpposite(), DungeonToolbox.getRandom(rooms, rand));
+			EnumFacing dir = getRandomDir(rand);
+			addRoom(x + dir.getFrontOffsetX(), z + dir.getFrontOffsetZ(), rand, dir.getOpposite(), DungeonToolbox.getRandom(rooms, rand));
 		}
 
 		return true;
 	}
 
-	public static EnumFacing getRandomDir(final Random rand) {
+	public static EnumFacing getRandomDir(Random rand) {
 
-		return EnumFacing.byIndex(rand.nextInt(4) + 2);
+		return EnumFacing.getFront(rand.nextInt(4) + 2);
 	}
 }

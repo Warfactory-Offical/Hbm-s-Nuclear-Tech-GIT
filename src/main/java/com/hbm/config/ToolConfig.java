@@ -19,7 +19,7 @@ public class ToolConfig {
 	public static boolean abilityMercury = true;
 	public static boolean abilityExplosion = true;
 	
-	public static void loadFromConfig(final Configuration config) {
+	public static void loadFromConfig(Configuration config) {
 		final String CATEGORY_TOOLS = "11_tools";
 		recursionDepth = CommonConfig.createConfigInt(config, CATEGORY_TOOLS, "11.00_recursionDepth", "Limits veinminer's recursive function. Usually not an issue, unless you're using bukkit which is especially sensitive for some reason.", 1000);
         recursiveStone = CommonConfig.createConfigBool(config, CATEGORY_TOOLS, "11.01_recursionDepth", "Determines whether veinminer can break stone", false);

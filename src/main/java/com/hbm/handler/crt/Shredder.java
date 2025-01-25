@@ -20,9 +20,9 @@ import net.minecraft.item.ItemStack;
 public class Shredder {
 	
 	private static class ActionAddRecipe implements IAction{
-		private final ItemStack input;
-		private final ItemStack output;
-		public ActionAddRecipe(final IItemStack input, final IItemStack output){
+		private ItemStack input;
+		private ItemStack output;
+		public ActionAddRecipe(IItemStack input, IItemStack output){
 			this.input = CraftTweakerMC.getItemStack(input);
 			this.output = CraftTweakerMC.getItemStack(output);
 		}
@@ -45,16 +45,16 @@ public class Shredder {
 	}
 
 	@ZenMethod
-	public static void addRecipe(final IItemStack input, final IItemStack output){
+	public static void addRecipe(IItemStack input, IItemStack output){
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(input, output));
 	}
 
 
 
 	public static class ActionRemoveRecipe implements IAction{
-		private final ItemStack input;
+		private ItemStack input;
 
-		public ActionRemoveRecipe(final IItemStack input){
+		public ActionRemoveRecipe(IItemStack input){
 			this.input = CraftTweakerMC.getItemStack(input);
 		}
 		@Override
@@ -72,7 +72,7 @@ public class Shredder {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(final IItemStack input){
+	public static void removeRecipe(IItemStack input){
 		NTMCraftTweaker.postInitActions.add(new ActionRemoveRecipe(input));
 	}
 

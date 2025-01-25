@@ -15,7 +15,7 @@ public class MovingSoundJetpack extends MovingSound {
 
 	public EntityPlayer player;
 	
-	public MovingSoundJetpack(final EntityPlayer player, final SoundEvent soundIn, final SoundCategory categoryIn) {
+	public MovingSoundJetpack(EntityPlayer player, SoundEvent soundIn, SoundCategory categoryIn) {
 		super(soundIn, categoryIn);
 		this.player = player;
 		this.repeat = true;
@@ -26,7 +26,7 @@ public class MovingSoundJetpack extends MovingSound {
 		this.xPosF = (float) player.posX;
 		this.yPosF = (float) player.posY;
 		this.zPosF = (float) player.posZ;
-		final JetpackInfo j = JetpackHandler.get(player);
+		JetpackInfo j = JetpackHandler.get(player);
 		if(j != null){
 			this.volume = (float) Math.log(j.thrust*30+1)*0.25F;
 			//System.out.println(volume);

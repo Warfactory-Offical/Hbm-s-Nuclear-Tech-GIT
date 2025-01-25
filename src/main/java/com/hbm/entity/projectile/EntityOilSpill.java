@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityOilSpill extends EntityThrowable {
 
-	public EntityOilSpill(final World worldIn) {
+	public EntityOilSpill(World worldIn) {
 		super(worldIn);
 	}
 
@@ -25,7 +25,7 @@ public class EntityOilSpill extends EntityThrowable {
 	}
 	
 	@Override
-	protected void onImpact(final RayTraceResult result) {
+	protected void onImpact(RayTraceResult result) {
 		if(this.ticksExisted > 5) {
         	this.setDead();
         }

@@ -9,19 +9,19 @@ public class RadiationSaveStructure {
 	
 	public RadiationSaveStructure() { }
 	
-	public RadiationSaveStructure(final int x, final int y, final float rad) {
+	public RadiationSaveStructure(int x, int y, float rad) {
 		chunkX = x;
 		chunkY = y;
 		radiation = rad;
 	}
 
-	public void readFromNBT(final NBTTagCompound nbt, final int index) {
+	public void readFromNBT(NBTTagCompound nbt, int index) {
 		chunkX = nbt.getInteger("rad_" + index + "_x");
 		chunkY = nbt.getInteger("rad_" + index + "_y");
 		radiation = nbt.getFloat("rad_" + index + "_level");
 	}
 
-	public void writeToNBT(final NBTTagCompound nbt, final int index) {
+	public void writeToNBT(NBTTagCompound nbt, int index) {
 		nbt.setInteger("rad_" + index + "_x", chunkX);
 		nbt.setInteger("rad_" + index + "_y", chunkY);
 		nbt.setFloat("rad_" + index + "_level", radiation);

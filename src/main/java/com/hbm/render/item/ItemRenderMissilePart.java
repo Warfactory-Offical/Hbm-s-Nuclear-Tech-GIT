@@ -1,22 +1,20 @@
 package com.hbm.render.item;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.render.misc.MissilePart;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderMissilePart extends TEISRBase {
 
 	MissilePart part;
 	
-	public ItemRenderMissilePart(final MissilePart part) {
+	public ItemRenderMissilePart(MissilePart part) { 
 		this.part = part;
 	}
 	
 	@Override
-	public void renderByItem(final ItemStack item) {
+	public void renderByItem(ItemStack item) {
 		if(part == null)
 			return;
 
@@ -34,7 +32,7 @@ public class ItemRenderMissilePart extends TEISRBase {
 		case GROUND:
 		case HEAD:
 		case FIXED:
-			final double s = 0.4;
+			double s = 0.4;
 			GL11.glScaled(s, s, s);
 			
 			/*if(part.type.name().equals(PartType.FINS.name())) {
@@ -54,8 +52,8 @@ public class ItemRenderMissilePart extends TEISRBase {
 			if(height == 0D)
 				height = 4D;
 			
-			final double size = 10;
-			final double scale = size / height;
+			double size = 10;
+			double scale = size / height;
 			
 			GL11.glTranslated(height / 2 * scale, 0, 0);
 			GL11.glTranslated(-4.1, 0.1, 0);

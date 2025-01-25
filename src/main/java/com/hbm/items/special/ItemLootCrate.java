@@ -1,13 +1,7 @@
 package com.hbm.items.special;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,14 +10,18 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class ItemLootCrate extends Item {
 
 	public static List<ItemMissile> list10 = new ArrayList<ItemMissile>();
 	public static List<ItemMissile> list15 = new ArrayList<ItemMissile>();
 	public static List<ItemMissile> listMisc = new ArrayList<ItemMissile>();
-	private static final Random rand = new Random();
+	private static Random rand = new Random();
 	
-	public ItemLootCrate(final String s) {
+	public ItemLootCrate(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		
@@ -31,22 +29,22 @@ public class ItemLootCrate extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ItemStack stack = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack stack = playerIn.getHeldItem(handIn);
 		playerIn.inventoryContainer.detectAndSendChanges();
 
 		if(stack.getItem() == ModItems.loot_10)
-			playerIn.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(choose(list10)));
+			playerIn.inventory.addItemStackToInventory(new ItemStack(choose(list10)));
 		if(stack.getItem() == ModItems.loot_15)
-			playerIn.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(choose(list15)));
+			playerIn.inventory.addItemStackToInventory(new ItemStack(choose(list15)));
 		if(stack.getItem() == ModItems.loot_misc)
-			playerIn.inventory.addItemStackToInventory(ItemStackUtil.itemStackFrom(choose(listMisc)));
+			playerIn.inventory.addItemStackToInventory(new ItemStack(choose(listMisc)));
 		
 		stack.shrink(1);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 	
-	private ItemMissile choose(final List<ItemMissile> parts) {
+	private ItemMissile choose(List<ItemMissile> parts) {
 		
 		boolean flag = true;
 		ItemMissile item = null;

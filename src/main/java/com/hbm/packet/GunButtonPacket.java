@@ -24,21 +24,21 @@ public class GunButtonPacket implements IMessage {
 
 		public GunButtonPacket() { }
 
-		public GunButtonPacket(final boolean m1, final byte b, final EnumHand hand) {
+		public GunButtonPacket(boolean m1, byte b, EnumHand hand) {
 			state = m1;
 			button = b;
 			this.hand = hand;
 		}
 
 		@Override
-		public void fromBytes(final ByteBuf buf) {
+		public void fromBytes(ByteBuf buf) {
 			state = buf.readBoolean();
 			button = buf.readByte();
 			hand = buf.readBoolean() ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
 		}
 
 		@Override
-		public void toBytes(final ByteBuf buf) {
+		public void toBytes(ByteBuf buf) {
 			buf.writeBoolean(state);
 			buf.writeByte(button);
 			buf.writeBoolean(hand == EnumHand.MAIN_HAND);
@@ -47,16 +47,17 @@ public class GunButtonPacket implements IMessage {
 		public static class Handler implements IMessageHandler<GunButtonPacket, IMessage> {
 
 			@Override
-			public IMessage onMessage(final GunButtonPacket m, final MessageContext ctx) {
+			public IMessage onMessage(GunButtonPacket m, MessageContext ctx) {
 				ctx.getServerHandler().player.getServer().addScheduledTask(() -> {
 					if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 						return;
 					
-					final EntityPlayer p = ctx.getServerHandler().player;
+					EntityPlayer p = ctx.getServerHandler().player;
 					
-					if(p.getHeldItem(m.hand) != null && p.getHeldItem(m.hand).getItem() instanceof ItemGunBase item) {
-
-                        switch(m.button) {
+					if(p.getHeldItem(m.hand) != null && p.getHeldItem(m.hand).getItem() instanceof ItemGunBase) {
+						ItemGunBase item = (ItemGunBase)p.getHeldItem(m.hand).getItem();
+						
+						switch(m.button) {
 						case 0: ItemGunBase.setIsMouseDown(p.getHeldItem(m.hand), m.state);
 								if(m.state)
 									item.startAction(p.getHeldItem(m.hand), p.world, p, true, m.hand);

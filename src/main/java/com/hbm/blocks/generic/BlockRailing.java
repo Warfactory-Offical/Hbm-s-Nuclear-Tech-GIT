@@ -1,10 +1,7 @@
 package com.hbm.blocks.generic;
 
-import java.util.List;
-
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.Library;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -23,34 +20,36 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class BlockRailing extends Block {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	
+
 	public int type;
-	
-	public BlockRailing(final Material materialIn, final int type, final String s){
+
+	public BlockRailing(Material materialIn, int type, String s){
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.type = type;
-		
+
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 
 	@Override
-	public boolean isFullCube(final IBlockState state){
+	public boolean isFullCube(IBlockState state){
 		return false;
 	}
-	
+
 	@Override
-	public boolean isOpaqueCube(final IBlockState state){
+	public boolean isOpaqueCube(IBlockState state){
 		return false;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
-	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos){
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
 		switch(type){
 		case 0:
 		case 1:
@@ -60,10 +59,10 @@ public class BlockRailing extends Block {
 			return super.getBoundingBox(state, source, pos);
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addCollisionBoxToList(final IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entityIn, final boolean isActualState){
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState){
 		switch(type){
 		case 0:
 		case 1:
@@ -77,25 +76,25 @@ public class BlockRailing extends Block {
 			super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 		}
 	}
-	
+
 	@Override
-	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer, final EnumHand hand) {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, new IProperty[]{FACING});
 	}
-	
+
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(FACING).getIndex();
+	public int getMetaFromState(IBlockState state) {
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
-	
+
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		EnumFacing enumfacing = EnumFacing.byIndex(meta);
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {
@@ -104,19 +103,19 @@ public class BlockRailing extends Block {
 
         return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
-	
-	
-	
+
+
+
 	@Override
-	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
 	}
-	
+
 	@Override
-	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
-	
-	
+
+
 }

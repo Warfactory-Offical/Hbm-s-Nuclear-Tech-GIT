@@ -1,11 +1,9 @@
 package com.hbm.inventory.container;
 
-import com.hbm.forgefluid.FFUtils;
 import com.hbm.packet.AuxLongPacket;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityCoreReceiver;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,11 +15,11 @@ import net.minecraftforge.fluids.FluidTank;
 
 public class ContainerCoreReceiver extends Container {
 
-	private final TileEntityCoreReceiver te;
+	private TileEntityCoreReceiver te;
 	private EntityPlayerMP player;
 
-	public ContainerCoreReceiver(final EntityPlayer player, final TileEntityCoreReceiver te) {
-		final InventoryPlayer invPlayer = player.inventory;
+	public ContainerCoreReceiver(EntityPlayer player, TileEntityCoreReceiver te) {
+		InventoryPlayer invPlayer = player.inventory;
 		if(player instanceof EntityPlayerMP)
 			this.player = (EntityPlayerMP) player;
 		this.te = te;
@@ -38,10 +36,10 @@ public class ContainerCoreReceiver extends Container {
 	}
 
 	@Override
-	public void addListener(final IContainerListener listener) {
+	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
 		PacketDispatcher.sendTo(new AuxLongPacket(te.getPos(), te.syncJoules, 0), player);
-		PacketDispatcher.sendTo(new FluidTankPacket(te.getPos(), tank), player);
+		PacketDispatcher.sendTo(new FluidTankPacket(te.getPos(), new FluidTank[] { tank }), player);
 	}
 
 	int joules;
@@ -53,22 +51,18 @@ public class ContainerCoreReceiver extends Container {
 			joules = (int) te.syncJoules;
 			PacketDispatcher.sendTo(new AuxLongPacket(te.getPos(), te.syncJoules, 0), player);
 		}
-		if(!FFUtils.areTanksEqual(tank, te.tank)){
-			tank = FFUtils.copyTank(te.tank);
-			PacketDispatcher.sendTo(new FluidTankPacket(te.getPos(), tank), player);
-		}
 		super.detectAndSendChanges();
 	}
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return te.isUseableByPlayer(player);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2) {
-		final ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2) {
+		ItemStack var3 = ItemStack.EMPTY;
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 
 		if(var4 != null && var4.getHasStack()) {
 			return ItemStack.EMPTY;

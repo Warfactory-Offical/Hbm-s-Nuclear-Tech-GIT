@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.TileEntityMachineEPress;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,11 +12,11 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineEPress extends Container {
 
-private final TileEntityMachineEPress nukeBoy;
+private TileEntityMachineEPress nukeBoy;
 
 	private int progress;
 	
-	public ContainerMachineEPress(final InventoryPlayer invPlayer, final TileEntityMachineEPress tedf) {
+	public ContainerMachineEPress(InventoryPlayer invPlayer, TileEntityMachineEPress tedf) {
 		
 		nukeBoy = tedf;
 
@@ -45,14 +44,14 @@ private final TileEntityMachineEPress nukeBoy;
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
@@ -80,7 +79,7 @@ private final TileEntityMachineEPress nukeBoy;
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return nukeBoy.isUseableByPlayer(player);
 	}
 	
@@ -90,7 +89,7 @@ private final TileEntityMachineEPress nukeBoy;
 		
 		for(int i = 0; i < this.listeners.size(); i++)
 		{
-			final IContainerListener par1 = this.listeners.get(i);
+			IContainerListener par1 = (IContainerListener)this.listeners.get(i);
 			
 			if(this.progress != this.nukeBoy.progress)
 			{
@@ -102,7 +101,7 @@ private final TileEntityMachineEPress nukeBoy;
 	}
 	
 	@Override
-	public void updateProgressBar(final int i, final int j) {
+	public void updateProgressBar(int i, int j) {
 		if(i == 0)
 		{
 			nukeBoy.progress = j;

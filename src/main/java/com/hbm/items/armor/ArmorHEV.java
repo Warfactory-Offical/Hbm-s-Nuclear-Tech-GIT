@@ -22,13 +22,13 @@ public class ArmorHEV extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	ModelArmorHEV[] models;
 	
-	public ArmorHEV(final ArmorMaterial material, final int layer, final EntityEquipmentSlot slot, final String texture, final long maxPower, final long chargeRate, final long consumption, final long drain, final String s) {
+	public ArmorHEV(ArmorMaterial material, int layer, EntityEquipmentSlot slot, String texture, long maxPower, long chargeRate, long consumption, long drain, String s) {
 		super(material, layer, slot, texture, maxPower, chargeRate, consumption, drain, s);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		if(models == null) {
 			models = new ModelArmorHEV[4];
 
@@ -40,7 +40,7 @@ public class ArmorHEV extends ArmorFSBPowered {
 	
 	@SideOnly(Side.CLIENT)
     @Override
-	public void handleOverlay(final RenderGameOverlayEvent.Pre event, final EntityPlayer player) {
+	public void handleOverlay(RenderGameOverlayEvent.Pre event, EntityPlayer player) {
     	if(hasFSBArmorIgnoreCharge(player)) {
     		if(event.getType() == ElementType.ARMOR) {
     			event.setCanceled(true);
@@ -49,7 +49,8 @@ public class ArmorHEV extends ArmorFSBPowered {
     		if(event.getType() == ElementType.HEALTH) {
     			event.setCanceled(true);
     			renderOverlay(event, player);
-            }
+    			return;
+    		}
     	}
     }
 
@@ -57,9 +58,9 @@ public class ArmorHEV extends ArmorFSBPowered {
 	private static float prevResult;
 	private static float lastResult;
 
-    private void renderOverlay(final RenderGameOverlayEvent.Pre event, final EntityPlayer player) {
+    private void renderOverlay(RenderGameOverlayEvent.Pre event, EntityPlayer player) {
 		float in = 0;
-		in = Library.getEntRadCap(player).getRads();
+		in = (float)Library.getEntRadCap(player).getRads();
 
         float radiation = 0;
 
@@ -80,16 +81,16 @@ public class ArmorHEV extends ArmorFSBPowered {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableAlpha();
 
-        final ScaledResolution res = event.getResolution();
+        ScaledResolution res = event.getResolution();
 
         double scale = 2D;
 
         GL11.glScaled(scale, scale, scale);
 
-		final int hX = (int)(8 / scale);
-		final int hY = (int)((res.getScaledHeight() - 18 - 2) / scale);
+		int hX = (int)(8 / scale);
+		int hY = (int)((res.getScaledHeight() - 18 - 2) / scale);
 
-		final int healthColor = player.getHealth() * 5 > 15 ? 0xff8000 : 0xff0000;
+		int healthColor = player.getHealth() * 5 > 15 ? 0xff8000 : 0xff0000;
 
 		Minecraft.getMinecraft().fontRenderer.drawString("+" + (int)(player.getHealth() * 5), hX, hY, healthColor);
 
@@ -97,16 +98,16 @@ public class ArmorHEV extends ArmorFSBPowered {
 
 		for(int i = 0; i < 4; i++) {
 
-			final ItemStack armor = player.inventory.armorInventory.get(i);
-			final ArmorFSBPowered item = ((ArmorFSBPowered)player.inventory.armorInventory.get(i).getItem());
+			ItemStack armor = player.inventory.armorInventory.get(i);
+			ArmorFSBPowered item = ((ArmorFSBPowered)player.inventory.armorInventory.get(i).getItem());
 
 			c += (double)item.getCharge(armor) / (double)item.getMaxCharge();
 		}
 
-		final int aX = (int)(70 / scale);
-		final int aY = (int)((res.getScaledHeight() - 18 - 2) / scale);
+		int aX = (int)(70 / scale);
+		int aY = (int)((res.getScaledHeight() - 18 - 2) / scale);
 
-		final int armorColor = c * 25 > 15 ? 0xff8000 : 0xff0000;
+		int armorColor = c * 25 > 15 ? 0xff8000 : 0xff0000;
 
 		Minecraft.getMinecraft().fontRenderer.drawString("||" + (int)(c * 25), aX, aY, armorColor);
 
@@ -116,7 +117,7 @@ public class ArmorHEV extends ArmorFSBPowered {
 
 			if(in / 100 > i) {
 
-				final int mid = (int)(in - i * 100);
+				int mid = (int)(in - i * 100);
 
 				if(mid < 33)
 					rad += "..";
@@ -131,10 +132,10 @@ public class ArmorHEV extends ArmorFSBPowered {
 
 		rad += "]";
 
-		final int rX = (int)(8 / scale);
-		final int rY = (int)((res.getScaledHeight() - 40) / scale);
+		int rX = (int)(8 / scale);
+		int rY = (int)((res.getScaledHeight() - 40) / scale);
 
-		final int radColor = in < 800 ? 0xff8000 : 0xff0000;
+		int radColor = in < 800 ? 0xff8000 : 0xff0000;
 
 		Minecraft.getMinecraft().fontRenderer.drawString(rad, rX, rY, radColor);
 
@@ -146,8 +147,8 @@ public class ArmorHEV extends ArmorFSBPowered {
 
         if(radiation > 0) {
 
-			final int dX = (int)(32 / scale);
-			final int dY = (int)((res.getScaledHeight() - 55) / scale);
+			int dX = (int)(32 / scale);
+			int dY = (int)((res.getScaledHeight() - 55) / scale);
 
 			String delta = "" + Math.round(radiation);
 

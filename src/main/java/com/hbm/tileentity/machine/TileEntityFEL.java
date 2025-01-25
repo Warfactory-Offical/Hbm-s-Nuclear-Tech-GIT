@@ -1,47 +1,43 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.Math;
-
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachineSILEX;
 import com.hbm.items.machine.ItemFELCrystal;
 import com.hbm.items.machine.ItemFELCrystal.EnumWavelengths;
+import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
+import com.hbm.packet.LoopedSoundPacket;
+import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
-import com.hbm.packet.LoopedSoundPacket;
-import com.hbm.packet.PacketDispatcher;
-
-import api.hbm.energy.IEnergyUser;
-import net.minecraft.util.ITickable;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.AxisAlignedBB;
-import com.hbm.lib.ForgeDirection;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityFEL extends TileEntityMachineBase implements ITickable, IEnergyUser {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TileEntityFEL extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2 {
 	
 	public long power;
 	public static final long maxPower = 2000000000;
@@ -67,40 +63,41 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 		
 		if(!world.isRemote) {
 			
-			final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-			this.trySubscribe(world, pos.add(dir.offsetX * -5, 1, dir.offsetZ  * -5), dir);
+			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+			this.trySubscribe(world, pos.getX() +dir.offsetX * -5, pos.getY() + 1, pos.getZ() + dir.offsetZ  * -5, dir);
 			this.power = Library.chargeTEFromItems(inventory, 0, power, maxPower);
 			
 			if(this.isOn && !(inventory.getStackInSlot(1).getCount() == 0)) {
 				
-				if(inventory.getStackInSlot(1).getItem() instanceof ItemFELCrystal crystal) {
-
-                    this.mode = crystal.wavelength;
+				if(inventory.getStackInSlot(1).getItem() instanceof ItemFELCrystal) {
+					
+					ItemFELCrystal crystal = (ItemFELCrystal) inventory.getStackInSlot(1).getItem();
+					this.mode = crystal.wavelength;
 					
 				} else { this.mode = EnumWavelengths.NULL; }
 				
 			} else { this.mode = EnumWavelengths.NULL; }
 			
-			final int range = 24;
+			int range = 24;
 			boolean silexSpacing = false;
-			final double xCoord = pos.getX();
-			final double yCoord = pos.getY();
-			final double zCoord = pos.getZ();
+			double xCoord = pos.getX();
+			double yCoord = pos.getY();
+			double zCoord = pos.getZ();
 			if(this.isOn &&  this.mode != EnumWavelengths.NULL) {
 				if(this.power < powerReq * Math.pow(4, mode.ordinal())){
 					this.power = 0;
 				}else{
-					final int distance = this.distance-1;
-					final double blx = Math.min(xCoord, xCoord + (double)dir.offsetX * distance) + 0.2;
-					final double bux = Math.max(xCoord, xCoord + (double)dir.offsetX * distance) + 0.8;
-					final double bly = Math.min(yCoord, 1 + yCoord + (double)dir.offsetY * distance) + 0.2;
-					final double buy = Math.max(yCoord, 1 + yCoord + (double)dir.offsetY * distance) + 0.8;
-					final double blz = Math.min(zCoord, zCoord + (double)dir.offsetZ * distance) + 0.2;
-					final double buz = Math.max(zCoord, zCoord + (double)dir.offsetZ * distance) + 0.8;
+					int distance = this.distance-1;
+					double blx = Math.min(xCoord, xCoord + (double)dir.offsetX * distance) + 0.2;
+					double bux = Math.max(xCoord, xCoord + (double)dir.offsetX * distance) + 0.8;
+					double bly = Math.min(yCoord, 1 + yCoord + (double)dir.offsetY * distance) + 0.2;
+					double buy = Math.max(yCoord, 1 + yCoord + (double)dir.offsetY * distance) + 0.8;
+					double blz = Math.min(zCoord, zCoord + (double)dir.offsetZ * distance) + 0.2;
+					double buz = Math.max(zCoord, zCoord + (double)dir.offsetZ * distance) + 0.8;
 					
-					final List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(blx, bly, blz, bux, buy, buz));
+					List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(blx, bly, blz, bux, buy, buz));
 					
-					for(final EntityLivingBase entity : list) {
+					for(EntityLivingBase entity : list) {
 						switch(this.mode) {
 						case RADIO: break;
 						case MICRO: entity.setFire(2); break;
@@ -125,11 +122,11 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 					this.power -= powerReq * ((mode.ordinal() == 0) ? 0 : Math.pow(4, mode.ordinal()));
 					for(int i = 3; i < range; i++) {
 					
-						final double x = xCoord + dir.offsetX * i;
-						final double y = yCoord + 1;
-						final double z = zCoord + dir.offsetZ * i;
+						double x = xCoord + dir.offsetX * i;
+						double y = yCoord + 1;
+						double z = zCoord + dir.offsetZ * i;
 						
-						final IBlockState b = world.getBlockState(new BlockPos(x, y, z));
+						IBlockState b = world.getBlockState(new BlockPos(x, y, z));
 						
 						if(!(b.getMaterial().isOpaque()) && b != Blocks.TNT) {
 							this.distance = range;
@@ -138,12 +135,13 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 						}
 						
 						if(b.getBlock() == ModBlocks.machine_silex) {
-							final BlockPos silex_pos = new BlockPos(x + dir.offsetX, yCoord, z + dir.offsetZ);
-							final TileEntity te = world.getTileEntity(silex_pos);
+							BlockPos silex_pos = new BlockPos(x + dir.offsetX, yCoord, z + dir.offsetZ);
+							TileEntity te = world.getTileEntity(silex_pos);
 						
-							if(te instanceof TileEntitySILEX silex) {
-                                final int meta = silex.getBlockMetadata() - BlockDummyable.offset;
-								if(rotationIsValid(meta, this.getBlockMetadata() - BlockDummyable.offset) && i >= 5 && !silexSpacing) {
+							if(te instanceof TileEntitySILEX) {
+								TileEntitySILEX silex = (TileEntitySILEX) te;
+								int meta = silex.getBlockMetadata() - BlockDummyable.offset;
+								if(rotationIsValid(meta, this.getBlockMetadata() - BlockDummyable.offset) && i >= 5 && silexSpacing == false	) {
 									if(silex.mode != this.mode) {
 										silex.mode = this.mode;
 										this.missingValidSilex = false;
@@ -151,15 +149,15 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 										continue;
 									} 
 								} else {
-									final MachineSILEX silexBlock = (MachineSILEX)silex.getBlockType();
+									MachineSILEX silexBlock = (MachineSILEX)silex.getBlockType();
 									world.setBlockToAir(silex_pos);
-									world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemStackUtil.itemStackFrom(Item.getItemFromBlock(ModBlocks.machine_silex))));
+									world.spawnEntity(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(Item.getItemFromBlock(ModBlocks.machine_silex))));
 								} 
 							}
 							
 						} else if(b.getBlock() != Blocks.AIR){
 							this.distance = i;
-							final float hardness = b.getBlock().getExplosionResistance(null);
+							float hardness = b.getBlock().getExplosionResistance(null);
 							boolean blocked = false;
 							switch(this.mode) {
 								case RADIO: blocked = true;break;
@@ -228,7 +226,7 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 			}
 			
 			PacketDispatcher.wrapper.sendToAll(new LoopedSoundPacket(pos.getX(), pos.getY(), pos.getZ()));
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			data.setString("mode", mode.toString());
 			data.setBoolean("isOn", isOn);
@@ -238,14 +236,18 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 		}
 	}
 	
-	public boolean rotationIsValid(final int silexMeta, final int felMeta) {
-		final ForgeDirection silexDir = ForgeDirection.getOrientation(silexMeta);
-		final ForgeDirection felDir = ForgeDirection.getOrientation(felMeta);
-        return silexDir == felDir || silexDir == felDir.getOpposite();
-    }
+	public boolean rotationIsValid(int silexMeta, int felMeta) {
+		ForgeDirection silexDir = ForgeDirection.getOrientation(silexMeta);
+		ForgeDirection felDir = ForgeDirection.getOrientation(felMeta);
+		if(silexDir == felDir || silexDir == felDir.getOpposite()) {
+			return true;
+		}
+		 
+		return false;
+	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 		this.mode = EnumWavelengths.valueOf(nbt.getString("mode"));
 		this.isOn = nbt.getBoolean("isOn");
@@ -254,19 +256,19 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 	}
 
 	@Override
-	public void handleButtonPacket(final int value, final int meta) {
+	public void handleButtonPacket(int value, int meta) {
 		
 		if(meta == 2){
 			this.isOn = !this.isOn;
 		}
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
 		this.power = nbt.getLong("power");
@@ -277,7 +279,7 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
 		nbt.setLong("power", this.power);
@@ -300,7 +302,7 @@ public class TileEntityFEL extends TileEntityMachineBase implements ITickable, I
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

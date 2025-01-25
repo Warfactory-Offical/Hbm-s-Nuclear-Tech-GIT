@@ -1,6 +1,7 @@
 package com.hbm.handler.jei;
 
-import com.hbm.inventory.RBMKOutgasserRecipes.RBMKOutgasserRecipe;
+
+import com.hbm.inventory.RBMKOutgasserRecipes;
 import com.hbm.lib.RefStrings;
 
 import com.hbm.util.I18nUtil;
@@ -16,7 +17,7 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-public class RBMKOutgasserRecipeHandler implements IRecipeCategory<RBMKOutgasserRecipe> {
+public class RBMKOutgasserRecipeHandler implements IRecipeCategory<RBMKOutgasserRecipes.RBMKOutgasserRecipe> {
 
 	public static final ResourceLocation gui_rl = new ResourceLocation(RefStrings.MODID, "textures/gui/reactors/gui_rbmk_outgasser.png");
 	
@@ -24,7 +25,7 @@ public class RBMKOutgasserRecipeHandler implements IRecipeCategory<RBMKOutgasser
 	protected final IDrawableStatic progressStatic;
 	protected final IDrawableAnimated progressAnimated;
 	
-	public RBMKOutgasserRecipeHandler(final IGuiHelper help) {
+	public RBMKOutgasserRecipeHandler(IGuiHelper help) {
 		background = help.createDrawable(gui_rl, 12, 17, 152, 72);
 		progressStatic = help.createDrawable(gui_rl, 190, 0, 44, 6);
 		progressAnimated = help.createAnimatedDrawable(progressStatic, 100, StartDirection.LEFT, false);
@@ -51,13 +52,13 @@ public class RBMKOutgasserRecipeHandler implements IRecipeCategory<RBMKOutgasser
 	}
 	
 	@Override
-	public void drawExtras(final Minecraft minecraft) {
+	public void drawExtras(Minecraft minecraft) {
 		progressAnimated.draw(minecraft, 66-12, 58-17);
 	}
 
 	@Override
-	public void setRecipe(final IRecipeLayout recipeLayout, final RBMKOutgasserRecipe recipeWrapper, final IIngredients ingredients) {
-		final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, RBMKOutgasserRecipes.RBMKOutgasserRecipe recipeWrapper, IIngredients ingredients) {
+		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		guiItemStacks.init(0, true, 47-12, 52-17);
 		guiItemStacks.init(1, false, 111-12, 52-17);

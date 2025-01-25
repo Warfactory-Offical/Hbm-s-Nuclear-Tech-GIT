@@ -1,16 +1,10 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
 import com.hbm.blocks.machine.MachineDiFurnaceRTG;
 import com.hbm.inventory.DiFurnaceRecipes;
-import com.hbm.items.ModItems;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.RTGUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -35,7 +29,7 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.progress = compound.getShort("progress");
 		this.rtgPower = compound.getInteger("rtgPower");
 		if(compound.hasKey("inventory"))
@@ -44,7 +38,7 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setShort("progress", progress);
 		compound.setInteger("rtgPower", rtgPower);
 		compound.setTag("inventory", inventory.serializeNBT());
@@ -67,12 +61,12 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 			}
 
 		
-			final boolean trigger = isProcessing() || (canProcess() && hasPower());
+			boolean trigger = isProcessing() || (canProcess() && hasPower());
 			if(trigger != lastTrigger)
 				MachineDiFurnaceRTG.updateBlockState(trigger, this.world, pos);
 			lastTrigger = trigger;
 
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setShort("progress", progress);
 			data.setInteger("rtgPower", rtgPower);
 			networkPack(data, 10);
@@ -80,7 +74,7 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		progress = nbt.getShort("progress");
 		rtgPower = nbt.getShort("rtgPower");
 	}
@@ -91,29 +85,32 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
-		final int i = e.ordinal();
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
+		int i = e.ordinal();
 		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
-        return i != 2;
-    }
+	public boolean isItemValidForSlot(int i, ItemStack stack) {
+		if(i == 2) {
+			return false;
+		}
+		return true;
+	}
 	
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
 		if(slot == 0 && isItemValidForSlot(slot, itemStack)) return inventory.getStackInSlot(1).getItem() != itemStack.getItem();
 		if(slot == 1 && isItemValidForSlot(slot, itemStack)) return inventory.getStackInSlot(0).getItem() != itemStack.getItem();
 		return isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount) {
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
 		return slot == 2;
 	}
 	
-	public boolean isUsableByPlayer(final EntityPlayer player){
+	public boolean isUsableByPlayer(EntityPlayer player){
 		if(world.getTileEntity(pos) != this)
 		{
 			return false;
@@ -122,11 +119,11 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 		}
 	}
 	
-	public int getDiFurnaceProgressScaled(final int i) {
+	public int getDiFurnaceProgressScaled(int i) {
 		return (progress * i) / progressRequired;
 	}
 	
-	public int getPowerRemainingScaled(final int i) {
+	public int getPowerRemainingScaled(int i) {
 		return (rtgPower * i) / maxRTGPower;
 	}
 
@@ -139,7 +136,7 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 		{
 			return false;
 		}
-		final ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
+		ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
 		if(itemStack == null)
 		{	
 			return false;
@@ -162,7 +159,7 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 	
 	private void processItem() {
 		if(canProcess()) {
-			final ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
+			ItemStack itemStack = DiFurnaceRecipes.getFurnaceProcessingResult(inventory.getStackInSlot(0), inventory.getStackInSlot(1));
 			
 			if(inventory.getStackInSlot(2).isEmpty())
 			{
@@ -175,7 +172,7 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements ITi
 			{
 				if(inventory.getStackInSlot(i).getCount() <= 0)
 				{
-					inventory.setStackInSlot(i, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(i).getItem().setFull3D()));
+					inventory.setStackInSlot(i, new ItemStack(inventory.getStackInSlot(i).getItem().setFull3D()));
 				}else{
 					inventory.getStackInSlot(i).shrink(1);
 				}

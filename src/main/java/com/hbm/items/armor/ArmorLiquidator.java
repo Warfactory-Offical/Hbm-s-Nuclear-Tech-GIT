@@ -40,15 +40,15 @@ public class ArmorLiquidator extends ArmorFSB implements IGasMask {
 
 	@SideOnly(Side.CLIENT)
 	private ModelM65 model;
-	private final ResourceLocation hazmatBlur = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_dark.png");
+	private ResourceLocation hazmatBlur = new ResourceLocation(RefStrings.MODID + ":textures/misc/overlay_dark.png");
 	
-	public ArmorLiquidator(final ArmorMaterial materialIn, final int renderIndexIn, final EntityEquipmentSlot equipmentSlotIn, final String texture, final String name) {
+	public ArmorLiquidator(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String texture, String name) {
 		super(materialIn, renderIndexIn, equipmentSlotIn, texture, name);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(final EntityLivingBase entityLiving, final ItemStack itemStack, final EntityEquipmentSlot armorSlot, final ModelBiped _default) {
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		if (this == ModItems.liquidator_helmet) {
 			if (armorSlot == EntityEquipmentSlot.HEAD) {
 				if (this.model == null) {
@@ -61,30 +61,30 @@ public class ArmorLiquidator extends ArmorFSB implements IGasMask {
 	}
 	
 	@Override
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(final EntityEquipmentSlot equipmentSlot) {
-		final Multimap<String, AttributeModifier> map = super.getItemAttributeModifiers(equipmentSlot);
+	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
+		Multimap<String, AttributeModifier> map = super.getItemAttributeModifiers(equipmentSlot);
 		if(equipmentSlot == this.armorType){
 			map.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(), new AttributeModifier(ArmorModHandler.fixedUUIDs[this.armorType.getIndex()], "Armor modifier", 100D, 0));
-			map.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(ArmorModHandler.fixedUUIDs[this.armorType.getIndex()], "Armor modifier", -0.1D, 1));
+			map.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(ArmorModHandler.fixedUUIDs[this.armorType.getIndex()], "Armor modifier", (double) -0.1D, 1));
 		}
 		return map;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderHelmetOverlay(final ItemStack stack, final EntityPlayer player, final ScaledResolution resolution, final float partialTicks) {
+	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
 		GlStateManager.disableDepth();
 		GlStateManager.depthMask(false);
 		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 		GlStateManager.color(1, 1, 1, 1);
 		GlStateManager.disableAlpha();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(hazmatBlur);
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buf.pos(0.0D, resolution.getScaledHeight(), -90.0D).tex(0, 1).endVertex();
-		buf.pos(resolution.getScaledWidth(), resolution.getScaledHeight(), -90.0D).tex(1, 1).endVertex();
-		buf.pos(resolution.getScaledWidth(), 0.0D, -90.0D).tex(1, 0).endVertex();
+		buf.pos(0.0D, (double) resolution.getScaledHeight(), -90.0D).tex(0, 1).endVertex();
+		buf.pos((double) resolution.getScaledWidth(), (double) resolution.getScaledHeight(), -90.0D).tex(1, 1).endVertex();
+		buf.pos((double) resolution.getScaledWidth(), 0.0D, -90.0D).tex(1, 0).endVertex();
 		buf.pos(0.0D, 0.0D, -90.0D).tex(0, 0).endVertex();
 		tes.draw();
 		GlStateManager.depthMask(true);
@@ -94,43 +94,43 @@ public class ArmorLiquidator extends ArmorFSB implements IGasMask {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn){
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		super.addInformation(stack, worldIn, list, flagIn);
 		if (this == ModItems.liquidator_helmet)
 			ArmorUtil.addGasMaskTooltip(stack, worldIn, list, flagIn);
 	}
 
 	@Override
-	public ArrayList<HazardClass> getBlacklist(final ItemStack stack) {
+	public ArrayList<HazardClass> getBlacklist(ItemStack stack) {
 		return new ArrayList(); // full hood has no restrictions
 	}
 
 	@Override
-	public ItemStack getFilter(final ItemStack stack) {
+	public ItemStack getFilter(ItemStack stack) {
 		return ArmorUtil.getGasMaskFilter(stack);
 	}
 
 	@Override
-	public void installFilter(final ItemStack stack, final ItemStack filter) {
+	public void installFilter(ItemStack stack, ItemStack filter) {
 		ArmorUtil.installGasMaskFilter(stack, filter);
 	}
 
 	@Override
-	public void damageFilter(final ItemStack stack, final int damage) {
+	public void damageFilter(ItemStack stack, int damage) {
 		ArmorUtil.damageGasMaskFilter(stack, damage);
 	}
 
 	@Override
-	public boolean isFilterApplicable(final ItemStack stack, final ItemStack filter) {
+	public boolean isFilterApplicable(ItemStack stack, ItemStack filter) {
 		return true;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (this == ModItems.liquidator_helmet){
 			if(player.isSneaking()) {
-				final ItemStack stack = player.getHeldItem(hand);
-				final ItemStack filter = this.getFilter(stack);
+				ItemStack stack = player.getHeldItem(hand);
+				ItemStack filter = this.getFilter(stack);
 				
 				if(filter != null) {
 					ArmorUtil.removeFilter(stack);

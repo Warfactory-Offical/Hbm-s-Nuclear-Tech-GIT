@@ -1,14 +1,13 @@
 package com.hbm.render.misc;
 
-import java.util.HashMap;
-
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile.PartType;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.amlfrom1710.IModelCustom;
-
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.HashMap;
 
 public class MissilePart {
 	
@@ -21,7 +20,7 @@ public class MissilePart {
 	public IModelCustom model;
 	public ResourceLocation texture;
 	
-	private MissilePart(final Item item, final PartType type, final double height, final double guiheight, final IModelCustom model, final ResourceLocation texture) {
+	private MissilePart(Item item, PartType type, double height, double guiheight, IModelCustom model, ResourceLocation texture) {
 		this.part = item;
 		this.type = type;
 		this.height = height;
@@ -177,13 +176,13 @@ public class MissilePart {
 		
 	}
 	
-	public static void registerPart(final Item item, final PartType type, final double height, final double guiheight, final IModelCustom model, final ResourceLocation texture) {
+	public static void registerPart(Item item, PartType type, double height, double guiheight, IModelCustom model, ResourceLocation texture) {
 		
-		final MissilePart part = new MissilePart(item, type, height, guiheight, model, texture);
+		MissilePart part = new MissilePart(item, type, height, guiheight, model, texture);
 		parts.put(item.hashCode(), part);
 	}
 	
-	public static MissilePart getPart(final Item item) {
+	public static MissilePart getPart(Item item) {
 		
 		if(item == null)
 			return null;

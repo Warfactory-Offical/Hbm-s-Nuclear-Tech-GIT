@@ -1,17 +1,15 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.mob.botprime.EntityBOTPrimeBody;
 import com.hbm.hfr.render.loader.HFRWavefrontObject;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.amlfrom1710.IModelCustom;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderWormBody extends Render<EntityBOTPrimeBody> {
 
@@ -20,13 +18,13 @@ public class RenderWormBody extends Render<EntityBOTPrimeBody> {
 	public static final IModelCustom body = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/mobs/bot_prime_body.obj"));
 	public static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID, "textures/entity/mark_zero_body.png");
 
-	protected RenderWormBody(final RenderManager renderManager) {
+	protected RenderWormBody(RenderManager renderManager) {
 		super(renderManager);
 		this.shadowOpaque = 0.0F;
 	}
 	
 	@Override
-	public void doRender(final EntityBOTPrimeBody entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityBOTPrimeBody entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -43,7 +41,7 @@ public class RenderWormBody extends Render<EntityBOTPrimeBody> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityBOTPrimeBody entity) {
+	protected ResourceLocation getEntityTexture(EntityBOTPrimeBody entity) {
 		return texture;
 	}
 	

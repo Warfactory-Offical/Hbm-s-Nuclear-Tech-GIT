@@ -23,14 +23,14 @@ public class ExtPropPacket implements IMessage {
 	public ExtPropPacket(){
 	}
 
-	public ExtPropPacket(final NBTTagCompound nbt){
+	public ExtPropPacket(NBTTagCompound nbt){
 		this.buffer = new PacketBuffer(Unpooled.buffer());
 
 		buffer.writeCompoundTag(nbt);
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf){
+	public void fromBytes(ByteBuf buf){
 		if(buffer == null) {
 			buffer = new PacketBuffer(Unpooled.buffer());
 		}
@@ -38,7 +38,7 @@ public class ExtPropPacket implements IMessage {
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf){
+	public void toBytes(ByteBuf buf){
 		if(buffer == null) {
 			buffer = new PacketBuffer(Unpooled.buffer());
 		}
@@ -49,17 +49,17 @@ public class ExtPropPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final ExtPropPacket m, final MessageContext ctx){
+		public IMessage onMessage(ExtPropPacket m, MessageContext ctx){
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				if(Minecraft.getMinecraft().world == null)
 					return;
 				try {
 
-					final NBTTagCompound nbt = m.buffer.readCompoundTag();
-					final IEntityHbmProps props = HbmLivingProps.getData(Minecraft.getMinecraft().player);
+					NBTTagCompound nbt = m.buffer.readCompoundTag();
+					IEntityHbmProps props = HbmLivingProps.getData(Minecraft.getMinecraft().player);
 					props.loadNBTData(nbt);
 
-				} catch(final IOException e) {
+				} catch(IOException e) {
 					e.printStackTrace();
 				}
 			});

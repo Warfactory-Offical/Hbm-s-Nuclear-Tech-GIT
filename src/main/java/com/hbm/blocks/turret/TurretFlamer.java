@@ -3,7 +3,6 @@ package com.hbm.blocks.turret;
 import com.hbm.entity.projectile.EntityFire;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.tileentity.turret.TileEntityTurretFlamer;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -13,17 +12,17 @@ import net.minecraft.world.World;
 
 public class TurretFlamer extends TurretBase {
 
-	public TurretFlamer(final Material materialIn, final String s) {
+	public TurretFlamer(Material materialIn, String s) {
 		super(materialIn, s);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityTurretFlamer();
 	}
 
 	@Override
-	public boolean executeHoldAction(final World world, final int i, final double yaw, double pitch, final BlockPos pos) {
+	public boolean executeHoldAction(World world, int i, double yaw, double pitch, BlockPos pos) {
 		boolean flag = false;
 		
 		if(pitch < -60)
@@ -31,12 +30,12 @@ public class TurretFlamer extends TurretBase {
 		if(pitch > 30)
 			pitch = 30;
 		
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		
 		if(true) {
-			final Vec3d vector = new Vec3d(
+			Vec3d vector = new Vec3d(
 					-Math.sin(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI),
 					-Math.sin(pitch / 180.0F * (float) Math.PI),
 					Math.cos(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI));
@@ -44,7 +43,7 @@ public class TurretFlamer extends TurretBase {
 			vector.normalize();
 			
 			if(!world.isRemote) {
-				final EntityFire bullet = new EntityFire(world);
+				EntityFire bullet = new EntityFire(world);
 				bullet.posX = x + vector.x * 2 + 0.5;
 				bullet.posY = y + vector.y * 2 + 1;
 				bullet.posZ = z + vector.z * 2 + 0.5;
@@ -70,6 +69,6 @@ public class TurretFlamer extends TurretBase {
 	}
 
 	@Override
-	public void executeReleaseAction(final World world, final int i, final double yaw, final double pitch, final BlockPos pos) {}
+	public void executeReleaseAction(World world, int i, double yaw, double pitch, BlockPos pos) {}
 
 }

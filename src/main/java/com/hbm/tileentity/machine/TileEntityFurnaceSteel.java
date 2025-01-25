@@ -1,15 +1,12 @@
 package com.hbm.tileentity.machine;
 
-import java.util.List;
-
+import api.hbm.tile.IHeatSource;
 import com.hbm.inventory.container.ContainerFurnaceSteel;
 import com.hbm.inventory.gui.GUIFurnaceSteel;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.ItemStackUtil;
-
-import api.hbm.tile.IHeatSource;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -27,6 +24,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGUIProvider, ITickable {
 
 	public int[] progress = new int[3];
@@ -36,7 +35,7 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	public int heat;
 	public static final int maxHeat = 100_000;
 	public static final double diffusion = 0.05D;
-	private final ItemStack[] lastItems = new ItemStack[3];
+	private ItemStack[] lastItems = new ItemStack[3];
 	
 	public boolean wasOn = false;
 	    
@@ -57,10 +56,10 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 			
 			this.wasOn = false;
 			
-			final int burn = (heat - TileEntityFurnaceSteel.maxHeat / 3) / 10;
+			int burn = (heat - TileEntityFurnaceSteel.maxHeat / 3) / 10;
 			
 			for(int i = 0; i < 3; i++) {
-				final ItemStack input = inventory.getStackInSlot(i);
+				ItemStack input = inventory.getStackInSlot(i);
 				
 				if(input == ItemStack.EMPTY || lastItems[i] == ItemStack.EMPTY || !input.isItemEqual(lastItems[i])) {
 					progress[i] = 0;
@@ -76,8 +75,8 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 				lastItems[i] = input;
 				
 				if(progress[i] >= processTime) {
-					final ItemStack outputs = inventory.getStackInSlot(i + 3);
-					final ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(i));
+					ItemStack outputs = inventory.getStackInSlot(i + 3);
+					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(i));
 					ItemStack copy = outputs;
 		
 					if(outputs == ItemStack.EMPTY) {
@@ -103,7 +102,7 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 				}
 			}
 			
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setIntArray("progress", progress);
 			data.setIntArray("bonus", bonus);
 			data.setInteger("heat", heat);
@@ -112,8 +111,8 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 		} else {
 			
 			if(this.wasOn) {
-				final ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
-				final ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				
 				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5 - dir.offsetX * 1.125 - rot.offsetX * 0.75, pos.getY() + 2.625, pos.getZ() + 0.5 - dir.offsetZ * 1.125 - rot.offsetZ * 0.75, 0.0, 0.05, 0.0);
 				
@@ -128,7 +127,7 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		this.progress = nbt.getIntArray("progress");
 		this.bonus = nbt.getIntArray("bonus");
 		this.heat = nbt.getInteger("heat");
@@ -136,36 +135,36 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
 		this.progress = nbt.getIntArray("progress");
 		this.bonus = nbt.getIntArray("bonus");
 		this.heat = nbt.getInteger("heat");
 		
-		final NBTTagList list = nbt.getTagList("lastItems", 10);
+		NBTTagList list = nbt.getTagList("lastItems", 10);
 		for(int i = 0; i < list.tagCount(); i++) {
-			final NBTTagCompound nbt1 = list.getCompoundTagAt(i);
-			final byte b0 = nbt1.getByte("lastItem");
+			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
+			byte b0 = nbt1.getByte("lastItem");
 			if(b0 >= 0 && b0 < lastItems.length) {
-				lastItems[b0] = ItemStackUtil.itemStackFrom(nbt1);
+				lastItems[b0] = new ItemStack(nbt1);
 			
 			}
 		}
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setIntArray("progress", progress);
 		nbt.setIntArray("bonus", bonus);
 		nbt.setInteger("heat", heat);
 		
-		final NBTTagList list = new NBTTagList();
+		NBTTagList list = new NBTTagList();
 		for(int i = 0; i < lastItems.length; i++) {
 			if(lastItems[i] != null) {
-				final NBTTagCompound nbt1 = new NBTTagCompound();
+				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("lastItem", (byte) i);
 				lastItems[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
@@ -175,11 +174,11 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 		return super.writeToNBT(nbt);
 	}
 	
-	protected void addBonus(final ItemStack stack, final int index) {
+	protected void addBonus(ItemStack stack, int index) {
 		
-		final List<String> names = ItemStackUtil.getOreDictNames(stack);
+		List<String> names = ItemStackUtil.getOreDictNames(stack);
 		
-		for(final String name : names) {
+		for(String name : names) {
 			if(name.startsWith("ore")) { this.bonus[index] += 25; return; }
 			if(name.startsWith("log")) { this.bonus[index] += 50; return; }
 			if(name.equals("anyTar")) { this.bonus[index] += 50; return; }
@@ -189,11 +188,12 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	protected void tryPullHeat() {
 		
 		if(this.heat >= TileEntityFurnaceSteel.maxHeat) return;
-		final BlockPos blockBelow = pos.down();
-		final TileEntity con = world.getTileEntity(blockBelow);
+		BlockPos blockBelow = pos.down();
+		TileEntity con = world.getTileEntity(blockBelow);
 		
-		if(con instanceof IHeatSource source) {
-            int diff = source.getHeatStored() - this.heat;
+		if(con instanceof IHeatSource) {
+			IHeatSource source = (IHeatSource) con;
+			int diff = source.getHeatStored() - this.heat;
 			
 			if(diff == 0) {
 				return;
@@ -212,14 +212,14 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 		this.heat = Math.max(this.heat - Math.max(this.heat / 1000, 1), 0);
 	}
 	
-	public boolean canSmelt(final int index) {
+	public boolean canSmelt(int index) {
 		
 		if(this.heat < TileEntityFurnaceSteel.maxHeat / 3) return false;
 		if(inventory.getStackInSlot(index).isEmpty())
 		{
 			return false;
 		}
-        final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(index));
+        ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(index));
         
 		if(itemStack == null || itemStack.isEmpty())
 		{
@@ -243,13 +243,13 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
 		return new int[]{ 0, 1, 2, 3, 4, 5};
 	}
 	
 
 	@Override
-	public boolean isItemValidForSlot(final int i, final ItemStack itemStack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
 		
 		if(i < 3)
 			return FurnaceRecipes.instance().getSmeltingResult(itemStack) != null;
@@ -258,18 +258,18 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	}
 
 	@Override
-	public boolean canExtractItem(final int i, final ItemStack itemStack, final int j) {
+	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
 		return i > 2;
 	}
 
 	@Override
-	public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new ContainerFurnaceSteel(player.inventory, this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new GUIFurnaceSteel(player.inventory, this);
 	}
 	

@@ -35,15 +35,15 @@ public class Dud extends WorldGenerator
 		};
 	}
 
-	public boolean LocationIsValidSpawn(final World world, final BlockPos pos)
+	public boolean LocationIsValidSpawn(World world, BlockPos pos)
  {
 
-		final IBlockState checkBlockState = world.getBlockState(pos.down());
-		final Block checkBlock = checkBlockState.getBlock();
-		final Block blockAbove = world.getBlockState(pos).getBlock();
-		final Block blockBelow = world.getBlockState(pos.down(2)).getBlock();
+		IBlockState checkBlockState = world.getBlockState(pos.down());
+		Block checkBlock = checkBlockState.getBlock();
+		Block blockAbove = world.getBlockState(pos).getBlock();
+		Block blockBelow = world.getBlockState(pos.down(2)).getBlock();
 
-		for (final Block i : GetValidSpawnBlocks())
+		for (Block i : GetValidSpawnBlocks())
 		{
 			if (blockAbove != Blocks.AIR)
 			{
@@ -66,15 +66,15 @@ public class Dud extends WorldGenerator
 	}
 
 	@Override
-	public boolean generate(final World world, final Random rand, final BlockPos pos)
+	public boolean generate(World world, Random rand, BlockPos pos)
 	{
 		return generate(world, rand, pos, false);
 
 	}
 	
-	public boolean generate(final World world, final Random rand, final BlockPos pos, final boolean force)
+	public boolean generate(World world, Random rand, BlockPos pos, boolean force)
 	{
-		final int i = rand.nextInt(1);
+		int i = rand.nextInt(1);
 
 		if(i == 0)
 		{
@@ -85,7 +85,7 @@ public class Dud extends WorldGenerator
 
 	}
 
-	public boolean generate_r0(final World world, final Random rand, final BlockPos pos, final boolean force)
+	public boolean generate_r0(World world, Random rand, BlockPos pos, boolean force)
 	{
 		if(!force && !LocationIsValidSpawn(world, pos))
 		{

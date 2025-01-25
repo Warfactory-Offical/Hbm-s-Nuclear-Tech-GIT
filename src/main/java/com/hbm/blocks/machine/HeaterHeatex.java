@@ -1,8 +1,5 @@
 package com.hbm.blocks.machine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ITooltipProvider;
@@ -10,7 +7,6 @@ import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityHeaterHeatex;
 import com.hbm.util.I18nUtil;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -25,14 +21,17 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HeaterHeatex extends BlockDummyable implements ITooltipProvider, ILookOverlay {
 
-    public HeaterHeatex(final Material mat, final String s) {
+    public HeaterHeatex(Material mat, String s) {
         super(Material.IRON, s);
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World world, final int meta) {
+    public TileEntity createNewTileEntity(World world, int meta) {
 
         if (meta >= 12) return new TileEntityHeaterHeatex();
         if (hasExtra(meta)) {
@@ -53,20 +52,20 @@ public class HeaterHeatex extends BlockDummyable implements ITooltipProvider, IL
     }
 
     @Override
-    public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         return standardOpenBehavior(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
     }
 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
         this.addStandardInfo(list);
         super.addInformation(stack, worldIn, list, flagIn);
     }
 
     @Override
-    protected void fillSpace(final World world, int x, final int y, int z, final ForgeDirection dir, final int o) {
+    protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
         super.fillSpace(world, x, y, z, dir, o);
 
         x += dir.offsetX * o;
@@ -79,18 +78,20 @@ public class HeaterHeatex extends BlockDummyable implements ITooltipProvider, IL
     }
 
     @Override
-    public void printHook(final Pre event, final World world, final int x, final int y, final int z) {
-        final int[] pos = this.findCore(world, x, y, z);
+    public void printHook(Pre event, World world, int x, int y, int z) {
+        int[] pos = this.findCore(world, x, y, z);
 
         if (pos == null)
             return;
 
-        final TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+        TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
 
-        if (!(te instanceof TileEntityHeaterHeatex heater))
+        if (!(te instanceof TileEntityHeaterHeatex))
             return;
 
-        final List<String> text = new ArrayList<>();
+        TileEntityHeaterHeatex heater = (TileEntityHeaterHeatex) te;
+
+        List<String> text = new ArrayList<>();
         text.add(String.format("%,d", heater.heatEnergy) + " TU");
         text.add("§c<- §r"+String.format("%,d", heater.heatGen) + " TU/t");
         ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getTranslationKey() + ".name"), 0xffff00, 0x404000, text);

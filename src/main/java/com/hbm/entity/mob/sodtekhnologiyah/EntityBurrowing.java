@@ -12,7 +12,7 @@ public abstract class EntityBurrowing extends EntityCreature implements IRadiati
 	protected float dragInAir;
 	protected float dragInGround;
 	
-	public EntityBurrowing(final World worldIn) {
+	public EntityBurrowing(World worldIn) {
 		super(worldIn);
 	}
 	
@@ -20,7 +20,7 @@ public abstract class EntityBurrowing extends EntityCreature implements IRadiati
 	 * No need to update this
 	 */
 	@Override
-	public void fall(final float distance, final float damageMultiplier) {}
+	public void fall(float distance, float damageMultiplier) {}
 	
 	/*
 	 * Our "eye"-height should always be centered
@@ -38,10 +38,10 @@ public abstract class EntityBurrowing extends EntityCreature implements IRadiati
 	 * No fall damage :P
 	 */
 	@Override
-	protected void updateFallState(final double y, final boolean onGroundIn, final IBlockState state, final BlockPos pos) {}
+	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
 	
 	@Override
-	public void travel(final float strafe, final float vertical, final float forward) {
+	public void travel(float strafe, float vertical, float forward) {
 		float drag = this.dragInGround;
         if ((!isEntityInsideOpaqueBlock()) && (!isInWater()) && (!isInLava()))
         {
@@ -78,8 +78,8 @@ public abstract class EntityBurrowing extends EntityCreature implements IRadiati
         this.motionZ *= drag;
 
         this.prevLimbSwingAmount = this.limbSwingAmount;
-        final double deltaX = this.posX - this.prevPosX;
-        final double deltaZ = this.posZ - this.prevPosZ;
+        double deltaX = this.posX - this.prevPosX;
+        double deltaZ = this.posZ - this.prevPosZ;
         float dist = (float) Math.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 4.0F;
         if (dist > 1.0F) {
           dist = 1.0F;

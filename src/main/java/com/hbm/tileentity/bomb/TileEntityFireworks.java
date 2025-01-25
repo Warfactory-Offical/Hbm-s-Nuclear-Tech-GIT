@@ -4,7 +4,6 @@ import com.hbm.entity.item.EntityFireworks;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -24,21 +23,21 @@ public class TileEntityFireworks extends TileEntity implements ITickable {
 	public void update() {
 		if(!world.isRemote) {
 
-			if(world.isBlockPowered(pos) && !message.isEmpty() && charges > 0) {
+			if(world.isBlockIndirectlyGettingPowered(pos) > 0 && !message.isEmpty() && charges > 0) {
 
 				delay--;
 
 				if(delay <= 0) {
 					delay = 30;
 
-					final int c = message.charAt(index);
+					int c = (int)(message.charAt(index));
 
-					final int mod = index % 9;
+					int mod = index % 9;
 
-					final double offX = (mod / 3 - 1) * 0.3125;
-					final double offZ = (mod % 3 - 1) * 0.3125;
+					double offX = (mod / 3 - 1) * 0.3125;
+					double offZ = (mod % 3 - 1) * 0.3125;
 
-					final EntityFireworks fireworks = new EntityFireworks(world, pos.getX() + 0.5 + offX, pos.getY() + 1.5, pos.getZ() + 0.5 + offZ, color, c);
+					EntityFireworks fireworks = new EntityFireworks(world, pos.getX() + 0.5 + offX, pos.getY() + 1.5, pos.getZ() + 0.5 + offZ, color, c);
 					world.spawnEntity(fireworks);
 
 					world.playSound(null, fireworks.posX, fireworks.posY, fireworks.posZ, HBMSoundHandler.rocketFlame, SoundCategory.BLOCKS, 3.0F, 1.0F);
@@ -46,7 +45,7 @@ public class TileEntityFireworks extends TileEntity implements ITickable {
 					charges--;
 					this.markDirty();
 
-					final NBTTagCompound data = new NBTTagCompound();
+					NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "vanillaExt");
 					data.setString("mode", "flame");
 					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.getX() + 0.5 + offX, pos.getY() + 1.125, pos.getZ() + 0.5 + offZ), new TargetPoint(this.world.provider.getDimension(), pos.getX() + 0.5 + offX, pos.getY() + 1.125, pos.getZ() + 0.5 + offZ, 100));
@@ -67,7 +66,7 @@ public class TileEntityFireworks extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.charges = compound.getInteger("charges");
 		this.color = compound.getInteger("color");
 		this.message = compound.getString("message");
@@ -75,7 +74,7 @@ public class TileEntityFireworks extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("charges", charges);
 		compound.setInteger("color", color);
 		compound.setString("message", message);

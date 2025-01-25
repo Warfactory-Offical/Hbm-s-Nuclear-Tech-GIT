@@ -4,7 +4,6 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachineITER;
 import com.hbm.lib.ForgeDirection;
-
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -144,15 +143,15 @@ public class TileEntityITERStruct extends TileEntity implements ITickable {
 			for(int x = 0; x < layout[0].length; x++) {
 				for(int z = 0; z < layout[0][0].length; z++) {
 
-					final int ly = y > 2 ? 4 - y : y;
+					int ly = y > 2 ? 4 - y : y;
 
-					final int width = 7;
+					int width = 7;
 
 					if(x == width && y == 0 && z == width)
 						continue;
 
-					final int b = layout[ly][x][z];
-					final Block block = world.getBlockState(new BlockPos(pos.getX() + x - width, pos.getY() + y, pos.getZ() + z - width)).getBlock();
+					int b = layout[ly][x][z];
+					Block block = world.getBlockState(new BlockPos(pos.getX() + x - width, pos.getY() + y, pos.getZ() + z - width)).getBlock();
 					switch(b) {
 					case 1: if(block != ModBlocks.fusion_conductor) { return; } break;
 					case 2: if(block != ModBlocks.fusion_center) { return; } break;

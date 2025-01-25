@@ -1,9 +1,6 @@
 package com.hbm.entity.mob.botprime;
 
-import java.util.List;
-
 import com.google.common.base.Predicate;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,6 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 
@@ -43,7 +42,7 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 			return target instanceof EntityWormBaseNT;
 		};
 
-	public EntityWormBaseNT(final World world) {
+	public EntityWormBaseNT(World world) {
 		super(world);
 		this.setSize(1.0F, 1.0F);
 		this.surfaceY = 60;
@@ -53,7 +52,7 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 		return this.partNum;
 	}
 
-	public void setPartNumber(final int num) {
+	public void setPartNumber(int num) {
 		this.partNum = num;
 	}
 
@@ -65,12 +64,12 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 		return this.headID;
 	}
 
-	public void setHeadID(final int id) {
+	public void setHeadID(int id) {
 		this.headID = id;
 	}
 	
 	@Override
-	public boolean attackEntityFrom(final DamageSource source, final float amount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(this.isEntityInvulnerable(source) || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.CRAMMING || ((source.getImmediateSource() instanceof EntityWormBaseNT) && ((EntityWormBaseNT) source.getImmediateSource()).getHeadID() == this.getHeadID())) {
 			return false;
 		} else {
@@ -79,7 +78,7 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 				return super.attackEntityFrom(source, amount);
 			}
 
-			final Entity head = this.targetedEntity;
+			Entity head = this.targetedEntity;
 
 			if(head != null) {
 				return head.attackEntityFrom(source, amount);
@@ -113,9 +112,9 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 		}
 	}
 	
-	protected void attackEntitiesInList(final List<Entity> targets) {
+	protected void attackEntitiesInList(List<Entity> targets) {
 
-		for(final Entity target : targets) {
+		for(Entity target : targets) {
 			if(((target instanceof EntityLivingBase)) && (canAttackClass(((EntityLivingBase)target).getClass())) && ((!(target instanceof EntityWormBaseNT)) || (((EntityWormBaseNT) target).getHeadID() != this.getHeadID()))) {
 				attackEntityAsMob(target);
 			}
@@ -123,23 +122,23 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 	}
 	
 	@Override
-	public boolean canAttackClass(final Class<? extends EntityLivingBase> cls) {
+	public boolean canAttackClass(Class<? extends EntityLivingBase> cls) {
 		return true;
 	}
 	
 	@Override
-	public boolean attackEntityAsMob(final Entity target) {
-		final boolean var2 = target.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength(target));
+	public boolean attackEntityAsMob(Entity target) {
+		boolean var2 = target.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength(target));
 
 		if(var2) {
 			this.idleTime = 0;
-			final double tx = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
-			final double tz = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
-			final double ty = (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D;
-			final double deltaX = target.posX - tx;
-			final double deltaZ = target.posZ - tz;
-			final double deltaY = target.posY - ty;
-			final double knockback = this.knockbackDivider * (deltaX * deltaX + deltaZ * deltaZ + deltaY * deltaY + 0.1D);
+			double tx = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
+			double tz = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
+			double ty = (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D;
+			double deltaX = target.posX - tx;
+			double deltaZ = target.posZ - tz;
+			double deltaY = target.posY - ty;
+			double knockback = this.knockbackDivider * (deltaX * deltaX + deltaZ * deltaZ + deltaY * deltaY + 0.1D);
 			target.addVelocity(deltaX / knockback, deltaY / knockback, deltaZ / knockback);
 		}
 
@@ -149,10 +148,10 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 	public abstract float getAttackStrength(Entity paramsa);
 	
 	@Override
-	public void addVelocity(final double x, final double y, final double z) {}
+	public void addVelocity(double x, double y, double z) {}
 	
 	@Override
-	public void faceEntity(final Entity entityIn, final float maxYawIncrease, final float maxPitchIncrease) {
+	public void faceEntity(Entity entityIn, float maxYawIncrease, float maxPitchIncrease) {
 	}
 	
 	protected boolean isCourseTraversable() {
@@ -162,12 +161,12 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 	protected boolean entInsideOpaqueBlock(){
 		for (int i = 0; i < 8; ++i)
         {
-            final float f = ((float)((i >> 0) % 2) - 0.5F) * this.width * 0.8F;
-            final float f1 = ((float)((i >> 1) % 2) - 0.5F) * 0.1F;
-            final float f2 = ((float)((i >> 2) % 2) - 0.5F) * this.width * 0.8F;
-            final int j = MathHelper.floor(this.posX + (double)f);
-            final int k = MathHelper.floor(this.posY + (double)this.getEyeHeight() + (double)f1);
-            final int l = MathHelper.floor(this.posZ + (double)f2);
+            float f = ((float)((i >> 0) % 2) - 0.5F) * this.width * 0.8F;
+            float f1 = ((float)((i >> 1) % 2) - 0.5F) * 0.1F;
+            float f2 = ((float)((i >> 2) % 2) - 0.5F) * this.width * 0.8F;
+            int j = MathHelper.floor(this.posX + (double)f);
+            int k = MathHelper.floor(this.posY + (double)this.getEyeHeight() + (double)f1);
+            int l = MathHelper.floor(this.posZ + (double)f2);
 
             if (this.world.getBlockState(new BlockPos(j, k, l)).isNormalCube())
             {
@@ -190,13 +189,13 @@ public abstract class EntityWormBaseNT extends EntityBurrowingNT {
 	}
 	
 	@Override
-	public void writeEntityToNBT(final NBTTagCompound compound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("wormID", this.getHeadID());
 	}
 	
 	@Override
-	public void readEntityFromNBT(final NBTTagCompound compound) {
+	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		setHeadID(compound.getInteger("wormID"));
 	}

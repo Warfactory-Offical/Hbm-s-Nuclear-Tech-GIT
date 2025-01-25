@@ -1,12 +1,10 @@
 package com.hbm.inventory;
 
-import java.util.HashSet;
-import java.util.HashMap;
-
 import com.hbm.forgefluid.ModForgeFluids;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import java.util.HashMap;
 
 public class FluidCombustionRecipes {
 	
@@ -63,32 +61,32 @@ public class FluidCombustionRecipes {
 		
 	}
 
-	public static int getFlameEnergy(final Fluid f){
-		final Integer heat = resultingTU.get(f);
+	public static int getFlameEnergy(Fluid f){
+		Integer heat = resultingTU.get(f);
 		if(heat != null)
 			return heat;
 		return 0;
 	}
 
-	public static boolean hasFuelRecipe(final Fluid fluid){
+	public static boolean hasFuelRecipe(Fluid fluid){
 		return resultingTU.containsKey(fluid);
 	}
 
-	public static void addBurnableFluid(final Fluid fluid, final int heatPerMiliBucket) {
+	public static void addBurnableFluid(Fluid fluid, int heatPerMiliBucket) {
 		resultingTU.put(fluid, heatPerMiliBucket);
 	}
 
-	public static void addBurnableFluid(final String fluid, final int heatPerMiliBucket){
+	public static void addBurnableFluid(String fluid, int heatPerMiliBucket){
 		if(FluidRegistry.isFluidRegistered(fluid)){
 			addBurnableFluid(FluidRegistry.getFluid(fluid), heatPerMiliBucket);
 		}
 	}
 
-	public static void removeBurnableFluid(final Fluid fluid){
+	public static void removeBurnableFluid(Fluid fluid){
 		resultingTU.remove(fluid);
 	}
 
-	public static void removeBurnableFluid(final String fluid){
+	public static void removeBurnableFluid(String fluid){
 		if(FluidRegistry.isFluidRegistered(fluid)){
 			resultingTU.remove(FluidRegistry.getFluid(fluid));
 		}

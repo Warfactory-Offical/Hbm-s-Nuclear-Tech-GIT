@@ -35,7 +35,7 @@ public class GunB93 extends Item {
 	public int dmgMin = 16;
 	public int dmgMax = 28;
 
-	public GunB93(final String s) {
+	public GunB93(String s) {
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
 		this.setCreativeTab(MainRegistry.weaponTab);
@@ -45,19 +45,19 @@ public class GunB93 extends Item {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(final ItemStack stack, final World worldIn, final EntityLivingBase entityLiving, final int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) == stack && !entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty() && entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.gun_b93) {
 			entityLiving.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).onPlayerStoppedUsing(worldIn, entityLiving, timeLeft);
 		}
 		if (!entityLiving.isSneaking()) {
 			int j = this.getMaxItemUseDuration(stack) - timeLeft;
 			if (entityLiving instanceof EntityPlayer) {
-				final ArrowLooseEvent evt = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, worldIn, j, false);
+				ArrowLooseEvent evt = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, worldIn, j, false);
 				MinecraftForge.EVENT_BUS.post(evt);
 				j = evt.getCharge();
 			}
 
-			final boolean flag = true;
+			boolean flag = true;
 			
 			if (flag) {
 				float f = j / 20.0F;
@@ -73,7 +73,7 @@ public class GunB93 extends Item {
 
 				if (!worldIn.isRemote) {
 					
-					final EntityModBeam entityarrow1;
+					EntityModBeam entityarrow1;
 					entityarrow1 = new EntityModBeam(worldIn, entityLiving, 3.0F, stack == entityLiving.getHeldItem(EnumHand.MAIN_HAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 					entityarrow1.mode = getPower(stack) - 1;
 					stack.damageItem(1, entityLiving);
@@ -91,8 +91,8 @@ public class GunB93 extends Item {
 	}
 
 	@Override
-	public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int i, final boolean b) {
-		final int j = getAnim(stack);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
+		int j = getAnim(stack);
 
 		if (j > 0) {
 			if (j < 30)
@@ -111,7 +111,7 @@ public class GunB93 extends Item {
 			    	if(!world.isRemote) {
 			    		world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 100.0f, world.rand.nextFloat() * 0.1F + 0.9F);
 
-						final EntityNukeExplosionMK3 exp = new EntityNukeExplosionMK3(world);
+						EntityNukeExplosionMK3 exp = new EntityNukeExplosionMK3(world);
 						exp.posX = entity.posX;
 						exp.posY = entity.posY;
 						exp.posZ = entity.posZ;
@@ -124,7 +124,7 @@ public class GunB93 extends Item {
 
 							world.spawnEntity(exp);
 				    		
-				    		final EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(world, 50);
+				    		EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(world, 50);
 				    		cloud.posX = entity.posX;
 				    		cloud.posY = entity.posY;
 				    		cloud.posZ = entity.posZ;
@@ -141,7 +141,7 @@ public class GunB93 extends Item {
 	 * How long it takes to use or consume an item
 	 */
 	@Override
-	public int getMaxItemUseDuration(final ItemStack p_77626_1_) {
+	public int getMaxItemUseDuration(ItemStack p_77626_1_) {
 		return 72000;
 	}
 
@@ -150,7 +150,7 @@ public class GunB93 extends Item {
 	 * is being used
 	 */
 	@Override
-	public EnumAction getItemUseAction(final ItemStack p_77661_1_) {
+	public EnumAction getItemUseAction(ItemStack p_77661_1_) {
 		return EnumAction.BOW;
 	}
 
@@ -159,8 +159,8 @@ public class GunB93 extends Item {
 	 * pressed. Args: itemStack, world, entityPlayer
 	 */
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ItemStack stack = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack stack = playerIn.getHeldItem(handIn);
 		if (!playerIn.isSneaking() && getPower(stack) > 0) {
 
 			if (getAnim(stack) == 0)
@@ -184,11 +184,11 @@ public class GunB93 extends Item {
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> tooltip, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18nUtil.resolveKey("trait.legendaryweap"));
 	}
 
-	private static int getAnim(final ItemStack stack) {
+	private static int getAnim(ItemStack stack) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -198,7 +198,7 @@ public class GunB93 extends Item {
 
 	}
 
-	private static void setAnim(final ItemStack stack, final int i) {
+	private static void setAnim(ItemStack stack, int i) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -207,7 +207,7 @@ public class GunB93 extends Item {
 
 	}
 
-	private static int getPower(final ItemStack stack) {
+	private static int getPower(ItemStack stack) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 			return 0;
@@ -217,7 +217,7 @@ public class GunB93 extends Item {
 
 	}
 
-	private static void setPower(final ItemStack stack, final int i) {
+	private static void setPower(ItemStack stack, int i) {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -226,7 +226,7 @@ public class GunB93 extends Item {
 
 	}
 
-	public static float getRotationFromAnim(final ItemStack stack, final float partialTicks) {
+	public static float getRotationFromAnim(ItemStack stack, float partialTicks) {
 		float rad = 0.0174533F;
 		rad *= 7.5F;
 		int i = getAnim(stack);
@@ -255,7 +255,7 @@ public class GunB93 extends Item {
 			return 2 - (i / 10);
 	}*/
 
-	public static float getTransFromAnim(final ItemStack stack, final float partialTicks) {
+	public static float getTransFromAnim(ItemStack stack, float partialTicks) {
 		float i = getAnim(stack);
 
 		if (i < 10)
@@ -272,13 +272,13 @@ public class GunB93 extends Item {
 	}
 
 	@Override
-	public EnumRarity getRarity(final ItemStack p_77613_1_) {
+	public EnumRarity getRarity(ItemStack p_77613_1_) {
 
 		return EnumRarity.UNCOMMON;
 	}
 	
 	@Override
-	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return false;
 	}
 }

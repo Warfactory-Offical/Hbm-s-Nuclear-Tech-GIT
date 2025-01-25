@@ -1,18 +1,16 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.network.energy.TileEntitySubstation;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderSubstation extends TileEntitySpecialRenderer<TileEntitySubstation> {
 
 	@Override
-	public void render(final TileEntitySubstation sub, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntitySubstation sub, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 			switch(sub.getBlockMetadata() - BlockDummyable.offset) {

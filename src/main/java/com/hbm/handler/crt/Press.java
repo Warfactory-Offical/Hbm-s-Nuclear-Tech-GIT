@@ -20,12 +20,12 @@ import java.util.Arrays;
 public class Press {
 
 	@ZenMethod
-	public static void addRecipe(final IItemStack output, final IIngredient input, final int type) {
+	public static void addRecipe(IItemStack output, IIngredient input, int type) {
 		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(output, input, type));
 	}
 
 	@Nullable
-	public static PressRecipes.PressType toType(final int type) {
+	public static PressRecipes.PressType toType(int type) {
 		if (type >= 0 && type < PressRecipes.PressType.values().length) {
 			return PressRecipes.PressType.values()[type];
 		} else {
@@ -34,13 +34,13 @@ public class Press {
 	}
 	private static class ActionAddRecipe implements IAction {
 
-		private final RecipesCommon.AStack input;
+		private RecipesCommon.AStack input;
 
-		private final ItemStack output;
+		private ItemStack output;
 
-		private final int type;
+		private int type;
 
-		public ActionAddRecipe(final IItemStack output, final IIngredient input, final int type) {
+		public ActionAddRecipe(IItemStack output, IIngredient input, int type) {
 			this.output = CraftTweakerMC.getItemStack(output);
 			this.input = NTMCraftTweaker.IIngredientToAStack(input);
 			this.type = type;
@@ -48,7 +48,7 @@ public class Press {
 
 		@Override
 		public void apply() {
-			final PressRecipes.PressType toType = toType(this.type);
+			PressRecipes.PressType toType = toType(this.type);
 			if(toType == null) {
 				CraftTweakerAPI.logError("Invalid press type: " + this.type);
 				return;

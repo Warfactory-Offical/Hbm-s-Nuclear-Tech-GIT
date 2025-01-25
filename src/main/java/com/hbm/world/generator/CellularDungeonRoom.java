@@ -10,28 +10,28 @@ public class CellularDungeonRoom {
 	protected CellularDungeonRoom daisyChain = null;
 	protected EnumFacing daisyDirection = null;
 	
-	public CellularDungeonRoom(final CellularDungeon parent) {
+	public CellularDungeonRoom(CellularDungeon parent) {
 		this.parent = parent;
 	}
 	
 	//per generation, only one door can be made. rooms having multiple doors will be the consequence of daisychaining.
 	//the initial room will use an invalid type to not spawn any doors.
-	public void generate(final World world, final int x, final int y, final int z, final EnumFacing door) {
+	public void generate(World world, int x, int y, int z, EnumFacing door) {
 		generateMain(world, x, y, z);
 		for(int i = 2; i < 6; i++) {
-			final EnumFacing dir = EnumFacing.byIndex(i);
+			EnumFacing dir = EnumFacing.getFront(i);
 			generateWall(world, x, y, z, dir, dir == door);
 		}
 	}
 	
-	public void generateMain(final World world, final int x, final int y, final int z) {
+	public void generateMain(World world, int x, int y, int z) {
 		
 		DungeonToolbox.generateBox(world, x, y, z, parent.width, 1, parent.width, parent.floor);
 		DungeonToolbox.generateBox(world, x, y + 1, z, parent.width, parent.height - 1, parent.width, Blocks.AIR.getDefaultState());
 		DungeonToolbox.generateBox(world, x, y + parent.height - 1, z, parent.width, 1, parent.width, parent.ceiling);
 	}
 	
-	public void generateWall(final World world, final int x, final int y, final int z, final EnumFacing wall, final boolean door) {
+	public void generateWall(World world, int x, int y, int z, EnumFacing wall, boolean door) {
 		
 		if(wall == EnumFacing.NORTH) {
 			DungeonToolbox.generateBox(world, x, y + 1, z, parent.width, parent.height - 2, 1, parent.wall);

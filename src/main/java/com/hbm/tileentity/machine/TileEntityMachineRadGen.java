@@ -1,27 +1,20 @@
 package com.hbm.tileentity.machine;
-import com.hbm.util.ItemStackUtil;
 
+import api.hbm.energymk2.IEnergyProviderMK2;
 import com.hbm.blocks.BlockDummyable;
-import com.hbm.blocks.ModBlocks;
-import com.hbm.items.ModItems;
-
-import com.hbm.util.ContaminationUtil;
-import com.hbm.lib.Library;
 import com.hbm.lib.ForgeDirection;
+import com.hbm.lib.Library;
 import com.hbm.packet.AuxElectricityPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityLoadedBase;
-
-import api.hbm.energy.IEnergyGenerator;
+import com.hbm.util.ContaminationUtil;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITickable, IEnergyGenerator {
+public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITickable, IEnergyProviderMK2 {
 
 	public ItemStackHandler inventory;
 
@@ -52,14 +45,14 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	public TileEntityMachineRadGen() {
 		inventory = new ItemStackHandler(3){
 			@Override
-			protected void onContentsChanged(final int slot) {
+			protected void onContentsChanged(int slot) {
 				markDirty();
 				super.onContentsChanged(slot);
 			}
 		};
 	}
 
-	private static final int[] accessibleSlots = new int[]{0};
+	private static int[] accessibleSlots = new int[]{0};
 
 	public String getInventoryName() {
 		return this.hasCustomInventoryName() ? this.customName : "container.radGen";
@@ -70,11 +63,11 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	}
 
 
-	public void setCustomName(final String name) {
+	public void setCustomName(String name) {
 		this.customName = name;
 	}
 	
-	public boolean isUseableByPlayer(final EntityPlayer player) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		if (world.getTileEntity(pos) != this) {
 			return false;
 		} else {
@@ -83,7 +76,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.power = compound.getLong("power");
 		this.fuel = compound.getInteger("fuel");
 		this.strength = compound.getInteger("strength");
@@ -93,7 +86,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("power", power);
 		compound.setInteger("fuel", fuel);
 		compound.setInteger("strength", strength);
@@ -101,11 +94,11 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 		return super.writeToNBT(compound);
 	}
 
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e) {
+	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
 		return accessibleSlots;
 	}
 
-	public boolean isItemValidForSlot(final int i, final ItemStack stack) {
+	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		return i == 0 && ContaminationUtil.getStackRads(stack) > 0;
 	}
 	
@@ -113,14 +106,15 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	public void update() {
 		if (!world.isRemote) {
 			power = Library.chargeItemsFromTE(inventory, 2, power, maxPower);
-			sendRADGenPower();
-			final int r = (int)Math.sqrt(ContaminationUtil.getStackRads(inventory.getStackInSlot(0)));
+			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+			this.tryProvide(world, this.pos.getX() - dir.offsetX * 4, this.pos.getY(), this.pos.getZ() - dir.offsetZ * 4, dir.getOpposite());
+			int r = (int)Math.sqrt(ContaminationUtil.getStackRads(inventory.getStackInSlot(0)));
 			if(r > 0) {
 				if(inventory.getStackInSlot(0).getItem().hasContainerItem(inventory.getStackInSlot(0))) {
 					if(inventory.getStackInSlot(1).isEmpty()) {
 						if(fuel + r <= maxFuel) {
 							
-							inventory.setStackInSlot(1, ItemStackUtil.itemStackFrom(inventory.getStackInSlot(0).getItem().getContainerItem()));
+							inventory.setStackInSlot(1, new ItemStack(inventory.getStackInSlot(0).getItem().getContainerItem()));
 							
 							inventory.getStackInSlot(0).shrink(1);
 							if(inventory.getStackInSlot(0).isEmpty())
@@ -152,7 +146,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 			if(fuel > 0) {
 				fuel--;
 				if(strength < maxStrength){
-					strength = maxStrength * fuel / maxFuel;
+					strength = (int)(maxStrength * fuel / maxFuel);
 				} else{
 					strength = maxStrength;
 				}
@@ -181,30 +175,17 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos.getX(), pos.getY(), pos.getZ(), power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 		}
 	}
-	public void sendRADGenPower(){
-		final int i = getBlockMetadata();
-		switch(i) {
-		case 2: 
-			this.sendPower(world, pos.add(5, 0, 0), Library.POS_X); break;
-		case 3: 
-			this.sendPower(world, pos.add(-5, 0, 0), Library.NEG_X); break;
-		case 4: 
-			this.sendPower(world, pos.add(0, 0, -5), Library.NEG_Z); break;
-		case 5: 
-			this.sendPower(world, pos.add(0, 0, 5), Library.POS_Z); break;
-		}
-	}
 	
-	public int getFuelScaled(final int i) {
+	public int getFuelScaled(int i) {
 		return (fuel * i) / maxFuel;
 	}
 	
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 	
-	public int getStrengthScaled(final int i) {
-		return strength * i / maxStrength;
+	public int getStrengthScaled(int i) {
+		return (int)(strength * i / maxStrength);
 	}
 	
 	@Override
@@ -220,7 +201,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	}
 	
 	@Override
-	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		} else {
@@ -229,7 +210,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	}
 	
 	@Override
-	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
@@ -239,7 +220,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	}
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		power = i;
 	}
 

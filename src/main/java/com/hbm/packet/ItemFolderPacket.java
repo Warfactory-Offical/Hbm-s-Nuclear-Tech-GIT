@@ -1,5 +1,4 @@
 package com.hbm.packet;
-import com.hbm.util.ItemStackUtil;
 
 import java.io.IOException;
 
@@ -29,26 +28,26 @@ public class ItemFolderPacket implements IMessage {
 
 	}
 
-	public ItemFolderPacket(final ItemStack stack) {
+	public ItemFolderPacket(ItemStack stack) {
 		buffer = new PacketBuffer(Unpooled.buffer());
 		buffer.writeCompoundTag(stack.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 		if (buffer == null) {
 			buffer = new PacketBuffer(Unpooled.buffer());
 		}
 		buffer.writeBytes(buf);
 		try {
-			stack = ItemStackUtil.itemStackFrom(buffer.readCompoundTag());
-		} catch(final IOException e) {
+			stack = new ItemStack(buffer.readCompoundTag());
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 		if (buffer == null) {
 			buffer = new PacketBuffer(Unpooled.buffer());
 		}
@@ -58,9 +57,9 @@ public class ItemFolderPacket implements IMessage {
 	public static class Handler implements IMessageHandler<ItemFolderPacket, IMessage> {
 
 		@Override
-		public IMessage onMessage(final ItemFolderPacket m, final MessageContext ctx) {
+		public IMessage onMessage(ItemFolderPacket m, MessageContext ctx) {
 			
-			final EntityPlayer p = ctx.getServerHandler().player;
+			EntityPlayer p = ctx.getServerHandler().player;
 			if(m.stack == null)
 				return null;
 			p.getServer().addScheduledTask(() -> {
@@ -68,7 +67,7 @@ public class ItemFolderPacket implements IMessage {
 				if(p.getHeldItemMainhand().getItem() != ModItems.template_folder && p.getHeldItemOffhand().getItem() != ModItems.template_folder)
 					return;
 				
-				final ItemStack stack = m.stack;
+				ItemStack stack = m.stack;
 				
 				if(p.capabilities.isCreativeMode) {
 					

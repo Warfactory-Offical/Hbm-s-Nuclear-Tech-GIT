@@ -19,19 +19,19 @@ public class PlayerInformPacket implements IMessage {
 
 	}
 
-	public PlayerInformPacket(final String dmesg)
+	public PlayerInformPacket(String dmesg)
 	{
 		this.dmesg = dmesg;
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf buf) {
+	public void fromBytes(ByteBuf buf) {
 
 		dmesg = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
-	public void toBytes(final ByteBuf buf) {
+	public void toBytes(ByteBuf buf) {
 
 		ByteBufUtils.writeUTF8String(buf, dmesg);
 	}
@@ -40,12 +40,12 @@ public class PlayerInformPacket implements IMessage {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(final PlayerInformPacket m, final MessageContext ctx) {
+		public IMessage onMessage(PlayerInformPacket m, MessageContext ctx) {
 			try {
 
 				MainRegistry.proxy.displayTooltip(m.dmesg);
 
-			} catch (final Exception x) { }
+			} catch (Exception x) { }
 			return null;
 		}
 	}

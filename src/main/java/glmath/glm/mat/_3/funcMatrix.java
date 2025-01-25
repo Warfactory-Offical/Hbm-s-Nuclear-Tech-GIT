@@ -35,8 +35,8 @@ abstract class funcMatrix {
      * @param res
      * @return
      */
-    public Mat3 inverse(final Mat3 res) {
-        final float s = 1.0f / det();
+    public Mat3 inverse(Mat3 res) {
+        float s = 1.0f / det();
         res.set((m11 * m22 - m21 * m12) * s,
                 (m21 * m02 - m01 * m22) * s,
                 (m01 * m12 - m11 * m02) * s,
@@ -57,8 +57,8 @@ abstract class funcMatrix {
         return invTransp(new Mat3());
     }
 
-    public Mat3 invTransp(final Mat3 res) {
-        final float s = 1.0f / det();
+    public Mat3 invTransp(Mat3 res) {
+        float s = 1.0f / det();
         /* Invert and transpose in one go */
         res.set(
                 (m11 * m22 - m21 * m12) * s,
@@ -81,11 +81,11 @@ abstract class funcMatrix {
         return transpose((Mat3) this);
     }
 
-    public Mat3 transpose(final Mat3 dest) {
+    public Mat3 transpose(Mat3 dest) {
         return transpose((Mat3) this, dest);
     }
 
-    public static Mat3 transpose(final Mat3 mat, final Mat3 dest) {
+    public static Mat3 transpose(Mat3 mat, Mat3 dest) {
         dest.set(
                 mat.m00, mat.m10, mat.m20,
                 mat.m01, mat.m11, mat.m21,

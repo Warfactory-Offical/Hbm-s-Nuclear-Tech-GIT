@@ -41,11 +41,11 @@ public class ParticleBulletImpact extends ParticleLayerBase {
 	Vec3d[] vertices;
 	int[] vbo;
 	
-	public ParticleBulletImpact(final World worldIn, final double posXIn, final double posYIn, final double posZIn, final float scale, final int maxAge, final Vec3d normal) {
+	public ParticleBulletImpact(World worldIn, double posXIn, double posYIn, double posZIn, float scale, int maxAge, Vec3d normal) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
 		this.particleMaxAge = maxAge;
-		final Vec3d angles = BobMathUtil.getEulerAngles(normal);
+		Vec3d angles = BobMathUtil.getEulerAngles(normal);
 		yaw = (float) angles.x;
 		pitch = (float) angles.y;
 		roll = worldIn.rand.nextFloat()*360;
@@ -68,11 +68,11 @@ public class ParticleBulletImpact extends ParticleLayerBase {
 		    GL11.glRotated(pitch, 1, 0, 0);
 		    GL11.glRotated(roll, 0, 1, 0);
 		    GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER);
-		    final Matrix4f mat = new Matrix4f();
+		    Matrix4f mat = new Matrix4f();
 		    mat.load(ClientProxy.AUX_GL_BUFFER);
 		    ClientProxy.AUX_GL_BUFFER.rewind();
 			GL11.glPopMatrix();
-			final Vector4f out = new Vector4f();
+			Vector4f out = new Vector4f();
 			Matrix4f.transform(mat, new Vector4f(-0.5F, 0, -0.5F, 1), out);
 			vertices[0] = new Vec3d(out.x, out.y, out.z);
 			Matrix4f.transform(mat, new Vector4f(0.5F, 0, -0.5F, 1), out);
@@ -85,7 +85,7 @@ public class ParticleBulletImpact extends ParticleLayerBase {
 		
 	}
 	
-	public ParticleBulletImpact color(final float r, final float g, final float b){
+	public ParticleBulletImpact color(float r, float g, float b){
 		this.particleRed = r;
 		this.particleGreen = g;
 		this.particleBlue = b;
@@ -97,7 +97,8 @@ public class ParticleBulletImpact extends ParticleLayerBase {
 		this.particleAge ++;
 		if(particleAge >= particleMaxAge){
 			setExpired();
-        }
+			return;
+		}
 	}
 	
 	@Override
@@ -111,27 +112,27 @@ public class ParticleBulletImpact extends ParticleLayerBase {
 	}
 	
 	@Override
-	public void renderParticle(final BufferBuilder buffer, final Entity entityIn, final float partialTicks, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		if(GeneralConfig.bulletHoleNormalMapping && vbo == null)
 			return;
-		final float fade = 1-MathHelper.clamp((particleAge+partialTicks)-(particleMaxAge-10), 0, 10)*0.1F;
+		float fade = 1-MathHelper.clamp((particleAge+partialTicks)-(particleMaxAge-10), 0, 10)*0.1F;
 		this.particleAlpha = fade;
 		
-        final double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
-        final double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
-        final double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
+        double entPosX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX)*partialTicks;
+        double entPosY = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY)*partialTicks;
+        double entPosZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ)*partialTicks;
         
         interpPosX = entPosX;
         interpPosY = entPosY;
         interpPosZ = entPosZ;
         
-		final float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - entPosX);
-        final float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - entPosY);
-        final float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - entPosZ);
+		float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - entPosX);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - entPosY);
+        float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - entPosZ);
         
-        final int i = this.getBrightnessForRender(partialTicks);
-        final int j = i >> 16 & 65535;
-        final int k = i & 65535;
+        int i = this.getBrightnessForRender(partialTicks);
+        int j = i >> 16 & 65535;
+        int k = i & 65535;
         
         float scale = particleScale;
         if(GeneralConfig.bulletHoleNormalMapping){

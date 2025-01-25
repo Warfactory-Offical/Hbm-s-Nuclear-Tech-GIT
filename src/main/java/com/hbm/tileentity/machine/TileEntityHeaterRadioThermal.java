@@ -1,25 +1,23 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.tile.IHeatSource;
 import com.hbm.inventory.container.ContainerRadioThermal;
 import com.hbm.inventory.gui.GUIRadioThermal;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.RTGUtil;
-
-import api.hbm.tile.IHeatSource;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implements IHeatSource, ITickable, IGUIProvider {
     
@@ -43,7 +41,7 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
             this.heatGen = RTGUtil.updateRTGs(inventory, new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}) * 10;
             this.heatEnergy += heatGen;
             if(heatEnergy > maxHeatEnergy) this.heatEnergy = maxHeatEnergy;
-            final NBTTagCompound data = new NBTTagCompound();
+            NBTTagCompound data = new NBTTagCompound();
             data.setInteger("hg", this.heatGen);
             data.setInteger("h", this.heatEnergy);
             networkPack(data, 25);
@@ -56,28 +54,29 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
     }
 
     @Override
-    public void networkUnpack(final NBTTagCompound nbt) {
+    public void networkUnpack(NBTTagCompound nbt) {
         this.heatGen = nbt.getInteger("hg");
         this.heatEnergy = nbt.getInteger("h");
     }
     
     @Override
-    public void readFromNBT(final NBTTagCompound nbt) {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.heatEnergy = nbt.getInteger("heatEnergy");
     }
     
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setInteger("heatEnergy", heatEnergy);
         return nbt;
     }
     
     protected void tryPullHeat() {
-        final TileEntity con = world.getTileEntity(pos.add(0, -1, 0));
+        TileEntity con = world.getTileEntity(pos.add(0, -1, 0));
         
-        if(con instanceof IHeatSource source) {
+        if(con instanceof IHeatSource) {
+            IHeatSource source = (IHeatSource) con;
             this.heatEnergy += source.getHeatStored() * 0.85;
             source.useUpHeat(source.getHeatStored());
         }
@@ -89,7 +88,7 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
     }
 
     @Override
-    public void useUpHeat(final int heat) {
+    public void useUpHeat(int heat) {
         this.heatEnergy = Math.max(0, this.heatEnergy - heat);
     }
     
@@ -112,13 +111,13 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
     }
 
     @Override
-    public Container provideContainer(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return new ContainerRadioThermal(player.inventory, this);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiScreen provideGUI(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+    public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return new GUIRadioThermal(player.inventory, this);
     }
 
@@ -130,12 +129,12 @@ public class TileEntityHeaterRadioThermal extends TileEntityMachineBase implemen
         return heatEnergy > 0;
     }
 
-    public int getHeatGenScaled(final int i){
+    public int getHeatGenScaled(int i){
         if(heatGen == 0) return 0;
         return (int) (Math.log(heatGen) * i / Math.log(90000));
     }
 
-    public int getHeatScaled(final int i){
+    public int getHeatScaled(int i){
         return (heatEnergy * i) / maxHeatEnergy;
     }
 }

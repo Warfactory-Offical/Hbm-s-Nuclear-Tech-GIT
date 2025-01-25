@@ -10,13 +10,13 @@ import java.util.List;
 
 public class ItemSwordMeteorite extends ItemSwordAbility {
 
-	public ItemSwordMeteorite(final float damage, final double movement, final ToolMaterial material, final String s) {
+	public ItemSwordMeteorite(float damage, double movement, ToolMaterial material, String s) {
 		super(damage, movement, material, s);
 		this.setMaxDamage(0);
 	}
 	
 	@Override
-	public void addInformation(final ItemStack stack, final World worldIn, final List<String> list, final ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, list, flagIn);
 		if(this == ModItems.meteorite_sword) {
     		list.add(TextFormatting.ITALIC + "Forged from a fallen star");

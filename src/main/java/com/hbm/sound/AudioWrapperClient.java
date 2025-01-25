@@ -10,22 +10,22 @@ public class AudioWrapperClient extends AudioWrapper {
 
 	AudioDynamic sound;
 	
-	public AudioWrapperClient(final SoundEvent source, final SoundCategory cat) {
+	public AudioWrapperClient(SoundEvent source, SoundCategory cat) {
 		if(source != null)
 			sound = new AudioDynamic(source, cat);
 	}
 	
-	public void updatePosition(final float x, final float y, final float z) {
+	public void updatePosition(float x, float y, float z) {
 		if(sound != null)
 			sound.setPosition(x, y, z);
 	}
 	
-	public void updateVolume(final float volume) {
+	public void updateVolume(float volume) {
 		if(sound != null)
 			sound.setVolume(volume);
 	}
 	
-	public void updatePitch(final float pitch) {
+	public void updatePitch(float pitch) {
 		if(sound != null)
 			sound.setPitch(pitch);
 	}
@@ -43,6 +43,12 @@ public class AudioWrapperClient extends AudioWrapper {
 		else
 			return 1;
 	}
+
+	@Override
+	public void keepAlive() {
+		if(sound != null)
+			sound.keepAlive();
+	}
 	
 	public void startSound() {
 		if(sound != null)
@@ -52,5 +58,10 @@ public class AudioWrapperClient extends AudioWrapper {
 	public void stopSound() {
 		if(sound != null)
 			sound.stop();
+	}
+
+	@Override
+	public boolean isPlaying() {
+		return sound.isPlaying();
 	}
 }

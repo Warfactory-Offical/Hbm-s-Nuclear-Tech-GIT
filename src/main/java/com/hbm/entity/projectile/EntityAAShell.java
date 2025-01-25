@@ -18,7 +18,7 @@ public class EntityAAShell extends Entity {
 	public int fuse = 5;
 	public int dFuse = 30;
 
-	public EntityAAShell(final World worldIn) {
+	public EntityAAShell(World worldIn) {
 		super(worldIn);
 	}
 
@@ -28,12 +28,12 @@ public class EntityAAShell extends Entity {
 	}
 	
 	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 
 	}
 
@@ -60,9 +60,9 @@ public class EntityAAShell extends Entity {
 			rotation();
 
 			if(fuse == 0) {
-				final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(this.posX - 5, this.posY - 5, this.posZ - 5, this.posX + 5, this.posY + 5, this.posZ + 5));
-				for(final Entity e : list) {
-					final float size = e.width * e.width * e.height;
+				List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(this.posX - 5, this.posY - 5, this.posZ - 5, this.posX + 5, this.posY + 5, this.posZ + 5));
+				for(Entity e : list) {
+					float size = e.width * e.width * e.height;
 					if(size >= 0.5) {
 						explode();
 						return;
@@ -79,11 +79,12 @@ public class EntityAAShell extends Entity {
 	}
 
 	public void rotation() {
-		final float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+		float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 		for(this.rotationPitch = (float) (Math.atan2(this.motionY, f2) * 180.0D / Math.PI) - 90; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
-        }
+			;
+		}
 
 		while(this.rotationPitch - this.prevRotationPitch >= 180.0F) {
 			this.prevRotationPitch += 360.0F;

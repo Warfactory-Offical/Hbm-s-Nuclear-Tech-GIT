@@ -1,20 +1,16 @@
 package com.hbm.inventory.control_panel.nodes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hbm.inventory.control_panel.*;
-import com.hbm.main.MainRegistry;
-import net.minecraft.util.math.BlockPos;
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.render.RenderHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Node {
 
@@ -33,18 +29,18 @@ public abstract class Node {
 	public abstract NodeType getType();
 	public abstract String getDisplayName();
 	
-	public Node(final float x, final float y){
+	public Node(float x, float y){
 		setPosition(x, y);
 	}
 	
-	public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys){
-		final NBTTagCompound inputs = new NBTTagCompound();
+	public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys){
+		NBTTagCompound inputs = new NBTTagCompound();
 		for(int i = 0; i < this.inputs.size(); i ++){
 			inputs.setTag("con"+i, this.inputs.get(i).writeToNBT(new NBTTagCompound(), sys));
 		}
 		tag.setTag("in", inputs);
 		
-		final NBTTagCompound outputs = new NBTTagCompound();
+		NBTTagCompound outputs = new NBTTagCompound();
 		for(int i = 0; i < this.outputs.size(); i ++){
 			outputs.setTag("con"+i, this.outputs.get(i).writeToNBT(new NBTTagCompound(), sys));
 		}
@@ -57,19 +53,19 @@ public abstract class Node {
 		return tag;
 	}
 	
-	public void readFromNBT(final NBTTagCompound tag, final NodeSystem sys){
+	public void readFromNBT(NBTTagCompound tag, NodeSystem sys){
 		this.inputs.clear();
 		this.outputs.clear();
-		final NBTTagCompound inputs = tag.getCompoundTag("in");
+		NBTTagCompound inputs = tag.getCompoundTag("in");
 		for(int i = 0; i < inputs.getKeySet().size(); i ++){
-			final NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
+			NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
 			c.readFromNBT(inputs.getCompoundTag("con"+i), sys);
 			this.inputs.add(c);
 		}
 		
-		final NBTTagCompound outputs = tag.getCompoundTag("out");
+		NBTTagCompound outputs = tag.getCompoundTag("out");
 		for(int i = 0; i < outputs.getKeySet().size(); i ++){
-			final NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
+			NodeConnection c = new NodeConnection(null, this, 0, false, null, new DataValueFloat(0));
 			c.readFromNBT(outputs.getCompoundTag("con"+i), sys);
 			this.outputs.add(c);
 		}
@@ -80,15 +76,15 @@ public abstract class Node {
 		cacheValid = false;
 	}
 	
-	public static Node nodeFromNBT(final NBTTagCompound tag, final NodeSystem sys){
+	public static Node nodeFromNBT(NBTTagCompound tag, NodeSystem sys){
 		Node node = null;
 		switch(tag.getString("nodeType")){
 		case "cancelEvent":
 			node = new NodeCancelEvent(0, 0);
 			break;
 		case "eventBroadcast":
-			final NBTTagCompound list = tag.getCompoundTag("itemList");
-			final List<ControlEvent> l = new ArrayList<>();
+			NBTTagCompound list = tag.getCompoundTag("itemList");
+			List<ControlEvent> l = new ArrayList<>();
 			for(int i = 0; i < list.getKeySet().size(); i ++){
 				l.add(ControlEvent.getRegisteredEvent(list.getString("item"+i)));
 			}
@@ -118,7 +114,7 @@ public abstract class Node {
 			node = new NodeConditional(0, 0);
 			break;
 		case "setVar":
-			final int ctrlIdx2 = tag.getInteger("controlIdx");
+			int ctrlIdx2 = tag.getInteger("controlIdx");
 			node = new NodeSetVar(0, 0, sys.parent.panel.controls.get(ctrlIdx2));
 			break;
 		case "input":
@@ -128,23 +124,23 @@ public abstract class Node {
 		return node;
 	}
 	
-	public void setPosition(final float x, final float y){
+	public void setPosition(float x, float y){
 		this.posX = x;
 		this.posY = y;
-		for(final NodeElement c : otherElements)
+		for(NodeElement c : otherElements)
 			c.resetOffset();
-		for(final NodeConnection c : inputs)
+		for(NodeConnection c : inputs)
 			c.resetOffset();
-		for(final NodeConnection c : outputs)
+		for(NodeConnection c : outputs)
 			c.resetOffset();
 	}
 	
-	public void render(final float mX, final float mY, final boolean isActive, final boolean isSelected){
+	public void render(float mX, float mY, boolean isActive, boolean isSelected){
 		float[] color;
 		Minecraft.getMinecraft().getTextureManager().bindTexture(NodeSystem.node_tex);
 		if(isActive || isSelected){
 			color = isActive ? new float[]{0.7F, 0.7F, 0.7F} : new float[]{1F, 0.5F, 0.1F};
-			final float edge = 0.5F;
+			float edge = 0.5F;
 			Tessellator.getInstance().getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 			RenderHelper.drawGuiRectBatchedColor(posX-edge, posY-edge, 0, 0.875F, 40+edge*2, 6+edge*2, 0.625F, 0.96875F, color[0], color[1], color[2], 1);
 			RenderHelper.drawGuiRectBatchedColor(posX-edge, posY+6, 0, 0.96875F, 40+edge*2, size+edge, 0.625F, 0.984375F, color[0], color[1], color[2], 1);
@@ -166,7 +162,7 @@ public abstract class Node {
 		for(int i = otherElements.size()-1; i >= 0; i --)
 			otherElements.get(i).render(mX, mY);
 
-		final FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		GL11.glPushMatrix();
 		GL11.glTranslated(posX, posY, 0);
 		GL11.glScaled(0.5, 0.5, 0.5);
@@ -175,10 +171,10 @@ public abstract class Node {
 		GL11.glPopMatrix();
 	}
 	
-	public void drawConnections(final float mX, final float mY){
-		for(final NodeConnection n : inputs)
+	public void drawConnections(float mX, float mY){
+		for(NodeConnection n : inputs)
 			n.drawLine(mX, mY);
-		for(final NodeConnection n : outputs)
+		for(NodeConnection n : outputs)
 			n.drawLine(mX, mY);
 	}
 	
@@ -187,8 +183,8 @@ public abstract class Node {
 		this.setPosition(posX, posY);
 	}
 	
-	public boolean onClick(final float x, final float y){
-		for(final NodeElement n : otherElements){
+	public boolean onClick(float x, float y){
+		for(NodeElement n : otherElements){
 			if(n.onClick(x, y))
 				return true;
 		}

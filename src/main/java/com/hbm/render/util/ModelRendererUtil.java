@@ -1,22 +1,5 @@
 package com.hbm.render.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Consumer;
-
-import javax.annotation.Nullable;
-import javax.vecmath.Matrix3f;
-import javax.vecmath.Vector3f;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
-
 import com.hbm.main.ClientProxy;
 import com.hbm.main.MainRegistry;
 import com.hbm.main.ResourceManager;
@@ -28,7 +11,6 @@ import com.hbm.physics.RigidBody;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.render.util.Triangle.TexVertex;
 import com.hbm.util.BobMathUtil;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -47,6 +29,21 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+
+import javax.annotation.Nullable;
+import javax.vecmath.Matrix3f;
+import javax.vecmath.Vector3f;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class ModelRendererUtil {
 
@@ -58,22 +55,22 @@ public class ModelRendererUtil {
 	public static Field rQuadList;
 	public static Field rCompiled;
 	
-	public static ResourceLocation getEntityTexture(final Entity e){
-		final Render<Entity> eRenderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(e);
+	public static ResourceLocation getEntityTexture(Entity e){
+		Render<Entity> eRenderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(e);
 		if(rGetEntityTexture == null){
 			rGetEntityTexture = ReflectionHelper.findMethod(Render.class, "getEntityTexture", "func_110775_a", Entity.class);
 		}
 		ResourceLocation r = null;
 		try {
 			r = (ResourceLocation) rGetEntityTexture.invoke(eRenderer, e);
-		} catch(final IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+		} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
 		}
 		return r == null ? ResourceManager.turbofan_blades_tex : r;
 	}
 	
-	public static List<Pair<Matrix4f, ModelRenderer>> getBoxesFromMob(final Entity e){
-		final Render<Entity> eRenderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(e);
+	public static List<Pair<Matrix4f, ModelRenderer>> getBoxesFromMob(Entity e){
+		Render<Entity> eRenderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(e);
 		if(eRenderer instanceof RenderLivingBase && e instanceof EntityLivingBase) {
 			return getBoxesFromMob((EntityLivingBase) e, ((RenderLivingBase<?>) eRenderer), MainRegistry.proxy.partialTicks());
 		}
@@ -81,22 +78,23 @@ public class ModelRendererUtil {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static List<Pair<Matrix4f, ModelRenderer>> getBoxesFromMob(final EntityLivingBase e, final RenderLivingBase<?> render, final float partialTicks) {
-		final ModelBase model = render.getMainModel();
+	private static List<Pair<Matrix4f, ModelRenderer>> getBoxesFromMob(EntityLivingBase e, RenderLivingBase<?> render, float partialTicks) {
+		ModelBase model = render.getMainModel();
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
 		GlStateManager.disableCull();
 		GlStateManager.enableRescaleNormal();
 		//So basically we're just going to copy vanialla methods so the 
 		model.swingProgress = e.getSwingProgress(partialTicks);
-		final boolean shouldSit = e.isRiding() && (e.getRidingEntity() != null && e.getRidingEntity().shouldRiderSit());
+		boolean shouldSit = e.isRiding() && (e.getRidingEntity() != null && e.getRidingEntity().shouldRiderSit());
 		model.isRiding = shouldSit;
 		model.isChild = e.isChild();
 		float f = interpolateRotation(e.prevRenderYawOffset, e.renderYawOffset, partialTicks);
-		final float f1 = interpolateRotation(e.prevRotationYawHead, e.rotationYawHead, partialTicks);
+		float f1 = interpolateRotation(e.prevRotationYawHead, e.rotationYawHead, partialTicks);
 		float f2 = f1 - f;
-		if(shouldSit && e.getRidingEntity() instanceof EntityLivingBase elivingbase) {
-            f = interpolateRotation(elivingbase.prevRenderYawOffset, elivingbase.renderYawOffset, partialTicks);
+		if(shouldSit && e.getRidingEntity() instanceof EntityLivingBase) {
+			EntityLivingBase elivingbase = (EntityLivingBase) e.getRidingEntity();
+			f = interpolateRotation(elivingbase.prevRenderYawOffset, elivingbase.renderYawOffset, partialTicks);
 			f2 = f1 - f;
 			float f3 = MathHelper.wrapDegrees(f2);
 
@@ -117,7 +115,7 @@ public class ModelRendererUtil {
 			f2 = f1 - f;
 		}
 
-		final float f7 = e.prevRotationPitch + (e.rotationPitch - e.prevRotationPitch) * partialTicks;
+		float f7 = e.prevRotationPitch + (e.rotationPitch - e.prevRotationPitch) * partialTicks;
 		//renderLivingAt(e, x, y, z);
 		//float f8 = e.ticksExisted + partialTicks;
 		//GlStateManager.rotate(180.0F - f, 0.0F, 1.0F, 0.0F);
@@ -137,7 +135,7 @@ public class ModelRendererUtil {
 		try {
 			f8 = (Float)rHandleRotationFloat.invoke(render, e, partialTicks);
 			rApplyRotations.invoke(render, e, f8, f, partialTicks);
-		} catch(final Exception x){
+		} catch(Exception x){
 		}
 		
         //this.applyRotations(entity, f8, f, partialTicks);
@@ -145,7 +143,7 @@ public class ModelRendererUtil {
 		float f4 = 0.0625F;
 		try {
 			f4 = (float) rPrepareScale.invoke(render, e, partialTicks);
-		} catch(final IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
+		} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
 			e2.printStackTrace();
 		}
 		float f5 = 0.0F;
@@ -174,14 +172,14 @@ public class ModelRendererUtil {
 			r = (ResourceLocation) rGetEntityTexture.invoke(render, e);
 			if(r == null)
 				r = ResourceManager.turbofan_blades_tex;
-		} catch(final IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+		} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
 		}
 		if(rCompiled == null){
 			rCompiled = ReflectionHelper.findField(ModelRenderer.class, "compiled", "field_78812_q");
 		}
-		final List<Pair<Matrix4f, ModelRenderer>> list = new ArrayList<>();
-		for(final ModelRenderer renderer : model.boxList) {
+		List<Pair<Matrix4f, ModelRenderer>> list = new ArrayList<>();
+		for(ModelRenderer renderer : model.boxList) {
 			if(!isChild(renderer, model.boxList))
 				generateList(e.world, e, f4, list, renderer, r);
 		}
@@ -192,41 +190,41 @@ public class ModelRendererUtil {
 		return list;
 	}
 	
-	public static boolean isChild(final ModelRenderer r, final List<ModelRenderer> list){
-		for(final ModelRenderer r2 : list){
+	public static boolean isChild(ModelRenderer r, List<ModelRenderer> list){
+		for(ModelRenderer r2 : list){
 			if(r2.childModels != null && r2.childModels.contains(r))
 				return true;
 		}
 		return false;
 	}
 	
-	protected static void generateList(final World world, final EntityLivingBase ent, final float scale, final List<Pair<Matrix4f, ModelRenderer>> list, final ModelRenderer render, final ResourceLocation tex){
+	protected static void generateList(World world, EntityLivingBase ent, float scale, List<Pair<Matrix4f, ModelRenderer>> list, ModelRenderer render, ResourceLocation tex){
 		boolean compiled = false;
 		try {
 			//A lot of mobs weirdly replace model renderers and end up with extra ones in the list that aren't ever rendered.
 			//Since they're not rendered, they should never be compiled, so this hack tries to detect that.
 			//Not the greatest method ever, but it appears to work.
 			compiled = rCompiled.getBoolean(render);
-		} catch(final Exception x){
+		} catch(Exception x){
 		}
 		if(render.isHidden || !render.showModel || !compiled)
 			return;
 		GL11.glPushMatrix();
 		doTransforms(render, scale);
 		if(render.childModels != null)
-			for(final ModelRenderer renderer : render.childModels) {
+			for(ModelRenderer renderer : render.childModels) {
 				generateList(world, ent, scale, list, renderer, tex);
 			}
 		GL11.glScaled(scale, scale, scale);
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, ClientProxy.AUX_GL_BUFFER);
-		final Matrix4f mat = new Matrix4f();
+		Matrix4f mat = new Matrix4f();
 		mat.load(ClientProxy.AUX_GL_BUFFER);
 		ClientProxy.AUX_GL_BUFFER.rewind();
 		list.add(Pair.of(mat, render));
 		GL11.glPopMatrix();
 	}
 	
-	public static void doTransforms(final ModelRenderer m, final float scale) {
+	public static void doTransforms(ModelRenderer m, float scale) {
 		GlStateManager.translate(m.offsetX, m.offsetY, m.offsetZ);
 		if(m.rotateAngleX == 0.0F && m.rotateAngleY == 0.0F && m.rotateAngleZ == 0.0F) {
 			if(m.rotationPointX == 0.0F && m.rotationPointY == 0.0F && m.rotationPointZ == 0.0F) {
@@ -247,11 +245,12 @@ public class ModelRendererUtil {
 		}
 	}
 	
-	protected static float interpolateRotation(final float prevYawOffset, final float yawOffset, final float partialTicks) {
+	protected static float interpolateRotation(float prevYawOffset, float yawOffset, float partialTicks) {
 		float f;
 		
 		for(f = yawOffset - prevYawOffset; f < -180.0F; f += 360.0F) {
-        }
+			;
+		}
 
 		while(f >= 180.0F) {
 			f -= 360.0F;
@@ -260,15 +259,15 @@ public class ModelRendererUtil {
 		return prevYawOffset + partialTicks * f;
 	}
 	
-	public static Triangle[] decompress(final VertexData vertices){
-		final Triangle[] tris = new Triangle[vertices.positionIndices.length/3];
+	public static Triangle[] decompress(VertexData vertices){
+		Triangle[] tris = new Triangle[vertices.positionIndices.length/3];
 		for(int i = 0; i < vertices.positionIndices.length; i += 3){
-			final int i0 = vertices.positionIndices[i];
-			final int i1 = vertices.positionIndices[i+1];
-			final int i2 = vertices.positionIndices[i+2];
-			final float[] tex = new float[6];
-			tex[0] = vertices.texCoords[(i)*2];
-			tex[1] = vertices.texCoords[(i)*2+1];
+			int i0 = vertices.positionIndices[i];
+			int i1 = vertices.positionIndices[i+1];
+			int i2 = vertices.positionIndices[i+2];
+			float[] tex = new float[6];
+			tex[0] = vertices.texCoords[(i+0)*2];
+			tex[1] = vertices.texCoords[(i+0)*2+1];
 			tex[2] = vertices.texCoords[(i+1)*2];
 			tex[3] = vertices.texCoords[(i+1)*2+1];
 			tex[4] = vertices.texCoords[(i+2)*2];
@@ -278,13 +277,13 @@ public class ModelRendererUtil {
 		return tris;
 	}
 	
-	public static VertexData compress(final Triangle[] tris){
-		final List<Vec3d> vertices = new ArrayList<>(tris.length*3);
-		final int[] indices = new int[tris.length*3];
-		final float[] texCoords = new float[tris.length*6];
+	public static VertexData compress(Triangle[] tris){
+		List<Vec3d> vertices = new ArrayList<>(tris.length*3);
+		int[] indices = new int[tris.length*3];
+		float[] texCoords = new float[tris.length*6];
 		for(int i = 0; i < tris.length; i ++){
-			final Triangle tri = tris[i];
-			final double eps = 0.00001D;
+			Triangle tri = tris[i];
+			double eps = 0.00001D;
 			int idx = epsIndexOf(vertices, tri.p1.pos, eps);
 			if(idx != -1){
 				indices[i*3] = idx;
@@ -309,21 +308,21 @@ public class ModelRendererUtil {
 				vertices.add(tri.p3.pos);
 			}
 			
-			texCoords[i * 6] = tri.p1.texX;
+			texCoords[i*6+0] = tri.p1.texX;
 			texCoords[i*6+1] = tri.p1.texY;
 			texCoords[i*6+2] = tri.p2.texX;
 			texCoords[i*6+3] = tri.p2.texY;
 			texCoords[i*6+4] = tri.p3.texX;
 			texCoords[i*6+5] = tri.p3.texY;
 		}
-		final VertexData data = new VertexData();
+		VertexData data = new VertexData();
 		data.positions = vertices.toArray(new Vec3d[0]);
 		data.positionIndices = indices;
 		data.texCoords = texCoords;
 		return data;
 	}
 	
-	private static int epsIndexOf(final List<Vec3d> l, final Vec3d vec, final double eps){
+	private static int epsIndexOf(List<Vec3d> l, Vec3d vec, double eps){
 		for(int i = 0; i < l.size(); i++){
 			if(BobMathUtil.epsilonEquals(vec, l.get(i), eps)){
 				return i;
@@ -332,21 +331,21 @@ public class ModelRendererUtil {
 		return -1;
 	}
 	
-	public static VertexData[] cutAndCapModelBox(final ModelBox b, final float[] plane, @Nullable final Matrix4f transform){
+	public static VertexData[] cutAndCapModelBox(ModelBox b, float[] plane, @Nullable Matrix4f transform){
 		return cutAndCapConvex(triangulate(b, transform), plane);
 	}
 	
-	public static VertexData[] cutAndCapConvex(final Triangle[] tris, final float[] plane){
-		final VertexData[] returnData = new VertexData[]{null, null, new VertexData()};
-		final List<Triangle> side1 = new ArrayList<>();
-		final List<Triangle> side2 = new ArrayList<>();
-		final List<Vec3d[]> clippedEdges = new ArrayList<>();
-		for(final Triangle t : tris){
+	public static VertexData[] cutAndCapConvex(Triangle[] tris, float[] plane){
+		VertexData[] returnData = new VertexData[]{null, null, new VertexData()};
+		List<Triangle> side1 = new ArrayList<>();
+		List<Triangle> side2 = new ArrayList<>();
+		List<Vec3d[]> clippedEdges = new ArrayList<>();
+		for(Triangle t : tris){
 			//Clip each triangle to the plane.
 			//TODO move this to a generic helper method for clipping triangles?
-			final boolean p1 = t.p1.pos.x*plane[0]+t.p1.pos.y*plane[1]+t.p1.pos.z*plane[2]+plane[3] > 0;
-			final boolean p2 = t.p2.pos.x*plane[0]+t.p2.pos.y*plane[1]+t.p2.pos.z*plane[2]+plane[3] > 0;
-			final boolean p3 = t.p3.pos.x*plane[0]+t.p3.pos.y*plane[1]+t.p3.pos.z*plane[2]+plane[3] > 0;
+			boolean p1 = t.p1.pos.x*plane[0]+t.p1.pos.y*plane[1]+t.p1.pos.z*plane[2]+plane[3] > 0;
+			boolean p2 = t.p2.pos.x*plane[0]+t.p2.pos.y*plane[1]+t.p2.pos.z*plane[2]+plane[3] > 0;
+			boolean p3 = t.p3.pos.x*plane[0]+t.p3.pos.y*plane[1]+t.p3.pos.z*plane[2]+plane[3] > 0;
 			//If all points on positive side, add to side 1 
 			if(p1 && p2 && p3){
 				side1.add(t);
@@ -355,10 +354,8 @@ public class ModelRendererUtil {
 				side2.add(t);
 			//else if only one is positive, clip and add 1 triangle to side 1, 2 to side 2
 			} else if(p1 ^ p2 ^ p3){
-				final TexVertex a;
-                TexVertex b;
-                final TexVertex c;
-                if(p1){
+				TexVertex a, b, c;
+				if(p1){
 					a = t.p1;
 					b = t.p2;
 					c = t.p3;
@@ -371,13 +368,13 @@ public class ModelRendererUtil {
 					b = t.p1;
 					c = t.p2;
 				}
-				final Vec3d rAB = b.pos.subtract(a.pos);
-				final Vec3d rAC = c.pos.subtract(a.pos);
-				final float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
-				final float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
-				final Vec3d d = a.pos.add(rAB.scale(interceptAB));
-				final Vec3d e = a.pos.add(rAC.scale(interceptAC));
-				final float[] deTex = new float[4];
+				Vec3d rAB = b.pos.subtract(a.pos);
+				Vec3d rAC = c.pos.subtract(a.pos);
+				float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
+				float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
+				Vec3d d = a.pos.add(rAB.scale(interceptAB));
+				Vec3d e = a.pos.add(rAC.scale(interceptAC));
+				float[] deTex = new float[4];
 				deTex[0] = a.texX + (b.texX-a.texX)*interceptAB;
 				deTex[1] = a.texY + (b.texY-a.texY)*interceptAB;
 				deTex[2] = a.texX + (c.texX-a.texX)*interceptAC;
@@ -390,10 +387,8 @@ public class ModelRendererUtil {
 				
 			//else one is negative, clip and add 2 triangles to side 1, 1 to side 2.
 			} else {
-				final TexVertex a;
-                TexVertex b;
-                final TexVertex c;
-                if(!p1){
+				TexVertex a, b, c;
+				if(!p1){
 					a = t.p1;
 					b = t.p2;
 					c = t.p3;
@@ -407,13 +402,13 @@ public class ModelRendererUtil {
 					c = t.p2;
 				}
 				//Duplicated code. Eh, I don't feel like redesigning this.
-				final Vec3d rAB = b.pos.subtract(a.pos);
-				final Vec3d rAC = c.pos.subtract(a.pos);
-				final float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
-				final float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
-				final Vec3d d = a.pos.add(rAB.scale(interceptAB));
-				final Vec3d e = a.pos.add(rAC.scale(interceptAC));
-				final float[] deTex = new float[4];
+				Vec3d rAB = b.pos.subtract(a.pos);
+				Vec3d rAC = c.pos.subtract(a.pos);
+				float interceptAB = (float) rayPlaneIntercept(a.pos, rAB, plane);
+				float interceptAC = (float) rayPlaneIntercept(a.pos, rAC, plane);
+				Vec3d d = a.pos.add(rAB.scale(interceptAB));
+				Vec3d e = a.pos.add(rAC.scale(interceptAC));
+				float[] deTex = new float[4];
 				deTex[0] = a.texX + (b.texX-a.texX)*interceptAB;
 				deTex[1] = a.texY + (b.texY-a.texY)*interceptAB;
 				deTex[2] = a.texX + (c.texX-a.texX)*interceptAC;
@@ -427,19 +422,19 @@ public class ModelRendererUtil {
 		}
 		//Since this is a convex mesh, generating one edge list is fine.
 		if(!clippedEdges.isEmpty()){
-			final Matrix3f mat = BakedModelUtil.normalToMat(new Vec3d(plane[0], plane[1], plane[2]), 0);
-			final List<Vec3d> orderedClipVertices = new ArrayList<>();
+			Matrix3f mat = BakedModelUtil.normalToMat(new Vec3d(plane[0], plane[1], plane[2]), 0);
+			List<Vec3d> orderedClipVertices = new ArrayList<>();
 			orderedClipVertices.add(clippedEdges.get(0)[0]);
 			while(!clippedEdges.isEmpty()){
 				orderedClipVertices.add(getNext(clippedEdges, orderedClipVertices.get(orderedClipVertices.size()-1)));
 			}
-			final Vector3f uv1 = new Vector3f((float)orderedClipVertices.get(0).x, (float)orderedClipVertices.get(0).y, (float)orderedClipVertices.get(0).z);
+			Vector3f uv1 = new Vector3f((float)orderedClipVertices.get(0).x, (float)orderedClipVertices.get(0).y, (float)orderedClipVertices.get(0).z);
 			mat.transform(uv1);
-			final Triangle[] cap = new Triangle[orderedClipVertices.size()-2];
+			Triangle[] cap = new Triangle[orderedClipVertices.size()-2];
 			for(int i = 0; i < cap.length; i ++){
-				final Vector3f uv2 = new Vector3f((float)orderedClipVertices.get(i+2).x, (float)orderedClipVertices.get(i+2).y, (float)orderedClipVertices.get(i+2).z);
+				Vector3f uv2 = new Vector3f((float)orderedClipVertices.get(i+2).x, (float)orderedClipVertices.get(i+2).y, (float)orderedClipVertices.get(i+2).z);
 				mat.transform(uv2);
-				final Vector3f uv3 = new Vector3f((float)orderedClipVertices.get(i+1).x, (float)orderedClipVertices.get(i+1).y, (float)orderedClipVertices.get(i+1).z);
+				Vector3f uv3 = new Vector3f((float)orderedClipVertices.get(i+1).x, (float)orderedClipVertices.get(i+1).y, (float)orderedClipVertices.get(i+1).z);
 				mat.transform(uv3);
 				cap[i] = new Triangle(orderedClipVertices.get(0), orderedClipVertices.get(i+2), orderedClipVertices.get(i+1), new float[]{uv1.x, uv1.y, uv2.x, uv2.y, uv3.x, uv3.y});
 				
@@ -453,11 +448,11 @@ public class ModelRendererUtil {
 		return returnData;
 	}
 	
-	private static Vec3d getNext(final List<Vec3d[]> edges, final Vec3d first){
-		final Iterator<Vec3d[]> itr = edges.iterator();
+	private static Vec3d getNext(List<Vec3d[]> edges, Vec3d first){
+		Iterator<Vec3d[]> itr = edges.iterator();
 		while(itr.hasNext()){
-			final Vec3d[] v = itr.next();
-			final double eps = 0.00001D;
+			Vec3d[] v = itr.next();
+			double eps = 0.00001D;
 			if(BobMathUtil.epsilonEquals(v[0], first, eps)){
 				itr.remove();
 				return v[1];
@@ -469,26 +464,26 @@ public class ModelRendererUtil {
 		throw new RuntimeException("Didn't find next in loop!");
 	}
 	
-	public static double rayPlaneIntercept(final Vec3d start, final Vec3d ray, final float[] plane){
-		final double num = -(plane[0]*start.x + plane[1]*start.y + plane[2]*start.z + plane[3]);
-		final double denom = plane[0]*ray.x + plane[1]*ray.y + plane[2]*ray.z;
+	public static double rayPlaneIntercept(Vec3d start, Vec3d ray, float[] plane){
+		double num = -(plane[0]*start.x + plane[1]*start.y + plane[2]*start.z + plane[3]);
+		double denom = plane[0]*ray.x + plane[1]*ray.y + plane[2]*ray.z;
 		return num/denom;
 	}
 
-	public static Triangle[] triangulate(final ModelBox b, @Nullable final Matrix4f transform){
+	public static Triangle[] triangulate(ModelBox b, @Nullable Matrix4f transform){
 		if(rQuadList == null){
 			rQuadList = ReflectionHelper.findField(ModelBox.class, "quadList", "field_78254_i");
 		}
-		final TexturedQuad[] quadList;
-		final Triangle[] tris = new Triangle[12];
+		TexturedQuad[] quadList;
+		Triangle[] tris = new Triangle[12];
 		try {
 			quadList = (TexturedQuad[]) rQuadList.get(b);
 			int i = 0;
-			for(final TexturedQuad t : quadList){
-				final Vec3d v0 = BobMathUtil.mat4Transform(t.vertexPositions[0].vector3D, transform);
-				final Vec3d v1 = BobMathUtil.mat4Transform(t.vertexPositions[1].vector3D, transform);
-				final Vec3d v2 = BobMathUtil.mat4Transform(t.vertexPositions[2].vector3D, transform);
-				final Vec3d v3 = BobMathUtil.mat4Transform(t.vertexPositions[3].vector3D, transform);
+			for(TexturedQuad t : quadList){
+				Vec3d v0 = BobMathUtil.mat4Transform(t.vertexPositions[0].vector3D, transform);
+				Vec3d v1 = BobMathUtil.mat4Transform(t.vertexPositions[1].vector3D, transform);
+				Vec3d v2 = BobMathUtil.mat4Transform(t.vertexPositions[2].vector3D, transform);
+				Vec3d v3 = BobMathUtil.mat4Transform(t.vertexPositions[3].vector3D, transform);
 				float[] tex = new float[6];
 				tex[0] = t.vertexPositions[0].texturePositionX;
 				tex[1] = t.vertexPositions[0].texturePositionY;
@@ -507,25 +502,25 @@ public class ModelRendererUtil {
 				tris[i++] = new Triangle(v2, v3, v0, tex);
 			}
 			return tris;
-		} catch(final IllegalArgumentException | IllegalAccessException e) {
+		} catch(IllegalArgumentException | IllegalAccessException e) {
 		}
 		throw new RuntimeException("Failed to get quads!");
 	}
 	
-	public static ParticleSlicedMob[] generateCutParticles(final Entity ent, final float[] plane, final ResourceLocation capTex, final float capBloom){
+	public static ParticleSlicedMob[] generateCutParticles(Entity ent, float[] plane, ResourceLocation capTex, float capBloom){
 		return generateCutParticles(ent, plane, capTex, capBloom, null);
 	}
 	
-	public static ParticleSlicedMob[] generateCutParticles(final Entity ent, final float[] plane, final ResourceLocation capTex, final float capBloom, final Consumer<List<Triangle>> capConsumer){
+	public static ParticleSlicedMob[] generateCutParticles(Entity ent, float[] plane, ResourceLocation capTex, float capBloom, Consumer<List<Triangle>> capConsumer){
 		
 		// Cut all mob boxes and store them in separate lists //
 		
-		final List<Pair<Matrix4f, ModelRenderer>> boxes = ModelRendererUtil.getBoxesFromMob(ent);
-		final List<CutModelData> top = new ArrayList<>();
-		final List<CutModelData> bottom = new ArrayList<>();
-		for(final Pair<Matrix4f, ModelRenderer> r : boxes){
-			for(final ModelBox b : r.getRight().cubeList){
-				final VertexData[] dat = ModelRendererUtil.cutAndCapModelBox(b, plane, r.getLeft());
+		List<Pair<Matrix4f, ModelRenderer>> boxes = ModelRendererUtil.getBoxesFromMob(ent);
+		List<CutModelData> top = new ArrayList<>();
+		List<CutModelData> bottom = new ArrayList<>();
+		for(Pair<Matrix4f, ModelRenderer> r : boxes){
+			for(ModelBox b : r.getRight().cubeList){
+				VertexData[] dat = ModelRendererUtil.cutAndCapModelBox(b, plane, r.getLeft());
 				CutModelData tp = null;
 				CutModelData bt = null;
 				if(dat[0].positionIndices != null && dat[0].positionIndices.length > 0){
@@ -544,47 +539,49 @@ public class ModelRendererUtil {
 		}
 		
 		if(capConsumer != null){
-			final List<Triangle> tris = new ArrayList<>();
-			for(final CutModelData d : top){
+			List<Triangle> tris = new ArrayList<>();
+			for(CutModelData d : top){
 				if(d.cap != null)
-                    Collections.addAll(tris, decompress(d.cap));
+					for(Triangle t : decompress(d.cap)){
+						tris.add(t);
+					}
 			}
 			capConsumer.accept(tris);
 		}
 		
-		final List<List<CutModelData>> particleChunks = new ArrayList<>();
+		List<List<CutModelData>> particleChunks = new ArrayList<>();
 		generateChunks(particleChunks, top);
 		generateChunks(particleChunks, bottom);
 		
-		final List<ParticleSlicedMob> particles = new ArrayList<>(2);
+		List<ParticleSlicedMob> particles = new ArrayList<>(2);
 		
-		final Tessellator tes = Tessellator.getInstance();
-		final BufferBuilder buf = tes.getBuffer();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
 		
-		final ResourceLocation tex = getEntityTexture(ent);
+		ResourceLocation tex = getEntityTexture(ent);
 		
-		for(final List<CutModelData> l : particleChunks){
+		for(List<CutModelData> l : particleChunks){
 			float scale = 3.5F;
 			if(l.get(0).flip){
 				scale = -scale;
 			}
 			//Generate the physics body
-			final RigidBody body = new RigidBody(ent.world, ent.posX, ent.posY, ent.posZ);
-			final Collider[] colliders = new Collider[l.size()];
+			RigidBody body = new RigidBody(ent.world, ent.posX, ent.posY, ent.posZ);
+			Collider[] colliders = new Collider[l.size()];
 			int i = 0;
-			for(final CutModelData dat : l){
+			for(CutModelData dat : l){
 				colliders[i++] = dat.collider;
 			}
 			body.addColliders(colliders);
-			body.impulseVelocityDirect(new Vec3(plane[0]*scale, plane[1]*scale, plane[2]*scale), body.globalCentroid.add(0, 0, 0));
+			body.impulseVelocityDirect(new Vec3(plane[0]*scale, plane[1]*scale, plane[2]*scale), body.globalCentroid.addVector(0, 0, 0));
 			
 			//Create rendering display lists
-			final int bodyDL = GL11.glGenLists(1);
-			final int capDL = GL11.glGenLists(1);
+			int bodyDL = GL11.glGenLists(1);
+			int capDL = GL11.glGenLists(1);
 			
 			GL11.glNewList(bodyDL, GL11.GL_COMPILE);
 			buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
-			for(final CutModelData dat : l){
+			for(CutModelData dat : l){
 				dat.data.tessellate(buf, true);
 			}
 			tes.draw();
@@ -592,7 +589,7 @@ public class ModelRendererUtil {
 			
 			GL11.glNewList(capDL, GL11.GL_COMPILE);
 			buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
-			for(final CutModelData dat : l){
+			for(CutModelData dat : l){
 				if(dat.cap != null)
 					dat.cap.tessellate(buf, dat.flip, true);
 			}
@@ -605,16 +602,16 @@ public class ModelRendererUtil {
 		return particles.toArray(new ParticleSlicedMob[particles.size()]);
 	}
 	
-	public static RigidBody[] generateRigidBodiesFromBoxes(final Entity ent, final List<Pair<Matrix4f, ModelRenderer>> boxes){
-		final RigidBody[] arr = new RigidBody[boxes.size()];
+	public static RigidBody[] generateRigidBodiesFromBoxes(Entity ent, List<Pair<Matrix4f, ModelRenderer>> boxes){
+		RigidBody[] arr = new RigidBody[boxes.size()];
 		int i = 0;
-		for(final Pair<Matrix4f, ModelRenderer> p : boxes){
-			final RigidBody body = new RigidBody(ent.world, ent.posX, ent.posY, ent.posZ);
-			final Collider[] colliders = new Collider[p.getRight().cubeList.size()];
+		for(Pair<Matrix4f, ModelRenderer> p : boxes){
+			RigidBody body = new RigidBody(ent.world, ent.posX, ent.posY, ent.posZ);
+			Collider[] colliders = new Collider[p.getRight().cubeList.size()];
 			int j = 0;
-			for(final ModelBox b : p.getRight().cubeList){
-				final Triangle[] data = triangulate(b, p.getLeft());
-				final VertexData dat = compress(data);
+			for(ModelBox b : p.getRight().cubeList){
+				Triangle[] data = triangulate(b, p.getLeft());
+				VertexData dat = compress(data);
 				colliders[j] = new ConvexMeshCollider(dat.positionIndices, dat.vertexArray(), 1); 
 				j++;
 			}
@@ -625,18 +622,18 @@ public class ModelRendererUtil {
 		return arr;
 	}
 	
-	public static int[] generateDisplayListsFromBoxes(final List<Pair<Matrix4f, ModelRenderer>> boxes){
-		final int[] lists = new int[boxes.size()];
+	public static int[] generateDisplayListsFromBoxes(List<Pair<Matrix4f, ModelRenderer>> boxes){
+		int[] lists = new int[boxes.size()];
 		int i = 0;
-		for(final Pair<Matrix4f, ModelRenderer> p : boxes){
-			final int list = GL11.glGenLists(1);
+		for(Pair<Matrix4f, ModelRenderer> p : boxes){
+			int list = GL11.glGenLists(1);
 			GL11.glNewList(list, GL11.GL_COMPILE);
-			final Tessellator tes = Tessellator.getInstance();
-			final BufferBuilder buf = tes.getBuffer();
+			Tessellator tes = Tessellator.getInstance();
+			BufferBuilder buf = tes.getBuffer();
 			buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
-			for(final ModelBox b : p.getRight().cubeList){
-				final Triangle[] data = triangulate(b, p.getLeft());
-				final VertexData dat = compress(data);
+			for(ModelBox b : p.getRight().cubeList){
+				Triangle[] data = triangulate(b, p.getLeft());
+				VertexData dat = compress(data);
 				dat.tessellate(buf, true);
 			}
 			tes.draw();
@@ -647,7 +644,7 @@ public class ModelRendererUtil {
 		return lists;
 	}
 	
-	private static void generateChunks(final List<List<CutModelData>> chunks, final List<CutModelData> toSort){
+	private static void generateChunks(List<List<CutModelData>> chunks, List<CutModelData> toSort){
 		GJK.margin = 0.01F;
 		List<CutModelData> chunk = new ArrayList<>();
 		boolean removed = false;
@@ -655,11 +652,11 @@ public class ModelRendererUtil {
 		while(!toSort.isEmpty()){
 			removed = false;
 			//Not as efficient as it could be and not the cleanest code, but it probably won't matter with the amount of cubes we're dealing with.
-			final List<CutModelData> toAdd = new ArrayList<>(2);
-			for(final CutModelData c : chunk){
-				final Iterator<CutModelData> itr = toSort.iterator();
+			List<CutModelData> toAdd = new ArrayList<>(2);
+			for(CutModelData c : chunk){
+				Iterator<CutModelData> itr = toSort.iterator();
 				while(itr.hasNext()){
-					final CutModelData d = itr.next();
+					CutModelData d = itr.next();
 					if(d.collider.localBox.grow(0.01F).intersects(c.collider.localBox)){
 						if(GJK.collidesAny(null, null, c.collider, d.collider)){
 							//Something got removed, which means we have to iterate again to check if that one is connected to anything.
@@ -692,7 +689,7 @@ public class ModelRendererUtil {
 		public boolean flip;
 		public ConvexMeshCollider collider;
 		
-		public CutModelData(final VertexData data, final VertexData cap, final boolean flip, final ConvexMeshCollider collider) {
+		public CutModelData(VertexData data, VertexData cap, boolean flip, ConvexMeshCollider collider) {
 			this.data = data;
 			this.cap = cap;
 			this.flip = flip;
@@ -706,44 +703,44 @@ public class ModelRendererUtil {
 		public int[] positionIndices;
 		public float[] texCoords;
 		
-		public void tessellate(final BufferBuilder buf, final boolean normal){
+		public void tessellate(BufferBuilder buf, boolean normal){
 			tessellate(buf, false, normal);
 		}
 		
-		public void tessellate(final BufferBuilder buf, final boolean flip, final boolean normal){
+		public void tessellate(BufferBuilder buf, boolean flip, boolean normal){
 			if(positionIndices != null)
 				for(int i = 0; i < positionIndices.length; i += 3){
-					final Vec3d a = positions[positionIndices[i]];
+					Vec3d a = positions[positionIndices[i]];
 					Vec3d b = positions[positionIndices[i+1]];
 					Vec3d c = positions[positionIndices[i+2]];
 					//Offset into texcoord array
 					int tOB = 1;
 					int tOC = 2;
 					if(flip){
-						final Vec3d tmp = b;
+						Vec3d tmp = b;
 						b = c;
 						c = tmp;
 						tOB = 2;
 						tOC = 1;
 					}
 					if(normal){
-						final Vec3d norm = b.subtract(a).crossProduct(c.subtract(a)).normalize();
-						buf.pos(a.x, a.y, a.z).tex(texCoords[i * 2], texCoords[i*2+1]).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
-						buf.pos(b.x, b.y, b.z).tex(texCoords[(i + tOB) * 2], texCoords[(i+tOB)*2+1]).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
-						buf.pos(c.x, c.y, c.z).tex(texCoords[(i + tOC) * 2], texCoords[(i+tOC)*2+1]).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
+						Vec3d norm = b.subtract(a).crossProduct(c.subtract(a)).normalize();
+						buf.pos(a.x, a.y, a.z).tex(texCoords[i*2+0], texCoords[i*2+1]).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
+						buf.pos(b.x, b.y, b.z).tex(texCoords[(i+tOB)*2+0], texCoords[(i+tOB)*2+1]).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
+						buf.pos(c.x, c.y, c.z).tex(texCoords[(i+tOC)*2+0], texCoords[(i+tOC)*2+1]).normal((float)norm.x, (float)norm.y, (float)norm.z).endVertex();
 					} else {
-						buf.pos(a.x, a.y, a.z).tex(texCoords[i * 2], texCoords[i*2+1]).endVertex();
-						buf.pos(b.x, b.y, b.z).tex(texCoords[(i + tOB) * 2], texCoords[(i+tOB)*2+1]).endVertex();
-						buf.pos(c.x, c.y, c.z).tex(texCoords[(i + tOC) * 2], texCoords[(i+tOC)*2+1]).endVertex();
+						buf.pos(a.x, a.y, a.z).tex(texCoords[i*2+0], texCoords[i*2+1]).endVertex();
+						buf.pos(b.x, b.y, b.z).tex(texCoords[(i+tOB)*2+0], texCoords[(i+tOB)*2+1]).endVertex();
+						buf.pos(c.x, c.y, c.z).tex(texCoords[(i+tOC)*2+0], texCoords[(i+tOC)*2+1]).endVertex();
 					}
 					
 				}
 		}
 
 		public float[] vertexArray() {
-			final float[] verts = new float[positions.length*3];
+			float[] verts = new float[positions.length*3];
 			for(int i = 0; i < positions.length; i ++){
-				final Vec3d pos = positions[i];
+				Vec3d pos = positions[i];
 				verts[i*3] = (float) pos.x;
 				verts[i*3+1] = (float) pos.y;
 				verts[i*3+2] = (float) pos.z;

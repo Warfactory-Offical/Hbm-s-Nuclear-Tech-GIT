@@ -2,7 +2,6 @@ package com.hbm.blocks.network.energy;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.tileentity.network.energy.TileEntityMachineDetector;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -19,7 +18,7 @@ public class PowerDetector extends BlockContainer {
 
 	public static final PropertyBool IS_ON = PropertyBool.create("is_on");
 	
-	public PowerDetector(final Material materialIn, final String s) {
+	public PowerDetector(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -28,23 +27,23 @@ public class PowerDetector extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityMachineDetector();
 	}
 	
 	@Override
-	public boolean canProvidePower(final IBlockState state) {
+	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}
 	
 	@Override
-	public int getWeakPower(final IBlockState blockState, final IBlockAccess blockAccess, final BlockPos pos, final EnumFacing side) {
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return blockState.getValue(IS_ON) ? 15 : 0;
 	}
 
-	public static void updateBlockState(final boolean isOn, final World world, final BlockPos pos){
-		final IBlockState i = world.getBlockState(pos);
-		final TileEntity entity = world.getTileEntity(pos);
+	public static void updateBlockState(boolean isOn, World world, BlockPos pos){
+		IBlockState i = world.getBlockState(pos);
+		TileEntity entity = world.getTileEntity(pos);
 		if(i.getBlock() == ModBlocks.machine_detector){
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(PowerDetector.IS_ON, isOn));
 		}
@@ -60,17 +59,17 @@ public class PowerDetector extends BlockContainer {
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
-	public int getMetaFromState(final IBlockState state) {
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(IS_ON) ? 1 : 0;
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
+	public IBlockState getStateFromMeta(int meta) {
 		return meta > 0 ? this.getDefaultState().withProperty(IS_ON, true) : this.getDefaultState().withProperty(IS_ON, false);
 	}
 }

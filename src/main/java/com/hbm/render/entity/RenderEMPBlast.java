@@ -1,34 +1,32 @@
 package com.hbm.render.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.entity.effect.EntityEMPBlast;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.amlfrom1710.AdvancedModelLoader;
 import com.hbm.render.amlfrom1710.IModelCustom;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 public class RenderEMPBlast extends Render<EntityEMPBlast> {
 
 	public static final IRenderFactory<EntityEMPBlast> FACTORY = (RenderManager man) -> {return new RenderEMPBlast(man);};
 	
 	private static final ResourceLocation ringModelRL = new ResourceLocation(/*"/assets/" + */RefStrings.MODID, "models/Ring.obj");
-	private final IModelCustom ringModel;
-    private final ResourceLocation ringTexture;
+	private IModelCustom ringModel;
+    private ResourceLocation ringTexture;
 	
-	protected RenderEMPBlast(final RenderManager renderManager) {
+	protected RenderEMPBlast(RenderManager renderManager) {
 		super(renderManager);
 		ringModel = AdvancedModelLoader.loadModel(ringModelRL);
     	ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/explosion/EMPBlast.png");
 	}
 	
 	@Override
-	public void doRender(final EntityEMPBlast entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(EntityEMPBlast entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		GL11.glTranslated(x, y, z);
@@ -43,7 +41,7 @@ public class RenderEMPBlast extends Render<EntityEMPBlast> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityEMPBlast entity) {
+	protected ResourceLocation getEntityTexture(EntityEMPBlast entity) {
 		return ringTexture;
 	}
 

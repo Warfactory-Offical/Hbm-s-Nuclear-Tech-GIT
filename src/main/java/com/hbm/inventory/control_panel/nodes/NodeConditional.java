@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class NodeConditional extends Node {
 
-    public NodeConditional(final float x, final float y) {
+    public NodeConditional(float x, float y) {
         super(x, y);
 
         this.inputs.add(new NodeConnection("Enable", this, inputs.size(), true, DataValue.DataType.NUMBER, new DataValueFloat(0)));
@@ -27,20 +27,20 @@ public class NodeConditional extends Node {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound tag, final NodeSystem sys) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag, NodeSystem sys) {
         tag.setString("nodeType", "conditional");
         return super.writeToNBT(tag, sys);
     }
 
     @Override
-    public DataValue evaluate(final int idx) {
+    public DataValue evaluate(int idx) {
         if (cacheValid)
             return evalCache[0];
         cacheValid = true;
 
-        final DataValue enable = inputs.get(0).evaluate();
-        final DataValue in = inputs.get(1).evaluate();
-        final DataValue defaul = inputs.get(2).evaluate();
+        DataValue enable = inputs.get(0).evaluate();
+        DataValue in = inputs.get(1).evaluate();
+        DataValue defaul = inputs.get(2).evaluate();
         if (enable == null || in == null || defaul == null)
             return null;
 

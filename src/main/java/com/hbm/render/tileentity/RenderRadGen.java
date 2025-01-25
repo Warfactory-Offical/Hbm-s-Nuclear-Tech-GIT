@@ -1,24 +1,21 @@
 package com.hbm.render.tileentity;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityMachineRadGen;
-
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
+import org.lwjgl.opengl.GL11;
 
 public class RenderRadGen extends TileEntitySpecialRenderer<TileEntityMachineRadGen> {
 
 	@Override
-	public boolean isGlobalRenderer(final TileEntityMachineRadGen te) {
+	public boolean isGlobalRenderer(TileEntityMachineRadGen te) {
 		return true;
 	}
 	
 	@Override
-	public void render(final TileEntityMachineRadGen te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
+	public void render(TileEntityMachineRadGen te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_LIGHTING);
         GlStateManager.enableLighting();
@@ -54,7 +51,7 @@ public class RenderRadGen extends TileEntitySpecialRenderer<TileEntityMachineRad
         GL11.glPushMatrix();
 	        if(te.fuel > 0){
 	        	GL11.glTranslated(0D, 1.5D, 0D);
-				GL11.glRotatef((System.currentTimeMillis() * te.strength/ TileEntityMachineRadGen.maxStrength) % 360, 1F, 0F, 0F);
+				GL11.glRotatef((System.currentTimeMillis() * te.strength/te.maxStrength) % 360, 1F, 0F, 0F);
 				GL11.glTranslated(0D, -1.5D, 0D);
 			}
 	        ResourceManager.radgen_body.renderPart("Rotor");

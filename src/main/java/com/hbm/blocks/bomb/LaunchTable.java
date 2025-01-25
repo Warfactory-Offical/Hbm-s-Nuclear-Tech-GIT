@@ -1,7 +1,4 @@
 package com.hbm.blocks.bomb;
-import com.hbm.util.ItemStackUtil;
-
-import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IBomb;
@@ -9,7 +6,6 @@ import com.hbm.interfaces.IMultiBlock;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.bomb.TileEntityLaunchTable;
 import com.hbm.tileentity.machine.TileEntityDummy;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
@@ -24,21 +20,19 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class LaunchTable extends BlockContainer implements IMultiBlock, IBomb {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
-	public LaunchTable(final Material materialIn, final String s) {
+	public LaunchTable(Material materialIn, String s) {
 		super(materialIn);
 		this.setTranslationKey(s);
 		this.setRegistryName(s);
@@ -47,53 +41,53 @@ public class LaunchTable extends BlockContainer implements IMultiBlock, IBomb {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityLaunchTable();
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(final IBlockState state) {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
-	public boolean isOpaqueCube(final IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(final IBlockState state) {
+	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public boolean isNormalCube(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 	
 	@Override
-	public boolean isFullCube(final IBlockState state) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, new IProperty[]{FACING});
 	}
 	
 	@Override
-	public int getMetaFromState(final IBlockState state) {
-		return state.getValue(FACING).getIndex();
+	public int getMetaFromState(IBlockState state) {
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
 	
 	@Override
-	public IBlockState getStateFromMeta(final int meta) {
-		EnumFacing enumfacing = EnumFacing.byIndex(meta);
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {
@@ -106,34 +100,34 @@ public class LaunchTable extends BlockContainer implements IMultiBlock, IBomb {
 	
 	
 	@Override
-	public IBlockState withRotation(final IBlockState state, final Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
 	}
 	
 	@Override
-	public IBlockState withMirror(final IBlockState state, final Mirror mirrorIn)
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-	   return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+	   return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
 	
 	@Override
-	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(ModBlocks.struct_launcher_core_large);
 	}
 	
 	@Override
-	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
-		return ItemStackUtil.itemStackFrom(ModBlocks.struct_launcher_core_large);
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(ModBlocks.struct_launcher_core_large);
 	}
 	
 	@Override
-	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 		{
 			return true;
 		} else if(!player.isSneaking())
 		{
-			final TileEntityLaunchTable entity = (TileEntityLaunchTable) world.getTileEntity(pos);
+			TileEntityLaunchTable entity = (TileEntityLaunchTable) world.getTileEntity(pos);
 			if(entity != null)
 			{
 				player.openGui(MainRegistry.instance, ModBlocks.guiID_launch_table, world, pos.getX(), pos.getY(), pos.getZ());
@@ -145,8 +139,8 @@ public class LaunchTable extends BlockContainer implements IMultiBlock, IBomb {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
-		final EnumFacing e = placer.getHorizontalFacing().getOpposite();
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		EnumFacing e = placer.getHorizontalFacing().getOpposite();
 		world.setBlockState(pos, state.withProperty(FACING, e));
 		
 		for(int k = -4; k <= 4; k++)
@@ -213,25 +207,34 @@ public class LaunchTable extends BlockContainer implements IMultiBlock, IBomb {
 					placeDummy(world, pos.getX() + i, pos.getY(), pos.getZ() + j, pos, ModBlocks.dummy_port_launch_table);
 	}
 	
-	private void placeDummy(final World world, final int x, final int y, final int z, final BlockPos target, final Block block) {
-		final BlockPos pos = new BlockPos(x, y, z);
+	private void placeDummy(World world, int x, int y, int z, BlockPos target, Block block) {
+		BlockPos pos = new BlockPos(x, y, z);
 		world.setBlockState(pos, block.getDefaultState());
 		
-		final TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		
-		if(te instanceof TileEntityDummy dummy) {
-            dummy.target = target;
+		if(te instanceof TileEntityDummy) {
+			TileEntityDummy dummy = (TileEntityDummy)te;
+			dummy.target = target;
 		}
 	}
 
 
 
 	@Override
-	public void explode(final World world, final BlockPos pos) {
-		final TileEntityLaunchTable entity = (TileEntityLaunchTable) world.getTileEntity(pos);
-		
-		if(entity.canLaunch())
-			entity.launch();
+	public BombReturnCode explode(World world, BlockPos pos) {
+		if (!world.isRemote) {
+			TileEntityLaunchTable entity = (TileEntityLaunchTable) world.getTileEntity(pos);
+
+			if (entity.canLaunch()) {
+				entity.launch();
+				return BombReturnCode.LAUNCHED;
+			}
+
+			return BombReturnCode.ERROR_MISSING_COMPONENT;
+		}
+
+		return BombReturnCode.UNDEFINED;
 	}
 
 }

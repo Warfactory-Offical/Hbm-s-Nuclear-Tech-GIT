@@ -1,23 +1,21 @@
 package com.hbm.inventory.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.inventory.container.ContainerMachineCMBFactory;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineCMBFactory;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GUIMachineCMBFactory extends GuiInfoContainer {
 	
-	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_cmb_manufactory.png");
-	private final TileEntityMachineCMBFactory diFurnace;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_cmb_manufactory.png");
+	private TileEntityMachineCMBFactory diFurnace;
 
-	public GUIMachineCMBFactory(final InventoryPlayer invPlayer, final TileEntityMachineCMBFactory tedf) {
+	public GUIMachineCMBFactory(InventoryPlayer invPlayer, TileEntityMachineCMBFactory tedf) {
 		super(new ContainerMachineCMBFactory(invPlayer, tedf));
 		diFurnace = tedf;
 		
@@ -26,7 +24,7 @@ public class GUIMachineCMBFactory extends GuiInfoContainer {
 	}
 	
 	@Override
-	public void drawScreen(final int mouseX, final int mouseY, final float f) {
+	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 69 - 52, 16, 52, diFurnace.tank, diFurnace.tankType);
@@ -35,26 +33,26 @@ public class GUIMachineCMBFactory extends GuiInfoContainer {
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-		final String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
+	protected void drawGuiContainerForegroundLayer(int i, int j) {
+		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(final float p_146976_1_, final int p_146976_2_, final int p_146976_3_) {
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		super.drawDefaultBackground();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if(diFurnace.power > 0) {
-			final int i = (int)diFurnace.getPowerScaled(52);
+			int i = (int)diFurnace.getPowerScaled(52);
 			drawTexturedModalRect(guiLeft + 8, guiTop + 69 - i, 176, 52 - i, 16, i);
 		}
 		
-		final int j1 = diFurnace.getProgressScaled(24);
+		int j1 = diFurnace.getProgressScaled(24);
 		drawTexturedModalRect(guiLeft + 101 + 9, guiTop + 34, 208, 0, j1 + 1, 16);
 		
 		FFUtils.drawLiquid(diFurnace.tank, guiLeft, guiTop, this.zLevel, 16, 52, 26, 97);

@@ -2,7 +2,6 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.oil.TileEntityMachineRefinery;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,9 +11,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMachineRefinery extends Container {
 
-private final TileEntityMachineRefinery testNuke;
+private TileEntityMachineRefinery testNuke;
 	
-	public ContainerMachineRefinery(final InventoryPlayer invPlayer, final TileEntityMachineRefinery tedf) {
+	public ContainerMachineRefinery(InventoryPlayer invPlayer, TileEntityMachineRefinery tedf) {
 		
 		testNuke = tedf;
 		
@@ -42,6 +41,8 @@ private final TileEntityMachineRefinery testNuke;
 		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 10, 134, 108));
 		//Sulfur Output
 		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 11, 152, 36));
+		//Fluid ID
+		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 12, 186, 106));
 		
 		for(int i = 0; i < 3; i++)
 		{
@@ -58,14 +59,14 @@ private final TileEntityMachineRefinery testNuke;
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(final EntityPlayer p_82846_1_, final int par2)
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = ItemStack.EMPTY;
-		final Slot var4 = this.inventorySlots.get(par2);
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
 		if (var4 != null && var4.getHasStack())
 		{
-			final ItemStack var5 = var4.getStack();
+			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
             if (par2 <= 11) {
@@ -97,7 +98,7 @@ private final TileEntityMachineRefinery testNuke;
     }
 
 	@Override
-	public boolean canInteractWith(final EntityPlayer player) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return testNuke.isUseableByPlayer(player);
 	}
 }

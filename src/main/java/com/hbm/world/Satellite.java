@@ -46,15 +46,15 @@ public class Satellite extends WorldGenerator
 		};
 	}
 
-	public boolean LocationIsValidSpawn(final World world, final BlockPos pos)
+	public boolean LocationIsValidSpawn(World world, BlockPos pos)
  {
 
-		final IBlockState checkBlockState = world.getBlockState(pos.down());
-		final Block checkBlock = checkBlockState.getBlock();
-		final Block blockAbove = world.getBlockState(pos).getBlock();
-		final Block blockBelow = world.getBlockState(pos.down(2)).getBlock();
+		IBlockState checkBlockState = world.getBlockState(pos.down());
+		Block checkBlock = checkBlockState.getBlock();
+		Block blockAbove = world.getBlockState(pos).getBlock();
+		Block blockBelow = world.getBlockState(pos.down(2)).getBlock();
 
-		for (final Block i : GetValidSpawnBlocks())
+		for (Block i : GetValidSpawnBlocks())
 		{
 			if (blockAbove != Blocks.AIR)
 			{
@@ -77,15 +77,15 @@ public class Satellite extends WorldGenerator
 	}
 
 	@Override
-	public boolean generate(final World world, final Random rand, final BlockPos pos)
+	public boolean generate(World world, Random rand, BlockPos pos)
 	{
 		return generate(world, rand, pos, false);
 
 	}
 	
-	public boolean generate(final World world, final Random rand, final BlockPos pos, final boolean force)
+	public boolean generate(World world, Random rand, BlockPos pos, boolean force)
 	{
-		final int i = rand.nextInt(1);
+		int i = rand.nextInt(1);
 
 		if(i == 0)
 		{
@@ -96,13 +96,13 @@ public class Satellite extends WorldGenerator
 
 	}
 
-	public boolean generate_r0(final World world, final Random rand, final int x, final int y, final int z, final boolean force)
+	public boolean generate_r0(World world, Random rand, int x, int y, int z, boolean force)
 	{
 		if(!force && (!LocationIsValidSpawn(world, new BlockPos(x, y, z)) || !LocationIsValidSpawn(world, new BlockPos(x + 24, y, z)) || !LocationIsValidSpawn(world, new BlockPos(x + 24, y, z + 30)) || !LocationIsValidSpawn(world, new BlockPos(x, y, z + 30))))
 		{
 			return false;
 		}
-		final MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
 		world.setBlockState(pos.setPos(x + 18, y + -3, z + 9), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + -3, z + 9), Library.getRandomConcrete().getDefaultState(), 3);
@@ -330,40 +330,40 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 18, y + -1, z + 30), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + -1, z + 30), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 20, y + -1, z + 30), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 5, y, z + 8), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
-		world.setBlockState(pos.setPos(x + 13, y, z + 8), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 8), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 20, y, z + 8), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 21, y, z + 8), ModBlocks.fence_metal.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 22, y, z + 8), ModBlocks.fence_metal.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 9), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 20, y, z + 9), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 18, y, z + 10), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 10), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 20, y, z + 10), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 17, y, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 18, y, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 20, y, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 21, y, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 17, y, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 18, y, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 20, y, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 21, y, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 17, y, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 18, y, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 20, y, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 21, y, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 18, y, z + 14), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 14), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 20, y, z + 14), Library.getRandomConcrete().getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 7, y, z + 17), Block4.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 17), Block4.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 5, y, z + 23), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[5]), 3);
-		world.setBlockState(pos.setPos(x + 7, y, z + 29), Block4.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 19, y, z + 29), Block4.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 0, z + 8), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
+		world.setBlockState(pos.setPos(x + 13, y + 0, z + 8), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 8), Block2.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 20, y + 0, z + 8), Block2.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 21, y + 0, z + 8), ModBlocks.fence_metal.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 22, y + 0, z + 8), ModBlocks.fence_metal.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 9), Block2.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 20, y + 0, z + 9), Block2.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 18, y + 0, z + 10), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 10), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 20, y + 0, z + 10), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 17, y + 0, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 18, y + 0, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 20, y + 0, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 21, y + 0, z + 11), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 17, y + 0, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 18, y + 0, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 20, y + 0, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 21, y + 0, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 17, y + 0, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 18, y + 0, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 20, y + 0, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 21, y + 0, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 18, y + 0, z + 14), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 14), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 20, y + 0, z + 14), Library.getRandomConcrete().getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 0, z + 17), Block4.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 17), Block4.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 5, y + 0, z + 23), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[5]), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 0, z + 29), Block4.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 19, y + 0, z + 29), Block4.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 1, z + 8), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 1, z + 8), Block3.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.values()[3]), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 1, z + 8), Block2.getDefaultState(), 3);
@@ -1005,7 +1005,7 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 19, y + 14, z + 18), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 14, z + 19), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 14, z + 19), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH), 3);
-        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(1), world.getTileEntity(pos.setPos(x + 10, y + 14, z + 19)), 8);
+        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(1), (TileEntityChest)world.getTileEntity(pos.setPos(x + 10, y + 14, z + 19)), 8);
 		world.setBlockState(pos.setPos(x + 19, y + 14, z + 19), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 20, y + 14, z + 19), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 21, y + 14, z + 19), Block2.getDefaultState(), 3);
@@ -1033,7 +1033,7 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 5, y + 14, z + 27), ModBlocks.fence_metal.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 14, z + 27), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 14, z + 27), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH), 3);
-        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(2), world.getTileEntity(pos.setPos(x + 16, y + 14, z + 27)), 8);
+        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(2), (TileEntityChest)world.getTileEntity(pos.setPos(x + 16, y + 14, z + 27)), 8);
 		world.setBlockState(pos.setPos(x + 19, y + 14, z + 27), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 14, z + 28), ModBlocks.fence_metal.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 6, y + 14, z + 28), ModBlocks.fence_metal.getDefaultState(), 3);
@@ -1450,7 +1450,7 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 17, y + 19, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 19, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + 19, z + 12), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.WEST), 3);
-        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(3), world.getTileEntity(pos.setPos(x + 19, y + 19, z + 12)), 12);
+        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(3), (TileEntityChest)world.getTileEntity(pos.setPos(x + 19, y + 19, z + 12)), 12);
 		world.setBlockState(pos.setPos(x + 20, y + 19, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 21, y + 19, z + 12), Library.getRandomConcrete().getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 19, z + 13), Library.getRandomConcrete().getDefaultState(), 3);
@@ -1601,7 +1601,7 @@ public class Satellite extends WorldGenerator
 		return true;
 
 	}
-	public boolean generate_r02(final World world, final Random rand, final int x, final int y, final int z, final MutableBlockPos pos)
+	public boolean generate_r02(World world, Random rand, int x, int y, int z, MutableBlockPos pos)
 	{
 
 		world.setBlockState(pos.setPos(x + 7, y + 24, z + 13), Block5.getDefaultState(), 3);
@@ -1785,28 +1785,28 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 12, y + 26, z + 8), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 26, z + 8), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 14, y + 26, z + 8), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 26, z + 9), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 26, z + 9), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 26, z + 9), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 15, y + 26, z + 9), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 26, z + 9), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 26, z + 9), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 26, z + 9), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + 26, z + 9), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 26, z + 10), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 26, z + 10), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 26, z + 10), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 15, y + 26, z + 10), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 26, z + 10), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 26, z + 10), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 26, z + 10), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + 26, z + 10), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 26, z + 11), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 26, z + 11), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 26, z + 11), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 15, y + 26, z + 11), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 26, z + 11), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 26, z + 11), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 26, z + 11), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + 26, z + 11), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 26, z + 12), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 26, z + 12), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 26, z + 12), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 26, z + 12), Block4.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 26, z + 12), Block4.getDefaultState(), 3);
@@ -1815,21 +1815,21 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 17, y + 26, z + 12), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 26, z + 12), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + 26, z + 12), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 26, z + 13), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 26, z + 13), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 26, z + 13), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 15, y + 26, z + 13), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 26, z + 13), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 26, z + 13), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 26, z + 13), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + 26, z + 13), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 26, z + 14), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 26, z + 14), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 26, z + 14), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 15, y + 26, z + 14), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 26, z + 14), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 17, y + 26, z + 14), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 18, y + 26, z + 14), Block2.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 19, y + 26, z + 14), Block2.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x, y + 26, z + 15), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 0, y + 26, z + 15), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 1, y + 26, z + 15), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 15, y + 26, z + 15), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 16, y + 26, z + 15), Block5.getDefaultState(), 3);
@@ -2210,11 +2210,11 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 9, y + 32, z + 23), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 32, z + 23), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 32, z + 23), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 7, y + 33, z), Block7.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 33, z), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 9, y + 33, z), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 10, y + 33, z), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 11, y + 33, z), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 7, y + 33, z + 0), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 33, z + 0), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 9, y + 33, z + 0), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 10, y + 33, z + 0), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 11, y + 33, z + 0), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 33, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 33, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 14, y + 33, z + 1), Block5.getDefaultState(), 3);
@@ -2252,10 +2252,10 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 9, y + 33, z + 24), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 33, z + 24), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 33, z + 24), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 8, y + 34, z), Block7.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 9, y + 34, z), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 10, y + 34, z), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 11, y + 34, z), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 8, y + 34, z + 0), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 9, y + 34, z + 0), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 10, y + 34, z + 0), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 11, y + 34, z + 0), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 34, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 34, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 14, y + 34, z + 1), Block5.getDefaultState(), 3);
@@ -2294,9 +2294,9 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 9, y + 34, z + 24), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 34, z + 24), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 34, z + 24), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 9, y + 35, z), Block7.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 10, y + 35, z), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 11, y + 35, z), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 9, y + 35, z + 0), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 10, y + 35, z + 0), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 11, y + 35, z + 0), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 35, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 35, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 14, y + 35, z + 1), Block5.getDefaultState(), 3);
@@ -2333,8 +2333,8 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 9, y + 35, z + 24), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 35, z + 24), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 35, z + 24), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 10, y + 36, z), Block7.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 11, y + 36, z), Block5.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 10, y + 36, z + 0), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 11, y + 36, z + 0), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 36, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 36, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 14, y + 36, z + 1), Block5.getDefaultState(), 3);
@@ -2371,7 +2371,7 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 14, y + 36, z + 23), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 10, y + 36, z + 24), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 11, y + 36, z + 24), Block5.getDefaultState(), 3);
-		world.setBlockState(pos.setPos(x + 11, y + 37, z), Block7.getDefaultState(), 3);
+		world.setBlockState(pos.setPos(x + 11, y + 37, z + 0), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 12, y + 37, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 13, y + 37, z + 1), Block5.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 14, y + 37, z + 1), Block5.getDefaultState(), 3);
@@ -2466,7 +2466,7 @@ public class Satellite extends WorldGenerator
 		world.setBlockState(pos.setPos(x + 4, y + 39, z + 12), Block7.getDefaultState(), 3);
 		//world.setBlockState(pos.setPos(x + 5, y + 39, z + 12), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 5, y + 39, z + 12), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.WEST), 3);
-        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(3), world.getTileEntity(pos.setPos(x + 5, y + 39, z + 12)), 12);
+        WeightedRandomChestContentFrom1710.generateChestContents(rand, HbmChestContents.getLoot(3), (TileEntityChest)world.getTileEntity(pos.setPos(x + 5, y + 39, z + 12)), 12);
 		world.setBlockState(pos.setPos(x + 6, y + 39, z + 12), Block7.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 7, y + 39, z + 12), Block4.getDefaultState(), 3);
 		world.setBlockState(pos.setPos(x + 8, y + 39, z + 12), Block4.getDefaultState(), 3);
@@ -2584,7 +2584,7 @@ public class Satellite extends WorldGenerator
 		return true;
 
 	}
-	public boolean generate_r03_last(final World world, final Random rand, final int x, final int y, final int z, final MutableBlockPos pos)
+	public boolean generate_r03_last(World world, Random rand, int x, int y, int z, MutableBlockPos pos)
 	{
 
 		world.setBlockState(pos.setPos(x + 19, y + 3, z + 9), Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.NORTH), 3);

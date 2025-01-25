@@ -1,17 +1,15 @@
 package com.hbm.render.item.weapon;
 
-import org.lwjgl.opengl.GL11;
-
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.GunB93;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.render.model.ModelB93;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class RenderGunB93 extends TEISRBase {
 
@@ -23,7 +21,7 @@ public class RenderGunB93 extends TEISRBase {
 	}
 	
 	@Override
-	public void renderByItem(final ItemStack item) {
+	public void renderByItem(ItemStack item) {
 		GL11.glPopMatrix();
 		switch(type) {
 		case FIRST_PERSON_LEFT_HAND:
@@ -63,7 +61,7 @@ public class RenderGunB93 extends TEISRBase {
 				}
 				
 				if(item.getItem() == ModItems.gun_b93 && GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) > 0) {
-					final float off = GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
+					float off = GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * 2;
 					GL11.glRotatef(GunB93.getRotationFromAnim(item, Minecraft.getMinecraft().getRenderPartialTicks()) * -90, 0.0F, 0.0F, 1.0F);
 					//b92Ani.apply();
 					GL11.glTranslatef(off * -0.5F, off * -0.5F, 0.0F);

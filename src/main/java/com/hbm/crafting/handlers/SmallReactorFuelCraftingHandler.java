@@ -15,11 +15,11 @@ public class SmallReactorFuelCraftingHandler extends net.minecraftforge.registri
 	 * The only rules for matching is that the item is fuel (meta and NBT don't matter) and that it's the only stack in the grid
 	 */
 	@Override
-	public boolean matches(final InventoryCrafting inventory, final World world) {
+	public boolean matches(InventoryCrafting inventory, World world) {
 		if(!hasExactlyOneStack(inventory))
 			return false;
 		
-		final ItemStack stack = getFirstStack(inventory);
+		ItemStack stack = getFirstStack(inventory);
 		
 		if(stack.getItem() instanceof ItemFuelRod){
 			return ItemFuelRod.getLifeTime(stack) == 0;
@@ -28,11 +28,11 @@ public class SmallReactorFuelCraftingHandler extends net.minecraftforge.registri
 	}
 
 	@Override
-	public ItemStack getCraftingResult(final InventoryCrafting inventory) {
+	public ItemStack getCraftingResult(InventoryCrafting inventory) {
 		if(!hasExactlyOneStack(inventory))
 			return ItemStack.EMPTY;
 		
-		final ItemStack stack = getFirstStack(inventory);
+		ItemStack stack = getFirstStack(inventory);
 		
 		if(stack.getItem() instanceof ItemFuelRod) {
 			if(ItemFuelRod.getLifeTime(stack) == 0){
@@ -48,14 +48,14 @@ public class SmallReactorFuelCraftingHandler extends net.minecraftforge.registri
 		return ItemStack.EMPTY;
 	}
 	
-	private boolean hasExactlyOneStack(final InventoryCrafting inventory) {
+	private boolean hasExactlyOneStack(InventoryCrafting inventory) {
 		
 		boolean hasOne = false;
 
 		for(int i = 0; i < 3; ++i) {
 			for(int j = 0; j < 3; ++j) {
 				
-				final ItemStack stack = inventory.getStackInRowAndColumn(j, i);
+				ItemStack stack = inventory.getStackInRowAndColumn(j, i);
 				
 				if(!stack.isEmpty()) {
 					
@@ -70,12 +70,12 @@ public class SmallReactorFuelCraftingHandler extends net.minecraftforge.registri
 		return hasOne;
 	}
 	
-	private ItemStack getFirstStack(final InventoryCrafting inventory) {
+	private ItemStack getFirstStack(InventoryCrafting inventory) {
 
 		for(int i = 0; i < 3; ++i) {
 			for(int j = 0; j < 3; ++j) {
 				
-				final ItemStack stack = inventory.getStackInRowAndColumn(j, i);
+				ItemStack stack = inventory.getStackInRowAndColumn(j, i);
 				
 				if(stack != null && !stack.isEmpty()) {
 					return stack;
@@ -92,7 +92,7 @@ public class SmallReactorFuelCraftingHandler extends net.minecraftforge.registri
 	}
 	
 	@Override
-	public boolean canFit(final int width, final int height){
+	public boolean canFit(int width, int height){
 		return width >= 1 && height >= 1;
 	}
 

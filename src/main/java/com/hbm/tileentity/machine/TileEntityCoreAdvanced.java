@@ -1,20 +1,16 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.items.ModItems;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
-import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBattery;
 import com.hbm.tileentity.INBTPacketReceiver;
 import com.hbm.tileentity.TileEntityMachineBase;
-
-import api.hbm.energy.IEnergyUser;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -22,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITickable, IEnergyUser, INBTPacketReceiver {
+public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2, INBTPacketReceiver {
 
 	public int progress = 0;
 	public int progressStep = 1;
@@ -42,7 +38,7 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound) {
 		this.progress = compound.getInteger("cookTime");
 		this.progressStep = compound.getInteger("speed");
 		power = compound.getLong("power");
@@ -52,7 +48,7 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("cookTime", progress);
 		compound.setInteger("speed", this.progressStep);
 		compound.setLong("power", power);
@@ -60,7 +56,7 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 		return super.writeToNBT(compound);
 	}
 
-	public void moveToSlotIfProcessable(final int slot){
+	public void moveToSlotIfProcessable(int slot){
 		if(inventory.getStackInSlot(slot).isEmpty()) {
 			for(int i = 0; i < 9; i++)
 			{
@@ -83,7 +79,7 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 							inventory.getStackInSlot(slot).grow(inventory.getStackInSlot(i).getCount());
 							inventory.setStackInSlot(i, ItemStack.EMPTY);
 						} else {
-							final int j = inventory.getStackInSlot(slot).getMaxStackSize() - inventory.getStackInSlot(slot).getCount();
+							int j = inventory.getStackInSlot(slot).getMaxStackSize() - inventory.getStackInSlot(slot).getCount();
 							inventory.getStackInSlot(slot).grow(j);
 							inventory.getStackInSlot(i).shrink(j);
 						}
@@ -94,10 +90,10 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 		}
 	}
 
-	public boolean hasSpace(final int input, final int output){
-		final boolean isEmpty = inventory.getStackInSlot(output).isEmpty();
+	public boolean hasSpace(int input, int output){
+		boolean isEmpty = inventory.getStackInSlot(output).isEmpty();
 		if(isEmpty) return true;
-		final ItemStack outputStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(input));
+		ItemStack outputStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(input));
 		return Library.areItemStacksEqualIgnoreCount(outputStack, inventory.getStackInSlot(output)) && inventory.getStackInSlot(output).getCount() < inventory.getStackInSlot(output).getMaxStackSize();
 	}
 
@@ -115,9 +111,9 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 		isProcessable(inventory.getStackInSlot(24));
 	}
 
-	public void process(final int input, final int output){
+	public void process(int input, int output){
 		if(isProcessable(inventory.getStackInSlot(input))) {
-			final ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(input));
+			ItemStack itemStack = FurnaceRecipes.instance().getSmeltingResult(inventory.getStackInSlot(input));
 
 			if(inventory.getStackInSlot(output).isEmpty()) {
 				inventory.setStackInSlot(output, itemStack.copy());
@@ -132,19 +128,19 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 		}
 	}
 
-	public void moveToOuput(final int slot){
+	public void moveToOuput(int slot){
 		if(!inventory.getStackInSlot(slot).isEmpty())
 		{
 			for(int i = 0; i < 9; i++)
 			{
-				final int j = i + 13;
+				int j = i + 13;
 				if(inventory.getStackInSlot(j).isEmpty()) {
 					inventory.setStackInSlot(j, inventory.getStackInSlot(slot).copy());
 					inventory.setStackInSlot(slot, ItemStack.EMPTY);
 					return;
 				} else if(Library.areItemStacksEqualIgnoreCount(inventory.getStackInSlot(j), inventory.getStackInSlot(slot))) {
-					final ItemStack stack = inventory.getStackInSlot(j);
-					final int k = stack.getMaxStackSize() - stack.getCount();
+					ItemStack stack = inventory.getStackInSlot(j);
+					int k = stack.getMaxStackSize() - stack.getCount();
 					if(k > 0) { //needs k items until stack is complete
 
 						if(stack.getCount() + inventory.getStackInSlot(slot).getCount() <= inventory.getStackInSlot(slot).getMaxStackSize()) {
@@ -168,8 +164,8 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 	@Override
 	public void update() {
 		if(!world.isRemote && isStructureValid(world)) {
-			this.trySubscribe(world, pos.add(0, 2, 0), ForgeDirection.UP);
-			this.trySubscribe(world, pos.add(0, -2, 0), ForgeDirection.DOWN);
+			this.trySubscribe(world, pos.getX(), pos.getY() + 2, pos.getZ(), ForgeDirection.UP);
+			this.trySubscribe(world, pos.getX(), pos.getY() - 2, pos.getZ(), ForgeDirection.DOWN);
 			hasCluster = inventory.getStackInSlot(22).getItem() == ModItems.factory_core_advanced;
 			
 			moveToSlotIfProcessable(9);
@@ -211,7 +207,7 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 			moveToOuput(25);
 			moveToOuput(26);
 
-			final NBTTagCompound data = new NBTTagCompound();
+			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("cookTime", progress);
 			data.setInteger("speed", progressStep);
 			data.setLong("power", power);
@@ -220,56 +216,60 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public void networkUnpack(final NBTTagCompound nbt) {
+	public void networkUnpack(NBTTagCompound nbt) {
 		this.progress = nbt.getInteger("cookTime");
 		this.progressStep = nbt.getInteger("speed");
 		this.power = nbt.getLong("power");
 	}
 
-	public boolean isStructureValid(final World world) {
-		final MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-		final int x = pos.getX();
-		final int y = pos.getY();
-		final int z = pos.getZ();
+	public boolean isStructureValid(World world) {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		
+		if(world.getBlockState(mPos.setPos(x, y, z)).getBlock() == ModBlocks.factory_advanced_core &&
+				world.getBlockState(mPos.setPos(x - 1, y - 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x, y - 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x + 1, y - 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x - 1, y - 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
+				(world.getBlockState(mPos.setPos(x, y - 1, z)).getBlock() == ModBlocks.factory_advanced_conductor || world.getBlockState(mPos.setPos(x, y - 1, z)).getBlock() == ModBlocks.factory_advanced_hull) &&
+				world.getBlockState(mPos.setPos(x + 1, y - 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x - 1, y - 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x, y - 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x + 1, y - 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x - 1, y, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x, y, z - 1)).getBlock() == ModBlocks.factory_advanced_furnace &&
+				world.getBlockState(mPos.setPos(x + 1, y, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x - 1, y, z)).getBlock() == ModBlocks.factory_advanced_furnace &&
+				world.getBlockState(mPos.setPos(x + 1, y, z)).getBlock() == ModBlocks.factory_advanced_furnace &&
+				world.getBlockState(mPos.setPos(x - 1, y, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x, y, z + 1)).getBlock() == ModBlocks.factory_advanced_furnace &&
+				world.getBlockState(mPos.setPos(x + 1, y, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x - 1, y + 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x, y + 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x + 1, y + 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x - 1, y + 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
+				(world.getBlockState(mPos.setPos(x, y + 1, z)).getBlock() == ModBlocks.factory_advanced_conductor || world.getBlockState(mPos.setPos(x, y + 1, z)).getBlock() == ModBlocks.factory_advanced_hull) &&
+				world.getBlockState(mPos.setPos(x + 1, y + 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x - 1, y + 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x, y + 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
+				world.getBlockState(mPos.setPos(x + 1, y + 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull)
+		{
+			return true;
+		}
+		return false;
+	}
 
-        return world.getBlockState(mPos.setPos(x, y, z)).getBlock() == ModBlocks.factory_advanced_core &&
-                world.getBlockState(mPos.setPos(x - 1, y - 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x, y - 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x + 1, y - 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x - 1, y - 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
-                (world.getBlockState(mPos.setPos(x, y - 1, z)).getBlock() == ModBlocks.factory_advanced_conductor || world.getBlockState(mPos.setPos(x, y - 1, z)).getBlock() == ModBlocks.factory_advanced_hull) &&
-                world.getBlockState(mPos.setPos(x + 1, y - 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x - 1, y - 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x, y - 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x + 1, y - 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x - 1, y, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x, y, z - 1)).getBlock() == ModBlocks.factory_advanced_furnace &&
-                world.getBlockState(mPos.setPos(x + 1, y, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x - 1, y, z)).getBlock() == ModBlocks.factory_advanced_furnace &&
-                world.getBlockState(mPos.setPos(x + 1, y, z)).getBlock() == ModBlocks.factory_advanced_furnace &&
-                world.getBlockState(mPos.setPos(x - 1, y, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x, y, z + 1)).getBlock() == ModBlocks.factory_advanced_furnace &&
-                world.getBlockState(mPos.setPos(x + 1, y, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x - 1, y + 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x, y + 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x + 1, y + 1, z - 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x - 1, y + 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
-                (world.getBlockState(mPos.setPos(x, y + 1, z)).getBlock() == ModBlocks.factory_advanced_conductor || world.getBlockState(mPos.setPos(x, y + 1, z)).getBlock() == ModBlocks.factory_advanced_hull) &&
-                world.getBlockState(mPos.setPos(x + 1, y + 1, z)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x - 1, y + 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x, y + 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull &&
-                world.getBlockState(mPos.setPos(x + 1, y + 1, z + 1)).getBlock() == ModBlocks.factory_advanced_hull;
-    }
-
-	public long getPowerScaled(final long i) {
+	public long getPowerScaled(long i) {
 		return (power * i) / maxPower;
 	}
 
-	public int getProgressScaled(final int i) {
+	public int getProgressScaled(int i) {
 		return (progress * i) / processTime;
 	}
 	
-	public boolean isProcessable(final ItemStack item) {
+	public boolean isProcessable(ItemStack item) {
 		if(item != null && !item.isEmpty())
 		{
 			return !FurnaceRecipes.instance().getSmeltingResult(item).isEmpty();
@@ -285,7 +285,7 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 
 
 	@Override
-	public void setPower(final long i) {
+	public void setPower(long i) {
 		this.power = i;
 	}
 
@@ -295,22 +295,22 @@ public class TileEntityCoreAdvanced extends TileEntityMachineBase implements ITi
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slot, final ItemStack stack){
+	public boolean isItemValidForSlot(int slot, ItemStack stack){
 		return (slot < 11 || slot == 23 || slot == 24) && isProcessable(stack);
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(final EnumFacing e){
+	public int[] getAccessibleSlotsFromSide(EnumFacing e){
 		return new int[]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 };
 	}
 	
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack itemStack, final int amount){
+	public boolean canInsertItem(int slot, ItemStack itemStack, int amount){
 		return this.isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack itemStack, final int amount){
+	public boolean canExtractItem(int slot, ItemStack itemStack, int amount){
 		return slot > 10 && slot != 22 && slot != 23 && slot != 24;
 	}
 }
