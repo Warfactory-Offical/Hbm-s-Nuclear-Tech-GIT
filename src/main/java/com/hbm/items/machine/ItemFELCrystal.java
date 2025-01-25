@@ -25,7 +25,7 @@ public class ItemFELCrystal extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn) {
-		String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (TextFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (this.getTranslationKeyInefficiently(stack) + ".desc");
+		String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (TextFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (this.getTranslationKey(stack) + ".desc");
 		list.add(I18nUtil.resolveKey(desc));
 		list.add(wavelength.textColor + I18nUtil.resolveKey(wavelength.name) + " - " + wavelength.textColor + I18nUtil.resolveKey(this.wavelength.wavelengthRange));
 	}

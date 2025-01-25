@@ -33,7 +33,7 @@ public class YellowBarrel extends Block {
 	}
 
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+	public void onBlockExploeded(World worldIn, BlockPos pos, Explosion explosionIn) {
 		if (!worldIn.isRemote && worldIn instanceof WorldServer) {
 			((WorldServer)worldIn).addScheduledTask(() -> {
         		explode(worldIn, pos.getX(), pos.getY(), pos.getZ());

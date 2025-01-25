@@ -209,7 +209,7 @@ public class BlockHazard extends Block implements IItemHazard {
     }
 
     @Override
-    public void onplayerDestroy(World world, BlockPos pos, IBlockState state) {
+    public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
         if (this == ModBlocks.block_meteor_molten) {
             if (!world.isRemote)
                 world.setBlockState(pos, Blocks.LAVA.getDefaultState());
